@@ -10,6 +10,7 @@ import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
 import soot.jimple.AnyNewExpr;
+import soot.jimple.ArrayRef;
 import soot.jimple.CaughtExceptionRef;
 import soot.jimple.ClassConstant;
 import soot.jimple.DefinitionStmt;
@@ -22,6 +23,7 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.MonitorStmt;
 import soot.jimple.NeExpr;
 import soot.jimple.NullConstant;
+import soot.jimple.ParameterRef;
 import soot.jimple.Ref;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
@@ -107,7 +109,7 @@ public class nullFinderAnalysis extends ForwardBranchedFlowAnalysis<NullableValu
 	protected void merge(NullableValueSet in1, NullableValueSet in2, NullableValueSet out) {
 		NullableValueSet newout = NullableValueSet.merge(in1, in2);
 		out.valueSet = newout.valueSet;
-		System.out.println("merge anal = " + out.valueSet.size());
+		//System.out.println("merge anal = " + out.valueSet.size());
 	}
 
 	@Override
@@ -125,19 +127,42 @@ public class nullFinderAnalysis extends ForwardBranchedFlowAnalysis<NullableValu
 		      right = ((JCastExpr) right).getOp();
 		    } //if right has a cast we remove it.
 		
-		if(right instanceof NullConstant) {
+		if(right instanceof NullConstant) {//if right is null constant we asigne left null status
 			out.add(left, "Null");
-		} else
+		} else //If right is something that we know can't be Null we give it nonnull status
 		if(right instanceof AnyNewExpr || right instanceof ThisRef 
 				|| right instanceof ClassConstant || right instanceof CaughtExceptionRef) {
 			out.add(left, "NonNull");
-		} else 
+		} else //if right is a known value we give its status to left
 		if (out.contains(right)){
 			out.add(left, NullableValueSet.getStatus(out, right));
-		} else{
-			out.add(left, "NSP");
+		} else{ //if non of those things we check if user gave instruction on what to trust
+			if (right instanceof InvokeExpr) {
+				if(prop.TrustInvocationsReturn) {
+					out.add(left, "NonNull");
+					return;
+				} 
+			} else if (right instanceof FieldRef) {
+				if (prop.TrustFieldRefReturn) {
+					out.add(left, "NonNull");
+					return;
+				}
+			} else if (right instanceof ArrayRef) {
+				if (prop.TrustArrayRefReturn) {
+					out.add(left, "NonNull");
+					return;
+				}
+			} else if (right instanceof ParameterRef){
+				if (prop.TrustParameterRefReturn) {
+					out.add(left, "NonNull");
+					return;
+				}
+			} else {//if not the case we just give it NSP because we don't know
+					out.add(left, "NSP");
+				}
+			}
 		}
-	}
+	
 	
 	
 	private void HandleFieldExpr(Stmt stm,NullableValueSet out,NullableValueSet outBranch) {
@@ -154,22 +179,6 @@ public class nullFinderAnalysis extends ForwardBranchedFlowAnalysis<NullableValu
 		}
 	}
 	
-	private void HandleInvokeExpr(Stmt stm,NullableValueSet out,NullableValueSet outBranch) {
-		InvokeExpr e  = stm.getInvokeExpr();
-
-		System.out.println("InvokeExpr");
-		//TODO effet de bords
-		//Si le statement déreférence qqch alors on met la valeure déréferencé nn-null
-		if (e instanceof InstanceInvokeExpr) {
-			if(stm.branches()) {
-				outBranch.add(((InstanceInvokeExpr) e).getBase(), "NonNull");
-			} 
-			if(stm.fallsThrough()) {
-				out.add(((InstanceInvokeExpr) e).getBase(), "NonNull");
-			}
-		}
-		
-	}
 	private void HandleArrayRef(Stmt stm,NullableValueSet out,NullableValueSet outBranch) {
 		Value base = stm.getArrayRef().getBase();
 		//si on optient un objet de l'array, c'est que l'array n'est pas null
@@ -181,22 +190,51 @@ public class nullFinderAnalysis extends ForwardBranchedFlowAnalysis<NullableValu
 		}
 		System.out.println("ArrayRef");
 	}
+	
+	
+	private void HandleInvokeExpr(Stmt stm,NullableValueSet out,NullableValueSet outBranch) {
+		InvokeExpr e  = stm.getInvokeExpr();
+
+		System.out.println("InvokeExpr");
+		if(prop.LooseInfoOnInvocations) {
+			for(NullableValue v:out) {
+				if(v.status.contentEquals("NonNull")) {
+					v.status = "NCP";
+				}
+			}
+			for(NullableValue v:outBranch) {
+				if(v.status.contentEquals("NonNull")) {
+					v.status = "NCP";
+				}
+			}
+		}
+		//Si le statement déreférence qqch alors on met la valeure déréferencé nn-null
+		if (e instanceof InstanceInvokeExpr) {
+			if(stm.branches()) {
+				outBranch.add(((InstanceInvokeExpr) e).getBase(), "NonNull");
+			} 
+			if(stm.fallsThrough()) {
+				out.add(((InstanceInvokeExpr) e).getBase(), "NonNull");
+			}
+		}
+		
+	}
+
 	private void handleIfStmt(Stmt stm,NullableValueSet out,NullableValueSet outBranch) {
 		JIfStmt sif = (JIfStmt) stm;
 		AbstractBinopExpr cond = (AbstractBinopExpr) sif.getCondition();
 		if(cond instanceof EqExpr || cond instanceof NeExpr) {
 			HandleEquality(stm,cond,out,outBranch);
-		} else if(cond instanceof InstanceOfExpr) {//if instance of then the thing tested is not null
+		} else if(cond instanceof InstanceOfExpr) {//if instanceof is true then the thing tested is not null
 			outBranch.add(((InstanceOfExpr) cond).getOp(), "NonNull");
 		}
 	}
 	private void HandleEquality(Stmt stm, AbstractBinopExpr cond,NullableValueSet out,NullableValueSet outBranch){
-		boolean eqstatus = cond instanceof EqExpr;
 		Value left = cond.getOp1();
 	    Value right = cond.getOp2();
-		System.out.println("\n\n\nENTERING EQUALITY left = " + left + " right = "+ right);
-		System.out.println("left is ref " + (left instanceof PhiExpr) + "  "+ left.getClass());
-		System.out.println("left is ref " + (right instanceof PhiExpr)+ "  "+ right.getClass());
+		//System.out.println("\n\n\nENTERING EQUALITY left = " + left + " right = "+ right);
+		//System.out.println("left is ref " + (left instanceof PhiExpr) + "  "+ left.getClass());
+		//System.out.println("left is ref " + (right instanceof PhiExpr)+ "  "+ right.getClass());
 		Value val = null;
 	    if (left == NullConstant.v()) {
 	      if (right != NullConstant.v()) {

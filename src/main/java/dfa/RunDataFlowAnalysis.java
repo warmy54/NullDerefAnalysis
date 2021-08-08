@@ -25,7 +25,7 @@ public class RunDataFlowAnalysis
 
 		
 		/*** *** YOU SHOULD EDIT THIS BEFORE RUNNING *** ***/
-		String classPath = "/home/frederic/soot"; 			//TODO CHANGE TO ARG PATH
+		String classPath = "/home/frederic/eclipse-workspace/testSoot/ressources/soot"; 			//TODO CHANGE TO ARG PATH
 
 		
 
@@ -38,18 +38,17 @@ public class RunDataFlowAnalysis
 			 "-p", "jb.ule", "off",		//stop jimple from removing unused locals
 			 "-p", "jb.tr", "ignore-nullpointer-dereferences:true", //we want to show null deref not delete them
 			 "-p", "jb.dae", "off", 	//stop jimple from removing useless asignment
-			 "-p", "jj.a", "enabled:false",
-			 "-p", "jb.lns", "off",
+			 
 			"-src-prec", "java",		// Specify type of source file
 			"-main-class", mainClass,	// Specify the main class 
 			"-f", "J", 					// Specify type of output file
 			"-keep-line-number",		//used to retrieve error location
-			mainClass 
+			mainClass
 		};
 		 // transformer for analysis
 		NullAnalysisProperties prop = new NullAnalysisProperties();
 
-		try {
+		try {//configurations des propriétés
 			prop.decode("config.properties");
 		} catch (Exception e) {
 			System.out.println("Configuration file decoding failed");

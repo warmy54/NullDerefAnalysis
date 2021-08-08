@@ -11,10 +11,14 @@ import java.util.Properties;
 
 public class NullAnalysisProperties {
 		
-		boolean SettingDefault;
-		boolean ShowNCPWarning =true; //default behavior
-		String user;
-		String password;
+		boolean SettingDefault; //default behavior
+		boolean ShowNCPWarning =true; 
+		boolean TrustInvocationsReturn = false;
+		boolean LooseInfoOnInvocations = false;
+		boolean TrustFieldRefReturn = false;
+		boolean TrustArrayRefReturn = false;
+		boolean TrustParameterRefReturn = false;
+
 		
 		public NullAnalysisProperties() {SettingDefault = true;}
 		public void decode(String path) throws IOException {
@@ -23,21 +27,59 @@ public class NullAnalysisProperties {
 
 	            Properties prop = new Properties();
 	            prop.load(input);
+	            
+	            
 	            String NCPString = prop.getProperty("ShowNCPWarning");
-
-	            if (NCPString.contentEquals("Yes") || NCPString.contentEquals("No")) {
-	            	ShowNCPWarning = YesNoToBoolean(prop.getProperty("ShowNCPWarning"));
+	            if(NCPString == null) {} else {
+		            if (NCPString.contentEquals("Yes") || NCPString.contentEquals("No")) {
+		            	ShowNCPWarning = YesNoToBoolean(NCPString);
+		            }
 	            }
-	            user = prop.getProperty("db.user");
-
-	            password = prop.getProperty("db.password");
+	            
+	            
+	            String TrustInvocationsString = prop.getProperty("TrustInvocations");
+	            if(TrustInvocationsString == null) {} else {
+	            	if (TrustInvocationsString.contentEquals("Yes") || TrustInvocationsString.contentEquals("No")) {
+		            	TrustInvocationsReturn = YesNoToBoolean(TrustInvocationsString);
+		            }
+	            }
+	            
+	            
+	            String LooseInfoOnInvocationsString = prop.getProperty("LooseInfoOnInvocations");
+	            if(LooseInfoOnInvocationsString == null) {} else {
+	            	if (LooseInfoOnInvocationsString.contentEquals("Yes") || LooseInfoOnInvocationsString.contentEquals("No")) {
+	            		LooseInfoOnInvocations = YesNoToBoolean(LooseInfoOnInvocationsString);
+		            }
+	            }
+	            
+	            String TrustFieldRefString = prop.getProperty("TrustFieldRef");
+	            if(TrustFieldRefString == null) {} else {
+	            	if (TrustFieldRefString.contentEquals("Yes") || TrustFieldRefString.contentEquals("No")) {
+		            	TrustFieldRefReturn = YesNoToBoolean(TrustFieldRefString);
+		            }
+	            }
+	            
+	            String TrustArrayRefString = prop.getProperty("TrustArrayRef");
+	            if(TrustArrayRefString == null) {} else {
+	            	if (TrustArrayRefString.contentEquals("Yes") || TrustArrayRefString.contentEquals("No")) {
+		            	TrustArrayRefReturn = YesNoToBoolean(TrustArrayRefString);
+		            }
+	            }
+	            
+	            String TrustParameterRefString = prop.getProperty("TrustParameterRef");
+	            if(TrustParameterRefString == null) {} else {
+	            	if (TrustParameterRefString.contentEquals("Yes") || TrustParameterRefString.contentEquals("No")) {
+	            		TrustParameterRefReturn = YesNoToBoolean(TrustParameterRefString);
+		            }
+	            }
+	            
+	            
 	            SettingDefault = false;
 			} catch (IOException io) {
 	            io.printStackTrace();
 	        }
 			
 		}
-		
 		public boolean YesNoToBoolean(String s) {
 			if (s.contentEquals("Yes")) {
 				return true;
@@ -51,6 +93,6 @@ public class NullAnalysisProperties {
 		public static void main(String[] argv) throws IOException {
 			NullAnalysisProperties prop = new NullAnalysisProperties();
 			prop.decode("config.properties");
-			System.out.println(prop.ShowNCPWarning);
+			System.out.println(prop.LooseInfoOnInvocations);
 		}
 }

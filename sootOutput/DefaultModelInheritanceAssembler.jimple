@@ -1,0 +1,1608 @@
+public class DefaultModelInheritanceAssembler extends java.lang.Object implements org.apache.maven.project.inheritance.ModelInheritanceAssembler
+{
+
+    public void <init>()
+    {
+        DefaultModelInheritanceAssembler this;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void assembleBuildInheritance(org.apache.maven.model.Build, org.apache.maven.model.Build, boolean)
+    {
+        org.apache.maven.model.Build childBuild, parentBuild;
+        java.lang.String $stack7, $stack8, $stack9, $stack10, $stack11, $stack12, $stack13, $stack14, $stack42, $stack47, $stack49, $stack51, $stack55, $stack57, $stack59, $stack61;
+        java.util.List $stack15, $stack16, $stack18, $stack20, resources;
+        boolean handleAsInheritance, $stack28, $stack37;
+        org.apache.maven.model.PluginManagement dominantPM, recessivePM, $stack23, $stack24;
+        DefaultModelInheritanceAssembler this;
+        org.apache.maven.model.PluginContainer $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        childBuild := @parameter0: org.apache.maven.model.Build;
+
+        parentBuild := @parameter1: org.apache.maven.model.Build;
+
+        handleAsInheritance := @parameter2: boolean;
+
+        $stack7 = virtualinvoke childBuild.<org.apache.maven.model.Build: java.lang.String getSourceDirectory()>();
+
+        if $stack7 != null goto label01;
+
+        $stack61 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.lang.String getSourceDirectory()>();
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void setSourceDirectory(java.lang.String)>($stack61);
+
+     label01:
+        $stack8 = virtualinvoke childBuild.<org.apache.maven.model.Build: java.lang.String getScriptSourceDirectory()>();
+
+        if $stack8 != null goto label02;
+
+        $stack59 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.lang.String getScriptSourceDirectory()>();
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void setScriptSourceDirectory(java.lang.String)>($stack59);
+
+     label02:
+        $stack9 = virtualinvoke childBuild.<org.apache.maven.model.Build: java.lang.String getTestSourceDirectory()>();
+
+        if $stack9 != null goto label03;
+
+        $stack57 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.lang.String getTestSourceDirectory()>();
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void setTestSourceDirectory(java.lang.String)>($stack57);
+
+     label03:
+        $stack10 = virtualinvoke childBuild.<org.apache.maven.model.Build: java.lang.String getOutputDirectory()>();
+
+        if $stack10 != null goto label04;
+
+        $stack55 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.lang.String getOutputDirectory()>();
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void setOutputDirectory(java.lang.String)>($stack55);
+
+     label04:
+        $stack11 = virtualinvoke childBuild.<org.apache.maven.model.Build: java.lang.String getTestOutputDirectory()>();
+
+        if $stack11 != null goto label05;
+
+        $stack51 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.lang.String getTestOutputDirectory()>();
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void setTestOutputDirectory(java.lang.String)>($stack51);
+
+     label05:
+        staticinvoke <org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void mergeExtensionLists(org.apache.maven.model.Build,org.apache.maven.model.Build)>(childBuild, parentBuild);
+
+        $stack12 = virtualinvoke childBuild.<org.apache.maven.model.Build: java.lang.String getDirectory()>();
+
+        if $stack12 != null goto label06;
+
+        $stack49 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.lang.String getDirectory()>();
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void setDirectory(java.lang.String)>($stack49);
+
+     label06:
+        $stack13 = virtualinvoke childBuild.<org.apache.maven.model.Build: java.lang.String getDefaultGoal()>();
+
+        if $stack13 != null goto label07;
+
+        $stack47 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.lang.String getDefaultGoal()>();
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void setDefaultGoal(java.lang.String)>($stack47);
+
+     label07:
+        $stack14 = virtualinvoke childBuild.<org.apache.maven.model.Build: java.lang.String getFinalName()>();
+
+        if $stack14 != null goto label08;
+
+        $stack42 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.lang.String getFinalName()>();
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void setFinalName(java.lang.String)>($stack42);
+
+     label08:
+        $stack15 = virtualinvoke childBuild.<org.apache.maven.model.Build: java.util.List getFilters()>();
+
+        $stack16 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.util.List getFilters()>();
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergeFilterLists(java.util.List,java.util.List)>($stack15, $stack16);
+
+        resources = virtualinvoke childBuild.<org.apache.maven.model.Build: java.util.List getResources()>();
+
+        if resources == null goto label09;
+
+        $stack37 = interfaceinvoke resources.<java.util.List: boolean isEmpty()>();
+
+        if $stack37 == 0 goto label10;
+
+     label09:
+        $stack18 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.util.List getResources()>();
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void setResources(java.util.List)>($stack18);
+
+     label10:
+        resources = virtualinvoke childBuild.<org.apache.maven.model.Build: java.util.List getTestResources()>();
+
+        if resources == null goto label11;
+
+        $stack28 = interfaceinvoke resources.<java.util.List: boolean isEmpty()>();
+
+        if $stack28 == 0 goto label12;
+
+     label11:
+        $stack20 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.util.List getTestResources()>();
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void setTestResources(java.util.List)>($stack20);
+
+     label12:
+        $r0 = (org.apache.maven.model.PluginContainer) childBuild;
+
+        $r1 = (org.apache.maven.model.PluginContainer) parentBuild;
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginLists(org.apache.maven.model.PluginContainer,org.apache.maven.model.PluginContainer,boolean)>($r0, $r1, handleAsInheritance);
+
+        dominantPM = virtualinvoke childBuild.<org.apache.maven.model.Build: org.apache.maven.model.PluginManagement getPluginManagement()>();
+
+        recessivePM = virtualinvoke parentBuild.<org.apache.maven.model.Build: org.apache.maven.model.PluginManagement getPluginManagement()>();
+
+        if dominantPM != null goto label13;
+
+        if recessivePM == null goto label13;
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void setPluginManagement(org.apache.maven.model.PluginManagement)>(recessivePM);
+
+        goto label14;
+
+     label13:
+        $stack23 = virtualinvoke childBuild.<org.apache.maven.model.Build: org.apache.maven.model.PluginManagement getPluginManagement()>();
+
+        $stack24 = virtualinvoke parentBuild.<org.apache.maven.model.Build: org.apache.maven.model.PluginManagement getPluginManagement()>();
+
+        $r2 = (org.apache.maven.model.PluginContainer) $stack23;
+
+        $r3 = (org.apache.maven.model.PluginContainer) $stack24;
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginLists(org.apache.maven.model.PluginContainer,org.apache.maven.model.PluginContainer,boolean)>($r2, $r3, 0);
+
+     label14:
+        return;
+    }
+
+    private void assembleScmInheritance(org.apache.maven.model.Model, org.apache.maven.model.Model, java.lang.String, boolean)
+    {
+        org.apache.maven.model.Model parent, child;
+        org.apache.maven.model.Scm $stack7, parentScm, childScm, $u0;
+        java.lang.String $stack10, $stack16, $stack18, $stack19, childPathAdjustment, $stack20, $stack21, $stack24, $stack25, $stack26, $stack27, $stack30, $stack31, $stack32, $stack12, $stack14;
+        boolean $stack11, $stack17, appendPaths, $stack22, $stack28, $stack13, $stack15;
+        DefaultModelInheritanceAssembler this;
+        org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler $r0, $r1, $r2;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        child := @parameter0: org.apache.maven.model.Model;
+
+        parent := @parameter1: org.apache.maven.model.Model;
+
+        childPathAdjustment := @parameter2: java.lang.String;
+
+        appendPaths := @parameter3: boolean;
+
+        $stack7 = virtualinvoke parent.<org.apache.maven.model.Model: org.apache.maven.model.Scm getScm()>();
+
+        if $stack7 == null goto label4;
+
+        parentScm = virtualinvoke parent.<org.apache.maven.model.Model: org.apache.maven.model.Scm getScm()>();
+
+        childScm = virtualinvoke child.<org.apache.maven.model.Model: org.apache.maven.model.Scm getScm()>();
+
+        if childScm != null goto label1;
+
+        $u0 = new org.apache.maven.model.Scm;
+
+        specialinvoke $u0.<org.apache.maven.model.Scm: void <init>()>();
+
+        childScm = $u0;
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setScm(org.apache.maven.model.Scm)>($u0);
+
+     label1:
+        $stack10 = virtualinvoke childScm.<org.apache.maven.model.Scm: java.lang.String getConnection()>();
+
+        $stack11 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack10);
+
+        if $stack11 == 0 goto label2;
+
+        $stack27 = virtualinvoke parentScm.<org.apache.maven.model.Scm: java.lang.String getConnection()>();
+
+        $stack28 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack27);
+
+        if $stack28 != 0 goto label2;
+
+        $stack30 = virtualinvoke parentScm.<org.apache.maven.model.Scm: java.lang.String getConnection()>();
+
+        $stack31 = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getArtifactId()>();
+
+        $r0 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        $stack32 = virtualinvoke $r0.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: java.lang.String appendPath(java.lang.String,java.lang.String,java.lang.String,boolean)>($stack30, $stack31, childPathAdjustment, appendPaths);
+
+        virtualinvoke childScm.<org.apache.maven.model.Scm: void setConnection(java.lang.String)>($stack32);
+
+     label2:
+        $stack12 = virtualinvoke childScm.<org.apache.maven.model.Scm: java.lang.String getDeveloperConnection()>();
+
+        $stack13 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack12);
+
+        if $stack13 == 0 goto label3;
+
+        $stack21 = virtualinvoke parentScm.<org.apache.maven.model.Scm: java.lang.String getDeveloperConnection()>();
+
+        $stack22 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack21);
+
+        if $stack22 != 0 goto label3;
+
+        $stack24 = virtualinvoke parentScm.<org.apache.maven.model.Scm: java.lang.String getDeveloperConnection()>();
+
+        $stack25 = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getArtifactId()>();
+
+        $r1 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        $stack26 = virtualinvoke $r1.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: java.lang.String appendPath(java.lang.String,java.lang.String,java.lang.String,boolean)>($stack24, $stack25, childPathAdjustment, appendPaths);
+
+        virtualinvoke childScm.<org.apache.maven.model.Scm: void setDeveloperConnection(java.lang.String)>($stack26);
+
+     label3:
+        $stack14 = virtualinvoke childScm.<org.apache.maven.model.Scm: java.lang.String getUrl()>();
+
+        $stack15 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack14);
+
+        if $stack15 == 0 goto label4;
+
+        $stack16 = virtualinvoke parentScm.<org.apache.maven.model.Scm: java.lang.String getUrl()>();
+
+        $stack17 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack16);
+
+        if $stack17 != 0 goto label4;
+
+        $stack18 = virtualinvoke parentScm.<org.apache.maven.model.Scm: java.lang.String getUrl()>();
+
+        $stack19 = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getArtifactId()>();
+
+        $r2 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        $stack20 = virtualinvoke $r2.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: java.lang.String appendPath(java.lang.String,java.lang.String,java.lang.String,boolean)>($stack18, $stack19, childPathAdjustment, appendPaths);
+
+        virtualinvoke childScm.<org.apache.maven.model.Scm: void setUrl(java.lang.String)>($stack20);
+
+     label4:
+        return;
+    }
+
+    public void copyModel(org.apache.maven.model.Model, org.apache.maven.model.Model)
+    {
+        DefaultModelInheritanceAssembler this;
+        org.apache.maven.model.Model dest, source;
+        org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler $r0;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        dest := @parameter0: org.apache.maven.model.Model;
+
+        source := @parameter1: org.apache.maven.model.Model;
+
+        $r0 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        specialinvoke $r0.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void assembleModelInheritance(org.apache.maven.model.Model,org.apache.maven.model.Model,java.lang.String,boolean)>(dest, source, null, 0);
+
+        return;
+    }
+
+    public void assembleModelInheritance(org.apache.maven.model.Model, org.apache.maven.model.Model, java.lang.String)
+    {
+        DefaultModelInheritanceAssembler this;
+        org.apache.maven.model.Model child, parent;
+        java.lang.String childPathAdjustment;
+        org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler $r0;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        child := @parameter0: org.apache.maven.model.Model;
+
+        parent := @parameter1: org.apache.maven.model.Model;
+
+        childPathAdjustment := @parameter2: java.lang.String;
+
+        $r0 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        specialinvoke $r0.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void assembleModelInheritance(org.apache.maven.model.Model,org.apache.maven.model.Model,java.lang.String,boolean)>(child, parent, childPathAdjustment, 1);
+
+        return;
+    }
+
+    public void assembleModelInheritance(org.apache.maven.model.Model, org.apache.maven.model.Model)
+    {
+        DefaultModelInheritanceAssembler this;
+        org.apache.maven.model.Model child, parent;
+        org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler $r0;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        child := @parameter0: org.apache.maven.model.Model;
+
+        parent := @parameter1: org.apache.maven.model.Model;
+
+        $r0 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        specialinvoke $r0.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void assembleModelInheritance(org.apache.maven.model.Model,org.apache.maven.model.Model,java.lang.String,boolean)>(child, parent, null, 1);
+
+        return;
+    }
+
+    private void assembleModelInheritance(org.apache.maven.model.Model, org.apache.maven.model.Model, java.lang.String, boolean)
+    {
+        org.apache.maven.model.Model parent, child;
+        java.lang.String $stack6, $stack7, $stack9, childPathAdjustment, $stack11, $stack65, $stack69, $stack70, $stack77, $stack78, $stack79, $stack80, $stack85, $stack86, $stack8;
+        DefaultModelInheritanceAssembler this;
+        boolean appendPaths;
+        org.apache.maven.model.Organization $stack12, $stack58;
+        org.apache.maven.model.CiManagement $stack13, $stack56;
+        java.util.List $stack14, $stack16, $stack18, $stack20, $stack22, $stack23, $stack24, $stack28, $stack50, $stack52, $stack54;
+        int $stack15, $stack17, $stack19, $stack21;
+        java.util.Properties $stack26, $stack27, $u0;
+        org.apache.maven.model.IssueManagement $stack67, $stack10;
+        org.apache.maven.model.Parent $stack82, $stack84;
+        org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        child := @parameter0: org.apache.maven.model.Model;
+
+        parent := @parameter1: org.apache.maven.model.Model;
+
+        childPathAdjustment := @parameter2: java.lang.String;
+
+        appendPaths := @parameter3: boolean;
+
+        if parent != null goto label01;
+
+        return;
+
+     label01:
+        $stack6 = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getGroupId()>();
+
+        if $stack6 != null goto label02;
+
+        $stack86 = virtualinvoke parent.<org.apache.maven.model.Model: java.lang.String getGroupId()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setGroupId(java.lang.String)>($stack86);
+
+     label02:
+        $stack7 = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getVersion()>();
+
+        if $stack7 != null goto label03;
+
+        $stack82 = virtualinvoke child.<org.apache.maven.model.Model: org.apache.maven.model.Parent getParent()>();
+
+        if $stack82 == null goto label03;
+
+        $stack84 = virtualinvoke child.<org.apache.maven.model.Model: org.apache.maven.model.Parent getParent()>();
+
+        $stack85 = virtualinvoke $stack84.<org.apache.maven.model.Parent: java.lang.String getVersion()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setVersion(java.lang.String)>($stack85);
+
+     label03:
+        $stack8 = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getInceptionYear()>();
+
+        if $stack8 != null goto label04;
+
+        $stack80 = virtualinvoke parent.<org.apache.maven.model.Model: java.lang.String getInceptionYear()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setInceptionYear(java.lang.String)>($stack80);
+
+     label04:
+        $stack9 = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getUrl()>();
+
+        if $stack9 != null goto label06;
+
+        $stack69 = virtualinvoke parent.<org.apache.maven.model.Model: java.lang.String getUrl()>();
+
+        if $stack69 == null goto label05;
+
+        $stack77 = virtualinvoke parent.<org.apache.maven.model.Model: java.lang.String getUrl()>();
+
+        $stack78 = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getArtifactId()>();
+
+        $r0 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        $stack79 = virtualinvoke $r0.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: java.lang.String appendPath(java.lang.String,java.lang.String,java.lang.String,boolean)>($stack77, $stack78, childPathAdjustment, appendPaths);
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setUrl(java.lang.String)>($stack79);
+
+        goto label06;
+
+     label05:
+        $stack70 = virtualinvoke parent.<org.apache.maven.model.Model: java.lang.String getUrl()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setUrl(java.lang.String)>($stack70);
+
+     label06:
+        $r1 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        specialinvoke $r1.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void assembleDistributionInheritance(org.apache.maven.model.Model,org.apache.maven.model.Model,java.lang.String,boolean)>(child, parent, childPathAdjustment, appendPaths);
+
+        $stack10 = virtualinvoke child.<org.apache.maven.model.Model: org.apache.maven.model.IssueManagement getIssueManagement()>();
+
+        if $stack10 != null goto label07;
+
+        $stack67 = virtualinvoke parent.<org.apache.maven.model.Model: org.apache.maven.model.IssueManagement getIssueManagement()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setIssueManagement(org.apache.maven.model.IssueManagement)>($stack67);
+
+     label07:
+        $stack11 = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getDescription()>();
+
+        if $stack11 != null goto label08;
+
+        $stack65 = virtualinvoke parent.<org.apache.maven.model.Model: java.lang.String getDescription()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setDescription(java.lang.String)>($stack65);
+
+     label08:
+        $stack12 = virtualinvoke child.<org.apache.maven.model.Model: org.apache.maven.model.Organization getOrganization()>();
+
+        if $stack12 != null goto label09;
+
+        $stack58 = virtualinvoke parent.<org.apache.maven.model.Model: org.apache.maven.model.Organization getOrganization()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setOrganization(org.apache.maven.model.Organization)>($stack58);
+
+     label09:
+        $r2 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        specialinvoke $r2.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void assembleScmInheritance(org.apache.maven.model.Model,org.apache.maven.model.Model,java.lang.String,boolean)>(child, parent, childPathAdjustment, appendPaths);
+
+        $stack13 = virtualinvoke child.<org.apache.maven.model.Model: org.apache.maven.model.CiManagement getCiManagement()>();
+
+        if $stack13 != null goto label10;
+
+        $stack56 = virtualinvoke parent.<org.apache.maven.model.Model: org.apache.maven.model.CiManagement getCiManagement()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setCiManagement(org.apache.maven.model.CiManagement)>($stack56);
+
+     label10:
+        $stack14 = virtualinvoke child.<org.apache.maven.model.Model: java.util.List getDevelopers()>();
+
+        $stack15 = interfaceinvoke $stack14.<java.util.List: int size()>();
+
+        if $stack15 != 0 goto label11;
+
+        $stack54 = virtualinvoke parent.<org.apache.maven.model.Model: java.util.List getDevelopers()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setDevelopers(java.util.List)>($stack54);
+
+     label11:
+        $stack16 = virtualinvoke child.<org.apache.maven.model.Model: java.util.List getLicenses()>();
+
+        $stack17 = interfaceinvoke $stack16.<java.util.List: int size()>();
+
+        if $stack17 != 0 goto label12;
+
+        $stack52 = virtualinvoke parent.<org.apache.maven.model.Model: java.util.List getLicenses()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setLicenses(java.util.List)>($stack52);
+
+     label12:
+        $stack18 = virtualinvoke child.<org.apache.maven.model.Model: java.util.List getContributors()>();
+
+        $stack19 = interfaceinvoke $stack18.<java.util.List: int size()>();
+
+        if $stack19 != 0 goto label13;
+
+        $stack50 = virtualinvoke parent.<org.apache.maven.model.Model: java.util.List getContributors()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setContributors(java.util.List)>($stack50);
+
+     label13:
+        $stack20 = virtualinvoke child.<org.apache.maven.model.Model: java.util.List getMailingLists()>();
+
+        $stack21 = interfaceinvoke $stack20.<java.util.List: int size()>();
+
+        if $stack21 != 0 goto label14;
+
+        $stack28 = virtualinvoke parent.<org.apache.maven.model.Model: java.util.List getMailingLists()>();
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setMailingLists(java.util.List)>($stack28);
+
+     label14:
+        $r3 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        specialinvoke $r3.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void assembleBuildInheritance(org.apache.maven.model.Model,org.apache.maven.model.Model)>(child, parent);
+
+        $r4 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        specialinvoke $r4.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void assembleDependencyInheritance(org.apache.maven.model.Model,org.apache.maven.model.Model)>(child, parent);
+
+        $stack22 = virtualinvoke child.<org.apache.maven.model.Model: java.util.List getRepositories()>();
+
+        $stack23 = virtualinvoke parent.<org.apache.maven.model.Model: java.util.List getRepositories()>();
+
+        $stack24 = staticinvoke <org.apache.maven.project.ModelUtils: java.util.List mergeRepositoryLists(java.util.List,java.util.List)>($stack22, $stack23);
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setRepositories(java.util.List)>($stack24);
+
+        $r5 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        specialinvoke $r5.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void assembleReportingInheritance(org.apache.maven.model.Model,org.apache.maven.model.Model)>(child, parent);
+
+        $r6 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        specialinvoke $r6.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void assembleDependencyManagementInheritance(org.apache.maven.model.Model,org.apache.maven.model.Model)>(child, parent);
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        $stack26 = virtualinvoke parent.<org.apache.maven.model.Model: java.util.Properties getProperties()>();
+
+        virtualinvoke $u0.<java.util.Properties: void putAll(java.util.Map)>($stack26);
+
+        $stack27 = virtualinvoke child.<org.apache.maven.model.Model: java.util.Properties getProperties()>();
+
+        virtualinvoke $u0.<java.util.Properties: void putAll(java.util.Map)>($stack27);
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setProperties(java.util.Properties)>($u0);
+
+        return;
+    }
+
+    private void assembleDependencyManagementInheritance(org.apache.maven.model.Model, org.apache.maven.model.Model)
+    {
+        org.apache.maven.model.Model parent, child;
+        org.apache.maven.model.DependencyManagement parentDepMgmt, childDepMgmt;
+        java.util.List childDeps, $stack15;
+        java.util.TreeMap $stack12;
+        boolean $stack14, $stack17, $stack20;
+        java.lang.Object $stack18, $stack22;
+        java.lang.String $stack19, $stack23;
+        DefaultModelInheritanceAssembler this;
+        java.util.Iterator l7;
+        org.apache.maven.model.Dependency dep;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        child := @parameter0: org.apache.maven.model.Model;
+
+        parent := @parameter1: org.apache.maven.model.Model;
+
+        parentDepMgmt = virtualinvoke parent.<org.apache.maven.model.Model: org.apache.maven.model.DependencyManagement getDependencyManagement()>();
+
+        childDepMgmt = virtualinvoke child.<org.apache.maven.model.Model: org.apache.maven.model.DependencyManagement getDependencyManagement()>();
+
+        if parentDepMgmt == null goto label6;
+
+        if childDepMgmt != null goto label1;
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setDependencyManagement(org.apache.maven.model.DependencyManagement)>(parentDepMgmt);
+
+        goto label6;
+
+     label1:
+        childDeps = virtualinvoke childDepMgmt.<org.apache.maven.model.DependencyManagement: java.util.List getDependencies()>();
+
+        $stack12 = new java.util.TreeMap;
+
+        specialinvoke $stack12.<java.util.TreeMap: void <init>()>();
+
+        l7 = interfaceinvoke childDeps.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack14 = interfaceinvoke l7.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label3;
+
+        $stack22 = interfaceinvoke l7.<java.util.Iterator: java.lang.Object next()>();
+
+        dep = (org.apache.maven.model.Dependency) $stack22;
+
+        $stack23 = virtualinvoke dep.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        interfaceinvoke $stack12.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack23, dep);
+
+        goto label2;
+
+     label3:
+        $stack15 = virtualinvoke parentDepMgmt.<org.apache.maven.model.DependencyManagement: java.util.List getDependencies()>();
+
+        l7 = interfaceinvoke $stack15.<java.util.List: java.util.Iterator iterator()>();
+
+     label4:
+        $stack17 = interfaceinvoke l7.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack17 == 0 goto label6;
+
+        $stack18 = interfaceinvoke l7.<java.util.Iterator: java.lang.Object next()>();
+
+        dep = (org.apache.maven.model.Dependency) $stack18;
+
+        $stack19 = virtualinvoke dep.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        $stack20 = interfaceinvoke $stack12.<java.util.Map: boolean containsKey(java.lang.Object)>($stack19);
+
+        if $stack20 != 0 goto label5;
+
+        virtualinvoke childDepMgmt.<org.apache.maven.model.DependencyManagement: void addDependency(org.apache.maven.model.Dependency)>(dep);
+
+     label5:
+        goto label4;
+
+     label6:
+        return;
+    }
+
+    private void assembleReportingInheritance(org.apache.maven.model.Model, org.apache.maven.model.Model)
+    {
+        org.apache.maven.model.Model child, parent;
+        org.apache.maven.model.Reporting parentReporting, $stack14, childReporting;
+        boolean $stack7, $stack9;
+        java.lang.String $stack8, $stack10;
+        DefaultModelInheritanceAssembler this;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        child := @parameter0: org.apache.maven.model.Model;
+
+        parent := @parameter1: org.apache.maven.model.Model;
+
+        childReporting = virtualinvoke child.<org.apache.maven.model.Model: org.apache.maven.model.Reporting getReporting()>();
+
+        parentReporting = virtualinvoke parent.<org.apache.maven.model.Model: org.apache.maven.model.Reporting getReporting()>();
+
+        if parentReporting == null goto label3;
+
+        if childReporting != null goto label1;
+
+        $stack14 = new org.apache.maven.model.Reporting;
+
+        specialinvoke $stack14.<org.apache.maven.model.Reporting: void <init>()>();
+
+        childReporting = $stack14;
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setReporting(org.apache.maven.model.Reporting)>($stack14);
+
+     label1:
+        $stack7 = virtualinvoke parentReporting.<org.apache.maven.model.Reporting: boolean isExcludeDefaults()>();
+
+        virtualinvoke childReporting.<org.apache.maven.model.Reporting: void setExcludeDefaults(boolean)>($stack7);
+
+        $stack8 = virtualinvoke childReporting.<org.apache.maven.model.Reporting: java.lang.String getOutputDirectory()>();
+
+        $stack9 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack8);
+
+        if $stack9 == 0 goto label2;
+
+        $stack10 = virtualinvoke parentReporting.<org.apache.maven.model.Reporting: java.lang.String getOutputDirectory()>();
+
+        virtualinvoke childReporting.<org.apache.maven.model.Reporting: void setOutputDirectory(java.lang.String)>($stack10);
+
+     label2:
+        staticinvoke <org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void mergeReportPluginLists(org.apache.maven.model.Reporting,org.apache.maven.model.Reporting,boolean)>(childReporting, parentReporting, 1);
+
+     label3:
+        return;
+    }
+
+    private static void mergeReportPluginLists(org.apache.maven.model.Reporting, org.apache.maven.model.Reporting, boolean)
+    {
+        org.apache.maven.model.Reporting child, parent;
+        java.util.List parentPlugins;
+        boolean $stack12, $stack16, $stack19, $stack24, handleAsInheritance, $stack44;
+        java.util.TreeMap $stack13;
+        java.util.Map childPlugins;
+        java.util.Collection $stack17, $stack21;
+        java.util.ArrayList $stack20;
+        java.lang.Object $stack22, $stack28, $stack31;
+        java.lang.String $stack23, $stack26, parentInherited, $stack30, $stack32;
+        org.apache.maven.model.ReportPlugin childPlugin, parentPlugin, assembledPlugin;
+        java.util.Iterator l6;
+
+        child := @parameter0: org.apache.maven.model.Reporting;
+
+        parent := @parameter1: org.apache.maven.model.Reporting;
+
+        handleAsInheritance := @parameter2: boolean;
+
+        if child == null goto label01;
+
+        if parent != null goto label02;
+
+     label01:
+        return;
+
+     label02:
+        parentPlugins = virtualinvoke parent.<org.apache.maven.model.Reporting: java.util.List getPlugins()>();
+
+        if parentPlugins == null goto label12;
+
+        $stack12 = interfaceinvoke parentPlugins.<java.util.List: boolean isEmpty()>();
+
+        if $stack12 != 0 goto label12;
+
+        $stack13 = new java.util.TreeMap;
+
+        specialinvoke $stack13.<java.util.TreeMap: void <init>()>();
+
+        childPlugins = virtualinvoke child.<org.apache.maven.model.Reporting: java.util.Map getReportPluginsAsMap()>();
+
+        l6 = interfaceinvoke parentPlugins.<java.util.List: java.util.Iterator iterator()>();
+
+     label03:
+        $stack16 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack16 == 0 goto label08;
+
+        $stack28 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        parentPlugin = (org.apache.maven.model.ReportPlugin) $stack28;
+
+        parentInherited = virtualinvoke parentPlugin.<org.apache.maven.model.ReportPlugin: java.lang.String getInherited()>();
+
+        if handleAsInheritance == 0 goto label04;
+
+        if parentInherited == null goto label04;
+
+        $stack44 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>(parentInherited);
+
+        if $stack44 == 0 goto label07;
+
+     label04:
+        assembledPlugin = parentPlugin;
+
+        $stack30 = virtualinvoke parentPlugin.<org.apache.maven.model.ReportPlugin: java.lang.String getKey()>();
+
+        $stack31 = interfaceinvoke childPlugins.<java.util.Map: java.lang.Object get(java.lang.Object)>($stack30);
+
+        childPlugin = (org.apache.maven.model.ReportPlugin) $stack31;
+
+        if childPlugin == null goto label05;
+
+        assembledPlugin = childPlugin;
+
+        staticinvoke <org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void mergeReportPluginDefinitions(org.apache.maven.model.ReportPlugin,org.apache.maven.model.ReportPlugin,boolean)>(childPlugin, parentPlugin, handleAsInheritance);
+
+     label05:
+        if handleAsInheritance == 0 goto label06;
+
+        if parentInherited != null goto label06;
+
+        virtualinvoke assembledPlugin.<org.apache.maven.model.ReportPlugin: void unsetInheritanceApplied()>();
+
+     label06:
+        $stack32 = virtualinvoke assembledPlugin.<org.apache.maven.model.ReportPlugin: java.lang.String getKey()>();
+
+        interfaceinvoke $stack13.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack32, assembledPlugin);
+
+     label07:
+        goto label03;
+
+     label08:
+        $stack17 = interfaceinvoke childPlugins.<java.util.Map: java.util.Collection values()>();
+
+        l6 = interfaceinvoke $stack17.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label09:
+        $stack19 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack19 == 0 goto label11;
+
+        $stack22 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        parentPlugin = (org.apache.maven.model.ReportPlugin) $stack22;
+
+        $stack23 = virtualinvoke parentPlugin.<org.apache.maven.model.ReportPlugin: java.lang.String getKey()>();
+
+        $stack24 = interfaceinvoke $stack13.<java.util.Map: boolean containsKey(java.lang.Object)>($stack23);
+
+        if $stack24 != 0 goto label10;
+
+        $stack26 = virtualinvoke parentPlugin.<org.apache.maven.model.ReportPlugin: java.lang.String getKey()>();
+
+        interfaceinvoke $stack13.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack26, parentPlugin);
+
+     label10:
+        goto label09;
+
+     label11:
+        $stack20 = new java.util.ArrayList;
+
+        $stack21 = interfaceinvoke $stack13.<java.util.Map: java.util.Collection values()>();
+
+        specialinvoke $stack20.<java.util.ArrayList: void <init>(java.util.Collection)>($stack21);
+
+        virtualinvoke child.<org.apache.maven.model.Reporting: void setPlugins(java.util.List)>($stack20);
+
+        virtualinvoke child.<org.apache.maven.model.Reporting: void flushReportPluginMap()>();
+
+     label12:
+        return;
+    }
+
+    private static void mergeReportSetDefinitions(org.apache.maven.model.ReportSet, org.apache.maven.model.ReportSet)
+    {
+        org.apache.maven.model.ReportSet parent, child;
+        java.util.List parentReports, childReports;
+        java.util.ArrayList $stack9;
+        java.lang.Object $stack10, $stack11, $stack25;
+        boolean $stack14, $stack26, $stack29;
+        java.util.Iterator childConfiguration;
+        java.lang.String report;
+        org.codehaus.plexus.util.xml.Xpp3Dom childConfiguration#5, report#6;
+
+        child := @parameter0: org.apache.maven.model.ReportSet;
+
+        parent := @parameter1: org.apache.maven.model.ReportSet;
+
+        parentReports = virtualinvoke parent.<org.apache.maven.model.ReportSet: java.util.List getReports()>();
+
+        childReports = virtualinvoke child.<org.apache.maven.model.ReportSet: java.util.List getReports()>();
+
+        $stack9 = new java.util.ArrayList;
+
+        specialinvoke $stack9.<java.util.ArrayList: void <init>()>();
+
+        if childReports == null goto label1;
+
+        $stack29 = interfaceinvoke childReports.<java.util.List: boolean isEmpty()>();
+
+        if $stack29 != 0 goto label1;
+
+        interfaceinvoke $stack9.<java.util.List: boolean addAll(java.util.Collection)>(childReports);
+
+     label1:
+        if parentReports == null goto label4;
+
+        childConfiguration = interfaceinvoke parentReports.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack14 = interfaceinvoke childConfiguration.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label4;
+
+        $stack25 = interfaceinvoke childConfiguration.<java.util.Iterator: java.lang.Object next()>();
+
+        report = (java.lang.String) $stack25;
+
+        $stack26 = interfaceinvoke $stack9.<java.util.List: boolean contains(java.lang.Object)>(report);
+
+        if $stack26 != 0 goto label3;
+
+        interfaceinvoke $stack9.<java.util.List: boolean add(java.lang.Object)>(report);
+
+     label3:
+        goto label2;
+
+     label4:
+        virtualinvoke child.<org.apache.maven.model.ReportSet: void setReports(java.util.List)>($stack9);
+
+        $stack10 = virtualinvoke child.<org.apache.maven.model.ReportSet: java.lang.Object getConfiguration()>();
+
+        childConfiguration#5 = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack10;
+
+        $stack11 = virtualinvoke parent.<org.apache.maven.model.ReportSet: java.lang.Object getConfiguration()>();
+
+        report#6 = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack11;
+
+        childConfiguration#5 = staticinvoke <org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom mergeXpp3Dom(org.codehaus.plexus.util.xml.Xpp3Dom,org.codehaus.plexus.util.xml.Xpp3Dom)>(childConfiguration#5, report#6);
+
+        virtualinvoke child.<org.apache.maven.model.ReportSet: void setConfiguration(java.lang.Object)>(childConfiguration#5);
+
+        return;
+    }
+
+    public static void mergeReportPluginDefinitions(org.apache.maven.model.ReportPlugin, org.apache.maven.model.ReportPlugin, boolean)
+    {
+        org.apache.maven.model.ReportPlugin child, parent;
+        java.lang.String $stack13, parentInherited, $stack34, $stack51, $stack54, $stack36, parentReportSet#26;
+        boolean parentIsInherited, $stack16, $stack20, $stack23, $stack28, handleAsInheritance, $stack47, $stack48;
+        java.util.List parentReportSets;
+        java.util.TreeMap $stack17;
+        java.util.Map childReportSets;
+        java.util.Set $stack21;
+        java.util.ArrayList $stack24;
+        java.util.Collection $stack25;
+        java.lang.Object $stack26, $stack27, $stack30, $stack35, parentReportSet1;
+        org.apache.maven.model.ReportSet $stack31, childReportSet, parentReportSet, assembledReportSet;
+        java.util.Iterator l8;
+        java.util.Map$Entry parentReportSet1#25;
+
+        child := @parameter0: org.apache.maven.model.ReportPlugin;
+
+        parent := @parameter1: org.apache.maven.model.ReportPlugin;
+
+        handleAsInheritance := @parameter2: boolean;
+
+        if child == null goto label01;
+
+        if parent != null goto label02;
+
+     label01:
+        return;
+
+     label02:
+        $stack13 = virtualinvoke child.<org.apache.maven.model.ReportPlugin: java.lang.String getVersion()>();
+
+        if $stack13 != null goto label03;
+
+        $stack51 = virtualinvoke parent.<org.apache.maven.model.ReportPlugin: java.lang.String getVersion()>();
+
+        if $stack51 == null goto label03;
+
+        $stack54 = virtualinvoke parent.<org.apache.maven.model.ReportPlugin: java.lang.String getVersion()>();
+
+        virtualinvoke child.<org.apache.maven.model.ReportPlugin: void setVersion(java.lang.String)>($stack54);
+
+     label03:
+        parentInherited = virtualinvoke parent.<org.apache.maven.model.ReportPlugin: java.lang.String getInherited()>();
+
+        if parentInherited == null goto label04;
+
+        $stack47 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>(parentInherited);
+
+        if $stack47 == 0 goto label05;
+
+     label04:
+        $stack48 = 1;
+
+        goto label06;
+
+     label05:
+        $stack48 = 0;
+
+     label06:
+        parentIsInherited = $stack48;
+
+        parentReportSets = virtualinvoke parent.<org.apache.maven.model.ReportPlugin: java.util.List getReportSets()>();
+
+        if parentReportSets == null goto label16;
+
+        $stack16 = interfaceinvoke parentReportSets.<java.util.List: boolean isEmpty()>();
+
+        if $stack16 != 0 goto label16;
+
+        $stack17 = new java.util.TreeMap;
+
+        specialinvoke $stack17.<java.util.TreeMap: void <init>()>();
+
+        childReportSets = virtualinvoke child.<org.apache.maven.model.ReportPlugin: java.util.Map getReportSetsAsMap()>();
+
+        l8 = interfaceinvoke parentReportSets.<java.util.List: java.util.Iterator iterator()>();
+
+     label07:
+        $stack20 = interfaceinvoke l8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack20 == 0 goto label12;
+
+        parentReportSet1 = interfaceinvoke l8.<java.util.Iterator: java.lang.Object next()>();
+
+        parentReportSet = (org.apache.maven.model.ReportSet) parentReportSet1;
+
+        if handleAsInheritance == 0 goto label08;
+
+        if parentIsInherited == 0 goto label11;
+
+     label08:
+        assembledReportSet = parentReportSet;
+
+        $stack34 = virtualinvoke parentReportSet.<org.apache.maven.model.ReportSet: java.lang.String getId()>();
+
+        $stack35 = interfaceinvoke childReportSets.<java.util.Map: java.lang.Object get(java.lang.Object)>($stack34);
+
+        childReportSet = (org.apache.maven.model.ReportSet) $stack35;
+
+        if childReportSet == null goto label09;
+
+        staticinvoke <org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void mergeReportSetDefinitions(org.apache.maven.model.ReportSet,org.apache.maven.model.ReportSet)>(childReportSet, parentReportSet);
+
+        assembledReportSet = childReportSet;
+
+        goto label10;
+
+     label09:
+        if handleAsInheritance == 0 goto label10;
+
+        if parentInherited != null goto label10;
+
+        virtualinvoke parentReportSet.<org.apache.maven.model.ReportSet: void unsetInheritanceApplied()>();
+
+     label10:
+        $stack36 = virtualinvoke assembledReportSet.<org.apache.maven.model.ReportSet: java.lang.String getId()>();
+
+        interfaceinvoke $stack17.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack36, assembledReportSet);
+
+     label11:
+        goto label07;
+
+     label12:
+        $stack21 = interfaceinvoke childReportSets.<java.util.Map: java.util.Set entrySet()>();
+
+        l8 = interfaceinvoke $stack21.<java.util.Set: java.util.Iterator iterator()>();
+
+     label13:
+        $stack23 = interfaceinvoke l8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack23 == 0 goto label15;
+
+        $stack26 = interfaceinvoke l8.<java.util.Iterator: java.lang.Object next()>();
+
+        parentReportSet1#25 = (java.util.Map$Entry) $stack26;
+
+        $stack27 = interfaceinvoke parentReportSet1#25.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        parentReportSet#26 = (java.lang.String) $stack27;
+
+        $stack28 = interfaceinvoke $stack17.<java.util.Map: boolean containsKey(java.lang.Object)>(parentReportSet#26);
+
+        if $stack28 != 0 goto label14;
+
+        $stack30 = interfaceinvoke parentReportSet1#25.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $stack31 = (org.apache.maven.model.ReportSet) $stack30;
+
+        interfaceinvoke $stack17.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(parentReportSet#26, $stack31);
+
+     label14:
+        goto label13;
+
+     label15:
+        $stack24 = new java.util.ArrayList;
+
+        $stack25 = interfaceinvoke $stack17.<java.util.Map: java.util.Collection values()>();
+
+        specialinvoke $stack24.<java.util.ArrayList: void <init>(java.util.Collection)>($stack25);
+
+        virtualinvoke child.<org.apache.maven.model.ReportPlugin: void setReportSets(java.util.List)>($stack24);
+
+        virtualinvoke child.<org.apache.maven.model.ReportPlugin: void flushReportSetMap()>();
+
+     label16:
+        return;
+    }
+
+    private void assembleDependencyInheritance(org.apache.maven.model.Model, org.apache.maven.model.Model)
+    {
+        java.util.LinkedHashMap $stack7;
+        org.apache.maven.model.Model parent, child;
+        java.util.ArrayList $stack10;
+        java.util.Collection $stack11;
+        boolean $stack13, $stack21;
+        java.lang.Object $stack16, $stack24;
+        java.lang.String $stack17, $stack25;
+        DefaultModelInheritanceAssembler this;
+        java.util.List deps;
+        java.util.Iterator l5;
+        org.apache.maven.model.Dependency dependency;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        child := @parameter0: org.apache.maven.model.Model;
+
+        parent := @parameter1: org.apache.maven.model.Model;
+
+        $stack7 = new java.util.LinkedHashMap;
+
+        specialinvoke $stack7.<java.util.LinkedHashMap: void <init>()>();
+
+        deps = virtualinvoke parent.<org.apache.maven.model.Model: java.util.List getDependencies()>();
+
+        if deps == null goto label2;
+
+        l5 = interfaceinvoke deps.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack21 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack21 == 0 goto label2;
+
+        $stack24 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.Dependency) $stack24;
+
+        $stack25 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        interfaceinvoke $stack7.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack25, dependency);
+
+        goto label1;
+
+     label2:
+        deps = virtualinvoke child.<org.apache.maven.model.Model: java.util.List getDependencies()>();
+
+        if deps == null goto label4;
+
+        l5 = interfaceinvoke deps.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack13 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label4;
+
+        $stack16 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.Dependency) $stack16;
+
+        $stack17 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        interfaceinvoke $stack7.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack17, dependency);
+
+        goto label3;
+
+     label4:
+        $stack10 = new java.util.ArrayList;
+
+        $stack11 = interfaceinvoke $stack7.<java.util.Map: java.util.Collection values()>();
+
+        specialinvoke $stack10.<java.util.ArrayList: void <init>(java.util.Collection)>($stack11);
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setDependencies(java.util.List)>($stack10);
+
+        return;
+    }
+
+    private void assembleBuildInheritance(org.apache.maven.model.Model, org.apache.maven.model.Model)
+    {
+        org.apache.maven.model.Model child, parent;
+        org.apache.maven.model.Build parentBuild, childBuild, $u0;
+        DefaultModelInheritanceAssembler this;
+        org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler $r0;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        child := @parameter0: org.apache.maven.model.Model;
+
+        parent := @parameter1: org.apache.maven.model.Model;
+
+        childBuild = virtualinvoke child.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        parentBuild = virtualinvoke parent.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        if parentBuild == null goto label2;
+
+        if childBuild != null goto label1;
+
+        $u0 = new org.apache.maven.model.Build;
+
+        specialinvoke $u0.<org.apache.maven.model.Build: void <init>()>();
+
+        childBuild = $u0;
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setBuild(org.apache.maven.model.Build)>($u0);
+
+     label1:
+        $r0 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        virtualinvoke $r0.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: void assembleBuildInheritance(org.apache.maven.model.Build,org.apache.maven.model.Build,boolean)>(childBuild, parentBuild, 1);
+
+     label2:
+        return;
+    }
+
+    private void assembleDistributionInheritance(org.apache.maven.model.Model, org.apache.maven.model.Model, java.lang.String, boolean)
+    {
+        org.apache.maven.model.Model parent, child;
+        org.apache.maven.model.DistributionManagement $stack8, parentDistMgmt, childDistMgmt, $u0;
+        org.apache.maven.model.Site $stack11, $stack25, $stack28, $stack30, $stack32, $u1;
+        java.lang.String $stack16, $stack29, $stack31, $stack33, $stack34, $stack35, $stack36, childPathAdjustment, $stack37, $stack14;
+        org.apache.maven.model.DeploymentRepository $stack17, $stack19, $stack21, $stack23, $stack12, site#9, $stack13;
+        DefaultModelInheritanceAssembler this;
+        boolean appendPaths, $stack15;
+        org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler $r0;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        child := @parameter0: org.apache.maven.model.Model;
+
+        parent := @parameter1: org.apache.maven.model.Model;
+
+        childPathAdjustment := @parameter2: java.lang.String;
+
+        appendPaths := @parameter3: boolean;
+
+        $stack8 = virtualinvoke parent.<org.apache.maven.model.Model: org.apache.maven.model.DistributionManagement getDistributionManagement()>();
+
+        if $stack8 == null goto label5;
+
+        parentDistMgmt = virtualinvoke parent.<org.apache.maven.model.Model: org.apache.maven.model.DistributionManagement getDistributionManagement()>();
+
+        childDistMgmt = virtualinvoke child.<org.apache.maven.model.Model: org.apache.maven.model.DistributionManagement getDistributionManagement()>();
+
+        if childDistMgmt != null goto label1;
+
+        $u0 = new org.apache.maven.model.DistributionManagement;
+
+        specialinvoke $u0.<org.apache.maven.model.DistributionManagement: void <init>()>();
+
+        childDistMgmt = $u0;
+
+        virtualinvoke child.<org.apache.maven.model.Model: void setDistributionManagement(org.apache.maven.model.DistributionManagement)>($u0);
+
+     label1:
+        $stack11 = virtualinvoke childDistMgmt.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.Site getSite()>();
+
+        if $stack11 != null goto label2;
+
+        $stack25 = virtualinvoke parentDistMgmt.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.Site getSite()>();
+
+        if $stack25 == null goto label2;
+
+        $u1 = new org.apache.maven.model.Site;
+
+        specialinvoke $u1.<org.apache.maven.model.Site: void <init>()>();
+
+        virtualinvoke childDistMgmt.<org.apache.maven.model.DistributionManagement: void setSite(org.apache.maven.model.Site)>($u1);
+
+        $stack28 = virtualinvoke parentDistMgmt.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.Site getSite()>();
+
+        $stack29 = virtualinvoke $stack28.<org.apache.maven.model.Site: java.lang.String getId()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Site: void setId(java.lang.String)>($stack29);
+
+        $stack30 = virtualinvoke parentDistMgmt.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.Site getSite()>();
+
+        $stack31 = virtualinvoke $stack30.<org.apache.maven.model.Site: java.lang.String getName()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Site: void setName(java.lang.String)>($stack31);
+
+        $stack32 = virtualinvoke parentDistMgmt.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.Site getSite()>();
+
+        $stack33 = virtualinvoke $stack32.<org.apache.maven.model.Site: java.lang.String getUrl()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Site: void setUrl(java.lang.String)>($stack33);
+
+        $stack34 = virtualinvoke $u1.<org.apache.maven.model.Site: java.lang.String getUrl()>();
+
+        if $stack34 == null goto label2;
+
+        $stack35 = virtualinvoke $u1.<org.apache.maven.model.Site: java.lang.String getUrl()>();
+
+        $stack36 = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getArtifactId()>();
+
+        $r0 = (org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler) this;
+
+        $stack37 = virtualinvoke $r0.<org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: java.lang.String appendPath(java.lang.String,java.lang.String,java.lang.String,boolean)>($stack35, $stack36, childPathAdjustment, appendPaths);
+
+        virtualinvoke $u1.<org.apache.maven.model.Site: void setUrl(java.lang.String)>($stack37);
+
+     label2:
+        $stack12 = virtualinvoke childDistMgmt.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.DeploymentRepository getRepository()>();
+
+        if $stack12 != null goto label3;
+
+        $stack21 = virtualinvoke parentDistMgmt.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.DeploymentRepository getRepository()>();
+
+        if $stack21 == null goto label3;
+
+        $stack23 = virtualinvoke parentDistMgmt.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.DeploymentRepository getRepository()>();
+
+        site#9 = staticinvoke <org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: org.apache.maven.model.DeploymentRepository copyDistributionRepository(org.apache.maven.model.DeploymentRepository)>($stack23);
+
+        virtualinvoke childDistMgmt.<org.apache.maven.model.DistributionManagement: void setRepository(org.apache.maven.model.DeploymentRepository)>(site#9);
+
+     label3:
+        $stack13 = virtualinvoke childDistMgmt.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.DeploymentRepository getSnapshotRepository()>();
+
+        if $stack13 != null goto label4;
+
+        $stack17 = virtualinvoke parentDistMgmt.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.DeploymentRepository getSnapshotRepository()>();
+
+        if $stack17 == null goto label4;
+
+        $stack19 = virtualinvoke parentDistMgmt.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.DeploymentRepository getSnapshotRepository()>();
+
+        site#9 = staticinvoke <org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: org.apache.maven.model.DeploymentRepository copyDistributionRepository(org.apache.maven.model.DeploymentRepository)>($stack19);
+
+        virtualinvoke childDistMgmt.<org.apache.maven.model.DistributionManagement: void setSnapshotRepository(org.apache.maven.model.DeploymentRepository)>(site#9);
+
+     label4:
+        $stack14 = virtualinvoke childDistMgmt.<org.apache.maven.model.DistributionManagement: java.lang.String getDownloadUrl()>();
+
+        $stack15 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack14);
+
+        if $stack15 == 0 goto label5;
+
+        $stack16 = virtualinvoke parentDistMgmt.<org.apache.maven.model.DistributionManagement: java.lang.String getDownloadUrl()>();
+
+        virtualinvoke childDistMgmt.<org.apache.maven.model.DistributionManagement: void setDownloadUrl(java.lang.String)>($stack16);
+
+     label5:
+        return;
+    }
+
+    private static org.apache.maven.model.DeploymentRepository copyDistributionRepository(org.apache.maven.model.DeploymentRepository)
+    {
+        org.apache.maven.model.DeploymentRepository $stack2, parentRepository;
+        java.lang.String $stack3, $stack4, $stack5, $stack6;
+        boolean $stack7;
+
+        parentRepository := @parameter0: org.apache.maven.model.DeploymentRepository;
+
+        $stack2 = new org.apache.maven.model.DeploymentRepository;
+
+        specialinvoke $stack2.<org.apache.maven.model.DeploymentRepository: void <init>()>();
+
+        $stack3 = virtualinvoke parentRepository.<org.apache.maven.model.DeploymentRepository: java.lang.String getId()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.DeploymentRepository: void setId(java.lang.String)>($stack3);
+
+        $stack4 = virtualinvoke parentRepository.<org.apache.maven.model.DeploymentRepository: java.lang.String getName()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.DeploymentRepository: void setName(java.lang.String)>($stack4);
+
+        $stack5 = virtualinvoke parentRepository.<org.apache.maven.model.DeploymentRepository: java.lang.String getUrl()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.DeploymentRepository: void setUrl(java.lang.String)>($stack5);
+
+        $stack6 = virtualinvoke parentRepository.<org.apache.maven.model.DeploymentRepository: java.lang.String getLayout()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.DeploymentRepository: void setLayout(java.lang.String)>($stack6);
+
+        $stack7 = virtualinvoke parentRepository.<org.apache.maven.model.DeploymentRepository: boolean isUniqueVersion()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.DeploymentRepository: void setUniqueVersion(boolean)>($stack7);
+
+        return $stack2;
+    }
+
+    protected java.lang.String appendPath(java.lang.String, java.lang.String, java.lang.String, boolean)
+    {
+        java.lang.String parentPath, $stack12, $stack14, pathAdjustment, childPath, uncleanPath, cleanedPath;
+        boolean appendPaths, $stack9;
+        int protocolIdx, $stack21, $stack23;
+        java.lang.StringBuilder $stack10, $stack11, $stack13, $stack15, $stack16, $stack17, $stack32, $stack33, $stack34, $stack35, $stack37, $stack38, $stack39, $stack40;
+        DefaultModelInheritanceAssembler this;
+
+        this := @this: DefaultModelInheritanceAssembler;
+
+        parentPath := @parameter0: java.lang.String;
+
+        childPath := @parameter1: java.lang.String;
+
+        pathAdjustment := @parameter2: java.lang.String;
+
+        appendPaths := @parameter3: boolean;
+
+        uncleanPath = parentPath;
+
+        if appendPaths == 0 goto label2;
+
+        if pathAdjustment == null goto label1;
+
+        $stack37 = new java.lang.StringBuilder;
+
+        specialinvoke $stack37.<java.lang.StringBuilder: void <init>()>();
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(parentPath);
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        $stack40 = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(pathAdjustment);
+
+        uncleanPath = virtualinvoke $stack40.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label1:
+        if childPath == null goto label2;
+
+        $stack32 = new java.lang.StringBuilder;
+
+        specialinvoke $stack32.<java.lang.StringBuilder: void <init>()>();
+
+        $stack33 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(uncleanPath);
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(childPath);
+
+        uncleanPath = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label2:
+        cleanedPath = "";
+
+        protocolIdx = virtualinvoke uncleanPath.<java.lang.String: int indexOf(java.lang.String)>("://");
+
+        if protocolIdx <= -1 goto label3;
+
+        $stack21 = protocolIdx + 3;
+
+        cleanedPath = virtualinvoke uncleanPath.<java.lang.String: java.lang.String substring(int,int)>(0, $stack21);
+
+        $stack23 = protocolIdx + 3;
+
+        uncleanPath = virtualinvoke uncleanPath.<java.lang.String: java.lang.String substring(int)>($stack23);
+
+     label3:
+        $stack9 = virtualinvoke uncleanPath.<java.lang.String: boolean startsWith(java.lang.String)>("/");
+
+        if $stack9 == 0 goto label4;
+
+        $stack15 = new java.lang.StringBuilder;
+
+        specialinvoke $stack15.<java.lang.StringBuilder: void <init>()>();
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(cleanedPath);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        cleanedPath = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label4:
+        $stack10 = new java.lang.StringBuilder;
+
+        specialinvoke $stack10.<java.lang.StringBuilder: void <init>()>();
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(cleanedPath);
+
+        $stack12 = staticinvoke <org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler: java.lang.String resolvePath(java.lang.String)>(uncleanPath);
+
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack14;
+    }
+
+    private static java.lang.String resolvePath(java.lang.String)
+    {
+        java.util.LinkedList $stack6;
+        java.util.StringTokenizer $stack7;
+        java.lang.String uncleanPath, $stack11, $stack13, token;
+        boolean $stack8, $stack15, $stack20, $stack21, $stack25, $stack10;
+        java.lang.StringBuilder $stack9;
+        java.lang.Object $stack12;
+        int $stack19;
+        byte l5;
+
+        uncleanPath := @parameter0: java.lang.String;
+
+        $stack6 = new java.util.LinkedList;
+
+        specialinvoke $stack6.<java.util.LinkedList: void <init>()>();
+
+        $stack7 = new java.util.StringTokenizer;
+
+        specialinvoke $stack7.<java.util.StringTokenizer: void <init>(java.lang.String,java.lang.String)>(uncleanPath, "/");
+
+     label01:
+        $stack8 = virtualinvoke $stack7.<java.util.StringTokenizer: boolean hasMoreTokens()>();
+
+        if $stack8 == 0 goto label10;
+
+        token = virtualinvoke $stack7.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        l5 = -1;
+
+        $stack19 = virtualinvoke token.<java.lang.String: int hashCode()>();
+
+        lookupswitch($stack19)
+        {
+            case 0: goto label02;
+            case 1472: goto label03;
+            default: goto label04;
+        };
+
+     label02:
+        $stack25 = virtualinvoke token.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+        if $stack25 == 0 goto label04;
+
+        l5 = 0;
+
+        goto label04;
+
+     label03:
+        $stack20 = virtualinvoke token.<java.lang.String: boolean equals(java.lang.Object)>("..");
+
+        if $stack20 == 0 goto label04;
+
+        l5 = 1;
+
+     label04:
+        lookupswitch(l5)
+        {
+            case 0: goto label05;
+            case 1: goto label06;
+            default: goto label08;
+        };
+
+     label05:
+        goto label09;
+
+     label06:
+        $stack21 = virtualinvoke $stack6.<java.util.LinkedList: boolean isEmpty()>();
+
+        if $stack21 == 0 goto label07;
+
+        goto label09;
+
+     label07:
+        virtualinvoke $stack6.<java.util.LinkedList: java.lang.Object removeLast()>();
+
+        goto label09;
+
+     label08:
+        virtualinvoke $stack6.<java.util.LinkedList: void addLast(java.lang.Object)>(token);
+
+     label09:
+        goto label01;
+
+     label10:
+        $stack9 = new java.lang.StringBuilder;
+
+        specialinvoke $stack9.<java.lang.StringBuilder: void <init>()>();
+
+     label11:
+        $stack10 = virtualinvoke $stack6.<java.util.LinkedList: boolean isEmpty()>();
+
+        if $stack10 != 0 goto label12;
+
+        $stack12 = virtualinvoke $stack6.<java.util.LinkedList: java.lang.Object removeFirst()>();
+
+        $stack13 = (java.lang.String) $stack12;
+
+        virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack13);
+
+        $stack15 = virtualinvoke $stack6.<java.util.LinkedList: boolean isEmpty()>();
+
+        if $stack15 != 0 goto label11;
+
+        virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+        goto label11;
+
+     label12:
+        $stack11 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack11;
+    }
+
+    private static void mergeExtensionLists(org.apache.maven.model.Build, org.apache.maven.model.Build)
+    {
+        org.apache.maven.model.Build parentBuild, childBuild;
+        java.util.List $stack4, $stack8;
+        java.util.Iterator l2;
+        boolean $stack6, $stack9;
+        java.lang.Object $stack7;
+        org.apache.maven.model.Extension e;
+
+        childBuild := @parameter0: org.apache.maven.model.Build;
+
+        parentBuild := @parameter1: org.apache.maven.model.Build;
+
+        $stack4 = virtualinvoke parentBuild.<org.apache.maven.model.Build: java.util.List getExtensions()>();
+
+        l2 = interfaceinvoke $stack4.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label3;
+
+        $stack7 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        e = (org.apache.maven.model.Extension) $stack7;
+
+        $stack8 = virtualinvoke childBuild.<org.apache.maven.model.Build: java.util.List getExtensions()>();
+
+        $stack9 = interfaceinvoke $stack8.<java.util.List: boolean contains(java.lang.Object)>(e);
+
+        if $stack9 != 0 goto label2;
+
+        virtualinvoke childBuild.<org.apache.maven.model.Build: void addExtension(org.apache.maven.model.Extension)>(e);
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+}

@@ -1,0 +1,203 @@
+class MavenArtifact extends java.lang.Object implements org.apache.maven.repository.ArtifactTransferResource
+{
+    private java.lang.String repositoryUrl;
+    private org.apache.maven.wagon.resource.Resource resource;
+    private long transferStartTime;
+
+    void <init>(java.lang.String, org.apache.maven.wagon.resource.Resource)
+    {
+        MavenArtifact this;
+        java.lang.String repositoryUrl, $stack14;
+        boolean $stack3;
+        org.apache.maven.wagon.resource.Resource resource;
+        int $stack5;
+        java.lang.StringBuilder $stack12, $stack13, $u0;
+        long $stack4;
+        org.apache.maven.repository.legacy.MavenArtifact $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: MavenArtifact;
+
+        repositoryUrl := @parameter0: java.lang.String;
+
+        resource := @parameter1: org.apache.maven.wagon.resource.Resource;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        if repositoryUrl != null goto label1;
+
+        $r0 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $r0.<org.apache.maven.repository.legacy.MavenArtifact: java.lang.String repositoryUrl> = "";
+
+        goto label3;
+
+     label1:
+        $stack3 = virtualinvoke repositoryUrl.<java.lang.String: boolean endsWith(java.lang.String)>("/");
+
+        if $stack3 != 0 goto label2;
+
+        $stack5 = virtualinvoke repositoryUrl.<java.lang.String: int length()>();
+
+        if $stack5 <= 0 goto label2;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(repositoryUrl);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $r1.<org.apache.maven.repository.legacy.MavenArtifact: java.lang.String repositoryUrl> = $stack14;
+
+        goto label3;
+
+     label2:
+        $r2 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $r2.<org.apache.maven.repository.legacy.MavenArtifact: java.lang.String repositoryUrl> = repositoryUrl;
+
+     label3:
+        $r3 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $r3.<org.apache.maven.repository.legacy.MavenArtifact: org.apache.maven.wagon.resource.Resource resource> = resource;
+
+        $stack4 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $r4 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $r4.<org.apache.maven.repository.legacy.MavenArtifact: long transferStartTime> = $stack4;
+
+        return;
+    }
+
+    public java.lang.String getRepositoryUrl()
+    {
+        MavenArtifact this;
+        java.lang.String $stack1;
+        org.apache.maven.repository.legacy.MavenArtifact $r0;
+
+        this := @this: MavenArtifact;
+
+        $r0 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.legacy.MavenArtifact: java.lang.String repositoryUrl>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getName()
+    {
+        MavenArtifact this;
+        org.apache.maven.wagon.resource.Resource $stack2;
+        boolean $stack4;
+        java.lang.String name;
+        org.apache.maven.repository.legacy.MavenArtifact $r0;
+
+        this := @this: MavenArtifact;
+
+        $r0 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $stack2 = $r0.<org.apache.maven.repository.legacy.MavenArtifact: org.apache.maven.wagon.resource.Resource resource>;
+
+        name = virtualinvoke $stack2.<org.apache.maven.wagon.resource.Resource: java.lang.String getName()>();
+
+        if name != null goto label1;
+
+        name = "";
+
+        goto label2;
+
+     label1:
+        $stack4 = virtualinvoke name.<java.lang.String: boolean startsWith(java.lang.String)>("/");
+
+        if $stack4 == 0 goto label2;
+
+        name = virtualinvoke name.<java.lang.String: java.lang.String substring(int)>(1);
+
+     label2:
+        return name;
+    }
+
+    public java.lang.String getUrl()
+    {
+        MavenArtifact this;
+        java.lang.String $stack2, $stack4, $stack6;
+        java.lang.StringBuilder $stack3, $stack5, $u0;
+        org.apache.maven.repository.legacy.MavenArtifact $r0, $r1;
+
+        this := @this: MavenArtifact;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.repository.legacy.MavenArtifact: java.lang.String getRepositoryUrl()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack2);
+
+        $r1 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $stack4 = virtualinvoke $r1.<org.apache.maven.repository.legacy.MavenArtifact: java.lang.String getName()>();
+
+        $stack5 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack4);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack6;
+    }
+
+    public long getContentLength()
+    {
+        MavenArtifact this;
+        org.apache.maven.wagon.resource.Resource $stack1;
+        long $stack2;
+        org.apache.maven.repository.legacy.MavenArtifact $r0;
+
+        this := @this: MavenArtifact;
+
+        $r0 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.legacy.MavenArtifact: org.apache.maven.wagon.resource.Resource resource>;
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.wagon.resource.Resource: long getContentLength()>();
+
+        return $stack2;
+    }
+
+    public long getTransferStartTime()
+    {
+        MavenArtifact this;
+        long $stack1;
+        org.apache.maven.repository.legacy.MavenArtifact $r0;
+
+        this := @this: MavenArtifact;
+
+        $r0 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.legacy.MavenArtifact: long transferStartTime>;
+
+        return $stack1;
+    }
+
+    public java.lang.String toString()
+    {
+        MavenArtifact this;
+        java.lang.String $stack1;
+        org.apache.maven.repository.legacy.MavenArtifact $r0;
+
+        this := @this: MavenArtifact;
+
+        $r0 = (org.apache.maven.repository.legacy.MavenArtifact) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.repository.legacy.MavenArtifact: java.lang.String getUrl()>();
+
+        return $stack1;
+    }
+}

@@ -58,13 +58,13 @@ public class nullFinderAnalysis extends ForwardBranchedFlowAnalysis<NullableValu
 	@Override
 	protected void flowThrough(NullableValueSet in, Unit s, List<NullableValueSet> fallOut,
 		List<NullableValueSet> branchOuts) {
-		System.out.println("flow + " + s.toString());
-		System.out.println("in of size" + in.valueSet.size()+ " = ["+ in + " ] ");
+		//System.out.println("flow + " + s.toString());
+		//System.out.println("in of size" + in.valueSet.size()+ " = ["+ in + " ] ");
 		NullableValueSet out = new NullableValueSet();
 		NullableValueSet outBranch = new NullableValueSet(); 
 		copy(in, out);
 		copy(in,outBranch); //on crée des set out et outbranch qui deviendrons les contenus de fallout et branchouts
-		System.out.println("predecesor with size = " + graph.getPredsOf(s).size() + " " +graph.getPredsOf(s));
+		//System.out.println("predecesor with size = " + graph.getPredsOf(s).size() + " " +graph.getPredsOf(s));
 		Stmt stm = (Stmt) s;
 		if (stm.containsInvokeExpr()) {
 			HandleInvokeExpr(stm,out,outBranch);
@@ -95,9 +95,9 @@ public class nullFinderAnalysis extends ForwardBranchedFlowAnalysis<NullableValu
 		for	(NullableValueSet next: branchOuts) {
 			next.replace(outBranch);
 		}
-		System.out.println("Descendant = " +  graph.getSuccsOf(s));
-		System.out.println("out après = " + fallOut);
-		System.out.println("out branch apres = " + branchOuts +" size = " + branchOuts.size() + "\n\n\n");
+		//System.out.println("Descendant = " +  graph.getSuccsOf(s));
+		//System.out.println("out après = " + fallOut);
+		//System.out.println("out branch apres = " + branchOuts +" size = " + branchOuts.size() + "\n\n\n");
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class nullFinderAnalysis extends ForwardBranchedFlowAnalysis<NullableValu
 				out.add(((InstanceFieldRef) e).getBase(), "NonNull");
 			}
 
-			System.out.println("FieldRef");
+			//System.out.println("FieldRef");
 		}
 	}
 	
@@ -188,14 +188,14 @@ public class nullFinderAnalysis extends ForwardBranchedFlowAnalysis<NullableValu
 		if(stm.fallsThrough()) {
 			out.add(base, "NonNull");
 		}
-		System.out.println("ArrayRef");
+		//System.out.println("ArrayRef");
 	}
 	
 	
 	private void HandleInvokeExpr(Stmt stm,NullableValueSet out,NullableValueSet outBranch) {
 		InvokeExpr e  = stm.getInvokeExpr();
 
-		System.out.println("InvokeExpr");
+		//System.out.println("InvokeExpr");
 		if(prop.LooseInfoOnInvocations) {
 			for(NullableValue v:out) {
 				if(v.status.contentEquals("NonNull")) {
@@ -257,7 +257,7 @@ public class nullFinderAnalysis extends ForwardBranchedFlowAnalysis<NullableValu
 		         outBranch.add(val, "NonNull");
 	        } 
 	      }
-	    System.out.println(val);
-	    System.out.println( "\n\n\n");
+	    //System.out.println(val);
+	    //System.out.println( "\n\n\n");
 	}
 }

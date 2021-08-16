@@ -1,0 +1,1821 @@
+public class DefaultLegacyArtifactCollector extends java.lang.Object implements org.apache.maven.repository.legacy.resolver.LegacyArtifactCollector
+{
+    private org.apache.maven.repository.legacy.resolver.conflict.ConflictResolver defaultConflictResolver;
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.apache.maven.plugin.LegacySupport legacySupport;
+
+    public void <init>()
+    {
+        DefaultLegacyArtifactCollector this;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    private void injectSession(org.apache.maven.artifact.resolver.ArtifactResolutionRequest)
+    {
+        DefaultLegacyArtifactCollector this;
+        org.apache.maven.plugin.LegacySupport $stack3;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.artifact.resolver.ArtifactResolutionRequest request;
+        boolean $stack5, $stack8;
+        org.apache.maven.execution.MavenExecutionRequest $stack7, $stack10, $stack13, $stack16;
+        java.util.List $stack11, $stack14, $stack17;
+        org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector $r0;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        request := @parameter0: org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
+
+        $r0 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        session = interfaceinvoke $stack3.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+        if session == null goto label1;
+
+        $stack5 = virtualinvoke session.<org.apache.maven.execution.MavenSession: boolean isOffline()>();
+
+        virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setOffline(boolean)>($stack5);
+
+        $stack7 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack8 = interfaceinvoke $stack7.<org.apache.maven.execution.MavenExecutionRequest: boolean isUpdateSnapshots()>();
+
+        virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setForceUpdate(boolean)>($stack8);
+
+        $stack10 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack11 = interfaceinvoke $stack10.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getServers()>();
+
+        virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setServers(java.util.List)>($stack11);
+
+        $stack13 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack14 = interfaceinvoke $stack13.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getMirrors()>();
+
+        virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setMirrors(java.util.List)>($stack14);
+
+        $stack16 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack17 = interfaceinvoke $stack16.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getProxies()>();
+
+        virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setProxies(java.util.List)>($stack17);
+
+     label1:
+        return;
+    }
+
+    public org.apache.maven.artifact.resolver.ArtifactResolutionResult collect(java.util.Set, org.apache.maven.artifact.Artifact, java.util.Map, org.apache.maven.artifact.repository.ArtifactRepository, java.util.List, org.apache.maven.artifact.metadata.ArtifactMetadataSource, org.apache.maven.artifact.resolver.filter.ArtifactFilter, java.util.List, java.util.List)
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        java.util.List remoteRepositories, listeners, conflictResolvers;
+        DefaultLegacyArtifactCollector this;
+        java.util.Set artifacts;
+        org.apache.maven.artifact.Artifact originatingArtifact;
+        java.util.Map managedVersions;
+        org.apache.maven.artifact.metadata.ArtifactMetadataSource source;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter filter;
+        org.apache.maven.artifact.resolver.ArtifactResolutionResult $stack14;
+        org.apache.maven.artifact.resolver.ArtifactResolutionRequest $u0;
+        org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector $r0, $r1;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        artifacts := @parameter0: java.util.Set;
+
+        originatingArtifact := @parameter1: org.apache.maven.artifact.Artifact;
+
+        managedVersions := @parameter2: java.util.Map;
+
+        localRepository := @parameter3: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        remoteRepositories := @parameter4: java.util.List;
+
+        source := @parameter5: org.apache.maven.artifact.metadata.ArtifactMetadataSource;
+
+        filter := @parameter6: org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+
+        listeners := @parameter7: java.util.List;
+
+        conflictResolvers := @parameter8: java.util.List;
+
+        $u0 = new org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository);
+
+        virtualinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setRemoteRepositories(java.util.List)>(remoteRepositories);
+
+        $r0 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void injectSession(org.apache.maven.artifact.resolver.ArtifactResolutionRequest)>($u0);
+
+        $r1 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        $stack14 = virtualinvoke $r1.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: org.apache.maven.artifact.resolver.ArtifactResolutionResult collect(java.util.Set,org.apache.maven.artifact.Artifact,java.util.Map,org.apache.maven.artifact.resolver.ArtifactResolutionRequest,org.apache.maven.artifact.metadata.ArtifactMetadataSource,org.apache.maven.artifact.resolver.filter.ArtifactFilter,java.util.List,java.util.List)>(artifacts, originatingArtifact, managedVersions, $u0, source, filter, listeners, conflictResolvers);
+
+        return $stack14;
+    }
+
+    public org.apache.maven.artifact.resolver.ArtifactResolutionResult collect(java.util.Set, org.apache.maven.artifact.Artifact, java.util.Map, org.apache.maven.artifact.resolver.ArtifactResolutionRequest, org.apache.maven.artifact.metadata.ArtifactMetadataSource, org.apache.maven.artifact.resolver.filter.ArtifactFilter, java.util.List, java.util.List)
+    {
+        org.apache.maven.artifact.Artifact originatingArtifact, artifact;
+        org.apache.maven.artifact.resolver.ArtifactResolutionRequest repositoryRequest;
+        java.util.List $stack24, $stack25, listeners, nodes, $stack42, conflictResolvers;
+        java.util.Set artifacts;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter filter;
+        DefaultLegacyArtifactCollector this;
+        java.util.Map managedVersions;
+        org.apache.maven.artifact.metadata.ArtifactMetadataSource source;
+        java.util.Iterator l14, l16;
+        java.lang.Object $stack31, $stack35;
+        boolean $stack33, $stack36, $stack38, $stack40, $stack41, $stack44, $stack30;
+        org.apache.maven.artifact.resolver.ResolutionNode node, $u2;
+        org.apache.maven.repository.legacy.resolver.conflict.ConflictResolver $stack51;
+        java.lang.Throwable $stack59, $stack61, $stack70, $stack78, $stack86, $stack88;
+        org.codehaus.plexus.logging.Logger $stack63, $stack72, $stack80;
+        java.lang.StringBuilder $stack64, $stack66, $stack73, $stack75, $stack81, $stack83, $u3, $u4, $u5;
+        java.lang.String $stack65, $stack67, $stack74, $stack76, $stack82, $stack84;
+        org.apache.maven.artifact.versioning.ManagedVersionMap e;
+        java.util.Collection $stack28;
+        org.apache.maven.artifact.resolver.ArtifactResolutionResult $u0;
+        java.util.LinkedHashMap $u1;
+        java.util.LinkedHashSet $u6;
+        org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector $r0, $r3, $r4, $r5, $r8, $r11;
+        org.apache.maven.artifact.resolver.CyclicDependencyException $r1, $r6, $r7;
+        java.lang.Exception $r2, $r10, $r14;
+        org.apache.maven.artifact.versioning.OverConstrainedVersionException $r9;
+        org.apache.maven.artifact.resolver.ArtifactResolutionException $r12, $r13;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        artifacts := @parameter0: java.util.Set;
+
+        originatingArtifact := @parameter1: org.apache.maven.artifact.Artifact;
+
+        managedVersions := @parameter2: java.util.Map;
+
+        repositoryRequest := @parameter3: org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
+
+        source := @parameter4: org.apache.maven.artifact.metadata.ArtifactMetadataSource;
+
+        filter := @parameter5: org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+
+        listeners := @parameter6: java.util.List;
+
+        conflictResolvers := @parameter7: java.util.List;
+
+        $u0 = new org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+
+        specialinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult setOriginatingArtifact(org.apache.maven.artifact.Artifact)>(originatingArtifact);
+
+        if conflictResolvers != null goto label01;
+
+        $r0 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        $stack51 = $r0.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: org.apache.maven.repository.legacy.resolver.conflict.ConflictResolver defaultConflictResolver>;
+
+        conflictResolvers = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($stack51);
+
+     label01:
+        $u1 = new java.util.LinkedHashMap;
+
+        specialinvoke $u1.<java.util.LinkedHashMap: void <init>()>();
+
+        $u2 = new org.apache.maven.artifact.resolver.ResolutionNode;
+
+        $stack24 = virtualinvoke repositoryRequest.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: java.util.List getRemoteRepositories()>();
+
+        specialinvoke $u2.<org.apache.maven.artifact.resolver.ResolutionNode: void <init>(org.apache.maven.artifact.Artifact,java.util.List)>(originatingArtifact, $stack24);
+
+     label02:
+        $stack25 = virtualinvoke repositoryRequest.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: java.util.List getRemoteRepositories()>();
+
+        virtualinvoke $u2.<org.apache.maven.artifact.resolver.ResolutionNode: void addDependencies(java.util.Set,java.util.List,org.apache.maven.artifact.resolver.filter.ArtifactFilter)>(artifacts, $stack25, filter);
+
+     label03:
+        goto label06;
+
+     label04:
+        $stack88 := @caughtexception;
+
+        $r1 = (org.apache.maven.artifact.resolver.CyclicDependencyException) $stack88;
+
+        virtualinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult addCircularDependencyException(org.apache.maven.artifact.resolver.CyclicDependencyException)>($r1);
+
+        return $u0;
+
+     label05:
+        $stack86 := @caughtexception;
+
+        $r2 = (java.lang.Exception) $stack86;
+
+        virtualinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult addVersionRangeViolation(java.lang.Exception)>($r2);
+
+        return $u0;
+
+     label06:
+        $r3 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        e = specialinvoke $r3.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: org.apache.maven.artifact.versioning.ManagedVersionMap getManagedVersionsMap(org.apache.maven.artifact.Artifact,java.util.Map)>(originatingArtifact, managedVersions);
+
+     label07:
+        $r4 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r4.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void recurse(org.apache.maven.artifact.resolver.ArtifactResolutionResult,org.apache.maven.artifact.resolver.ResolutionNode,java.util.Map,org.apache.maven.artifact.versioning.ManagedVersionMap,org.apache.maven.artifact.resolver.ArtifactResolutionRequest,org.apache.maven.artifact.metadata.ArtifactMetadataSource,org.apache.maven.artifact.resolver.filter.ArtifactFilter,java.util.List,java.util.List)>($u0, $u2, $u1, e, repositoryRequest, source, filter, listeners, conflictResolvers);
+
+     label08:
+        goto label12;
+
+     label09:
+        $stack78 := @caughtexception;
+
+        $r5 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        $stack80 = $r5.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: org.codehaus.plexus.logging.Logger logger>;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack81 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("While recursing: ");
+
+        $r6 = (org.apache.maven.artifact.resolver.CyclicDependencyException) $stack78;
+
+        $stack82 = virtualinvoke $r6.<org.apache.maven.artifact.resolver.CyclicDependencyException: java.lang.String getMessage()>();
+
+        $stack83 = virtualinvoke $stack81.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack82);
+
+        $stack84 = virtualinvoke $stack83.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack80.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack84, $stack78);
+
+        $r7 = (org.apache.maven.artifact.resolver.CyclicDependencyException) $stack78;
+
+        virtualinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult addCircularDependencyException(org.apache.maven.artifact.resolver.CyclicDependencyException)>($r7);
+
+        goto label12;
+
+     label10:
+        $stack70 := @caughtexception;
+
+        $r8 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        $stack72 = $r8.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: org.codehaus.plexus.logging.Logger logger>;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack73 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("While recursing: ");
+
+        $r9 = (org.apache.maven.artifact.versioning.OverConstrainedVersionException) $stack70;
+
+        $stack74 = virtualinvoke $r9.<org.apache.maven.artifact.versioning.OverConstrainedVersionException: java.lang.String getMessage()>();
+
+        $stack75 = virtualinvoke $stack73.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack74);
+
+        $stack76 = virtualinvoke $stack75.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack72.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack76, $stack70);
+
+        $r10 = (java.lang.Exception) $stack70;
+
+        virtualinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult addVersionRangeViolation(java.lang.Exception)>($r10);
+
+        goto label12;
+
+     label11:
+        $stack61 := @caughtexception;
+
+        $r11 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        $stack63 = $r11.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: org.codehaus.plexus.logging.Logger logger>;
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack64 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("While recursing: ");
+
+        $r12 = (org.apache.maven.artifact.resolver.ArtifactResolutionException) $stack61;
+
+        $stack65 = virtualinvoke $r12.<org.apache.maven.artifact.resolver.ArtifactResolutionException: java.lang.String getMessage()>();
+
+        $stack66 = virtualinvoke $stack64.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack65);
+
+        $stack67 = virtualinvoke $stack66.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack63.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack67, $stack61);
+
+        $r13 = (org.apache.maven.artifact.resolver.ArtifactResolutionException) $stack61;
+
+        virtualinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult addErrorArtifactException(org.apache.maven.artifact.resolver.ArtifactResolutionException)>($r13);
+
+     label12:
+        $u6 = new java.util.LinkedHashSet;
+
+        specialinvoke $u6.<java.util.LinkedHashSet: void <init>()>();
+
+        $stack28 = interfaceinvoke $u1.<java.util.Map: java.util.Collection values()>();
+
+        l14 = interfaceinvoke $stack28.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label13:
+        $stack30 = interfaceinvoke l14.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack30 == 0 goto label21;
+
+        $stack31 = interfaceinvoke l14.<java.util.Iterator: java.lang.Object next()>();
+
+        nodes = (java.util.List) $stack31;
+
+        l16 = interfaceinvoke nodes.<java.util.List: java.util.Iterator iterator()>();
+
+     label14:
+        $stack33 = interfaceinvoke l16.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack33 == 0 goto label20;
+
+        $stack35 = interfaceinvoke l16.<java.util.Iterator: java.lang.Object next()>();
+
+        node = (org.apache.maven.artifact.resolver.ResolutionNode) $stack35;
+
+        $stack36 = virtualinvoke node.<java.lang.Object: boolean equals(java.lang.Object)>($u2);
+
+        if $stack36 != 0 goto label19;
+
+        $stack38 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: boolean isActive()>();
+
+        if $stack38 == 0 goto label19;
+
+        artifact = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+     label15:
+        $stack40 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: boolean filterTrail(org.apache.maven.artifact.resolver.filter.ArtifactFilter)>(filter);
+
+        if $stack40 == 0 goto label17;
+
+        $stack41 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: boolean isChildOfRootNode()>();
+
+        if $stack41 != 0 goto label16;
+
+        $stack44 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: boolean isOptional()>();
+
+        if $stack44 != 0 goto label17;
+
+     label16:
+        $stack42 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: java.util.List getDependencyTrail()>();
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setDependencyTrail(java.util.List)>($stack42);
+
+        interfaceinvoke $u6.<java.util.Set: boolean add(java.lang.Object)>(node);
+
+        virtualinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: void addArtifact(org.apache.maven.artifact.Artifact)>(artifact);
+
+     label17:
+        goto label19;
+
+     label18:
+        $stack59 := @caughtexception;
+
+        $r14 = (java.lang.Exception) $stack59;
+
+        virtualinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult addVersionRangeViolation(java.lang.Exception)>($r14);
+
+     label19:
+        goto label14;
+
+     label20:
+        goto label13;
+
+     label21:
+        virtualinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: void setArtifactResolutionNodes(java.util.Set)>($u6);
+
+        return $u0;
+
+        catch org.apache.maven.artifact.resolver.CyclicDependencyException from label02 to label03 with label04;
+        catch org.apache.maven.artifact.versioning.OverConstrainedVersionException from label02 to label03 with label05;
+        catch org.apache.maven.artifact.resolver.CyclicDependencyException from label07 to label08 with label09;
+        catch org.apache.maven.artifact.versioning.OverConstrainedVersionException from label07 to label08 with label10;
+        catch org.apache.maven.artifact.resolver.ArtifactResolutionException from label07 to label08 with label11;
+        catch org.apache.maven.artifact.versioning.OverConstrainedVersionException from label15 to label17 with label18;
+    }
+
+    private org.apache.maven.artifact.versioning.ManagedVersionMap getManagedVersionsMap(org.apache.maven.artifact.Artifact, java.util.Map)
+    {
+        java.util.Map managedVersions;
+        org.apache.maven.artifact.versioning.ManagedVersionMap $stack5, $stack12, versionMap;
+        org.apache.maven.artifact.Artifact originatingArtifact, managedOriginatingArtifact;
+        boolean $stack8, $stack15;
+        java.lang.String $stack9, $stack6;
+        DefaultLegacyArtifactCollector this;
+        java.lang.Object $stack7;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        originatingArtifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        managedVersions := @parameter1: java.util.Map;
+
+        if managedVersions == null goto label1;
+
+        $stack15 = managedVersions instanceof org.apache.maven.artifact.versioning.ManagedVersionMap;
+
+        if $stack15 == 0 goto label1;
+
+        versionMap = (org.apache.maven.artifact.versioning.ManagedVersionMap) managedVersions;
+
+        goto label2;
+
+     label1:
+        $stack5 = new org.apache.maven.artifact.versioning.ManagedVersionMap;
+
+        specialinvoke $stack5.<org.apache.maven.artifact.versioning.ManagedVersionMap: void <init>(java.util.Map)>(managedVersions);
+
+        versionMap = $stack5;
+
+     label2:
+        $stack6 = interfaceinvoke originatingArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getDependencyConflictId()>();
+
+        $stack7 = virtualinvoke versionMap.<org.apache.maven.artifact.versioning.ManagedVersionMap: java.lang.Object get(java.lang.Object)>($stack6);
+
+        managedOriginatingArtifact = (org.apache.maven.artifact.Artifact) $stack7;
+
+        if managedOriginatingArtifact == null goto label4;
+
+        $stack8 = managedVersions instanceof org.apache.maven.artifact.versioning.ManagedVersionMap;
+
+        if $stack8 == 0 goto label3;
+
+        $stack12 = new org.apache.maven.artifact.versioning.ManagedVersionMap;
+
+        specialinvoke $stack12.<org.apache.maven.artifact.versioning.ManagedVersionMap: void <init>(java.util.Map)>(managedVersions);
+
+        versionMap = $stack12;
+
+     label3:
+        $stack9 = interfaceinvoke originatingArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getDependencyConflictId()>();
+
+        virtualinvoke versionMap.<org.apache.maven.artifact.versioning.ManagedVersionMap: java.lang.Object remove(java.lang.Object)>($stack9);
+
+     label4:
+        return versionMap;
+    }
+
+    private void recurse(org.apache.maven.artifact.resolver.ArtifactResolutionResult, org.apache.maven.artifact.resolver.ResolutionNode, java.util.Map, org.apache.maven.artifact.versioning.ManagedVersionMap, org.apache.maven.artifact.resolver.ArtifactResolutionRequest, org.apache.maven.artifact.metadata.ArtifactMetadataSource, org.apache.maven.artifact.resolver.filter.ArtifactFilter, java.util.List, java.util.List) throws org.apache.maven.artifact.resolver.ArtifactResolutionException
+    {
+        DefaultLegacyArtifactCollector this;
+        java.util.List listeners, $stack44, $stack59, $stack61, $stack63, $stack65, conflictResolvers, $stack192, $stack197, $stack233, $stack267, $stack274, previousNodes, versions, newRange#49, metadataRequest#71;
+        org.apache.maven.artifact.resolver.ResolutionNode node, $stack184, $stack204, previous, newRange#21, resetNodes#36, j#37, previousRange#47, $u15;
+        java.lang.Object key, $stack25, $stack38, $stack53, $stack106, $stack129, $stack172, resetArtifact#55;
+        org.apache.maven.artifact.versioning.ManagedVersionMap managedVersions;
+        boolean $stack24, $stack29, $stack30, $stack34, $stack39, $stack42, $stack54, $stack70, $stack72, $stack87, $stack113, $stack125, $stack130, $stack137, $stack170, $stack179, $stack37, $stack50;
+        java.util.Map resolvedArtifacts;
+        java.lang.String $stack31, $stack33, $stack74, $stack94, $stack99, $stack142, $stack159, $stack163, $stack165, $stack186, $stack202, $stack203, $stack237, $stack240, $stack242, $stack271, $stack273, $stack51;
+        org.apache.maven.artifact.Artifact $stack32, $stack41, $stack132, $stack134, $stack139, $stack140, $stack141, $stack144, $stack153, $stack158, $stack162, $stack166, $stack178, $stack180, $stack181, $stack212, $stack246, resetArtifact, parentArtifact#39, currentRange#48, versions#62;
+        org.apache.maven.artifact.resolver.ArtifactResolutionRequest request, $u18;
+        org.apache.maven.artifact.metadata.ArtifactMetadataSource source;
+        java.util.Set $stack58;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter filter, $stack67, $stack69, $stack110, $stack112, metadataRequest#63, $r20;
+        org.apache.maven.artifact.resolver.ArtifactResolutionResult result;
+        java.lang.StringBuilder $stack90, $stack91, $stack92, $stack93, $stack97, $stack98, $stack157, $stack160, $stack161, $stack164, $stack196, $stack198, $stack199, $stack201, $stack236, $stack238, $stack239, $stack241, $stack270, $stack272, $u1, $u3, $u5, $u11, $u13, $u16;
+        org.apache.maven.artifact.versioning.VersionRange $stack182, $stack189, $stack191, $stack200, previousRange, currentRange, newRange, aaf#72;
+        org.apache.maven.artifact.resolver.ResolutionNode[] $stack183;
+        java.lang.Throwable $stack228, $stack230, $stack232, $stack243, $stack264, $stack266, $r6, $r7, $r22, $r23, $r29;
+        java.util.Iterator parentArtifact, resetNodes#26, previous#40;
+        int j;
+        org.apache.maven.artifact.versioning.ArtifactVersion metadataRequest#18, versions#73;
+        org.apache.maven.repository.legacy.resolver.conflict.ConflictResolver j#30;
+        org.apache.maven.artifact.metadata.ResolutionGroup j#80;
+        org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest $u0, $u9;
+        org.apache.maven.artifact.resolver.ArtifactResolutionException $u2, $u6, $u7, $u17, $r33;
+        org.apache.maven.artifact.versioning.OverConstrainedVersionException $u4, $u12, $u14;
+        java.util.ArrayList $u8;
+        org.apache.maven.artifact.resolver.filter.AndArtifactFilter $u10;
+        org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector $r0, $r1, $r2, $r8, $r11, $r12, $r13, $r15, $r16, $r19, $r24, $r27, $r31, $r34;
+        org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest $r3, $r4, $r17, $r18, $r21, $r25;
+        org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalException $r5, $r28;
+        java.lang.Exception $r9, $r10, $r14, $r32;
+        org.apache.maven.artifact.resolver.CyclicDependencyException $r26;
+        org.apache.maven.artifact.repository.RepositoryRequest $r30;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        result := @parameter0: org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+
+        node := @parameter1: org.apache.maven.artifact.resolver.ResolutionNode;
+
+        resolvedArtifacts := @parameter2: java.util.Map;
+
+        managedVersions := @parameter3: org.apache.maven.artifact.versioning.ManagedVersionMap;
+
+        request := @parameter4: org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
+
+        source := @parameter5: org.apache.maven.artifact.metadata.ArtifactMetadataSource;
+
+        filter := @parameter6: org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+
+        listeners := @parameter7: java.util.List;
+
+        conflictResolvers := @parameter8: java.util.List;
+
+        $r0 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode)>(1, listeners, node);
+
+        key = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: java.lang.Object getKey()>();
+
+        $stack24 = virtualinvoke managedVersions.<org.apache.maven.artifact.versioning.ManagedVersionMap: boolean containsKey(java.lang.Object)>(key);
+
+        if $stack24 == 0 goto label01;
+
+        $r1 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r1.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void manageArtifact(org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.versioning.ManagedVersionMap,java.util.List)>(node, managedVersions, listeners);
+
+     label01:
+        $stack25 = interfaceinvoke resolvedArtifacts.<java.util.Map: java.lang.Object get(java.lang.Object)>(key);
+
+        previousNodes = (java.util.List) $stack25;
+
+        if previousNodes == null goto label25;
+
+        parentArtifact = interfaceinvoke previousNodes.<java.util.List: java.util.Iterator iterator()>();
+
+     label02:
+        $stack125 = interfaceinvoke parentArtifact.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack125 == 0 goto label24;
+
+        $stack129 = interfaceinvoke parentArtifact.<java.util.Iterator: java.lang.Object next()>();
+
+        previous = (org.apache.maven.artifact.resolver.ResolutionNode) $stack129;
+
+     label03:
+        $stack130 = virtualinvoke previous.<org.apache.maven.artifact.resolver.ResolutionNode: boolean isActive()>();
+
+        if $stack130 == 0 goto label21;
+
+        $stack132 = virtualinvoke previous.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        previousRange = interfaceinvoke $stack132.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.VersionRange getVersionRange()>();
+
+        $stack134 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        currentRange = interfaceinvoke $stack134.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.VersionRange getVersionRange()>();
+
+        if previousRange == null goto label13;
+
+        if currentRange == null goto label13;
+
+        newRange = virtualinvoke previousRange.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.VersionRange restrict(org.apache.maven.artifact.versioning.VersionRange)>(currentRange);
+
+        $stack178 = virtualinvoke previous.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack179 = virtualinvoke newRange.<org.apache.maven.artifact.versioning.VersionRange: boolean isSelectedVersionKnown(org.apache.maven.artifact.Artifact)>($stack178);
+
+        if $stack179 == 0 goto label04;
+
+        $stack212 = virtualinvoke previous.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $r2 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r2.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.versioning.VersionRange)>(11, listeners, node, $stack212, newRange);
+
+     label04:
+        $stack180 = virtualinvoke previous.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke $stack180.<org.apache.maven.artifact.Artifact: void setVersionRange(org.apache.maven.artifact.versioning.VersionRange)>(newRange);
+
+        $stack181 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack182 = virtualinvoke currentRange.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.VersionRange restrict(org.apache.maven.artifact.versioning.VersionRange)>(previousRange);
+
+        interfaceinvoke $stack181.<org.apache.maven.artifact.Artifact: void setVersionRange(org.apache.maven.artifact.versioning.VersionRange)>($stack182);
+
+        $stack183 = newarray (org.apache.maven.artifact.resolver.ResolutionNode)[2];
+
+        $stack183[0] = previous;
+
+        $stack183[1] = node;
+
+        j = 0;
+
+     label05:
+        if j >= 2 goto label13;
+
+        $stack184 = $stack183[j];
+
+        resetArtifact = virtualinvoke $stack184.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack186 = interfaceinvoke resetArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        if $stack186 != null goto label12;
+
+        $stack189 = interfaceinvoke resetArtifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.VersionRange getVersionRange()>();
+
+        if $stack189 == null goto label12;
+
+        versions = interfaceinvoke resetArtifact.<org.apache.maven.artifact.Artifact: java.util.List getAvailableVersions()>();
+
+        if versions != null goto label09;
+
+     label06:
+        $u0 = new org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest: void <init>(org.apache.maven.artifact.resolver.ArtifactResolutionRequest)>(request);
+
+        $r3 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        interfaceinvoke $r3.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setArtifact(org.apache.maven.artifact.Artifact)>(resetArtifact);
+
+        $r4 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        versions = interfaceinvoke source.<org.apache.maven.artifact.metadata.ArtifactMetadataSource: java.util.List retrieveAvailableVersions(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest)>($r4);
+
+        interfaceinvoke resetArtifact.<org.apache.maven.artifact.Artifact: void setAvailableVersions(java.util.List)>(versions);
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack266 := @caughtexception;
+
+        $stack267 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: java.util.List getDependencyTrail()>();
+
+        interfaceinvoke resetArtifact.<org.apache.maven.artifact.Artifact: void setDependencyTrail(java.util.List)>($stack267);
+
+        $u2 = new org.apache.maven.artifact.resolver.ArtifactResolutionException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack270 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to get dependency information: ");
+
+        $r5 = (org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalException) $stack266;
+
+        $stack271 = virtualinvoke $r5.<org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalException: java.lang.String getMessage()>();
+
+        $stack272 = virtualinvoke $stack270.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack271);
+
+        $stack273 = virtualinvoke $stack272.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack274 = virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: java.util.List getRemoteRepositories()>();
+
+        specialinvoke $u2.<org.apache.maven.artifact.resolver.ArtifactResolutionException: void <init>(java.lang.String,org.apache.maven.artifact.Artifact,java.util.List,java.lang.Throwable)>($stack273, resetArtifact, $stack274, $stack266);
+
+        $r6 = (java.lang.Throwable) $u2;
+
+        throw $r6;
+
+     label09:
+        $stack191 = interfaceinvoke resetArtifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.VersionRange getVersionRange()>();
+
+        $stack192 = interfaceinvoke resetArtifact.<org.apache.maven.artifact.Artifact: java.util.List getAvailableVersions()>();
+
+        metadataRequest#18 = virtualinvoke $stack191.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion matchVersion(java.util.List)>($stack192);
+
+        if metadataRequest#18 == null goto label10;
+
+        $stack203 = virtualinvoke metadataRequest#18.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke resetArtifact.<org.apache.maven.artifact.Artifact: void selectVersion(java.lang.String)>($stack203);
+
+        goto label11;
+
+     label10:
+        $u4 = new org.apache.maven.artifact.versioning.OverConstrainedVersionException;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack196 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to find a version in ");
+
+        $stack197 = interfaceinvoke resetArtifact.<org.apache.maven.artifact.Artifact: java.util.List getAvailableVersions()>();
+
+        $stack198 = virtualinvoke $stack196.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack197);
+
+        $stack199 = virtualinvoke $stack198.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to match the range ");
+
+        $stack200 = interfaceinvoke resetArtifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.VersionRange getVersionRange()>();
+
+        $stack201 = virtualinvoke $stack199.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack200);
+
+        $stack202 = virtualinvoke $stack201.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u4.<org.apache.maven.artifact.versioning.OverConstrainedVersionException: void <init>(java.lang.String,org.apache.maven.artifact.Artifact)>($stack202, resetArtifact);
+
+        $r7 = (java.lang.Throwable) $u4;
+
+        throw $r7;
+
+     label11:
+        $stack204 = $stack183[j];
+
+        $r8 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r8.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode)>(10, listeners, $stack204);
+
+     label12:
+        j = j + 1;
+
+        goto label05;
+
+     label13:
+        newRange#21 = null;
+
+        resetNodes#26 = interfaceinvoke conflictResolvers.<java.util.List: java.util.Iterator iterator()>();
+
+     label14:
+        if newRange#21 != null goto label15;
+
+        $stack170 = interfaceinvoke resetNodes#26.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack170 == 0 goto label15;
+
+        $stack172 = interfaceinvoke resetNodes#26.<java.util.Iterator: java.lang.Object next()>();
+
+        j#30 = (org.apache.maven.repository.legacy.resolver.conflict.ConflictResolver) $stack172;
+
+        newRange#21 = interfaceinvoke j#30.<org.apache.maven.repository.legacy.resolver.conflict.ConflictResolver: org.apache.maven.artifact.resolver.ResolutionNode resolveConflict(org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.resolver.ResolutionNode)>(previous, node);
+
+        goto label14;
+
+     label15:
+        if newRange#21 != null goto label16;
+
+        $u6 = new org.apache.maven.artifact.resolver.ArtifactResolutionException;
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack157 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot resolve artifact version conflict between ");
+
+        $stack158 = virtualinvoke previous.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack159 = interfaceinvoke $stack158.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack160 = virtualinvoke $stack157.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack159);
+
+        $stack161 = virtualinvoke $stack160.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" and ");
+
+        $stack162 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack163 = interfaceinvoke $stack162.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack164 = virtualinvoke $stack161.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack163);
+
+        $stack165 = virtualinvoke $stack164.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack166 = virtualinvoke previous.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        specialinvoke $u6.<org.apache.maven.artifact.resolver.ArtifactResolutionException: void <init>(java.lang.String,org.apache.maven.artifact.Artifact)>($stack165, $stack166);
+
+        $r9 = (java.lang.Exception) $u6;
+
+        virtualinvoke result.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult addVersionRangeViolation(java.lang.Exception)>($r9);
+
+     label16:
+        if newRange#21 == previous goto label17;
+
+        if newRange#21 == node goto label17;
+
+        $u7 = new org.apache.maven.artifact.resolver.ArtifactResolutionException;
+
+        $stack153 = virtualinvoke newRange#21.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        specialinvoke $u7.<org.apache.maven.artifact.resolver.ArtifactResolutionException: void <init>(java.lang.String,org.apache.maven.artifact.Artifact)>("Conflict resolver returned unknown resolution node: ", $stack153);
+
+        $r10 = (java.lang.Exception) $u7;
+
+        virtualinvoke result.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult addVersionRangeViolation(java.lang.Exception)>($r10);
+
+     label17:
+        if newRange#21 != previous goto label18;
+
+        resetNodes#36 = previous;
+
+        j#37 = node;
+
+        goto label19;
+
+     label18:
+        resetNodes#36 = node;
+
+        j#37 = previous;
+
+     label19:
+        $r11 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        $stack137 = virtualinvoke $r11.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: boolean checkScopeUpdate(org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.resolver.ResolutionNode,java.util.List)>(j#37, resetNodes#36, listeners);
+
+        if $stack137 == 0 goto label20;
+
+        virtualinvoke resetNodes#36.<org.apache.maven.artifact.resolver.ResolutionNode: void disable()>();
+
+        $stack140 = virtualinvoke j#37.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack141 = virtualinvoke resetNodes#36.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack142 = interfaceinvoke $stack141.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        interfaceinvoke $stack140.<org.apache.maven.artifact.Artifact: void setVersion(java.lang.String)>($stack142);
+
+        $stack144 = virtualinvoke j#37.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $r12 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r12.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.Artifact)>(5, listeners, resetNodes#36, $stack144);
+
+        goto label21;
+
+     label20:
+        virtualinvoke j#37.<org.apache.maven.artifact.resolver.ResolutionNode: void disable()>();
+
+        $stack139 = virtualinvoke resetNodes#36.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $r13 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r13.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.Artifact)>(5, listeners, j#37, $stack139);
+
+     label21:
+        goto label23;
+
+     label22:
+        $stack264 := @caughtexception;
+
+        $r14 = (java.lang.Exception) $stack264;
+
+        virtualinvoke result.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult addVersionRangeViolation(java.lang.Exception)>($r14);
+
+     label23:
+        goto label02;
+
+     label24:
+        goto label26;
+
+     label25:
+        $u8 = new java.util.ArrayList;
+
+        specialinvoke $u8.<java.util.ArrayList: void <init>()>();
+
+        previousNodes = $u8;
+
+        interfaceinvoke resolvedArtifacts.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, $u8);
+
+     label26:
+        interfaceinvoke previousNodes.<java.util.List: boolean add(java.lang.Object)>(node);
+
+        $stack29 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: boolean isActive()>();
+
+        if $stack29 == 0 goto label27;
+
+        $r15 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r15.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode)>(4, listeners, node);
+
+     label27:
+        $stack30 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: boolean isActive()>();
+
+        if $stack30 == 0 goto label55;
+
+        $stack31 = "system";
+
+        $stack32 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack33 = interfaceinvoke $stack32.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack34 = virtualinvoke $stack31.<java.lang.String: boolean equals(java.lang.Object)>($stack33);
+
+        if $stack34 != 0 goto label55;
+
+        $r16 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r16.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode)>(2, listeners, node);
+
+        parentArtifact#39 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        previous#40 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: java.util.Iterator getChildrenIterator()>();
+
+     label28:
+        $stack37 = interfaceinvoke previous#40.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack37 == 0 goto label54;
+
+        $stack38 = interfaceinvoke previous#40.<java.util.Iterator: java.lang.Object next()>();
+
+        previousRange#47 = (org.apache.maven.artifact.resolver.ResolutionNode) $stack38;
+
+     label29:
+        $stack39 = virtualinvoke previousRange#47.<org.apache.maven.artifact.resolver.ResolutionNode: boolean isResolved()>();
+
+        if $stack39 != 0 goto label50;
+
+        $stack41 = virtualinvoke previousRange#47.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack42 = interfaceinvoke $stack41.<org.apache.maven.artifact.Artifact: boolean isOptional()>();
+
+        if $stack42 == 0 goto label30;
+
+        $stack113 = virtualinvoke previousRange#47.<org.apache.maven.artifact.resolver.ResolutionNode: boolean isChildOfRootNode()>();
+
+        if $stack113 == 0 goto label50;
+
+     label30:
+        currentRange#48 = virtualinvoke previousRange#47.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack44 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: java.util.List getDependencyTrail()>();
+
+        interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: void setDependencyTrail(java.util.List)>($stack44);
+
+        newRange#49 = virtualinvoke previousRange#47.<org.apache.maven.artifact.resolver.ResolutionNode: java.util.List getRemoteRepositories()>();
+
+        $u9 = new org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest;
+
+        specialinvoke $u9.<org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest: void <init>(org.apache.maven.artifact.resolver.ArtifactResolutionRequest)>(request);
+
+        $r17 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u9;
+
+        interfaceinvoke $r17.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setArtifact(org.apache.maven.artifact.Artifact)>(currentRange#48);
+
+        $r18 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u9;
+
+        interfaceinvoke $r18.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setRemoteRepositories(java.util.List)>(newRange#49);
+
+     label31:
+        resetArtifact#55 = virtualinvoke previousRange#47.<org.apache.maven.artifact.resolver.ResolutionNode: java.lang.Object getKey()>();
+
+        $stack50 = virtualinvoke managedVersions.<org.apache.maven.artifact.versioning.ManagedVersionMap: boolean containsKey(java.lang.Object)>(resetArtifact#55);
+
+        if $stack50 == 0 goto label33;
+
+        $r19 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r19.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void manageArtifact(org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.versioning.ManagedVersionMap,java.util.List)>(previousRange#47, managedVersions, listeners);
+
+        $stack106 = virtualinvoke managedVersions.<org.apache.maven.artifact.versioning.ManagedVersionMap: java.lang.Object get(java.lang.Object)>(resetArtifact#55);
+
+        versions#62 = (org.apache.maven.artifact.Artifact) $stack106;
+
+        metadataRequest#63 = interfaceinvoke versions#62.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.resolver.filter.ArtifactFilter getDependencyFilter()>();
+
+        if null == metadataRequest#63 goto label33;
+
+        $stack110 = interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.resolver.filter.ArtifactFilter getDependencyFilter()>();
+
+        if null == $stack110 goto label32;
+
+        $u10 = new org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
+
+        specialinvoke $u10.<org.apache.maven.artifact.resolver.filter.AndArtifactFilter: void <init>()>();
+
+        $stack112 = interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.resolver.filter.ArtifactFilter getDependencyFilter()>();
+
+        virtualinvoke $u10.<org.apache.maven.artifact.resolver.filter.AndArtifactFilter: void add(org.apache.maven.artifact.resolver.filter.ArtifactFilter)>($stack112);
+
+        virtualinvoke $u10.<org.apache.maven.artifact.resolver.filter.AndArtifactFilter: void add(org.apache.maven.artifact.resolver.filter.ArtifactFilter)>(metadataRequest#63);
+
+        $r20 = (org.apache.maven.artifact.resolver.filter.ArtifactFilter) $u10;
+
+        interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: void setDependencyFilter(org.apache.maven.artifact.resolver.filter.ArtifactFilter)>($r20);
+
+        goto label33;
+
+     label32:
+        interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: void setDependencyFilter(org.apache.maven.artifact.resolver.filter.ArtifactFilter)>(metadataRequest#63);
+
+     label33:
+        $stack51 = interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        if $stack51 != null goto label39;
+
+        $stack72 = interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: boolean isSelectedVersionKnown()>();
+
+        if $stack72 != 0 goto label37;
+
+        metadataRequest#71 = interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: java.util.List getAvailableVersions()>();
+
+        if metadataRequest#71 != null goto label34;
+
+        $r21 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u9;
+
+        metadataRequest#71 = interfaceinvoke source.<org.apache.maven.artifact.metadata.ArtifactMetadataSource: java.util.List retrieveAvailableVersions(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest)>($r21);
+
+        interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: void setAvailableVersions(java.util.List)>(metadataRequest#71);
+
+     label34:
+        staticinvoke <java.util.Collections: void sort(java.util.List)>(metadataRequest#71);
+
+        aaf#72 = interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.VersionRange getVersionRange()>();
+
+        versions#73 = virtualinvoke aaf#72.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion matchVersion(java.util.List)>(metadataRequest#71);
+
+        if versions#73 != null goto label36;
+
+        $stack87 = interfaceinvoke metadataRequest#71.<java.util.List: boolean isEmpty()>();
+
+        if $stack87 == 0 goto label35;
+
+        $u12 = new org.apache.maven.artifact.versioning.OverConstrainedVersionException;
+
+        $u11 = new java.lang.StringBuilder;
+
+        specialinvoke $u11.<java.lang.StringBuilder: void <init>()>();
+
+        $stack97 = virtualinvoke $u11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("No versions are present in the repository for the artifact with a range ");
+
+        $stack98 = virtualinvoke $stack97.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(aaf#72);
+
+        $stack99 = virtualinvoke $stack98.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u12.<org.apache.maven.artifact.versioning.OverConstrainedVersionException: void <init>(java.lang.String,org.apache.maven.artifact.Artifact,java.util.List)>($stack99, currentRange#48, newRange#49);
+
+        $r22 = (java.lang.Throwable) $u12;
+
+        throw $r22;
+
+     label35:
+        $u14 = new org.apache.maven.artifact.versioning.OverConstrainedVersionException;
+
+        $u13 = new java.lang.StringBuilder;
+
+        specialinvoke $u13.<java.lang.StringBuilder: void <init>()>();
+
+        $stack90 = virtualinvoke $u13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Couldn\'t find a version in ");
+
+        $stack91 = virtualinvoke $stack90.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadataRequest#71);
+
+        $stack92 = virtualinvoke $stack91.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to match range ");
+
+        $stack93 = virtualinvoke $stack92.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(aaf#72);
+
+        $stack94 = virtualinvoke $stack93.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u14.<org.apache.maven.artifact.versioning.OverConstrainedVersionException: void <init>(java.lang.String,org.apache.maven.artifact.Artifact,java.util.List)>($stack94, currentRange#48, newRange#49);
+
+        $r23 = (java.lang.Throwable) $u14;
+
+        throw $r23;
+
+     label36:
+        goto label38;
+
+     label37:
+        versions#73 = interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.ArtifactVersion getSelectedVersion()>();
+
+     label38:
+        $stack74 = virtualinvoke versions#73.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: void selectVersion(java.lang.String)>($stack74);
+
+        $r24 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r24.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode)>(10, listeners, previousRange#47);
+
+     label39:
+        $r25 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u9;
+
+        j#80 = interfaceinvoke source.<org.apache.maven.artifact.metadata.ArtifactMetadataSource: org.apache.maven.artifact.metadata.ResolutionGroup retrieve(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest)>($r25);
+
+        if j#80 != null goto label40;
+
+        goto label41;
+
+     label40:
+        $stack53 = virtualinvoke previousRange#47.<org.apache.maven.artifact.resolver.ResolutionNode: java.lang.Object getKey()>();
+
+        $stack54 = virtualinvoke resetArtifact#55.<java.lang.Object: boolean equals(java.lang.Object)>($stack53);
+
+        if $stack54 == 0 goto label31;
+
+     label41:
+        if parentArtifact#39 == null goto label43;
+
+        $stack67 = interfaceinvoke parentArtifact#39.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.resolver.filter.ArtifactFilter getDependencyFilter()>();
+
+        if $stack67 == null goto label43;
+
+        $stack69 = interfaceinvoke parentArtifact#39.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.resolver.filter.ArtifactFilter getDependencyFilter()>();
+
+        $stack70 = interfaceinvoke $stack69.<org.apache.maven.artifact.resolver.filter.ArtifactFilter: boolean include(org.apache.maven.artifact.Artifact)>(currentRange#48);
+
+        if $stack70 != 0 goto label43;
+
+     label42:
+        goto label28;
+
+     label43:
+        if j#80 != null goto label45;
+
+     label44:
+        goto label28;
+
+     label45:
+        $stack58 = virtualinvoke j#80.<org.apache.maven.artifact.metadata.ResolutionGroup: java.util.Set getArtifacts()>();
+
+        $stack59 = virtualinvoke j#80.<org.apache.maven.artifact.metadata.ResolutionGroup: java.util.List getResolutionRepositories()>();
+
+        virtualinvoke previousRange#47.<org.apache.maven.artifact.resolver.ResolutionNode: void addDependencies(java.util.Set,java.util.List,org.apache.maven.artifact.resolver.filter.ArtifactFilter)>($stack58, $stack59, filter);
+
+     label46:
+        goto label49;
+
+     label47:
+        $stack243 := @caughtexception;
+
+        $u15 = new org.apache.maven.artifact.resolver.ResolutionNode;
+
+        $r26 = (org.apache.maven.artifact.resolver.CyclicDependencyException) $stack243;
+
+        $stack246 = virtualinvoke $r26.<org.apache.maven.artifact.resolver.CyclicDependencyException: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        specialinvoke $u15.<org.apache.maven.artifact.resolver.ResolutionNode: void <init>(org.apache.maven.artifact.Artifact,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode)>($stack246, newRange#49, previousRange#47);
+
+        $r27 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r27.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode)>(8, listeners, $u15);
+
+        goto label49;
+
+     label48:
+        $stack232 := @caughtexception;
+
+        $stack233 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: java.util.List getDependencyTrail()>();
+
+        interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: void setDependencyTrail(java.util.List)>($stack233);
+
+        $u17 = new org.apache.maven.artifact.resolver.ArtifactResolutionException;
+
+        $u16 = new java.lang.StringBuilder;
+
+        specialinvoke $u16.<java.lang.StringBuilder: void <init>()>();
+
+        $stack236 = virtualinvoke $u16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to get dependency information for ");
+
+        $stack237 = interfaceinvoke currentRange#48.<org.apache.maven.artifact.Artifact: java.lang.String getId()>();
+
+        $stack238 = virtualinvoke $stack236.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack237);
+
+        $stack239 = virtualinvoke $stack238.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $r28 = (org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalException) $stack232;
+
+        $stack240 = virtualinvoke $r28.<org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalException: java.lang.String getMessage()>();
+
+        $stack241 = virtualinvoke $stack239.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack240);
+
+        $stack242 = virtualinvoke $stack241.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u17.<org.apache.maven.artifact.resolver.ArtifactResolutionException: void <init>(java.lang.String,org.apache.maven.artifact.Artifact,java.util.List,java.lang.Throwable)>($stack242, currentRange#48, newRange#49, $stack232);
+
+        $r29 = (java.lang.Throwable) $u17;
+
+        throw $r29;
+
+     label49:
+        $u18 = new org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
+
+        $r30 = (org.apache.maven.artifact.repository.RepositoryRequest) $u9;
+
+        specialinvoke $u18.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: void <init>(org.apache.maven.artifact.repository.RepositoryRequest)>($r30);
+
+        $stack61 = virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: java.util.List getServers()>();
+
+        virtualinvoke $u18.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setServers(java.util.List)>($stack61);
+
+        $stack63 = virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: java.util.List getMirrors()>();
+
+        virtualinvoke $u18.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setMirrors(java.util.List)>($stack63);
+
+        $stack65 = virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: java.util.List getProxies()>();
+
+        virtualinvoke $u18.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setProxies(java.util.List)>($stack65);
+
+        $r31 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r31.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void recurse(org.apache.maven.artifact.resolver.ArtifactResolutionResult,org.apache.maven.artifact.resolver.ResolutionNode,java.util.Map,org.apache.maven.artifact.versioning.ManagedVersionMap,org.apache.maven.artifact.resolver.ArtifactResolutionRequest,org.apache.maven.artifact.metadata.ArtifactMetadataSource,org.apache.maven.artifact.resolver.filter.ArtifactFilter,java.util.List,java.util.List)>(result, previousRange#47, resolvedArtifacts, managedVersions, $u18, source, filter, listeners, conflictResolvers);
+
+     label50:
+        goto label53;
+
+     label51:
+        $stack230 := @caughtexception;
+
+        $r32 = (java.lang.Exception) $stack230;
+
+        virtualinvoke result.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult addVersionRangeViolation(java.lang.Exception)>($r32);
+
+        goto label53;
+
+     label52:
+        $stack228 := @caughtexception;
+
+        $r33 = (org.apache.maven.artifact.resolver.ArtifactResolutionException) $stack228;
+
+        virtualinvoke result.<org.apache.maven.artifact.resolver.ArtifactResolutionResult: org.apache.maven.artifact.resolver.ArtifactResolutionResult addMetadataResolutionException(org.apache.maven.artifact.resolver.ArtifactResolutionException)>($r33);
+
+     label53:
+        goto label28;
+
+     label54:
+        $r34 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r34.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode)>(3, listeners, node);
+
+     label55:
+        return;
+
+        catch org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalException from label06 to label07 with label08;
+        catch org.apache.maven.artifact.versioning.OverConstrainedVersionException from label03 to label21 with label22;
+        catch org.apache.maven.artifact.resolver.CyclicDependencyException from label31 to label42 with label47;
+        catch org.apache.maven.artifact.resolver.CyclicDependencyException from label43 to label44 with label47;
+        catch org.apache.maven.artifact.resolver.CyclicDependencyException from label45 to label46 with label47;
+        catch org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalException from label31 to label42 with label48;
+        catch org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalException from label43 to label44 with label48;
+        catch org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalException from label45 to label46 with label48;
+        catch org.apache.maven.artifact.versioning.OverConstrainedVersionException from label29 to label42 with label51;
+        catch org.apache.maven.artifact.versioning.OverConstrainedVersionException from label43 to label44 with label51;
+        catch org.apache.maven.artifact.versioning.OverConstrainedVersionException from label45 to label50 with label51;
+        catch org.apache.maven.artifact.resolver.ArtifactResolutionException from label29 to label42 with label52;
+        catch org.apache.maven.artifact.resolver.ArtifactResolutionException from label43 to label44 with label52;
+        catch org.apache.maven.artifact.resolver.ArtifactResolutionException from label45 to label50 with label52;
+    }
+
+    private void manageArtifact(org.apache.maven.artifact.resolver.ResolutionNode, org.apache.maven.artifact.versioning.ManagedVersionMap, java.util.List)
+    {
+        org.apache.maven.artifact.versioning.ManagedVersionMap managedVersions;
+        org.apache.maven.artifact.resolver.ResolutionNode node;
+        java.lang.Object $stack5, $stack6;
+        org.apache.maven.artifact.Artifact artifact, $stack13, $stack16, $stack19, $stack22, $stack32, $stack35, $stack10;
+        java.lang.String $stack7, $stack20, $stack23, $stack33, $stack36, $stack8, $stack9, $stack11;
+        java.io.File $stack14, $stack15, $stack17;
+        DefaultLegacyArtifactCollector this;
+        java.util.List listeners;
+        boolean $stack18, $stack31, $stack12;
+        org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector $r0, $r1, $r2;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        node := @parameter0: org.apache.maven.artifact.resolver.ResolutionNode;
+
+        managedVersions := @parameter1: org.apache.maven.artifact.versioning.ManagedVersionMap;
+
+        listeners := @parameter2: java.util.List;
+
+        $stack5 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: java.lang.Object getKey()>();
+
+        $stack6 = virtualinvoke managedVersions.<org.apache.maven.artifact.versioning.ManagedVersionMap: java.lang.Object get(java.lang.Object)>($stack5);
+
+        artifact = (org.apache.maven.artifact.Artifact) $stack6;
+
+        $stack7 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        if $stack7 == null goto label2;
+
+        $stack31 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: boolean isChildOfRootNode()>();
+
+        if $stack31 == 0 goto label1;
+
+        $stack35 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack36 = interfaceinvoke $stack35.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        if $stack36 != null goto label2;
+
+     label1:
+        $r0 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.Artifact)>(12, listeners, node, artifact);
+
+        $stack32 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack33 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        interfaceinvoke $stack32.<org.apache.maven.artifact.Artifact: void setVersion(java.lang.String)>($stack33);
+
+     label2:
+        $stack8 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        if $stack8 == null goto label4;
+
+        $stack18 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: boolean isChildOfRootNode()>();
+
+        if $stack18 == 0 goto label3;
+
+        $stack22 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack23 = interfaceinvoke $stack22.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        if $stack23 != null goto label4;
+
+     label3:
+        $r1 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r1.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.Artifact)>(13, listeners, node, artifact);
+
+        $stack19 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack20 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        interfaceinvoke $stack19.<org.apache.maven.artifact.Artifact: void setScope(java.lang.String)>($stack20);
+
+     label4:
+        $stack9 = "system";
+
+        $stack10 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack11 = interfaceinvoke $stack10.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack12 = virtualinvoke $stack9.<java.lang.String: boolean equals(java.lang.Object)>($stack11);
+
+        if $stack12 == 0 goto label5;
+
+        $stack13 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack14 = interfaceinvoke $stack13.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        if $stack14 != null goto label5;
+
+        $stack15 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        if $stack15 == null goto label5;
+
+        $r2 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r2.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.Artifact)>(14, listeners, node, artifact);
+
+        $stack16 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack17 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        interfaceinvoke $stack16.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($stack17);
+
+     label5:
+        return;
+    }
+
+    boolean checkScopeUpdate(org.apache.maven.artifact.resolver.ResolutionNode, org.apache.maven.artifact.resolver.ResolutionNode, java.util.List)
+    {
+        org.apache.maven.artifact.resolver.ResolutionNode farthest, nearest;
+        org.apache.maven.artifact.Artifact farthestArtifact, nearestArtifact;
+        java.lang.String $stack9, $stack10, $stack16, $stack19, $stack20, $stack24, $stack25, $stack28, $stack29, $stack12, $stack13;
+        boolean $stack11, $stack21, $stack26, $stack30, updateScope, $stack14;
+        DefaultLegacyArtifactCollector this;
+        java.util.List listeners;
+        int $stack15;
+        org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector $r0, $r1;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        farthest := @parameter0: org.apache.maven.artifact.resolver.ResolutionNode;
+
+        nearest := @parameter1: org.apache.maven.artifact.resolver.ResolutionNode;
+
+        listeners := @parameter2: java.util.List;
+
+        updateScope = 0;
+
+        farthestArtifact = virtualinvoke farthest.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        nearestArtifact = virtualinvoke nearest.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack9 = "runtime";
+
+        $stack10 = interfaceinvoke farthestArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack11 = virtualinvoke $stack9.<java.lang.String: boolean equals(java.lang.Object)>($stack10);
+
+        if $stack11 == 0 goto label2;
+
+        $stack24 = "test";
+
+        $stack25 = interfaceinvoke nearestArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack26 = virtualinvoke $stack24.<java.lang.String: boolean equals(java.lang.Object)>($stack25);
+
+        if $stack26 != 0 goto label1;
+
+        $stack28 = "provided";
+
+        $stack29 = interfaceinvoke nearestArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack30 = virtualinvoke $stack28.<java.lang.String: boolean equals(java.lang.Object)>($stack29);
+
+        if $stack30 == 0 goto label2;
+
+     label1:
+        updateScope = 1;
+
+     label2:
+        $stack12 = "compile";
+
+        $stack13 = interfaceinvoke farthestArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack14 = virtualinvoke $stack12.<java.lang.String: boolean equals(java.lang.Object)>($stack13);
+
+        if $stack14 == 0 goto label3;
+
+        $stack19 = "compile";
+
+        $stack20 = interfaceinvoke nearestArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack21 = virtualinvoke $stack19.<java.lang.String: boolean equals(java.lang.Object)>($stack20);
+
+        if $stack21 != 0 goto label3;
+
+        updateScope = 1;
+
+     label3:
+        $stack15 = virtualinvoke nearest.<org.apache.maven.artifact.resolver.ResolutionNode: int getDepth()>();
+
+        if $stack15 >= 2 goto label4;
+
+        if updateScope == 0 goto label4;
+
+        updateScope = 0;
+
+        $r0 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.Artifact)>(9, listeners, nearest, farthestArtifact);
+
+     label4:
+        if updateScope == 0 goto label5;
+
+        $r1 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r1.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.Artifact)>(6, listeners, nearest, farthestArtifact);
+
+        $stack16 = interfaceinvoke farthestArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        interfaceinvoke nearestArtifact.<org.apache.maven.artifact.Artifact: void setScope(java.lang.String)>($stack16);
+
+     label5:
+        return updateScope;
+    }
+
+    private void fireEvent(int, java.util.List, org.apache.maven.artifact.resolver.ResolutionNode)
+    {
+        DefaultLegacyArtifactCollector this;
+        int event;
+        java.util.List listeners;
+        org.apache.maven.artifact.resolver.ResolutionNode node;
+        org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector $r0;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        event := @parameter0: int;
+
+        listeners := @parameter1: java.util.List;
+
+        node := @parameter2: org.apache.maven.artifact.resolver.ResolutionNode;
+
+        $r0 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.Artifact)>(event, listeners, node, null);
+
+        return;
+    }
+
+    private void fireEvent(int, java.util.List, org.apache.maven.artifact.resolver.ResolutionNode, org.apache.maven.artifact.Artifact)
+    {
+        DefaultLegacyArtifactCollector this;
+        int event;
+        java.util.List listeners;
+        org.apache.maven.artifact.resolver.ResolutionNode node;
+        org.apache.maven.artifact.Artifact replacement;
+        org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector $r0;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        event := @parameter0: int;
+
+        listeners := @parameter1: java.util.List;
+
+        node := @parameter2: org.apache.maven.artifact.resolver.ResolutionNode;
+
+        replacement := @parameter3: org.apache.maven.artifact.Artifact;
+
+        $r0 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: void fireEvent(int,java.util.List,org.apache.maven.artifact.resolver.ResolutionNode,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.versioning.VersionRange)>(event, listeners, node, replacement, null);
+
+        return;
+    }
+
+    private void fireEvent(int, java.util.List, org.apache.maven.artifact.resolver.ResolutionNode, org.apache.maven.artifact.Artifact, org.apache.maven.artifact.versioning.VersionRange)
+    {
+        java.util.List listeners;
+        java.util.Iterator l6;
+        boolean $stack10, $stack12, $stack16, $stack19, $stack24, $stack27;
+        java.lang.Object $stack11;
+        org.apache.maven.artifact.resolver.ResolutionListener listener;
+        int event;
+        org.apache.maven.artifact.resolver.ResolutionNode node;
+        org.apache.maven.artifact.Artifact $stack13, replacement, $stack15, $stack17, $stack18, $stack20, $stack21, $stack22, $stack25, $stack32, $stack33, $stack35, $stack36, $stack38, $stack39, $stack40, $stack41, $stack42;
+        org.apache.maven.artifact.versioning.VersionRange $stack23, newRange, $stack26;
+        java.lang.String $stack34, $stack37, $stack47;
+        java.lang.IllegalStateException $stack43;
+        java.lang.StringBuilder $stack44, $stack45, $stack46;
+        DefaultLegacyArtifactCollector this;
+        org.apache.maven.artifact.resolver.ResolutionListenerForDepMgmt asImpl;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        event := @parameter0: int;
+
+        listeners := @parameter1: java.util.List;
+
+        node := @parameter2: org.apache.maven.artifact.resolver.ResolutionNode;
+
+        replacement := @parameter3: org.apache.maven.artifact.Artifact;
+
+        newRange := @parameter4: org.apache.maven.artifact.versioning.VersionRange;
+
+        l6 = interfaceinvoke listeners.<java.util.List: java.util.Iterator iterator()>();
+
+     label01:
+        $stack10 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label21;
+
+        $stack11 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        listener = (org.apache.maven.artifact.resolver.ResolutionListener) $stack11;
+
+        tableswitch(event)
+        {
+            case 1: goto label02;
+            case 2: goto label03;
+            case 3: goto label04;
+            case 4: goto label05;
+            case 5: goto label06;
+            case 6: goto label08;
+            case 7: goto label19;
+            case 8: goto label07;
+            case 9: goto label09;
+            case 10: goto label16;
+            case 11: goto label17;
+            case 12: goto label10;
+            case 13: goto label12;
+            case 14: goto label14;
+            default: goto label19;
+        };
+
+     label02:
+        $stack42 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void testArtifact(org.apache.maven.artifact.Artifact)>($stack42);
+
+        goto label20;
+
+     label03:
+        $stack41 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void startProcessChildren(org.apache.maven.artifact.Artifact)>($stack41);
+
+        goto label20;
+
+     label04:
+        $stack40 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void endProcessChildren(org.apache.maven.artifact.Artifact)>($stack40);
+
+        goto label20;
+
+     label05:
+        $stack39 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void includeArtifact(org.apache.maven.artifact.Artifact)>($stack39);
+
+        goto label20;
+
+     label06:
+        $stack38 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void omitForNearer(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.Artifact)>($stack38, replacement);
+
+        goto label20;
+
+     label07:
+        $stack35 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void omitForCycle(org.apache.maven.artifact.Artifact)>($stack35);
+
+        goto label20;
+
+     label08:
+        $stack36 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack37 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void updateScope(org.apache.maven.artifact.Artifact,java.lang.String)>($stack36, $stack37);
+
+        goto label20;
+
+     label09:
+        $stack33 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack34 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void updateScopeCurrentPom(org.apache.maven.artifact.Artifact,java.lang.String)>($stack33, $stack34);
+
+        goto label20;
+
+     label10:
+        $stack19 = listener instanceof org.apache.maven.artifact.resolver.ResolutionListenerForDepMgmt;
+
+        if $stack19 == 0 goto label11;
+
+        asImpl = (org.apache.maven.artifact.resolver.ResolutionListenerForDepMgmt) listener;
+
+        $stack21 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke asImpl.<org.apache.maven.artifact.resolver.ResolutionListenerForDepMgmt: void manageArtifactVersion(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.Artifact)>($stack21, replacement);
+
+        goto label20;
+
+     label11:
+        $stack20 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void manageArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.Artifact)>($stack20, replacement);
+
+        goto label20;
+
+     label12:
+        $stack16 = listener instanceof org.apache.maven.artifact.resolver.ResolutionListenerForDepMgmt;
+
+        if $stack16 == 0 goto label13;
+
+        asImpl = (org.apache.maven.artifact.resolver.ResolutionListenerForDepMgmt) listener;
+
+        $stack18 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke asImpl.<org.apache.maven.artifact.resolver.ResolutionListenerForDepMgmt: void manageArtifactScope(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.Artifact)>($stack18, replacement);
+
+        goto label20;
+
+     label13:
+        $stack17 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void manageArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.Artifact)>($stack17, replacement);
+
+        goto label20;
+
+     label14:
+        $stack12 = listener instanceof org.apache.maven.artifact.resolver.ResolutionListenerForDepMgmt;
+
+        if $stack12 == 0 goto label15;
+
+        asImpl = (org.apache.maven.artifact.resolver.ResolutionListenerForDepMgmt) listener;
+
+        $stack15 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke asImpl.<org.apache.maven.artifact.resolver.ResolutionListenerForDepMgmt: void manageArtifactSystemPath(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.Artifact)>($stack15, replacement);
+
+        goto label20;
+
+     label15:
+        $stack13 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void manageArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.Artifact)>($stack13, replacement);
+
+        goto label20;
+
+     label16:
+        $stack32 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void selectVersionFromRange(org.apache.maven.artifact.Artifact)>($stack32);
+
+        goto label20;
+
+     label17:
+        $stack22 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack23 = interfaceinvoke $stack22.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.VersionRange getVersionRange()>();
+
+        $stack24 = virtualinvoke $stack23.<org.apache.maven.artifact.versioning.VersionRange: boolean hasRestrictions()>();
+
+        if $stack24 != 0 goto label18;
+
+        $stack26 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.VersionRange getVersionRange()>();
+
+        $stack27 = virtualinvoke $stack26.<org.apache.maven.artifact.versioning.VersionRange: boolean hasRestrictions()>();
+
+        if $stack27 == 0 goto label20;
+
+     label18:
+        $stack25 = virtualinvoke node.<org.apache.maven.artifact.resolver.ResolutionNode: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke listener.<org.apache.maven.artifact.resolver.ResolutionListener: void restrictRange(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.versioning.VersionRange)>($stack25, replacement, newRange);
+
+        goto label20;
+
+     label19:
+        $stack43 = new java.lang.IllegalStateException;
+
+        $stack44 = new java.lang.StringBuilder;
+
+        specialinvoke $stack44.<java.lang.StringBuilder: void <init>()>();
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown event: ");
+
+        $stack46 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(event);
+
+        $stack47 = virtualinvoke $stack46.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack43.<java.lang.IllegalStateException: void <init>(java.lang.String)>($stack47);
+
+        throw $stack43;
+
+     label20:
+        goto label01;
+
+     label21:
+        return;
+    }
+
+    public org.apache.maven.artifact.resolver.ArtifactResolutionResult collect(java.util.Set, org.apache.maven.artifact.Artifact, java.util.Map, org.apache.maven.artifact.repository.ArtifactRepository, java.util.List, org.apache.maven.artifact.metadata.ArtifactMetadataSource, org.apache.maven.artifact.resolver.filter.ArtifactFilter, java.util.List)
+    {
+        DefaultLegacyArtifactCollector this;
+        java.util.Set artifacts;
+        org.apache.maven.artifact.Artifact originatingArtifact;
+        java.util.Map managedVersions;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        java.util.List remoteRepositories, listeners;
+        org.apache.maven.artifact.metadata.ArtifactMetadataSource source;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter filter;
+        org.apache.maven.artifact.resolver.ArtifactResolutionResult $stack9;
+        org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector $r0;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        artifacts := @parameter0: java.util.Set;
+
+        originatingArtifact := @parameter1: org.apache.maven.artifact.Artifact;
+
+        managedVersions := @parameter2: java.util.Map;
+
+        localRepository := @parameter3: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        remoteRepositories := @parameter4: java.util.List;
+
+        source := @parameter5: org.apache.maven.artifact.metadata.ArtifactMetadataSource;
+
+        filter := @parameter6: org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+
+        listeners := @parameter7: java.util.List;
+
+        $r0 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        $stack9 = virtualinvoke $r0.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: org.apache.maven.artifact.resolver.ArtifactResolutionResult collect(java.util.Set,org.apache.maven.artifact.Artifact,java.util.Map,org.apache.maven.artifact.repository.ArtifactRepository,java.util.List,org.apache.maven.artifact.metadata.ArtifactMetadataSource,org.apache.maven.artifact.resolver.filter.ArtifactFilter,java.util.List,java.util.List)>(artifacts, originatingArtifact, managedVersions, localRepository, remoteRepositories, source, filter, listeners, null);
+
+        return $stack9;
+    }
+
+    public org.apache.maven.artifact.resolver.ArtifactResolutionResult collect(java.util.Set, org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository, java.util.List, org.apache.maven.artifact.metadata.ArtifactMetadataSource, org.apache.maven.artifact.resolver.filter.ArtifactFilter, java.util.List)
+    {
+        DefaultLegacyArtifactCollector this;
+        java.util.Set artifacts;
+        org.apache.maven.artifact.Artifact originatingArtifact;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        java.util.List remoteRepositories, listeners;
+        org.apache.maven.artifact.metadata.ArtifactMetadataSource source;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter filter;
+        org.apache.maven.artifact.resolver.ArtifactResolutionResult $stack8;
+        org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector $r0;
+
+        this := @this: DefaultLegacyArtifactCollector;
+
+        artifacts := @parameter0: java.util.Set;
+
+        originatingArtifact := @parameter1: org.apache.maven.artifact.Artifact;
+
+        localRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        remoteRepositories := @parameter3: java.util.List;
+
+        source := @parameter4: org.apache.maven.artifact.metadata.ArtifactMetadataSource;
+
+        filter := @parameter5: org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+
+        listeners := @parameter6: java.util.List;
+
+        $r0 = (org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector) this;
+
+        $stack8 = virtualinvoke $r0.<org.apache.maven.repository.legacy.resolver.DefaultLegacyArtifactCollector: org.apache.maven.artifact.resolver.ArtifactResolutionResult collect(java.util.Set,org.apache.maven.artifact.Artifact,java.util.Map,org.apache.maven.artifact.repository.ArtifactRepository,java.util.List,org.apache.maven.artifact.metadata.ArtifactMetadataSource,org.apache.maven.artifact.resolver.filter.ArtifactFilter,java.util.List)>(artifacts, originatingArtifact, null, localRepository, remoteRepositories, source, filter, listeners);
+
+        return $stack8;
+    }
+}

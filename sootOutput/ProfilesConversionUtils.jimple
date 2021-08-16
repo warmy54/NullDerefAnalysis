@@ -1,0 +1,265 @@
+public class ProfilesConversionUtils extends java.lang.Object
+{
+
+    private void <init>()
+    {
+        ProfilesConversionUtils this;
+
+        this := @this: ProfilesConversionUtils;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.apache.maven.model.Profile convertFromProfileXmlProfile(org.apache.maven.profiles.Profile)
+    {
+        org.apache.maven.model.Profile $stack8;
+        org.apache.maven.profiles.Profile profileXmlProfile;
+        java.lang.String $stack9, $stack31, $stack40, $stack41, $stack45, $stack46, $stack47, $stack48, $stack52, $stack53;
+        org.apache.maven.profiles.Activation profileActivation;
+        boolean $stack15, $stack22, $stack30;
+        org.apache.maven.profiles.Repository $stack18, $stack26;
+        org.apache.maven.model.Repository $stack19, $stack27;
+        org.apache.maven.model.Activation $stack29;
+        org.apache.maven.model.ActivationFile $stack39;
+        org.apache.maven.model.ActivationOS $stack44;
+        org.apache.maven.model.ActivationProperty $stack51;
+        org.apache.maven.profiles.ActivationProperty profileProp;
+        org.apache.maven.profiles.ActivationOS prop#4;
+        org.apache.maven.profiles.ActivationFile os#6;
+        java.util.Properties $stack11;
+        java.util.List activation#17, profileProp#22;
+        java.util.Iterator profileProp#20, prop#23;
+        java.lang.Object prop#21, os#24;
+
+        profileXmlProfile := @parameter0: org.apache.maven.profiles.Profile;
+
+        $stack8 = new org.apache.maven.model.Profile;
+
+        specialinvoke $stack8.<org.apache.maven.model.Profile: void <init>()>();
+
+        $stack9 = virtualinvoke profileXmlProfile.<org.apache.maven.profiles.Profile: java.lang.String getId()>();
+
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void setId(java.lang.String)>($stack9);
+
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void setSource(java.lang.String)>("profiles.xml");
+
+        profileActivation = virtualinvoke profileXmlProfile.<org.apache.maven.profiles.Profile: org.apache.maven.profiles.Activation getActivation()>();
+
+        if profileActivation == null goto label4;
+
+        $stack29 = new org.apache.maven.model.Activation;
+
+        specialinvoke $stack29.<org.apache.maven.model.Activation: void <init>()>();
+
+        $stack30 = virtualinvoke profileActivation.<org.apache.maven.profiles.Activation: boolean isActiveByDefault()>();
+
+        virtualinvoke $stack29.<org.apache.maven.model.Activation: void setActiveByDefault(boolean)>($stack30);
+
+        $stack31 = virtualinvoke profileActivation.<org.apache.maven.profiles.Activation: java.lang.String getJdk()>();
+
+        virtualinvoke $stack29.<org.apache.maven.model.Activation: void setJdk(java.lang.String)>($stack31);
+
+        profileProp = virtualinvoke profileActivation.<org.apache.maven.profiles.Activation: org.apache.maven.profiles.ActivationProperty getProperty()>();
+
+        if profileProp == null goto label1;
+
+        $stack51 = new org.apache.maven.model.ActivationProperty;
+
+        specialinvoke $stack51.<org.apache.maven.model.ActivationProperty: void <init>()>();
+
+        $stack52 = virtualinvoke profileProp.<org.apache.maven.profiles.ActivationProperty: java.lang.String getName()>();
+
+        virtualinvoke $stack51.<org.apache.maven.model.ActivationProperty: void setName(java.lang.String)>($stack52);
+
+        $stack53 = virtualinvoke profileProp.<org.apache.maven.profiles.ActivationProperty: java.lang.String getValue()>();
+
+        virtualinvoke $stack51.<org.apache.maven.model.ActivationProperty: void setValue(java.lang.String)>($stack53);
+
+        virtualinvoke $stack29.<org.apache.maven.model.Activation: void setProperty(org.apache.maven.model.ActivationProperty)>($stack51);
+
+     label1:
+        prop#4 = virtualinvoke profileActivation.<org.apache.maven.profiles.Activation: org.apache.maven.profiles.ActivationOS getOs()>();
+
+        if prop#4 == null goto label2;
+
+        $stack44 = new org.apache.maven.model.ActivationOS;
+
+        specialinvoke $stack44.<org.apache.maven.model.ActivationOS: void <init>()>();
+
+        $stack45 = virtualinvoke prop#4.<org.apache.maven.profiles.ActivationOS: java.lang.String getArch()>();
+
+        virtualinvoke $stack44.<org.apache.maven.model.ActivationOS: void setArch(java.lang.String)>($stack45);
+
+        $stack46 = virtualinvoke prop#4.<org.apache.maven.profiles.ActivationOS: java.lang.String getFamily()>();
+
+        virtualinvoke $stack44.<org.apache.maven.model.ActivationOS: void setFamily(java.lang.String)>($stack46);
+
+        $stack47 = virtualinvoke prop#4.<org.apache.maven.profiles.ActivationOS: java.lang.String getName()>();
+
+        virtualinvoke $stack44.<org.apache.maven.model.ActivationOS: void setName(java.lang.String)>($stack47);
+
+        $stack48 = virtualinvoke prop#4.<org.apache.maven.profiles.ActivationOS: java.lang.String getVersion()>();
+
+        virtualinvoke $stack44.<org.apache.maven.model.ActivationOS: void setVersion(java.lang.String)>($stack48);
+
+        virtualinvoke $stack29.<org.apache.maven.model.Activation: void setOs(org.apache.maven.model.ActivationOS)>($stack44);
+
+     label2:
+        os#6 = virtualinvoke profileActivation.<org.apache.maven.profiles.Activation: org.apache.maven.profiles.ActivationFile getFile()>();
+
+        if os#6 == null goto label3;
+
+        $stack39 = new org.apache.maven.model.ActivationFile;
+
+        specialinvoke $stack39.<org.apache.maven.model.ActivationFile: void <init>()>();
+
+        $stack40 = virtualinvoke os#6.<org.apache.maven.profiles.ActivationFile: java.lang.String getExists()>();
+
+        virtualinvoke $stack39.<org.apache.maven.model.ActivationFile: void setExists(java.lang.String)>($stack40);
+
+        $stack41 = virtualinvoke os#6.<org.apache.maven.profiles.ActivationFile: java.lang.String getMissing()>();
+
+        virtualinvoke $stack39.<org.apache.maven.model.ActivationFile: void setMissing(java.lang.String)>($stack41);
+
+        virtualinvoke $stack29.<org.apache.maven.model.Activation: void setFile(org.apache.maven.model.ActivationFile)>($stack39);
+
+     label3:
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void setActivation(org.apache.maven.model.Activation)>($stack29);
+
+     label4:
+        $stack11 = virtualinvoke profileXmlProfile.<org.apache.maven.profiles.Profile: java.util.Properties getProperties()>();
+
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void setProperties(java.util.Properties)>($stack11);
+
+        activation#17 = virtualinvoke profileXmlProfile.<org.apache.maven.profiles.Profile: java.util.List getRepositories()>();
+
+        if activation#17 == null goto label6;
+
+        profileProp#20 = interfaceinvoke activation#17.<java.util.List: java.util.Iterator iterator()>();
+
+     label5:
+        $stack22 = interfaceinvoke profileProp#20.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack22 == 0 goto label6;
+
+        prop#21 = interfaceinvoke profileProp#20.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack26 = (org.apache.maven.profiles.Repository) prop#21;
+
+        $stack27 = staticinvoke <org.apache.maven.profiles.ProfilesConversionUtils: org.apache.maven.model.Repository convertFromProfileXmlRepository(org.apache.maven.profiles.Repository)>($stack26);
+
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void addRepository(org.apache.maven.model.Repository)>($stack27);
+
+        goto label5;
+
+     label6:
+        profileProp#22 = virtualinvoke profileXmlProfile.<org.apache.maven.profiles.Profile: java.util.List getPluginRepositories()>();
+
+        if profileProp#22 == null goto label8;
+
+        prop#23 = interfaceinvoke profileProp#22.<java.util.List: java.util.Iterator iterator()>();
+
+     label7:
+        $stack15 = interfaceinvoke prop#23.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label8;
+
+        os#24 = interfaceinvoke prop#23.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack18 = (org.apache.maven.profiles.Repository) os#24;
+
+        $stack19 = staticinvoke <org.apache.maven.profiles.ProfilesConversionUtils: org.apache.maven.model.Repository convertFromProfileXmlRepository(org.apache.maven.profiles.Repository)>($stack18);
+
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void addPluginRepository(org.apache.maven.model.Repository)>($stack19);
+
+        goto label7;
+
+     label8:
+        return $stack8;
+    }
+
+    private static org.apache.maven.model.Repository convertFromProfileXmlRepository(org.apache.maven.profiles.Repository)
+    {
+        org.apache.maven.model.Repository $stack2;
+        org.apache.maven.profiles.Repository profileXmlRepo;
+        java.lang.String $stack3, $stack4, $stack5, $stack6;
+        org.apache.maven.profiles.RepositoryPolicy $stack7, $stack8, $stack9, $stack12;
+        org.apache.maven.model.RepositoryPolicy $stack10, $stack13;
+
+        profileXmlRepo := @parameter0: org.apache.maven.profiles.Repository;
+
+        $stack2 = new org.apache.maven.model.Repository;
+
+        specialinvoke $stack2.<org.apache.maven.model.Repository: void <init>()>();
+
+        $stack3 = virtualinvoke profileXmlRepo.<org.apache.maven.profiles.Repository: java.lang.String getId()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setId(java.lang.String)>($stack3);
+
+        $stack4 = virtualinvoke profileXmlRepo.<org.apache.maven.profiles.Repository: java.lang.String getLayout()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setLayout(java.lang.String)>($stack4);
+
+        $stack5 = virtualinvoke profileXmlRepo.<org.apache.maven.profiles.Repository: java.lang.String getName()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setName(java.lang.String)>($stack5);
+
+        $stack6 = virtualinvoke profileXmlRepo.<org.apache.maven.profiles.Repository: java.lang.String getUrl()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setUrl(java.lang.String)>($stack6);
+
+        $stack7 = virtualinvoke profileXmlRepo.<org.apache.maven.profiles.Repository: org.apache.maven.profiles.RepositoryPolicy getSnapshots()>();
+
+        if $stack7 == null goto label1;
+
+        $stack12 = virtualinvoke profileXmlRepo.<org.apache.maven.profiles.Repository: org.apache.maven.profiles.RepositoryPolicy getSnapshots()>();
+
+        $stack13 = staticinvoke <org.apache.maven.profiles.ProfilesConversionUtils: org.apache.maven.model.RepositoryPolicy convertRepositoryPolicy(org.apache.maven.profiles.RepositoryPolicy)>($stack12);
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setSnapshots(org.apache.maven.model.RepositoryPolicy)>($stack13);
+
+     label1:
+        $stack8 = virtualinvoke profileXmlRepo.<org.apache.maven.profiles.Repository: org.apache.maven.profiles.RepositoryPolicy getReleases()>();
+
+        if $stack8 == null goto label2;
+
+        $stack9 = virtualinvoke profileXmlRepo.<org.apache.maven.profiles.Repository: org.apache.maven.profiles.RepositoryPolicy getReleases()>();
+
+        $stack10 = staticinvoke <org.apache.maven.profiles.ProfilesConversionUtils: org.apache.maven.model.RepositoryPolicy convertRepositoryPolicy(org.apache.maven.profiles.RepositoryPolicy)>($stack9);
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setReleases(org.apache.maven.model.RepositoryPolicy)>($stack10);
+
+     label2:
+        return $stack2;
+    }
+
+    private static org.apache.maven.model.RepositoryPolicy convertRepositoryPolicy(org.apache.maven.profiles.RepositoryPolicy)
+    {
+        org.apache.maven.model.RepositoryPolicy $stack2;
+        org.apache.maven.profiles.RepositoryPolicy profileXmlRepo;
+        boolean $stack3;
+        java.lang.String $stack4, $stack5;
+
+        profileXmlRepo := @parameter0: org.apache.maven.profiles.RepositoryPolicy;
+
+        $stack2 = new org.apache.maven.model.RepositoryPolicy;
+
+        specialinvoke $stack2.<org.apache.maven.model.RepositoryPolicy: void <init>()>();
+
+        $stack3 = virtualinvoke profileXmlRepo.<org.apache.maven.profiles.RepositoryPolicy: boolean isEnabled()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.RepositoryPolicy: void setEnabled(boolean)>($stack3);
+
+        $stack4 = virtualinvoke profileXmlRepo.<org.apache.maven.profiles.RepositoryPolicy: java.lang.String getUpdatePolicy()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.RepositoryPolicy: void setUpdatePolicy(java.lang.String)>($stack4);
+
+        $stack5 = virtualinvoke profileXmlRepo.<org.apache.maven.profiles.RepositoryPolicy: java.lang.String getChecksumPolicy()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.RepositoryPolicy: void setChecksumPolicy(java.lang.String)>($stack5);
+
+        return $stack2;
+    }
+}

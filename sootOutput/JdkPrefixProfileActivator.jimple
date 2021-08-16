@@ -1,0 +1,232 @@
+public class JdkPrefixProfileActivator extends org.apache.maven.profiles.activation.DetectedProfileActivator
+{
+    private static final java.lang.String JDK_VERSION;
+
+    public void <init>()
+    {
+        JdkPrefixProfileActivator this;
+
+        this := @this: JdkPrefixProfileActivator;
+
+        specialinvoke this.<org.apache.maven.profiles.activation.DetectedProfileActivator: void <init>()>();
+
+        return;
+    }
+
+    public boolean isActive(org.apache.maven.model.Profile) throws org.apache.maven.profiles.activation.ProfileActivationException
+    {
+        org.apache.maven.model.Profile profile;
+        org.apache.maven.model.Activation activation;
+        boolean $stack7, $stack8, $stack9, $stack10, $stack12, e#3, $stack13;
+        JdkPrefixProfileActivator this;
+        java.lang.String $stack11, $stack23, $stack26, $stack28, jdk;
+        java.lang.Throwable $stack19, $r2;
+        java.lang.StringBuilder $stack22, $stack24, $stack25, $stack27, $u0;
+        org.apache.maven.profiles.activation.ProfileActivationException $u1;
+        org.apache.maven.profiles.activation.JdkPrefixProfileActivator $r0, $r3;
+        org.apache.maven.artifact.versioning.InvalidVersionSpecificationException $r1;
+
+        this := @this: JdkPrefixProfileActivator;
+
+        profile := @parameter0: org.apache.maven.model.Profile;
+
+        activation = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        jdk = virtualinvoke activation.<org.apache.maven.model.Activation: java.lang.String getJdk()>();
+
+        $stack7 = virtualinvoke jdk.<java.lang.String: boolean startsWith(java.lang.String)>("[");
+
+        if $stack7 != 0 goto label1;
+
+        $stack9 = virtualinvoke jdk.<java.lang.String: boolean startsWith(java.lang.String)>("(");
+
+        if $stack9 == 0 goto label4;
+
+     label1:
+        $r0 = (org.apache.maven.profiles.activation.JdkPrefixProfileActivator) this;
+
+        $stack8 = specialinvoke $r0.<org.apache.maven.profiles.activation.JdkPrefixProfileActivator: boolean matchJdkVersionRange(java.lang.String)>(jdk);
+
+     label2:
+        return $stack8;
+
+     label3:
+        $stack19 := @caughtexception;
+
+        $u1 = new org.apache.maven.profiles.activation.ProfileActivationException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack22 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid JDK version in profile \'");
+
+        $stack23 = virtualinvoke profile.<org.apache.maven.model.Profile: java.lang.String getId()>();
+
+        $stack24 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\': ");
+
+        $r1 = (org.apache.maven.artifact.versioning.InvalidVersionSpecificationException) $stack19;
+
+        $stack26 = virtualinvoke $r1.<org.apache.maven.artifact.versioning.InvalidVersionSpecificationException: java.lang.String getMessage()>();
+
+        $stack27 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack26);
+
+        $stack28 = virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.apache.maven.profiles.activation.ProfileActivationException: void <init>(java.lang.String)>($stack28);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label4:
+        e#3 = 0;
+
+        $stack10 = virtualinvoke jdk.<java.lang.String: boolean startsWith(java.lang.String)>("!");
+
+        if $stack10 == 0 goto label5;
+
+        e#3 = 1;
+
+        jdk = virtualinvoke jdk.<java.lang.String: java.lang.String substring(int)>(1);
+
+     label5:
+        $r3 = (org.apache.maven.profiles.activation.JdkPrefixProfileActivator) this;
+
+        $stack11 = virtualinvoke $r3.<org.apache.maven.profiles.activation.JdkPrefixProfileActivator: java.lang.String getJdkVersion()>();
+
+        $stack12 = virtualinvoke $stack11.<java.lang.String: boolean startsWith(java.lang.String)>(jdk);
+
+        if $stack12 == 0 goto label8;
+
+        if e#3 != 0 goto label6;
+
+        $stack13 = 1;
+
+        goto label7;
+
+     label6:
+        $stack13 = 0;
+
+     label7:
+        return $stack13;
+
+     label8:
+        return e#3;
+
+        catch org.apache.maven.artifact.versioning.InvalidVersionSpecificationException from label1 to label2 with label3;
+    }
+
+    private boolean matchJdkVersionRange(java.lang.String) throws org.apache.maven.artifact.versioning.InvalidVersionSpecificationException
+    {
+        JdkPrefixProfileActivator this;
+        java.lang.String jdk, $stack4, $stack7, $stack8;
+        org.apache.maven.artifact.versioning.VersionRange jdkVersionRange;
+        boolean $stack9;
+        org.apache.maven.artifact.versioning.DefaultArtifactVersion $u0;
+        org.apache.maven.profiles.activation.JdkPrefixProfileActivator $r0, $r1, $r2;
+        org.apache.maven.artifact.versioning.ArtifactVersion $r3;
+
+        this := @this: JdkPrefixProfileActivator;
+
+        jdk := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.profiles.activation.JdkPrefixProfileActivator) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.profiles.activation.JdkPrefixProfileActivator: java.lang.String convertJdkToMavenVersion(java.lang.String)>(jdk);
+
+        jdkVersionRange = staticinvoke <org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.VersionRange createFromVersionSpec(java.lang.String)>($stack4);
+
+        $u0 = new org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+
+        $r1 = (org.apache.maven.profiles.activation.JdkPrefixProfileActivator) this;
+
+        $stack7 = virtualinvoke $r1.<org.apache.maven.profiles.activation.JdkPrefixProfileActivator: java.lang.String getJdkVersion()>();
+
+        $r2 = (org.apache.maven.profiles.activation.JdkPrefixProfileActivator) this;
+
+        $stack8 = specialinvoke $r2.<org.apache.maven.profiles.activation.JdkPrefixProfileActivator: java.lang.String convertJdkToMavenVersion(java.lang.String)>($stack7);
+
+        specialinvoke $u0.<org.apache.maven.artifact.versioning.DefaultArtifactVersion: void <init>(java.lang.String)>($stack8);
+
+        $r3 = (org.apache.maven.artifact.versioning.ArtifactVersion) $u0;
+
+        $stack9 = virtualinvoke jdkVersionRange.<org.apache.maven.artifact.versioning.VersionRange: boolean containsVersion(org.apache.maven.artifact.versioning.ArtifactVersion)>($r3);
+
+        return $stack9;
+    }
+
+    private java.lang.String convertJdkToMavenVersion(java.lang.String)
+    {
+        java.lang.String jdk, $stack2;
+        JdkPrefixProfileActivator this;
+
+        this := @this: JdkPrefixProfileActivator;
+
+        jdk := @parameter0: java.lang.String;
+
+        $stack2 = virtualinvoke jdk.<java.lang.String: java.lang.String replaceAll(java.lang.String,java.lang.String)>("_", "-");
+
+        return $stack2;
+    }
+
+    protected java.lang.String getJdkVersion()
+    {
+        java.lang.String $stack1;
+        JdkPrefixProfileActivator this;
+
+        this := @this: JdkPrefixProfileActivator;
+
+        $stack1 = <org.apache.maven.profiles.activation.JdkPrefixProfileActivator: java.lang.String JDK_VERSION>;
+
+        return $stack1;
+    }
+
+    protected boolean canDetectActivation(org.apache.maven.model.Profile)
+    {
+        org.apache.maven.model.Profile profile;
+        org.apache.maven.model.Activation $stack2, $stack3;
+        java.lang.String $stack4;
+        boolean $stack5, $stack6;
+        JdkPrefixProfileActivator this;
+
+        this := @this: JdkPrefixProfileActivator;
+
+        profile := @parameter0: org.apache.maven.model.Profile;
+
+        $stack2 = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        if $stack2 == null goto label1;
+
+        $stack3 = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        $stack4 = virtualinvoke $stack3.<org.apache.maven.model.Activation: java.lang.String getJdk()>();
+
+        $stack5 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack4);
+
+        if $stack5 == 0 goto label1;
+
+        $stack6 = 1;
+
+        goto label2;
+
+     label1:
+        $stack6 = 0;
+
+     label2:
+        return $stack6;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String $stack0;
+
+        $stack0 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("java.version");
+
+        <org.apache.maven.profiles.activation.JdkPrefixProfileActivator: java.lang.String JDK_VERSION> = $stack0;
+
+        return;
+    }
+}

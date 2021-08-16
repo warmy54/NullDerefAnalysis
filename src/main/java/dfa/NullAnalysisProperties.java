@@ -18,7 +18,7 @@ public class NullAnalysisProperties {
 		boolean TrustFieldRefReturn = false;
 		boolean TrustArrayRefReturn = false;
 		boolean TrustParameterRefReturn = false;
-
+		String MainClass = "";
 		
 		public NullAnalysisProperties() {SettingDefault = true;}
 		public void decode(String path) throws IOException {

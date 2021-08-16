@@ -1,0 +1,176 @@
+public class DefaultMavenProfilesBuilder extends org.codehaus.plexus.logging.AbstractLogEnabled implements org.apache.maven.profiles.MavenProfilesBuilder
+{
+    private static final java.lang.String PROFILES_XML_FILE;
+
+    public void <init>()
+    {
+        DefaultMavenProfilesBuilder this;
+
+        this := @this: DefaultMavenProfilesBuilder;
+
+        specialinvoke this.<org.codehaus.plexus.logging.AbstractLogEnabled: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.profiles.ProfilesRoot buildProfiles(java.io.File) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.io.File basedir, $u0;
+        boolean $stack10;
+        org.codehaus.plexus.util.xml.XmlStreamReader profileReader;
+        java.lang.Throwable $stack21, $stack22, $stack24, $stack25;
+        java.lang.Exception $stack27;
+        DefaultMavenProfilesBuilder this;
+        org.codehaus.plexus.logging.Logger $stack28, $stack29;
+        org.apache.maven.profiles.ProfilesRoot profilesRoot;
+        java.lang.String rawInput;
+        org.apache.maven.profiles.io.xpp3.ProfilesXpp3Reader $u1;
+        java.io.StringWriter $u2;
+        org.codehaus.plexus.interpolation.RegexBasedInterpolator $u3;
+        org.codehaus.plexus.interpolation.EnvarBasedValueSource $u4;
+        java.io.StringReader $u5;
+        java.io.Reader $r0, $r4, $r5;
+        org.codehaus.plexus.interpolation.ValueSource $r1;
+        org.apache.maven.profiles.DefaultMavenProfilesBuilder $r2, $r3;
+
+        this := @this: DefaultMavenProfilesBuilder;
+
+        basedir := @parameter0: java.io.File;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.io.File,java.lang.String)>(basedir, "profiles.xml");
+
+        profilesRoot = null;
+
+        $stack10 = virtualinvoke $u0.<java.io.File: boolean exists()>();
+
+        if $stack10 == 0 goto label19;
+
+        $u1 = new org.apache.maven.profiles.io.xpp3.ProfilesXpp3Reader;
+
+        specialinvoke $u1.<org.apache.maven.profiles.io.xpp3.ProfilesXpp3Reader: void <init>()>();
+
+        profileReader = staticinvoke <org.codehaus.plexus.util.ReaderFactory: org.codehaus.plexus.util.xml.XmlStreamReader newXmlReader(java.io.File)>($u0);
+
+     label01:
+        $u2 = new java.io.StringWriter;
+
+        specialinvoke $u2.<java.io.StringWriter: void <init>()>();
+
+     label02:
+        $r0 = (java.io.Reader) profileReader;
+
+        staticinvoke <org.codehaus.plexus.util.IOUtil: void copy(java.io.Reader,java.io.Writer)>($r0, $u2);
+
+        rawInput = virtualinvoke $u2.<java.io.StringWriter: java.lang.String toString()>();
+
+     label03:
+        $u3 = new org.codehaus.plexus.interpolation.RegexBasedInterpolator;
+
+        specialinvoke $u3.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: void <init>()>();
+
+        $u4 = new org.codehaus.plexus.interpolation.EnvarBasedValueSource;
+
+        specialinvoke $u4.<org.codehaus.plexus.interpolation.EnvarBasedValueSource: void <init>()>();
+
+        $r1 = (org.codehaus.plexus.interpolation.ValueSource) $u4;
+
+        virtualinvoke $u3.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: void addValueSource(org.codehaus.plexus.interpolation.ValueSource)>($r1);
+
+        rawInput = virtualinvoke $u3.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: java.lang.String interpolate(java.lang.String,java.lang.String)>(rawInput, "settings");
+
+     label04:
+        goto label06;
+
+     label05:
+        $stack27 := @caughtexception;
+
+        $r2 = (org.apache.maven.profiles.DefaultMavenProfilesBuilder) this;
+
+        $stack28 = virtualinvoke $r2.<org.apache.maven.profiles.DefaultMavenProfilesBuilder: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        interfaceinvoke $stack28.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("Failed to initialize environment variable resolver. Skipping environment substitution in profiles.xml.");
+
+        $r3 = (org.apache.maven.profiles.DefaultMavenProfilesBuilder) this;
+
+        $stack29 = virtualinvoke $r3.<org.apache.maven.profiles.DefaultMavenProfilesBuilder: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        interfaceinvoke $stack29.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>("Failed to initialize envar resolver. Skipping resolution.", $stack27);
+
+     label06:
+        $u5 = new java.io.StringReader;
+
+        specialinvoke $u5.<java.io.StringReader: void <init>(java.lang.String)>(rawInput);
+
+        profilesRoot = virtualinvoke $u1.<org.apache.maven.profiles.io.xpp3.ProfilesXpp3Reader: org.apache.maven.profiles.ProfilesRoot read(java.io.Reader)>($u5);
+
+     label07:
+        virtualinvoke $u2.<java.io.StringWriter: void close()>();
+
+        goto label13;
+
+     label08:
+        $stack25 := @caughtexception;
+
+     label09:
+        virtualinvoke $u2.<java.io.StringWriter: void close()>();
+
+     label10:
+        goto label12;
+
+     label11:
+        $stack24 := @caughtexception;
+
+        virtualinvoke $stack25.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack24);
+
+     label12:
+        throw $stack25;
+
+     label13:
+        if profileReader == null goto label19;
+
+        $r4 = (java.io.Reader) profileReader;
+
+        virtualinvoke $r4.<java.io.Reader: void close()>();
+
+        goto label19;
+
+     label14:
+        $stack22 := @caughtexception;
+
+        if profileReader == null goto label18;
+
+     label15:
+        $r5 = (java.io.Reader) profileReader;
+
+        virtualinvoke $r5.<java.io.Reader: void close()>();
+
+     label16:
+        goto label18;
+
+     label17:
+        $stack21 := @caughtexception;
+
+        virtualinvoke $stack22.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack21);
+
+     label18:
+        throw $stack22;
+
+     label19:
+        return profilesRoot;
+
+        catch java.lang.Exception from label03 to label04 with label05;
+        catch java.lang.Throwable from label02 to label07 with label08;
+        catch java.lang.Throwable from label09 to label10 with label11;
+        catch java.lang.Throwable from label01 to label13 with label14;
+        catch java.lang.Throwable from label15 to label16 with label17;
+    }
+
+    public static void <clinit>()
+    {
+        <DefaultMavenProfilesBuilder: java.lang.String PROFILES_XML_FILE> = "profiles.xml";
+
+        return;
+    }
+}

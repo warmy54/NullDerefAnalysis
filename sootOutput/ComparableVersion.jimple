@@ -1,0 +1,635 @@
+public class ComparableVersion extends java.lang.Object implements java.lang.Comparable
+{
+    private static final int MAX_INTITEM_LENGTH;
+    private static final int MAX_LONGITEM_LENGTH;
+    private java.lang.String value;
+    private java.lang.String canonical;
+    private org.apache.maven.artifact.versioning.ComparableVersion$ListItem items;
+
+    public void <init>(java.lang.String)
+    {
+        ComparableVersion this;
+        java.lang.String version;
+        org.apache.maven.artifact.versioning.ComparableVersion $r0;
+
+        this := @this: ComparableVersion;
+
+        version := @parameter0: java.lang.String;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        virtualinvoke $r0.<org.apache.maven.artifact.versioning.ComparableVersion: void parseVersion(java.lang.String)>(version);
+
+        return;
+    }
+
+    public final void parseVersion(java.lang.String)
+    {
+        ComparableVersion this;
+        java.util.Locale $stack9;
+        int $stack12, $stack13, startIndex, i;
+        java.lang.Object $stack15;
+        java.lang.String $stack17, $stack26, $stack34, $stack39, $stack53, version, version#2;
+        org.apache.maven.artifact.versioning.ComparableVersion$Item $stack18, $stack27, $stack40, $stack54;
+        char c;
+        boolean $stack21, isDigit, $stack14;
+        org.apache.maven.artifact.versioning.ComparableVersion$ListItem $stack30, $stack37, $stack43, list, $u0, $u2, $u4, $u5;
+        org.apache.maven.artifact.versioning.ComparableVersion$IntItem $stack45, $stack56;
+        java.util.ArrayDeque $u1;
+        org.apache.maven.artifact.versioning.ComparableVersion$StringItem $u3;
+        org.apache.maven.artifact.versioning.ComparableVersion $r0, $r1, $r2;
+
+        this := @this: ComparableVersion;
+
+        version := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        $r0.<org.apache.maven.artifact.versioning.ComparableVersion: java.lang.String value> = version;
+
+        $u0 = new org.apache.maven.artifact.versioning.ComparableVersion$ListItem;
+
+        specialinvoke $u0.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: void <init>(org.apache.maven.artifact.versioning.ComparableVersion$1)>(null);
+
+        $r1 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        $r1.<org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$ListItem items> = $u0;
+
+        $stack9 = <java.util.Locale: java.util.Locale ENGLISH>;
+
+        version#2 = virtualinvoke version.<java.lang.String: java.lang.String toLowerCase(java.util.Locale)>($stack9);
+
+        $r2 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        list = $r2.<org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$ListItem items>;
+
+        $u1 = new java.util.ArrayDeque;
+
+        specialinvoke $u1.<java.util.ArrayDeque: void <init>()>();
+
+        interfaceinvoke $u1.<java.util.Deque: void push(java.lang.Object)>(list);
+
+        isDigit = 0;
+
+        startIndex = 0;
+
+        i = 0;
+
+     label01:
+        $stack12 = virtualinvoke version#2.<java.lang.String: int length()>();
+
+        if i >= $stack12 goto label12;
+
+        c = virtualinvoke version#2.<java.lang.String: char charAt(int)>(i);
+
+        if c != 46 goto label04;
+
+        if i != startIndex goto label02;
+
+        $stack56 = <org.apache.maven.artifact.versioning.ComparableVersion$IntItem: org.apache.maven.artifact.versioning.ComparableVersion$IntItem ZERO>;
+
+        virtualinvoke list.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: boolean add(java.lang.Object)>($stack56);
+
+        goto label03;
+
+     label02:
+        $stack53 = virtualinvoke version#2.<java.lang.String: java.lang.String substring(int,int)>(startIndex, i);
+
+        $stack54 = staticinvoke <org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$Item parseItem(boolean,java.lang.String)>(isDigit, $stack53);
+
+        virtualinvoke list.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: boolean add(java.lang.Object)>($stack54);
+
+     label03:
+        startIndex = i + 1;
+
+        goto label11;
+
+     label04:
+        if c != 45 goto label07;
+
+        if i != startIndex goto label05;
+
+        $stack45 = <org.apache.maven.artifact.versioning.ComparableVersion$IntItem: org.apache.maven.artifact.versioning.ComparableVersion$IntItem ZERO>;
+
+        virtualinvoke list.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: boolean add(java.lang.Object)>($stack45);
+
+        goto label06;
+
+     label05:
+        $stack39 = virtualinvoke version#2.<java.lang.String: java.lang.String substring(int,int)>(startIndex, i);
+
+        $stack40 = staticinvoke <org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$Item parseItem(boolean,java.lang.String)>(isDigit, $stack39);
+
+        virtualinvoke list.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: boolean add(java.lang.Object)>($stack40);
+
+     label06:
+        startIndex = i + 1;
+
+        $stack43 = list;
+
+        $u2 = new org.apache.maven.artifact.versioning.ComparableVersion$ListItem;
+
+        specialinvoke $u2.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: void <init>(org.apache.maven.artifact.versioning.ComparableVersion$1)>(null);
+
+        list = $u2;
+
+        virtualinvoke $stack43.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: boolean add(java.lang.Object)>($u2);
+
+        interfaceinvoke $u1.<java.util.Deque: void push(java.lang.Object)>($u2);
+
+        goto label11;
+
+     label07:
+        $stack21 = staticinvoke <java.lang.Character: boolean isDigit(char)>(c);
+
+        if $stack21 == 0 goto label09;
+
+        if isDigit != 0 goto label08;
+
+        if i <= startIndex goto label08;
+
+        $u3 = new org.apache.maven.artifact.versioning.ComparableVersion$StringItem;
+
+        $stack34 = virtualinvoke version#2.<java.lang.String: java.lang.String substring(int,int)>(startIndex, i);
+
+        specialinvoke $u3.<org.apache.maven.artifact.versioning.ComparableVersion$StringItem: void <init>(java.lang.String,boolean)>($stack34, 1);
+
+        virtualinvoke list.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: boolean add(java.lang.Object)>($u3);
+
+        startIndex = i;
+
+        $stack37 = list;
+
+        $u4 = new org.apache.maven.artifact.versioning.ComparableVersion$ListItem;
+
+        specialinvoke $u4.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: void <init>(org.apache.maven.artifact.versioning.ComparableVersion$1)>(null);
+
+        list = $u4;
+
+        virtualinvoke $stack37.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: boolean add(java.lang.Object)>($u4);
+
+        interfaceinvoke $u1.<java.util.Deque: void push(java.lang.Object)>($u4);
+
+     label08:
+        isDigit = 1;
+
+        goto label11;
+
+     label09:
+        if isDigit == 0 goto label10;
+
+        if i <= startIndex goto label10;
+
+        $stack26 = virtualinvoke version#2.<java.lang.String: java.lang.String substring(int,int)>(startIndex, i);
+
+        $stack27 = staticinvoke <org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$Item parseItem(boolean,java.lang.String)>(1, $stack26);
+
+        virtualinvoke list.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: boolean add(java.lang.Object)>($stack27);
+
+        startIndex = i;
+
+        $stack30 = list;
+
+        $u5 = new org.apache.maven.artifact.versioning.ComparableVersion$ListItem;
+
+        specialinvoke $u5.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: void <init>(org.apache.maven.artifact.versioning.ComparableVersion$1)>(null);
+
+        list = $u5;
+
+        virtualinvoke $stack30.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: boolean add(java.lang.Object)>($u5);
+
+        interfaceinvoke $u1.<java.util.Deque: void push(java.lang.Object)>($u5);
+
+     label10:
+        isDigit = 0;
+
+     label11:
+        i = i + 1;
+
+        goto label01;
+
+     label12:
+        $stack13 = virtualinvoke version#2.<java.lang.String: int length()>();
+
+        if $stack13 <= startIndex goto label13;
+
+        $stack17 = virtualinvoke version#2.<java.lang.String: java.lang.String substring(int)>(startIndex);
+
+        $stack18 = staticinvoke <org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$Item parseItem(boolean,java.lang.String)>(isDigit, $stack17);
+
+        virtualinvoke list.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: boolean add(java.lang.Object)>($stack18);
+
+     label13:
+        $stack14 = interfaceinvoke $u1.<java.util.Deque: boolean isEmpty()>();
+
+        if $stack14 != 0 goto label14;
+
+        $stack15 = interfaceinvoke $u1.<java.util.Deque: java.lang.Object pop()>();
+
+        list = (org.apache.maven.artifact.versioning.ComparableVersion$ListItem) $stack15;
+
+        virtualinvoke list.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: void normalize()>();
+
+        goto label13;
+
+     label14:
+        return;
+    }
+
+    private static org.apache.maven.artifact.versioning.ComparableVersion$Item parseItem(boolean, java.lang.String)
+    {
+        boolean isDigit;
+        int $stack4, $stack5;
+        java.lang.String buf, buf#2;
+        org.apache.maven.artifact.versioning.ComparableVersion$IntItem $u0;
+        org.apache.maven.artifact.versioning.ComparableVersion$LongItem $u1;
+        org.apache.maven.artifact.versioning.ComparableVersion$BigIntegerItem $u2;
+        org.apache.maven.artifact.versioning.ComparableVersion$StringItem $u3;
+        org.apache.maven.artifact.versioning.ComparableVersion$Item $r0, $r1, $r2, $r3;
+
+        isDigit := @parameter0: boolean;
+
+        buf := @parameter1: java.lang.String;
+
+        if isDigit == 0 goto label3;
+
+        buf#2 = staticinvoke <org.apache.maven.artifact.versioning.ComparableVersion: java.lang.String stripLeadingZeroes(java.lang.String)>(buf);
+
+        $stack4 = virtualinvoke buf#2.<java.lang.String: int length()>();
+
+        if $stack4 > 9 goto label1;
+
+        $u0 = new org.apache.maven.artifact.versioning.ComparableVersion$IntItem;
+
+        specialinvoke $u0.<org.apache.maven.artifact.versioning.ComparableVersion$IntItem: void <init>(java.lang.String)>(buf#2);
+
+        $r0 = (org.apache.maven.artifact.versioning.ComparableVersion$Item) $u0;
+
+        return $r0;
+
+     label1:
+        $stack5 = virtualinvoke buf#2.<java.lang.String: int length()>();
+
+        if $stack5 > 18 goto label2;
+
+        $u1 = new org.apache.maven.artifact.versioning.ComparableVersion$LongItem;
+
+        specialinvoke $u1.<org.apache.maven.artifact.versioning.ComparableVersion$LongItem: void <init>(java.lang.String)>(buf#2);
+
+        $r1 = (org.apache.maven.artifact.versioning.ComparableVersion$Item) $u1;
+
+        return $r1;
+
+     label2:
+        $u2 = new org.apache.maven.artifact.versioning.ComparableVersion$BigIntegerItem;
+
+        specialinvoke $u2.<org.apache.maven.artifact.versioning.ComparableVersion$BigIntegerItem: void <init>(java.lang.String)>(buf#2);
+
+        $r2 = (org.apache.maven.artifact.versioning.ComparableVersion$Item) $u2;
+
+        return $r2;
+
+     label3:
+        $u3 = new org.apache.maven.artifact.versioning.ComparableVersion$StringItem;
+
+        specialinvoke $u3.<org.apache.maven.artifact.versioning.ComparableVersion$StringItem: void <init>(java.lang.String,boolean)>(buf, 0);
+
+        $r3 = (org.apache.maven.artifact.versioning.ComparableVersion$Item) $u3;
+
+        return $r3;
+    }
+
+    private static java.lang.String stripLeadingZeroes(java.lang.String)
+    {
+        java.lang.String buf, $stack8;
+        boolean $stack3;
+        int $stack4, i;
+        char c;
+
+        buf := @parameter0: java.lang.String;
+
+        if buf == null goto label1;
+
+        $stack3 = virtualinvoke buf.<java.lang.String: boolean isEmpty()>();
+
+        if $stack3 == 0 goto label2;
+
+     label1:
+        return "0";
+
+     label2:
+        i = 0;
+
+     label3:
+        $stack4 = virtualinvoke buf.<java.lang.String: int length()>();
+
+        if i >= $stack4 goto label5;
+
+        c = virtualinvoke buf.<java.lang.String: char charAt(int)>(i);
+
+        if c == 48 goto label4;
+
+        $stack8 = virtualinvoke buf.<java.lang.String: java.lang.String substring(int)>(i);
+
+        return $stack8;
+
+     label4:
+        i = i + 1;
+
+        goto label3;
+
+     label5:
+        return buf;
+    }
+
+    public int compareTo(org.apache.maven.artifact.versioning.ComparableVersion)
+    {
+        ComparableVersion this;
+        org.apache.maven.artifact.versioning.ComparableVersion o, $r0;
+        org.apache.maven.artifact.versioning.ComparableVersion$ListItem $stack2, $stack3;
+        int $stack4;
+        org.apache.maven.artifact.versioning.ComparableVersion$Item $r1;
+
+        this := @this: ComparableVersion;
+
+        o := @parameter0: org.apache.maven.artifact.versioning.ComparableVersion;
+
+        $r0 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$ListItem items>;
+
+        $stack2 = o.<org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$ListItem items>;
+
+        $r1 = (org.apache.maven.artifact.versioning.ComparableVersion$Item) $stack2;
+
+        $stack4 = virtualinvoke $stack3.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: int compareTo(org.apache.maven.artifact.versioning.ComparableVersion$Item)>($r1);
+
+        return $stack4;
+    }
+
+    public java.lang.String toString()
+    {
+        ComparableVersion this;
+        java.lang.String $stack1;
+        org.apache.maven.artifact.versioning.ComparableVersion $r0;
+
+        this := @this: ComparableVersion;
+
+        $r0 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        $stack1 = $r0.<org.apache.maven.artifact.versioning.ComparableVersion: java.lang.String value>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getCanonical()
+    {
+        ComparableVersion this;
+        java.lang.String $stack1, $stack2, $stack4;
+        org.apache.maven.artifact.versioning.ComparableVersion$ListItem $stack3;
+        org.apache.maven.artifact.versioning.ComparableVersion $r0, $r1, $r2, $r3;
+
+        this := @this: ComparableVersion;
+
+        $r0 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        $stack1 = $r0.<org.apache.maven.artifact.versioning.ComparableVersion: java.lang.String canonical>;
+
+        if $stack1 != null goto label1;
+
+        $r1 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        $stack3 = $r1.<org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$ListItem items>;
+
+        $stack4 = virtualinvoke $stack3.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: java.lang.String toString()>();
+
+        $r2 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        $r2.<org.apache.maven.artifact.versioning.ComparableVersion: java.lang.String canonical> = $stack4;
+
+     label1:
+        $r3 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        $stack2 = $r3.<org.apache.maven.artifact.versioning.ComparableVersion: java.lang.String canonical>;
+
+        return $stack2;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        java.lang.Object o;
+        boolean $stack2, $stack6, $stack7;
+        ComparableVersion this;
+        org.apache.maven.artifact.versioning.ComparableVersion $stack3, $r0;
+        org.apache.maven.artifact.versioning.ComparableVersion$ListItem $stack4, $stack5;
+
+        this := @this: ComparableVersion;
+
+        o := @parameter0: java.lang.Object;
+
+        $stack2 = o instanceof org.apache.maven.artifact.versioning.ComparableVersion;
+
+        if $stack2 == 0 goto label1;
+
+        $r0 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        $stack5 = $r0.<org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$ListItem items>;
+
+        $stack3 = (org.apache.maven.artifact.versioning.ComparableVersion) o;
+
+        $stack4 = $stack3.<org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$ListItem items>;
+
+        $stack6 = virtualinvoke $stack5.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: boolean equals(java.lang.Object)>($stack4);
+
+        if $stack6 == 0 goto label1;
+
+        $stack7 = 1;
+
+        goto label2;
+
+     label1:
+        $stack7 = 0;
+
+     label2:
+        return $stack7;
+    }
+
+    public int hashCode()
+    {
+        ComparableVersion this;
+        org.apache.maven.artifact.versioning.ComparableVersion$ListItem $stack1;
+        int $stack2;
+        org.apache.maven.artifact.versioning.ComparableVersion $r0;
+
+        this := @this: ComparableVersion;
+
+        $r0 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        $stack1 = $r0.<org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$ListItem items>;
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.artifact.versioning.ComparableVersion$ListItem: int hashCode()>();
+
+        return $stack2;
+    }
+
+    public static transient void main(java.lang.String[])
+    {
+        java.io.PrintStream $stack9, $stack30, $stack13;
+        java.lang.String[] args;
+        int $stack10, l4, compare, i, l5, $stack14;
+        java.lang.String version, $stack32, $stack46, $stack38, $stack19, $stack23, $stack25;
+        org.apache.maven.artifact.versioning.ComparableVersion $stack11, prev;
+        java.lang.StringBuilder $stack29, $stack31, $stack33, $stack34, $stack35, $stack36, $stack37, $stack12, $stack15, $stack16, $stack17, $stack18, $stack20, $stack21, $stack24;
+        org.apache.maven.artifact.versioning.ComparableVersion$ListItem $stack22;
+
+        args := @parameter0: java.lang.String[];
+
+        $stack9 = <java.lang.System: java.io.PrintStream out>;
+
+        virtualinvoke $stack9.<java.io.PrintStream: void println(java.lang.String)>("Display parameters as parsed by Maven (in canonical form and as a list of tokens) and comparison result:");
+
+        $stack10 = lengthof args;
+
+        if $stack10 != 0 goto label1;
+
+        return;
+
+     label1:
+        prev = null;
+
+        i = 1;
+
+        l4 = lengthof args;
+
+        l5 = 0;
+
+     label2:
+        if l5 >= l4 goto label7;
+
+        version = args[l5];
+
+        $stack11 = new org.apache.maven.artifact.versioning.ComparableVersion;
+
+        specialinvoke $stack11.<org.apache.maven.artifact.versioning.ComparableVersion: void <init>(java.lang.String)>(version);
+
+        if prev == null goto label6;
+
+        compare = virtualinvoke prev.<org.apache.maven.artifact.versioning.ComparableVersion: int compareTo(org.apache.maven.artifact.versioning.ComparableVersion)>($stack11);
+
+        $stack30 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack29 = new java.lang.StringBuilder;
+
+        specialinvoke $stack29.<java.lang.StringBuilder: void <init>()>();
+
+        $stack31 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   ");
+
+        $stack32 = virtualinvoke prev.<org.apache.maven.artifact.versioning.ComparableVersion: java.lang.String toString()>();
+
+        $stack33 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack32);
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        if compare != 0 goto label3;
+
+        $stack46 = "==";
+
+        goto label5;
+
+     label3:
+        if compare >= 0 goto label4;
+
+        $stack46 = "<";
+
+        goto label5;
+
+     label4:
+        $stack46 = ">";
+
+     label5:
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack46);
+
+        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(version);
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack30.<java.io.PrintStream: void println(java.lang.String)>($stack38);
+
+     label6:
+        $stack13 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack12 = new java.lang.StringBuilder;
+
+        specialinvoke $stack12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack14 = i;
+
+        i = i + 1;
+
+        $stack15 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(". ");
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(version);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" -> ");
+
+        $stack19 = virtualinvoke $stack11.<org.apache.maven.artifact.versioning.ComparableVersion: java.lang.String getCanonical()>();
+
+        $stack20 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; tokens: ");
+
+        $stack22 = $stack11.<org.apache.maven.artifact.versioning.ComparableVersion: org.apache.maven.artifact.versioning.ComparableVersion$ListItem items>;
+
+        $stack23 = staticinvoke <org.apache.maven.artifact.versioning.ComparableVersion$ListItem: java.lang.String access$100(org.apache.maven.artifact.versioning.ComparableVersion$ListItem)>($stack22);
+
+        $stack24 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack13.<java.io.PrintStream: void println(java.lang.String)>($stack25);
+
+        prev = $stack11;
+
+        l5 = l5 + 1;
+
+        goto label2;
+
+     label7:
+        return;
+    }
+
+    public volatile int compareTo(java.lang.Object)
+    {
+        ComparableVersion this;
+        java.lang.Object l1;
+        org.apache.maven.artifact.versioning.ComparableVersion $stack2, $r0;
+        int $stack3;
+
+        this := @this: ComparableVersion;
+
+        l1 := @parameter0: java.lang.Object;
+
+        $stack2 = (org.apache.maven.artifact.versioning.ComparableVersion) l1;
+
+        $r0 = (org.apache.maven.artifact.versioning.ComparableVersion) this;
+
+        $stack3 = virtualinvoke $r0.<org.apache.maven.artifact.versioning.ComparableVersion: int compareTo(org.apache.maven.artifact.versioning.ComparableVersion)>($stack2);
+
+        return $stack3;
+    }
+
+    public static void <clinit>()
+    {
+        <ComparableVersion: int MAX_LONGITEM_LENGTH> = 18;
+
+        <ComparableVersion: int MAX_INTITEM_LENGTH> = 9;
+
+        return;
+    }
+}

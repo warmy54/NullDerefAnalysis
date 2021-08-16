@@ -1,0 +1,194 @@
+public final class ProjectUtils extends java.lang.Object
+{
+
+    private void <init>()
+    {
+        ProjectUtils this;
+
+        this := @this: ProjectUtils;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.util.List buildArtifactRepositories(java.util.List, org.apache.maven.artifact.repository.ArtifactRepositoryFactory, org.codehaus.plexus.PlexusContainer) throws org.apache.maven.artifact.InvalidRepositoryException
+    {
+        java.util.ArrayList $stack6;
+        java.util.List repositories;
+        java.util.Iterator l4;
+        boolean $stack8;
+        java.lang.Object $stack9;
+        org.apache.maven.model.Repository r;
+        org.apache.maven.artifact.repository.ArtifactRepositoryFactory artifactRepositoryFactory;
+        org.codehaus.plexus.PlexusContainer c;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack10;
+
+        repositories := @parameter0: java.util.List;
+
+        artifactRepositoryFactory := @parameter1: org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+
+        c := @parameter2: org.codehaus.plexus.PlexusContainer;
+
+        $stack6 = new java.util.ArrayList;
+
+        specialinvoke $stack6.<java.util.ArrayList: void <init>()>();
+
+        l4 = interfaceinvoke repositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label2;
+
+        $stack9 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        r = (org.apache.maven.model.Repository) $stack9;
+
+        $stack10 = staticinvoke <org.apache.maven.project.ProjectUtils: org.apache.maven.artifact.repository.ArtifactRepository buildArtifactRepository(org.apache.maven.model.Repository,org.apache.maven.artifact.repository.ArtifactRepositoryFactory,org.codehaus.plexus.PlexusContainer)>(r, artifactRepositoryFactory, c);
+
+        interfaceinvoke $stack6.<java.util.List: boolean add(java.lang.Object)>($stack10);
+
+        goto label1;
+
+     label2:
+        return $stack6;
+    }
+
+    public static org.apache.maven.artifact.repository.ArtifactRepository buildDeploymentArtifactRepository(org.apache.maven.model.DeploymentRepository, org.apache.maven.artifact.repository.ArtifactRepositoryFactory, org.codehaus.plexus.PlexusContainer) throws org.apache.maven.artifact.InvalidRepositoryException
+    {
+        org.apache.maven.model.DeploymentRepository repo;
+        org.apache.maven.artifact.repository.ArtifactRepositoryFactory artifactRepositoryFactory;
+        org.codehaus.plexus.PlexusContainer c;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack3;
+        org.apache.maven.model.Repository $r0;
+
+        repo := @parameter0: org.apache.maven.model.DeploymentRepository;
+
+        artifactRepositoryFactory := @parameter1: org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+
+        c := @parameter2: org.codehaus.plexus.PlexusContainer;
+
+        $r0 = (org.apache.maven.model.Repository) repo;
+
+        $stack3 = staticinvoke <org.apache.maven.project.ProjectUtils: org.apache.maven.artifact.repository.ArtifactRepository buildArtifactRepository(org.apache.maven.model.Repository,org.apache.maven.artifact.repository.ArtifactRepositoryFactory,org.codehaus.plexus.PlexusContainer)>($r0, artifactRepositoryFactory, c);
+
+        return $stack3;
+    }
+
+    public static org.apache.maven.artifact.repository.ArtifactRepository buildArtifactRepository(org.apache.maven.model.Repository, org.apache.maven.artifact.repository.ArtifactRepositoryFactory, org.codehaus.plexus.PlexusContainer) throws org.apache.maven.artifact.InvalidRepositoryException
+    {
+        org.codehaus.plexus.PlexusContainer c;
+        org.apache.maven.repository.RepositorySystem repositorySystem;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.apache.maven.model.Repository repo;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        org.apache.maven.artifact.repository.ArtifactRepository[] $stack9, $stack11, $stack13;
+        java.util.List $stack10, $stack12, $stack14;
+        org.apache.maven.artifact.repository.ArtifactRepositoryFactory artifactRepositoryFactory;
+
+        repo := @parameter0: org.apache.maven.model.Repository;
+
+        artifactRepositoryFactory := @parameter1: org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+
+        c := @parameter2: org.codehaus.plexus.PlexusContainer;
+
+        repositorySystem = staticinvoke <org.apache.maven.project.ProjectUtils: org.apache.maven.repository.RepositorySystem rs(org.codehaus.plexus.PlexusContainer)>(c);
+
+        session = staticinvoke <org.apache.maven.project.ProjectUtils: org.eclipse.aether.RepositorySystemSession rss(org.codehaus.plexus.PlexusContainer)>(c);
+
+        repository = interfaceinvoke repositorySystem.<org.apache.maven.repository.RepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository buildArtifactRepository(org.apache.maven.model.Repository)>(repo);
+
+        if session == null goto label1;
+
+        $stack9 = newarray (org.apache.maven.artifact.repository.ArtifactRepository)[1];
+
+        $stack9[0] = repository;
+
+        $stack10 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack9);
+
+        interfaceinvoke repositorySystem.<org.apache.maven.repository.RepositorySystem: void injectMirror(org.eclipse.aether.RepositorySystemSession,java.util.List)>(session, $stack10);
+
+        $stack11 = newarray (org.apache.maven.artifact.repository.ArtifactRepository)[1];
+
+        $stack11[0] = repository;
+
+        $stack12 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack11);
+
+        interfaceinvoke repositorySystem.<org.apache.maven.repository.RepositorySystem: void injectProxy(org.eclipse.aether.RepositorySystemSession,java.util.List)>(session, $stack12);
+
+        $stack13 = newarray (org.apache.maven.artifact.repository.ArtifactRepository)[1];
+
+        $stack13[0] = repository;
+
+        $stack14 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack13);
+
+        interfaceinvoke repositorySystem.<org.apache.maven.repository.RepositorySystem: void injectAuthentication(org.eclipse.aether.RepositorySystemSession,java.util.List)>(session, $stack14);
+
+     label1:
+        return repository;
+    }
+
+    private static org.apache.maven.repository.RepositorySystem rs(org.codehaus.plexus.PlexusContainer)
+    {
+        org.codehaus.plexus.PlexusContainer c;
+        java.lang.Object $stack2;
+        org.apache.maven.repository.RepositorySystem $stack3;
+        java.lang.Throwable $stack4;
+        java.lang.IllegalStateException $stack5;
+
+        c := @parameter0: org.codehaus.plexus.PlexusContainer;
+
+     label1:
+        $stack2 = interfaceinvoke c.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/apache/maven/repository/RepositorySystem;");
+
+        $stack3 = (org.apache.maven.repository.RepositorySystem) $stack2;
+
+     label2:
+        return $stack3;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        $stack5 = new java.lang.IllegalStateException;
+
+        specialinvoke $stack5.<java.lang.IllegalStateException: void <init>(java.lang.Throwable)>($stack4);
+
+        throw $stack5;
+
+        catch org.codehaus.plexus.component.repository.exception.ComponentLookupException from label1 to label2 with label3;
+    }
+
+    private static org.eclipse.aether.RepositorySystemSession rss(org.codehaus.plexus.PlexusContainer)
+    {
+        org.codehaus.plexus.PlexusContainer c;
+        java.lang.Object $stack2;
+        org.eclipse.aether.RepositorySystemSession $stack3;
+        java.lang.Throwable $stack4;
+        java.lang.IllegalStateException $stack5;
+        org.apache.maven.plugin.LegacySupport legacySupport;
+
+        c := @parameter0: org.codehaus.plexus.PlexusContainer;
+
+     label1:
+        $stack2 = interfaceinvoke c.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/apache/maven/plugin/LegacySupport;");
+
+        legacySupport = (org.apache.maven.plugin.LegacySupport) $stack2;
+
+        $stack3 = interfaceinvoke legacySupport.<org.apache.maven.plugin.LegacySupport: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+     label2:
+        return $stack3;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        $stack5 = new java.lang.IllegalStateException;
+
+        specialinvoke $stack5.<java.lang.IllegalStateException: void <init>(java.lang.Throwable)>($stack4);
+
+        throw $stack5;
+
+        catch org.codehaus.plexus.component.repository.exception.ComponentLookupException from label1 to label2 with label3;
+    }
+}

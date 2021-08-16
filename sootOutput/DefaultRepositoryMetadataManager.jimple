@@ -1,0 +1,1672 @@
+public class DefaultRepositoryMetadataManager extends org.codehaus.plexus.logging.AbstractLogEnabled implements org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager
+{
+    private org.apache.maven.repository.legacy.WagonManager wagonManager;
+    private org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager;
+
+    public void <init>()
+    {
+        DefaultRepositoryMetadataManager this;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        specialinvoke this.<org.codehaus.plexus.logging.AbstractLogEnabled: void <init>()>();
+
+        return;
+    }
+
+    public void resolve(org.apache.maven.artifact.repository.metadata.RepositoryMetadata, java.util.List, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        java.util.List remoteRepositories;
+        DefaultRepositoryMetadataManager this;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata metadata;
+        org.apache.maven.artifact.repository.DefaultRepositoryRequest $u0;
+        org.apache.maven.artifact.repository.RepositoryRequest $r0, $r1, $r3;
+        org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager $r2;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        remoteRepositories := @parameter1: java.util.List;
+
+        localRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $u0 = new org.apache.maven.artifact.repository.DefaultRepositoryRequest;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.DefaultRepositoryRequest: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.repository.RepositoryRequest) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.artifact.repository.RepositoryRequest: org.apache.maven.artifact.repository.RepositoryRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository);
+
+        $r1 = (org.apache.maven.artifact.repository.RepositoryRequest) $u0;
+
+        interfaceinvoke $r1.<org.apache.maven.artifact.repository.RepositoryRequest: org.apache.maven.artifact.repository.RepositoryRequest setRemoteRepositories(java.util.List)>(remoteRepositories);
+
+        $r2 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $r3 = (org.apache.maven.artifact.repository.RepositoryRequest) $u0;
+
+        virtualinvoke $r2.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: void resolve(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.RepositoryRequest)>(metadata, $r3);
+
+        return;
+    }
+
+    public void resolve(org.apache.maven.artifact.repository.metadata.RepositoryMetadata, org.apache.maven.artifact.repository.RepositoryRequest) throws org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException
+    {
+        org.apache.maven.artifact.repository.RepositoryRequest request;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepo, repository;
+        java.util.List remoteRepositories;
+        boolean $stack16, $stack29, $stack30, $stack49, $stack56, $stack73, $stack124, $stack129, $stack19, update, $stack33;
+        DefaultRepositoryMetadataManager this;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata metadata;
+        java.lang.String $stack17, $stack27, $stack28, $stack42, $stack44, $stack46, $stack65, $stack68, $stack71, $stack82, $stack85, $stack88, $stack95, $stack97, $stack105, $stack108, $stack110, $stack121, $stack123;
+        java.util.Iterator l6;
+        java.lang.Object $stack24, $stack39, $stack60, $stack77;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy policy;
+        org.apache.maven.repository.legacy.UpdateCheckManager $stack31, $stack47, $stack99, $stack112, $stack115;
+        long $stack35;
+        org.codehaus.plexus.logging.Logger $stack37, $stack55, $stack57, $stack72, $stack74, $stack101, $stack111, $stack117;
+        java.lang.StringBuilder $stack40, $stack41, $stack43, $stack59, $stack61, $stack62, $stack63, $stack64, $stack66, $stack67, $stack69, $stack70, $stack76, $stack78, $stack79, $stack80, $stack81, $stack83, $stack84, $stack86, $stack87, $stack94, $stack96, $stack103, $stack104, $stack106, $stack107, $stack109, $stack119, $stack120, $stack122, $u1, $u2, $u3, $u4, $u5, $u6;
+        org.apache.maven.repository.legacy.WagonManager $stack45;
+        java.lang.Throwable $stack91, $stack98, $stack100, $stack116, $r21;
+        java.lang.InterruptedException $stack113;
+        java.util.Date localCopyLastModified;
+        java.io.File $u0;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException $u7;
+        org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager $r0, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r10, $r11, $r12, $r13, $r15, $r16, $r17, $r18;
+        org.apache.maven.artifact.metadata.ArtifactMetadata $r1, $r9;
+        org.apache.maven.wagon.TransferFailedException $r14;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException $r19;
+        java.lang.Exception $r20;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        request := @parameter1: org.apache.maven.artifact.repository.RepositoryRequest;
+
+        localRepo = interfaceinvoke request.<org.apache.maven.artifact.repository.RepositoryRequest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        remoteRepositories = interfaceinvoke request.<org.apache.maven.artifact.repository.RepositoryRequest: java.util.List getRemoteRepositories()>();
+
+        $stack16 = interfaceinvoke request.<org.apache.maven.artifact.repository.RepositoryRequest: boolean isOffline()>();
+
+        if $stack16 != 0 goto label21;
+
+        localCopyLastModified = null;
+
+        $stack17 = interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: java.lang.String getBaseVersion()>();
+
+        if $stack17 == null goto label01;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        localCopyLastModified = specialinvoke $r0.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: java.util.Date getLocalCopyLastModified(org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.metadata.RepositoryMetadata)>(localRepo, metadata);
+
+     label01:
+        l6 = interfaceinvoke remoteRepositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label02:
+        $stack19 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack19 == 0 goto label21;
+
+        $stack24 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.apache.maven.artifact.repository.ArtifactRepository) $stack24;
+
+        policy = interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getPolicy(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
+
+        $u0 = new java.io.File;
+
+        $stack27 = interfaceinvoke localRepo.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $r1 = (org.apache.maven.artifact.metadata.ArtifactMetadata) metadata;
+
+        $stack28 = interfaceinvoke localRepo.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfLocalRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository)>($r1, repository);
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack27, $stack28);
+
+        $stack29 = virtualinvoke policy.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: boolean isEnabled()>();
+
+        if $stack29 != 0 goto label03;
+
+        update = 0;
+
+        $r2 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack72 = virtualinvoke $r2.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $stack73 = interfaceinvoke $stack72.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack73 == 0 goto label06;
+
+        $r3 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack74 = virtualinvoke $r3.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack76 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Skipping update check for ");
+
+        $stack77 = interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: java.lang.Object getKey()>();
+
+        $stack78 = virtualinvoke $stack76.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack77);
+
+        $stack79 = virtualinvoke $stack78.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack80 = virtualinvoke $stack79.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($u0);
+
+        $stack81 = virtualinvoke $stack80.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") from disabled repository ");
+
+        $stack82 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack83 = virtualinvoke $stack81.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack82);
+
+        $stack84 = virtualinvoke $stack83.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack85 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
+
+        $stack86 = virtualinvoke $stack84.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack85);
+
+        $stack87 = virtualinvoke $stack86.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack88 = virtualinvoke $stack87.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack74.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack88);
+
+        goto label06;
+
+     label03:
+        $stack30 = interfaceinvoke request.<org.apache.maven.artifact.repository.RepositoryRequest: boolean isForceUpdate()>();
+
+        if $stack30 == 0 goto label04;
+
+        update = 1;
+
+        goto label06;
+
+     label04:
+        if localCopyLastModified == null goto label05;
+
+        $stack49 = virtualinvoke policy.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: boolean checkOutOfDate(java.util.Date)>(localCopyLastModified);
+
+        if $stack49 != 0 goto label05;
+
+        update = 0;
+
+        $r4 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack55 = virtualinvoke $r4.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $stack56 = interfaceinvoke $stack55.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack56 == 0 goto label06;
+
+        $r5 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack57 = virtualinvoke $r5.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack59 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Skipping update check for ");
+
+        $stack60 = interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: java.lang.Object getKey()>();
+
+        $stack61 = virtualinvoke $stack59.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack60);
+
+        $stack62 = virtualinvoke $stack61.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack63 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($u0);
+
+        $stack64 = virtualinvoke $stack63.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") from repository ");
+
+        $stack65 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack66 = virtualinvoke $stack64.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack65);
+
+        $stack67 = virtualinvoke $stack66.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack68 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
+
+        $stack69 = virtualinvoke $stack67.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack68);
+
+        $stack70 = virtualinvoke $stack69.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") in favor of local copy");
+
+        $stack71 = virtualinvoke $stack70.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack57.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack71);
+
+        goto label06;
+
+     label05:
+        $r6 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack31 = $r6.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
+
+        update = interfaceinvoke $stack31.<org.apache.maven.repository.legacy.UpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>(metadata, repository, $u0);
+
+     label06:
+        if update == 0 goto label19;
+
+        $r7 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack37 = virtualinvoke $r7.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack39 = interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: java.lang.Object getKey()>();
+
+        $stack40 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack39);
+
+        $stack41 = virtualinvoke $stack40.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": checking for updates from ");
+
+        $stack42 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack43 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack42);
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack37.<org.codehaus.plexus.logging.Logger: void info(java.lang.String)>($stack44);
+
+     label07:
+        $r8 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack45 = $r8.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $stack46 = virtualinvoke policy.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: java.lang.String getChecksumPolicy()>();
+
+        $r9 = (org.apache.maven.artifact.metadata.ArtifactMetadata) metadata;
+
+        interfaceinvoke $stack45.<org.apache.maven.repository.legacy.WagonManager: void getArtifactMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File,java.lang.String)>($r9, repository, $u0, $stack46);
+
+     label08:
+        $r10 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack47 = $r10.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
+
+        interfaceinvoke $stack47.<org.apache.maven.repository.legacy.UpdateCheckManager: void touch(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>(metadata, repository, $u0);
+
+        goto label19;
+
+     label09:
+        $stack116 := @caughtexception;
+
+        $r11 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack117 = virtualinvoke $r11.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack119 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadata);
+
+        $stack120 = virtualinvoke $stack119.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" could not be found on repository: ");
+
+        $stack121 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack122 = virtualinvoke $stack120.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack121);
+
+        $stack123 = virtualinvoke $stack122.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack117.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack123);
+
+        $stack124 = virtualinvoke $u0.<java.io.File: boolean exists()>();
+
+        if $stack124 == 0 goto label14;
+
+        $stack129 = virtualinvoke $u0.<java.io.File: boolean delete()>();
+
+        if $stack129 != 0 goto label14;
+
+     label10:
+        staticinvoke <java.lang.Thread: void sleep(long)>(10L);
+
+     label11:
+        goto label13;
+
+     label12:
+        $stack113 := @caughtexception;
+
+     label13:
+        virtualinvoke $u0.<java.io.File: boolean delete()>();
+
+     label14:
+        $r12 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack115 = $r12.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
+
+        interfaceinvoke $stack115.<org.apache.maven.repository.legacy.UpdateCheckManager: void touch(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>(metadata, repository, $u0);
+
+        goto label19;
+
+     label15:
+        $stack100 := @caughtexception;
+
+        $r13 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack101 = virtualinvoke $r13.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack103 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadata);
+
+        $stack104 = virtualinvoke $stack103.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" could not be retrieved from repository: ");
+
+        $stack105 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack106 = virtualinvoke $stack104.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack105);
+
+        $stack107 = virtualinvoke $stack106.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" due to an error: ");
+
+        $r14 = (org.apache.maven.wagon.TransferFailedException) $stack100;
+
+        $stack108 = virtualinvoke $r14.<org.apache.maven.wagon.TransferFailedException: java.lang.String getMessage()>();
+
+        $stack109 = virtualinvoke $stack107.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack108);
+
+        $stack110 = virtualinvoke $stack109.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack101.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack110);
+
+        $r15 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack111 = virtualinvoke $r15.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        interfaceinvoke $stack111.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>("Exception", $stack100);
+
+     label16:
+        $r16 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack112 = $r16.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
+
+        interfaceinvoke $stack112.<org.apache.maven.repository.legacy.UpdateCheckManager: void touch(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>(metadata, repository, $u0);
+
+        goto label19;
+
+     label17:
+        $stack98 := @caughtexception;
+
+     label18:
+        $r17 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack99 = $r17.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
+
+        interfaceinvoke $stack99.<org.apache.maven.repository.legacy.UpdateCheckManager: void touch(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>(metadata, repository, $u0);
+
+        throw $stack98;
+
+     label19:
+        $stack33 = virtualinvoke $u0.<java.io.File: boolean exists()>();
+
+        if $stack33 == 0 goto label20;
+
+        $stack35 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        virtualinvoke $u0.<java.io.File: boolean setLastModified(long)>($stack35);
+
+     label20:
+        goto label02;
+
+     label21:
+        $r18 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        specialinvoke $r18.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: void mergeMetadata(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,java.util.List,org.apache.maven.artifact.repository.ArtifactRepository)>(metadata, remoteRepositories, localRepo);
+
+     label22:
+        goto label24;
+
+     label23:
+        $stack91 := @caughtexception;
+
+        $u7 = new org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException;
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack94 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to store local copy of metadata: ");
+
+        $r19 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException) $stack91;
+
+        $stack95 = virtualinvoke $r19.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException: java.lang.String getMessage()>();
+
+        $stack96 = virtualinvoke $stack94.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack95);
+
+        $stack97 = virtualinvoke $stack96.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r20 = (java.lang.Exception) $stack91;
+
+        specialinvoke $u7.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException: void <init>(java.lang.String,java.lang.Exception)>($stack97, $r20);
+
+        $r21 = (java.lang.Throwable) $u7;
+
+        throw $r21;
+
+     label24:
+        return;
+
+        catch org.apache.maven.wagon.ResourceDoesNotExistException from label07 to label08 with label09;
+        catch java.lang.InterruptedException from label10 to label11 with label12;
+        catch org.apache.maven.wagon.TransferFailedException from label07 to label08 with label15;
+        catch java.lang.Throwable from label07 to label08 with label17;
+        catch java.lang.Throwable from label09 to label14 with label17;
+        catch java.lang.Throwable from label15 to label16 with label17;
+        catch java.lang.Throwable from label17 to label18 with label17;
+        catch org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException from label21 to label22 with label23;
+    }
+
+    private java.util.Date getLocalCopyLastModified(org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.artifact.repository.metadata.RepositoryMetadata)
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata metadata;
+        java.lang.String metadataPath, $stack7;
+        boolean $stack8;
+        long $stack10;
+        DefaultRepositoryMetadataManager this;
+        java.util.Date $stack9, $u1;
+        java.io.File $u0;
+        org.apache.maven.artifact.metadata.ArtifactMetadata $r0;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        localRepository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        metadata := @parameter1: org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        $r0 = (org.apache.maven.artifact.metadata.ArtifactMetadata) metadata;
+
+        metadataPath = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfLocalRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository)>($r0, localRepository);
+
+        $u0 = new java.io.File;
+
+        $stack7 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack7, metadataPath);
+
+        $stack8 = virtualinvoke $u0.<java.io.File: boolean isFile()>();
+
+        if $stack8 == 0 goto label1;
+
+        $u1 = new java.util.Date;
+
+        $stack9 = $u1;
+
+        $stack10 = virtualinvoke $u0.<java.io.File: long lastModified()>();
+
+        specialinvoke $u1.<java.util.Date: void <init>(long)>($stack10);
+
+        goto label2;
+
+     label1:
+        $stack9 = null;
+
+     label2:
+        return $stack9;
+    }
+
+    private void mergeMetadata(org.apache.maven.artifact.repository.metadata.RepositoryMetadata, java.util.List, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException
+    {
+        java.util.List remoteRepositories;
+        java.util.Iterator l6;
+        boolean $stack11, $stack12, $stack20, $stack22;
+        DefaultRepositoryMetadataManager this;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata metadata;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository, repository, selected;
+        java.lang.Object $stack18;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy policy;
+        java.util.HashMap $u0;
+        org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager $r0, $r1, $r2;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        remoteRepositories := @parameter1: java.util.List;
+
+        localRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $u0 = new java.util.HashMap;
+
+        specialinvoke $u0.<java.util.HashMap: void <init>()>();
+
+        selected = null;
+
+        l6 = interfaceinvoke remoteRepositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack11 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label3;
+
+        $stack18 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.apache.maven.artifact.repository.ArtifactRepository) $stack18;
+
+        policy = interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getPolicy(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
+
+        $stack20 = virtualinvoke policy.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: boolean isEnabled()>();
+
+        if $stack20 == 0 goto label2;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack22 = specialinvoke $r0.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: boolean loadMetadata(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.ArtifactRepository,java.util.Map)>(metadata, repository, localRepository, $u0);
+
+        if $stack22 == 0 goto label2;
+
+        interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: void setRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
+
+        selected = repository;
+
+     label2:
+        goto label1;
+
+     label3:
+        $r1 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack12 = specialinvoke $r1.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: boolean loadMetadata(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.ArtifactRepository,java.util.Map)>(metadata, localRepository, localRepository, $u0);
+
+        if $stack12 == 0 goto label4;
+
+        interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: void setRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(null);
+
+        selected = localRepository;
+
+     label4:
+        $r2 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        specialinvoke $r2.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: void updateSnapshotMetadata(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,java.util.Map,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.ArtifactRepository)>(metadata, $u0, selected, localRepository);
+
+        return;
+    }
+
+    private void updateSnapshotMetadata(org.apache.maven.artifact.repository.metadata.RepositoryMetadata, java.util.Map, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException
+    {
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata metadata;
+        boolean $stack9, $stack13, $stack16, $stack23;
+        org.apache.maven.artifact.repository.metadata.Metadata prevMetadata, m;
+        java.util.Map previousMetadata;
+        java.util.Set $stack11;
+        java.util.Iterator l6;
+        java.lang.Object $stack14, $stack15;
+        org.apache.maven.artifact.repository.ArtifactRepository repository, selected, localRepository;
+        org.apache.maven.artifact.repository.metadata.Versioning $stack17, $stack19, $stack21, $stack24, $stack26, $stack27, $stack29, $stack31;
+        org.apache.maven.artifact.repository.metadata.Snapshot $stack20, $stack22, $stack25, $stack28, $stack30;
+        DefaultRepositoryMetadataManager this;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        previousMetadata := @parameter1: java.util.Map;
+
+        selected := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        localRepository := @parameter3: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $stack9 = interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: boolean isSnapshot()>();
+
+        if $stack9 == 0 goto label6;
+
+        prevMetadata = interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata getMetadata()>();
+
+        $stack11 = interfaceinvoke previousMetadata.<java.util.Map: java.util.Set keySet()>();
+
+        l6 = interfaceinvoke $stack11.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $stack13 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label5;
+
+        $stack14 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.apache.maven.artifact.repository.ArtifactRepository) $stack14;
+
+        $stack15 = interfaceinvoke previousMetadata.<java.util.Map: java.lang.Object get(java.lang.Object)>(repository);
+
+        m = (org.apache.maven.artifact.repository.metadata.Metadata) $stack15;
+
+        $stack16 = virtualinvoke repository.<java.lang.Object: boolean equals(java.lang.Object)>(selected);
+
+        if $stack16 == 0 goto label3;
+
+        $stack26 = virtualinvoke m.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        if $stack26 != null goto label2;
+
+        $stack31 = new org.apache.maven.artifact.repository.metadata.Versioning;
+
+        specialinvoke $stack31.<org.apache.maven.artifact.repository.metadata.Versioning: void <init>()>();
+
+        virtualinvoke m.<org.apache.maven.artifact.repository.metadata.Metadata: void setVersioning(org.apache.maven.artifact.repository.metadata.Versioning)>($stack31);
+
+     label2:
+        $stack27 = virtualinvoke m.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        $stack28 = virtualinvoke $stack27.<org.apache.maven.artifact.repository.metadata.Versioning: org.apache.maven.artifact.repository.metadata.Snapshot getSnapshot()>();
+
+        if $stack28 != null goto label4;
+
+        $stack29 = virtualinvoke m.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        $stack30 = new org.apache.maven.artifact.repository.metadata.Snapshot;
+
+        specialinvoke $stack30.<org.apache.maven.artifact.repository.metadata.Snapshot: void <init>()>();
+
+        virtualinvoke $stack29.<org.apache.maven.artifact.repository.metadata.Versioning: void setSnapshot(org.apache.maven.artifact.repository.metadata.Snapshot)>($stack30);
+
+        goto label4;
+
+     label3:
+        $stack17 = virtualinvoke m.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        if $stack17 == null goto label4;
+
+        $stack19 = virtualinvoke m.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        $stack20 = virtualinvoke $stack19.<org.apache.maven.artifact.repository.metadata.Versioning: org.apache.maven.artifact.repository.metadata.Snapshot getSnapshot()>();
+
+        if $stack20 == null goto label4;
+
+        $stack21 = virtualinvoke m.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        $stack22 = virtualinvoke $stack21.<org.apache.maven.artifact.repository.metadata.Versioning: org.apache.maven.artifact.repository.metadata.Snapshot getSnapshot()>();
+
+        $stack23 = virtualinvoke $stack22.<org.apache.maven.artifact.repository.metadata.Snapshot: boolean isLocalCopy()>();
+
+        if $stack23 == 0 goto label4;
+
+        $stack24 = virtualinvoke m.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        $stack25 = virtualinvoke $stack24.<org.apache.maven.artifact.repository.metadata.Versioning: org.apache.maven.artifact.repository.metadata.Snapshot getSnapshot()>();
+
+        virtualinvoke $stack25.<org.apache.maven.artifact.repository.metadata.Snapshot: void setLocalCopy(boolean)>(0);
+
+        interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: void setMetadata(org.apache.maven.artifact.repository.metadata.Metadata)>(m);
+
+        interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: void storeInLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository, repository);
+
+     label4:
+        goto label1;
+
+     label5:
+        interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: void setMetadata(org.apache.maven.artifact.repository.metadata.Metadata)>(prevMetadata);
+
+     label6:
+        return;
+    }
+
+    private boolean loadMetadata(org.apache.maven.artifact.repository.metadata.RepositoryMetadata, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.artifact.repository.ArtifactRepository, java.util.Map)
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository, remoteRepository;
+        java.lang.String $stack10, $stack11, $stack25, $stack27;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata repoMetadata;
+        boolean $stack12, $stack14, $stack23, setRepository;
+        DefaultRepositoryMetadataManager this;
+        org.apache.maven.artifact.repository.metadata.Metadata metadata, $stack17, $stack15;
+        java.util.Map previousMetadata;
+        java.lang.Throwable $stack21;
+        org.codehaus.plexus.logging.Logger $stack22, $stack24, $stack26;
+        java.io.File $u0;
+        org.apache.maven.artifact.metadata.ArtifactMetadata $r0;
+        org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager $r1, $r2, $r3, $r5;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException $r4, $r6;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        repoMetadata := @parameter0: org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        remoteRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        localRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        previousMetadata := @parameter3: java.util.Map;
+
+        setRepository = 0;
+
+        $u0 = new java.io.File;
+
+        $stack10 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $r0 = (org.apache.maven.artifact.metadata.ArtifactMetadata) repoMetadata;
+
+        $stack11 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfLocalRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository)>($r0, remoteRepository);
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack10, $stack11);
+
+        $stack12 = virtualinvoke $u0.<java.io.File: boolean exists()>();
+
+        if $stack12 == 0 goto label9;
+
+     label1:
+        $r1 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        metadata = virtualinvoke $r1.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.artifact.repository.metadata.Metadata readMetadata(java.io.File)>($u0);
+
+     label2:
+        goto label6;
+
+     label3:
+        $stack21 := @caughtexception;
+
+        $r2 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack22 = virtualinvoke $r2.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $stack23 = interfaceinvoke $stack22.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack23 == 0 goto label4;
+
+        $r3 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack26 = virtualinvoke $r3.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $r4 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException) $stack21;
+
+        $stack27 = virtualinvoke $r4.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException: java.lang.String getMessage()>();
+
+        interfaceinvoke $stack26.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String,java.lang.Throwable)>($stack27, $stack21);
+
+        goto label5;
+
+     label4:
+        $r5 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack24 = virtualinvoke $r5.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $r6 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException) $stack21;
+
+        $stack25 = virtualinvoke $r6.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException: java.lang.String getMessage()>();
+
+        interfaceinvoke $stack24.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack25);
+
+     label5:
+        return 0;
+
+     label6:
+        $stack14 = interfaceinvoke repoMetadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: boolean isSnapshot()>();
+
+        if $stack14 == 0 goto label7;
+
+        if previousMetadata == null goto label7;
+
+        interfaceinvoke previousMetadata.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(remoteRepository, metadata);
+
+     label7:
+        $stack15 = interfaceinvoke repoMetadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata getMetadata()>();
+
+        if $stack15 == null goto label8;
+
+        $stack17 = interfaceinvoke repoMetadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata getMetadata()>();
+
+        setRepository = virtualinvoke $stack17.<org.apache.maven.artifact.repository.metadata.Metadata: boolean merge(org.apache.maven.artifact.repository.metadata.Metadata)>(metadata);
+
+        goto label9;
+
+     label8:
+        interfaceinvoke repoMetadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: void setMetadata(org.apache.maven.artifact.repository.metadata.Metadata)>(metadata);
+
+        setRepository = 1;
+
+     label9:
+        return setRepository;
+
+        catch org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException from label1 to label2 with label3;
+    }
+
+    protected org.apache.maven.artifact.repository.metadata.Metadata readMetadata(java.io.File) throws org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException
+    {
+        java.io.File mappingFile;
+        org.apache.maven.artifact.repository.metadata.Metadata result;
+        java.lang.Throwable $stack9, $stack25, $stack26, $r3, $r6;
+        java.lang.StringBuilder $stack12, $stack13, $stack14, $stack16, $stack21, $stack22, $stack23, $u1, $u3;
+        java.lang.String $stack15, $stack17, $stack24;
+        java.io.FileNotFoundException $stack18;
+        DefaultRepositoryMetadataManager this;
+        org.codehaus.plexus.util.xml.XmlStreamReader reader;
+        org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader $u0;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException $u2, $u4;
+        java.io.Reader $r0, $r1, $r2;
+        java.lang.Exception $r4, $r5;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        mappingFile := @parameter0: java.io.File;
+
+     label01:
+        reader = staticinvoke <org.codehaus.plexus.util.ReaderFactory: org.codehaus.plexus.util.xml.XmlStreamReader newXmlReader(java.io.File)>(mappingFile);
+
+     label02:
+        $u0 = new org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: void <init>()>();
+
+        $r0 = (java.io.Reader) reader;
+
+        result = virtualinvoke $u0.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: org.apache.maven.artifact.repository.metadata.Metadata read(java.io.Reader,boolean)>($r0, 0);
+
+     label03:
+        if reader == null goto label09;
+
+        $r1 = (java.io.Reader) reader;
+
+        virtualinvoke $r1.<java.io.Reader: void close()>();
+
+        goto label09;
+
+     label04:
+        $stack26 := @caughtexception;
+
+        if reader == null goto label08;
+
+     label05:
+        $r2 = (java.io.Reader) reader;
+
+        virtualinvoke $r2.<java.io.Reader: void close()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $stack25 := @caughtexception;
+
+        virtualinvoke $stack26.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack25);
+
+     label08:
+        throw $stack26;
+
+     label09:
+        goto label12;
+
+     label10:
+        $stack18 := @caughtexception;
+
+        $u2 = new org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack21 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot read metadata from \'");
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(mappingFile);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException: void <init>(java.lang.String,java.lang.Exception)>($stack24, $stack18);
+
+        $r3 = (java.lang.Throwable) $u2;
+
+        throw $r3;
+
+     label11:
+        $stack9 := @caughtexception;
+
+        $u4 = new org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot read metadata from \'");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(mappingFile);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\': ");
+
+        $r4 = (java.lang.Exception) $stack9;
+
+        $stack15 = virtualinvoke $r4.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $stack16 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack15);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = (java.lang.Exception) $stack9;
+
+        specialinvoke $u4.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException: void <init>(java.lang.String,java.lang.Exception)>($stack17, $r5);
+
+        $r6 = (java.lang.Throwable) $u4;
+
+        throw $r6;
+
+     label12:
+        return result;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch java.io.FileNotFoundException from label01 to label09 with label10;
+        catch java.io.IOException from label01 to label09 with label11;
+        catch org.codehaus.plexus.util.xml.pull.XmlPullParserException from label01 to label09 with label11;
+    }
+
+    private void fixTimestamp(java.io.File, org.apache.maven.artifact.repository.metadata.Metadata, org.apache.maven.artifact.repository.metadata.Metadata)
+    {
+        org.apache.maven.artifact.repository.metadata.Metadata metadata, reference;
+        DefaultRepositoryMetadataManager this;
+        org.codehaus.plexus.logging.Logger $stack9, $stack22, $stack40, $stack42, $stack43;
+        java.lang.StringBuilder $stack11, $stack12, $stack24, $stack25, $stack26, $stack27, $stack28, $stack29, $stack30, $stack34, $stack35, $stack36, $stack38, $u0, $u1, $u3;
+        java.io.File metadataFile;
+        java.lang.String $stack13, now, $stack31, $stack37, lastUpdated, versioningRef#18;
+        int $stack21;
+        java.io.IOException $stack32;
+        boolean $stack41, changed;
+        java.lang.Throwable $stack44, $stack45;
+        org.apache.maven.artifact.repository.metadata.Versioning versioning, versioningRef;
+        org.codehaus.plexus.util.xml.XmlStreamWriter versioning#12;
+        org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer $u2;
+        org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager $r0, $r1, $r5, $r6, $r7;
+        java.io.Writer $r2, $r3, $r4;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        metadataFile := @parameter0: java.io.File;
+
+        metadata := @parameter1: org.apache.maven.artifact.repository.metadata.Metadata;
+
+        reference := @parameter2: org.apache.maven.artifact.repository.metadata.Metadata;
+
+        changed = 0;
+
+        if metadata == null goto label01;
+
+        if reference == null goto label01;
+
+        versioning = virtualinvoke metadata.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        versioningRef = virtualinvoke reference.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        if versioning == null goto label01;
+
+        if versioningRef == null goto label01;
+
+        lastUpdated = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getLastUpdated()>();
+
+        now = virtualinvoke versioningRef.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getLastUpdated()>();
+
+        if lastUpdated == null goto label01;
+
+        if now == null goto label01;
+
+        $stack21 = virtualinvoke now.<java.lang.String: int compareTo(java.lang.String)>(lastUpdated);
+
+        if $stack21 >= 0 goto label01;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack22 = virtualinvoke $r0.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack24 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The last updated timestamp in ");
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadataFile);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" refers to the future (now = ");
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(now);
+
+        $stack28 = virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", lastUpdated = ");
+
+        $stack29 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(lastUpdated);
+
+        $stack30 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("). Please verify that the clocks of all deploying machines are reasonably synchronized.");
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack22.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack31);
+
+        virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: void setLastUpdated(java.lang.String)>(now);
+
+        changed = 1;
+
+     label01:
+        if changed == 0 goto label13;
+
+        $r1 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack9 = virtualinvoke $r1.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack11 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Repairing metadata in ");
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadataFile);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack9.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack13);
+
+     label02:
+        versioning#12 = staticinvoke <org.codehaus.plexus.util.WriterFactory: org.codehaus.plexus.util.xml.XmlStreamWriter newXmlWriter(java.io.File)>(metadataFile);
+
+     label03:
+        $u2 = new org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer;
+
+        specialinvoke $u2.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer: void <init>()>();
+
+        $r2 = (java.io.Writer) versioning#12;
+
+        virtualinvoke $u2.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer: void write(java.io.Writer,org.apache.maven.artifact.repository.metadata.Metadata)>($r2, metadata);
+
+     label04:
+        if versioning#12 == null goto label10;
+
+        $r3 = (java.io.Writer) versioning#12;
+
+        virtualinvoke $r3.<java.io.Writer: void close()>();
+
+        goto label10;
+
+     label05:
+        $stack45 := @caughtexception;
+
+        if versioning#12 == null goto label09;
+
+     label06:
+        $r4 = (java.io.Writer) versioning#12;
+
+        virtualinvoke $r4.<java.io.Writer: void close()>();
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack44 := @caughtexception;
+
+        virtualinvoke $stack45.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack44);
+
+     label09:
+        throw $stack45;
+
+     label10:
+        goto label13;
+
+     label11:
+        $stack32 := @caughtexception;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack34 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not write fixed metadata to ");
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadataFile);
+
+        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack37 = virtualinvoke $stack32.<java.io.IOException: java.lang.String getMessage()>();
+
+        $stack38 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack37);
+
+        versioningRef#18 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack40 = virtualinvoke $r5.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $stack41 = interfaceinvoke $stack40.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack41 == 0 goto label12;
+
+        $r6 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack43 = virtualinvoke $r6.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        interfaceinvoke $stack43.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String,java.lang.Throwable)>(versioningRef#18, $stack32);
+
+        goto label13;
+
+     label12:
+        $r7 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack42 = virtualinvoke $r7.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        interfaceinvoke $stack42.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>(versioningRef#18);
+
+     label13:
+        return;
+
+        catch java.lang.Throwable from label03 to label04 with label05;
+        catch java.lang.Throwable from label06 to label07 with label08;
+        catch java.io.IOException from label02 to label10 with label11;
+    }
+
+    public void resolveAlways(org.apache.maven.artifact.repository.metadata.RepositoryMetadata, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException
+    {
+        DefaultRepositoryMetadataManager this;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata metadata;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository, remoteRepository;
+        java.io.File file;
+        boolean $stack7;
+        java.lang.Throwable $stack9, $stack12, $r4, $r8;
+        java.lang.String $stack11, $stack17, $stack20, $stack22;
+        java.lang.StringBuilder $stack15, $stack16, $stack18, $stack19, $stack21, $u0;
+        org.apache.maven.artifact.repository.metadata.Metadata e#2;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException $u1, $u2;
+        org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager $r0, $r5;
+        org.apache.maven.artifact.metadata.ArtifactMetadata $r1;
+        org.apache.maven.wagon.TransferFailedException $r2;
+        java.lang.Exception $r3, $r7;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException $r6;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        remoteRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+     label1:
+        $r0 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $r1 = (org.apache.maven.artifact.metadata.ArtifactMetadata) metadata;
+
+        file = specialinvoke $r0.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: java.io.File getArtifactMetadataFromDeploymentRepository(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.ArtifactRepository)>($r1, localRepository, remoteRepository);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack12 := @caughtexception;
+
+        $u1 = new org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack15 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadata);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" could not be retrieved from repository: ");
+
+        $stack17 = interfaceinvoke remoteRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack18 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack17);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" due to an error: ");
+
+        $r2 = (org.apache.maven.wagon.TransferFailedException) $stack12;
+
+        $stack20 = virtualinvoke $r2.<org.apache.maven.wagon.TransferFailedException: java.lang.String getMessage()>();
+
+        $stack21 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack20);
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = (java.lang.Exception) $stack12;
+
+        specialinvoke $u1.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException: void <init>(java.lang.String,java.lang.Exception)>($stack22, $r3);
+
+        $r4 = (java.lang.Throwable) $u1;
+
+        throw $r4;
+
+     label4:
+        $stack7 = virtualinvoke file.<java.io.File: boolean exists()>();
+
+        if $stack7 == 0 goto label5;
+
+        $r5 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        e#2 = virtualinvoke $r5.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.artifact.repository.metadata.Metadata readMetadata(java.io.File)>(file);
+
+        interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: void setMetadata(org.apache.maven.artifact.repository.metadata.Metadata)>(e#2);
+
+     label5:
+        goto label7;
+
+     label6:
+        $stack9 := @caughtexception;
+
+        $u2 = new org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException;
+
+        $r6 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException) $stack9;
+
+        $stack11 = virtualinvoke $r6.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException: java.lang.String getMessage()>();
+
+        $r7 = (java.lang.Exception) $stack9;
+
+        specialinvoke $u2.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException: void <init>(java.lang.String,java.lang.Exception)>($stack11, $r7);
+
+        $r8 = (java.lang.Throwable) $u2;
+
+        throw $r8;
+
+     label7:
+        return;
+
+        catch org.apache.maven.wagon.TransferFailedException from label1 to label2 with label3;
+        catch org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException from label4 to label5 with label6;
+    }
+
+    private java.io.File getArtifactMetadataFromDeploymentRepository(org.apache.maven.artifact.metadata.ArtifactMetadata, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.wagon.TransferFailedException
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepo, remoteRepository;
+        java.lang.String $stack9, $stack10, $stack31, $stack34;
+        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
+        DefaultRepositoryMetadataManager this;
+        org.apache.maven.repository.legacy.WagonManager $stack11;
+        boolean $stack12, $stack17, $stack35, $stack37, $stack23;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata $stack13, $stack18, $stack24;
+        org.apache.maven.repository.legacy.UpdateCheckManager $stack14, $stack19, $stack25;
+        java.lang.Throwable $stack16, $stack26;
+        java.lang.InterruptedException $stack21;
+        org.codehaus.plexus.logging.Logger $stack27;
+        java.lang.StringBuilder $stack29, $stack30, $stack32, $stack33, $u1;
+        java.io.File $u0;
+        org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.metadata.ArtifactMetadata;
+
+        localRepo := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        remoteRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $u0 = new java.io.File;
+
+        $stack9 = interfaceinvoke localRepo.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $stack10 = interfaceinvoke localRepo.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfLocalRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository)>(metadata, remoteRepository);
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack9, $stack10);
+
+     label01:
+        $r0 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack11 = $r0.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        interfaceinvoke $stack11.<org.apache.maven.repository.legacy.WagonManager: void getArtifactMetadataFromDeploymentRepository(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File,java.lang.String)>(metadata, remoteRepository, $u0, "warn");
+
+     label02:
+        $stack12 = metadata instanceof org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        if $stack12 == 0 goto label12;
+
+        $r1 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack14 = $r1.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
+
+        $stack13 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) metadata;
+
+        interfaceinvoke $stack14.<org.apache.maven.repository.legacy.UpdateCheckManager: void touch(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>($stack13, remoteRepository, $u0);
+
+        goto label12;
+
+     label03:
+        $stack26 := @caughtexception;
+
+        $r2 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack27 = virtualinvoke $r2.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack29 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadata);
+
+        $stack30 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" could not be found on repository: ");
+
+        $stack31 = interfaceinvoke remoteRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack32 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack31);
+
+        $stack33 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", so will be created");
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack27.<org.codehaus.plexus.logging.Logger: void info(java.lang.String)>($stack34);
+
+        $stack35 = virtualinvoke $u0.<java.io.File: boolean exists()>();
+
+        if $stack35 == 0 goto label08;
+
+        $stack37 = virtualinvoke $u0.<java.io.File: boolean delete()>();
+
+        if $stack37 != 0 goto label08;
+
+     label04:
+        staticinvoke <java.lang.Thread: void sleep(long)>(10L);
+
+     label05:
+        goto label07;
+
+     label06:
+        $stack21 := @caughtexception;
+
+     label07:
+        virtualinvoke $u0.<java.io.File: boolean delete()>();
+
+     label08:
+        $stack23 = metadata instanceof org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        if $stack23 == 0 goto label12;
+
+        $r3 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack25 = $r3.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
+
+        $stack24 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) metadata;
+
+        interfaceinvoke $stack25.<org.apache.maven.repository.legacy.UpdateCheckManager: void touch(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>($stack24, remoteRepository, $u0);
+
+        goto label12;
+
+     label09:
+        $stack16 := @caughtexception;
+
+     label10:
+        $stack17 = metadata instanceof org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        if $stack17 == 0 goto label11;
+
+        $r4 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack19 = $r4.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
+
+        $stack18 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) metadata;
+
+        interfaceinvoke $stack19.<org.apache.maven.repository.legacy.UpdateCheckManager: void touch(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>($stack18, remoteRepository, $u0);
+
+     label11:
+        throw $stack16;
+
+     label12:
+        return $u0;
+
+        catch org.apache.maven.wagon.ResourceDoesNotExistException from label01 to label02 with label03;
+        catch java.lang.InterruptedException from label04 to label05 with label06;
+        catch java.lang.Throwable from label01 to label02 with label09;
+        catch java.lang.Throwable from label03 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    public void deploy(org.apache.maven.artifact.metadata.ArtifactMetadata, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.artifact.repository.metadata.RepositoryMetadataDeploymentException
+    {
+        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
+        boolean $stack6, $stack18;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository, deploymentRepository;
+        java.lang.String $stack8, $stack9, $stack14, $stack16, $stack29, $stack31, $stack36, $stack38, $stack45, $stack48, $stack50;
+        DefaultRepositoryMetadataManager this;
+        org.apache.maven.repository.legacy.WagonManager $stack10;
+        org.codehaus.plexus.logging.Logger $stack11;
+        java.lang.StringBuilder $stack13, $stack15, $stack28, $stack30, $stack35, $stack37, $stack43, $stack44, $stack46, $stack47, $stack49, $u0, $u1, $u4, $u6;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack22, $stack24;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata $stack23;
+        java.lang.Throwable $stack25, $stack32, $stack39, $stack40, $r4, $r9, $r13;
+        java.io.File file, $u3;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataDeploymentException $u2, $u5, $u7;
+        org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager $r0, $r1, $r5, $r6, $r10;
+        org.apache.maven.wagon.TransferFailedException $r2, $r11;
+        java.lang.Exception $r3, $r8, $r12;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException $r7;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.metadata.ArtifactMetadata;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        deploymentRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $stack6 = metadata instanceof org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        if $stack6 == 0 goto label08;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack11 = virtualinvoke $r0.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Retrieving previous metadata from ");
+
+        $stack14 = interfaceinvoke deploymentRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack15 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack11.<org.codehaus.plexus.logging.Logger: void info(java.lang.String)>($stack16);
+
+     label01:
+        $r1 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        file = specialinvoke $r1.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: java.io.File getArtifactMetadataFromDeploymentRepository(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.ArtifactRepository)>(metadata, localRepository, deploymentRepository);
+
+     label02:
+        goto label04;
+
+     label03:
+        $stack40 := @caughtexception;
+
+        $u2 = new org.apache.maven.artifact.repository.metadata.RepositoryMetadataDeploymentException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack43 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadata);
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" could not be retrieved from repository: ");
+
+        $stack45 = interfaceinvoke deploymentRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack46 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack45);
+
+        $stack47 = virtualinvoke $stack46.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" due to an error: ");
+
+        $r2 = (org.apache.maven.wagon.TransferFailedException) $stack40;
+
+        $stack48 = virtualinvoke $r2.<org.apache.maven.wagon.TransferFailedException: java.lang.String getMessage()>();
+
+        $stack49 = virtualinvoke $stack47.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack48);
+
+        $stack50 = virtualinvoke $stack49.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = (java.lang.Exception) $stack40;
+
+        specialinvoke $u2.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataDeploymentException: void <init>(java.lang.String,java.lang.Exception)>($stack50, $r3);
+
+        $r4 = (java.lang.Throwable) $u2;
+
+        throw $r4;
+
+     label04:
+        $stack18 = virtualinvoke file.<java.io.File: boolean isFile()>();
+
+        if $stack18 == 0 goto label09;
+
+     label05:
+        $r5 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack22 = virtualinvoke $r5.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.artifact.repository.metadata.Metadata readMetadata(java.io.File)>(file);
+
+        $stack23 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) metadata;
+
+        $stack24 = interfaceinvoke $stack23.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata getMetadata()>();
+
+        $r6 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        specialinvoke $r6.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: void fixTimestamp(java.io.File,org.apache.maven.artifact.repository.metadata.Metadata,org.apache.maven.artifact.repository.metadata.Metadata)>(file, $stack22, $stack24);
+
+     label06:
+        goto label09;
+
+     label07:
+        $stack39 := @caughtexception;
+
+        goto label09;
+
+     label08:
+        $u3 = new java.io.File;
+
+        $stack8 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $stack9 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfLocalRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository)>(metadata, deploymentRepository);
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack8, $stack9);
+
+        file = $u3;
+
+     label09:
+        interfaceinvoke metadata.<org.apache.maven.artifact.metadata.ArtifactMetadata: void storeInLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository, deploymentRepository);
+
+     label10:
+        goto label12;
+
+     label11:
+        $stack32 := @caughtexception;
+
+        $u5 = new org.apache.maven.artifact.repository.metadata.RepositoryMetadataDeploymentException;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack35 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error installing metadata: ");
+
+        $r7 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException) $stack32;
+
+        $stack36 = virtualinvoke $r7.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException: java.lang.String getMessage()>();
+
+        $stack37 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack36);
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r8 = (java.lang.Exception) $stack32;
+
+        specialinvoke $u5.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataDeploymentException: void <init>(java.lang.String,java.lang.Exception)>($stack38, $r8);
+
+        $r9 = (java.lang.Throwable) $u5;
+
+        throw $r9;
+
+     label12:
+        $r10 = (org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager) this;
+
+        $stack10 = $r10.<org.apache.maven.artifact.repository.metadata.DefaultRepositoryMetadataManager: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        interfaceinvoke $stack10.<org.apache.maven.repository.legacy.WagonManager: void putArtifactMetadata(java.io.File,org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository)>(file, metadata, deploymentRepository);
+
+     label13:
+        goto label15;
+
+     label14:
+        $stack25 := @caughtexception;
+
+        $u7 = new org.apache.maven.artifact.repository.metadata.RepositoryMetadataDeploymentException;
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack28 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error while deploying metadata: ");
+
+        $r11 = (org.apache.maven.wagon.TransferFailedException) $stack25;
+
+        $stack29 = virtualinvoke $r11.<org.apache.maven.wagon.TransferFailedException: java.lang.String getMessage()>();
+
+        $stack30 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack29);
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r12 = (java.lang.Exception) $stack25;
+
+        specialinvoke $u7.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataDeploymentException: void <init>(java.lang.String,java.lang.Exception)>($stack31, $r12);
+
+        $r13 = (java.lang.Throwable) $u7;
+
+        throw $r13;
+
+     label15:
+        return;
+
+        catch org.apache.maven.wagon.TransferFailedException from label01 to label02 with label03;
+        catch org.apache.maven.artifact.repository.metadata.RepositoryMetadataReadException from label05 to label06 with label07;
+        catch org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException from label09 to label10 with label11;
+        catch org.apache.maven.wagon.TransferFailedException from label12 to label13 with label14;
+    }
+
+    public void install(org.apache.maven.artifact.metadata.ArtifactMetadata, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.artifact.repository.metadata.RepositoryMetadataInstallationException
+    {
+        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        java.lang.Throwable $stack4, $r2;
+        java.lang.StringBuilder $stack7, $stack9, $u0;
+        java.lang.String $stack8, $stack10;
+        DefaultRepositoryMetadataManager this;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataInstallationException $u1;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException $r0;
+        java.lang.Exception $r1;
+
+        this := @this: DefaultRepositoryMetadataManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.metadata.ArtifactMetadata;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+     label1:
+        interfaceinvoke metadata.<org.apache.maven.artifact.metadata.ArtifactMetadata: void storeInLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository, localRepository);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        $u1 = new org.apache.maven.artifact.repository.metadata.RepositoryMetadataInstallationException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error installing metadata: ");
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException) $stack4;
+
+        $stack8 = virtualinvoke $r0.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException: java.lang.String getMessage()>();
+
+        $stack9 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = (java.lang.Exception) $stack4;
+
+        specialinvoke $u1.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataInstallationException: void <init>(java.lang.String,java.lang.Exception)>($stack10, $r1);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label4:
+        return;
+
+        catch org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException from label1 to label2 with label3;
+    }
+}

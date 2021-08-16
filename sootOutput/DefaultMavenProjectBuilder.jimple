@@ -1,0 +1,803 @@
+public class DefaultMavenProjectBuilder extends java.lang.Object implements org.apache.maven.project.MavenProjectBuilder
+{
+    private org.apache.maven.project.ProjectBuilder projectBuilder;
+    private org.apache.maven.repository.RepositorySystem repositorySystem;
+    private org.apache.maven.plugin.LegacySupport legacySupport;
+
+    public void <init>()
+    {
+        DefaultMavenProjectBuilder this;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    private org.apache.maven.project.ProjectBuildingRequest toRequest(org.apache.maven.project.ProjectBuilderConfiguration)
+    {
+        org.apache.maven.project.ProjectBuilderConfiguration configuration;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack9;
+        java.util.Date $stack11;
+        java.util.Properties $stack12, $stack14;
+        org.apache.maven.profiles.ProfileManager profileManager;
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.plugin.LegacySupport $stack17;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.MavenExecutionRequest req;
+        java.util.List $stack21, $stack22, $stack23, $stack24;
+        org.apache.maven.project.DefaultProjectBuildingRequest $u0;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r0;
+        org.apache.maven.project.ProjectBuildingRequest $r1;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        configuration := @parameter0: org.apache.maven.project.ProjectBuilderConfiguration;
+
+        $u0 = new org.apache.maven.project.DefaultProjectBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setValidationLevel(int)>(20);
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setResolveDependencies(boolean)>(0);
+
+        $stack9 = interfaceinvoke configuration.<org.apache.maven.project.ProjectBuilderConfiguration: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>($stack9);
+
+        $stack11 = interfaceinvoke configuration.<org.apache.maven.project.ProjectBuilderConfiguration: java.util.Date getBuildStartTime()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: void setBuildStartTime(java.util.Date)>($stack11);
+
+        $stack12 = interfaceinvoke configuration.<org.apache.maven.project.ProjectBuilderConfiguration: java.util.Properties getUserProperties()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setUserProperties(java.util.Properties)>($stack12);
+
+        $stack14 = interfaceinvoke configuration.<org.apache.maven.project.ProjectBuilderConfiguration: java.util.Properties getExecutionProperties()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setSystemProperties(java.util.Properties)>($stack14);
+
+        profileManager = interfaceinvoke configuration.<org.apache.maven.project.ProjectBuilderConfiguration: org.apache.maven.profiles.ProfileManager getGlobalProfileManager()>();
+
+        if profileManager == null goto label1;
+
+        $stack23 = interfaceinvoke profileManager.<org.apache.maven.profiles.ProfileManager: java.util.List getExplicitlyActivatedIds()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: void setActiveProfileIds(java.util.List)>($stack23);
+
+        $stack24 = interfaceinvoke profileManager.<org.apache.maven.profiles.ProfileManager: java.util.List getExplicitlyDeactivatedIds()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: void setInactiveProfileIds(java.util.List)>($stack24);
+
+        goto label2;
+
+     label1:
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack17 = $r0.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        session = interfaceinvoke $stack17.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+        if session == null goto label2;
+
+        req = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        if req == null goto label2;
+
+        $stack21 = interfaceinvoke req.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getActiveProfiles()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: void setActiveProfileIds(java.util.List)>($stack21);
+
+        $stack22 = interfaceinvoke req.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getInactiveProfiles()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: void setInactiveProfileIds(java.util.List)>($stack22);
+
+     label2:
+        $r1 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        return $r1;
+    }
+
+    private org.apache.maven.project.ProjectBuildingRequest injectSession(org.apache.maven.project.ProjectBuildingRequest)
+    {
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.plugin.LegacySupport $stack4;
+        org.apache.maven.execution.MavenSession session;
+        java.util.Properties $stack7, $stack11, $stack13, $stack19, $u0;
+        org.apache.maven.project.ProjectBuildingRequest request;
+        org.eclipse.aether.RepositorySystemSession $stack9;
+        boolean $stack14;
+        java.util.List $stack17;
+        org.apache.maven.execution.MavenExecutionRequest req;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r0;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        request := @parameter0: org.apache.maven.project.ProjectBuildingRequest;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack4 = $r0.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        session = interfaceinvoke $stack4.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+        if session == null goto label3;
+
+        $stack9 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setRepositorySession(org.eclipse.aether.RepositorySystemSession)>($stack9);
+
+        $stack11 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.Properties getSystemProperties()>();
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setSystemProperties(java.util.Properties)>($stack11);
+
+        $stack13 = interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: java.util.Properties getUserProperties()>();
+
+        $stack14 = virtualinvoke $stack13.<java.util.Properties: boolean isEmpty()>();
+
+        if $stack14 == 0 goto label1;
+
+        $stack19 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.Properties getUserProperties()>();
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setUserProperties(java.util.Properties)>($stack19);
+
+     label1:
+        req = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        if req == null goto label2;
+
+        $stack17 = interfaceinvoke req.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getRemoteRepositories()>();
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setRemoteRepositories(java.util.List)>($stack17);
+
+     label2:
+        goto label4;
+
+     label3:
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        staticinvoke <org.apache.maven.properties.internal.EnvironmentUtils: void addEnvVars(java.util.Properties)>($u0);
+
+        $stack7 = staticinvoke <java.lang.System: java.util.Properties getProperties()>();
+
+        virtualinvoke $u0.<java.util.Properties: void putAll(java.util.Map)>($stack7);
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setSystemProperties(java.util.Properties)>($u0);
+
+     label4:
+        return request;
+    }
+
+    private java.util.List normalizeToArtifactRepositories(java.util.List, org.apache.maven.project.ProjectBuildingRequest) throws org.apache.maven.project.ProjectBuildingException
+    {
+        java.util.List repositories, $stack24, $stack28, $stack32;
+        int $stack9;
+        java.util.Iterator l5;
+        boolean $stack11, $stack14, normalized;
+        java.lang.Object repository;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack15, repo;
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.model.Repository $stack18;
+        org.apache.maven.repository.RepositorySystem $stack19, $stack21, $stack25, $stack29;
+        org.apache.maven.project.ProjectBuildingRequest request;
+        org.eclipse.aether.RepositorySystemSession $stack22, $stack26, $stack30;
+        org.apache.maven.artifact.repository.ArtifactRepository[] $stack23, $stack27, $stack31;
+        java.lang.Throwable $stack34, $r4;
+        java.lang.StringBuilder $stack38, $stack39, $u1;
+        java.lang.String $stack40;
+        java.util.ArrayList $u0;
+        org.apache.maven.project.ProjectBuildingException $u2;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        repositories := @parameter0: java.util.List;
+
+        request := @parameter1: org.apache.maven.project.ProjectBuildingRequest;
+
+        if repositories == null goto label9;
+
+        normalized = 0;
+
+        $u0 = new java.util.ArrayList;
+
+        $stack9 = interfaceinvoke repositories.<java.util.List: int size()>();
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(int)>($stack9);
+
+        l5 = interfaceinvoke repositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack11 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label8;
+
+        repository = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack14 = repository instanceof org.apache.maven.model.Repository;
+
+        if $stack14 == 0 goto label6;
+
+     label2:
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack19 = $r0.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        $stack18 = (org.apache.maven.model.Repository) repository;
+
+        repo = interfaceinvoke $stack19.<org.apache.maven.repository.RepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository buildArtifactRepository(org.apache.maven.model.Repository)>($stack18);
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack21 = $r1.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        $stack22 = interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $stack23 = newarray (org.apache.maven.artifact.repository.ArtifactRepository)[1];
+
+        $stack23[0] = repo;
+
+        $stack24 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack23);
+
+        interfaceinvoke $stack21.<org.apache.maven.repository.RepositorySystem: void injectMirror(org.eclipse.aether.RepositorySystemSession,java.util.List)>($stack22, $stack24);
+
+        $r2 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack25 = $r2.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        $stack26 = interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $stack27 = newarray (org.apache.maven.artifact.repository.ArtifactRepository)[1];
+
+        $stack27[0] = repo;
+
+        $stack28 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack27);
+
+        interfaceinvoke $stack25.<org.apache.maven.repository.RepositorySystem: void injectProxy(org.eclipse.aether.RepositorySystemSession,java.util.List)>($stack26, $stack28);
+
+        $r3 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack29 = $r3.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        $stack30 = interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $stack31 = newarray (org.apache.maven.artifact.repository.ArtifactRepository)[1];
+
+        $stack31[0] = repo;
+
+        $stack32 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack31);
+
+        interfaceinvoke $stack29.<org.apache.maven.repository.RepositorySystem: void injectAuthentication(org.eclipse.aether.RepositorySystemSession,java.util.List)>($stack30, $stack32);
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(repo);
+
+     label3:
+        goto label5;
+
+     label4:
+        $stack34 := @caughtexception;
+
+        $u2 = new org.apache.maven.project.ProjectBuildingException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack38 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid remote repository ");
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(repository);
+
+        $stack40 = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.apache.maven.project.ProjectBuildingException: void <init>(java.lang.String,java.lang.String,java.lang.Throwable)>("", $stack40, $stack34);
+
+        $r4 = (java.lang.Throwable) $u2;
+
+        throw $r4;
+
+     label5:
+        normalized = 1;
+
+        goto label7;
+
+     label6:
+        $stack15 = (org.apache.maven.artifact.repository.ArtifactRepository) repository;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($stack15);
+
+     label7:
+        goto label1;
+
+     label8:
+        if normalized == 0 goto label9;
+
+        return $u0;
+
+     label9:
+        return repositories;
+
+        catch org.apache.maven.artifact.InvalidRepositoryException from label2 to label3 with label4;
+    }
+
+    private org.apache.maven.project.ProjectBuildingException transformError(org.apache.maven.project.ProjectBuildingException)
+    {
+        org.apache.maven.project.ProjectBuildingException e, $r0;
+        java.lang.Throwable $stack2;
+        boolean $stack3;
+        java.lang.String $stack5, $stack6;
+        java.io.File $stack7;
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.project.InvalidProjectModelException $u0;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        e := @parameter0: org.apache.maven.project.ProjectBuildingException;
+
+        $stack2 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.Throwable getCause()>();
+
+        $stack3 = $stack2 instanceof org.apache.maven.model.building.ModelBuildingException;
+
+        if $stack3 == 0 goto label1;
+
+        $u0 = new org.apache.maven.project.InvalidProjectModelException;
+
+        $stack5 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.String getProjectId()>();
+
+        $stack6 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.String getMessage()>();
+
+        $stack7 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.io.File getPomFile()>();
+
+        specialinvoke $u0.<org.apache.maven.project.InvalidProjectModelException: void <init>(java.lang.String,java.lang.String,java.io.File)>($stack5, $stack6, $stack7);
+
+        $r0 = (org.apache.maven.project.ProjectBuildingException) $u0;
+
+        return $r0;
+
+     label1:
+        return e;
+    }
+
+    public org.apache.maven.project.MavenProject build(java.io.File, org.apache.maven.project.ProjectBuilderConfiguration) throws org.apache.maven.project.ProjectBuildingException
+    {
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.project.ProjectBuilderConfiguration configuration;
+        org.apache.maven.project.ProjectBuildingRequest $stack5, request;
+        java.io.File pom;
+        org.apache.maven.project.ProjectBuilder $stack7;
+        org.apache.maven.project.ProjectBuildingResult $stack8;
+        org.apache.maven.project.MavenProject $stack9;
+        java.lang.Throwable $stack10, $r5;
+        org.apache.maven.project.ProjectBuildingException $stack11, $r4;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        pom := @parameter0: java.io.File;
+
+        configuration := @parameter1: org.apache.maven.project.ProjectBuilderConfiguration;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack5 = specialinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuildingRequest toRequest(org.apache.maven.project.ProjectBuilderConfiguration)>(configuration);
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        request = specialinvoke $r1.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuildingRequest injectSession(org.apache.maven.project.ProjectBuildingRequest)>($stack5);
+
+     label1:
+        $r2 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack7 = $r2.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        $stack8 = interfaceinvoke $stack7.<org.apache.maven.project.ProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(java.io.File,org.apache.maven.project.ProjectBuildingRequest)>(pom, request);
+
+        $stack9 = interfaceinvoke $stack8.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+     label2:
+        return $stack9;
+
+     label3:
+        $stack10 := @caughtexception;
+
+        $r3 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $r4 = (org.apache.maven.project.ProjectBuildingException) $stack10;
+
+        $stack11 = specialinvoke $r3.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuildingException transformError(org.apache.maven.project.ProjectBuildingException)>($r4);
+
+        $r5 = (java.lang.Throwable) $stack11;
+
+        throw $r5;
+
+        catch org.apache.maven.project.ProjectBuildingException from label1 to label2 with label3;
+    }
+
+    public org.apache.maven.project.MavenProject build(java.io.File, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.profiles.ProfileManager) throws org.apache.maven.project.ProjectBuildingException
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        org.apache.maven.profiles.ProfileManager profileManager;
+        DefaultMavenProjectBuilder this;
+        java.io.File pom;
+        org.apache.maven.project.MavenProject $stack8;
+        org.apache.maven.project.DefaultProjectBuilderConfiguration $u0;
+        org.apache.maven.project.ProjectBuilderConfiguration $r0, $r1, $r3;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r2;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        pom := @parameter0: java.io.File;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        profileManager := @parameter2: org.apache.maven.profiles.ProfileManager;
+
+        $u0 = new org.apache.maven.project.DefaultProjectBuilderConfiguration;
+
+        specialinvoke $u0.<org.apache.maven.project.DefaultProjectBuilderConfiguration: void <init>()>();
+
+        $r0 = (org.apache.maven.project.ProjectBuilderConfiguration) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.project.ProjectBuilderConfiguration: org.apache.maven.project.ProjectBuilderConfiguration setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository);
+
+        $r1 = (org.apache.maven.project.ProjectBuilderConfiguration) $u0;
+
+        interfaceinvoke $r1.<org.apache.maven.project.ProjectBuilderConfiguration: org.apache.maven.project.ProjectBuilderConfiguration setGlobalProfileManager(org.apache.maven.profiles.ProfileManager)>(profileManager);
+
+        $r2 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $r3 = (org.apache.maven.project.ProjectBuilderConfiguration) $u0;
+
+        $stack8 = virtualinvoke $r2.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.MavenProject build(java.io.File,org.apache.maven.project.ProjectBuilderConfiguration)>(pom, $r3);
+
+        return $stack8;
+    }
+
+    public org.apache.maven.project.MavenProject buildFromRepository(org.apache.maven.artifact.Artifact, java.util.List, org.apache.maven.project.ProjectBuilderConfiguration, boolean) throws org.apache.maven.project.ProjectBuildingException
+    {
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.project.ProjectBuilderConfiguration configuration;
+        org.apache.maven.project.ProjectBuildingRequest $stack7, request;
+        java.util.List remoteRepositories, $stack9;
+        org.apache.maven.artifact.Artifact artifact;
+        boolean allowStubModel;
+        org.apache.maven.project.ProjectBuilder $stack13;
+        org.apache.maven.project.ProjectBuildingResult $stack14;
+        org.apache.maven.project.MavenProject $stack15;
+        java.lang.Throwable $stack16, $r6;
+        org.apache.maven.project.ProjectBuildingException $stack17, $r5;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        remoteRepositories := @parameter1: java.util.List;
+
+        configuration := @parameter2: org.apache.maven.project.ProjectBuilderConfiguration;
+
+        allowStubModel := @parameter3: boolean;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack7 = specialinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuildingRequest toRequest(org.apache.maven.project.ProjectBuilderConfiguration)>(configuration);
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        request = specialinvoke $r1.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuildingRequest injectSession(org.apache.maven.project.ProjectBuildingRequest)>($stack7);
+
+        $r2 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack9 = specialinvoke $r2.<org.apache.maven.project.DefaultMavenProjectBuilder: java.util.List normalizeToArtifactRepositories(java.util.List,org.apache.maven.project.ProjectBuildingRequest)>(remoteRepositories, request);
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setRemoteRepositories(java.util.List)>($stack9);
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setProcessPlugins(boolean)>(0);
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setValidationLevel(int)>(0);
+
+     label1:
+        $r3 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack13 = $r3.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        $stack14 = interfaceinvoke $stack13.<org.apache.maven.project.ProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(org.apache.maven.artifact.Artifact,boolean,org.apache.maven.project.ProjectBuildingRequest)>(artifact, allowStubModel, request);
+
+        $stack15 = interfaceinvoke $stack14.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+     label2:
+        return $stack15;
+
+     label3:
+        $stack16 := @caughtexception;
+
+        $r4 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $r5 = (org.apache.maven.project.ProjectBuildingException) $stack16;
+
+        $stack17 = specialinvoke $r4.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuildingException transformError(org.apache.maven.project.ProjectBuildingException)>($r5);
+
+        $r6 = (java.lang.Throwable) $stack17;
+
+        throw $r6;
+
+        catch org.apache.maven.project.ProjectBuildingException from label1 to label2 with label3;
+    }
+
+    public org.apache.maven.project.MavenProject buildFromRepository(org.apache.maven.artifact.Artifact, java.util.List, org.apache.maven.artifact.repository.ArtifactRepository, boolean) throws org.apache.maven.project.ProjectBuildingException
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.artifact.Artifact artifact;
+        java.util.List remoteRepositories;
+        boolean allowStubModel;
+        org.apache.maven.project.MavenProject $stack8;
+        org.apache.maven.project.DefaultProjectBuilderConfiguration $u0;
+        org.apache.maven.project.ProjectBuilderConfiguration $r0, $r2;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r1;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        remoteRepositories := @parameter1: java.util.List;
+
+        localRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        allowStubModel := @parameter3: boolean;
+
+        $u0 = new org.apache.maven.project.DefaultProjectBuilderConfiguration;
+
+        specialinvoke $u0.<org.apache.maven.project.DefaultProjectBuilderConfiguration: void <init>()>();
+
+        $r0 = (org.apache.maven.project.ProjectBuilderConfiguration) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.project.ProjectBuilderConfiguration: org.apache.maven.project.ProjectBuilderConfiguration setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository);
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $r2 = (org.apache.maven.project.ProjectBuilderConfiguration) $u0;
+
+        $stack8 = virtualinvoke $r1.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.MavenProject buildFromRepository(org.apache.maven.artifact.Artifact,java.util.List,org.apache.maven.project.ProjectBuilderConfiguration,boolean)>(artifact, remoteRepositories, $r2, allowStubModel);
+
+        return $stack8;
+    }
+
+    public org.apache.maven.project.MavenProject buildFromRepository(org.apache.maven.artifact.Artifact, java.util.List, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.project.ProjectBuildingException
+    {
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.artifact.Artifact artifact;
+        java.util.List remoteRepositories;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        org.apache.maven.project.MavenProject $stack4;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r0;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        remoteRepositories := @parameter1: java.util.List;
+
+        localRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack4 = virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.MavenProject buildFromRepository(org.apache.maven.artifact.Artifact,java.util.List,org.apache.maven.artifact.repository.ArtifactRepository,boolean)>(artifact, remoteRepositories, localRepository, 1);
+
+        return $stack4;
+    }
+
+    public org.apache.maven.project.MavenProject buildStandaloneSuperProject(org.apache.maven.project.ProjectBuilderConfiguration) throws org.apache.maven.project.ProjectBuildingException
+    {
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.project.ProjectBuilderConfiguration configuration;
+        org.apache.maven.project.ProjectBuildingRequest $stack5, request;
+        java.lang.Class $stack10;
+        java.net.URL $stack11;
+        org.apache.maven.project.ProjectBuilder $stack12;
+        org.apache.maven.project.ProjectBuildingResult $stack13;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.model.building.UrlModelSource $u0;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r0, $r1, $r2;
+        org.apache.maven.model.building.ModelSource $r3;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        configuration := @parameter0: org.apache.maven.project.ProjectBuilderConfiguration;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack5 = specialinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuildingRequest toRequest(org.apache.maven.project.ProjectBuilderConfiguration)>(configuration);
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        request = specialinvoke $r1.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuildingRequest injectSession(org.apache.maven.project.ProjectBuildingRequest)>($stack5);
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setProcessPlugins(boolean)>(0);
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setValidationLevel(int)>(0);
+
+        $u0 = new org.apache.maven.model.building.UrlModelSource;
+
+        $stack10 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack11 = virtualinvoke $stack10.<java.lang.Class: java.net.URL getResource(java.lang.String)>("standalone.xml");
+
+        specialinvoke $u0.<org.apache.maven.model.building.UrlModelSource: void <init>(java.net.URL)>($stack11);
+
+        $r2 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack12 = $r2.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        $r3 = (org.apache.maven.model.building.ModelSource) $u0;
+
+        $stack13 = interfaceinvoke $stack12.<org.apache.maven.project.ProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(org.apache.maven.model.building.ModelSource,org.apache.maven.project.ProjectBuildingRequest)>($r3, request);
+
+        project = interfaceinvoke $stack13.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+        virtualinvoke project.<org.apache.maven.project.MavenProject: void setExecutionRoot(boolean)>(1);
+
+        return project;
+    }
+
+    public org.apache.maven.project.MavenProject buildStandaloneSuperProject(org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.project.ProjectBuildingException
+    {
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        org.apache.maven.project.MavenProject $stack2;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r0;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        localRepository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.MavenProject buildStandaloneSuperProject(org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.profiles.ProfileManager)>(localRepository, null);
+
+        return $stack2;
+    }
+
+    public org.apache.maven.project.MavenProject buildStandaloneSuperProject(org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.profiles.ProfileManager) throws org.apache.maven.project.ProjectBuildingException
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        org.apache.maven.profiles.ProfileManager profileManager;
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.project.MavenProject $stack7;
+        org.apache.maven.project.DefaultProjectBuilderConfiguration $u0;
+        org.apache.maven.project.ProjectBuilderConfiguration $r0, $r1, $r3;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r2;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        localRepository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        profileManager := @parameter1: org.apache.maven.profiles.ProfileManager;
+
+        $u0 = new org.apache.maven.project.DefaultProjectBuilderConfiguration;
+
+        specialinvoke $u0.<org.apache.maven.project.DefaultProjectBuilderConfiguration: void <init>()>();
+
+        $r0 = (org.apache.maven.project.ProjectBuilderConfiguration) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.project.ProjectBuilderConfiguration: org.apache.maven.project.ProjectBuilderConfiguration setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository);
+
+        $r1 = (org.apache.maven.project.ProjectBuilderConfiguration) $u0;
+
+        interfaceinvoke $r1.<org.apache.maven.project.ProjectBuilderConfiguration: org.apache.maven.project.ProjectBuilderConfiguration setGlobalProfileManager(org.apache.maven.profiles.ProfileManager)>(profileManager);
+
+        $r2 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $r3 = (org.apache.maven.project.ProjectBuilderConfiguration) $u0;
+
+        $stack7 = virtualinvoke $r2.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.MavenProject buildStandaloneSuperProject(org.apache.maven.project.ProjectBuilderConfiguration)>($r3);
+
+        return $stack7;
+    }
+
+    public org.apache.maven.project.MavenProject buildWithDependencies(java.io.File, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.profiles.ProfileManager, org.apache.maven.wagon.events.TransferListener) throws org.apache.maven.project.ProjectBuildingException, org.apache.maven.artifact.resolver.ArtifactResolutionException, org.apache.maven.artifact.resolver.ArtifactNotFoundException
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        org.apache.maven.profiles.ProfileManager profileManager;
+        DefaultMavenProjectBuilder this;
+        org.apache.maven.project.ProjectBuildingRequest $stack11, request;
+        java.io.File pom;
+        org.apache.maven.project.ProjectBuilder $stack14;
+        org.apache.maven.project.ProjectBuildingResult $stack15;
+        org.apache.maven.project.MavenProject $stack16;
+        java.lang.Throwable $stack17, $r8;
+        org.apache.maven.project.ProjectBuildingException $stack18, $r7;
+        org.apache.maven.wagon.events.TransferListener transferListener;
+        org.apache.maven.project.DefaultProjectBuilderConfiguration $u0;
+        org.apache.maven.project.ProjectBuilderConfiguration $r0, $r1, $r3;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r2, $r4, $r5, $r6;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        pom := @parameter0: java.io.File;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        profileManager := @parameter2: org.apache.maven.profiles.ProfileManager;
+
+        transferListener := @parameter3: org.apache.maven.wagon.events.TransferListener;
+
+        $u0 = new org.apache.maven.project.DefaultProjectBuilderConfiguration;
+
+        specialinvoke $u0.<org.apache.maven.project.DefaultProjectBuilderConfiguration: void <init>()>();
+
+        $r0 = (org.apache.maven.project.ProjectBuilderConfiguration) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.project.ProjectBuilderConfiguration: org.apache.maven.project.ProjectBuilderConfiguration setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository);
+
+        $r1 = (org.apache.maven.project.ProjectBuilderConfiguration) $u0;
+
+        interfaceinvoke $r1.<org.apache.maven.project.ProjectBuilderConfiguration: org.apache.maven.project.ProjectBuilderConfiguration setGlobalProfileManager(org.apache.maven.profiles.ProfileManager)>(profileManager);
+
+        $r2 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $r3 = (org.apache.maven.project.ProjectBuilderConfiguration) $u0;
+
+        $stack11 = specialinvoke $r2.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuildingRequest toRequest(org.apache.maven.project.ProjectBuilderConfiguration)>($r3);
+
+        $r4 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        request = specialinvoke $r4.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuildingRequest injectSession(org.apache.maven.project.ProjectBuildingRequest)>($stack11);
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setResolveDependencies(boolean)>(1);
+
+     label1:
+        $r5 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack14 = $r5.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        $stack15 = interfaceinvoke $stack14.<org.apache.maven.project.ProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(java.io.File,org.apache.maven.project.ProjectBuildingRequest)>(pom, request);
+
+        $stack16 = interfaceinvoke $stack15.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+     label2:
+        return $stack16;
+
+     label3:
+        $stack17 := @caughtexception;
+
+        $r6 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $r7 = (org.apache.maven.project.ProjectBuildingException) $stack17;
+
+        $stack18 = specialinvoke $r6.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.ProjectBuildingException transformError(org.apache.maven.project.ProjectBuildingException)>($r7);
+
+        $r8 = (java.lang.Throwable) $stack18;
+
+        throw $r8;
+
+        catch org.apache.maven.project.ProjectBuildingException from label1 to label2 with label3;
+    }
+
+    public org.apache.maven.project.MavenProject buildWithDependencies(java.io.File, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.profiles.ProfileManager) throws org.apache.maven.project.ProjectBuildingException, org.apache.maven.artifact.resolver.ArtifactResolutionException, org.apache.maven.artifact.resolver.ArtifactNotFoundException
+    {
+        DefaultMavenProjectBuilder this;
+        java.io.File pom;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        org.apache.maven.profiles.ProfileManager profileManager;
+        org.apache.maven.project.MavenProject $stack4;
+        org.apache.maven.project.DefaultMavenProjectBuilder $r0;
+
+        this := @this: DefaultMavenProjectBuilder;
+
+        pom := @parameter0: java.io.File;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        profileManager := @parameter2: org.apache.maven.profiles.ProfileManager;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilder) this;
+
+        $stack4 = virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilder: org.apache.maven.project.MavenProject buildWithDependencies(java.io.File,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.profiles.ProfileManager,org.apache.maven.wagon.events.TransferListener)>(pom, localRepository, profileManager, null);
+
+        return $stack4;
+    }
+}

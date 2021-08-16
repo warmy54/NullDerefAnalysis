@@ -1,0 +1,1428 @@
+public class MetadataGraph extends java.lang.Object
+{
+    public static final int DEFAULT_VERTICES;
+    public static final int DEFAULT_EDGES;
+    private boolean versionedVertices;
+    private boolean scopedVertices;
+    org.apache.maven.repository.metadata.MetadataGraphVertex entry;
+    java.util.TreeSet vertices;
+    java.util.Map incidentEdges;
+    java.util.Map excidentEdges;
+    org.apache.maven.artifact.ArtifactScopeEnum scope;
+
+    public void <init>(int)
+    {
+        MetadataGraph this;
+        int nVertices, $stack2;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2;
+
+        this := @this: MetadataGraph;
+
+        nVertices := @parameter0: int;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r0.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices> = 0;
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r1.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices> = 0;
+
+        $stack2 = 2 * nVertices;
+
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r2.<org.apache.maven.repository.metadata.MetadataGraph: void init(int,int)>(nVertices, $stack2);
+
+        return;
+    }
+
+    public void <init>(int, int)
+    {
+        MetadataGraph this;
+        int nVertices, nEdges;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2;
+
+        this := @this: MetadataGraph;
+
+        nVertices := @parameter0: int;
+
+        nEdges := @parameter1: int;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r0.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices> = 0;
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r1.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices> = 0;
+
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r2.<org.apache.maven.repository.metadata.MetadataGraph: void init(int,int)>(nVertices, nEdges);
+
+        return;
+    }
+
+    public void <init>(org.apache.maven.repository.metadata.MetadataGraphVertex) throws org.apache.maven.repository.metadata.MetadataResolutionException
+    {
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataGraphVertex entry;
+        boolean $stack2, $stack3;
+        java.util.TreeSet $stack4;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: MetadataGraph;
+
+        entry := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r0.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices> = 0;
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r1.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices> = 0;
+
+        staticinvoke <org.apache.maven.repository.metadata.MetadataGraph: void checkVertex(org.apache.maven.repository.metadata.MetadataGraphVertex)>(entry);
+
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r2.<org.apache.maven.repository.metadata.MetadataGraph: void checkVertices(int)>(1);
+
+        $r3 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack2 = $r3.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices>;
+
+        virtualinvoke entry.<org.apache.maven.repository.metadata.MetadataGraphVertex: void setCompareVersion(boolean)>($stack2);
+
+        $r4 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack3 = $r4.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices>;
+
+        virtualinvoke entry.<org.apache.maven.repository.metadata.MetadataGraphVertex: void setCompareScope(boolean)>($stack3);
+
+        $r5 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack4 = $r5.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        virtualinvoke $stack4.<java.util.TreeSet: boolean add(java.lang.Object)>(entry);
+
+        $r6 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r6.<org.apache.maven.repository.metadata.MetadataGraph: org.apache.maven.repository.metadata.MetadataGraphVertex entry> = entry;
+
+        return;
+    }
+
+    public void <init>(org.apache.maven.repository.metadata.MetadataTreeNode) throws org.apache.maven.repository.metadata.MetadataResolutionException
+    {
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataTreeNode tree;
+        org.apache.maven.repository.metadata.MetadataGraph $r0;
+
+        this := @this: MetadataGraph;
+
+        tree := @parameter0: org.apache.maven.repository.metadata.MetadataTreeNode;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.metadata.MetadataGraph: void <init>(org.apache.maven.repository.metadata.MetadataTreeNode,boolean,boolean)>(tree, 0, 0);
+
+        return;
+    }
+
+    public void <init>(org.apache.maven.repository.metadata.MetadataTreeNode, boolean, boolean) throws org.apache.maven.repository.metadata.MetadataResolutionException
+    {
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataTreeNode tree;
+        boolean versionedVertices, scopedVertices, $stack8;
+        int count, $stack6, $stack7;
+        org.apache.maven.repository.metadata.MetadataResolutionException $u0;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r3, $r4, $r5, $r6, $r7, $r8;
+        java.lang.Throwable $r2;
+
+        this := @this: MetadataGraph;
+
+        tree := @parameter0: org.apache.maven.repository.metadata.MetadataTreeNode;
+
+        versionedVertices := @parameter1: boolean;
+
+        scopedVertices := @parameter2: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r0.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices> = 0;
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r1.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices> = 0;
+
+        if tree != null goto label1;
+
+        $u0 = new org.apache.maven.repository.metadata.MetadataResolutionException;
+
+        specialinvoke $u0.<org.apache.maven.repository.metadata.MetadataResolutionException: void <init>(java.lang.String)>("tree is null");
+
+        $r2 = (java.lang.Throwable) $u0;
+
+        throw $r2;
+
+     label1:
+        $r3 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        virtualinvoke $r3.<org.apache.maven.repository.metadata.MetadataGraph: void setVersionedVertices(boolean)>(versionedVertices);
+
+        $r4 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        virtualinvoke $r4.<org.apache.maven.repository.metadata.MetadataGraph: void setScopedVertices(boolean)>(scopedVertices);
+
+        if scopedVertices != 0 goto label2;
+
+        if versionedVertices == 0 goto label3;
+
+     label2:
+        $stack8 = 1;
+
+        goto label4;
+
+     label3:
+        $stack8 = 0;
+
+     label4:
+        $r5 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r5.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices> = $stack8;
+
+        $r6 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r6.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices> = scopedVertices;
+
+        count = staticinvoke <org.apache.maven.repository.metadata.MetadataGraph: int countNodes(org.apache.maven.repository.metadata.MetadataTreeNode)>(tree);
+
+        $stack6 = count / 2;
+
+        $stack7 = count + $stack6;
+
+        $r7 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r7.<org.apache.maven.repository.metadata.MetadataGraph: void init(int,int)>(count, $stack7);
+
+        $r8 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r8.<org.apache.maven.repository.metadata.MetadataGraph: void processTreeNodes(org.apache.maven.repository.metadata.MetadataGraphVertex,org.apache.maven.repository.metadata.MetadataTreeNode,int,int)>(null, tree, 0, 0);
+
+        return;
+    }
+
+    private void processTreeNodes(org.apache.maven.repository.metadata.MetadataGraphVertex, org.apache.maven.repository.metadata.MetadataTreeNode, int, int) throws org.apache.maven.repository.metadata.MetadataResolutionException
+    {
+        org.apache.maven.repository.metadata.MetadataTreeNode node, n;
+        MetadataGraph this;
+        boolean $stack10, $stack11, $stack14, $stack25;
+        org.apache.maven.repository.metadata.ArtifactMetadata $stack12, md;
+        java.util.TreeSet $stack13, $stack30;
+        org.apache.maven.repository.metadata.MetadataGraphVertex parentVertex, $u0;
+        int $stack16, $stack17, depth, $stack18, pomOrder, e#4;
+        java.lang.String $stack23, $stack26;
+        org.apache.maven.artifact.ArtifactScopeEnum $stack24;
+        org.apache.maven.repository.metadata.MetadataTreeNode[] md#3;
+        org.apache.maven.repository.metadata.MetadataGraphEdge $u1;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: MetadataGraph;
+
+        parentVertex := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        node := @parameter1: org.apache.maven.repository.metadata.MetadataTreeNode;
+
+        depth := @parameter2: int;
+
+        pomOrder := @parameter3: int;
+
+        if node != null goto label1;
+
+        return;
+
+     label1:
+        $u0 = new org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        $stack12 = node.<org.apache.maven.repository.metadata.MetadataTreeNode: org.apache.maven.repository.metadata.ArtifactMetadata md>;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack11 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices>;
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack10 = $r1.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices>;
+
+        specialinvoke $u0.<org.apache.maven.repository.metadata.MetadataGraphVertex: void <init>(org.apache.maven.repository.metadata.ArtifactMetadata,boolean,boolean)>($stack12, $stack11, $stack10);
+
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack13 = $r2.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        $stack14 = virtualinvoke $stack13.<java.util.TreeSet: boolean contains(java.lang.Object)>($u0);
+
+        if $stack14 != 0 goto label2;
+
+        $r3 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack30 = $r3.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        virtualinvoke $stack30.<java.util.TreeSet: boolean add(java.lang.Object)>($u0);
+
+     label2:
+        if parentVertex == null goto label3;
+
+        md = virtualinvoke node.<org.apache.maven.repository.metadata.MetadataTreeNode: org.apache.maven.repository.metadata.ArtifactMetadata getMd()>();
+
+        $u1 = new org.apache.maven.repository.metadata.MetadataGraphEdge;
+
+        $stack26 = md.<org.apache.maven.repository.metadata.ArtifactMetadata: java.lang.String version>;
+
+        $stack25 = md.<org.apache.maven.repository.metadata.ArtifactMetadata: boolean resolved>;
+
+        $stack24 = md.<org.apache.maven.repository.metadata.ArtifactMetadata: org.apache.maven.artifact.ArtifactScopeEnum artifactScope>;
+
+        $stack23 = md.<org.apache.maven.repository.metadata.ArtifactMetadata: java.lang.String artifactUri>;
+
+        specialinvoke $u1.<org.apache.maven.repository.metadata.MetadataGraphEdge: void <init>(java.lang.String,boolean,org.apache.maven.artifact.ArtifactScopeEnum,java.lang.String,int,int)>($stack26, $stack25, $stack24, $stack23, depth, pomOrder);
+
+        $r4 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        virtualinvoke $r4.<org.apache.maven.repository.metadata.MetadataGraph: org.apache.maven.repository.metadata.MetadataGraph addEdge(org.apache.maven.repository.metadata.MetadataGraphVertex,org.apache.maven.repository.metadata.MetadataGraphVertex,org.apache.maven.repository.metadata.MetadataGraphEdge)>(parentVertex, $u0, $u1);
+
+        goto label4;
+
+     label3:
+        $r5 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r5.<org.apache.maven.repository.metadata.MetadataGraph: org.apache.maven.repository.metadata.MetadataGraphVertex entry> = $u0;
+
+     label4:
+        md#3 = virtualinvoke node.<org.apache.maven.repository.metadata.MetadataTreeNode: org.apache.maven.repository.metadata.MetadataTreeNode[] getChildren()>();
+
+        if md#3 == null goto label5;
+
+        $stack16 = lengthof md#3;
+
+        if $stack16 >= 1 goto label6;
+
+     label5:
+        return;
+
+     label6:
+        e#4 = 0;
+
+     label7:
+        $stack17 = lengthof md#3;
+
+        if e#4 >= $stack17 goto label8;
+
+        n = md#3[e#4];
+
+        $stack18 = depth + 1;
+
+        $r6 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r6.<org.apache.maven.repository.metadata.MetadataGraph: void processTreeNodes(org.apache.maven.repository.metadata.MetadataGraphVertex,org.apache.maven.repository.metadata.MetadataTreeNode,int,int)>($u0, n, $stack18, e#4);
+
+        e#4 = e#4 + 1;
+
+        goto label7;
+
+     label8:
+        return;
+    }
+
+    public org.apache.maven.repository.metadata.MetadataGraphVertex findVertex(org.apache.maven.repository.metadata.ArtifactMetadata)
+    {
+        org.apache.maven.repository.metadata.ArtifactMetadata md;
+        MetadataGraph this;
+        java.util.TreeSet $stack5, $stack7, $stack12;
+        int $stack8;
+        boolean $stack10, $stack11, $stack14, $stack16;
+        java.util.Iterator l3;
+        java.lang.Object $stack15;
+        org.apache.maven.repository.metadata.MetadataGraphVertex gv, $u0;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: MetadataGraph;
+
+        md := @parameter0: org.apache.maven.repository.metadata.ArtifactMetadata;
+
+        if md == null goto label1;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack5 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        if $stack5 == null goto label1;
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack7 = $r1.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        $stack8 = virtualinvoke $stack7.<java.util.TreeSet: int size()>();
+
+        if $stack8 >= 1 goto label2;
+
+     label1:
+        return null;
+
+     label2:
+        $u0 = new org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        specialinvoke $u0.<org.apache.maven.repository.metadata.MetadataGraphVertex: void <init>(org.apache.maven.repository.metadata.ArtifactMetadata)>(md);
+
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack10 = $r2.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices>;
+
+        virtualinvoke $u0.<org.apache.maven.repository.metadata.MetadataGraphVertex: void setCompareVersion(boolean)>($stack10);
+
+        $r3 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack11 = $r3.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices>;
+
+        virtualinvoke $u0.<org.apache.maven.repository.metadata.MetadataGraphVertex: void setCompareScope(boolean)>($stack11);
+
+        $r4 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack12 = $r4.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        l3 = virtualinvoke $stack12.<java.util.TreeSet: java.util.Iterator iterator()>();
+
+     label3:
+        $stack14 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label5;
+
+        $stack15 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        gv = (org.apache.maven.repository.metadata.MetadataGraphVertex) $stack15;
+
+        $stack16 = virtualinvoke gv.<org.apache.maven.repository.metadata.MetadataGraphVertex: boolean equals(java.lang.Object)>($u0);
+
+        if $stack16 == 0 goto label4;
+
+        return gv;
+
+     label4:
+        goto label3;
+
+     label5:
+        return null;
+    }
+
+    public org.apache.maven.repository.metadata.MetadataGraphVertex addVertex(org.apache.maven.repository.metadata.ArtifactMetadata)
+    {
+        org.apache.maven.repository.metadata.ArtifactMetadata md;
+        MetadataGraph this;
+        boolean $stack5, $stack6;
+        java.util.TreeSet $stack7;
+        org.apache.maven.repository.metadata.MetadataGraphVertex v, $u0;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: MetadataGraph;
+
+        md := @parameter0: org.apache.maven.repository.metadata.ArtifactMetadata;
+
+        if md != null goto label1;
+
+        return null;
+
+     label1:
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.metadata.MetadataGraph: void checkVertices()>();
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        v = virtualinvoke $r1.<org.apache.maven.repository.metadata.MetadataGraph: org.apache.maven.repository.metadata.MetadataGraphVertex findVertex(org.apache.maven.repository.metadata.ArtifactMetadata)>(md);
+
+        if v == null goto label2;
+
+        return v;
+
+     label2:
+        $u0 = new org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        specialinvoke $u0.<org.apache.maven.repository.metadata.MetadataGraphVertex: void <init>(org.apache.maven.repository.metadata.ArtifactMetadata)>(md);
+
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack5 = $r2.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices>;
+
+        virtualinvoke $u0.<org.apache.maven.repository.metadata.MetadataGraphVertex: void setCompareVersion(boolean)>($stack5);
+
+        $r3 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack6 = $r3.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices>;
+
+        virtualinvoke $u0.<org.apache.maven.repository.metadata.MetadataGraphVertex: void setCompareScope(boolean)>($stack6);
+
+        $r4 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack7 = $r4.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        virtualinvoke $stack7.<java.util.TreeSet: boolean add(java.lang.Object)>($u0);
+
+        return $u0;
+    }
+
+    private void init(int, int)
+    {
+        int nVertices, nEdges, nV, nE;
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1;
+
+        this := @this: MetadataGraph;
+
+        nVertices := @parameter0: int;
+
+        nEdges := @parameter1: int;
+
+        nV = nVertices;
+
+        if nVertices >= 1 goto label1;
+
+        nV = 1;
+
+     label1:
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.metadata.MetadataGraph: void checkVertices(int)>(nV);
+
+        nE = nVertices;
+
+        if nEdges > nV goto label2;
+
+        nE = 2 * nVertices;
+
+     label2:
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r1.<org.apache.maven.repository.metadata.MetadataGraph: void checkEdges(int)>(nE);
+
+        return;
+    }
+
+    private void checkVertices()
+    {
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataGraph $r0;
+
+        this := @this: MetadataGraph;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.metadata.MetadataGraph: void checkVertices(int)>(32);
+
+        return;
+    }
+
+    private void checkVertices(int)
+    {
+        MetadataGraph this;
+        java.util.TreeSet $stack2, $u0;
+        int nVertices;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1;
+
+        this := @this: MetadataGraph;
+
+        nVertices := @parameter0: int;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack2 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        if $stack2 != null goto label1;
+
+        $u0 = new java.util.TreeSet;
+
+        specialinvoke $u0.<java.util.TreeSet: void <init>()>();
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r1.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices> = $u0;
+
+     label1:
+        return;
+    }
+
+    private void checkEdges()
+    {
+        MetadataGraph this;
+        java.util.TreeSet $stack2, $stack3, $stack5;
+        int $stack4, $stack6, $stack7, count;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2, $r3;
+
+        this := @this: MetadataGraph;
+
+        count = 64;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack2 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        if $stack2 == null goto label1;
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack3 = $r1.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        $stack4 = virtualinvoke $stack3.<java.util.TreeSet: int size()>();
+
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack5 = $r2.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        $stack6 = virtualinvoke $stack5.<java.util.TreeSet: int size()>();
+
+        $stack7 = $stack6 / 2;
+
+        count = $stack4 + $stack7;
+
+     label1:
+        $r3 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r3.<org.apache.maven.repository.metadata.MetadataGraph: void checkEdges(int)>(count);
+
+        return;
+    }
+
+    private void checkEdges(int)
+    {
+        MetadataGraph this;
+        java.util.Map $stack2, $stack3;
+        int nEdges;
+        java.util.HashMap $u0, $u1;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2, $r3;
+
+        this := @this: MetadataGraph;
+
+        nEdges := @parameter0: int;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack2 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map incidentEdges>;
+
+        if $stack2 != null goto label1;
+
+        $u0 = new java.util.HashMap;
+
+        specialinvoke $u0.<java.util.HashMap: void <init>(int)>(nEdges);
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r1.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map incidentEdges> = $u0;
+
+     label1:
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack3 = $r2.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map excidentEdges>;
+
+        if $stack3 != null goto label2;
+
+        $u1 = new java.util.HashMap;
+
+        specialinvoke $u1.<java.util.HashMap: void <init>(int)>(nEdges);
+
+        $r3 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r3.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map excidentEdges> = $u1;
+
+     label2:
+        return;
+    }
+
+    private static void checkVertex(org.apache.maven.repository.metadata.MetadataGraphVertex) throws org.apache.maven.repository.metadata.MetadataResolutionException
+    {
+        org.apache.maven.repository.metadata.MetadataGraphVertex v;
+        org.apache.maven.repository.metadata.ArtifactMetadata $stack1;
+        org.apache.maven.repository.metadata.MetadataResolutionException $u0, $u1;
+        java.lang.Throwable $r0, $r1;
+
+        v := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        if v != null goto label1;
+
+        $u0 = new org.apache.maven.repository.metadata.MetadataResolutionException;
+
+        specialinvoke $u0.<org.apache.maven.repository.metadata.MetadataResolutionException: void <init>(java.lang.String)>("null vertex");
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label1:
+        $stack1 = virtualinvoke v.<org.apache.maven.repository.metadata.MetadataGraphVertex: org.apache.maven.repository.metadata.ArtifactMetadata getMd()>();
+
+        if $stack1 != null goto label2;
+
+        $u1 = new org.apache.maven.repository.metadata.MetadataResolutionException;
+
+        specialinvoke $u1.<org.apache.maven.repository.metadata.MetadataResolutionException: void <init>(java.lang.String)>("vertex without metadata");
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label2:
+        return;
+    }
+
+    private static void checkEdge(org.apache.maven.repository.metadata.MetadataGraphEdge) throws org.apache.maven.repository.metadata.MetadataResolutionException
+    {
+        org.apache.maven.repository.metadata.MetadataGraphEdge e;
+        org.apache.maven.repository.metadata.MetadataResolutionException $u0;
+        java.lang.Throwable $r0;
+
+        e := @parameter0: org.apache.maven.repository.metadata.MetadataGraphEdge;
+
+        if e != null goto label1;
+
+        $u0 = new org.apache.maven.repository.metadata.MetadataResolutionException;
+
+        specialinvoke $u0.<org.apache.maven.repository.metadata.MetadataResolutionException: void <init>(java.lang.String)>("badly formed edge");
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label1:
+        return;
+    }
+
+    public java.util.List getEdgesBetween(org.apache.maven.repository.metadata.MetadataGraphVertex, org.apache.maven.repository.metadata.MetadataGraphVertex)
+    {
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataGraphVertex vTo, $stack14, vFrom;
+        java.util.List edges;
+        boolean $stack8, $stack12, $stack15;
+        int $stack10;
+        java.util.Iterator l5;
+        java.lang.Object $stack13;
+        org.apache.maven.repository.metadata.MetadataGraphEdge e;
+        java.util.ArrayList $u0;
+        org.apache.maven.repository.metadata.MetadataGraph $r0;
+
+        this := @this: MetadataGraph;
+
+        vFrom := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        vTo := @parameter1: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        edges = virtualinvoke $r0.<org.apache.maven.repository.metadata.MetadataGraph: java.util.List getIncidentEdges(org.apache.maven.repository.metadata.MetadataGraphVertex)>(vTo);
+
+        if edges == null goto label1;
+
+        $stack8 = interfaceinvoke edges.<java.util.List: boolean isEmpty()>();
+
+        if $stack8 == 0 goto label2;
+
+     label1:
+        return null;
+
+     label2:
+        $u0 = new java.util.ArrayList;
+
+        $stack10 = interfaceinvoke edges.<java.util.List: int size()>();
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(int)>($stack10);
+
+        l5 = interfaceinvoke edges.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack12 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack12 == 0 goto label5;
+
+        $stack13 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        e = (org.apache.maven.repository.metadata.MetadataGraphEdge) $stack13;
+
+        $stack14 = virtualinvoke e.<org.apache.maven.repository.metadata.MetadataGraphEdge: org.apache.maven.repository.metadata.MetadataGraphVertex getSource()>();
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.repository.metadata.MetadataGraphVertex: boolean equals(java.lang.Object)>(vFrom);
+
+        if $stack15 == 0 goto label4;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(e);
+
+     label4:
+        goto label3;
+
+     label5:
+        return $u0;
+    }
+
+    public org.apache.maven.repository.metadata.MetadataGraph addEdge(org.apache.maven.repository.metadata.MetadataGraphVertex, org.apache.maven.repository.metadata.MetadataGraphVertex, org.apache.maven.repository.metadata.MetadataGraphEdge) throws org.apache.maven.repository.metadata.MetadataResolutionException
+    {
+        org.apache.maven.repository.metadata.MetadataGraphVertex vFrom, vTo;
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataGraphEdge e;
+        boolean $stack6, $stack7, $stack11, $stack15;
+        java.util.Map $stack8, $stack12;
+        java.util.function.Function $stack9, $stack13;
+        java.lang.Object $stack10, $stack14;
+        java.util.List exList, inList;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: MetadataGraph;
+
+        vFrom := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        vTo := @parameter1: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        e := @parameter2: org.apache.maven.repository.metadata.MetadataGraphEdge;
+
+        staticinvoke <org.apache.maven.repository.metadata.MetadataGraph: void checkVertex(org.apache.maven.repository.metadata.MetadataGraphVertex)>(vFrom);
+
+        staticinvoke <org.apache.maven.repository.metadata.MetadataGraph: void checkVertex(org.apache.maven.repository.metadata.MetadataGraphVertex)>(vTo);
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.metadata.MetadataGraph: void checkVertices()>();
+
+        staticinvoke <org.apache.maven.repository.metadata.MetadataGraph: void checkEdge(org.apache.maven.repository.metadata.MetadataGraphEdge)>(e);
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r1.<org.apache.maven.repository.metadata.MetadataGraph: void checkEdges()>();
+
+        virtualinvoke e.<org.apache.maven.repository.metadata.MetadataGraphEdge: void setSource(org.apache.maven.repository.metadata.MetadataGraphVertex)>(vFrom);
+
+        virtualinvoke e.<org.apache.maven.repository.metadata.MetadataGraphEdge: void setTarget(org.apache.maven.repository.metadata.MetadataGraphVertex)>(vTo);
+
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack6 = $r2.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices>;
+
+        virtualinvoke vFrom.<org.apache.maven.repository.metadata.MetadataGraphVertex: void setCompareVersion(boolean)>($stack6);
+
+        $r3 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack7 = $r3.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices>;
+
+        virtualinvoke vFrom.<org.apache.maven.repository.metadata.MetadataGraphVertex: void setCompareScope(boolean)>($stack7);
+
+        $r4 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack8 = $r4.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map excidentEdges>;
+
+        $stack9 = staticinvoke <MetadataGraph$lambda_addEdge_0__309: java.util.function.Function bootstrap$()>();
+
+        $stack10 = interfaceinvoke $stack8.<java.util.Map: java.lang.Object computeIfAbsent(java.lang.Object,java.util.function.Function)>(vFrom, $stack9);
+
+        exList = (java.util.List) $stack10;
+
+        $stack11 = interfaceinvoke exList.<java.util.List: boolean contains(java.lang.Object)>(e);
+
+        if $stack11 != 0 goto label1;
+
+        interfaceinvoke exList.<java.util.List: boolean add(java.lang.Object)>(e);
+
+     label1:
+        $r5 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack12 = $r5.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map incidentEdges>;
+
+        $stack13 = staticinvoke <MetadataGraph$lambda_addEdge_1__310: java.util.function.Function bootstrap$()>();
+
+        $stack14 = interfaceinvoke $stack12.<java.util.Map: java.lang.Object computeIfAbsent(java.lang.Object,java.util.function.Function)>(vTo, $stack13);
+
+        inList = (java.util.List) $stack14;
+
+        $stack15 = interfaceinvoke inList.<java.util.List: boolean contains(java.lang.Object)>(e);
+
+        if $stack15 != 0 goto label2;
+
+        interfaceinvoke inList.<java.util.List: boolean add(java.lang.Object)>(e);
+
+     label2:
+        $r6 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        return $r6;
+    }
+
+    public org.apache.maven.repository.metadata.MetadataGraph removeVertex(org.apache.maven.repository.metadata.MetadataGraphVertex)
+    {
+        MetadataGraph this;
+        java.util.TreeSet $stack2, $stack12;
+        java.util.Map $stack4, $stack5, $stack8, $stack3;
+        org.apache.maven.repository.metadata.MetadataGraphVertex v;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: MetadataGraph;
+
+        v := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack2 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        if $stack2 == null goto label1;
+
+        if v == null goto label1;
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack12 = $r1.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        virtualinvoke $stack12.<java.util.TreeSet: boolean remove(java.lang.Object)>(v);
+
+     label1:
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack3 = $r2.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map incidentEdges>;
+
+        if $stack3 == null goto label2;
+
+        $r3 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack8 = $r3.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map incidentEdges>;
+
+        interfaceinvoke $stack8.<java.util.Map: java.lang.Object remove(java.lang.Object)>(v);
+
+     label2:
+        $r4 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack4 = $r4.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map excidentEdges>;
+
+        if $stack4 == null goto label3;
+
+        $r5 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack5 = $r5.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map excidentEdges>;
+
+        interfaceinvoke $stack5.<java.util.Map: java.lang.Object remove(java.lang.Object)>(v);
+
+     label3:
+        $r6 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        return $r6;
+    }
+
+    private static int countNodes(org.apache.maven.repository.metadata.MetadataTreeNode)
+    {
+        org.apache.maven.repository.metadata.MetadataTreeNode tree, n;
+        org.apache.maven.repository.metadata.MetadataTreeNode[] kids;
+        int $stack8, l4, $stack9, count, l5;
+
+        tree := @parameter0: org.apache.maven.repository.metadata.MetadataTreeNode;
+
+        if tree != null goto label1;
+
+        return 0;
+
+     label1:
+        count = 1;
+
+        kids = virtualinvoke tree.<org.apache.maven.repository.metadata.MetadataTreeNode: org.apache.maven.repository.metadata.MetadataTreeNode[] getChildren()>();
+
+        if kids == null goto label2;
+
+        $stack8 = lengthof kids;
+
+        if $stack8 >= 1 goto label3;
+
+     label2:
+        return 1;
+
+     label3:
+        l4 = lengthof kids;
+
+        l5 = 0;
+
+     label4:
+        if l5 >= l4 goto label5;
+
+        n = kids[l5];
+
+        $stack9 = staticinvoke <org.apache.maven.repository.metadata.MetadataGraph: int countNodes(org.apache.maven.repository.metadata.MetadataTreeNode)>(n);
+
+        count = count + $stack9;
+
+        l5 = l5 + 1;
+
+        goto label4;
+
+     label5:
+        return count;
+    }
+
+    public org.apache.maven.repository.metadata.MetadataGraphVertex getEntry()
+    {
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataGraphVertex $stack1;
+        org.apache.maven.repository.metadata.MetadataGraph $r0;
+
+        this := @this: MetadataGraph;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: org.apache.maven.repository.metadata.MetadataGraphVertex entry>;
+
+        return $stack1;
+    }
+
+    public void setEntry(org.apache.maven.repository.metadata.MetadataGraphVertex)
+    {
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataGraphVertex entry;
+        org.apache.maven.repository.metadata.MetadataGraph $r0;
+
+        this := @this: MetadataGraph;
+
+        entry := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r0.<org.apache.maven.repository.metadata.MetadataGraph: org.apache.maven.repository.metadata.MetadataGraphVertex entry> = entry;
+
+        return;
+    }
+
+    public java.util.TreeSet getVertices()
+    {
+        MetadataGraph this;
+        java.util.TreeSet $stack1;
+        org.apache.maven.repository.metadata.MetadataGraph $r0;
+
+        this := @this: MetadataGraph;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        return $stack1;
+    }
+
+    public java.util.List getIncidentEdges(org.apache.maven.repository.metadata.MetadataGraphVertex)
+    {
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataGraphVertex vertex;
+        java.util.Map $stack2;
+        java.lang.Object $stack3;
+        java.util.List $stack4;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1;
+
+        this := @this: MetadataGraph;
+
+        vertex := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.metadata.MetadataGraph: void checkEdges()>();
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack2 = $r1.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map incidentEdges>;
+
+        $stack3 = interfaceinvoke $stack2.<java.util.Map: java.lang.Object get(java.lang.Object)>(vertex);
+
+        $stack4 = (java.util.List) $stack3;
+
+        return $stack4;
+    }
+
+    public java.util.List getExcidentEdges(org.apache.maven.repository.metadata.MetadataGraphVertex)
+    {
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataGraphVertex vertex;
+        java.util.Map $stack2;
+        java.lang.Object $stack3;
+        java.util.List $stack4;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1;
+
+        this := @this: MetadataGraph;
+
+        vertex := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.metadata.MetadataGraph: void checkEdges()>();
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack2 = $r1.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map excidentEdges>;
+
+        $stack3 = interfaceinvoke $stack2.<java.util.Map: java.lang.Object get(java.lang.Object)>(vertex);
+
+        $stack4 = (java.util.List) $stack3;
+
+        return $stack4;
+    }
+
+    public boolean isVersionedVertices()
+    {
+        MetadataGraph this;
+        boolean $stack1;
+        org.apache.maven.repository.metadata.MetadataGraph $r0;
+
+        this := @this: MetadataGraph;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices>;
+
+        return $stack1;
+    }
+
+    public void setVersionedVertices(boolean)
+    {
+        MetadataGraph this;
+        boolean versionedVertices;
+        org.apache.maven.repository.metadata.MetadataGraph $r0;
+
+        this := @this: MetadataGraph;
+
+        versionedVertices := @parameter0: boolean;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r0.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices> = versionedVertices;
+
+        return;
+    }
+
+    public boolean isScopedVertices()
+    {
+        MetadataGraph this;
+        boolean $stack1;
+        org.apache.maven.repository.metadata.MetadataGraph $r0;
+
+        this := @this: MetadataGraph;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices>;
+
+        return $stack1;
+    }
+
+    public void setScopedVertices(boolean)
+    {
+        MetadataGraph this;
+        boolean scopedVertices;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1;
+
+        this := @this: MetadataGraph;
+
+        scopedVertices := @parameter0: boolean;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r0.<org.apache.maven.repository.metadata.MetadataGraph: boolean scopedVertices> = scopedVertices;
+
+        if scopedVertices == 0 goto label1;
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r1.<org.apache.maven.repository.metadata.MetadataGraph: boolean versionedVertices> = 1;
+
+     label1:
+        return;
+    }
+
+    public org.apache.maven.artifact.ArtifactScopeEnum getScope()
+    {
+        MetadataGraph this;
+        org.apache.maven.artifact.ArtifactScopeEnum $stack1;
+        org.apache.maven.repository.metadata.MetadataGraph $r0;
+
+        this := @this: MetadataGraph;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: org.apache.maven.artifact.ArtifactScopeEnum scope>;
+
+        return $stack1;
+    }
+
+    public void setScope(org.apache.maven.artifact.ArtifactScopeEnum)
+    {
+        MetadataGraph this;
+        org.apache.maven.artifact.ArtifactScopeEnum scope;
+        org.apache.maven.repository.metadata.MetadataGraph $r0;
+
+        this := @this: MetadataGraph;
+
+        scope := @parameter0: org.apache.maven.artifact.ArtifactScopeEnum;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $r0.<org.apache.maven.repository.metadata.MetadataGraph: org.apache.maven.artifact.ArtifactScopeEnum scope> = scope;
+
+        return;
+    }
+
+    public boolean isEmpty()
+    {
+        MetadataGraph this;
+        org.apache.maven.repository.metadata.MetadataGraphVertex $stack1;
+        java.util.TreeSet $stack2, $stack3;
+        boolean $stack4, $stack5;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2;
+
+        this := @this: MetadataGraph;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.metadata.MetadataGraph: org.apache.maven.repository.metadata.MetadataGraphVertex entry>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack2 = $r1.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        if $stack2 == null goto label1;
+
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack3 = $r2.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        $stack4 = virtualinvoke $stack3.<java.util.TreeSet: boolean isEmpty()>();
+
+        if $stack4 == 0 goto label2;
+
+     label1:
+        $stack5 = 1;
+
+        goto label3;
+
+     label2:
+        $stack5 = 0;
+
+     label3:
+        return $stack5;
+    }
+
+    public boolean isEmptyEdges()
+    {
+        MetadataGraph this;
+        boolean $stack1, $stack4, $stack5;
+        java.util.Map $stack2, $stack3;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2;
+
+        this := @this: MetadataGraph;
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.repository.metadata.MetadataGraph: boolean isEmpty()>();
+
+        if $stack1 != 0 goto label1;
+
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack2 = $r1.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map incidentEdges>;
+
+        if $stack2 == null goto label1;
+
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack3 = $r2.<org.apache.maven.repository.metadata.MetadataGraph: java.util.Map incidentEdges>;
+
+        $stack4 = interfaceinvoke $stack3.<java.util.Map: boolean isEmpty()>();
+
+        if $stack4 == 0 goto label2;
+
+     label1:
+        $stack5 = 1;
+
+        goto label3;
+
+     label2:
+        $stack5 = 0;
+
+     label3:
+        return $stack5;
+    }
+
+    public java.lang.String toString()
+    {
+        MetadataGraph this;
+        boolean $stack9, $stack12, $stack28, $stack38;
+        java.util.TreeSet $stack10;
+        java.util.Iterator l2, outs, e;
+        java.lang.String $stack14, $stack18, $stack33, $stack44;
+        java.lang.Object $stack15, $stack31, $stack42;
+        org.apache.maven.repository.metadata.MetadataGraphVertex v;
+        java.lang.StringBuilder $stack16, $stack19, $stack32, $stack34, $stack43, $stack45, $u0;
+        org.apache.maven.repository.metadata.ArtifactMetadata $stack17;
+        java.util.List ins, outs#3;
+        org.apache.maven.repository.metadata.MetadataGraphEdge e;
+        org.apache.maven.repository.metadata.MetadataGraph $r0, $r1, $r2, $r3;
+
+        this := @this: MetadataGraph;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(int)>(512);
+
+        $r0 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack9 = virtualinvoke $r0.<org.apache.maven.repository.metadata.MetadataGraph: boolean isEmpty()>();
+
+        if $stack9 == 0 goto label01;
+
+        return "empty";
+
+     label01:
+        $r1 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        $stack10 = $r1.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet vertices>;
+
+        l2 = virtualinvoke $stack10.<java.util.TreeSet: java.util.Iterator iterator()>();
+
+     label02:
+        $stack12 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack12 == 0 goto label11;
+
+        $stack15 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        v = (org.apache.maven.repository.metadata.MetadataGraphVertex) $stack15;
+
+        $stack16 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Vertex:  ");
+
+        $stack17 = virtualinvoke v.<org.apache.maven.repository.metadata.MetadataGraphVertex: org.apache.maven.repository.metadata.ArtifactMetadata getMd()>();
+
+        $stack18 = virtualinvoke $stack17.<org.apache.maven.repository.metadata.ArtifactMetadata: java.lang.String toString()>();
+
+        $stack19 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack18);
+
+        virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(10);
+
+        $r2 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        ins = virtualinvoke $r2.<org.apache.maven.repository.metadata.MetadataGraph: java.util.List getIncidentEdges(org.apache.maven.repository.metadata.MetadataGraphVertex)>(v);
+
+        if ins == null goto label05;
+
+        outs = interfaceinvoke ins.<java.util.List: java.util.Iterator iterator()>();
+
+     label03:
+        $stack38 = interfaceinvoke outs.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack38 == 0 goto label04;
+
+        $stack42 = interfaceinvoke outs.<java.util.Iterator: java.lang.Object next()>();
+
+        e = (org.apache.maven.repository.metadata.MetadataGraphEdge) $stack42;
+
+        $stack43 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("       from :  ");
+
+        $stack44 = virtualinvoke e.<org.apache.maven.repository.metadata.MetadataGraphEdge: java.lang.String toString()>();
+
+        $stack45 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack44);
+
+        virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(10);
+
+        goto label03;
+
+     label04:
+        goto label06;
+
+     label05:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("      no entries\n");
+
+     label06:
+        $r3 = (org.apache.maven.repository.metadata.MetadataGraph) this;
+
+        outs#3 = virtualinvoke $r3.<org.apache.maven.repository.metadata.MetadataGraph: java.util.List getExcidentEdges(org.apache.maven.repository.metadata.MetadataGraphVertex)>(v);
+
+        if outs#3 == null goto label09;
+
+        e = interfaceinvoke outs#3.<java.util.List: java.util.Iterator iterator()>();
+
+     label07:
+        $stack28 = interfaceinvoke e.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack28 == 0 goto label08;
+
+        $stack31 = interfaceinvoke e.<java.util.Iterator: java.lang.Object next()>();
+
+        e = (org.apache.maven.repository.metadata.MetadataGraphEdge) $stack31;
+
+        $stack32 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("        to :  ");
+
+        $stack33 = virtualinvoke e.<org.apache.maven.repository.metadata.MetadataGraphEdge: java.lang.String toString()>();
+
+        $stack34 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack33);
+
+        virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(10);
+
+        goto label07;
+
+     label08:
+        goto label10;
+
+     label09:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("      no exit\n");
+
+     label10:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("-------------------------------------------------\n");
+
+        goto label02;
+
+     label11:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("=============================================================\n");
+
+        $stack14 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack14;
+    }
+
+    private static java.util.List lambda$addEdge$1(org.apache.maven.repository.metadata.MetadataGraphVertex)
+    {
+        java.util.ArrayList $stack1;
+        org.apache.maven.repository.metadata.MetadataGraphVertex k;
+
+        k := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        $stack1 = new java.util.ArrayList;
+
+        specialinvoke $stack1.<java.util.ArrayList: void <init>()>();
+
+        return $stack1;
+    }
+
+    private static java.util.List lambda$addEdge$0(org.apache.maven.repository.metadata.MetadataGraphVertex)
+    {
+        java.util.ArrayList $stack1;
+        org.apache.maven.repository.metadata.MetadataGraphVertex k;
+
+        k := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        $stack1 = new java.util.ArrayList;
+
+        specialinvoke $stack1.<java.util.ArrayList: void <init>()>();
+
+        return $stack1;
+    }
+
+    public static void <clinit>()
+    {
+        <MetadataGraph: int DEFAULT_EDGES> = 64;
+
+        <MetadataGraph: int DEFAULT_VERTICES> = 32;
+
+        return;
+    }
+}

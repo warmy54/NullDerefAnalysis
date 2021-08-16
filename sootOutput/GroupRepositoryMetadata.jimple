@@ -1,0 +1,218 @@
+public class GroupRepositoryMetadata extends org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata
+{
+    private final java.lang.String groupId;
+
+    public void <init>(java.lang.String)
+    {
+        GroupRepositoryMetadata this;
+        java.lang.String groupId;
+        org.apache.maven.artifact.repository.metadata.Metadata $u0;
+        org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata $r0;
+
+        this := @this: GroupRepositoryMetadata;
+
+        groupId := @parameter0: java.lang.String;
+
+        $u0 = new org.apache.maven.artifact.repository.metadata.Metadata;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.Metadata: void <init>()>();
+
+        specialinvoke this.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: void <init>(org.apache.maven.artifact.repository.metadata.Metadata)>($u0);
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata) this;
+
+        $r0.<org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata: java.lang.String groupId> = groupId;
+
+        return;
+    }
+
+    public boolean storedInGroupDirectory()
+    {
+        GroupRepositoryMetadata this;
+
+        this := @this: GroupRepositoryMetadata;
+
+        return 1;
+    }
+
+    public boolean storedInArtifactVersionDirectory()
+    {
+        GroupRepositoryMetadata this;
+
+        this := @this: GroupRepositoryMetadata;
+
+        return 0;
+    }
+
+    public java.lang.String getGroupId()
+    {
+        GroupRepositoryMetadata this;
+        java.lang.String $stack1;
+        org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata $r0;
+
+        this := @this: GroupRepositoryMetadata;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata) this;
+
+        $stack1 = $r0.<org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata: java.lang.String groupId>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getArtifactId()
+    {
+        GroupRepositoryMetadata this;
+
+        this := @this: GroupRepositoryMetadata;
+
+        return null;
+    }
+
+    public java.lang.String getBaseVersion()
+    {
+        GroupRepositoryMetadata this;
+
+        this := @this: GroupRepositoryMetadata;
+
+        return null;
+    }
+
+    public void addPluginMapping(java.lang.String, java.lang.String)
+    {
+        GroupRepositoryMetadata this;
+        java.lang.String goalPrefix, artifactId;
+        org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata $r0;
+
+        this := @this: GroupRepositoryMetadata;
+
+        goalPrefix := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata) this;
+
+        virtualinvoke $r0.<org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata: void addPluginMapping(java.lang.String,java.lang.String,java.lang.String)>(goalPrefix, artifactId, artifactId);
+
+        return;
+    }
+
+    public void addPluginMapping(java.lang.String, java.lang.String, java.lang.String)
+    {
+        GroupRepositoryMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack8, $stack13;
+        java.util.List plugins;
+        boolean $stack11, $stack17, found;
+        java.lang.String goalPrefix, artifactId, name, $stack16;
+        java.lang.Object $stack15;
+        org.apache.maven.artifact.repository.metadata.Plugin plugin, $u0;
+        java.util.Iterator i;
+        org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata $r0, $r1;
+
+        this := @this: GroupRepositoryMetadata;
+
+        goalPrefix := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        name := @parameter2: java.lang.String;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata) this;
+
+        $stack8 = virtualinvoke $r0.<org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata getMetadata()>();
+
+        plugins = virtualinvoke $stack8.<org.apache.maven.artifact.repository.metadata.Metadata: java.util.List getPlugins()>();
+
+        found = 0;
+
+        i = interfaceinvoke plugins.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack11 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label3;
+
+        if found != 0 goto label3;
+
+        $stack15 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+
+        plugin = (org.apache.maven.artifact.repository.metadata.Plugin) $stack15;
+
+        $stack16 = virtualinvoke plugin.<org.apache.maven.artifact.repository.metadata.Plugin: java.lang.String getPrefix()>();
+
+        $stack17 = virtualinvoke $stack16.<java.lang.String: boolean equals(java.lang.Object)>(goalPrefix);
+
+        if $stack17 == 0 goto label2;
+
+        found = 1;
+
+     label2:
+        goto label1;
+
+     label3:
+        if found != 0 goto label4;
+
+        $u0 = new org.apache.maven.artifact.repository.metadata.Plugin;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.Plugin: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.artifact.repository.metadata.Plugin: void setPrefix(java.lang.String)>(goalPrefix);
+
+        virtualinvoke $u0.<org.apache.maven.artifact.repository.metadata.Plugin: void setArtifactId(java.lang.String)>(artifactId);
+
+        virtualinvoke $u0.<org.apache.maven.artifact.repository.metadata.Plugin: void setName(java.lang.String)>(name);
+
+        $r1 = (org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata) this;
+
+        $stack13 = virtualinvoke $r1.<org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata getMetadata()>();
+
+        virtualinvoke $stack13.<org.apache.maven.artifact.repository.metadata.Metadata: void addPlugin(org.apache.maven.artifact.repository.metadata.Plugin)>($u0);
+
+     label4:
+        return;
+    }
+
+    public java.lang.Object getKey()
+    {
+        GroupRepositoryMetadata this;
+        java.lang.String $stack1;
+        org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata $r0;
+
+        this := @this: GroupRepositoryMetadata;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata) this;
+
+        $stack1 = $r0.<org.apache.maven.artifact.repository.metadata.GroupRepositoryMetadata: java.lang.String groupId>;
+
+        return $stack1;
+    }
+
+    public boolean isSnapshot()
+    {
+        GroupRepositoryMetadata this;
+
+        this := @this: GroupRepositoryMetadata;
+
+        return 0;
+    }
+
+    public org.apache.maven.artifact.repository.ArtifactRepository getRepository()
+    {
+        GroupRepositoryMetadata this;
+
+        this := @this: GroupRepositoryMetadata;
+
+        return null;
+    }
+
+    public void setRepository(org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        GroupRepositoryMetadata this;
+        org.apache.maven.artifact.repository.ArtifactRepository remoteRepository;
+
+        this := @this: GroupRepositoryMetadata;
+
+        remoteRepository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        return;
+    }
+}

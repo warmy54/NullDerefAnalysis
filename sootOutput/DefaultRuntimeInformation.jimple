@@ -1,0 +1,77 @@
+public class DefaultRuntimeInformation extends java.lang.Object implements org.apache.maven.execution.RuntimeInformation, org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable
+{
+    private org.apache.maven.rtinfo.RuntimeInformation rtInfo;
+    private org.apache.maven.artifact.versioning.ArtifactVersion applicationVersion;
+
+    public void <init>()
+    {
+        DefaultRuntimeInformation this;
+
+        this := @this: DefaultRuntimeInformation;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.artifact.versioning.ArtifactVersion getApplicationVersion()
+    {
+        DefaultRuntimeInformation this;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack1;
+        org.apache.maven.execution.DefaultRuntimeInformation $r0;
+
+        this := @this: DefaultRuntimeInformation;
+
+        $r0 = (org.apache.maven.execution.DefaultRuntimeInformation) this;
+
+        $stack1 = $r0.<org.apache.maven.execution.DefaultRuntimeInformation: org.apache.maven.artifact.versioning.ArtifactVersion applicationVersion>;
+
+        return $stack1;
+    }
+
+    public void initialize() throws org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException
+    {
+        DefaultRuntimeInformation this;
+        org.apache.maven.rtinfo.RuntimeInformation $stack2;
+        java.lang.String mavenVersion;
+        boolean $stack4;
+        org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException $u0;
+        org.apache.maven.artifact.versioning.DefaultArtifactVersion $u1;
+        org.apache.maven.execution.DefaultRuntimeInformation $r0, $r2;
+        java.lang.Throwable $r1;
+        org.apache.maven.artifact.versioning.ArtifactVersion $r3;
+
+        this := @this: DefaultRuntimeInformation;
+
+        $r0 = (org.apache.maven.execution.DefaultRuntimeInformation) this;
+
+        $stack2 = $r0.<org.apache.maven.execution.DefaultRuntimeInformation: org.apache.maven.rtinfo.RuntimeInformation rtInfo>;
+
+        mavenVersion = interfaceinvoke $stack2.<org.apache.maven.rtinfo.RuntimeInformation: java.lang.String getMavenVersion()>();
+
+        $stack4 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>(mavenVersion);
+
+        if $stack4 == 0 goto label1;
+
+        $u0 = new org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+
+        specialinvoke $u0.<org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException: void <init>(java.lang.String)>("Unable to read Maven version from maven-core");
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        $u1 = new org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+
+        specialinvoke $u1.<org.apache.maven.artifact.versioning.DefaultArtifactVersion: void <init>(java.lang.String)>(mavenVersion);
+
+        $r2 = (org.apache.maven.execution.DefaultRuntimeInformation) this;
+
+        $r3 = (org.apache.maven.artifact.versioning.ArtifactVersion) $u1;
+
+        $r2.<org.apache.maven.execution.DefaultRuntimeInformation: org.apache.maven.artifact.versioning.ArtifactVersion applicationVersion> = $r3;
+
+        return;
+    }
+}

@@ -1,0 +1,759 @@
+public class DebugResolutionListener extends java.lang.Object implements org.apache.maven.artifact.resolver.ResolutionListener, org.apache.maven.artifact.resolver.ResolutionListenerForDepMgmt
+{
+    private org.codehaus.plexus.logging.Logger logger;
+    private java.lang.String indent;
+    private static java.util.Set ignoredArtifacts;
+
+    public void <init>(org.codehaus.plexus.logging.Logger)
+    {
+        DebugResolutionListener this;
+        org.codehaus.plexus.logging.Logger logger;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        logger := @parameter0: org.codehaus.plexus.logging.Logger;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent> = "";
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger> = logger;
+
+        return;
+    }
+
+    public void testArtifact(org.apache.maven.artifact.Artifact)
+    {
+        DebugResolutionListener this;
+        org.apache.maven.artifact.Artifact node;
+
+        this := @this: DebugResolutionListener;
+
+        node := @parameter0: org.apache.maven.artifact.Artifact;
+
+        return;
+    }
+
+    public void startProcessChildren(org.apache.maven.artifact.Artifact)
+    {
+        DebugResolutionListener this;
+        java.lang.String $stack3, $stack6;
+        java.lang.StringBuilder $stack4, $stack5, $u0;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack4 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack3);
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("  ");
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent> = $stack6;
+
+        return;
+    }
+
+    public void endProcessChildren(org.apache.maven.artifact.Artifact)
+    {
+        DebugResolutionListener this;
+        java.lang.String $stack2, $stack3;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack2 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: java.lang.String substring(int)>(2);
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent> = $stack3;
+
+        return;
+    }
+
+    public void includeArtifact(org.apache.maven.artifact.Artifact)
+    {
+        DebugResolutionListener this;
+        org.codehaus.plexus.logging.Logger $stack3;
+        java.lang.String $stack4, $stack8, $stack11;
+        java.lang.StringBuilder $stack5, $stack6, $stack7, $stack9, $stack10, $u0;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack4 = $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack5 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack4);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (selected for ");
+
+        $stack8 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack9 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack3.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack11);
+
+        return;
+    }
+
+    public void omitForNearer(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.Artifact)
+    {
+        org.apache.maven.artifact.Artifact omitted, kept;
+        java.lang.String omittedVersion, keptVersion, $stack10, $stack16;
+        boolean $stack7;
+        DebugResolutionListener this;
+        org.codehaus.plexus.logging.Logger $stack9;
+        java.lang.StringBuilder $stack11, $stack12, $stack13, $stack14, $stack15, $u0;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        omitted := @parameter0: org.apache.maven.artifact.Artifact;
+
+        kept := @parameter1: org.apache.maven.artifact.Artifact;
+
+        omittedVersion = interfaceinvoke omitted.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        keptVersion = interfaceinvoke kept.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack7 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>(omittedVersion, keptVersion);
+
+        if $stack7 != 0 goto label1;
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack9 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack10 = $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack11 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(omitted);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (removed - nearer found: ");
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(keptVersion);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack9.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack16);
+
+     label1:
+        return;
+    }
+
+    public void omitForCycle(org.apache.maven.artifact.Artifact)
+    {
+        DebugResolutionListener this;
+        org.codehaus.plexus.logging.Logger $stack3;
+        java.lang.String $stack4, $stack8;
+        java.lang.StringBuilder $stack5, $stack6, $stack7, $u0;
+        org.apache.maven.artifact.Artifact omitted;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        omitted := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack4 = $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack5 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack4);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(omitted);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (removed - causes a cycle in the graph)");
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack3.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack8);
+
+        return;
+    }
+
+    public void updateScopeCurrentPom(org.apache.maven.artifact.Artifact, java.lang.String)
+    {
+        DebugResolutionListener this;
+        org.codehaus.plexus.logging.Logger $stack4, $stack18;
+        java.lang.String $stack5, ignoredScope, $stack11, $stack14, $stack22, $stack27;
+        java.lang.StringBuilder $stack6, $stack7, $stack8, $stack9, $stack10, $stack12, $stack13, $stack19, $stack20, $stack21, $stack23, $stack24, $stack25, $stack26, $u0, $u1;
+        org.apache.maven.artifact.Artifact artifact;
+        java.util.Set $stack15, $stack28;
+        boolean $stack16;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1, $r2;
+
+        this := @this: DebugResolutionListener;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        ignoredScope := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack4 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack5 = $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (not setting artifactScope to: ");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(ignoredScope);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; local artifactScope ");
+
+        $stack11 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack12 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" wins)");
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack4.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack14);
+
+        $stack15 = <org.apache.maven.artifact.resolver.DebugResolutionListener: java.util.Set ignoredArtifacts>;
+
+        $stack16 = interfaceinvoke $stack15.<java.util.Set: boolean contains(java.lang.Object)>(artifact);
+
+        if $stack16 != 0 goto label1;
+
+        $r2 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack18 = $r2.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack19 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n\tArtifact ");
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" retains local artifactScope \'");
+
+        $stack22 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack23 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack22);
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' overriding broader artifactScope \'");
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(ignoredScope);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'\n\tgiven by a dependency. If this is not intended, modify or remove the local artifactScope.\n");
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack18.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack27);
+
+        $stack28 = <org.apache.maven.artifact.resolver.DebugResolutionListener: java.util.Set ignoredArtifacts>;
+
+        interfaceinvoke $stack28.<java.util.Set: boolean add(java.lang.Object)>(artifact);
+
+     label1:
+        return;
+    }
+
+    public void updateScope(org.apache.maven.artifact.Artifact, java.lang.String)
+    {
+        DebugResolutionListener this;
+        org.codehaus.plexus.logging.Logger $stack4;
+        java.lang.String $stack5, scope, $stack11;
+        java.lang.StringBuilder $stack6, $stack7, $stack8, $stack9, $stack10, $u0;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        scope := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack4 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack5 = $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (setting artifactScope to: ");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(scope);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack4.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack11);
+
+        return;
+    }
+
+    public void selectVersionFromRange(org.apache.maven.artifact.Artifact)
+    {
+        DebugResolutionListener this;
+        org.codehaus.plexus.logging.Logger $stack3;
+        java.lang.String $stack4, $stack8, $stack14;
+        java.lang.StringBuilder $stack5, $stack6, $stack7, $stack9, $stack10, $stack12, $stack13, $u0;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.versioning.VersionRange $stack11;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack4 = $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack5 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack4);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (setting version to: ");
+
+        $stack8 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack9 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" from range: ");
+
+        $stack11 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.VersionRange getVersionRange()>();
+
+        $stack12 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack11);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack3.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack14);
+
+        return;
+    }
+
+    public void restrictRange(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.Artifact, org.apache.maven.artifact.versioning.VersionRange)
+    {
+        DebugResolutionListener this;
+        org.codehaus.plexus.logging.Logger $stack5;
+        java.lang.String $stack6, $stack18;
+        java.lang.StringBuilder $stack7, $stack8, $stack9, $stack11, $stack12, $stack14, $stack15, $stack16, $stack17, $u0;
+        org.apache.maven.artifact.Artifact artifact, replacement;
+        org.apache.maven.artifact.versioning.VersionRange $stack10, $stack13, newRange;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        replacement := @parameter1: org.apache.maven.artifact.Artifact;
+
+        newRange := @parameter2: org.apache.maven.artifact.versioning.VersionRange;
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack5 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack6 = $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack6);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (range restricted from: ");
+
+        $stack10 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.VersionRange getVersionRange()>();
+
+        $stack11 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack10);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" and: ");
+
+        $stack13 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.versioning.VersionRange getVersionRange()>();
+
+        $stack14 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack13);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to: ");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(newRange);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" )");
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack5.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack18);
+
+        return;
+    }
+
+    public void manageArtifact(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.Artifact)
+    {
+        DebugResolutionListener this;
+        java.lang.String $stack5, $stack13, $stack14, $stack23, $stack33, msg;
+        java.lang.StringBuilder $stack6, $stack7, $stack10, $stack11, $stack16, $stack17, $stack21, $stack22, $stack24, $stack31, $stack32, $stack34, $stack35, $u0, $u1, $u2, $u3, $u4;
+        org.apache.maven.artifact.Artifact artifact, replacement;
+        org.codehaus.plexus.logging.Logger $stack19;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        replacement := @parameter1: org.apache.maven.artifact.Artifact;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack5 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        msg = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack10 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(msg);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        msg = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack13 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        if $stack13 == null goto label1;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack31 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(msg);
+
+        $stack32 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("applying version: ");
+
+        $stack33 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack34 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack33);
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(";");
+
+        msg = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label1:
+        $stack14 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        if $stack14 == null goto label2;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack21 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(msg);
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("applying artifactScope: ");
+
+        $stack23 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack24 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+        msg = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label2:
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack16 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(msg);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        msg = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack19 = $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack19.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>(msg);
+
+        return;
+    }
+
+    public void manageArtifactVersion(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.Artifact)
+    {
+        org.apache.maven.artifact.Artifact replacement, artifact;
+        java.lang.String $stack4, $stack5, $stack8, $stack12, msg;
+        boolean $stack6;
+        DebugResolutionListener this;
+        java.lang.StringBuilder $stack9, $stack10, $stack11, $stack13, $stack14, $u0;
+        org.codehaus.plexus.logging.Logger $stack16;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        replacement := @parameter1: org.apache.maven.artifact.Artifact;
+
+        $stack4 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack5 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack6 = virtualinvoke $stack4.<java.lang.String: boolean equals(java.lang.Object)>($stack5);
+
+        if $stack6 != 0 goto label1;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack8 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack9 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (applying version: ");
+
+        $stack12 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        msg = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack16 = $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack16.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>(msg);
+
+     label1:
+        return;
+    }
+
+    public void manageArtifactScope(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.Artifact)
+    {
+        org.apache.maven.artifact.Artifact replacement, artifact;
+        java.lang.String $stack4, $stack5, $stack8, $stack12, msg;
+        boolean $stack6;
+        DebugResolutionListener this;
+        java.lang.StringBuilder $stack9, $stack10, $stack11, $stack13, $stack14, $u0;
+        org.codehaus.plexus.logging.Logger $stack16;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        replacement := @parameter1: org.apache.maven.artifact.Artifact;
+
+        $stack4 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack5 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack6 = virtualinvoke $stack4.<java.lang.String: boolean equals(java.lang.Object)>($stack5);
+
+        if $stack6 != 0 goto label1;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack8 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack9 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (applying artifactScope: ");
+
+        $stack12 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        msg = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack16 = $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack16.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>(msg);
+
+     label1:
+        return;
+    }
+
+    public void manageArtifactSystemPath(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.Artifact)
+    {
+        org.apache.maven.artifact.Artifact replacement, artifact;
+        java.lang.String $stack4, $stack5, $stack8, msg;
+        boolean $stack6;
+        DebugResolutionListener this;
+        java.lang.StringBuilder $stack9, $stack10, $stack11, $stack13, $stack14, $u0;
+        java.io.File $stack12;
+        org.codehaus.plexus.logging.Logger $stack16;
+        org.apache.maven.artifact.resolver.DebugResolutionListener $r0, $r1;
+
+        this := @this: DebugResolutionListener;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        replacement := @parameter1: org.apache.maven.artifact.Artifact;
+
+        $stack4 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack5 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack6 = virtualinvoke $stack4.<java.lang.String: boolean equals(java.lang.Object)>($stack5);
+
+        if $stack6 != 0 goto label1;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack8 = $r0.<org.apache.maven.artifact.resolver.DebugResolutionListener: java.lang.String indent>;
+
+        $stack9 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (applying system path: ");
+
+        $stack12 = interfaceinvoke replacement.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        msg = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.DebugResolutionListener) this;
+
+        $stack16 = $r1.<org.apache.maven.artifact.resolver.DebugResolutionListener: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack16.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>(msg);
+
+     label1:
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.util.HashSet $stack0;
+
+        $stack0 = new java.util.HashSet;
+
+        specialinvoke $stack0.<java.util.HashSet: void <init>()>();
+
+        <org.apache.maven.artifact.resolver.DebugResolutionListener: java.util.Set ignoredArtifacts> = $stack0;
+
+        return;
+    }
+}

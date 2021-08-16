@@ -1,0 +1,99 @@
+public class BuildTimestampValueSource extends org.codehaus.plexus.interpolation.AbstractValueSource
+{
+    private final java.util.Date startTime;
+    private final java.lang.String format;
+    private java.lang.String formattedDate;
+
+    public void <init>(java.util.Date, java.lang.String)
+    {
+        BuildTimestampValueSource this;
+        java.util.Date startTime;
+        java.lang.String format;
+        org.apache.maven.project.interpolation.BuildTimestampValueSource $r0, $r1;
+
+        this := @this: BuildTimestampValueSource;
+
+        startTime := @parameter0: java.util.Date;
+
+        format := @parameter1: java.lang.String;
+
+        specialinvoke this.<org.codehaus.plexus.interpolation.AbstractValueSource: void <init>(boolean)>(0);
+
+        $r0 = (org.apache.maven.project.interpolation.BuildTimestampValueSource) this;
+
+        $r0.<org.apache.maven.project.interpolation.BuildTimestampValueSource: java.util.Date startTime> = startTime;
+
+        $r1 = (org.apache.maven.project.interpolation.BuildTimestampValueSource) this;
+
+        $r1.<org.apache.maven.project.interpolation.BuildTimestampValueSource: java.lang.String format> = format;
+
+        return;
+    }
+
+    public java.lang.Object getValue(java.lang.String)
+    {
+        java.lang.String expression, $stack2, $stack4, $stack9, $stack11, $stack12, $stack5;
+        boolean $stack3, $stack13;
+        BuildTimestampValueSource this;
+        java.util.Date $stack6, $stack10;
+        java.text.SimpleDateFormat $u0;
+        org.apache.maven.project.interpolation.BuildTimestampValueSource $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: BuildTimestampValueSource;
+
+        expression := @parameter0: java.lang.String;
+
+        $stack2 = "build.timestamp";
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: boolean equals(java.lang.Object)>(expression);
+
+        if $stack3 != 0 goto label1;
+
+        $stack12 = "maven.build.timestamp";
+
+        $stack13 = virtualinvoke $stack12.<java.lang.String: boolean equals(java.lang.Object)>(expression);
+
+        if $stack13 == 0 goto label3;
+
+     label1:
+        $r0 = (org.apache.maven.project.interpolation.BuildTimestampValueSource) this;
+
+        $stack4 = $r0.<org.apache.maven.project.interpolation.BuildTimestampValueSource: java.lang.String formattedDate>;
+
+        if $stack4 != null goto label2;
+
+        $r1 = (org.apache.maven.project.interpolation.BuildTimestampValueSource) this;
+
+        $stack6 = $r1.<org.apache.maven.project.interpolation.BuildTimestampValueSource: java.util.Date startTime>;
+
+        if $stack6 == null goto label2;
+
+        $u0 = new java.text.SimpleDateFormat;
+
+        $r2 = (org.apache.maven.project.interpolation.BuildTimestampValueSource) this;
+
+        $stack9 = $r2.<org.apache.maven.project.interpolation.BuildTimestampValueSource: java.lang.String format>;
+
+        specialinvoke $u0.<java.text.SimpleDateFormat: void <init>(java.lang.String)>($stack9);
+
+        $r3 = (org.apache.maven.project.interpolation.BuildTimestampValueSource) this;
+
+        $stack10 = $r3.<org.apache.maven.project.interpolation.BuildTimestampValueSource: java.util.Date startTime>;
+
+        $stack11 = virtualinvoke $u0.<java.text.SimpleDateFormat: java.lang.String format(java.util.Date)>($stack10);
+
+        $r4 = (org.apache.maven.project.interpolation.BuildTimestampValueSource) this;
+
+        $r4.<org.apache.maven.project.interpolation.BuildTimestampValueSource: java.lang.String formattedDate> = $stack11;
+
+     label2:
+        $r5 = (org.apache.maven.project.interpolation.BuildTimestampValueSource) this;
+
+        $stack5 = $r5.<org.apache.maven.project.interpolation.BuildTimestampValueSource: java.lang.String formattedDate>;
+
+        return $stack5;
+
+     label3:
+        return null;
+    }
+}

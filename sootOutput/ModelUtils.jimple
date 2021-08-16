@@ -1,0 +1,683 @@
+public final class ModelUtils extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        ModelUtils this;
+
+        this := @this: ModelUtils;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void mergePluginLists(org.apache.maven.model.PluginContainer, org.apache.maven.model.PluginContainer, boolean)
+    {
+        org.apache.maven.model.PluginContainer childContainer, parentContainer;
+        boolean $stack12, handleAsInheritance, $stack31, $stack38, $stack40, $stack46, $stack17;
+        java.util.ArrayList $stack13, $stack14;
+        java.lang.Object $stack18, $stack43, $stack21;
+        org.apache.maven.model.Plugin parentPlugin, plugin, childPlugin;
+        java.lang.String parentInherited, inherited, $stack20;
+        java.util.List parentPlugins, $stack22, childPlugin#43;
+        java.util.Iterator it, inherited#8;
+        java.util.Map plugin#7;
+
+        childContainer := @parameter0: org.apache.maven.model.PluginContainer;
+
+        parentContainer := @parameter1: org.apache.maven.model.PluginContainer;
+
+        handleAsInheritance := @parameter2: boolean;
+
+        if childContainer == null goto label01;
+
+        if parentContainer != null goto label02;
+
+     label01:
+        return;
+
+     label02:
+        parentPlugins = virtualinvoke parentContainer.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        if parentPlugins == null goto label10;
+
+        $stack12 = interfaceinvoke parentPlugins.<java.util.List: boolean isEmpty()>();
+
+        if $stack12 != 0 goto label10;
+
+        $stack13 = new java.util.ArrayList;
+
+        specialinvoke $stack13.<java.util.ArrayList: void <init>(java.util.Collection)>(parentPlugins);
+
+        if handleAsInheritance == 0 goto label05;
+
+        it = interfaceinvoke $stack13.<java.util.List: java.util.Iterator iterator()>();
+
+     label03:
+        $stack40 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack40 == 0 goto label05;
+
+        $stack43 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+
+        plugin = (org.apache.maven.model.Plugin) $stack43;
+
+        inherited = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getInherited()>();
+
+        if inherited == null goto label04;
+
+        $stack46 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>(inherited);
+
+        if $stack46 != 0 goto label04;
+
+        interfaceinvoke it.<java.util.Iterator: void remove()>();
+
+     label04:
+        goto label03;
+
+     label05:
+        $stack14 = new java.util.ArrayList;
+
+        specialinvoke $stack14.<java.util.ArrayList: void <init>()>();
+
+        plugin#7 = virtualinvoke childContainer.<org.apache.maven.model.PluginContainer: java.util.Map getPluginsAsMap()>();
+
+        inherited#8 = interfaceinvoke $stack13.<java.util.List: java.util.Iterator iterator()>();
+
+     label06:
+        $stack17 = interfaceinvoke inherited#8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack17 == 0 goto label10;
+
+        $stack18 = interfaceinvoke inherited#8.<java.util.Iterator: java.lang.Object next()>();
+
+        parentPlugin = (org.apache.maven.model.Plugin) $stack18;
+
+        parentInherited = virtualinvoke parentPlugin.<org.apache.maven.model.Plugin: java.lang.String getInherited()>();
+
+        if handleAsInheritance == 0 goto label07;
+
+        if parentInherited == null goto label07;
+
+        $stack38 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>(parentInherited);
+
+        if $stack38 == 0 goto label09;
+
+     label07:
+        $stack20 = virtualinvoke parentPlugin.<org.apache.maven.model.Plugin: java.lang.String getKey()>();
+
+        $stack21 = interfaceinvoke plugin#7.<java.util.Map: java.lang.Object get(java.lang.Object)>($stack20);
+
+        childPlugin = (org.apache.maven.model.Plugin) $stack21;
+
+        if childPlugin == null goto label08;
+
+        $stack31 = interfaceinvoke $stack14.<java.util.List: boolean contains(java.lang.Object)>(childPlugin);
+
+        if $stack31 != 0 goto label08;
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginDefinitions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean)>(childPlugin, parentPlugin, handleAsInheritance);
+
+        interfaceinvoke $stack14.<java.util.List: boolean add(java.lang.Object)>(childPlugin);
+
+     label08:
+        if handleAsInheritance == 0 goto label09;
+
+        if parentInherited != null goto label09;
+
+        virtualinvoke parentPlugin.<org.apache.maven.model.Plugin: void unsetInheritanceApplied()>();
+
+     label09:
+        $stack22 = virtualinvoke childContainer.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        childPlugin#43 = staticinvoke <org.apache.maven.project.ModelUtils: java.util.List orderAfterMerge(java.util.List,java.util.List,java.util.List)>($stack14, $stack13, $stack22);
+
+        virtualinvoke childContainer.<org.apache.maven.model.PluginContainer: void setPlugins(java.util.List)>(childPlugin#43);
+
+        virtualinvoke childContainer.<org.apache.maven.model.PluginContainer: void flushPluginMap()>();
+
+        goto label06;
+
+     label10:
+        return;
+    }
+
+    public static java.util.List orderAfterMerge(java.util.List, java.util.List, java.util.List)
+    {
+        java.util.ArrayList $stack11, $stack13, $stack14;
+        java.util.List merged, highPrioritySource, lowPrioritySource, source;
+        boolean $stack12, $stack21, $stack22, $stack26, $stack29, $stack18;
+        java.util.Iterator l6, l8;
+        java.lang.Object $stack19, $stack25;
+        org.apache.maven.model.Plugin item;
+        int idx;
+
+        merged := @parameter0: java.util.List;
+
+        highPrioritySource := @parameter1: java.util.List;
+
+        lowPrioritySource := @parameter2: java.util.List;
+
+        $stack11 = new java.util.ArrayList;
+
+        specialinvoke $stack11.<java.util.ArrayList: void <init>()>();
+
+        $stack12 = interfaceinvoke merged.<java.util.List: boolean isEmpty()>();
+
+        if $stack12 != 0 goto label1;
+
+        interfaceinvoke $stack11.<java.util.List: boolean addAll(java.util.Collection)>(merged);
+
+     label1:
+        $stack13 = new java.util.ArrayList;
+
+        specialinvoke $stack13.<java.util.ArrayList: void <init>()>();
+
+        $stack14 = new java.util.ArrayList;
+
+        specialinvoke $stack14.<java.util.ArrayList: void <init>()>();
+
+        interfaceinvoke $stack14.<java.util.List: boolean add(java.lang.Object)>(highPrioritySource);
+
+        interfaceinvoke $stack14.<java.util.List: boolean add(java.lang.Object)>(lowPrioritySource);
+
+        l6 = interfaceinvoke $stack14.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack18 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack18 == 0 goto label9;
+
+        $stack19 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        source = (java.util.List) $stack19;
+
+        l8 = interfaceinvoke source.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack21 = interfaceinvoke l8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack21 == 0 goto label7;
+
+        $stack25 = interfaceinvoke l8.<java.util.Iterator: java.lang.Object next()>();
+
+        item = (org.apache.maven.model.Plugin) $stack25;
+
+        $stack26 = interfaceinvoke $stack11.<java.util.List: boolean contains(java.lang.Object)>(item);
+
+        if $stack26 == 0 goto label5;
+
+        $stack29 = interfaceinvoke $stack13.<java.util.List: boolean isEmpty()>();
+
+        if $stack29 != 0 goto label6;
+
+        idx = interfaceinvoke $stack11.<java.util.List: int indexOf(java.lang.Object)>(item);
+
+        if idx >= 0 goto label4;
+
+        idx = 0;
+
+     label4:
+        interfaceinvoke $stack11.<java.util.List: boolean addAll(int,java.util.Collection)>(idx, $stack13);
+
+        interfaceinvoke $stack13.<java.util.List: void clear()>();
+
+        goto label6;
+
+     label5:
+        interfaceinvoke $stack13.<java.util.List: boolean add(java.lang.Object)>(item);
+
+     label6:
+        goto label3;
+
+     label7:
+        $stack22 = interfaceinvoke $stack13.<java.util.List: boolean isEmpty()>();
+
+        if $stack22 != 0 goto label8;
+
+        interfaceinvoke $stack11.<java.util.List: boolean addAll(java.util.Collection)>($stack13);
+
+        interfaceinvoke $stack13.<java.util.List: void clear()>();
+
+     label8:
+        goto label2;
+
+     label9:
+        return $stack11;
+    }
+
+    public static void mergePluginDefinitions(org.apache.maven.model.Plugin, org.apache.maven.model.Plugin, boolean)
+    {
+        org.apache.maven.model.Plugin child, parent;
+        boolean $stack17, parentIsInherited, $stack27, $stack32, $stack35, $stack38, handleAsInheritance, $stack61, $stack62, $stack63, $stack59;
+        java.lang.String $stack18, parentInherited, $stack37, inherited, $stack43, $stack66, $stack80, $stack45;
+        org.codehaus.plexus.util.xml.Xpp3Dom parentConfiguration, childConfiguration;
+        java.util.List parentExecutions, $stack33, $stack22, $stack23, $stack24;
+        java.util.ArrayList $stack28;
+        java.util.TreeMap $stack29;
+        java.util.Map childExecutions;
+        java.lang.Object $stack36, $stack41, $stack44, $stack19, $stack20;
+        org.apache.maven.model.PluginExecution childExecution, parentExecution, assembled;
+        java.util.Iterator l11;
+
+        child := @parameter0: org.apache.maven.model.Plugin;
+
+        parent := @parameter1: org.apache.maven.model.Plugin;
+
+        handleAsInheritance := @parameter2: boolean;
+
+        if child == null goto label01;
+
+        if parent != null goto label02;
+
+     label01:
+        return;
+
+     label02:
+        $stack17 = virtualinvoke parent.<org.apache.maven.model.Plugin: boolean isExtensions()>();
+
+        if $stack17 == 0 goto label03;
+
+        virtualinvoke child.<org.apache.maven.model.Plugin: void setExtensions(boolean)>(1);
+
+     label03:
+        $stack18 = virtualinvoke child.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        if $stack18 != null goto label04;
+
+        $stack66 = virtualinvoke parent.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        if $stack66 == null goto label04;
+
+        $stack80 = virtualinvoke parent.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        virtualinvoke child.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>($stack80);
+
+     label04:
+        $stack19 = virtualinvoke child.<org.apache.maven.model.Plugin: java.lang.Object getConfiguration()>();
+
+        childConfiguration = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack19;
+
+        $stack20 = virtualinvoke parent.<org.apache.maven.model.Plugin: java.lang.Object getConfiguration()>();
+
+        parentConfiguration = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack20;
+
+        childConfiguration = staticinvoke <org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom mergeXpp3Dom(org.codehaus.plexus.util.xml.Xpp3Dom,org.codehaus.plexus.util.xml.Xpp3Dom)>(childConfiguration, parentConfiguration);
+
+        virtualinvoke child.<org.apache.maven.model.Plugin: void setConfiguration(java.lang.Object)>(childConfiguration);
+
+        $stack22 = virtualinvoke child.<org.apache.maven.model.Plugin: java.util.List getDependencies()>();
+
+        $stack23 = virtualinvoke parent.<org.apache.maven.model.Plugin: java.util.List getDependencies()>();
+
+        $stack24 = staticinvoke <org.apache.maven.project.ModelUtils: java.util.List mergeDependencyList(java.util.List,java.util.List)>($stack22, $stack23);
+
+        virtualinvoke child.<org.apache.maven.model.Plugin: void setDependencies(java.util.List)>($stack24);
+
+        parentInherited = virtualinvoke parent.<org.apache.maven.model.Plugin: java.lang.String getInherited()>();
+
+        if parentInherited == null goto label05;
+
+        $stack62 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>(parentInherited);
+
+        if $stack62 == 0 goto label06;
+
+     label05:
+        $stack63 = 1;
+
+        goto label07;
+
+     label06:
+        $stack63 = 0;
+
+     label07:
+        parentIsInherited = $stack63;
+
+        parentExecutions = virtualinvoke parent.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        if parentExecutions == null goto label20;
+
+        $stack27 = interfaceinvoke parentExecutions.<java.util.List: boolean isEmpty()>();
+
+        if $stack27 != 0 goto label20;
+
+        $stack28 = new java.util.ArrayList;
+
+        specialinvoke $stack28.<java.util.ArrayList: void <init>()>();
+
+        $stack29 = new java.util.TreeMap;
+
+        specialinvoke $stack29.<java.util.TreeMap: void <init>()>();
+
+        childExecutions = virtualinvoke child.<org.apache.maven.model.Plugin: java.util.Map getExecutionsAsMap()>();
+
+        l11 = interfaceinvoke parentExecutions.<java.util.List: java.util.Iterator iterator()>();
+
+     label08:
+        $stack32 = interfaceinvoke l11.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack32 == 0 goto label16;
+
+        $stack41 = interfaceinvoke l11.<java.util.Iterator: java.lang.Object next()>();
+
+        parentExecution = (org.apache.maven.model.PluginExecution) $stack41;
+
+        inherited = virtualinvoke parentExecution.<org.apache.maven.model.PluginExecution: java.lang.String getInherited()>();
+
+        if parentIsInherited == 0 goto label10;
+
+        if inherited == null goto label09;
+
+        $stack61 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>(inherited);
+
+        if $stack61 == 0 goto label10;
+
+     label09:
+        $stack59 = 1;
+
+        goto label11;
+
+     label10:
+        $stack59 = 0;
+
+     label11:
+        if handleAsInheritance == 0 goto label12;
+
+        if $stack59 == 0 goto label15;
+
+     label12:
+        assembled = parentExecution;
+
+        $stack43 = virtualinvoke parentExecution.<org.apache.maven.model.PluginExecution: java.lang.String getId()>();
+
+        $stack44 = interfaceinvoke childExecutions.<java.util.Map: java.lang.Object get(java.lang.Object)>($stack43);
+
+        childExecution = (org.apache.maven.model.PluginExecution) $stack44;
+
+        if childExecution == null goto label13;
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginExecutionDefinitions(org.apache.maven.model.PluginExecution,org.apache.maven.model.PluginExecution)>(childExecution, parentExecution);
+
+        assembled = childExecution;
+
+        goto label14;
+
+     label13:
+        if handleAsInheritance == 0 goto label14;
+
+        if parentInherited != null goto label14;
+
+        virtualinvoke parentExecution.<org.apache.maven.model.PluginExecution: void unsetInheritanceApplied()>();
+
+     label14:
+        $stack45 = virtualinvoke assembled.<org.apache.maven.model.PluginExecution: java.lang.String getId()>();
+
+        interfaceinvoke $stack29.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack45, assembled);
+
+        interfaceinvoke $stack28.<java.util.List: boolean add(java.lang.Object)>(assembled);
+
+     label15:
+        goto label08;
+
+     label16:
+        $stack33 = virtualinvoke child.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        l11 = interfaceinvoke $stack33.<java.util.List: java.util.Iterator iterator()>();
+
+     label17:
+        $stack35 = interfaceinvoke l11.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack35 == 0 goto label19;
+
+        $stack36 = interfaceinvoke l11.<java.util.Iterator: java.lang.Object next()>();
+
+        parentExecution = (org.apache.maven.model.PluginExecution) $stack36;
+
+        $stack37 = virtualinvoke parentExecution.<org.apache.maven.model.PluginExecution: java.lang.String getId()>();
+
+        $stack38 = interfaceinvoke $stack29.<java.util.Map: boolean containsKey(java.lang.Object)>($stack37);
+
+        if $stack38 != 0 goto label18;
+
+        interfaceinvoke $stack28.<java.util.List: boolean add(java.lang.Object)>(parentExecution);
+
+     label18:
+        goto label17;
+
+     label19:
+        virtualinvoke child.<org.apache.maven.model.Plugin: void setExecutions(java.util.List)>($stack28);
+
+        virtualinvoke child.<org.apache.maven.model.Plugin: void flushExecutionMap()>();
+
+     label20:
+        return;
+    }
+
+    private static void mergePluginExecutionDefinitions(org.apache.maven.model.PluginExecution, org.apache.maven.model.PluginExecution)
+    {
+        org.apache.maven.model.PluginExecution child, parent;
+        java.lang.String $stack7, $stack33, goal;
+        java.util.List parentGoals, childGoals;
+        java.util.ArrayList $stack10;
+        java.lang.Object $stack11, $stack12, $stack26;
+        boolean $stack15, $stack27, $stack30;
+        java.util.Iterator childConfiguration;
+        org.codehaus.plexus.util.xml.Xpp3Dom childConfiguration#5, goal#6;
+
+        child := @parameter0: org.apache.maven.model.PluginExecution;
+
+        parent := @parameter1: org.apache.maven.model.PluginExecution;
+
+        $stack7 = virtualinvoke child.<org.apache.maven.model.PluginExecution: java.lang.String getPhase()>();
+
+        if $stack7 != null goto label1;
+
+        $stack33 = virtualinvoke parent.<org.apache.maven.model.PluginExecution: java.lang.String getPhase()>();
+
+        virtualinvoke child.<org.apache.maven.model.PluginExecution: void setPhase(java.lang.String)>($stack33);
+
+     label1:
+        parentGoals = virtualinvoke parent.<org.apache.maven.model.PluginExecution: java.util.List getGoals()>();
+
+        childGoals = virtualinvoke child.<org.apache.maven.model.PluginExecution: java.util.List getGoals()>();
+
+        $stack10 = new java.util.ArrayList;
+
+        specialinvoke $stack10.<java.util.ArrayList: void <init>()>();
+
+        if childGoals == null goto label2;
+
+        $stack30 = interfaceinvoke childGoals.<java.util.List: boolean isEmpty()>();
+
+        if $stack30 != 0 goto label2;
+
+        interfaceinvoke $stack10.<java.util.List: boolean addAll(java.util.Collection)>(childGoals);
+
+     label2:
+        if parentGoals == null goto label5;
+
+        childConfiguration = interfaceinvoke parentGoals.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack15 = interfaceinvoke childConfiguration.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label5;
+
+        $stack26 = interfaceinvoke childConfiguration.<java.util.Iterator: java.lang.Object next()>();
+
+        goal = (java.lang.String) $stack26;
+
+        $stack27 = interfaceinvoke $stack10.<java.util.List: boolean contains(java.lang.Object)>(goal);
+
+        if $stack27 != 0 goto label4;
+
+        interfaceinvoke $stack10.<java.util.List: boolean add(java.lang.Object)>(goal);
+
+     label4:
+        goto label3;
+
+     label5:
+        virtualinvoke child.<org.apache.maven.model.PluginExecution: void setGoals(java.util.List)>($stack10);
+
+        $stack11 = virtualinvoke child.<org.apache.maven.model.PluginExecution: java.lang.Object getConfiguration()>();
+
+        childConfiguration#5 = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack11;
+
+        $stack12 = virtualinvoke parent.<org.apache.maven.model.PluginExecution: java.lang.Object getConfiguration()>();
+
+        goal#6 = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack12;
+
+        childConfiguration#5 = staticinvoke <org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom mergeXpp3Dom(org.codehaus.plexus.util.xml.Xpp3Dom,org.codehaus.plexus.util.xml.Xpp3Dom)>(childConfiguration#5, goal#6);
+
+        virtualinvoke child.<org.apache.maven.model.PluginExecution: void setConfiguration(java.lang.Object)>(childConfiguration#5);
+
+        return;
+    }
+
+    public static java.util.List mergeRepositoryLists(java.util.List, java.util.List)
+    {
+        java.util.ArrayList $stack5;
+        java.util.List dominant, recessive;
+        java.util.Iterator l3;
+        boolean $stack7, $stack9;
+        java.lang.Object $stack8;
+        org.apache.maven.model.Repository repository;
+
+        dominant := @parameter0: java.util.List;
+
+        recessive := @parameter1: java.util.List;
+
+        $stack5 = new java.util.ArrayList;
+
+        specialinvoke $stack5.<java.util.ArrayList: void <init>(java.util.Collection)>(dominant);
+
+        l3 = interfaceinvoke recessive.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label3;
+
+        $stack8 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.apache.maven.model.Repository) $stack8;
+
+        $stack9 = interfaceinvoke $stack5.<java.util.List: boolean contains(java.lang.Object)>(repository);
+
+        if $stack9 != 0 goto label2;
+
+        interfaceinvoke $stack5.<java.util.List: boolean add(java.lang.Object)>(repository);
+
+     label2:
+        goto label1;
+
+     label3:
+        return $stack5;
+    }
+
+    public static void mergeFilterLists(java.util.List, java.util.List)
+    {
+        java.util.List parentFilters, childFilters;
+        java.util.Iterator l2;
+        boolean $stack5, $stack7;
+        java.lang.Object $stack6;
+        java.lang.String f;
+
+        childFilters := @parameter0: java.util.List;
+
+        parentFilters := @parameter1: java.util.List;
+
+        l2 = interfaceinvoke parentFilters.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack5 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack5 == 0 goto label3;
+
+        $stack6 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        f = (java.lang.String) $stack6;
+
+        $stack7 = interfaceinvoke childFilters.<java.util.List: boolean contains(java.lang.Object)>(f);
+
+        if $stack7 != 0 goto label2;
+
+        interfaceinvoke childFilters.<java.util.List: boolean add(java.lang.Object)>(f);
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    private static java.util.List mergeDependencyList(java.util.List, java.util.List)
+    {
+        java.util.LinkedHashMap $stack5;
+        java.util.List parent, child;
+        java.util.ArrayList $stack6;
+        java.util.Collection $stack7;
+        boolean $stack9, $stack16;
+        java.lang.Object $stack11, $stack18;
+        java.lang.String $stack12, $stack19;
+        java.util.Iterator l3;
+        org.apache.maven.model.Dependency dependency;
+
+        child := @parameter0: java.util.List;
+
+        parent := @parameter1: java.util.List;
+
+        $stack5 = new java.util.LinkedHashMap;
+
+        specialinvoke $stack5.<java.util.LinkedHashMap: void <init>()>();
+
+        if parent == null goto label2;
+
+        l3 = interfaceinvoke parent.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack16 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack16 == 0 goto label2;
+
+        $stack18 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.Dependency) $stack18;
+
+        $stack19 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        interfaceinvoke $stack5.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack19, dependency);
+
+        goto label1;
+
+     label2:
+        if child == null goto label4;
+
+        l3 = interfaceinvoke child.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack9 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label4;
+
+        $stack11 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.Dependency) $stack11;
+
+        $stack12 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        interfaceinvoke $stack5.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack12, dependency);
+
+        goto label3;
+
+     label4:
+        $stack6 = new java.util.ArrayList;
+
+        $stack7 = interfaceinvoke $stack5.<java.util.Map: java.util.Collection values()>();
+
+        specialinvoke $stack6.<java.util.ArrayList: void <init>(java.util.Collection)>($stack7);
+
+        return $stack6;
+    }
+}

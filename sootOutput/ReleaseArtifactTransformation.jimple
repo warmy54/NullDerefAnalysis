@@ -1,0 +1,199 @@
+public class ReleaseArtifactTransformation extends org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation
+{
+
+    public void <init>()
+    {
+        ReleaseArtifactTransformation this;
+
+        this := @this: ReleaseArtifactTransformation;
+
+        specialinvoke this.<org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation: void <init>()>();
+
+        return;
+    }
+
+    public void transformForResolve(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.RepositoryRequest) throws org.apache.maven.artifact.resolver.ArtifactResolutionException, org.apache.maven.artifact.resolver.ArtifactNotFoundException
+    {
+        org.apache.maven.artifact.Artifact artifact;
+        java.lang.String $stack4, $stack5, $stack8, $stack14, version;
+        boolean $stack6, $stack9;
+        ReleaseArtifactTransformation this;
+        org.apache.maven.artifact.repository.RepositoryRequest request;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack10;
+        java.lang.Throwable $stack12, $r1, $r3;
+        org.apache.maven.artifact.resolver.ArtifactNotFoundException $u0;
+        org.apache.maven.artifact.resolver.ArtifactResolutionException $u1;
+        org.apache.maven.repository.legacy.resolver.transform.ReleaseArtifactTransformation $r0;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException $r2;
+
+        this := @this: ReleaseArtifactTransformation;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        request := @parameter1: org.apache.maven.artifact.repository.RepositoryRequest;
+
+        $stack4 = "RELEASE";
+
+        $stack5 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack6 = virtualinvoke $stack4.<java.lang.String: boolean equals(java.lang.Object)>($stack5);
+
+        if $stack6 == 0 goto label5;
+
+     label1:
+        $r0 = (org.apache.maven.repository.legacy.resolver.transform.ReleaseArtifactTransformation) this;
+
+        version = virtualinvoke $r0.<org.apache.maven.repository.legacy.resolver.transform.ReleaseArtifactTransformation: java.lang.String resolveVersion(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.RepositoryRequest)>(artifact, request);
+
+        $stack8 = "RELEASE";
+
+        $stack9 = virtualinvoke $stack8.<java.lang.String: boolean equals(java.lang.Object)>(version);
+
+        if $stack9 == 0 goto label2;
+
+        $u0 = new org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+
+        specialinvoke $u0.<org.apache.maven.artifact.resolver.ArtifactNotFoundException: void <init>(java.lang.String,org.apache.maven.artifact.Artifact)>("Unable to determine the release version", artifact);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label2:
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setBaseVersion(java.lang.String)>(version);
+
+        $stack10 = interfaceinvoke request.<org.apache.maven.artifact.repository.RepositoryRequest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void updateVersion(java.lang.String,org.apache.maven.artifact.repository.ArtifactRepository)>(version, $stack10);
+
+     label3:
+        goto label5;
+
+     label4:
+        $stack12 := @caughtexception;
+
+        $u1 = new org.apache.maven.artifact.resolver.ArtifactResolutionException;
+
+        $r2 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException) $stack12;
+
+        $stack14 = virtualinvoke $r2.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException: java.lang.String getMessage()>();
+
+        specialinvoke $u1.<org.apache.maven.artifact.resolver.ArtifactResolutionException: void <init>(java.lang.String,org.apache.maven.artifact.Artifact,java.lang.Throwable)>($stack14, artifact, $stack12);
+
+        $r3 = (java.lang.Throwable) $u1;
+
+        throw $r3;
+
+     label5:
+        return;
+
+        catch org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException from label1 to label3 with label4;
+    }
+
+    public void transformForInstall(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        ReleaseArtifactTransformation this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        org.apache.maven.repository.legacy.resolver.transform.ReleaseArtifactTransformation $r0;
+
+        this := @this: ReleaseArtifactTransformation;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.legacy.resolver.transform.ReleaseArtifactTransformation) this;
+
+        metadata = specialinvoke $r0.<org.apache.maven.repository.legacy.resolver.transform.ReleaseArtifactTransformation: org.apache.maven.artifact.metadata.ArtifactMetadata createMetadata(org.apache.maven.artifact.Artifact)>(artifact);
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void addMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata)>(metadata);
+
+        return;
+    }
+
+    public void transformForDeployment(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        ReleaseArtifactTransformation this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
+        org.apache.maven.artifact.repository.ArtifactRepository remoteRepository, localRepository;
+        org.apache.maven.repository.legacy.resolver.transform.ReleaseArtifactTransformation $r0;
+
+        this := @this: ReleaseArtifactTransformation;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        remoteRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        localRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.legacy.resolver.transform.ReleaseArtifactTransformation) this;
+
+        metadata = specialinvoke $r0.<org.apache.maven.repository.legacy.resolver.transform.ReleaseArtifactTransformation: org.apache.maven.artifact.metadata.ArtifactMetadata createMetadata(org.apache.maven.artifact.Artifact)>(artifact);
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void addMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata)>(metadata);
+
+        return;
+    }
+
+    private org.apache.maven.artifact.metadata.ArtifactMetadata createMetadata(org.apache.maven.artifact.Artifact)
+    {
+        org.apache.maven.artifact.Artifact artifact;
+        java.lang.String $stack4, $stack7;
+        boolean $stack5;
+        ReleaseArtifactTransformation this;
+        org.apache.maven.artifact.repository.metadata.Versioning $u0;
+        org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata $u1;
+        org.apache.maven.artifact.metadata.ArtifactMetadata $r0;
+
+        this := @this: ReleaseArtifactTransformation;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $u0 = new org.apache.maven.artifact.repository.metadata.Versioning;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.Versioning: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.artifact.repository.metadata.Versioning: void updateTimestamp()>();
+
+        $stack4 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        virtualinvoke $u0.<org.apache.maven.artifact.repository.metadata.Versioning: void addVersion(java.lang.String)>($stack4);
+
+        $stack5 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: boolean isRelease()>();
+
+        if $stack5 == 0 goto label1;
+
+        $stack7 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        virtualinvoke $u0.<org.apache.maven.artifact.repository.metadata.Versioning: void setRelease(java.lang.String)>($stack7);
+
+     label1:
+        $u1 = new org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata;
+
+        specialinvoke $u1.<org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata: void <init>(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.metadata.Versioning)>(artifact, $u0);
+
+        $r0 = (org.apache.maven.artifact.metadata.ArtifactMetadata) $u1;
+
+        return $r0;
+    }
+
+    protected java.lang.String constructVersion(org.apache.maven.artifact.repository.metadata.Versioning, java.lang.String)
+    {
+        org.apache.maven.artifact.repository.metadata.Versioning versioning;
+        java.lang.String $stack3, baseVersion;
+        ReleaseArtifactTransformation this;
+
+        this := @this: ReleaseArtifactTransformation;
+
+        versioning := @parameter0: org.apache.maven.artifact.repository.metadata.Versioning;
+
+        baseVersion := @parameter1: java.lang.String;
+
+        $stack3 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getRelease()>();
+
+        return $stack3;
+    }
+}

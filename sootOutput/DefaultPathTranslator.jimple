@@ -1,0 +1,600 @@
+public class DefaultPathTranslator extends java.lang.Object implements org.apache.maven.project.path.PathTranslator
+{
+    private static final java.lang.String[] BASEDIR_EXPRESSIONS;
+
+    public void <init>()
+    {
+        DefaultPathTranslator this;
+
+        this := @this: DefaultPathTranslator;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void alignToBaseDirectory(org.apache.maven.model.Model, java.io.File)
+    {
+        java.io.File basedir;
+        org.apache.maven.model.Model model;
+        org.apache.maven.model.Build build;
+        DefaultPathTranslator this;
+        java.lang.String $stack9, $stack10, $stack11, $stack12, $stack13, $stack14, $stack15, $stack16, $stack24, $stack25, $stack26, $stack27, filter, $stack43, $stack47, $stack48, $stack51, $stack52;
+        java.util.List $stack17, $stack20, $stack23, $stack31;
+        boolean $stack19, $stack22, $stack33;
+        java.lang.Object $stack42, $stack46, $stack50;
+        java.util.Iterator filters, resource#6;
+        org.apache.maven.model.Resource resource;
+        org.apache.maven.model.Reporting filters#11;
+        java.util.ArrayList $u0;
+        org.apache.maven.project.path.DefaultPathTranslator $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: DefaultPathTranslator;
+
+        model := @parameter0: org.apache.maven.model.Model;
+
+        basedir := @parameter1: java.io.File;
+
+        if basedir != null goto label01;
+
+        return;
+
+     label01:
+        build = virtualinvoke model.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        if build == null goto label09;
+
+        $stack11 = virtualinvoke build.<org.apache.maven.model.Build: java.lang.String getDirectory()>();
+
+        $r0 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack12 = virtualinvoke $r0.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String alignToBaseDirectory(java.lang.String,java.io.File)>($stack11, basedir);
+
+        virtualinvoke build.<org.apache.maven.model.Build: void setDirectory(java.lang.String)>($stack12);
+
+        $stack13 = virtualinvoke build.<org.apache.maven.model.Build: java.lang.String getSourceDirectory()>();
+
+        $r1 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack14 = virtualinvoke $r1.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String alignToBaseDirectory(java.lang.String,java.io.File)>($stack13, basedir);
+
+        virtualinvoke build.<org.apache.maven.model.Build: void setSourceDirectory(java.lang.String)>($stack14);
+
+        $stack15 = virtualinvoke build.<org.apache.maven.model.Build: java.lang.String getTestSourceDirectory()>();
+
+        $r2 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack16 = virtualinvoke $r2.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String alignToBaseDirectory(java.lang.String,java.io.File)>($stack15, basedir);
+
+        virtualinvoke build.<org.apache.maven.model.Build: void setTestSourceDirectory(java.lang.String)>($stack16);
+
+        $stack17 = virtualinvoke build.<org.apache.maven.model.Build: java.util.List getResources()>();
+
+        filters = interfaceinvoke $stack17.<java.util.List: java.util.Iterator iterator()>();
+
+     label02:
+        $stack19 = interfaceinvoke filters.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack19 == 0 goto label03;
+
+        $stack50 = interfaceinvoke filters.<java.util.Iterator: java.lang.Object next()>();
+
+        resource = (org.apache.maven.model.Resource) $stack50;
+
+        $stack51 = virtualinvoke resource.<org.apache.maven.model.Resource: java.lang.String getDirectory()>();
+
+        $r3 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack52 = virtualinvoke $r3.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String alignToBaseDirectory(java.lang.String,java.io.File)>($stack51, basedir);
+
+        virtualinvoke resource.<org.apache.maven.model.Resource: void setDirectory(java.lang.String)>($stack52);
+
+        goto label02;
+
+     label03:
+        $stack20 = virtualinvoke build.<org.apache.maven.model.Build: java.util.List getTestResources()>();
+
+        filters = interfaceinvoke $stack20.<java.util.List: java.util.Iterator iterator()>();
+
+     label04:
+        $stack22 = interfaceinvoke filters.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack22 == 0 goto label05;
+
+        $stack46 = interfaceinvoke filters.<java.util.Iterator: java.lang.Object next()>();
+
+        resource = (org.apache.maven.model.Resource) $stack46;
+
+        $stack47 = virtualinvoke resource.<org.apache.maven.model.Resource: java.lang.String getDirectory()>();
+
+        $r4 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack48 = virtualinvoke $r4.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String alignToBaseDirectory(java.lang.String,java.io.File)>($stack47, basedir);
+
+        virtualinvoke resource.<org.apache.maven.model.Resource: void setDirectory(java.lang.String)>($stack48);
+
+        goto label04;
+
+     label05:
+        $stack23 = virtualinvoke build.<org.apache.maven.model.Build: java.util.List getFilters()>();
+
+        if $stack23 == null goto label08;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $stack31 = virtualinvoke build.<org.apache.maven.model.Build: java.util.List getFilters()>();
+
+        resource#6 = interfaceinvoke $stack31.<java.util.List: java.util.Iterator iterator()>();
+
+     label06:
+        $stack33 = interfaceinvoke resource#6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack33 == 0 goto label07;
+
+        $stack42 = interfaceinvoke resource#6.<java.util.Iterator: java.lang.Object next()>();
+
+        filter = (java.lang.String) $stack42;
+
+        $r5 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack43 = virtualinvoke $r5.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String alignToBaseDirectory(java.lang.String,java.io.File)>(filter, basedir);
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($stack43);
+
+        goto label06;
+
+     label07:
+        virtualinvoke build.<org.apache.maven.model.Build: void setFilters(java.util.List)>($u0);
+
+     label08:
+        $stack24 = virtualinvoke build.<org.apache.maven.model.Build: java.lang.String getOutputDirectory()>();
+
+        $r6 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack25 = virtualinvoke $r6.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String alignToBaseDirectory(java.lang.String,java.io.File)>($stack24, basedir);
+
+        virtualinvoke build.<org.apache.maven.model.Build: void setOutputDirectory(java.lang.String)>($stack25);
+
+        $stack26 = virtualinvoke build.<org.apache.maven.model.Build: java.lang.String getTestOutputDirectory()>();
+
+        $r7 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack27 = virtualinvoke $r7.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String alignToBaseDirectory(java.lang.String,java.io.File)>($stack26, basedir);
+
+        virtualinvoke build.<org.apache.maven.model.Build: void setTestOutputDirectory(java.lang.String)>($stack27);
+
+     label09:
+        filters#11 = virtualinvoke model.<org.apache.maven.model.Model: org.apache.maven.model.Reporting getReporting()>();
+
+        if filters#11 == null goto label10;
+
+        $stack9 = virtualinvoke filters#11.<org.apache.maven.model.Reporting: java.lang.String getOutputDirectory()>();
+
+        $r8 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack10 = virtualinvoke $r8.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String alignToBaseDirectory(java.lang.String,java.io.File)>($stack9, basedir);
+
+        virtualinvoke filters#11.<org.apache.maven.model.Reporting: void setOutputDirectory(java.lang.String)>($stack10);
+
+     label10:
+        return;
+    }
+
+    public java.lang.String alignToBaseDirectory(java.lang.String, java.io.File)
+    {
+        java.io.File basedir, $u0, $u1, $u2;
+        java.lang.String path, $stack8, $stack9, s;
+        DefaultPathTranslator this;
+        boolean $stack7, $stack10;
+        java.net.URI $stack13, $stack14;
+        org.apache.maven.project.path.DefaultPathTranslator $r0;
+
+        this := @this: DefaultPathTranslator;
+
+        path := @parameter0: java.lang.String;
+
+        basedir := @parameter1: java.io.File;
+
+        if basedir != null goto label1;
+
+        return path;
+
+     label1:
+        if path != null goto label2;
+
+        return null;
+
+     label2:
+        $r0 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        s = specialinvoke $r0.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String stripBasedirToken(java.lang.String)>(path);
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>(s);
+
+        $stack7 = virtualinvoke $u0.<java.io.File: boolean isAbsolute()>();
+
+        if $stack7 == 0 goto label3;
+
+        s = virtualinvoke $u0.<java.io.File: java.lang.String getPath()>();
+
+        goto label5;
+
+     label3:
+        $stack8 = virtualinvoke $u0.<java.io.File: java.lang.String getPath()>();
+
+        $stack9 = <java.io.File: java.lang.String separator>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.String: boolean startsWith(java.lang.String)>($stack9);
+
+        if $stack10 == 0 goto label4;
+
+        s = virtualinvoke $u0.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        goto label5;
+
+     label4:
+        $u2 = new java.io.File;
+
+        $u1 = new java.io.File;
+
+        specialinvoke $u1.<java.io.File: void <init>(java.io.File,java.lang.String)>(basedir, s);
+
+        $stack13 = virtualinvoke $u1.<java.io.File: java.net.URI toURI()>();
+
+        $stack14 = virtualinvoke $stack13.<java.net.URI: java.net.URI normalize()>();
+
+        specialinvoke $u2.<java.io.File: void <init>(java.net.URI)>($stack14);
+
+        s = virtualinvoke $u2.<java.io.File: java.lang.String getAbsolutePath()>();
+
+     label5:
+        return s;
+    }
+
+    private java.lang.String stripBasedirToken(java.lang.String)
+    {
+        java.lang.String[] l3;
+        int l4, $stack8, $stack9, $stack10, l5;
+        DefaultPathTranslator this;
+        java.lang.String $stack11, expression, s, basedirExpr;
+        boolean $stack13;
+        org.apache.maven.project.path.DefaultPathTranslator $r0;
+
+        this := @this: DefaultPathTranslator;
+
+        s := @parameter0: java.lang.String;
+
+        if s == null goto label5;
+
+        basedirExpr = null;
+
+        l3 = <org.apache.maven.project.path.DefaultPathTranslator: java.lang.String[] BASEDIR_EXPRESSIONS>;
+
+        l4 = lengthof l3;
+
+        l5 = 0;
+
+     label1:
+        if l5 >= l4 goto label3;
+
+        expression = l3[l5];
+
+        $stack13 = virtualinvoke s.<java.lang.String: boolean startsWith(java.lang.String)>(expression);
+
+        if $stack13 == 0 goto label2;
+
+        basedirExpr = expression;
+
+        goto label3;
+
+     label2:
+        l5 = l5 + 1;
+
+        goto label1;
+
+     label3:
+        if basedirExpr == null goto label5;
+
+        $stack8 = virtualinvoke s.<java.lang.String: int length()>();
+
+        $stack9 = virtualinvoke basedirExpr.<java.lang.String: int length()>();
+
+        if $stack8 <= $stack9 goto label4;
+
+        $stack10 = virtualinvoke basedirExpr.<java.lang.String: int length()>();
+
+        $stack11 = virtualinvoke s.<java.lang.String: java.lang.String substring(int)>($stack10);
+
+        $r0 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        s = specialinvoke $r0.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String chopLeadingFileSeparator(java.lang.String)>($stack11);
+
+        goto label5;
+
+     label4:
+        s = ".";
+
+     label5:
+        return s;
+    }
+
+    private java.lang.String chopLeadingFileSeparator(java.lang.String)
+    {
+        boolean $stack2, $stack5;
+        DefaultPathTranslator this;
+        java.lang.String path;
+
+        this := @this: DefaultPathTranslator;
+
+        path := @parameter0: java.lang.String;
+
+        if path == null goto label2;
+
+        $stack2 = virtualinvoke path.<java.lang.String: boolean startsWith(java.lang.String)>("/");
+
+        if $stack2 != 0 goto label1;
+
+        $stack5 = virtualinvoke path.<java.lang.String: boolean startsWith(java.lang.String)>("\\");
+
+        if $stack5 == 0 goto label2;
+
+     label1:
+        path = virtualinvoke path.<java.lang.String: java.lang.String substring(int)>(1);
+
+     label2:
+        return path;
+    }
+
+    public void unalignFromBaseDirectory(org.apache.maven.model.Model, java.io.File)
+    {
+        java.io.File basedir;
+        org.apache.maven.model.Model model;
+        org.apache.maven.model.Build build;
+        DefaultPathTranslator this;
+        java.lang.String $stack9, $stack10, $stack11, $stack12, $stack13, $stack14, $stack15, $stack16, $stack24, $stack25, $stack26, $stack27, filter, $stack43, $stack47, $stack48, $stack51, $stack52;
+        java.util.List $stack17, $stack20, $stack23, $stack31;
+        boolean $stack19, $stack22, $stack33;
+        java.lang.Object $stack42, $stack46, $stack50;
+        java.util.Iterator filters, resource#6;
+        org.apache.maven.model.Resource resource;
+        org.apache.maven.model.Reporting filters#11;
+        java.util.ArrayList $u0;
+        org.apache.maven.project.path.DefaultPathTranslator $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: DefaultPathTranslator;
+
+        model := @parameter0: org.apache.maven.model.Model;
+
+        basedir := @parameter1: java.io.File;
+
+        if basedir != null goto label01;
+
+        return;
+
+     label01:
+        build = virtualinvoke model.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        if build == null goto label09;
+
+        $stack11 = virtualinvoke build.<org.apache.maven.model.Build: java.lang.String getDirectory()>();
+
+        $r0 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack12 = virtualinvoke $r0.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String unalignFromBaseDirectory(java.lang.String,java.io.File)>($stack11, basedir);
+
+        virtualinvoke build.<org.apache.maven.model.Build: void setDirectory(java.lang.String)>($stack12);
+
+        $stack13 = virtualinvoke build.<org.apache.maven.model.Build: java.lang.String getSourceDirectory()>();
+
+        $r1 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack14 = virtualinvoke $r1.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String unalignFromBaseDirectory(java.lang.String,java.io.File)>($stack13, basedir);
+
+        virtualinvoke build.<org.apache.maven.model.Build: void setSourceDirectory(java.lang.String)>($stack14);
+
+        $stack15 = virtualinvoke build.<org.apache.maven.model.Build: java.lang.String getTestSourceDirectory()>();
+
+        $r2 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack16 = virtualinvoke $r2.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String unalignFromBaseDirectory(java.lang.String,java.io.File)>($stack15, basedir);
+
+        virtualinvoke build.<org.apache.maven.model.Build: void setTestSourceDirectory(java.lang.String)>($stack16);
+
+        $stack17 = virtualinvoke build.<org.apache.maven.model.Build: java.util.List getResources()>();
+
+        filters = interfaceinvoke $stack17.<java.util.List: java.util.Iterator iterator()>();
+
+     label02:
+        $stack19 = interfaceinvoke filters.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack19 == 0 goto label03;
+
+        $stack50 = interfaceinvoke filters.<java.util.Iterator: java.lang.Object next()>();
+
+        resource = (org.apache.maven.model.Resource) $stack50;
+
+        $stack51 = virtualinvoke resource.<org.apache.maven.model.Resource: java.lang.String getDirectory()>();
+
+        $r3 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack52 = virtualinvoke $r3.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String unalignFromBaseDirectory(java.lang.String,java.io.File)>($stack51, basedir);
+
+        virtualinvoke resource.<org.apache.maven.model.Resource: void setDirectory(java.lang.String)>($stack52);
+
+        goto label02;
+
+     label03:
+        $stack20 = virtualinvoke build.<org.apache.maven.model.Build: java.util.List getTestResources()>();
+
+        filters = interfaceinvoke $stack20.<java.util.List: java.util.Iterator iterator()>();
+
+     label04:
+        $stack22 = interfaceinvoke filters.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack22 == 0 goto label05;
+
+        $stack46 = interfaceinvoke filters.<java.util.Iterator: java.lang.Object next()>();
+
+        resource = (org.apache.maven.model.Resource) $stack46;
+
+        $stack47 = virtualinvoke resource.<org.apache.maven.model.Resource: java.lang.String getDirectory()>();
+
+        $r4 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack48 = virtualinvoke $r4.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String unalignFromBaseDirectory(java.lang.String,java.io.File)>($stack47, basedir);
+
+        virtualinvoke resource.<org.apache.maven.model.Resource: void setDirectory(java.lang.String)>($stack48);
+
+        goto label04;
+
+     label05:
+        $stack23 = virtualinvoke build.<org.apache.maven.model.Build: java.util.List getFilters()>();
+
+        if $stack23 == null goto label08;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $stack31 = virtualinvoke build.<org.apache.maven.model.Build: java.util.List getFilters()>();
+
+        resource#6 = interfaceinvoke $stack31.<java.util.List: java.util.Iterator iterator()>();
+
+     label06:
+        $stack33 = interfaceinvoke resource#6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack33 == 0 goto label07;
+
+        $stack42 = interfaceinvoke resource#6.<java.util.Iterator: java.lang.Object next()>();
+
+        filter = (java.lang.String) $stack42;
+
+        $r5 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack43 = virtualinvoke $r5.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String unalignFromBaseDirectory(java.lang.String,java.io.File)>(filter, basedir);
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($stack43);
+
+        goto label06;
+
+     label07:
+        virtualinvoke build.<org.apache.maven.model.Build: void setFilters(java.util.List)>($u0);
+
+     label08:
+        $stack24 = virtualinvoke build.<org.apache.maven.model.Build: java.lang.String getOutputDirectory()>();
+
+        $r6 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack25 = virtualinvoke $r6.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String unalignFromBaseDirectory(java.lang.String,java.io.File)>($stack24, basedir);
+
+        virtualinvoke build.<org.apache.maven.model.Build: void setOutputDirectory(java.lang.String)>($stack25);
+
+        $stack26 = virtualinvoke build.<org.apache.maven.model.Build: java.lang.String getTestOutputDirectory()>();
+
+        $r7 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack27 = virtualinvoke $r7.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String unalignFromBaseDirectory(java.lang.String,java.io.File)>($stack26, basedir);
+
+        virtualinvoke build.<org.apache.maven.model.Build: void setTestOutputDirectory(java.lang.String)>($stack27);
+
+     label09:
+        filters#11 = virtualinvoke model.<org.apache.maven.model.Model: org.apache.maven.model.Reporting getReporting()>();
+
+        if filters#11 == null goto label10;
+
+        $stack9 = virtualinvoke filters#11.<org.apache.maven.model.Reporting: java.lang.String getOutputDirectory()>();
+
+        $r8 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        $stack10 = virtualinvoke $r8.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String unalignFromBaseDirectory(java.lang.String,java.io.File)>($stack9, basedir);
+
+        virtualinvoke filters#11.<org.apache.maven.model.Reporting: void setOutputDirectory(java.lang.String)>($stack10);
+
+     label10:
+        return;
+    }
+
+    public java.lang.String unalignFromBaseDirectory(java.lang.String, java.io.File)
+    {
+        java.io.File basedir, $u0;
+        java.lang.String base, $stack14, path, path#2;
+        boolean $stack6, $stack9;
+        int $stack7, $stack13;
+        DefaultPathTranslator this;
+        org.apache.maven.project.path.DefaultPathTranslator $r0;
+
+        this := @this: DefaultPathTranslator;
+
+        path := @parameter0: java.lang.String;
+
+        basedir := @parameter1: java.io.File;
+
+        if basedir != null goto label1;
+
+        return path;
+
+     label1:
+        if path != null goto label2;
+
+        return null;
+
+     label2:
+        path#2 = virtualinvoke path.<java.lang.String: java.lang.String trim()>();
+
+        base = virtualinvoke basedir.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack6 = virtualinvoke path#2.<java.lang.String: boolean startsWith(java.lang.String)>(base);
+
+        if $stack6 == 0 goto label3;
+
+        $stack13 = virtualinvoke base.<java.lang.String: int length()>();
+
+        $stack14 = virtualinvoke path#2.<java.lang.String: java.lang.String substring(int)>($stack13);
+
+        $r0 = (org.apache.maven.project.path.DefaultPathTranslator) this;
+
+        path#2 = specialinvoke $r0.<org.apache.maven.project.path.DefaultPathTranslator: java.lang.String chopLeadingFileSeparator(java.lang.String)>($stack14);
+
+     label3:
+        $stack7 = virtualinvoke path#2.<java.lang.String: int length()>();
+
+        if $stack7 > 0 goto label4;
+
+        path#2 = ".";
+
+     label4:
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>(path#2);
+
+        $stack9 = virtualinvoke $u0.<java.io.File: boolean isAbsolute()>();
+
+        if $stack9 != 0 goto label5;
+
+        path#2 = virtualinvoke path#2.<java.lang.String: java.lang.String replace(char,char)>(92, 47);
+
+     label5:
+        return path#2;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String[] $stack0;
+
+        $stack0 = newarray (java.lang.String)[3];
+
+        $stack0[0] = "${basedir}";
+
+        $stack0[1] = "${pom.basedir}";
+
+        $stack0[2] = "${project.basedir}";
+
+        <org.apache.maven.project.path.DefaultPathTranslator: java.lang.String[] BASEDIR_EXPRESSIONS> = $stack0;
+
+        return;
+    }
+}

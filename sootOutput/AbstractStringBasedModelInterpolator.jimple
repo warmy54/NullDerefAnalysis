@@ -1,0 +1,838 @@
+public abstract class AbstractStringBasedModelInterpolator extends org.codehaus.plexus.logging.AbstractLogEnabled implements org.apache.maven.project.interpolation.ModelInterpolator, org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable
+{
+    private static final java.util.List PROJECT_PREFIXES;
+    private static final java.util.List TRANSLATED_PATH_EXPRESSIONS;
+    private org.apache.maven.project.path.PathTranslator pathTranslator;
+    private org.codehaus.plexus.interpolation.Interpolator interpolator;
+    private org.codehaus.plexus.interpolation.RecursionInterceptor recursionInterceptor;
+
+    protected void <init>(org.apache.maven.project.path.PathTranslator)
+    {
+        AbstractStringBasedModelInterpolator this;
+        org.apache.maven.project.path.PathTranslator pathTranslator;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r0;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        pathTranslator := @parameter0: org.apache.maven.project.path.PathTranslator;
+
+        specialinvoke this.<org.codehaus.plexus.logging.AbstractLogEnabled: void <init>()>();
+
+        $r0 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $r0.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.apache.maven.project.path.PathTranslator pathTranslator> = pathTranslator;
+
+        return;
+    }
+
+    protected void <init>()
+    {
+        AbstractStringBasedModelInterpolator this;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        specialinvoke this.<org.codehaus.plexus.logging.AbstractLogEnabled: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.model.Model interpolate(org.apache.maven.model.Model, java.util.Map) throws org.apache.maven.project.interpolation.ModelInterpolationException
+    {
+        AbstractStringBasedModelInterpolator this;
+        org.apache.maven.model.Model model, $stack3;
+        java.util.Map context;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r0;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        model := @parameter0: org.apache.maven.model.Model;
+
+        context := @parameter1: java.util.Map;
+
+        $r0 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack3 = virtualinvoke $r0.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.apache.maven.model.Model interpolate(org.apache.maven.model.Model,java.util.Map,boolean)>(model, context, 1);
+
+        return $stack3;
+    }
+
+    public org.apache.maven.model.Model interpolate(org.apache.maven.model.Model, java.util.Map, boolean) throws org.apache.maven.project.interpolation.ModelInterpolationException
+    {
+        java.util.Map context;
+        AbstractStringBasedModelInterpolator this;
+        org.apache.maven.model.Model model, $stack9;
+        org.apache.maven.project.ProjectBuilderConfiguration $stack8;
+        boolean strict;
+        java.util.Properties $u0;
+        org.apache.maven.project.DefaultProjectBuilderConfiguration $u1;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r0;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        model := @parameter0: org.apache.maven.model.Model;
+
+        context := @parameter1: java.util.Map;
+
+        strict := @parameter2: boolean;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u0.<java.util.Properties: void putAll(java.util.Map)>(context);
+
+        $u1 = new org.apache.maven.project.DefaultProjectBuilderConfiguration;
+
+        specialinvoke $u1.<org.apache.maven.project.DefaultProjectBuilderConfiguration: void <init>()>();
+
+        $stack8 = virtualinvoke $u1.<org.apache.maven.project.DefaultProjectBuilderConfiguration: org.apache.maven.project.ProjectBuilderConfiguration setExecutionProperties(java.util.Properties)>($u0);
+
+        $r0 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack9 = virtualinvoke $r0.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.apache.maven.model.Model interpolate(org.apache.maven.model.Model,java.io.File,org.apache.maven.project.ProjectBuilderConfiguration,boolean)>(model, null, $stack8, 1);
+
+        return $stack9;
+    }
+
+    public org.apache.maven.model.Model interpolate(org.apache.maven.model.Model, java.io.File, org.apache.maven.project.ProjectBuilderConfiguration, boolean) throws org.apache.maven.project.interpolation.ModelInterpolationException
+    {
+        AbstractStringBasedModelInterpolator this;
+        java.io.File projectDir;
+        org.apache.maven.project.ProjectBuilderConfiguration config;
+        boolean debugEnabled;
+        java.lang.Throwable $stack18, $r0, $r2;
+        java.io.IOException $stack20;
+        org.apache.maven.model.Model model, model#5;
+        java.lang.String e#3;
+        java.io.StringWriter $u0;
+        org.apache.maven.model.io.xpp3.MavenXpp3Writer $u1;
+        org.apache.maven.project.interpolation.ModelInterpolationException $u2, $u5;
+        java.io.StringReader $u3;
+        org.apache.maven.model.io.xpp3.MavenXpp3Reader $u4;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r1;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        model := @parameter0: org.apache.maven.model.Model;
+
+        projectDir := @parameter1: java.io.File;
+
+        config := @parameter2: org.apache.maven.project.ProjectBuilderConfiguration;
+
+        debugEnabled := @parameter3: boolean;
+
+        $u0 = new java.io.StringWriter;
+
+        specialinvoke $u0.<java.io.StringWriter: void <init>(int)>(1024);
+
+        $u1 = new org.apache.maven.model.io.xpp3.MavenXpp3Writer;
+
+        specialinvoke $u1.<org.apache.maven.model.io.xpp3.MavenXpp3Writer: void <init>()>();
+
+     label1:
+        virtualinvoke $u1.<org.apache.maven.model.io.xpp3.MavenXpp3Writer: void write(java.io.Writer,org.apache.maven.model.Model)>($u0, model);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack20 := @caughtexception;
+
+        $u2 = new org.apache.maven.project.interpolation.ModelInterpolationException;
+
+        specialinvoke $u2.<org.apache.maven.project.interpolation.ModelInterpolationException: void <init>(java.lang.String,java.lang.Throwable)>("Cannot serialize project model for interpolation.", $stack20);
+
+        $r0 = (java.lang.Throwable) $u2;
+
+        throw $r0;
+
+     label4:
+        e#3 = virtualinvoke $u0.<java.io.StringWriter: java.lang.String toString()>();
+
+        $r1 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        e#3 = virtualinvoke $r1.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.lang.String interpolate(java.lang.String,org.apache.maven.model.Model,java.io.File,org.apache.maven.project.ProjectBuilderConfiguration,boolean)>(e#3, model, projectDir, config, debugEnabled);
+
+        $u3 = new java.io.StringReader;
+
+        specialinvoke $u3.<java.io.StringReader: void <init>(java.lang.String)>(e#3);
+
+        $u4 = new org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+
+        specialinvoke $u4.<org.apache.maven.model.io.xpp3.MavenXpp3Reader: void <init>()>();
+
+     label5:
+        model#5 = virtualinvoke $u4.<org.apache.maven.model.io.xpp3.MavenXpp3Reader: org.apache.maven.model.Model read(java.io.Reader)>($u3);
+
+     label6:
+        goto label8;
+
+     label7:
+        $stack18 := @caughtexception;
+
+        $u5 = new org.apache.maven.project.interpolation.ModelInterpolationException;
+
+        specialinvoke $u5.<org.apache.maven.project.interpolation.ModelInterpolationException: void <init>(java.lang.String,java.lang.Throwable)>("Cannot read project model from interpolating filter of serialized version.", $stack18);
+
+        $r2 = (java.lang.Throwable) $u5;
+
+        throw $r2;
+
+     label8:
+        return model#5;
+
+        catch java.io.IOException from label1 to label2 with label3;
+        catch java.io.IOException from label5 to label6 with label7;
+        catch org.codehaus.plexus.util.xml.pull.XmlPullParserException from label5 to label6 with label7;
+    }
+
+    public java.lang.String interpolate(java.lang.String, org.apache.maven.model.Model, java.io.File, org.apache.maven.project.ProjectBuilderConfiguration, boolean) throws org.apache.maven.project.interpolation.ModelInterpolationException
+    {
+        AbstractStringBasedModelInterpolator this;
+        org.apache.maven.model.Model model;
+        java.io.File projectDir;
+        org.apache.maven.project.ProjectBuilderConfiguration config;
+        java.util.List valueSources, postProcessors;
+        java.lang.String src, l8;
+        boolean debug;
+        org.codehaus.plexus.interpolation.Interpolator $stack13, $stack15;
+        java.lang.Throwable $stack14;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        src := @parameter0: java.lang.String;
+
+        model := @parameter1: org.apache.maven.model.Model;
+
+        projectDir := @parameter2: java.io.File;
+
+        config := @parameter3: org.apache.maven.project.ProjectBuilderConfiguration;
+
+        debug := @parameter4: boolean;
+
+     label1:
+        $r0 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        valueSources = virtualinvoke $r0.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.util.List createValueSources(org.apache.maven.model.Model,java.io.File,org.apache.maven.project.ProjectBuilderConfiguration)>(model, projectDir, config);
+
+        $r1 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        postProcessors = virtualinvoke $r1.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.util.List createPostProcessors(org.apache.maven.model.Model,java.io.File,org.apache.maven.project.ProjectBuilderConfiguration)>(model, projectDir, config);
+
+        $r2 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        l8 = virtualinvoke $r2.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.lang.String interpolateInternal(java.lang.String,java.util.List,java.util.List,boolean)>(src, valueSources, postProcessors, debug);
+
+     label2:
+        $r3 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack13 = $r3.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        interfaceinvoke $stack13.<org.codehaus.plexus.interpolation.Interpolator: void clearAnswers()>();
+
+        return l8;
+
+     label3:
+        $stack14 := @caughtexception;
+
+     label4:
+        $r4 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack15 = $r4.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        interfaceinvoke $stack15.<org.codehaus.plexus.interpolation.Interpolator: void clearAnswers()>();
+
+        throw $stack14;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    protected java.util.List createValueSources(org.apache.maven.model.Model, java.io.File, org.apache.maven.project.ProjectBuilderConfiguration)
+    {
+        org.apache.maven.model.Model model;
+        java.util.Properties modelProperties, $stack29, $stack34;
+        java.util.List $stack13, $stack17, $stack20;
+        AbstractStringBasedModelInterpolator this;
+        java.io.File projectDir;
+        org.apache.maven.project.ProjectBuilderConfiguration config;
+        java.util.Date $stack25;
+        java.lang.String timestampFormat;
+        org.codehaus.plexus.interpolation.PrefixedObjectValueSource $u0;
+        org.codehaus.plexus.interpolation.ObjectBasedValueSource $u1;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator$1 $u2;
+        org.codehaus.plexus.interpolation.PrefixedValueSourceWrapper $u3, $u5;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator$2 $u4;
+        java.util.ArrayList $u6;
+        org.apache.maven.project.interpolation.BuildTimestampValueSource $u7;
+        org.codehaus.plexus.interpolation.MapBasedValueSource $u8, $u9, $u10;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator$3 $u11;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r0, $r2, $r4;
+        org.codehaus.plexus.interpolation.ValueSource $r1, $r3;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        model := @parameter0: org.apache.maven.model.Model;
+
+        projectDir := @parameter1: java.io.File;
+
+        config := @parameter2: org.apache.maven.project.ProjectBuilderConfiguration;
+
+        timestampFormat = "yyyyMMdd-HHmm";
+
+        modelProperties = virtualinvoke model.<org.apache.maven.model.Model: java.util.Properties getProperties()>();
+
+        if modelProperties == null goto label1;
+
+        timestampFormat = virtualinvoke modelProperties.<java.util.Properties: java.lang.String getProperty(java.lang.String,java.lang.String)>("maven.build.timestamp.format", "yyyyMMdd-HHmm");
+
+     label1:
+        $u0 = new org.codehaus.plexus.interpolation.PrefixedObjectValueSource;
+
+        $stack13 = <org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.util.List PROJECT_PREFIXES>;
+
+        specialinvoke $u0.<org.codehaus.plexus.interpolation.PrefixedObjectValueSource: void <init>(java.util.List,java.lang.Object,boolean)>($stack13, model, 0);
+
+        $u1 = new org.codehaus.plexus.interpolation.ObjectBasedValueSource;
+
+        specialinvoke $u1.<org.codehaus.plexus.interpolation.ObjectBasedValueSource: void <init>(java.lang.Object)>(model);
+
+        $u3 = new org.codehaus.plexus.interpolation.PrefixedValueSourceWrapper;
+
+        $u2 = new org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator$1;
+
+        $r0 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        specialinvoke $u2.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator$1: void <init>(org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator,boolean,java.io.File)>($r0, 0, projectDir);
+
+        $stack17 = <org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.util.List PROJECT_PREFIXES>;
+
+        $r1 = (org.codehaus.plexus.interpolation.ValueSource) $u2;
+
+        specialinvoke $u3.<org.codehaus.plexus.interpolation.PrefixedValueSourceWrapper: void <init>(org.codehaus.plexus.interpolation.ValueSource,java.util.List,boolean)>($r1, $stack17, 1);
+
+        $u5 = new org.codehaus.plexus.interpolation.PrefixedValueSourceWrapper;
+
+        $u4 = new org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator$2;
+
+        $r2 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        specialinvoke $u4.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator$2: void <init>(org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator,boolean,java.io.File)>($r2, 0, projectDir);
+
+        $stack20 = <org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.util.List PROJECT_PREFIXES>;
+
+        $r3 = (org.codehaus.plexus.interpolation.ValueSource) $u4;
+
+        specialinvoke $u5.<org.codehaus.plexus.interpolation.PrefixedValueSourceWrapper: void <init>(org.codehaus.plexus.interpolation.ValueSource,java.util.List,boolean)>($r3, $stack20, 0);
+
+        $u6 = new java.util.ArrayList;
+
+        specialinvoke $u6.<java.util.ArrayList: void <init>(int)>(9);
+
+        interfaceinvoke $u6.<java.util.List: boolean add(java.lang.Object)>($u3);
+
+        interfaceinvoke $u6.<java.util.List: boolean add(java.lang.Object)>($u5);
+
+        $u7 = new org.apache.maven.project.interpolation.BuildTimestampValueSource;
+
+        $stack25 = interfaceinvoke config.<org.apache.maven.project.ProjectBuilderConfiguration: java.util.Date getBuildStartTime()>();
+
+        specialinvoke $u7.<org.apache.maven.project.interpolation.BuildTimestampValueSource: void <init>(java.util.Date,java.lang.String)>($stack25, timestampFormat);
+
+        interfaceinvoke $u6.<java.util.List: boolean add(java.lang.Object)>($u7);
+
+        interfaceinvoke $u6.<java.util.List: boolean add(java.lang.Object)>($u0);
+
+        $u8 = new org.codehaus.plexus.interpolation.MapBasedValueSource;
+
+        $stack29 = interfaceinvoke config.<org.apache.maven.project.ProjectBuilderConfiguration: java.util.Properties getUserProperties()>();
+
+        specialinvoke $u8.<org.codehaus.plexus.interpolation.MapBasedValueSource: void <init>(java.util.Map)>($stack29);
+
+        interfaceinvoke $u6.<java.util.List: boolean add(java.lang.Object)>($u8);
+
+        $u9 = new org.codehaus.plexus.interpolation.MapBasedValueSource;
+
+        specialinvoke $u9.<org.codehaus.plexus.interpolation.MapBasedValueSource: void <init>(java.util.Map)>(modelProperties);
+
+        interfaceinvoke $u6.<java.util.List: boolean add(java.lang.Object)>($u9);
+
+        $u10 = new org.codehaus.plexus.interpolation.MapBasedValueSource;
+
+        $stack34 = interfaceinvoke config.<org.apache.maven.project.ProjectBuilderConfiguration: java.util.Properties getExecutionProperties()>();
+
+        specialinvoke $u10.<org.codehaus.plexus.interpolation.MapBasedValueSource: void <init>(java.util.Map)>($stack34);
+
+        interfaceinvoke $u6.<java.util.List: boolean add(java.lang.Object)>($u10);
+
+        $u11 = new org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator$3;
+
+        $r4 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        specialinvoke $u11.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator$3: void <init>(org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator,boolean,org.apache.maven.project.ProjectBuilderConfiguration)>($r4, 0, config);
+
+        interfaceinvoke $u6.<java.util.List: boolean add(java.lang.Object)>($u11);
+
+        interfaceinvoke $u6.<java.util.List: boolean add(java.lang.Object)>($u1);
+
+        return $u6;
+    }
+
+    protected java.util.List createPostProcessors(org.apache.maven.model.Model, java.io.File, org.apache.maven.project.ProjectBuilderConfiguration)
+    {
+        java.io.File projectDir;
+        AbstractStringBasedModelInterpolator this;
+        org.apache.maven.project.path.PathTranslator $stack5;
+        java.util.List $stack6, $stack7, $stack8;
+        org.apache.maven.model.Model model;
+        org.apache.maven.project.ProjectBuilderConfiguration config;
+        org.apache.maven.project.interpolation.PathTranslatingPostProcessor $u0;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r0;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        model := @parameter0: org.apache.maven.model.Model;
+
+        projectDir := @parameter1: java.io.File;
+
+        config := @parameter2: org.apache.maven.project.ProjectBuilderConfiguration;
+
+        $u0 = new org.apache.maven.project.interpolation.PathTranslatingPostProcessor;
+
+        $stack7 = <org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.util.List PROJECT_PREFIXES>;
+
+        $stack6 = <org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.util.List TRANSLATED_PATH_EXPRESSIONS>;
+
+        $r0 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack5 = $r0.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.apache.maven.project.path.PathTranslator pathTranslator>;
+
+        specialinvoke $u0.<org.apache.maven.project.interpolation.PathTranslatingPostProcessor: void <init>(java.util.List,java.util.List,java.io.File,org.apache.maven.project.path.PathTranslator)>($stack7, $stack6, projectDir, $stack5);
+
+        $stack8 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($u0);
+
+        return $stack8;
+    }
+
+    protected java.lang.String interpolateInternal(java.lang.String, java.util.List, java.util.List, boolean) throws org.apache.maven.project.interpolation.ModelInterpolationException
+    {
+        java.lang.String src, $stack45, $stack49, $stack51, $stack75, result;
+        boolean $stack16, $stack20, $stack22, debug, $stack30, $stack42, $stack44, $stack47, $stack64, $stack66, $stack28;
+        AbstractStringBasedModelInterpolator this;
+        org.codehaus.plexus.logging.Logger logger;
+        java.util.List valueSources, postProcessors, e#8;
+        org.codehaus.plexus.interpolation.RecursionInterceptor $stack23;
+        org.codehaus.plexus.interpolation.Interpolator $stack24, $stack33, $stack36, $stack38, $stack55, $stack58, $stack68, $stack71, $stack26;
+        java.lang.Object $stack32, $stack35, next, $stack54, $stack57, $stack67, $stack70, vs#9;
+        java.util.Iterator l10, e, l13;
+        java.lang.Throwable $stack52, $stack53, $stack60, $stack62, $stack73, $r6;
+        org.codehaus.plexus.interpolation.ValueSource vs;
+        org.codehaus.plexus.interpolation.InterpolationPostProcessor vs#5;
+        org.apache.maven.project.interpolation.ModelInterpolationException $u0;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r0, $r1, $r2, $r3, $r4, $r7, $r8, $r9, $r10, $r11, $r12;
+        org.codehaus.plexus.interpolation.InterpolationException $r5;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        src := @parameter0: java.lang.String;
+
+        valueSources := @parameter1: java.util.List;
+
+        postProcessors := @parameter2: java.util.List;
+
+        debug := @parameter3: boolean;
+
+        $stack16 = virtualinvoke src.<java.lang.String: boolean contains(java.lang.CharSequence)>("${");
+
+        if $stack16 != 0 goto label01;
+
+        return src;
+
+     label01:
+        $r0 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        logger = virtualinvoke $r0.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        entermonitor this;
+
+     label02:
+        e = interfaceinvoke valueSources.<java.util.List: java.util.Iterator iterator()>();
+
+     label03:
+        $stack20 = interfaceinvoke e.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack20 == 0 goto label04;
+
+        $stack57 = interfaceinvoke e.<java.util.Iterator: java.lang.Object next()>();
+
+        vs = (org.codehaus.plexus.interpolation.ValueSource) $stack57;
+
+        $r1 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack58 = $r1.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        interfaceinvoke $stack58.<org.codehaus.plexus.interpolation.Interpolator: void addValueSource(org.codehaus.plexus.interpolation.ValueSource)>(vs);
+
+        goto label03;
+
+     label04:
+        e = interfaceinvoke postProcessors.<java.util.List: java.util.Iterator iterator()>();
+
+     label05:
+        $stack22 = interfaceinvoke e.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack22 == 0 goto label06;
+
+        $stack54 = interfaceinvoke e.<java.util.Iterator: java.lang.Object next()>();
+
+        vs#5 = (org.codehaus.plexus.interpolation.InterpolationPostProcessor) $stack54;
+
+        $r2 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack55 = $r2.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        interfaceinvoke $stack55.<org.codehaus.plexus.interpolation.Interpolator: void addPostProcessor(org.codehaus.plexus.interpolation.InterpolationPostProcessor)>(vs#5);
+
+        goto label05;
+
+     label06:
+        $r3 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack24 = $r3.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        $r4 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack23 = $r4.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.RecursionInterceptor recursionInterceptor>;
+
+        result = interfaceinvoke $stack24.<org.codehaus.plexus.interpolation.Interpolator: java.lang.String interpolate(java.lang.String,org.codehaus.plexus.interpolation.RecursionInterceptor)>(src, $stack23);
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack73 := @caughtexception;
+
+        $u0 = new org.apache.maven.project.interpolation.ModelInterpolationException;
+
+        $r5 = (org.codehaus.plexus.interpolation.InterpolationException) $stack73;
+
+        $stack75 = virtualinvoke $r5.<org.codehaus.plexus.interpolation.InterpolationException: java.lang.String getMessage()>();
+
+        specialinvoke $u0.<org.apache.maven.project.interpolation.ModelInterpolationException: void <init>(java.lang.String,java.lang.Throwable)>($stack75, $stack73);
+
+        $r6 = (java.lang.Throwable) $u0;
+
+        throw $r6;
+
+     label09:
+        if debug == 0 goto label16;
+
+        $r7 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack38 = $r7.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        e#8 = interfaceinvoke $stack38.<org.codehaus.plexus.interpolation.Interpolator: java.util.List getFeedback()>();
+
+        if e#8 == null goto label16;
+
+        $stack42 = interfaceinvoke e#8.<java.util.List: boolean isEmpty()>();
+
+        if $stack42 != 0 goto label16;
+
+        interfaceinvoke logger.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>("Maven encountered the following problems during initial POM interpolation:");
+
+        vs#9 = null;
+
+        l10 = interfaceinvoke e#8.<java.util.List: java.util.Iterator iterator()>();
+
+     label10:
+        $stack44 = interfaceinvoke l10.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack44 == 0 goto label15;
+
+        next = interfaceinvoke l10.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack47 = next instanceof java.lang.Throwable;
+
+        if $stack47 == 0 goto label12;
+
+        if vs#9 != null goto label11;
+
+        $stack53 = (java.lang.Throwable) next;
+
+        interfaceinvoke logger.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>("", $stack53);
+
+        goto label14;
+
+     label11:
+        $stack51 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(vs#9);
+
+        $stack52 = (java.lang.Throwable) next;
+
+        interfaceinvoke logger.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack51, $stack52);
+
+        goto label14;
+
+     label12:
+        if vs#9 == null goto label13;
+
+        $stack49 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(vs#9);
+
+        interfaceinvoke logger.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack49);
+
+     label13:
+        vs#9 = next;
+
+     label14:
+        goto label10;
+
+     label15:
+        if vs#9 == null goto label16;
+
+        $stack45 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(vs#9);
+
+        interfaceinvoke logger.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack45);
+
+     label16:
+        $r8 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack26 = $r8.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        interfaceinvoke $stack26.<org.codehaus.plexus.interpolation.Interpolator: void clearFeedback()>();
+
+     label17:
+        e = interfaceinvoke valueSources.<java.util.List: java.util.Iterator iterator()>();
+
+     label18:
+        $stack28 = interfaceinvoke e.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack28 == 0 goto label19;
+
+        $stack35 = interfaceinvoke e.<java.util.Iterator: java.lang.Object next()>();
+
+        vs = (org.codehaus.plexus.interpolation.ValueSource) $stack35;
+
+        $r9 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack36 = $r9.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        interfaceinvoke $stack36.<org.codehaus.plexus.interpolation.Interpolator: void removeValuesSource(org.codehaus.plexus.interpolation.ValueSource)>(vs);
+
+        goto label18;
+
+     label19:
+        e = interfaceinvoke postProcessors.<java.util.List: java.util.Iterator iterator()>();
+
+     label20:
+        $stack30 = interfaceinvoke e.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack30 == 0 goto label21;
+
+        $stack32 = interfaceinvoke e.<java.util.Iterator: java.lang.Object next()>();
+
+        vs#5 = (org.codehaus.plexus.interpolation.InterpolationPostProcessor) $stack32;
+
+        $r10 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack33 = $r10.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        interfaceinvoke $stack33.<org.codehaus.plexus.interpolation.Interpolator: void removePostProcessor(org.codehaus.plexus.interpolation.InterpolationPostProcessor)>(vs#5);
+
+        goto label20;
+
+     label21:
+        goto label28;
+
+     label22:
+        $stack62 := @caughtexception;
+
+     label23:
+        l13 = interfaceinvoke valueSources.<java.util.List: java.util.Iterator iterator()>();
+
+     label24:
+        $stack64 = interfaceinvoke l13.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack64 == 0 goto label25;
+
+        $stack70 = interfaceinvoke l13.<java.util.Iterator: java.lang.Object next()>();
+
+        vs = (org.codehaus.plexus.interpolation.ValueSource) $stack70;
+
+        $r11 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack71 = $r11.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        interfaceinvoke $stack71.<org.codehaus.plexus.interpolation.Interpolator: void removeValuesSource(org.codehaus.plexus.interpolation.ValueSource)>(vs);
+
+        goto label24;
+
+     label25:
+        l13 = interfaceinvoke postProcessors.<java.util.List: java.util.Iterator iterator()>();
+
+     label26:
+        $stack66 = interfaceinvoke l13.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack66 == 0 goto label27;
+
+        $stack67 = interfaceinvoke l13.<java.util.Iterator: java.lang.Object next()>();
+
+        vs#5 = (org.codehaus.plexus.interpolation.InterpolationPostProcessor) $stack67;
+
+        $r12 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack68 = $r12.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        interfaceinvoke $stack68.<org.codehaus.plexus.interpolation.Interpolator: void removePostProcessor(org.codehaus.plexus.interpolation.InterpolationPostProcessor)>(vs#5);
+
+        goto label26;
+
+     label27:
+        throw $stack62;
+
+     label28:
+        exitmonitor this;
+
+     label29:
+        goto label32;
+
+     label30:
+        $stack60 := @caughtexception;
+
+        exitmonitor this;
+
+     label31:
+        throw $stack60;
+
+     label32:
+        return result;
+
+        catch org.codehaus.plexus.interpolation.InterpolationException from label06 to label07 with label08;
+        catch java.lang.Throwable from label06 to label17 with label22;
+        catch java.lang.Throwable from label22 to label23 with label22;
+        catch java.lang.Throwable from label02 to label29 with label30;
+        catch java.lang.Throwable from label30 to label31 with label30;
+    }
+
+    protected org.codehaus.plexus.interpolation.RecursionInterceptor getRecursionInterceptor()
+    {
+        AbstractStringBasedModelInterpolator this;
+        org.codehaus.plexus.interpolation.RecursionInterceptor $stack1;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r0;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        $r0 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack1 = $r0.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.RecursionInterceptor recursionInterceptor>;
+
+        return $stack1;
+    }
+
+    protected void setRecursionInterceptor(org.codehaus.plexus.interpolation.RecursionInterceptor)
+    {
+        AbstractStringBasedModelInterpolator this;
+        org.codehaus.plexus.interpolation.RecursionInterceptor recursionInterceptor;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r0;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        recursionInterceptor := @parameter0: org.codehaus.plexus.interpolation.RecursionInterceptor;
+
+        $r0 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $r0.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.RecursionInterceptor recursionInterceptor> = recursionInterceptor;
+
+        return;
+    }
+
+    protected abstract org.codehaus.plexus.interpolation.Interpolator createInterpolator();
+
+    public void initialize() throws org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException
+    {
+        AbstractStringBasedModelInterpolator this;
+        org.codehaus.plexus.interpolation.Interpolator $stack1;
+        java.util.List $stack3;
+        org.codehaus.plexus.interpolation.PrefixAwareRecursionInterceptor $u0;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r0, $r1, $r2;
+        org.codehaus.plexus.interpolation.RecursionInterceptor $r3;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        $r0 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator createInterpolator()>();
+
+        $r1 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $r1.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator> = $stack1;
+
+        $u0 = new org.codehaus.plexus.interpolation.PrefixAwareRecursionInterceptor;
+
+        $stack3 = <org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.util.List PROJECT_PREFIXES>;
+
+        specialinvoke $u0.<org.codehaus.plexus.interpolation.PrefixAwareRecursionInterceptor: void <init>(java.util.Collection)>($stack3);
+
+        $r2 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $r3 = (org.codehaus.plexus.interpolation.RecursionInterceptor) $u0;
+
+        $r2.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.RecursionInterceptor recursionInterceptor> = $r3;
+
+        return;
+    }
+
+    protected final org.codehaus.plexus.interpolation.Interpolator getInterpolator()
+    {
+        AbstractStringBasedModelInterpolator this;
+        org.codehaus.plexus.interpolation.Interpolator $stack1;
+        org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator $r0;
+
+        this := @this: AbstractStringBasedModelInterpolator;
+
+        $r0 = (org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator) this;
+
+        $stack1 = $r0.<org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: org.codehaus.plexus.interpolation.Interpolator interpolator>;
+
+        return $stack1;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String[] $stack1;
+        java.util.List $stack2;
+        java.util.ArrayList $stack3;
+
+        $stack1 = newarray (java.lang.String)[2];
+
+        $stack1[0] = "pom.";
+
+        $stack1[1] = "project.";
+
+        $stack2 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack1);
+
+        <org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.util.List PROJECT_PREFIXES> = $stack2;
+
+        $stack3 = new java.util.ArrayList;
+
+        specialinvoke $stack3.<java.util.ArrayList: void <init>()>();
+
+        interfaceinvoke $stack3.<java.util.List: boolean add(java.lang.Object)>("build.directory");
+
+        interfaceinvoke $stack3.<java.util.List: boolean add(java.lang.Object)>("build.outputDirectory");
+
+        interfaceinvoke $stack3.<java.util.List: boolean add(java.lang.Object)>("build.testOutputDirectory");
+
+        interfaceinvoke $stack3.<java.util.List: boolean add(java.lang.Object)>("build.sourceDirectory");
+
+        interfaceinvoke $stack3.<java.util.List: boolean add(java.lang.Object)>("build.testSourceDirectory");
+
+        interfaceinvoke $stack3.<java.util.List: boolean add(java.lang.Object)>("build.scriptSourceDirectory");
+
+        interfaceinvoke $stack3.<java.util.List: boolean add(java.lang.Object)>("reporting.outputDirectory");
+
+        <org.apache.maven.project.interpolation.AbstractStringBasedModelInterpolator: java.util.List TRANSLATED_PATH_EXPRESSIONS> = $stack3;
+
+        return;
+    }
+}

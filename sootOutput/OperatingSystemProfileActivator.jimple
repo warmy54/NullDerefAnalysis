@@ -1,0 +1,333 @@
+public class OperatingSystemProfileActivator extends java.lang.Object implements org.apache.maven.profiles.activation.ProfileActivator
+{
+
+    public void <init>()
+    {
+        OperatingSystemProfileActivator this;
+
+        this := @this: OperatingSystemProfileActivator;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean canDetermineActivation(org.apache.maven.model.Profile)
+    {
+        org.apache.maven.model.Profile profile;
+        org.apache.maven.model.Activation activation;
+        org.apache.maven.model.ActivationOS $stack4;
+        OperatingSystemProfileActivator this;
+        boolean $stack5;
+
+        this := @this: OperatingSystemProfileActivator;
+
+        profile := @parameter0: org.apache.maven.model.Profile;
+
+        activation = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        if activation == null goto label1;
+
+        $stack4 = virtualinvoke activation.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationOS getOs()>();
+
+        if $stack4 == null goto label1;
+
+        $stack5 = 1;
+
+        goto label2;
+
+     label1:
+        $stack5 = 0;
+
+     label2:
+        return $stack5;
+    }
+
+    public boolean isActive(org.apache.maven.model.Profile)
+    {
+        org.apache.maven.model.Profile profile;
+        org.apache.maven.model.Activation activation;
+        org.apache.maven.model.ActivationOS os;
+        OperatingSystemProfileActivator this;
+        java.lang.String $stack8, $stack10, $stack12, $stack14, $stack16, $stack18, $stack20, $stack22;
+        boolean result;
+        org.apache.maven.profiles.activation.OperatingSystemProfileActivator $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: OperatingSystemProfileActivator;
+
+        profile := @parameter0: org.apache.maven.model.Profile;
+
+        activation = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        os = virtualinvoke activation.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationOS getOs()>();
+
+        $r0 = (org.apache.maven.profiles.activation.OperatingSystemProfileActivator) this;
+
+        result = specialinvoke $r0.<org.apache.maven.profiles.activation.OperatingSystemProfileActivator: boolean ensureAtLeastOneNonNull(org.apache.maven.model.ActivationOS)>(os);
+
+        if result == 0 goto label1;
+
+        $stack20 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getFamily()>();
+
+        if $stack20 == null goto label1;
+
+        $stack22 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getFamily()>();
+
+        $r1 = (org.apache.maven.profiles.activation.OperatingSystemProfileActivator) this;
+
+        result = specialinvoke $r1.<org.apache.maven.profiles.activation.OperatingSystemProfileActivator: boolean determineFamilyMatch(java.lang.String)>($stack22);
+
+     label1:
+        if result == 0 goto label2;
+
+        $stack16 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getName()>();
+
+        if $stack16 == null goto label2;
+
+        $stack18 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getName()>();
+
+        $r2 = (org.apache.maven.profiles.activation.OperatingSystemProfileActivator) this;
+
+        result = specialinvoke $r2.<org.apache.maven.profiles.activation.OperatingSystemProfileActivator: boolean determineNameMatch(java.lang.String)>($stack18);
+
+     label2:
+        if result == 0 goto label3;
+
+        $stack12 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getArch()>();
+
+        if $stack12 == null goto label3;
+
+        $stack14 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getArch()>();
+
+        $r3 = (org.apache.maven.profiles.activation.OperatingSystemProfileActivator) this;
+
+        result = specialinvoke $r3.<org.apache.maven.profiles.activation.OperatingSystemProfileActivator: boolean determineArchMatch(java.lang.String)>($stack14);
+
+     label3:
+        if result == 0 goto label4;
+
+        $stack8 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getVersion()>();
+
+        if $stack8 == null goto label4;
+
+        $stack10 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getVersion()>();
+
+        $r4 = (org.apache.maven.profiles.activation.OperatingSystemProfileActivator) this;
+
+        result = specialinvoke $r4.<org.apache.maven.profiles.activation.OperatingSystemProfileActivator: boolean determineVersionMatch(java.lang.String)>($stack10);
+
+     label4:
+        return result;
+    }
+
+    private boolean ensureAtLeastOneNonNull(org.apache.maven.model.ActivationOS)
+    {
+        org.apache.maven.model.ActivationOS os;
+        java.lang.String $stack2, $stack3, $stack4, $stack5;
+        OperatingSystemProfileActivator this;
+        boolean $stack6;
+
+        this := @this: OperatingSystemProfileActivator;
+
+        os := @parameter0: org.apache.maven.model.ActivationOS;
+
+        $stack2 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getArch()>();
+
+        if $stack2 != null goto label1;
+
+        $stack3 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getFamily()>();
+
+        if $stack3 != null goto label1;
+
+        $stack4 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getName()>();
+
+        if $stack4 != null goto label1;
+
+        $stack5 = virtualinvoke os.<org.apache.maven.model.ActivationOS: java.lang.String getVersion()>();
+
+        if $stack5 == null goto label2;
+
+     label1:
+        $stack6 = 1;
+
+        goto label3;
+
+     label2:
+        $stack6 = 0;
+
+     label3:
+        return $stack6;
+    }
+
+    private boolean determineVersionMatch(java.lang.String)
+    {
+        java.lang.String version, test;
+        boolean $stack5, result, reverse, $stack7;
+        OperatingSystemProfileActivator this;
+
+        this := @this: OperatingSystemProfileActivator;
+
+        version := @parameter0: java.lang.String;
+
+        test = version;
+
+        reverse = 0;
+
+        $stack5 = virtualinvoke version.<java.lang.String: boolean startsWith(java.lang.String)>("!");
+
+        if $stack5 == 0 goto label1;
+
+        reverse = 1;
+
+        test = virtualinvoke version.<java.lang.String: java.lang.String substring(int)>(1);
+
+     label1:
+        result = staticinvoke <org.codehaus.plexus.util.Os: boolean isVersion(java.lang.String)>(test);
+
+        if reverse == 0 goto label4;
+
+        if result != 0 goto label2;
+
+        $stack7 = 1;
+
+        goto label3;
+
+     label2:
+        $stack7 = 0;
+
+     label3:
+        return $stack7;
+
+     label4:
+        return result;
+    }
+
+    private boolean determineArchMatch(java.lang.String)
+    {
+        java.lang.String arch, test;
+        boolean $stack5, result, reverse, $stack7;
+        OperatingSystemProfileActivator this;
+
+        this := @this: OperatingSystemProfileActivator;
+
+        arch := @parameter0: java.lang.String;
+
+        test = arch;
+
+        reverse = 0;
+
+        $stack5 = virtualinvoke arch.<java.lang.String: boolean startsWith(java.lang.String)>("!");
+
+        if $stack5 == 0 goto label1;
+
+        reverse = 1;
+
+        test = virtualinvoke arch.<java.lang.String: java.lang.String substring(int)>(1);
+
+     label1:
+        result = staticinvoke <org.codehaus.plexus.util.Os: boolean isArch(java.lang.String)>(test);
+
+        if reverse == 0 goto label4;
+
+        if result != 0 goto label2;
+
+        $stack7 = 1;
+
+        goto label3;
+
+     label2:
+        $stack7 = 0;
+
+     label3:
+        return $stack7;
+
+     label4:
+        return result;
+    }
+
+    private boolean determineNameMatch(java.lang.String)
+    {
+        java.lang.String name, test;
+        boolean $stack5, result, reverse, $stack7;
+        OperatingSystemProfileActivator this;
+
+        this := @this: OperatingSystemProfileActivator;
+
+        name := @parameter0: java.lang.String;
+
+        test = name;
+
+        reverse = 0;
+
+        $stack5 = virtualinvoke name.<java.lang.String: boolean startsWith(java.lang.String)>("!");
+
+        if $stack5 == 0 goto label1;
+
+        reverse = 1;
+
+        test = virtualinvoke name.<java.lang.String: java.lang.String substring(int)>(1);
+
+     label1:
+        result = staticinvoke <org.codehaus.plexus.util.Os: boolean isName(java.lang.String)>(test);
+
+        if reverse == 0 goto label4;
+
+        if result != 0 goto label2;
+
+        $stack7 = 1;
+
+        goto label3;
+
+     label2:
+        $stack7 = 0;
+
+     label3:
+        return $stack7;
+
+     label4:
+        return result;
+    }
+
+    private boolean determineFamilyMatch(java.lang.String)
+    {
+        java.lang.String family, test;
+        boolean $stack5, result, reverse, $stack7;
+        OperatingSystemProfileActivator this;
+
+        this := @this: OperatingSystemProfileActivator;
+
+        family := @parameter0: java.lang.String;
+
+        test = family;
+
+        reverse = 0;
+
+        $stack5 = virtualinvoke family.<java.lang.String: boolean startsWith(java.lang.String)>("!");
+
+        if $stack5 == 0 goto label1;
+
+        reverse = 1;
+
+        test = virtualinvoke family.<java.lang.String: java.lang.String substring(int)>(1);
+
+     label1:
+        result = staticinvoke <org.codehaus.plexus.util.Os: boolean isFamily(java.lang.String)>(test);
+
+        if reverse == 0 goto label4;
+
+        if result != 0 goto label2;
+
+        $stack7 = 1;
+
+        goto label3;
+
+     label2:
+        $stack7 = 0;
+
+     label3:
+        return $stack7;
+
+     label4:
+        return result;
+    }
+}

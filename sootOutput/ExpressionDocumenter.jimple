@@ -1,0 +1,381 @@
+public class ExpressionDocumenter extends java.lang.Object
+{
+    private static final java.lang.String[] EXPRESSION_ROOTS;
+    private static final java.lang.String EXPRESSION_DOCO_ROOTPATH;
+    private static java.util.Map expressionDocumentation;
+    static final boolean $assertionsDisabled;
+
+    public void <init>()
+    {
+        ExpressionDocumenter this;
+
+        this := @this: ExpressionDocumenter;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.util.Map load() throws org.apache.maven.usability.plugin.ExpressionDocumentationException
+    {
+        java.util.Map $stack8, $stack9, $stack21, doco;
+        java.lang.ClassLoader docLoader;
+        java.lang.String[] l1;
+        int l2, l3;
+        java.lang.String root, $stack16, $stack28, $stack34;
+        java.lang.StringBuilder $stack13, $stack14, $stack15, $stack26, $stack27, $stack32, $stack33, $u1, $u2, $u4;
+        java.lang.Throwable $stack23, $stack35, $stack36, $r0, $r1;
+        java.io.IOException $stack29;
+        java.io.InputStream docStream;
+        java.util.HashMap $u0;
+        org.apache.maven.usability.plugin.ExpressionDocumentationException $u3, $u5;
+
+        $stack8 = <org.apache.maven.usability.plugin.ExpressionDocumenter: java.util.Map expressionDocumentation>;
+
+        if $stack8 != null goto label14;
+
+        $u0 = new java.util.HashMap;
+
+        specialinvoke $u0.<java.util.HashMap: void <init>()>();
+
+        <org.apache.maven.usability.plugin.ExpressionDocumenter: java.util.Map expressionDocumentation> = $u0;
+
+        docLoader = staticinvoke <org.apache.maven.usability.plugin.ExpressionDocumenter: java.lang.ClassLoader initializeDocLoader()>();
+
+        l1 = <org.apache.maven.usability.plugin.ExpressionDocumenter: java.lang.String[] EXPRESSION_ROOTS>;
+
+        l2 = lengthof l1;
+
+        l3 = 0;
+
+     label01:
+        if l3 >= l2 goto label14;
+
+        root = l1[l3];
+
+     label02:
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("META-INF/maven/plugin-expressions/");
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(root);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".paramdoc.xml");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        docStream = virtualinvoke docLoader.<java.lang.ClassLoader: java.io.InputStream getResourceAsStream(java.lang.String)>($stack16);
+
+     label03:
+        if docStream == null goto label04;
+
+        doco = staticinvoke <org.apache.maven.usability.plugin.ExpressionDocumenter: java.util.Map parseExpressionDocumentation(java.io.InputStream)>(docStream);
+
+        $stack21 = <org.apache.maven.usability.plugin.ExpressionDocumenter: java.util.Map expressionDocumentation>;
+
+        interfaceinvoke $stack21.<java.util.Map: void putAll(java.util.Map)>(doco);
+
+     label04:
+        if docStream == null goto label10;
+
+        virtualinvoke docStream.<java.io.InputStream: void close()>();
+
+        goto label10;
+
+     label05:
+        $stack36 := @caughtexception;
+
+        if docStream == null goto label09;
+
+     label06:
+        virtualinvoke docStream.<java.io.InputStream: void close()>();
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack35 := @caughtexception;
+
+        virtualinvoke $stack36.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack35);
+
+     label09:
+        throw $stack36;
+
+     label10:
+        goto label13;
+
+     label11:
+        $stack29 := @caughtexception;
+
+        $u3 = new org.apache.maven.usability.plugin.ExpressionDocumentationException;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack32 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to read documentation for expression root: ");
+
+        $stack33 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(root);
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u3.<org.apache.maven.usability.plugin.ExpressionDocumentationException: void <init>(java.lang.String,java.lang.Throwable)>($stack34, $stack29);
+
+        $r0 = (java.lang.Throwable) $u3;
+
+        throw $r0;
+
+     label12:
+        $stack23 := @caughtexception;
+
+        $u5 = new org.apache.maven.usability.plugin.ExpressionDocumentationException;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack26 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to parse documentation for expression root: ");
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(root);
+
+        $stack28 = virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u5.<org.apache.maven.usability.plugin.ExpressionDocumentationException: void <init>(java.lang.String,java.lang.Throwable)>($stack28, $stack23);
+
+        $r1 = (java.lang.Throwable) $u5;
+
+        throw $r1;
+
+     label13:
+        l3 = l3 + 1;
+
+        goto label01;
+
+     label14:
+        $stack9 = <org.apache.maven.usability.plugin.ExpressionDocumenter: java.util.Map expressionDocumentation>;
+
+        return $stack9;
+
+        catch java.lang.Throwable from label03 to label04 with label05;
+        catch java.lang.Throwable from label06 to label07 with label08;
+        catch java.io.IOException from label02 to label10 with label11;
+        catch org.codehaus.plexus.util.xml.pull.XmlPullParserException from label02 to label10 with label12;
+    }
+
+    private static java.util.Map parseExpressionDocumentation(java.io.InputStream) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.io.InputStream docStream;
+        org.codehaus.plexus.util.xml.XmlStreamReader $stack9;
+        org.apache.maven.usability.plugin.ExpressionDocumentation documentation;
+        java.util.List expressions;
+        boolean $stack14, $stack17;
+        java.util.Iterator l6;
+        java.lang.Object $stack18;
+        org.apache.maven.usability.plugin.Expression expression;
+        java.lang.String $stack19;
+        java.io.BufferedReader $u0;
+        org.apache.maven.usability.plugin.io.xpp3.ParamdocXpp3Reader $u1;
+        java.util.HashMap $u2;
+        java.io.Reader $r0;
+
+        docStream := @parameter0: java.io.InputStream;
+
+        $u0 = new java.io.BufferedReader;
+
+        $stack9 = staticinvoke <org.codehaus.plexus.util.ReaderFactory: org.codehaus.plexus.util.xml.XmlStreamReader newXmlReader(java.io.InputStream)>(docStream);
+
+        $r0 = (java.io.Reader) $stack9;
+
+        specialinvoke $u0.<java.io.BufferedReader: void <init>(java.io.Reader)>($r0);
+
+        $u1 = new org.apache.maven.usability.plugin.io.xpp3.ParamdocXpp3Reader;
+
+        specialinvoke $u1.<org.apache.maven.usability.plugin.io.xpp3.ParamdocXpp3Reader: void <init>()>();
+
+        documentation = virtualinvoke $u1.<org.apache.maven.usability.plugin.io.xpp3.ParamdocXpp3Reader: org.apache.maven.usability.plugin.ExpressionDocumentation read(java.io.Reader,boolean)>($u0, 1);
+
+        expressions = virtualinvoke documentation.<org.apache.maven.usability.plugin.ExpressionDocumentation: java.util.List getExpressions()>();
+
+        $u2 = new java.util.HashMap;
+
+        specialinvoke $u2.<java.util.HashMap: void <init>()>();
+
+        if expressions == null goto label2;
+
+        $stack14 = interfaceinvoke expressions.<java.util.List: boolean isEmpty()>();
+
+        if $stack14 != 0 goto label2;
+
+        l6 = interfaceinvoke expressions.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack17 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack17 == 0 goto label2;
+
+        $stack18 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        expression = (org.apache.maven.usability.plugin.Expression) $stack18;
+
+        $stack19 = virtualinvoke expression.<org.apache.maven.usability.plugin.Expression: java.lang.String getSyntax()>();
+
+        interfaceinvoke $u2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack19, expression);
+
+        goto label1;
+
+     label2:
+        return $u2;
+    }
+
+    private static java.lang.ClassLoader initializeDocLoader() throws org.apache.maven.usability.plugin.ExpressionDocumentationException
+    {
+        java.lang.Class $stack6, $stack12;
+        java.lang.String $stack7, $stack8, myResourcePath, $stack28, myClasspathEntry;
+        java.lang.StringBuilder $stack9, $stack10, $u0;
+        java.lang.ClassLoader $stack13;
+        java.net.URL myResource, docResource;
+        boolean $stack15, $stack23;
+        int $stack18, $stack19, $stack20, $stack21, $stack29;
+        java.net.URL[] $stack27;
+        java.net.MalformedURLException $stack40;
+        java.lang.AssertionError $u1;
+        java.io.File $u2;
+        org.apache.maven.usability.plugin.ExpressionDocumentationException $u3;
+        java.net.URLClassLoader $u4;
+        java.lang.Throwable $r0;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = class "Lorg/apache/maven/usability/plugin/ExpressionDocumenter;";
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Class: java.lang.String getName()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.String: java.lang.String replace(char,char)>(46, 47);
+
+        $stack9 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".class");
+
+        myResourcePath = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = class "Lorg/apache/maven/usability/plugin/ExpressionDocumenter;";
+
+        $stack13 = virtualinvoke $stack12.<java.lang.Class: java.lang.ClassLoader getClassLoader()>();
+
+        myResource = virtualinvoke $stack13.<java.lang.ClassLoader: java.net.URL getResource(java.lang.String)>(myResourcePath);
+
+        $stack15 = <org.apache.maven.usability.plugin.ExpressionDocumenter: boolean $assertionsDisabled>;
+
+        if $stack15 != 0 goto label1;
+
+        if myResource != null goto label1;
+
+        $u1 = new java.lang.AssertionError;
+
+        specialinvoke $u1.<java.lang.AssertionError: void <init>(java.lang.Object)>("The resource is this class itself loaded by its own classloader and must exist");
+
+        throw $u1;
+
+     label1:
+        myClasspathEntry = virtualinvoke myResource.<java.net.URL: java.lang.String getPath()>();
+
+        $stack18 = virtualinvoke myClasspathEntry.<java.lang.String: int length()>();
+
+        $stack19 = virtualinvoke myResourcePath.<java.lang.String: int length()>();
+
+        $stack20 = $stack19 + 2;
+
+        $stack21 = $stack18 - $stack20;
+
+        myClasspathEntry = virtualinvoke myClasspathEntry.<java.lang.String: java.lang.String substring(int,int)>(0, $stack21);
+
+        $stack23 = virtualinvoke myClasspathEntry.<java.lang.String: boolean startsWith(java.lang.String)>("file:");
+
+        if $stack23 == 0 goto label2;
+
+        $stack28 = "file:";
+
+        $stack29 = virtualinvoke $stack28.<java.lang.String: int length()>();
+
+        myClasspathEntry = virtualinvoke myClasspathEntry.<java.lang.String: java.lang.String substring(int)>($stack29);
+
+     label2:
+        $u2 = new java.io.File;
+
+        specialinvoke $u2.<java.io.File: void <init>(java.lang.String)>(myClasspathEntry);
+
+        docResource = virtualinvoke $u2.<java.io.File: java.net.URL toURL()>();
+
+     label3:
+        goto label5;
+
+     label4:
+        $stack40 := @caughtexception;
+
+        $u3 = new org.apache.maven.usability.plugin.ExpressionDocumentationException;
+
+        specialinvoke $u3.<org.apache.maven.usability.plugin.ExpressionDocumentationException: void <init>(java.lang.String,java.lang.Throwable)>("Cannot construct expression documentation classpath resource base.", $stack40);
+
+        $r0 = (java.lang.Throwable) $u3;
+
+        throw $r0;
+
+     label5:
+        $u4 = new java.net.URLClassLoader;
+
+        $stack27 = newarray (java.net.URL)[1];
+
+        $stack27[0] = docResource;
+
+        specialinvoke $u4.<java.net.URLClassLoader: void <init>(java.net.URL[])>($stack27);
+
+        return $u4;
+
+        catch java.net.MalformedURLException from label2 to label3 with label4;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $stack0;
+        boolean $stack1, $stack3;
+        java.lang.String[] $stack2;
+
+        <ExpressionDocumenter: java.lang.String EXPRESSION_DOCO_ROOTPATH> = "META-INF/maven/plugin-expressions/";
+
+        $stack0 = class "Lorg/apache/maven/usability/plugin/ExpressionDocumenter;";
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Class: boolean desiredAssertionStatus()>();
+
+        if $stack1 != 0 goto label1;
+
+        $stack3 = 1;
+
+        goto label2;
+
+     label1:
+        $stack3 = 0;
+
+     label2:
+        <org.apache.maven.usability.plugin.ExpressionDocumenter: boolean $assertionsDisabled> = $stack3;
+
+        $stack2 = newarray (java.lang.String)[5];
+
+        $stack2[0] = "project";
+
+        $stack2[1] = "settings";
+
+        $stack2[2] = "session";
+
+        $stack2[3] = "plugin";
+
+        $stack2[4] = "rootless";
+
+        <org.apache.maven.usability.plugin.ExpressionDocumenter: java.lang.String[] EXPRESSION_ROOTS> = $stack2;
+
+        return;
+    }
+}

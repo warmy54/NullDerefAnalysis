@@ -1,0 +1,2250 @@
+public class LegacyRepositorySystem extends java.lang.Object implements org.apache.maven.repository.RepositorySystem
+{
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
+    private org.apache.maven.artifact.resolver.ArtifactResolver artifactResolver;
+    private org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory artifactRepositoryFactory;
+    private java.util.Map layouts;
+    private org.apache.maven.repository.legacy.WagonManager wagonManager;
+    private org.codehaus.plexus.PlexusContainer plexus;
+    private org.apache.maven.repository.MirrorSelector mirrorSelector;
+    private org.apache.maven.settings.crypto.SettingsDecrypter settingsDecrypter;
+
+    public void <init>()
+    {
+        LegacyRepositorySystem this;
+
+        this := @this: LegacyRepositorySystem;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.artifact.Artifact createArtifact(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    {
+        LegacyRepositorySystem this;
+        java.lang.String groupId, artifactId, version, scope, type;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack6;
+        org.apache.maven.artifact.Artifact $stack7;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        version := @parameter2: java.lang.String;
+
+        scope := @parameter3: java.lang.String;
+
+        type := @parameter4: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack6 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        $stack7 = interfaceinvoke $stack6.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createArtifact(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)>(groupId, artifactId, version, scope, type);
+
+        return $stack7;
+    }
+
+    public org.apache.maven.artifact.Artifact createArtifact(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    {
+        LegacyRepositorySystem this;
+        java.lang.String groupId, artifactId, version, packaging;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack5;
+        org.apache.maven.artifact.Artifact $stack6;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        version := @parameter2: java.lang.String;
+
+        packaging := @parameter3: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack5 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        $stack6 = interfaceinvoke $stack5.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createBuildArtifact(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>(groupId, artifactId, version, packaging);
+
+        return $stack6;
+    }
+
+    public org.apache.maven.artifact.Artifact createArtifactWithClassifier(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    {
+        LegacyRepositorySystem this;
+        java.lang.String groupId, artifactId, version, type, classifier;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack6;
+        org.apache.maven.artifact.Artifact $stack7;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        version := @parameter2: java.lang.String;
+
+        type := @parameter3: java.lang.String;
+
+        classifier := @parameter4: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack6 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        $stack7 = interfaceinvoke $stack6.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createArtifactWithClassifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)>(groupId, artifactId, version, type, classifier);
+
+        return $stack7;
+    }
+
+    public org.apache.maven.artifact.Artifact createProjectArtifact(java.lang.String, java.lang.String, java.lang.String)
+    {
+        LegacyRepositorySystem this;
+        java.lang.String groupId, artifactId, metaVersionId;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack4;
+        org.apache.maven.artifact.Artifact $stack5;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        metaVersionId := @parameter2: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack4 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        $stack5 = interfaceinvoke $stack4.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createProjectArtifact(java.lang.String,java.lang.String,java.lang.String)>(groupId, artifactId, metaVersionId);
+
+        return $stack5;
+    }
+
+    public org.apache.maven.artifact.Artifact createDependencyArtifact(org.apache.maven.model.Dependency)
+    {
+        org.apache.maven.model.Dependency d;
+        java.lang.String $stack7, $stack10, $stack11, $stack12, $stack13, $stack14, $stack17, $stack18, $stack30, $stack33, $stack35, $stack38, $stack41, $stack47, $stack48;
+        org.apache.maven.artifact.versioning.VersionRange versionRange;
+        LegacyRepositorySystem this;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack9;
+        boolean $stack15, $stack19, $stack25, $stack21;
+        java.util.List $stack23, $stack20;
+        java.util.Iterator l5;
+        java.lang.Object $stack28;
+        org.apache.maven.model.Exclusion exclusion;
+        java.lang.StringBuilder $stack31, $stack32, $stack34, $u2;
+        java.lang.Throwable $stack42;
+        java.lang.Object[] $stack43;
+        org.codehaus.plexus.logging.Logger $stack44;
+        org.apache.maven.artifact.Artifact e#2;
+        java.io.File $u0;
+        java.util.ArrayList $u1;
+        org.apache.maven.artifact.resolver.filter.ExcludesArtifactFilter $u3;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter $r2;
+
+        this := @this: LegacyRepositorySystem;
+
+        d := @parameter0: org.apache.maven.model.Dependency;
+
+     label1:
+        $stack7 = virtualinvoke d.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        versionRange = staticinvoke <org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.VersionRange createFromVersionSpec(java.lang.String)>($stack7);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack42 := @caughtexception;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack44 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack43 = newarray (java.lang.Object)[2];
+
+        $stack47 = virtualinvoke d.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        $stack43[0] = $stack47;
+
+        $stack43[1] = d;
+
+        $stack48 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Invalid version specification \'%s\' creating dependency artifact \'%s\'.", $stack43);
+
+        interfaceinvoke $stack44.<org.codehaus.plexus.logging.Logger: void error(java.lang.String,java.lang.Throwable)>($stack48, $stack42);
+
+        return null;
+
+     label4:
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack9 = $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        $stack10 = virtualinvoke d.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack11 = virtualinvoke d.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack12 = virtualinvoke d.<org.apache.maven.model.Dependency: java.lang.String getType()>();
+
+        $stack13 = virtualinvoke d.<org.apache.maven.model.Dependency: java.lang.String getClassifier()>();
+
+        $stack14 = virtualinvoke d.<org.apache.maven.model.Dependency: java.lang.String getScope()>();
+
+        $stack15 = virtualinvoke d.<org.apache.maven.model.Dependency: boolean isOptional()>();
+
+        e#2 = interfaceinvoke $stack9.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createDependencyArtifact(java.lang.String,java.lang.String,org.apache.maven.artifact.versioning.VersionRange,java.lang.String,java.lang.String,java.lang.String,boolean)>($stack10, $stack11, versionRange, $stack12, $stack13, $stack14, $stack15);
+
+        $stack17 = "system";
+
+        $stack18 = virtualinvoke d.<org.apache.maven.model.Dependency: java.lang.String getScope()>();
+
+        $stack19 = virtualinvoke $stack17.<java.lang.String: boolean equals(java.lang.Object)>($stack18);
+
+        if $stack19 == 0 goto label5;
+
+        $stack38 = virtualinvoke d.<org.apache.maven.model.Dependency: java.lang.String getSystemPath()>();
+
+        if $stack38 == null goto label5;
+
+        $u0 = new java.io.File;
+
+        $stack41 = virtualinvoke d.<org.apache.maven.model.Dependency: java.lang.String getSystemPath()>();
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>($stack41);
+
+        interfaceinvoke e#2.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($u0);
+
+     label5:
+        $stack20 = virtualinvoke d.<org.apache.maven.model.Dependency: java.util.List getExclusions()>();
+
+        $stack21 = interfaceinvoke $stack20.<java.util.List: boolean isEmpty()>();
+
+        if $stack21 != 0 goto label8;
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        $stack23 = virtualinvoke d.<org.apache.maven.model.Dependency: java.util.List getExclusions()>();
+
+        l5 = interfaceinvoke $stack23.<java.util.List: java.util.Iterator iterator()>();
+
+     label6:
+        $stack25 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack25 == 0 goto label7;
+
+        $stack28 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        exclusion = (org.apache.maven.model.Exclusion) $stack28;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack30 = virtualinvoke exclusion.<org.apache.maven.model.Exclusion: java.lang.String getGroupId()>();
+
+        $stack31 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack30);
+
+        $stack32 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack33 = virtualinvoke exclusion.<org.apache.maven.model.Exclusion: java.lang.String getArtifactId()>();
+
+        $stack34 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack33);
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $u1.<java.util.List: boolean add(java.lang.Object)>($stack35);
+
+        goto label6;
+
+     label7:
+        $u3 = new org.apache.maven.artifact.resolver.filter.ExcludesArtifactFilter;
+
+        specialinvoke $u3.<org.apache.maven.artifact.resolver.filter.ExcludesArtifactFilter: void <init>(java.util.List)>($u1);
+
+        $r2 = (org.apache.maven.artifact.resolver.filter.ArtifactFilter) $u3;
+
+        interfaceinvoke e#2.<org.apache.maven.artifact.Artifact: void setDependencyFilter(org.apache.maven.artifact.resolver.filter.ArtifactFilter)>($r2);
+
+     label8:
+        return e#2;
+
+        catch org.apache.maven.artifact.versioning.InvalidVersionSpecificationException from label1 to label2 with label3;
+    }
+
+    public org.apache.maven.artifact.Artifact createExtensionArtifact(java.lang.String, java.lang.String, java.lang.String)
+    {
+        java.lang.String version, groupId, artifactId, $stack12;
+        org.apache.maven.artifact.versioning.VersionRange versionRange;
+        LegacyRepositorySystem this;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack7;
+        org.apache.maven.artifact.Artifact $stack8;
+        java.lang.Throwable $stack9;
+        java.lang.Object[] $stack10;
+        org.codehaus.plexus.logging.Logger $stack11;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1;
+
+        this := @this: LegacyRepositorySystem;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        version := @parameter2: java.lang.String;
+
+     label1:
+        versionRange = staticinvoke <org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.VersionRange createFromVersionSpec(java.lang.String)>(version);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack9 := @caughtexception;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack11 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack10 = newarray (java.lang.Object)[4];
+
+        $stack10[0] = version;
+
+        $stack10[1] = groupId;
+
+        $stack10[2] = artifactId;
+
+        $stack10[3] = version;
+
+        $stack12 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Invalid version specification \'%s\' creating extension artifact \'%s:%s:%s\'.", $stack10);
+
+        interfaceinvoke $stack11.<org.codehaus.plexus.logging.Logger: void error(java.lang.String,java.lang.Throwable)>($stack12, $stack9);
+
+        return null;
+
+     label4:
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack7 = $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        $stack8 = interfaceinvoke $stack7.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createExtensionArtifact(java.lang.String,java.lang.String,org.apache.maven.artifact.versioning.VersionRange)>(groupId, artifactId, versionRange);
+
+        return $stack8;
+
+        catch org.apache.maven.artifact.versioning.InvalidVersionSpecificationException from label1 to label2 with label3;
+    }
+
+    public org.apache.maven.artifact.Artifact createParentArtifact(java.lang.String, java.lang.String, java.lang.String)
+    {
+        LegacyRepositorySystem this;
+        java.lang.String groupId, artifactId, version;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack4;
+        org.apache.maven.artifact.Artifact $stack5;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        version := @parameter2: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack4 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        $stack5 = interfaceinvoke $stack4.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createParentArtifact(java.lang.String,java.lang.String,java.lang.String)>(groupId, artifactId, version);
+
+        return $stack5;
+    }
+
+    public org.apache.maven.artifact.Artifact createPluginArtifact(org.apache.maven.model.Plugin)
+    {
+        org.apache.maven.model.Plugin plugin;
+        boolean $stack6;
+        org.apache.maven.artifact.versioning.VersionRange versionRange;
+        LegacyRepositorySystem this;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack8;
+        java.lang.String $stack9, $stack10, $stack16, version;
+        org.apache.maven.artifact.Artifact $stack11;
+        java.lang.Throwable $stack13;
+        java.lang.Object[] $stack14;
+        org.codehaus.plexus.logging.Logger $stack15;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1;
+
+        this := @this: LegacyRepositorySystem;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        version = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        $stack6 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>(version);
+
+        if $stack6 == 0 goto label1;
+
+        version = "RELEASE";
+
+     label1:
+        versionRange = staticinvoke <org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.VersionRange createFromVersionSpec(java.lang.String)>(version);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack13 := @caughtexception;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack15 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack14 = newarray (java.lang.Object)[2];
+
+        $stack14[0] = version;
+
+        $stack14[1] = plugin;
+
+        $stack16 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Invalid version specification \'%s\' creating plugin artifact \'%s\'.", $stack14);
+
+        interfaceinvoke $stack15.<org.codehaus.plexus.logging.Logger: void error(java.lang.String,java.lang.Throwable)>($stack16, $stack13);
+
+        return null;
+
+     label4:
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack8 = $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        $stack9 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        $stack10 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        $stack11 = interfaceinvoke $stack8.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createPluginArtifact(java.lang.String,java.lang.String,org.apache.maven.artifact.versioning.VersionRange)>($stack9, $stack10, versionRange);
+
+        return $stack11;
+
+        catch org.apache.maven.artifact.versioning.InvalidVersionSpecificationException from label1 to label2 with label3;
+    }
+
+    public org.apache.maven.artifact.repository.ArtifactRepositoryPolicy buildArtifactRepositoryPolicy(org.apache.maven.model.RepositoryPolicy)
+    {
+        org.apache.maven.model.RepositoryPolicy policy;
+        java.lang.String $stack7, $stack8, updatePolicy, checksumPolicy;
+        LegacyRepositorySystem this;
+        boolean enabled;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy $stack5;
+
+        this := @this: LegacyRepositorySystem;
+
+        policy := @parameter0: org.apache.maven.model.RepositoryPolicy;
+
+        enabled = 1;
+
+        updatePolicy = null;
+
+        checksumPolicy = null;
+
+        if policy == null goto label2;
+
+        enabled = virtualinvoke policy.<org.apache.maven.model.RepositoryPolicy: boolean isEnabled()>();
+
+        $stack7 = virtualinvoke policy.<org.apache.maven.model.RepositoryPolicy: java.lang.String getUpdatePolicy()>();
+
+        if $stack7 == null goto label1;
+
+        updatePolicy = virtualinvoke policy.<org.apache.maven.model.RepositoryPolicy: java.lang.String getUpdatePolicy()>();
+
+     label1:
+        $stack8 = virtualinvoke policy.<org.apache.maven.model.RepositoryPolicy: java.lang.String getChecksumPolicy()>();
+
+        if $stack8 == null goto label2;
+
+        checksumPolicy = virtualinvoke policy.<org.apache.maven.model.RepositoryPolicy: java.lang.String getChecksumPolicy()>();
+
+     label2:
+        $stack5 = new org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
+
+        specialinvoke $stack5.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: void <init>(boolean,java.lang.String,java.lang.String)>(enabled, updatePolicy, checksumPolicy);
+
+        return $stack5;
+    }
+
+    public org.apache.maven.artifact.repository.ArtifactRepository createDefaultLocalRepository() throws org.apache.maven.artifact.InvalidRepositoryException
+    {
+        LegacyRepositorySystem this;
+        java.io.File $stack1;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack2;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        $stack1 = <org.apache.maven.repository.RepositorySystem: java.io.File defaultUserLocalRepository>;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createLocalRepository(java.io.File)>($stack1);
+
+        return $stack2;
+    }
+
+    public org.apache.maven.artifact.repository.ArtifactRepository createLocalRepository(java.io.File) throws org.apache.maven.artifact.InvalidRepositoryException
+    {
+        LegacyRepositorySystem this;
+        java.lang.StringBuilder $stack3, $stack6, $u0;
+        java.io.File localRepository;
+        java.net.URI $stack4;
+        java.lang.String $stack5, $stack7;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack8;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        localRepository := @parameter0: java.io.File;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("file://");
+
+        $stack4 = virtualinvoke localRepository.<java.io.File: java.net.URI toURI()>();
+
+        $stack5 = virtualinvoke $stack4.<java.net.URI: java.lang.String getRawPath()>();
+
+        $stack6 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack8 = specialinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createRepository(java.lang.String,java.lang.String,boolean,java.lang.String,boolean,java.lang.String,java.lang.String)>($stack7, "local", 1, "always", 1, "always", "ignore");
+
+        return $stack8;
+    }
+
+    public org.apache.maven.artifact.repository.ArtifactRepository createDefaultRemoteRepository() throws org.apache.maven.artifact.InvalidRepositoryException
+    {
+        LegacyRepositorySystem this;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack1;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack1 = specialinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createRepository(java.lang.String,java.lang.String,boolean,java.lang.String,boolean,java.lang.String,java.lang.String)>("https://repo.maven.apache.org/maven2", "central", 1, "daily", 0, "daily", "warn");
+
+        return $stack1;
+    }
+
+    public org.apache.maven.artifact.repository.ArtifactRepository createLocalRepository(java.lang.String, java.lang.String) throws java.io.IOException
+    {
+        LegacyRepositorySystem this;
+        java.lang.String url, $stack3, repositoryId;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack4;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1;
+
+        this := @this: LegacyRepositorySystem;
+
+        url := @parameter0: java.lang.String;
+
+        repositoryId := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack3 = specialinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: java.lang.String canonicalFileUrl(java.lang.String)>(url);
+
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack4 = specialinvoke $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createRepository(java.lang.String,java.lang.String,boolean,java.lang.String,boolean,java.lang.String,java.lang.String)>($stack3, repositoryId, 1, "always", 1, "always", "ignore");
+
+        return $stack4;
+    }
+
+    private java.lang.String canonicalFileUrl(java.lang.String) throws java.io.IOException
+    {
+        boolean $stack3, $stack4, $stack16, $stack9;
+        java.lang.StringBuilder $stack10, $stack11, $stack13, $stack19, $stack20, $stack24, $stack26, $stack27, $stack28;
+        java.lang.String $stack12, $stack21, $stack23, url, $stack6, $stack8;
+        int $stack22, $stack7;
+        LegacyRepositorySystem this;
+        java.io.File $stack5;
+
+        this := @this: LegacyRepositorySystem;
+
+        url := @parameter0: java.lang.String;
+
+        $stack3 = virtualinvoke url.<java.lang.String: boolean startsWith(java.lang.String)>("file:");
+
+        if $stack3 != 0 goto label1;
+
+        $stack26 = new java.lang.StringBuilder;
+
+        specialinvoke $stack26.<java.lang.StringBuilder: void <init>()>();
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("file://");
+
+        $stack28 = virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(url);
+
+        url = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label2;
+
+     label1:
+        $stack4 = virtualinvoke url.<java.lang.String: boolean startsWith(java.lang.String)>("file:");
+
+        if $stack4 == 0 goto label2;
+
+        $stack16 = virtualinvoke url.<java.lang.String: boolean startsWith(java.lang.String)>("file://");
+
+        if $stack16 != 0 goto label2;
+
+        $stack19 = new java.lang.StringBuilder;
+
+        specialinvoke $stack19.<java.lang.StringBuilder: void <init>()>();
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("file://");
+
+        $stack21 = "file:";
+
+        $stack22 = virtualinvoke $stack21.<java.lang.String: int length()>();
+
+        $stack23 = virtualinvoke url.<java.lang.String: java.lang.String substring(int)>($stack22);
+
+        $stack24 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+        url = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label2:
+        $stack5 = new java.io.File;
+
+        $stack6 = "file://";
+
+        $stack7 = virtualinvoke $stack6.<java.lang.String: int length()>();
+
+        $stack8 = virtualinvoke url.<java.lang.String: java.lang.String substring(int)>($stack7);
+
+        specialinvoke $stack5.<java.io.File: void <init>(java.lang.String)>($stack8);
+
+        $stack9 = virtualinvoke $stack5.<java.io.File: boolean isAbsolute()>();
+
+        if $stack9 != 0 goto label3;
+
+        $stack10 = new java.lang.StringBuilder;
+
+        specialinvoke $stack10.<java.lang.StringBuilder: void <init>()>();
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("file://");
+
+        $stack12 = virtualinvoke $stack5.<java.io.File: java.lang.String getCanonicalPath()>();
+
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        url = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label3:
+        return url;
+    }
+
+    public org.apache.maven.artifact.resolver.ArtifactResolutionResult resolve(org.apache.maven.artifact.resolver.ArtifactResolutionRequest)
+    {
+        LegacyRepositorySystem this;
+        org.codehaus.plexus.PlexusContainer $stack8;
+        java.lang.Object $stack9;
+        org.apache.maven.artifact.resolver.ArtifactResolutionRequest request;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack10, $stack18, delegatingLocalRepository#5, $r2;
+        boolean $stack11;
+        org.apache.maven.artifact.resolver.ArtifactResolver $stack15, $stack20, $stack23;
+        java.lang.Throwable $stack22, $stack25, $stack27;
+        org.apache.maven.artifact.resolver.ArtifactResolutionResult $stack24, l5;
+        org.apache.maven.repository.LocalArtifactRepository ideWorkspace, orig;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository delegatingLocalRepository, $u0;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1, $r3, $r4;
+
+        this := @this: LegacyRepositorySystem;
+
+        request := @parameter0: org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
+
+     label01:
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack8 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.codehaus.plexus.PlexusContainer plexus>;
+
+        $stack9 = interfaceinvoke $stack8.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class,java.lang.String)>(class "Lorg/apache/maven/repository/LocalArtifactRepository;", "ide-workspace");
+
+        ideWorkspace = (org.apache.maven.repository.LocalArtifactRepository) $stack9;
+
+        $stack10 = virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        $stack11 = $stack10 instanceof org.apache.maven.repository.DelegatingLocalArtifactRepository;
+
+        if $stack11 == 0 goto label07;
+
+        $stack18 = virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        delegatingLocalRepository = (org.apache.maven.repository.DelegatingLocalArtifactRepository) $stack18;
+
+        orig = virtualinvoke delegatingLocalRepository.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository getIdeWorkspace()>();
+
+        virtualinvoke delegatingLocalRepository.<org.apache.maven.repository.DelegatingLocalArtifactRepository: void setIdeWorkspace(org.apache.maven.repository.LocalArtifactRepository)>(ideWorkspace);
+
+     label02:
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack20 = $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.resolver.ArtifactResolver artifactResolver>;
+
+        l5 = interfaceinvoke $stack20.<org.apache.maven.artifact.resolver.ArtifactResolver: org.apache.maven.artifact.resolver.ArtifactResolutionResult resolve(org.apache.maven.artifact.resolver.ArtifactResolutionRequest)>(request);
+
+     label03:
+        virtualinvoke delegatingLocalRepository.<org.apache.maven.repository.DelegatingLocalArtifactRepository: void setIdeWorkspace(org.apache.maven.repository.LocalArtifactRepository)>(orig);
+
+     label04:
+        return l5;
+
+     label05:
+        $stack27 := @caughtexception;
+
+     label06:
+        virtualinvoke delegatingLocalRepository.<org.apache.maven.repository.DelegatingLocalArtifactRepository: void setIdeWorkspace(org.apache.maven.repository.LocalArtifactRepository)>(orig);
+
+        throw $stack27;
+
+     label07:
+        delegatingLocalRepository#5 = virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        $u0 = new org.apache.maven.repository.DelegatingLocalArtifactRepository;
+
+        specialinvoke $u0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: void <init>(org.apache.maven.artifact.repository.ArtifactRepository)>(delegatingLocalRepository#5);
+
+        virtualinvoke $u0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: void setIdeWorkspace(org.apache.maven.repository.LocalArtifactRepository)>(ideWorkspace);
+
+        $r2 = (org.apache.maven.artifact.repository.ArtifactRepository) $u0;
+
+        virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>($r2);
+
+     label08:
+        $r3 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack15 = $r3.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.resolver.ArtifactResolver artifactResolver>;
+
+        l5 = interfaceinvoke $stack15.<org.apache.maven.artifact.resolver.ArtifactResolver: org.apache.maven.artifact.resolver.ArtifactResolutionResult resolve(org.apache.maven.artifact.resolver.ArtifactResolutionRequest)>(request);
+
+     label09:
+        virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(delegatingLocalRepository#5);
+
+     label10:
+        return l5;
+
+     label11:
+        $stack25 := @caughtexception;
+
+     label12:
+        virtualinvoke request.<org.apache.maven.artifact.resolver.ArtifactResolutionRequest: org.apache.maven.artifact.resolver.ArtifactResolutionRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(delegatingLocalRepository#5);
+
+        throw $stack25;
+
+     label13:
+        $stack22 := @caughtexception;
+
+        $r4 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack23 = $r4.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.resolver.ArtifactResolver artifactResolver>;
+
+        $stack24 = interfaceinvoke $stack23.<org.apache.maven.artifact.resolver.ArtifactResolver: org.apache.maven.artifact.resolver.ArtifactResolutionResult resolve(org.apache.maven.artifact.resolver.ArtifactResolutionRequest)>(request);
+
+        return $stack24;
+
+        catch java.lang.Throwable from label02 to label03 with label05;
+        catch java.lang.Throwable from label05 to label06 with label05;
+        catch java.lang.Throwable from label08 to label09 with label11;
+        catch java.lang.Throwable from label11 to label12 with label11;
+        catch org.codehaus.plexus.component.repository.exception.ComponentLookupException from label01 to label04 with label13;
+        catch org.codehaus.plexus.component.repository.exception.ComponentLookupException from label05 to label10 with label13;
+        catch org.codehaus.plexus.component.repository.exception.ComponentLookupException from label11 to label13 with label13;
+    }
+
+    public java.util.List getEffectiveRepositories(java.util.List)
+    {
+        java.util.List repositories, $stack49, aliasedRepos, key#7;
+        boolean $stack15, $stack19, $stack25, $stack30, $stack39;
+        java.util.Collection $stack17;
+        java.lang.Object $stack20, $stack32, $stack42, $stack46, $stack52, $stack55;
+        int $stack23, $stack28;
+        LegacyRepositorySystem this;
+        java.lang.String $stack33, $stack34, key;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $stack35;
+        org.apache.maven.artifact.repository.ArtifactRepository effectiveRepository, repository, aliasedRepo;
+        org.apache.maven.artifact.repository.Authentication $stack37;
+        org.apache.maven.repository.Proxy $stack38;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy $stack43, $stack47, releasePolicy#11, snapshotPolicy#15;
+        java.util.function.Function $stack54;
+        java.util.Iterator effectiveRepositories, repository#6, releasePolicy, snapshotPolicy;
+        java.util.LinkedHashMap $u0;
+        java.util.ArrayList $u1, $u2, $u3, $u4;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1, $r2;
+
+        this := @this: LegacyRepositorySystem;
+
+        repositories := @parameter0: java.util.List;
+
+        if repositories != null goto label1;
+
+        return null;
+
+     label1:
+        $u0 = new java.util.LinkedHashMap;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>()>();
+
+        effectiveRepositories = interfaceinvoke repositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack15 = interfaceinvoke effectiveRepositories.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label3;
+
+        $stack52 = interfaceinvoke effectiveRepositories.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.apache.maven.artifact.repository.ArtifactRepository) $stack52;
+
+        key = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack54 = staticinvoke <LegacyRepositorySystem$lambda_getEffectiveRepositories_0__309: java.util.function.Function bootstrap$()>();
+
+        $stack55 = interfaceinvoke $u0.<java.util.Map: java.lang.Object computeIfAbsent(java.lang.Object,java.util.function.Function)>(key, $stack54);
+
+        aliasedRepos = (java.util.List) $stack55;
+
+        interfaceinvoke aliasedRepos.<java.util.List: boolean add(java.lang.Object)>(repository);
+
+        goto label2;
+
+     label3:
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        $stack17 = interfaceinvoke $u0.<java.util.Map: java.util.Collection values()>();
+
+        repository#6 = interfaceinvoke $stack17.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label4:
+        $stack19 = interfaceinvoke repository#6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack19 == 0 goto label9;
+
+        $stack20 = interfaceinvoke repository#6.<java.util.Iterator: java.lang.Object next()>();
+
+        key#7 = (java.util.List) $stack20;
+
+        $u2 = new java.util.ArrayList;
+
+        specialinvoke $u2.<java.util.ArrayList: void <init>()>();
+
+        $u3 = new java.util.ArrayList;
+
+        $stack23 = interfaceinvoke key#7.<java.util.List: int size()>();
+
+        specialinvoke $u3.<java.util.ArrayList: void <init>(int)>($stack23);
+
+        releasePolicy = interfaceinvoke key#7.<java.util.List: java.util.Iterator iterator()>();
+
+     label5:
+        $stack25 = interfaceinvoke releasePolicy.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack25 == 0 goto label6;
+
+        $stack46 = interfaceinvoke releasePolicy.<java.util.Iterator: java.lang.Object next()>();
+
+        aliasedRepo = (org.apache.maven.artifact.repository.ArtifactRepository) $stack46;
+
+        $stack47 = interfaceinvoke aliasedRepo.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getReleases()>();
+
+        interfaceinvoke $u3.<java.util.List: boolean add(java.lang.Object)>($stack47);
+
+        $stack49 = interfaceinvoke aliasedRepo.<org.apache.maven.artifact.repository.ArtifactRepository: java.util.List getMirroredRepositories()>();
+
+        interfaceinvoke $u2.<java.util.List: boolean addAll(java.util.Collection)>($stack49);
+
+        goto label5;
+
+     label6:
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        releasePolicy#11 = specialinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getEffectivePolicy(java.util.Collection)>($u3);
+
+        $u4 = new java.util.ArrayList;
+
+        $stack28 = interfaceinvoke key#7.<java.util.List: int size()>();
+
+        specialinvoke $u4.<java.util.ArrayList: void <init>(int)>($stack28);
+
+        snapshotPolicy = interfaceinvoke key#7.<java.util.List: java.util.Iterator iterator()>();
+
+     label7:
+        $stack30 = interfaceinvoke snapshotPolicy.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack30 == 0 goto label8;
+
+        $stack42 = interfaceinvoke snapshotPolicy.<java.util.Iterator: java.lang.Object next()>();
+
+        aliasedRepo = (org.apache.maven.artifact.repository.ArtifactRepository) $stack42;
+
+        $stack43 = interfaceinvoke aliasedRepo.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getSnapshots()>();
+
+        interfaceinvoke $u4.<java.util.List: boolean add(java.lang.Object)>($stack43);
+
+        goto label7;
+
+     label8:
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        snapshotPolicy#15 = specialinvoke $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getEffectivePolicy(java.util.Collection)>($u4);
+
+        $stack32 = interfaceinvoke key#7.<java.util.List: java.lang.Object get(int)>(0);
+
+        aliasedRepo = (org.apache.maven.artifact.repository.ArtifactRepository) $stack32;
+
+        $stack33 = interfaceinvoke aliasedRepo.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack34 = interfaceinvoke aliasedRepo.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
+
+        $stack35 = interfaceinvoke aliasedRepo.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
+
+        $r2 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        effectiveRepository = virtualinvoke $r2.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>($stack33, $stack34, $stack35, snapshotPolicy#15, releasePolicy#11);
+
+        $stack37 = interfaceinvoke aliasedRepo.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.Authentication getAuthentication()>();
+
+        interfaceinvoke effectiveRepository.<org.apache.maven.artifact.repository.ArtifactRepository: void setAuthentication(org.apache.maven.artifact.repository.Authentication)>($stack37);
+
+        $stack38 = interfaceinvoke aliasedRepo.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
+
+        interfaceinvoke effectiveRepository.<org.apache.maven.artifact.repository.ArtifactRepository: void setProxy(org.apache.maven.repository.Proxy)>($stack38);
+
+        interfaceinvoke effectiveRepository.<org.apache.maven.artifact.repository.ArtifactRepository: void setMirroredRepositories(java.util.List)>($u2);
+
+        $stack39 = interfaceinvoke aliasedRepo.<org.apache.maven.artifact.repository.ArtifactRepository: boolean isBlocked()>();
+
+        interfaceinvoke effectiveRepository.<org.apache.maven.artifact.repository.ArtifactRepository: void setBlocked(boolean)>($stack39);
+
+        interfaceinvoke $u1.<java.util.List: boolean add(java.lang.Object)>(effectiveRepository);
+
+        goto label4;
+
+     label9:
+        return $u1;
+    }
+
+    private org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getEffectivePolicy(java.util.Collection)
+    {
+        java.util.Collection policies;
+        java.util.Iterator l3;
+        boolean $stack6;
+        java.lang.Object $stack7;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy policy, $stack9, effectivePolicy;
+        LegacyRepositorySystem this;
+
+        this := @this: LegacyRepositorySystem;
+
+        policies := @parameter0: java.util.Collection;
+
+        effectivePolicy = null;
+
+        l3 = interfaceinvoke policies.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label4;
+
+        $stack7 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        policy = (org.apache.maven.artifact.repository.ArtifactRepositoryPolicy) $stack7;
+
+        if effectivePolicy != null goto label2;
+
+        $stack9 = new org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
+
+        specialinvoke $stack9.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: void <init>(org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>(policy);
+
+        effectivePolicy = $stack9;
+
+        goto label3;
+
+     label2:
+        virtualinvoke effectivePolicy.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: void merge(org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>(policy);
+
+     label3:
+        goto label1;
+
+     label4:
+        return effectivePolicy;
+    }
+
+    public org.apache.maven.settings.Mirror getMirror(org.apache.maven.artifact.repository.ArtifactRepository, java.util.List)
+    {
+        LegacyRepositorySystem this;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        java.util.List mirrors;
+        org.apache.maven.repository.MirrorSelector $stack3;
+        org.apache.maven.settings.Mirror $stack4;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        mirrors := @parameter1: java.util.List;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.repository.MirrorSelector mirrorSelector>;
+
+        $stack4 = interfaceinvoke $stack3.<org.apache.maven.repository.MirrorSelector: org.apache.maven.settings.Mirror getMirror(org.apache.maven.artifact.repository.ArtifactRepository,java.util.List)>(repository, mirrors);
+
+        return $stack4;
+    }
+
+    public void injectMirror(java.util.List, java.util.List)
+    {
+        java.util.List repositories, mirrors;
+        java.util.Iterator l3;
+        boolean $stack7;
+        java.lang.Object $stack8;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        LegacyRepositorySystem this;
+        org.apache.maven.settings.Mirror mirror;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1;
+
+        this := @this: LegacyRepositorySystem;
+
+        repositories := @parameter0: java.util.List;
+
+        mirrors := @parameter1: java.util.List;
+
+        if repositories == null goto label2;
+
+        if mirrors == null goto label2;
+
+        l3 = interfaceinvoke repositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label2;
+
+        $stack8 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.apache.maven.artifact.repository.ArtifactRepository) $stack8;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        mirror = virtualinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.settings.Mirror getMirror(org.apache.maven.artifact.repository.ArtifactRepository,java.util.List)>(repository, mirrors);
+
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        specialinvoke $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: void injectMirror(org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.settings.Mirror)>(repository, mirror);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    private org.apache.maven.settings.Mirror getMirror(org.eclipse.aether.RepositorySystemSession, org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.repository.MirrorSelector selector;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        org.eclipse.aether.repository.RemoteRepository $stack8, repo;
+        org.apache.maven.settings.Mirror $stack10;
+        java.lang.String $stack11, $stack12, $stack13;
+        boolean $stack14;
+        LegacyRepositorySystem this;
+
+        this := @this: LegacyRepositorySystem;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        if session == null goto label1;
+
+        selector = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.MirrorSelector getMirrorSelector()>();
+
+        if selector == null goto label1;
+
+        $stack8 = staticinvoke <org.apache.maven.RepositoryUtils: org.eclipse.aether.repository.RemoteRepository toRepo(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
+
+        repo = interfaceinvoke selector.<org.eclipse.aether.repository.MirrorSelector: org.eclipse.aether.repository.RemoteRepository getMirror(org.eclipse.aether.repository.RemoteRepository)>($stack8);
+
+        if repo == null goto label1;
+
+        $stack10 = new org.apache.maven.settings.Mirror;
+
+        specialinvoke $stack10.<org.apache.maven.settings.Mirror: void <init>()>();
+
+        $stack11 = virtualinvoke repo.<org.eclipse.aether.repository.RemoteRepository: java.lang.String getId()>();
+
+        virtualinvoke $stack10.<org.apache.maven.settings.Mirror: void setId(java.lang.String)>($stack11);
+
+        $stack12 = virtualinvoke repo.<org.eclipse.aether.repository.RemoteRepository: java.lang.String getUrl()>();
+
+        virtualinvoke $stack10.<org.apache.maven.settings.Mirror: void setUrl(java.lang.String)>($stack12);
+
+        $stack13 = virtualinvoke repo.<org.eclipse.aether.repository.RemoteRepository: java.lang.String getContentType()>();
+
+        virtualinvoke $stack10.<org.apache.maven.settings.Mirror: void setLayout(java.lang.String)>($stack13);
+
+        $stack14 = virtualinvoke repo.<org.eclipse.aether.repository.RemoteRepository: boolean isBlocked()>();
+
+        virtualinvoke $stack10.<org.apache.maven.settings.Mirror: void setBlocked(boolean)>($stack14);
+
+        return $stack10;
+
+     label1:
+        return null;
+    }
+
+    public void injectMirror(org.eclipse.aether.RepositorySystemSession, java.util.List)
+    {
+        java.util.List repositories;
+        org.eclipse.aether.RepositorySystemSession session;
+        java.util.Iterator l3;
+        boolean $stack7;
+        java.lang.Object $stack8;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        LegacyRepositorySystem this;
+        org.apache.maven.settings.Mirror mirror;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1;
+
+        this := @this: LegacyRepositorySystem;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        repositories := @parameter1: java.util.List;
+
+        if repositories == null goto label2;
+
+        if session == null goto label2;
+
+        l3 = interfaceinvoke repositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label2;
+
+        $stack8 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.apache.maven.artifact.repository.ArtifactRepository) $stack8;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        mirror = specialinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.settings.Mirror getMirror(org.eclipse.aether.RepositorySystemSession,org.apache.maven.artifact.repository.ArtifactRepository)>(session, repository);
+
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        specialinvoke $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: void injectMirror(org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.settings.Mirror)>(repository, mirror);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    private void injectMirror(org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.settings.Mirror)
+    {
+        org.apache.maven.settings.Mirror mirror;
+        LegacyRepositorySystem this;
+        org.apache.maven.artifact.repository.ArtifactRepository repository, original;
+        java.lang.String $stack4, $stack5, $stack11, $stack12, $stack13, $stack16;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $stack6, $stack17;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy $stack7, $stack8;
+        java.util.List $stack10;
+        boolean $stack14, $stack15;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1;
+
+        this := @this: LegacyRepositorySystem;
+
+        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        mirror := @parameter1: org.apache.maven.settings.Mirror;
+
+        if mirror == null goto label2;
+
+        $stack4 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack5 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
+
+        $stack6 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
+
+        $stack7 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getSnapshots()>();
+
+        $stack8 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getReleases()>();
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        original = virtualinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>($stack4, $stack5, $stack6, $stack7, $stack8);
+
+        $stack10 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>(original);
+
+        interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: void setMirroredRepositories(java.util.List)>($stack10);
+
+        $stack11 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getId()>();
+
+        interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: void setId(java.lang.String)>($stack11);
+
+        $stack12 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getUrl()>();
+
+        interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: void setUrl(java.lang.String)>($stack12);
+
+        $stack13 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getLayout()>();
+
+        $stack14 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack13);
+
+        if $stack14 == 0 goto label1;
+
+        $stack16 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getLayout()>();
+
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack17 = specialinvoke $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout(java.lang.String)>($stack16);
+
+        interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: void setLayout(org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout)>($stack17);
+
+     label1:
+        $stack15 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: boolean isBlocked()>();
+
+        interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: void setBlocked(boolean)>($stack15);
+
+     label2:
+        return;
+    }
+
+    public void injectAuthentication(java.util.List, java.util.List)
+    {
+        java.util.List repositories, servers, $stack29;
+        java.lang.Object $stack14, $stack16, $stack40, $stack48;
+        java.lang.String $stack15, $stack25, $stack26, $stack27, $stack28, $stack42, $stack49, $stack52;
+        LegacyRepositorySystem this;
+        org.apache.maven.settings.crypto.SettingsDecrypter $stack19;
+        org.apache.maven.settings.crypto.SettingsDecryptionResult result;
+        org.codehaus.plexus.logging.Logger $stack22, $stack41;
+        boolean $stack23, $stack31, $stack46, $stack50, $stack13;
+        org.apache.maven.settings.building.SettingsProblem problem;
+        java.lang.Exception $stack43;
+        java.util.Iterator l4, authentication;
+        org.apache.maven.settings.Server server;
+        org.apache.maven.artifact.repository.ArtifactRepository server#8;
+        java.util.HashMap $u0;
+        org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest $u1;
+        org.apache.maven.artifact.repository.Authentication $u2;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r2, $r3;
+        org.apache.maven.settings.crypto.SettingsDecryptionRequest $r1;
+
+        this := @this: LegacyRepositorySystem;
+
+        repositories := @parameter0: java.util.List;
+
+        servers := @parameter1: java.util.List;
+
+        if repositories == null goto label9;
+
+        $u0 = new java.util.HashMap;
+
+        specialinvoke $u0.<java.util.HashMap: void <init>()>();
+
+        if servers == null goto label3;
+
+        l4 = interfaceinvoke servers.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack46 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack46 == 0 goto label3;
+
+        $stack48 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        server = (org.apache.maven.settings.Server) $stack48;
+
+        $stack49 = virtualinvoke server.<org.apache.maven.settings.Server: java.lang.String getId()>();
+
+        $stack50 = interfaceinvoke $u0.<java.util.Map: boolean containsKey(java.lang.Object)>($stack49);
+
+        if $stack50 != 0 goto label2;
+
+        $stack52 = virtualinvoke server.<org.apache.maven.settings.Server: java.lang.String getId()>();
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack52, server);
+
+     label2:
+        goto label1;
+
+     label3:
+        l4 = interfaceinvoke repositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label4:
+        $stack13 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label9;
+
+        $stack14 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        server#8 = (org.apache.maven.artifact.repository.ArtifactRepository) $stack14;
+
+        $stack15 = interfaceinvoke server#8.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack16 = interfaceinvoke $u0.<java.util.Map: java.lang.Object get(java.lang.Object)>($stack15);
+
+        server = (org.apache.maven.settings.Server) $stack16;
+
+        if server == null goto label7;
+
+        $u1 = new org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
+
+        specialinvoke $u1.<org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest: void <init>(org.apache.maven.settings.Server)>(server);
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack19 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.settings.crypto.SettingsDecrypter settingsDecrypter>;
+
+        $r1 = (org.apache.maven.settings.crypto.SettingsDecryptionRequest) $u1;
+
+        result = interfaceinvoke $stack19.<org.apache.maven.settings.crypto.SettingsDecrypter: org.apache.maven.settings.crypto.SettingsDecryptionResult decrypt(org.apache.maven.settings.crypto.SettingsDecryptionRequest)>($r1);
+
+        server = interfaceinvoke result.<org.apache.maven.settings.crypto.SettingsDecryptionResult: org.apache.maven.settings.Server getServer()>();
+
+        $r2 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack22 = $r2.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack23 = interfaceinvoke $stack22.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack23 == 0 goto label6;
+
+        $stack29 = interfaceinvoke result.<org.apache.maven.settings.crypto.SettingsDecryptionResult: java.util.List getProblems()>();
+
+        authentication = interfaceinvoke $stack29.<java.util.List: java.util.Iterator iterator()>();
+
+     label5:
+        $stack31 = interfaceinvoke authentication.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack31 == 0 goto label6;
+
+        $stack40 = interfaceinvoke authentication.<java.util.Iterator: java.lang.Object next()>();
+
+        problem = (org.apache.maven.settings.building.SettingsProblem) $stack40;
+
+        $r3 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack41 = $r3.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack42 = interfaceinvoke problem.<org.apache.maven.settings.building.SettingsProblem: java.lang.String getMessage()>();
+
+        $stack43 = interfaceinvoke problem.<org.apache.maven.settings.building.SettingsProblem: java.lang.Exception getException()>();
+
+        interfaceinvoke $stack41.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack42, $stack43);
+
+        goto label5;
+
+     label6:
+        $u2 = new org.apache.maven.artifact.repository.Authentication;
+
+        $stack25 = virtualinvoke server.<org.apache.maven.settings.Server: java.lang.String getUsername()>();
+
+        $stack26 = virtualinvoke server.<org.apache.maven.settings.Server: java.lang.String getPassword()>();
+
+        specialinvoke $u2.<org.apache.maven.artifact.repository.Authentication: void <init>(java.lang.String,java.lang.String)>($stack25, $stack26);
+
+        $stack27 = virtualinvoke server.<org.apache.maven.settings.Server: java.lang.String getPrivateKey()>();
+
+        virtualinvoke $u2.<org.apache.maven.artifact.repository.Authentication: void setPrivateKey(java.lang.String)>($stack27);
+
+        $stack28 = virtualinvoke server.<org.apache.maven.settings.Server: java.lang.String getPassphrase()>();
+
+        virtualinvoke $u2.<org.apache.maven.artifact.repository.Authentication: void setPassphrase(java.lang.String)>($stack28);
+
+        interfaceinvoke server#8.<org.apache.maven.artifact.repository.ArtifactRepository: void setAuthentication(org.apache.maven.artifact.repository.Authentication)>($u2);
+
+        goto label8;
+
+     label7:
+        interfaceinvoke server#8.<org.apache.maven.artifact.repository.ArtifactRepository: void setAuthentication(org.apache.maven.artifact.repository.Authentication)>(null);
+
+     label8:
+        goto label4;
+
+     label9:
+        return;
+    }
+
+    private org.apache.maven.artifact.repository.Authentication getAuthentication(org.eclipse.aether.RepositorySystemSession, org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.repository.AuthenticationSelector selector;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        org.eclipse.aether.repository.Authentication auth;
+        org.eclipse.aether.repository.RemoteRepository$Builder $stack12, $stack13;
+        org.eclipse.aether.repository.AuthenticationContext authCtx;
+        org.apache.maven.artifact.repository.Authentication $stack16;
+        java.lang.String $stack17, $stack18, $stack19, $stack20;
+        LegacyRepositorySystem this;
+        org.eclipse.aether.repository.RemoteRepository repo;
+
+        this := @this: LegacyRepositorySystem;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        if session == null goto label1;
+
+        selector = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.AuthenticationSelector getAuthenticationSelector()>();
+
+        if selector == null goto label1;
+
+        repo = staticinvoke <org.apache.maven.RepositoryUtils: org.eclipse.aether.repository.RemoteRepository toRepo(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
+
+        auth = interfaceinvoke selector.<org.eclipse.aether.repository.AuthenticationSelector: org.eclipse.aether.repository.Authentication getAuthentication(org.eclipse.aether.repository.RemoteRepository)>(repo);
+
+        if auth == null goto label1;
+
+        $stack12 = new org.eclipse.aether.repository.RemoteRepository$Builder;
+
+        specialinvoke $stack12.<org.eclipse.aether.repository.RemoteRepository$Builder: void <init>(org.eclipse.aether.repository.RemoteRepository)>(repo);
+
+        $stack13 = virtualinvoke $stack12.<org.eclipse.aether.repository.RemoteRepository$Builder: org.eclipse.aether.repository.RemoteRepository$Builder setAuthentication(org.eclipse.aether.repository.Authentication)>(auth);
+
+        repo = virtualinvoke $stack13.<org.eclipse.aether.repository.RemoteRepository$Builder: org.eclipse.aether.repository.RemoteRepository build()>();
+
+        authCtx = staticinvoke <org.eclipse.aether.repository.AuthenticationContext: org.eclipse.aether.repository.AuthenticationContext forRepository(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.repository.RemoteRepository)>(session, repo);
+
+        $stack16 = new org.apache.maven.artifact.repository.Authentication;
+
+        $stack17 = virtualinvoke authCtx.<org.eclipse.aether.repository.AuthenticationContext: java.lang.String get(java.lang.String)>("username");
+
+        $stack18 = virtualinvoke authCtx.<org.eclipse.aether.repository.AuthenticationContext: java.lang.String get(java.lang.String)>("password");
+
+        specialinvoke $stack16.<org.apache.maven.artifact.repository.Authentication: void <init>(java.lang.String,java.lang.String)>($stack17, $stack18);
+
+        $stack19 = virtualinvoke authCtx.<org.eclipse.aether.repository.AuthenticationContext: java.lang.String get(java.lang.String)>("privateKey.path");
+
+        virtualinvoke $stack16.<org.apache.maven.artifact.repository.Authentication: void setPrivateKey(java.lang.String)>($stack19);
+
+        $stack20 = virtualinvoke authCtx.<org.eclipse.aether.repository.AuthenticationContext: java.lang.String get(java.lang.String)>("privateKey.passphrase");
+
+        virtualinvoke $stack16.<org.apache.maven.artifact.repository.Authentication: void setPassphrase(java.lang.String)>($stack20);
+
+        virtualinvoke authCtx.<org.eclipse.aether.repository.AuthenticationContext: void close()>();
+
+        return $stack16;
+
+     label1:
+        return null;
+    }
+
+    public void injectAuthentication(org.eclipse.aether.RepositorySystemSession, java.util.List)
+    {
+        java.util.List repositories;
+        org.eclipse.aether.RepositorySystemSession session;
+        java.util.Iterator l3;
+        boolean $stack6;
+        java.lang.Object $stack7;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        LegacyRepositorySystem this;
+        org.apache.maven.artifact.repository.Authentication $stack8;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        repositories := @parameter1: java.util.List;
+
+        if repositories == null goto label2;
+
+        if session == null goto label2;
+
+        l3 = interfaceinvoke repositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label2;
+
+        $stack7 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.apache.maven.artifact.repository.ArtifactRepository) $stack7;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack8 = specialinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.Authentication getAuthentication(org.eclipse.aether.RepositorySystemSession,org.apache.maven.artifact.repository.ArtifactRepository)>(session, repository);
+
+        interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: void setAuthentication(org.apache.maven.artifact.repository.Authentication)>($stack8);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    private org.apache.maven.settings.Proxy getProxy(org.apache.maven.artifact.repository.ArtifactRepository, java.util.List)
+    {
+        java.util.List proxies;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        java.lang.String $stack7, $stack14, $stack15, $stack17, $stack20, $stack22, $stack23, $stack24;
+        java.util.Iterator l3;
+        boolean $stack10, $stack12, $stack16, $stack18, $stack25;
+        java.lang.Object $stack11;
+        org.apache.maven.settings.Proxy proxy;
+        org.apache.maven.wagon.proxy.ProxyInfo $stack19;
+        org.apache.maven.wagon.repository.Repository $stack21;
+        LegacyRepositorySystem this;
+
+        this := @this: LegacyRepositorySystem;
+
+        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        proxies := @parameter1: java.util.List;
+
+        if proxies == null goto label5;
+
+        $stack7 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getProtocol()>();
+
+        if $stack7 == null goto label5;
+
+        l3 = interfaceinvoke proxies.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label5;
+
+        $stack11 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        proxy = (org.apache.maven.settings.Proxy) $stack11;
+
+        $stack12 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: boolean isActive()>();
+
+        if $stack12 == 0 goto label4;
+
+        $stack14 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getProtocol()>();
+
+        $stack15 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getProtocol()>();
+
+        $stack16 = virtualinvoke $stack14.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($stack15);
+
+        if $stack16 == 0 goto label4;
+
+        $stack17 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getNonProxyHosts()>();
+
+        $stack18 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack17);
+
+        if $stack18 == 0 goto label3;
+
+        $stack19 = new org.apache.maven.wagon.proxy.ProxyInfo;
+
+        specialinvoke $stack19.<org.apache.maven.wagon.proxy.ProxyInfo: void <init>()>();
+
+        $stack20 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getNonProxyHosts()>();
+
+        virtualinvoke $stack19.<org.apache.maven.wagon.proxy.ProxyInfo: void setNonProxyHosts(java.lang.String)>($stack20);
+
+        $stack21 = new org.apache.maven.wagon.repository.Repository;
+
+        $stack22 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack23 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
+
+        specialinvoke $stack21.<org.apache.maven.wagon.repository.Repository: void <init>(java.lang.String,java.lang.String)>($stack22, $stack23);
+
+        $stack24 = virtualinvoke $stack21.<org.apache.maven.wagon.repository.Repository: java.lang.String getHost()>();
+
+        $stack25 = staticinvoke <org.apache.maven.wagon.proxy.ProxyUtils: boolean validateNonProxyHosts(org.apache.maven.wagon.proxy.ProxyInfo,java.lang.String)>($stack19, $stack24);
+
+        if $stack25 != 0 goto label2;
+
+        return proxy;
+
+     label2:
+        goto label4;
+
+     label3:
+        return proxy;
+
+     label4:
+        goto label1;
+
+     label5:
+        return null;
+    }
+
+    public void injectProxy(java.util.List, java.util.List)
+    {
+        java.util.List repositories, proxies, $stack28;
+        java.util.Iterator l3, p;
+        boolean $stack11, $stack20, $stack30;
+        java.lang.Object $stack12, $stack45;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        LegacyRepositorySystem this;
+        org.apache.maven.settings.crypto.SettingsDecrypter $stack16;
+        org.apache.maven.settings.crypto.SettingsDecryptionResult result;
+        org.codehaus.plexus.logging.Logger $stack19, $stack46;
+        java.lang.String $stack22, $stack23, $stack25, $stack26, $stack27, $stack47;
+        int $stack24;
+        org.apache.maven.settings.building.SettingsProblem problem;
+        java.lang.Exception $stack48;
+        org.apache.maven.settings.Proxy proxy;
+        org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest $u0;
+        org.apache.maven.repository.Proxy $u1;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1, $r3, $r4;
+        org.apache.maven.settings.crypto.SettingsDecryptionRequest $r2;
+
+        this := @this: LegacyRepositorySystem;
+
+        repositories := @parameter0: java.util.List;
+
+        proxies := @parameter1: java.util.List;
+
+        if repositories == null goto label6;
+
+        l3 = interfaceinvoke repositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack11 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label6;
+
+        $stack12 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.apache.maven.artifact.repository.ArtifactRepository) $stack12;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        proxy = specialinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.settings.Proxy getProxy(org.apache.maven.artifact.repository.ArtifactRepository,java.util.List)>(repository, proxies);
+
+        if proxy == null goto label4;
+
+        $u0 = new org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
+
+        specialinvoke $u0.<org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest: void <init>(org.apache.maven.settings.Proxy)>(proxy);
+
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack16 = $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.settings.crypto.SettingsDecrypter settingsDecrypter>;
+
+        $r2 = (org.apache.maven.settings.crypto.SettingsDecryptionRequest) $u0;
+
+        result = interfaceinvoke $stack16.<org.apache.maven.settings.crypto.SettingsDecrypter: org.apache.maven.settings.crypto.SettingsDecryptionResult decrypt(org.apache.maven.settings.crypto.SettingsDecryptionRequest)>($r2);
+
+        proxy = interfaceinvoke result.<org.apache.maven.settings.crypto.SettingsDecryptionResult: org.apache.maven.settings.Proxy getProxy()>();
+
+        $r3 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack19 = $r3.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack20 = interfaceinvoke $stack19.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack20 == 0 goto label3;
+
+        $stack28 = interfaceinvoke result.<org.apache.maven.settings.crypto.SettingsDecryptionResult: java.util.List getProblems()>();
+
+        p = interfaceinvoke $stack28.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack30 = interfaceinvoke p.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack30 == 0 goto label3;
+
+        $stack45 = interfaceinvoke p.<java.util.Iterator: java.lang.Object next()>();
+
+        problem = (org.apache.maven.settings.building.SettingsProblem) $stack45;
+
+        $r4 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack46 = $r4.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack47 = interfaceinvoke problem.<org.apache.maven.settings.building.SettingsProblem: java.lang.String getMessage()>();
+
+        $stack48 = interfaceinvoke problem.<org.apache.maven.settings.building.SettingsProblem: java.lang.Exception getException()>();
+
+        interfaceinvoke $stack46.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack47, $stack48);
+
+        goto label2;
+
+     label3:
+        $u1 = new org.apache.maven.repository.Proxy;
+
+        specialinvoke $u1.<org.apache.maven.repository.Proxy: void <init>()>();
+
+        $stack22 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getHost()>();
+
+        virtualinvoke $u1.<org.apache.maven.repository.Proxy: void setHost(java.lang.String)>($stack22);
+
+        $stack23 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getProtocol()>();
+
+        virtualinvoke $u1.<org.apache.maven.repository.Proxy: void setProtocol(java.lang.String)>($stack23);
+
+        $stack24 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: int getPort()>();
+
+        virtualinvoke $u1.<org.apache.maven.repository.Proxy: void setPort(int)>($stack24);
+
+        $stack25 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getNonProxyHosts()>();
+
+        virtualinvoke $u1.<org.apache.maven.repository.Proxy: void setNonProxyHosts(java.lang.String)>($stack25);
+
+        $stack26 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getUsername()>();
+
+        virtualinvoke $u1.<org.apache.maven.repository.Proxy: void setUserName(java.lang.String)>($stack26);
+
+        $stack27 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getPassword()>();
+
+        virtualinvoke $u1.<org.apache.maven.repository.Proxy: void setPassword(java.lang.String)>($stack27);
+
+        interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: void setProxy(org.apache.maven.repository.Proxy)>($u1);
+
+        goto label5;
+
+     label4:
+        interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: void setProxy(org.apache.maven.repository.Proxy)>(null);
+
+     label5:
+        goto label1;
+
+     label6:
+        return;
+    }
+
+    private org.apache.maven.repository.Proxy getProxy(org.eclipse.aether.RepositorySystemSession, org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.repository.ProxySelector selector;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        org.eclipse.aether.repository.Proxy proxy;
+        org.apache.maven.repository.Proxy $stack12;
+        java.lang.String $stack13, $stack14, $stack21, $stack22, $stack23, $stack24;
+        int $stack15;
+        org.eclipse.aether.repository.Authentication $stack16;
+        org.eclipse.aether.repository.RemoteRepository$Builder $stack17, $stack18;
+        org.eclipse.aether.repository.AuthenticationContext authCtx;
+        LegacyRepositorySystem this;
+        org.eclipse.aether.repository.RemoteRepository repo;
+
+        this := @this: LegacyRepositorySystem;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        if session == null goto label2;
+
+        selector = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.ProxySelector getProxySelector()>();
+
+        if selector == null goto label2;
+
+        repo = staticinvoke <org.apache.maven.RepositoryUtils: org.eclipse.aether.repository.RemoteRepository toRepo(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
+
+        proxy = interfaceinvoke selector.<org.eclipse.aether.repository.ProxySelector: org.eclipse.aether.repository.Proxy getProxy(org.eclipse.aether.repository.RemoteRepository)>(repo);
+
+        if proxy == null goto label2;
+
+        $stack12 = new org.apache.maven.repository.Proxy;
+
+        specialinvoke $stack12.<org.apache.maven.repository.Proxy: void <init>()>();
+
+        $stack13 = virtualinvoke proxy.<org.eclipse.aether.repository.Proxy: java.lang.String getHost()>();
+
+        virtualinvoke $stack12.<org.apache.maven.repository.Proxy: void setHost(java.lang.String)>($stack13);
+
+        $stack14 = virtualinvoke proxy.<org.eclipse.aether.repository.Proxy: java.lang.String getType()>();
+
+        virtualinvoke $stack12.<org.apache.maven.repository.Proxy: void setProtocol(java.lang.String)>($stack14);
+
+        $stack15 = virtualinvoke proxy.<org.eclipse.aether.repository.Proxy: int getPort()>();
+
+        virtualinvoke $stack12.<org.apache.maven.repository.Proxy: void setPort(int)>($stack15);
+
+        $stack16 = virtualinvoke proxy.<org.eclipse.aether.repository.Proxy: org.eclipse.aether.repository.Authentication getAuthentication()>();
+
+        if $stack16 == null goto label1;
+
+        $stack17 = new org.eclipse.aether.repository.RemoteRepository$Builder;
+
+        specialinvoke $stack17.<org.eclipse.aether.repository.RemoteRepository$Builder: void <init>(org.eclipse.aether.repository.RemoteRepository)>(repo);
+
+        $stack18 = virtualinvoke $stack17.<org.eclipse.aether.repository.RemoteRepository$Builder: org.eclipse.aether.repository.RemoteRepository$Builder setProxy(org.eclipse.aether.repository.Proxy)>(proxy);
+
+        repo = virtualinvoke $stack18.<org.eclipse.aether.repository.RemoteRepository$Builder: org.eclipse.aether.repository.RemoteRepository build()>();
+
+        authCtx = staticinvoke <org.eclipse.aether.repository.AuthenticationContext: org.eclipse.aether.repository.AuthenticationContext forProxy(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.repository.RemoteRepository)>(session, repo);
+
+        $stack21 = virtualinvoke authCtx.<org.eclipse.aether.repository.AuthenticationContext: java.lang.String get(java.lang.String)>("username");
+
+        virtualinvoke $stack12.<org.apache.maven.repository.Proxy: void setUserName(java.lang.String)>($stack21);
+
+        $stack22 = virtualinvoke authCtx.<org.eclipse.aether.repository.AuthenticationContext: java.lang.String get(java.lang.String)>("password");
+
+        virtualinvoke $stack12.<org.apache.maven.repository.Proxy: void setPassword(java.lang.String)>($stack22);
+
+        $stack23 = virtualinvoke authCtx.<org.eclipse.aether.repository.AuthenticationContext: java.lang.String get(java.lang.String)>("ntlm.domain");
+
+        virtualinvoke $stack12.<org.apache.maven.repository.Proxy: void setNtlmDomain(java.lang.String)>($stack23);
+
+        $stack24 = virtualinvoke authCtx.<org.eclipse.aether.repository.AuthenticationContext: java.lang.String get(java.lang.String)>("ntlm.workstation");
+
+        virtualinvoke $stack12.<org.apache.maven.repository.Proxy: void setNtlmHost(java.lang.String)>($stack24);
+
+        virtualinvoke authCtx.<org.eclipse.aether.repository.AuthenticationContext: void close()>();
+
+     label1:
+        return $stack12;
+
+     label2:
+        return null;
+    }
+
+    public void injectProxy(org.eclipse.aether.RepositorySystemSession, java.util.List)
+    {
+        java.util.List repositories;
+        org.eclipse.aether.RepositorySystemSession session;
+        java.util.Iterator l3;
+        boolean $stack6;
+        java.lang.Object $stack7;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        LegacyRepositorySystem this;
+        org.apache.maven.repository.Proxy $stack8;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        repositories := @parameter1: java.util.List;
+
+        if repositories == null goto label2;
+
+        if session == null goto label2;
+
+        l3 = interfaceinvoke repositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label2;
+
+        $stack7 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.apache.maven.artifact.repository.ArtifactRepository) $stack7;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack8 = specialinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.repository.Proxy getProxy(org.eclipse.aether.RepositorySystemSession,org.apache.maven.artifact.repository.ArtifactRepository)>(session, repository);
+
+        interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: void setProxy(org.apache.maven.repository.Proxy)>($stack8);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void retrieve(org.apache.maven.artifact.repository.ArtifactRepository, java.io.File, java.lang.String, org.apache.maven.repository.ArtifactTransferListener) throws org.apache.maven.repository.ArtifactTransferFailedException, org.apache.maven.repository.ArtifactDoesNotExistException
+    {
+        LegacyRepositorySystem this;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        java.io.File destination;
+        java.lang.String remotePath, $stack10, $stack13;
+        org.apache.maven.repository.ArtifactTransferListener transferListener;
+        org.apache.maven.repository.legacy.WagonManager $stack6;
+        org.apache.maven.wagon.events.TransferListener $stack7;
+        java.lang.Throwable $stack8, $stack11, $r1, $r2;
+        org.apache.maven.repository.ArtifactTransferFailedException $u0;
+        org.apache.maven.repository.ArtifactDoesNotExistException $u1;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        destination := @parameter1: java.io.File;
+
+        remotePath := @parameter2: java.lang.String;
+
+        transferListener := @parameter3: org.apache.maven.repository.ArtifactTransferListener;
+
+     label1:
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack6 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $stack7 = staticinvoke <org.apache.maven.repository.legacy.TransferListenerAdapter: org.apache.maven.wagon.events.TransferListener newAdapter(org.apache.maven.repository.ArtifactTransferListener)>(transferListener);
+
+        interfaceinvoke $stack6.<org.apache.maven.repository.legacy.WagonManager: void getRemoteFile(org.apache.maven.artifact.repository.ArtifactRepository,java.io.File,java.lang.String,org.apache.maven.wagon.events.TransferListener,java.lang.String,boolean)>(repository, destination, remotePath, $stack7, "warn", 1);
+
+     label2:
+        goto label5;
+
+     label3:
+        $stack11 := @caughtexception;
+
+        $u0 = new org.apache.maven.repository.ArtifactTransferFailedException;
+
+        $stack13 = staticinvoke <org.apache.maven.repository.legacy.LegacyRepositorySystem: java.lang.String getMessage(java.lang.Throwable,java.lang.String)>($stack11, "Error transferring artifact.");
+
+        specialinvoke $u0.<org.apache.maven.repository.ArtifactTransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack13, $stack11);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label4:
+        $stack8 := @caughtexception;
+
+        $u1 = new org.apache.maven.repository.ArtifactDoesNotExistException;
+
+        $stack10 = staticinvoke <org.apache.maven.repository.legacy.LegacyRepositorySystem: java.lang.String getMessage(java.lang.Throwable,java.lang.String)>($stack8, "Requested artifact does not exist.");
+
+        specialinvoke $u1.<org.apache.maven.repository.ArtifactDoesNotExistException: void <init>(java.lang.String,java.lang.Throwable)>($stack10, $stack8);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label5:
+        return;
+
+        catch org.apache.maven.wagon.TransferFailedException from label1 to label2 with label3;
+        catch org.apache.maven.wagon.ResourceDoesNotExistException from label1 to label2 with label4;
+    }
+
+    public void publish(org.apache.maven.artifact.repository.ArtifactRepository, java.io.File, java.lang.String, org.apache.maven.repository.ArtifactTransferListener) throws org.apache.maven.repository.ArtifactTransferFailedException
+    {
+        LegacyRepositorySystem this;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        java.io.File source;
+        java.lang.String remotePath, $stack10;
+        org.apache.maven.repository.ArtifactTransferListener transferListener;
+        org.apache.maven.repository.legacy.WagonManager $stack6;
+        org.apache.maven.wagon.events.TransferListener $stack7;
+        java.lang.Throwable $stack8, $r1;
+        org.apache.maven.repository.ArtifactTransferFailedException $u0;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        source := @parameter1: java.io.File;
+
+        remotePath := @parameter2: java.lang.String;
+
+        transferListener := @parameter3: org.apache.maven.repository.ArtifactTransferListener;
+
+     label1:
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack6 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $stack7 = staticinvoke <org.apache.maven.repository.legacy.TransferListenerAdapter: org.apache.maven.wagon.events.TransferListener newAdapter(org.apache.maven.repository.ArtifactTransferListener)>(transferListener);
+
+        interfaceinvoke $stack6.<org.apache.maven.repository.legacy.WagonManager: void putRemoteFile(org.apache.maven.artifact.repository.ArtifactRepository,java.io.File,java.lang.String,org.apache.maven.wagon.events.TransferListener)>(repository, source, remotePath, $stack7);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack8 := @caughtexception;
+
+        $u0 = new org.apache.maven.repository.ArtifactTransferFailedException;
+
+        $stack10 = staticinvoke <org.apache.maven.repository.legacy.LegacyRepositorySystem: java.lang.String getMessage(java.lang.Throwable,java.lang.String)>($stack8, "Error transferring artifact.");
+
+        specialinvoke $u0.<org.apache.maven.repository.ArtifactTransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack10, $stack8);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label4:
+        return;
+
+        catch org.apache.maven.wagon.TransferFailedException from label1 to label2 with label3;
+    }
+
+    public org.apache.maven.artifact.repository.ArtifactRepository buildArtifactRepository(org.apache.maven.model.Repository) throws org.apache.maven.artifact.InvalidRepositoryException
+    {
+        org.apache.maven.model.Repository repo;
+        java.lang.String id, url, $stack14, $stack21;
+        boolean $stack7, $stack9;
+        LegacyRepositorySystem this;
+        org.apache.maven.model.RepositoryPolicy $stack10, $stack12;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy snapshots, releases;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $stack15;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack16;
+        java.lang.StringBuilder $stack19, $stack20, $u1;
+        org.apache.maven.artifact.InvalidRepositoryException $u0, $u2;
+        java.lang.Throwable $r0, $r1;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r2, $r3, $r4, $r5;
+
+        this := @this: LegacyRepositorySystem;
+
+        repo := @parameter0: org.apache.maven.model.Repository;
+
+        if repo == null goto label3;
+
+        id = virtualinvoke repo.<org.apache.maven.model.Repository: java.lang.String getId()>();
+
+        $stack7 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>(id);
+
+        if $stack7 == 0 goto label1;
+
+        $u0 = new org.apache.maven.artifact.InvalidRepositoryException;
+
+        specialinvoke $u0.<org.apache.maven.artifact.InvalidRepositoryException: void <init>(java.lang.String,java.lang.String)>("Repository identifier missing", "");
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label1:
+        url = virtualinvoke repo.<org.apache.maven.model.Repository: java.lang.String getUrl()>();
+
+        $stack9 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>(url);
+
+        if $stack9 == 0 goto label2;
+
+        $u2 = new org.apache.maven.artifact.InvalidRepositoryException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack19 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("URL missing for repository ");
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(id);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.apache.maven.artifact.InvalidRepositoryException: void <init>(java.lang.String,java.lang.String)>($stack21, id);
+
+        $r1 = (java.lang.Throwable) $u2;
+
+        throw $r1;
+
+     label2:
+        $stack10 = virtualinvoke repo.<org.apache.maven.model.Repository: org.apache.maven.model.RepositoryPolicy getSnapshots()>();
+
+        $r2 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        snapshots = virtualinvoke $r2.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy buildArtifactRepositoryPolicy(org.apache.maven.model.RepositoryPolicy)>($stack10);
+
+        $stack12 = virtualinvoke repo.<org.apache.maven.model.Repository: org.apache.maven.model.RepositoryPolicy getReleases()>();
+
+        $r3 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        releases = virtualinvoke $r3.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy buildArtifactRepositoryPolicy(org.apache.maven.model.RepositoryPolicy)>($stack12);
+
+        $stack14 = virtualinvoke repo.<org.apache.maven.model.Repository: java.lang.String getLayout()>();
+
+        $r4 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack15 = specialinvoke $r4.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout(java.lang.String)>($stack14);
+
+        $r5 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack16 = virtualinvoke $r5.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>(id, url, $stack15, snapshots, releases);
+
+        return $stack16;
+
+     label3:
+        return null;
+    }
+
+    private org.apache.maven.artifact.repository.ArtifactRepository createRepository(java.lang.String, java.lang.String, boolean, java.lang.String, boolean, java.lang.String, java.lang.String)
+    {
+        boolean snapshots, releases;
+        java.lang.String snapshotUpdates, checksumPolicy, releaseUpdates, repositoryId, url;
+        LegacyRepositorySystem this;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack12;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy $u0, $u1;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0;
+
+        this := @this: LegacyRepositorySystem;
+
+        url := @parameter0: java.lang.String;
+
+        repositoryId := @parameter1: java.lang.String;
+
+        releases := @parameter2: boolean;
+
+        releaseUpdates := @parameter3: java.lang.String;
+
+        snapshots := @parameter4: boolean;
+
+        snapshotUpdates := @parameter5: java.lang.String;
+
+        checksumPolicy := @parameter6: java.lang.String;
+
+        $u0 = new org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: void <init>(boolean,java.lang.String,java.lang.String)>(snapshots, snapshotUpdates, checksumPolicy);
+
+        $u1 = new org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
+
+        specialinvoke $u1.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: void <init>(boolean,java.lang.String,java.lang.String)>(releases, releaseUpdates, checksumPolicy);
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack12 = virtualinvoke $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>(repositoryId, url, null, $u0, $u1);
+
+        return $stack12;
+    }
+
+    public org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String, java.lang.String, org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout, org.apache.maven.artifact.repository.ArtifactRepositoryPolicy, org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)
+    {
+        LegacyRepositorySystem this;
+        java.lang.String repositoryId, url;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy snapshots, releases;
+        org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory $stack7;
+        org.apache.maven.artifact.repository.ArtifactRepository artifactRepository;
+        java.util.Map $stack9;
+        java.lang.Object $stack10;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout repositoryLayout;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1;
+
+        this := @this: LegacyRepositorySystem;
+
+        repositoryId := @parameter0: java.lang.String;
+
+        url := @parameter1: java.lang.String;
+
+        repositoryLayout := @parameter2: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
+
+        snapshots := @parameter3: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
+
+        releases := @parameter4: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
+
+        if repositoryLayout != null goto label1;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack9 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: java.util.Map layouts>;
+
+        $stack10 = interfaceinvoke $stack9.<java.util.Map: java.lang.Object get(java.lang.Object)>("default");
+
+        repositoryLayout = (org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout) $stack10;
+
+     label1:
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack7 = $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory artifactRepositoryFactory>;
+
+        artifactRepository = interfaceinvoke $stack7.<org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>(repositoryId, url, repositoryLayout, snapshots, releases);
+
+        return artifactRepository;
+    }
+
+    private static java.lang.String getMessage(java.lang.Throwable, java.lang.String)
+    {
+        java.lang.Throwable error, $stack5;
+        java.lang.String msg, def, $stack6;
+        boolean $stack4;
+
+        error := @parameter0: java.lang.Throwable;
+
+        def := @parameter1: java.lang.String;
+
+        if error != null goto label1;
+
+        return def;
+
+     label1:
+        msg = virtualinvoke error.<java.lang.Throwable: java.lang.String getMessage()>();
+
+        $stack4 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>(msg);
+
+        if $stack4 == 0 goto label2;
+
+        return msg;
+
+     label2:
+        $stack5 = virtualinvoke error.<java.lang.Throwable: java.lang.Throwable getCause()>();
+
+        $stack6 = staticinvoke <org.apache.maven.repository.legacy.LegacyRepositorySystem: java.lang.String getMessage(java.lang.Throwable,java.lang.String)>($stack5, def);
+
+        return $stack6;
+    }
+
+    private org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout(java.lang.String)
+    {
+        LegacyRepositorySystem this;
+        java.lang.String id;
+        java.util.Map $stack3, $stack6;
+        java.lang.Object $stack4, $stack7, layout;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $stack8, $r2;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem$UnknownRepositoryLayout $u0;
+        org.apache.maven.repository.legacy.LegacyRepositorySystem $r0, $r1;
+
+        this := @this: LegacyRepositorySystem;
+
+        id := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystem: java.util.Map layouts>;
+
+        $stack4 = interfaceinvoke $stack3.<java.util.Map: java.lang.Object get(java.lang.Object)>(id);
+
+        layout = (org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout) $stack4;
+
+        if layout != null goto label1;
+
+        $u0 = new org.apache.maven.repository.legacy.LegacyRepositorySystem$UnknownRepositoryLayout;
+
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystem) this;
+
+        $stack6 = $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystem: java.util.Map layouts>;
+
+        $stack7 = interfaceinvoke $stack6.<java.util.Map: java.lang.Object get(java.lang.Object)>("default");
+
+        $stack8 = (org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout) $stack7;
+
+        specialinvoke $u0.<org.apache.maven.repository.legacy.LegacyRepositorySystem$UnknownRepositoryLayout: void <init>(java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout)>(id, $stack8);
+
+        layout = $u0;
+
+     label1:
+        $r2 = (org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout) layout;
+
+        return $r2;
+    }
+
+    private static java.util.List lambda$getEffectiveRepositories$0(java.lang.String)
+    {
+        java.util.ArrayList $stack1;
+        java.lang.String k;
+
+        k := @parameter0: java.lang.String;
+
+        $stack1 = new java.util.ArrayList;
+
+        specialinvoke $stack1.<java.util.ArrayList: void <init>()>();
+
+        return $stack1;
+    }
+}

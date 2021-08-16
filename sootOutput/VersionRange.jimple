@@ -1,0 +1,1420 @@
+public class VersionRange extends java.lang.Object
+{
+    private static final java.util.Map CACHE_SPEC;
+    private static final java.util.Map CACHE_VERSION;
+    private final org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion;
+    private final java.util.List restrictions;
+
+    private void <init>(org.apache.maven.artifact.versioning.ArtifactVersion, java.util.List)
+    {
+        VersionRange this;
+        org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion;
+        java.util.List restrictions;
+        org.apache.maven.artifact.versioning.VersionRange $r0, $r1;
+
+        this := @this: VersionRange;
+
+        recommendedVersion := @parameter0: org.apache.maven.artifact.versioning.ArtifactVersion;
+
+        restrictions := @parameter1: java.util.List;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $r0.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion> = recommendedVersion;
+
+        $r1 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $r1.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions> = restrictions;
+
+        return;
+    }
+
+    public org.apache.maven.artifact.versioning.ArtifactVersion getRecommendedVersion()
+    {
+        VersionRange this;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack1;
+        org.apache.maven.artifact.versioning.VersionRange $r0;
+
+        this := @this: VersionRange;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack1 = $r0.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        return $stack1;
+    }
+
+    public java.util.List getRestrictions()
+    {
+        VersionRange this;
+        java.util.List $stack1;
+        org.apache.maven.artifact.versioning.VersionRange $r0;
+
+        this := @this: VersionRange;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack1 = $r0.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        return $stack1;
+    }
+
+    public org.apache.maven.artifact.versioning.VersionRange cloneOf()
+    {
+        VersionRange this;
+        java.util.List $stack2, $stack6, $stack10;
+        boolean $stack7;
+        java.util.ArrayList copiedRestrictions, $u0;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack4;
+        org.apache.maven.artifact.versioning.VersionRange $u1, $r0, $r1, $r2, $r3;
+
+        this := @this: VersionRange;
+
+        copiedRestrictions = null;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack2 = $r0.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        if $stack2 == null goto label1;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        copiedRestrictions = $u0;
+
+        $r1 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack6 = $r1.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        $stack7 = interfaceinvoke $stack6.<java.util.List: boolean isEmpty()>();
+
+        if $stack7 != 0 goto label1;
+
+        $r2 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack10 = $r2.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        interfaceinvoke $u0.<java.util.List: boolean addAll(java.util.Collection)>($stack10);
+
+     label1:
+        $u1 = new org.apache.maven.artifact.versioning.VersionRange;
+
+        $r3 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack4 = $r3.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        specialinvoke $u1.<org.apache.maven.artifact.versioning.VersionRange: void <init>(org.apache.maven.artifact.versioning.ArtifactVersion,java.util.List)>($stack4, copiedRestrictions);
+
+        return $u1;
+    }
+
+    public static org.apache.maven.artifact.versioning.VersionRange createFromVersionSpec(java.lang.String) throws org.apache.maven.artifact.versioning.InvalidVersionSpecificationException
+    {
+        java.lang.String spec, $stack18, $stack23, $stack29, $stack36, $stack54, $stack75, process;
+        java.util.Map $stack11, $stack60;
+        java.lang.Object $stack12;
+        boolean $stack14, $stack28, $stack57;
+        int index1, index2, $stack17, $stack22, $stack25, $stack38, $stack58, $stack62, index;
+        org.apache.maven.artifact.versioning.Restriction restriction, $stack64;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack31, $stack37, upperBound, lowerBound, $r3;
+        java.lang.StringBuilder $stack34, $stack35, $stack52, $stack53, $stack73, $stack74, $u1, $u3, $u5;
+        org.apache.maven.artifact.versioning.VersionRange cached, $u8;
+        org.apache.maven.artifact.versioning.DefaultArtifactVersion version, $u7;
+        java.util.ArrayList $u0;
+        org.apache.maven.artifact.versioning.InvalidVersionSpecificationException $u2, $u4, $u6;
+        java.lang.Throwable $r0, $r1, $r2;
+
+        spec := @parameter0: java.lang.String;
+
+        if spec != null goto label01;
+
+        return null;
+
+     label01:
+        $stack11 = <org.apache.maven.artifact.versioning.VersionRange: java.util.Map CACHE_SPEC>;
+
+        $stack12 = interfaceinvoke $stack11.<java.util.Map: java.lang.Object get(java.lang.Object)>(spec);
+
+        cached = (org.apache.maven.artifact.versioning.VersionRange) $stack12;
+
+        if cached == null goto label02;
+
+        return cached;
+
+     label02:
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        process = spec;
+
+        version = null;
+
+        upperBound = null;
+
+        lowerBound = null;
+
+     label03:
+        $stack14 = virtualinvoke process.<java.lang.String: boolean startsWith(java.lang.String)>("[");
+
+        if $stack14 != 0 goto label04;
+
+        $stack57 = virtualinvoke process.<java.lang.String: boolean startsWith(java.lang.String)>("(");
+
+        if $stack57 == 0 goto label12;
+
+     label04:
+        index1 = virtualinvoke process.<java.lang.String: int indexOf(int)>(41);
+
+        index2 = virtualinvoke process.<java.lang.String: int indexOf(int)>(93);
+
+        index = index2;
+
+        if index2 < 0 goto label05;
+
+        if index1 >= index2 goto label06;
+
+     label05:
+        if index1 < 0 goto label06;
+
+        index = index1;
+
+     label06:
+        if index >= 0 goto label07;
+
+        $u2 = new org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack52 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unbounded range: ");
+
+        $stack53 = virtualinvoke $stack52.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(spec);
+
+        $stack54 = virtualinvoke $stack53.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.apache.maven.artifact.versioning.InvalidVersionSpecificationException: void <init>(java.lang.String)>($stack54);
+
+        $r0 = (java.lang.Throwable) $u2;
+
+        throw $r0;
+
+     label07:
+        $stack17 = index + 1;
+
+        $stack18 = virtualinvoke process.<java.lang.String: java.lang.String substring(int,int)>(0, $stack17);
+
+        restriction = staticinvoke <org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.Restriction parseRestriction(java.lang.String)>($stack18);
+
+        if lowerBound != null goto label08;
+
+        lowerBound = virtualinvoke restriction.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+     label08:
+        if upperBound == null goto label10;
+
+        $stack31 = virtualinvoke restriction.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        if $stack31 == null goto label09;
+
+        $stack37 = virtualinvoke restriction.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        $stack38 = interfaceinvoke $stack37.<org.apache.maven.artifact.versioning.ArtifactVersion: int compareTo(java.lang.Object)>(upperBound);
+
+        if $stack38 >= 0 goto label10;
+
+     label09:
+        $u4 = new org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack34 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Ranges overlap: ");
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(spec);
+
+        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u4.<org.apache.maven.artifact.versioning.InvalidVersionSpecificationException: void <init>(java.lang.String)>($stack36);
+
+        $r1 = (java.lang.Throwable) $u4;
+
+        throw $r1;
+
+     label10:
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(restriction);
+
+        upperBound = virtualinvoke restriction.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        $stack22 = index + 1;
+
+        $stack23 = virtualinvoke process.<java.lang.String: java.lang.String substring(int)>($stack22);
+
+        process = virtualinvoke $stack23.<java.lang.String: java.lang.String trim()>();
+
+        $stack25 = virtualinvoke process.<java.lang.String: int length()>();
+
+        if $stack25 <= 0 goto label11;
+
+        $stack28 = virtualinvoke process.<java.lang.String: boolean startsWith(java.lang.String)>(",");
+
+        if $stack28 == 0 goto label11;
+
+        $stack29 = virtualinvoke process.<java.lang.String: java.lang.String substring(int)>(1);
+
+        process = virtualinvoke $stack29.<java.lang.String: java.lang.String trim()>();
+
+     label11:
+        goto label03;
+
+     label12:
+        $stack58 = virtualinvoke process.<java.lang.String: int length()>();
+
+        if $stack58 <= 0 goto label14;
+
+        $stack62 = interfaceinvoke $u0.<java.util.List: int size()>();
+
+        if $stack62 <= 0 goto label13;
+
+        $u6 = new org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack73 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Only fully-qualified sets allowed in multiple set scenario: ");
+
+        $stack74 = virtualinvoke $stack73.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(spec);
+
+        $stack75 = virtualinvoke $stack74.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u6.<org.apache.maven.artifact.versioning.InvalidVersionSpecificationException: void <init>(java.lang.String)>($stack75);
+
+        $r2 = (java.lang.Throwable) $u6;
+
+        throw $r2;
+
+     label13:
+        $u7 = new org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+
+        specialinvoke $u7.<org.apache.maven.artifact.versioning.DefaultArtifactVersion: void <init>(java.lang.String)>(process);
+
+        version = $u7;
+
+        $stack64 = <org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.Restriction EVERYTHING>;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($stack64);
+
+     label14:
+        $u8 = new org.apache.maven.artifact.versioning.VersionRange;
+
+        $r3 = (org.apache.maven.artifact.versioning.ArtifactVersion) version;
+
+        specialinvoke $u8.<org.apache.maven.artifact.versioning.VersionRange: void <init>(org.apache.maven.artifact.versioning.ArtifactVersion,java.util.List)>($r3, $u0);
+
+        $stack60 = <org.apache.maven.artifact.versioning.VersionRange: java.util.Map CACHE_SPEC>;
+
+        interfaceinvoke $stack60.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(spec, $u8);
+
+        return $u8;
+    }
+
+    private static org.apache.maven.artifact.versioning.Restriction parseRestriction(java.lang.String) throws org.apache.maven.artifact.versioning.InvalidVersionSpecificationException
+    {
+        java.lang.String spec, $stack15, process, $stack18, $stack21, upperBound, $stack37, $stack47, $stack52, version#3;
+        boolean lowerBoundInclusive, upperBoundInclusive, $stack23;
+        int $stack13, $stack14, index, $stack20, $stack24, $stack25, $stack32;
+        java.lang.StringBuilder $stack35, $stack36, $stack45, $stack46, $stack50, $stack51, $u0, $u4, $u8;
+        org.apache.maven.artifact.versioning.Restriction restriction, $u3, $u10;
+        org.apache.maven.artifact.versioning.DefaultArtifactVersion lowerVersion, upperVersion, $u2, $u6, $u7;
+        org.apache.maven.artifact.versioning.InvalidVersionSpecificationException $u1, $u5, $u9;
+        java.lang.Throwable $r0, $r3, $r5;
+        org.apache.maven.artifact.versioning.ArtifactVersion $r1, $r2, $r4, $r6, $r7;
+
+        spec := @parameter0: java.lang.String;
+
+        lowerBoundInclusive = virtualinvoke spec.<java.lang.String: boolean startsWith(java.lang.String)>("[");
+
+        upperBoundInclusive = virtualinvoke spec.<java.lang.String: boolean endsWith(java.lang.String)>("]");
+
+        $stack13 = virtualinvoke spec.<java.lang.String: int length()>();
+
+        $stack14 = $stack13 - 1;
+
+        $stack15 = virtualinvoke spec.<java.lang.String: java.lang.String substring(int,int)>(1, $stack14);
+
+        process = virtualinvoke $stack15.<java.lang.String: java.lang.String trim()>();
+
+        index = virtualinvoke process.<java.lang.String: int indexOf(int)>(44);
+
+        if index >= 0 goto label3;
+
+        if lowerBoundInclusive == 0 goto label1;
+
+        if upperBoundInclusive != 0 goto label2;
+
+     label1:
+        $u1 = new org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack50 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Single version must be surrounded by []: ");
+
+        $stack51 = virtualinvoke $stack50.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(spec);
+
+        $stack52 = virtualinvoke $stack51.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.apache.maven.artifact.versioning.InvalidVersionSpecificationException: void <init>(java.lang.String)>($stack52);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label2:
+        $u2 = new org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+
+        specialinvoke $u2.<org.apache.maven.artifact.versioning.DefaultArtifactVersion: void <init>(java.lang.String)>(process);
+
+        $u3 = new org.apache.maven.artifact.versioning.Restriction;
+
+        $r1 = (org.apache.maven.artifact.versioning.ArtifactVersion) $u2;
+
+        $r2 = (org.apache.maven.artifact.versioning.ArtifactVersion) $u2;
+
+        specialinvoke $u3.<org.apache.maven.artifact.versioning.Restriction: void <init>(org.apache.maven.artifact.versioning.ArtifactVersion,boolean,org.apache.maven.artifact.versioning.ArtifactVersion,boolean)>($r1, lowerBoundInclusive, $r2, upperBoundInclusive);
+
+        restriction = $u3;
+
+        goto label8;
+
+     label3:
+        $stack18 = virtualinvoke process.<java.lang.String: java.lang.String substring(int,int)>(0, index);
+
+        version#3 = virtualinvoke $stack18.<java.lang.String: java.lang.String trim()>();
+
+        $stack20 = index + 1;
+
+        $stack21 = virtualinvoke process.<java.lang.String: java.lang.String substring(int)>($stack20);
+
+        upperBound = virtualinvoke $stack21.<java.lang.String: java.lang.String trim()>();
+
+        $stack23 = virtualinvoke version#3.<java.lang.String: boolean equals(java.lang.Object)>(upperBound);
+
+        if $stack23 == 0 goto label4;
+
+        $u5 = new org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack45 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Range cannot have identical boundaries: ");
+
+        $stack46 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(spec);
+
+        $stack47 = virtualinvoke $stack46.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u5.<org.apache.maven.artifact.versioning.InvalidVersionSpecificationException: void <init>(java.lang.String)>($stack47);
+
+        $r3 = (java.lang.Throwable) $u5;
+
+        throw $r3;
+
+     label4:
+        lowerVersion = null;
+
+        $stack24 = virtualinvoke version#3.<java.lang.String: int length()>();
+
+        if $stack24 <= 0 goto label5;
+
+        $u6 = new org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+
+        specialinvoke $u6.<org.apache.maven.artifact.versioning.DefaultArtifactVersion: void <init>(java.lang.String)>(version#3);
+
+        lowerVersion = $u6;
+
+     label5:
+        upperVersion = null;
+
+        $stack25 = virtualinvoke upperBound.<java.lang.String: int length()>();
+
+        if $stack25 <= 0 goto label6;
+
+        $u7 = new org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+
+        specialinvoke $u7.<org.apache.maven.artifact.versioning.DefaultArtifactVersion: void <init>(java.lang.String)>(upperBound);
+
+        upperVersion = $u7;
+
+     label6:
+        if upperVersion == null goto label7;
+
+        if lowerVersion == null goto label7;
+
+        $r4 = (org.apache.maven.artifact.versioning.ArtifactVersion) upperVersion;
+
+        $stack32 = interfaceinvoke $r4.<org.apache.maven.artifact.versioning.ArtifactVersion: int compareTo(java.lang.Object)>(lowerVersion);
+
+        if $stack32 >= 0 goto label7;
+
+        $u9 = new org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
+
+        $u8 = new java.lang.StringBuilder;
+
+        specialinvoke $u8.<java.lang.StringBuilder: void <init>()>();
+
+        $stack35 = virtualinvoke $u8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Range defies version ordering: ");
+
+        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(spec);
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u9.<org.apache.maven.artifact.versioning.InvalidVersionSpecificationException: void <init>(java.lang.String)>($stack37);
+
+        $r5 = (java.lang.Throwable) $u9;
+
+        throw $r5;
+
+     label7:
+        $u10 = new org.apache.maven.artifact.versioning.Restriction;
+
+        $r6 = (org.apache.maven.artifact.versioning.ArtifactVersion) lowerVersion;
+
+        $r7 = (org.apache.maven.artifact.versioning.ArtifactVersion) upperVersion;
+
+        specialinvoke $u10.<org.apache.maven.artifact.versioning.Restriction: void <init>(org.apache.maven.artifact.versioning.ArtifactVersion,boolean,org.apache.maven.artifact.versioning.ArtifactVersion,boolean)>($r6, lowerBoundInclusive, $r7, upperBoundInclusive);
+
+        restriction = $u10;
+
+     label8:
+        return restriction;
+    }
+
+    public static org.apache.maven.artifact.versioning.VersionRange createFromVersion(java.lang.String)
+    {
+        java.lang.String version;
+        java.util.Map $stack3, $stack8;
+        java.lang.Object $stack4;
+        java.util.List restrictions;
+        org.apache.maven.artifact.versioning.VersionRange cached, $u1;
+        org.apache.maven.artifact.versioning.DefaultArtifactVersion $u0;
+        org.apache.maven.artifact.versioning.ArtifactVersion $r0;
+
+        version := @parameter0: java.lang.String;
+
+        $stack3 = <org.apache.maven.artifact.versioning.VersionRange: java.util.Map CACHE_VERSION>;
+
+        $stack4 = interfaceinvoke $stack3.<java.util.Map: java.lang.Object get(java.lang.Object)>(version);
+
+        cached = (org.apache.maven.artifact.versioning.VersionRange) $stack4;
+
+        if cached != null goto label1;
+
+        restrictions = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        $u1 = new org.apache.maven.artifact.versioning.VersionRange;
+
+        $u0 = new org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+
+        specialinvoke $u0.<org.apache.maven.artifact.versioning.DefaultArtifactVersion: void <init>(java.lang.String)>(version);
+
+        $r0 = (org.apache.maven.artifact.versioning.ArtifactVersion) $u0;
+
+        specialinvoke $u1.<org.apache.maven.artifact.versioning.VersionRange: void <init>(org.apache.maven.artifact.versioning.ArtifactVersion,java.util.List)>($r0, restrictions);
+
+        cached = $u1;
+
+        $stack8 = <org.apache.maven.artifact.versioning.VersionRange: java.util.Map CACHE_VERSION>;
+
+        interfaceinvoke $stack8.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(version, $u1);
+
+     label1:
+        return cached;
+    }
+
+    public org.apache.maven.artifact.versioning.VersionRange restrict(org.apache.maven.artifact.versioning.VersionRange)
+    {
+        VersionRange this;
+        java.util.List r1, r2, $stack29, restrictions;
+        org.apache.maven.artifact.versioning.VersionRange restriction, $u0, $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+        boolean $stack8, $stack17, $stack23, $stack26, $stack28;
+        int $stack10;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack11, $stack12, $stack19, $stack21, $stack22, $stack25, version;
+        java.util.Iterator l6;
+        java.lang.Object $stack18;
+        org.apache.maven.artifact.versioning.Restriction r;
+
+        this := @this: VersionRange;
+
+        restriction := @parameter0: org.apache.maven.artifact.versioning.VersionRange;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        r1 = $r0.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        r2 = restriction.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        $stack8 = interfaceinvoke r1.<java.util.List: boolean isEmpty()>();
+
+        if $stack8 != 0 goto label01;
+
+        $stack28 = interfaceinvoke r2.<java.util.List: boolean isEmpty()>();
+
+        if $stack28 == 0 goto label02;
+
+     label01:
+        restrictions = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        goto label03;
+
+     label02:
+        $r1 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack29 = specialinvoke $r1.<org.apache.maven.artifact.versioning.VersionRange: java.util.List intersection(java.util.List,java.util.List)>(r1, r2);
+
+        restrictions = staticinvoke <java.util.Collections: java.util.List unmodifiableList(java.util.List)>($stack29);
+
+     label03:
+        version = null;
+
+        $stack10 = interfaceinvoke restrictions.<java.util.List: int size()>();
+
+        if $stack10 <= 0 goto label08;
+
+        l6 = interfaceinvoke restrictions.<java.util.List: java.util.Iterator iterator()>();
+
+     label04:
+        $stack17 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack17 == 0 goto label07;
+
+        $stack18 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        r = (org.apache.maven.artifact.versioning.Restriction) $stack18;
+
+        $r2 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack19 = $r2.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        if $stack19 == null goto label05;
+
+        $r3 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack25 = $r3.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        $stack26 = virtualinvoke r.<org.apache.maven.artifact.versioning.Restriction: boolean containsVersion(org.apache.maven.artifact.versioning.ArtifactVersion)>($stack25);
+
+        if $stack26 == 0 goto label05;
+
+        $r4 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        version = $r4.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        goto label07;
+
+     label05:
+        if version != null goto label06;
+
+        $stack21 = virtualinvoke restriction.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion getRecommendedVersion()>();
+
+        if $stack21 == null goto label06;
+
+        $stack22 = virtualinvoke restriction.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion getRecommendedVersion()>();
+
+        $stack23 = virtualinvoke r.<org.apache.maven.artifact.versioning.Restriction: boolean containsVersion(org.apache.maven.artifact.versioning.ArtifactVersion)>($stack22);
+
+        if $stack23 == 0 goto label06;
+
+        version = virtualinvoke restriction.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion getRecommendedVersion()>();
+
+     label06:
+        goto label04;
+
+     label07:
+        goto label10;
+
+     label08:
+        $r5 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack11 = $r5.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        if $stack11 == null goto label09;
+
+        $r6 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        version = $r6.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        goto label10;
+
+     label09:
+        $stack12 = restriction.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        if $stack12 == null goto label10;
+
+        version = restriction.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+     label10:
+        $u0 = new org.apache.maven.artifact.versioning.VersionRange;
+
+        specialinvoke $u0.<org.apache.maven.artifact.versioning.VersionRange: void <init>(org.apache.maven.artifact.versioning.ArtifactVersion,java.util.List)>(version, restrictions);
+
+        return $u0;
+    }
+
+    private java.util.List intersection(java.util.List, java.util.List)
+    {
+        java.util.ArrayList $stack14;
+        java.util.List r1, r2;
+        int $stack15, $stack16, $stack17, $stack51, $stack82, $stack89, comparison;
+        java.util.Iterator i1, i2;
+        java.lang.Object $stack20, $stack21, $stack43, $stack45, $stack84, $stack91;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack22, $stack25, $stack26, $stack27, $stack32, $stack33, $stack34, $stack78, $stack80, $stack81, $stack85, $stack87, $stack88, $stack23, $stack24, lower, $stack31, upper, $stack40;
+        boolean $stack41, $stack44, $stack57, $stack59, $stack68, $stack70, $stack83, $stack90, done, lowerInclusive, $stack71, upperInclusive, $stack60;
+        org.apache.maven.artifact.versioning.Restriction $stack54, res1, res2, $stack38;
+        VersionRange this;
+
+        this := @this: VersionRange;
+
+        r1 := @parameter0: java.util.List;
+
+        r2 := @parameter1: java.util.List;
+
+        $stack14 = new java.util.ArrayList;
+
+        $stack15 = interfaceinvoke r1.<java.util.List: int size()>();
+
+        $stack16 = interfaceinvoke r2.<java.util.List: int size()>();
+
+        $stack17 = $stack15 + $stack16;
+
+        specialinvoke $stack14.<java.util.ArrayList: void <init>(int)>($stack17);
+
+        i1 = interfaceinvoke r1.<java.util.List: java.util.Iterator iterator()>();
+
+        i2 = interfaceinvoke r2.<java.util.List: java.util.Iterator iterator()>();
+
+        $stack20 = interfaceinvoke i1.<java.util.Iterator: java.lang.Object next()>();
+
+        res1 = (org.apache.maven.artifact.versioning.Restriction) $stack20;
+
+        $stack21 = interfaceinvoke i2.<java.util.Iterator: java.lang.Object next()>();
+
+        res2 = (org.apache.maven.artifact.versioning.Restriction) $stack21;
+
+        done = 0;
+
+     label01:
+        if done != 0 goto label29;
+
+        $stack22 = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        if $stack22 == null goto label02;
+
+        $stack85 = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        if $stack85 == null goto label02;
+
+        $stack87 = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        $stack88 = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        $stack89 = interfaceinvoke $stack87.<org.apache.maven.artifact.versioning.ArtifactVersion: int compareTo(java.lang.Object)>($stack88);
+
+        if $stack89 > 0 goto label27;
+
+     label02:
+        $stack23 = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        if $stack23 == null goto label03;
+
+        $stack78 = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        if $stack78 == null goto label03;
+
+        $stack80 = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        $stack81 = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        $stack82 = interfaceinvoke $stack80.<org.apache.maven.artifact.versioning.ArtifactVersion: int compareTo(java.lang.Object)>($stack81);
+
+        if $stack82 < 0 goto label25;
+
+     label03:
+        $stack24 = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        if $stack24 != null goto label04;
+
+        lower = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        lowerInclusive = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: boolean isLowerBoundInclusive()>();
+
+        goto label10;
+
+     label04:
+        $stack25 = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        if $stack25 != null goto label05;
+
+        lower = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        lowerInclusive = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: boolean isLowerBoundInclusive()>();
+
+        goto label10;
+
+     label05:
+        $stack26 = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        $stack27 = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        comparison = interfaceinvoke $stack26.<org.apache.maven.artifact.versioning.ArtifactVersion: int compareTo(java.lang.Object)>($stack27);
+
+        if comparison >= 0 goto label06;
+
+        lower = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        lowerInclusive = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: boolean isLowerBoundInclusive()>();
+
+        goto label10;
+
+     label06:
+        if comparison != 0 goto label09;
+
+        lower = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        $stack68 = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: boolean isLowerBoundInclusive()>();
+
+        if $stack68 == 0 goto label07;
+
+        $stack70 = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: boolean isLowerBoundInclusive()>();
+
+        if $stack70 == 0 goto label07;
+
+        $stack71 = 1;
+
+        goto label08;
+
+     label07:
+        $stack71 = 0;
+
+     label08:
+        lowerInclusive = $stack71;
+
+        goto label10;
+
+     label09:
+        lower = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getLowerBound()>();
+
+        lowerInclusive = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: boolean isLowerBoundInclusive()>();
+
+     label10:
+        $stack31 = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        if $stack31 != null goto label11;
+
+        upper = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        upperInclusive = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: boolean isUpperBoundInclusive()>();
+
+        goto label17;
+
+     label11:
+        $stack32 = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        if $stack32 != null goto label12;
+
+        upper = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        upperInclusive = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: boolean isUpperBoundInclusive()>();
+
+        goto label17;
+
+     label12:
+        $stack33 = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        $stack34 = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        comparison = interfaceinvoke $stack33.<org.apache.maven.artifact.versioning.ArtifactVersion: int compareTo(java.lang.Object)>($stack34);
+
+        if comparison >= 0 goto label13;
+
+        upper = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        upperInclusive = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: boolean isUpperBoundInclusive()>();
+
+        goto label17;
+
+     label13:
+        if comparison != 0 goto label16;
+
+        upper = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        $stack57 = virtualinvoke res1.<org.apache.maven.artifact.versioning.Restriction: boolean isUpperBoundInclusive()>();
+
+        if $stack57 == 0 goto label14;
+
+        $stack59 = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: boolean isUpperBoundInclusive()>();
+
+        if $stack59 == 0 goto label14;
+
+        $stack60 = 1;
+
+        goto label15;
+
+     label14:
+        $stack60 = 0;
+
+     label15:
+        upperInclusive = $stack60;
+
+        goto label17;
+
+     label16:
+        upper = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        upperInclusive = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: boolean isUpperBoundInclusive()>();
+
+     label17:
+        if lower == null goto label18;
+
+        if upper == null goto label18;
+
+        $stack51 = interfaceinvoke lower.<org.apache.maven.artifact.versioning.ArtifactVersion: int compareTo(java.lang.Object)>(upper);
+
+        if $stack51 == 0 goto label19;
+
+     label18:
+        $stack38 = new org.apache.maven.artifact.versioning.Restriction;
+
+        specialinvoke $stack38.<org.apache.maven.artifact.versioning.Restriction: void <init>(org.apache.maven.artifact.versioning.ArtifactVersion,boolean,org.apache.maven.artifact.versioning.ArtifactVersion,boolean)>(lower, lowerInclusive, upper, upperInclusive);
+
+        interfaceinvoke $stack14.<java.util.List: boolean add(java.lang.Object)>($stack38);
+
+        goto label20;
+
+     label19:
+        if lowerInclusive == 0 goto label20;
+
+        if upperInclusive == 0 goto label20;
+
+        $stack54 = new org.apache.maven.artifact.versioning.Restriction;
+
+        specialinvoke $stack54.<org.apache.maven.artifact.versioning.Restriction: void <init>(org.apache.maven.artifact.versioning.ArtifactVersion,boolean,org.apache.maven.artifact.versioning.ArtifactVersion,boolean)>(lower, lowerInclusive, upper, upperInclusive);
+
+        interfaceinvoke $stack14.<java.util.List: boolean add(java.lang.Object)>($stack54);
+
+     label20:
+        $stack40 = virtualinvoke res2.<org.apache.maven.artifact.versioning.Restriction: org.apache.maven.artifact.versioning.ArtifactVersion getUpperBound()>();
+
+        if upper != $stack40 goto label22;
+
+        $stack44 = interfaceinvoke i2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack44 == 0 goto label21;
+
+        $stack45 = interfaceinvoke i2.<java.util.Iterator: java.lang.Object next()>();
+
+        res2 = (org.apache.maven.artifact.versioning.Restriction) $stack45;
+
+        goto label24;
+
+     label21:
+        done = 1;
+
+        goto label24;
+
+     label22:
+        $stack41 = interfaceinvoke i1.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack41 == 0 goto label23;
+
+        $stack43 = interfaceinvoke i1.<java.util.Iterator: java.lang.Object next()>();
+
+        res1 = (org.apache.maven.artifact.versioning.Restriction) $stack43;
+
+        goto label24;
+
+     label23:
+        done = 1;
+
+     label24:
+        goto label01;
+
+     label25:
+        $stack83 = interfaceinvoke i1.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack83 == 0 goto label26;
+
+        $stack84 = interfaceinvoke i1.<java.util.Iterator: java.lang.Object next()>();
+
+        res1 = (org.apache.maven.artifact.versioning.Restriction) $stack84;
+
+        goto label01;
+
+     label26:
+        done = 1;
+
+        goto label01;
+
+     label27:
+        $stack90 = interfaceinvoke i2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack90 == 0 goto label28;
+
+        $stack91 = interfaceinvoke i2.<java.util.Iterator: java.lang.Object next()>();
+
+        res2 = (org.apache.maven.artifact.versioning.Restriction) $stack91;
+
+        goto label01;
+
+     label28:
+        done = 1;
+
+        goto label01;
+
+     label29:
+        return $stack14;
+    }
+
+    public org.apache.maven.artifact.versioning.ArtifactVersion getSelectedVersion(org.apache.maven.artifact.Artifact) throws org.apache.maven.artifact.versioning.OverConstrainedVersionException
+    {
+        VersionRange this;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack3, version;
+        java.util.List $stack4;
+        int $stack5;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.versioning.OverConstrainedVersionException $u0;
+        org.apache.maven.artifact.versioning.VersionRange $r0, $r1, $r2;
+        java.lang.Throwable $r3;
+
+        this := @this: VersionRange;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        if $stack3 == null goto label1;
+
+        $r1 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        version = $r1.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        goto label3;
+
+     label1:
+        $r2 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack4 = $r2.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        $stack5 = interfaceinvoke $stack4.<java.util.List: int size()>();
+
+        if $stack5 != 0 goto label2;
+
+        $u0 = new org.apache.maven.artifact.versioning.OverConstrainedVersionException;
+
+        specialinvoke $u0.<org.apache.maven.artifact.versioning.OverConstrainedVersionException: void <init>(java.lang.String,org.apache.maven.artifact.Artifact)>("The artifact has no valid ranges", artifact);
+
+        $r3 = (java.lang.Throwable) $u0;
+
+        throw $r3;
+
+     label2:
+        version = null;
+
+     label3:
+        return version;
+    }
+
+    public boolean isSelectedVersionKnown(org.apache.maven.artifact.Artifact) throws org.apache.maven.artifact.versioning.OverConstrainedVersionException
+    {
+        VersionRange this;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack3;
+        java.util.List $stack4;
+        int $stack5;
+        org.apache.maven.artifact.Artifact artifact;
+        boolean value;
+        org.apache.maven.artifact.versioning.OverConstrainedVersionException $u0;
+        org.apache.maven.artifact.versioning.VersionRange $r0, $r1;
+        java.lang.Throwable $r2;
+
+        this := @this: VersionRange;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        value = 0;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        if $stack3 == null goto label1;
+
+        value = 1;
+
+        goto label2;
+
+     label1:
+        $r1 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack4 = $r1.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        $stack5 = interfaceinvoke $stack4.<java.util.List: int size()>();
+
+        if $stack5 != 0 goto label2;
+
+        $u0 = new org.apache.maven.artifact.versioning.OverConstrainedVersionException;
+
+        specialinvoke $u0.<org.apache.maven.artifact.versioning.OverConstrainedVersionException: void <init>(java.lang.String,org.apache.maven.artifact.Artifact)>("The artifact has no valid ranges", artifact);
+
+        $r2 = (java.lang.Throwable) $u0;
+
+        throw $r2;
+
+     label2:
+        return value;
+    }
+
+    public java.lang.String toString()
+    {
+        VersionRange this;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack4, $stack16;
+        java.util.List $stack6;
+        java.util.Iterator i;
+        boolean $stack8, $stack13;
+        java.lang.String $stack9, $stack11, $stack17;
+        java.lang.Object $stack10;
+        org.apache.maven.artifact.versioning.Restriction r;
+        java.lang.StringBuilder $u0;
+        org.apache.maven.artifact.versioning.VersionRange $r0, $r1, $r2;
+
+        this := @this: VersionRange;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack4 = $r0.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        if $stack4 == null goto label1;
+
+        $r1 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack16 = $r1.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        $stack17 = virtualinvoke $stack16.<java.lang.Object: java.lang.String toString()>();
+
+        return $stack17;
+
+     label1:
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack6 = $r2.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        i = interfaceinvoke $stack6.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack8 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label4;
+
+        $stack10 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+
+        r = (org.apache.maven.artifact.versioning.Restriction) $stack10;
+
+        $stack11 = virtualinvoke r.<org.apache.maven.artifact.versioning.Restriction: java.lang.String toString()>();
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        $stack13 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label3;
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(44);
+
+     label3:
+        goto label2;
+
+     label4:
+        $stack9 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack9;
+    }
+
+    public org.apache.maven.artifact.versioning.ArtifactVersion matchVersion(java.util.List)
+    {
+        java.util.List versions;
+        java.util.Iterator l3;
+        boolean $stack6, $stack8;
+        java.lang.Object $stack7;
+        org.apache.maven.artifact.versioning.ArtifactVersion version, matched;
+        VersionRange this;
+        int $stack10;
+        org.apache.maven.artifact.versioning.VersionRange $r0;
+
+        this := @this: VersionRange;
+
+        versions := @parameter0: java.util.List;
+
+        matched = null;
+
+        l3 = interfaceinvoke versions.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label4;
+
+        $stack7 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        version = (org.apache.maven.artifact.versioning.ArtifactVersion) $stack7;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack8 = virtualinvoke $r0.<org.apache.maven.artifact.versioning.VersionRange: boolean containsVersion(org.apache.maven.artifact.versioning.ArtifactVersion)>(version);
+
+        if $stack8 == 0 goto label3;
+
+        if matched == null goto label2;
+
+        $stack10 = interfaceinvoke version.<org.apache.maven.artifact.versioning.ArtifactVersion: int compareTo(java.lang.Object)>(matched);
+
+        if $stack10 <= 0 goto label3;
+
+     label2:
+        matched = version;
+
+     label3:
+        goto label1;
+
+     label4:
+        return matched;
+    }
+
+    public boolean containsVersion(org.apache.maven.artifact.versioning.ArtifactVersion)
+    {
+        VersionRange this;
+        java.util.List $stack4;
+        java.util.Iterator l2;
+        boolean $stack6, $stack8;
+        java.lang.Object $stack7;
+        org.apache.maven.artifact.versioning.Restriction restriction;
+        org.apache.maven.artifact.versioning.ArtifactVersion version;
+        org.apache.maven.artifact.versioning.VersionRange $r0;
+
+        this := @this: VersionRange;
+
+        version := @parameter0: org.apache.maven.artifact.versioning.ArtifactVersion;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack4 = $r0.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        l2 = interfaceinvoke $stack4.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label3;
+
+        $stack7 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        restriction = (org.apache.maven.artifact.versioning.Restriction) $stack7;
+
+        $stack8 = virtualinvoke restriction.<org.apache.maven.artifact.versioning.Restriction: boolean containsVersion(org.apache.maven.artifact.versioning.ArtifactVersion)>(version);
+
+        if $stack8 == 0 goto label2;
+
+        return 1;
+
+     label2:
+        goto label1;
+
+     label3:
+        return 0;
+    }
+
+    public boolean hasRestrictions()
+    {
+        VersionRange this;
+        java.util.List $stack1;
+        boolean $stack2, $stack4;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack3;
+        org.apache.maven.artifact.versioning.VersionRange $r0, $r1;
+
+        this := @this: VersionRange;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack1 = $r0.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        $stack2 = interfaceinvoke $stack1.<java.util.List: boolean isEmpty()>();
+
+        if $stack2 != 0 goto label1;
+
+        $r1 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack3 = $r1.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        if $stack3 != null goto label1;
+
+        $stack4 = 1;
+
+        goto label2;
+
+     label1:
+        $stack4 = 0;
+
+     label2:
+        return $stack4;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        VersionRange this;
+        java.lang.Object obj;
+        boolean $stack3, $stack6, $stack9, $stack10;
+        org.apache.maven.artifact.versioning.VersionRange other, $r0, $r1;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack4, $stack5;
+        java.util.List $stack7, $stack8;
+
+        this := @this: VersionRange;
+
+        obj := @parameter0: java.lang.Object;
+
+        if this != obj goto label1;
+
+        return 1;
+
+     label1:
+        $stack3 = obj instanceof org.apache.maven.artifact.versioning.VersionRange;
+
+        if $stack3 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        other = (org.apache.maven.artifact.versioning.VersionRange) obj;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack5 = $r0.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        $stack4 = other.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        $stack6 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack5, $stack4);
+
+        if $stack6 == 0 goto label3;
+
+        $r1 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack8 = $r1.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        $stack7 = other.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        $stack9 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack8, $stack7);
+
+        if $stack9 == 0 goto label3;
+
+        $stack10 = 1;
+
+        goto label4;
+
+     label3:
+        $stack10 = 0;
+
+     label4:
+        return $stack10;
+    }
+
+    public int hashCode()
+    {
+        VersionRange this;
+        org.apache.maven.artifact.versioning.ArtifactVersion $stack2, $stack3;
+        int $stack4, $stack8, $stack5, hash#3, $stack9;
+        java.util.List $stack6, $stack7;
+        org.apache.maven.artifact.versioning.VersionRange $r0, $r1, $r2, $r3;
+
+        this := @this: VersionRange;
+
+        $stack4 = 31 * 7;
+
+        $r0 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack2 = $r0.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        if $stack2 != null goto label1;
+
+        $stack5 = 0;
+
+        goto label2;
+
+     label1:
+        $r1 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack3 = $r1.<org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.ArtifactVersion recommendedVersion>;
+
+        $stack5 = virtualinvoke $stack3.<java.lang.Object: int hashCode()>();
+
+     label2:
+        hash#3 = $stack4 + $stack5;
+
+        $stack8 = 31 * hash#3;
+
+        $r2 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack6 = $r2.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        if $stack6 != null goto label3;
+
+        $stack9 = 0;
+
+        goto label4;
+
+     label3:
+        $r3 = (org.apache.maven.artifact.versioning.VersionRange) this;
+
+        $stack7 = $r3.<org.apache.maven.artifact.versioning.VersionRange: java.util.List restrictions>;
+
+        $stack9 = interfaceinvoke $stack7.<java.util.List: int hashCode()>();
+
+     label4:
+        hash#3 = $stack8 + $stack9;
+
+        return hash#3;
+    }
+
+    static void <clinit>()
+    {
+        java.util.WeakHashMap $stack0, $stack2;
+        java.util.Map $stack1, $stack3;
+
+        $stack0 = new java.util.WeakHashMap;
+
+        specialinvoke $stack0.<java.util.WeakHashMap: void <init>()>();
+
+        $stack1 = staticinvoke <java.util.Collections: java.util.Map synchronizedMap(java.util.Map)>($stack0);
+
+        <org.apache.maven.artifact.versioning.VersionRange: java.util.Map CACHE_SPEC> = $stack1;
+
+        $stack2 = new java.util.WeakHashMap;
+
+        specialinvoke $stack2.<java.util.WeakHashMap: void <init>()>();
+
+        $stack3 = staticinvoke <java.util.Collections: java.util.Map synchronizedMap(java.util.Map)>($stack2);
+
+        <org.apache.maven.artifact.versioning.VersionRange: java.util.Map CACHE_VERSION> = $stack3;
+
+        return;
+    }
+}

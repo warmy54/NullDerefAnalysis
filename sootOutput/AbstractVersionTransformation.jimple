@@ -1,0 +1,283 @@
+public abstract class AbstractVersionTransformation extends org.codehaus.plexus.logging.AbstractLogEnabled implements org.apache.maven.repository.legacy.resolver.transform.ArtifactTransformation
+{
+    protected org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager repositoryMetadataManager;
+    protected org.apache.maven.repository.legacy.WagonManager wagonManager;
+
+    public void <init>()
+    {
+        AbstractVersionTransformation this;
+
+        this := @this: AbstractVersionTransformation;
+
+        specialinvoke this.<org.codehaus.plexus.logging.AbstractLogEnabled: void <init>()>();
+
+        return;
+    }
+
+    public void transformForResolve(org.apache.maven.artifact.Artifact, java.util.List, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.artifact.resolver.ArtifactResolutionException, org.apache.maven.artifact.resolver.ArtifactNotFoundException
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        java.util.List remoteRepositories;
+        AbstractVersionTransformation this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.DefaultRepositoryRequest $u0;
+        org.apache.maven.artifact.repository.RepositoryRequest $r0, $r1, $r3;
+        org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation $r2;
+
+        this := @this: AbstractVersionTransformation;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        remoteRepositories := @parameter1: java.util.List;
+
+        localRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $u0 = new org.apache.maven.artifact.repository.DefaultRepositoryRequest;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.DefaultRepositoryRequest: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.repository.RepositoryRequest) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.artifact.repository.RepositoryRequest: org.apache.maven.artifact.repository.RepositoryRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository);
+
+        $r1 = (org.apache.maven.artifact.repository.RepositoryRequest) $u0;
+
+        interfaceinvoke $r1.<org.apache.maven.artifact.repository.RepositoryRequest: org.apache.maven.artifact.repository.RepositoryRequest setRemoteRepositories(java.util.List)>(remoteRepositories);
+
+        $r2 = (org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation) this;
+
+        $r3 = (org.apache.maven.artifact.repository.RepositoryRequest) $u0;
+
+        virtualinvoke $r2.<org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation: void transformForResolve(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.RepositoryRequest)>(artifact, $r3);
+
+        return;
+    }
+
+    protected java.lang.String resolveVersion(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository, java.util.List) throws org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        java.util.List remoteRepositories;
+        AbstractVersionTransformation this;
+        org.apache.maven.artifact.Artifact artifact;
+        java.lang.String $stack8;
+        org.apache.maven.artifact.repository.DefaultRepositoryRequest $u0;
+        org.apache.maven.artifact.repository.RepositoryRequest $r0, $r1, $r3;
+        org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation $r2;
+
+        this := @this: AbstractVersionTransformation;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        remoteRepositories := @parameter2: java.util.List;
+
+        $u0 = new org.apache.maven.artifact.repository.DefaultRepositoryRequest;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.DefaultRepositoryRequest: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.repository.RepositoryRequest) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.artifact.repository.RepositoryRequest: org.apache.maven.artifact.repository.RepositoryRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository);
+
+        $r1 = (org.apache.maven.artifact.repository.RepositoryRequest) $u0;
+
+        interfaceinvoke $r1.<org.apache.maven.artifact.repository.RepositoryRequest: org.apache.maven.artifact.repository.RepositoryRequest setRemoteRepositories(java.util.List)>(remoteRepositories);
+
+        $r2 = (org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation) this;
+
+        $r3 = (org.apache.maven.artifact.repository.RepositoryRequest) $u0;
+
+        $stack8 = virtualinvoke $r2.<org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation: java.lang.String resolveVersion(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.RepositoryRequest)>(artifact, $r3);
+
+        return $stack8;
+    }
+
+    protected java.lang.String resolveVersion(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.RepositoryRequest) throws org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException
+    {
+        org.apache.maven.artifact.Artifact artifact;
+        boolean $stack7, $stack12, $stack14, $stack52;
+        AbstractVersionTransformation this;
+        org.apache.maven.artifact.repository.RepositoryRequest request;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager $stack9;
+        org.apache.maven.artifact.repository.metadata.Metadata repoMetadata;
+        org.codehaus.plexus.logging.Logger $stack11, $stack15, $stack33;
+        java.lang.String $stack13, $stack17, $stack20, $stack23, $stack38, $stack48, $stack50, $stack51, version, message;
+        java.lang.StringBuilder $stack18, $stack19, $stack24, $stack25, $stack26, $stack30, $stack31, $stack35, $stack36, $stack39, $u2, $u3, $u4, $u5;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack28, $stack37;
+        org.apache.maven.artifact.repository.metadata.Versioning $stack45, $stack47;
+        java.lang.Object metadata;
+        org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata $u0;
+        org.apache.maven.artifact.repository.metadata.SnapshotArtifactRepositoryMetadata $u1;
+        org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation $r0, $r4, $r5, $r6, $r7;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata $r1, $r3;
+        org.apache.maven.artifact.metadata.ArtifactMetadata $r2;
+
+        this := @this: AbstractVersionTransformation;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        request := @parameter1: org.apache.maven.artifact.repository.RepositoryRequest;
+
+        $stack7 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: boolean isSnapshot()>();
+
+        if $stack7 == 0 goto label1;
+
+        $stack50 = "LATEST";
+
+        $stack51 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getBaseVersion()>();
+
+        $stack52 = virtualinvoke $stack50.<java.lang.String: boolean equals(java.lang.Object)>($stack51);
+
+        if $stack52 == 0 goto label2;
+
+     label1:
+        $u0 = new org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata: void <init>(org.apache.maven.artifact.Artifact)>(artifact);
+
+        metadata = $u0;
+
+        goto label3;
+
+     label2:
+        $u1 = new org.apache.maven.artifact.repository.metadata.SnapshotArtifactRepositoryMetadata;
+
+        specialinvoke $u1.<org.apache.maven.artifact.repository.metadata.SnapshotArtifactRepositoryMetadata: void <init>(org.apache.maven.artifact.Artifact)>(artifact);
+
+        metadata = $u1;
+
+     label3:
+        $r0 = (org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation) this;
+
+        $stack9 = $r0.<org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation: org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager repositoryMetadataManager>;
+
+        $r1 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) metadata;
+
+        interfaceinvoke $stack9.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager: void resolve(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.RepositoryRequest)>($r1, request);
+
+        $r2 = (org.apache.maven.artifact.metadata.ArtifactMetadata) metadata;
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void addMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata)>($r2);
+
+        $r3 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) metadata;
+
+        repoMetadata = interfaceinvoke $r3.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata getMetadata()>();
+
+        version = null;
+
+        if repoMetadata == null goto label4;
+
+        $stack45 = virtualinvoke repoMetadata.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        if $stack45 == null goto label4;
+
+        $stack47 = virtualinvoke repoMetadata.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        $stack48 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getBaseVersion()>();
+
+        $r4 = (org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation) this;
+
+        version = virtualinvoke $r4.<org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation: java.lang.String constructVersion(org.apache.maven.artifact.repository.metadata.Versioning,java.lang.String)>($stack47, $stack48);
+
+     label4:
+        if version != null goto label5;
+
+        version = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getBaseVersion()>();
+
+     label5:
+        $r5 = (org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation) this;
+
+        $stack11 = virtualinvoke $r5.<org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $stack12 = interfaceinvoke $stack11.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack12 == 0 goto label9;
+
+        $stack13 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getBaseVersion()>();
+
+        $stack14 = virtualinvoke version.<java.lang.String: boolean equals(java.lang.Object)>($stack13);
+
+        if $stack14 != 0 goto label8;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack23 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack24 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": resolved to version ");
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(version);
+
+        message = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack28 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.repository.ArtifactRepository getRepository()>();
+
+        if $stack28 == null goto label6;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack35 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(message);
+
+        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" from repository ");
+
+        $stack37 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.repository.ArtifactRepository getRepository()>();
+
+        $stack38 = interfaceinvoke $stack37.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack39 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack38);
+
+        message = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label7;
+
+     label6:
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack30 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(message);
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" from local repository");
+
+        message = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label7:
+        $r6 = (org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation) this;
+
+        $stack33 = virtualinvoke $r6.<org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        interfaceinvoke $stack33.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>(message);
+
+        goto label9;
+
+     label8:
+        $r7 = (org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation) this;
+
+        $stack15 = virtualinvoke $r7.<org.apache.maven.repository.legacy.resolver.transform.AbstractVersionTransformation: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack17 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack18 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack17);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": using locally installed snapshot");
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack15.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack20);
+
+     label9:
+        return version;
+    }
+
+    protected abstract java.lang.String constructVersion(org.apache.maven.artifact.repository.metadata.Versioning, java.lang.String);
+}

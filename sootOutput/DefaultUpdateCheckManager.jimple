@@ -1,0 +1,1494 @@
+public class DefaultUpdateCheckManager extends org.codehaus.plexus.logging.AbstractLogEnabled implements org.apache.maven.repository.legacy.UpdateCheckManager
+{
+    private static final java.lang.String ERROR_KEY_SUFFIX;
+    public static final java.lang.String LAST_UPDATE_TAG;
+    private static final java.lang.String TOUCHFILE_NAME;
+
+    public void <init>()
+    {
+        DefaultUpdateCheckManager this;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        specialinvoke this.<org.codehaus.plexus.logging.AbstractLogEnabled: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(org.codehaus.plexus.logging.Logger)
+    {
+        DefaultUpdateCheckManager this;
+        org.codehaus.plexus.logging.Logger logger;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $r0;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        logger := @parameter0: org.codehaus.plexus.logging.Logger;
+
+        specialinvoke this.<org.codehaus.plexus.logging.AbstractLogEnabled: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: void enableLogging(org.codehaus.plexus.logging.Logger)>(logger);
+
+        return;
+    }
+
+    public boolean isUpdateRequired(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        org.apache.maven.artifact.Artifact artifact;
+        java.io.File file, touchfile;
+        boolean $stack8, $stack10, $stack12, $stack13, $stack17, $stack38, $stack18;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy policy, $stack9;
+        DefaultUpdateCheckManager this;
+        org.codehaus.plexus.logging.Logger $stack11, $stack22, $stack37, $stack39;
+        java.lang.String $stack15, $stack29, $stack32, $stack35, $stack46, $stack49, $stack52;
+        long $stack20;
+        java.lang.StringBuilder $stack24, $stack25, $stack26, $stack27, $stack28, $stack30, $stack31, $stack33, $stack34, $stack41, $stack42, $stack43, $stack44, $stack45, $stack47, $stack48, $stack50, $stack51, $u0, $u1;
+        java.util.Date lastCheckDate, $u2;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        file = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        $stack8 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: boolean isSnapshot()>();
+
+        if $stack8 == 0 goto label01;
+
+        $stack9 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getSnapshots()>();
+
+        goto label02;
+
+     label01:
+        $stack9 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getReleases()>();
+
+     label02:
+        policy = $stack9;
+
+        $stack10 = virtualinvoke $stack9.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: boolean isEnabled()>();
+
+        if $stack10 != 0 goto label04;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack37 = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $stack38 = interfaceinvoke $stack37.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack38 == 0 goto label03;
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack39 = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack41 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Skipping update check for ");
+
+        $stack42 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        $stack43 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(file);
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") from ");
+
+        $stack46 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack47 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack46);
+
+        $stack48 = virtualinvoke $stack47.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack49 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
+
+        $stack50 = virtualinvoke $stack48.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack49);
+
+        $stack51 = virtualinvoke $stack50.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack52 = virtualinvoke $stack51.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack39.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack52);
+
+     label03:
+        return 0;
+
+     label04:
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack11 = virtualinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $stack12 = interfaceinvoke $stack11.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack12 == 0 goto label05;
+
+        $r3 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack22 = virtualinvoke $r3.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack24 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Determining update check for ");
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifact);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(file);
+
+        $stack28 = virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") from ");
+
+        $stack29 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack30 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack29);
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack32 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
+
+        $stack33 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack32);
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack22.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack35);
+
+     label05:
+        if file != null goto label06;
+
+        return 1;
+
+     label06:
+        $stack13 = virtualinvoke file.<java.io.File: boolean exists()>();
+
+        if $stack13 == 0 goto label07;
+
+        $u2 = new java.util.Date;
+
+        $stack20 = virtualinvoke file.<java.io.File: long lastModified()>();
+
+        specialinvoke $u2.<java.util.Date: void <init>(long)>($stack20);
+
+        lastCheckDate = $u2;
+
+        goto label08;
+
+     label07:
+        $r4 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        touchfile = virtualinvoke $r4.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $r5 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack15 = virtualinvoke $r5.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getRepositoryKey(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
+
+        $r6 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        lastCheckDate = virtualinvoke $r6.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.util.Date readLastUpdated(java.io.File,java.lang.String)>(touchfile, $stack15);
+
+     label08:
+        if lastCheckDate == null goto label09;
+
+        $stack17 = virtualinvoke policy.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: boolean checkOutOfDate(java.util.Date)>(lastCheckDate);
+
+        if $stack17 == 0 goto label10;
+
+     label09:
+        $stack18 = 1;
+
+        goto label11;
+
+     label10:
+        $stack18 = 0;
+
+     label11:
+        return $stack18;
+    }
+
+    public boolean isUpdateRequired(org.apache.maven.artifact.repository.metadata.RepositoryMetadata, org.apache.maven.artifact.repository.ArtifactRepository, java.io.File)
+    {
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata metadata;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy policy;
+        boolean $stack7, $stack9, $stack11, $stack30, $stack12;
+        DefaultUpdateCheckManager this;
+        org.codehaus.plexus.logging.Logger $stack8, $stack13, $stack29, $stack31;
+        java.io.File file;
+        java.util.Date lastCheckDate;
+        java.lang.StringBuilder $stack15, $stack17, $stack18, $stack19, $stack20, $stack22, $stack23, $stack25, $stack26, $stack33, $stack35, $stack36, $stack37, $stack38, $stack40, $stack41, $stack43, $stack44, $u0, $u1;
+        java.lang.Object $stack16, $stack34;
+        java.lang.String $stack21, $stack24, $stack27, $stack39, $stack42, $stack45;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        file := @parameter2: java.io.File;
+
+        policy = interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getPolicy(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
+
+        $stack7 = virtualinvoke policy.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: boolean isEnabled()>();
+
+        if $stack7 != 0 goto label2;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack29 = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $stack30 = interfaceinvoke $stack29.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack30 == 0 goto label1;
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack31 = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack33 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Skipping update check for ");
+
+        $stack34 = interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: java.lang.Object getKey()>();
+
+        $stack35 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack34);
+
+        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(file);
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") from ");
+
+        $stack39 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack40 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack39);
+
+        $stack41 = virtualinvoke $stack40.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack42 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
+
+        $stack43 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack42);
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack31.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack45);
+
+     label1:
+        return 0;
+
+     label2:
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack8 = virtualinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $stack9 = interfaceinvoke $stack8.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack9 == 0 goto label3;
+
+        $r3 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack13 = virtualinvoke $r3.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack15 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Determining update check for ");
+
+        $stack16 = interfaceinvoke metadata.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: java.lang.Object getKey()>();
+
+        $stack17 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack16);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(file);
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") from ");
+
+        $stack21 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack22 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack21);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack24 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
+
+        $stack25 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack24);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack13.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack27);
+
+     label3:
+        if file != null goto label4;
+
+        return 1;
+
+     label4:
+        $r4 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        lastCheckDate = specialinvoke $r4.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.util.Date readLastUpdated(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>(metadata, repository, file);
+
+        if lastCheckDate == null goto label5;
+
+        $stack11 = virtualinvoke policy.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: boolean checkOutOfDate(java.util.Date)>(lastCheckDate);
+
+        if $stack11 == 0 goto label6;
+
+     label5:
+        $stack12 = 1;
+
+        goto label7;
+
+     label6:
+        $stack12 = 0;
+
+     label7:
+        return $stack12;
+    }
+
+    private java.util.Date readLastUpdated(org.apache.maven.artifact.repository.metadata.RepositoryMetadata, org.apache.maven.artifact.repository.ArtifactRepository, java.io.File)
+    {
+        DefaultUpdateCheckManager this;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata metadata;
+        java.io.File file, touchfile;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        java.lang.String key;
+        java.util.Date $stack8;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $r0, $r1, $r2;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        file := @parameter2: java.io.File;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        touchfile = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,java.io.File)>(metadata, file);
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        key = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getMetadataKey(org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>(repository, file);
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack8 = virtualinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.util.Date readLastUpdated(java.io.File,java.lang.String)>(touchfile, key);
+
+        return $stack8;
+    }
+
+    public java.lang.String getError(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        DefaultUpdateCheckManager this;
+        org.apache.maven.artifact.Artifact artifact;
+        java.io.File touchFile;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        java.lang.String $stack5, $stack6;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $r0, $r1, $r2;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        touchFile = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack5 = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getRepositoryKey(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack6 = specialinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getError(java.io.File,java.lang.String)>(touchFile, $stack5);
+
+        return $stack6;
+    }
+
+    public void touch(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository, java.lang.String)
+    {
+        org.apache.maven.artifact.Artifact artifact;
+        java.io.File file, touchfile;
+        DefaultUpdateCheckManager this;
+        boolean $stack8;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        java.lang.String $stack9, error;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $r0, $r1, $r2;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        error := @parameter2: java.lang.String;
+
+        file = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        touchfile = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $stack8 = virtualinvoke file.<java.io.File: boolean exists()>();
+
+        if $stack8 == 0 goto label1;
+
+        virtualinvoke touchfile.<java.io.File: boolean delete()>();
+
+        goto label2;
+
+     label1:
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack9 = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getRepositoryKey(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        specialinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: void writeLastUpdated(java.io.File,java.lang.String,java.lang.String)>(touchfile, $stack9, error);
+
+     label2:
+        return;
+    }
+
+    public void touch(org.apache.maven.artifact.repository.metadata.RepositoryMetadata, org.apache.maven.artifact.repository.ArtifactRepository, java.io.File)
+    {
+        DefaultUpdateCheckManager this;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata metadata;
+        java.io.File file, touchfile;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        java.lang.String key;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $r0, $r1, $r2;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        file := @parameter2: java.io.File;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        touchfile = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,java.io.File)>(metadata, file);
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        key = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getMetadataKey(org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>(repository, file);
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        specialinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: void writeLastUpdated(java.io.File,java.lang.String,java.lang.String)>(touchfile, key, null);
+
+        return;
+    }
+
+    java.lang.String getMetadataKey(org.apache.maven.artifact.repository.ArtifactRepository, java.io.File)
+    {
+        java.lang.StringBuilder $stack3, $stack5, $stack6, $stack8, $stack9;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        java.lang.String $stack4, $stack7, $stack10;
+        java.io.File file;
+        DefaultUpdateCheckManager this;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        file := @parameter1: java.io.File;
+
+        $stack3 = new java.lang.StringBuilder;
+
+        specialinvoke $stack3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack4 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack5 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack4);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        $stack7 = virtualinvoke file.<java.io.File: java.lang.String getName()>();
+
+        $stack8 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack7);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".lastUpdated");
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack10;
+    }
+
+    java.lang.String getRepositoryKey(org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        java.lang.StringBuilder $stack6, $stack12, $stack14, $stack16, $stack19, $stack26, $stack27, $stack29, $stack33, $stack35, $stack37, $stack40;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        org.apache.maven.repository.Proxy proxy;
+        java.lang.String $stack9, $stack11, $stack13, $stack15, $stack17, $stack24, $stack25, $stack34, $stack36, $stack38;
+        int hash, $stack28;
+        DefaultUpdateCheckManager this;
+        org.apache.maven.artifact.repository.Authentication hash;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $stack6 = new java.lang.StringBuilder;
+
+        specialinvoke $stack6.<java.lang.StringBuilder: void <init>(int)>(256);
+
+        proxy = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
+
+        if proxy == null goto label2;
+
+        $stack24 = virtualinvoke proxy.<org.apache.maven.repository.Proxy: java.lang.String getUserName()>();
+
+        if $stack24 == null goto label1;
+
+        $stack33 = new java.lang.StringBuilder;
+
+        specialinvoke $stack33.<java.lang.StringBuilder: void <init>()>();
+
+        $stack34 = virtualinvoke proxy.<org.apache.maven.repository.Proxy: java.lang.String getUserName()>();
+
+        $stack35 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack34);
+
+        $stack36 = virtualinvoke proxy.<org.apache.maven.repository.Proxy: java.lang.String getPassword()>();
+
+        $stack37 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack36);
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        hash = virtualinvoke $stack38.<java.lang.String: int hashCode()>();
+
+        $stack40 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(hash);
+
+        virtualinvoke $stack40.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(64);
+
+     label1:
+        $stack25 = virtualinvoke proxy.<org.apache.maven.repository.Proxy: java.lang.String getHost()>();
+
+        $stack26 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack25);
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack28 = virtualinvoke proxy.<org.apache.maven.repository.Proxy: int getPort()>();
+
+        $stack29 = virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack28);
+
+        virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(62);
+
+     label2:
+        hash = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.Authentication getAuthentication()>();
+
+        if hash == null goto label3;
+
+        $stack12 = new java.lang.StringBuilder;
+
+        specialinvoke $stack12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke hash.<org.apache.maven.artifact.repository.Authentication: java.lang.String getUsername()>();
+
+        $stack14 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack13);
+
+        $stack15 = virtualinvoke hash.<org.apache.maven.artifact.repository.Authentication: java.lang.String getPassword()>();
+
+        $stack16 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack15);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        hash = virtualinvoke $stack17.<java.lang.String: int hashCode()>();
+
+        $stack19 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(hash);
+
+        virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(64);
+
+     label3:
+        $stack9 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
+
+        virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack11;
+    }
+
+    private void writeLastUpdated(java.io.File, java.lang.String, java.lang.String)
+    {
+        java.io.File touchfile, $stack13, $stack69;
+        java.lang.String $stack11, $stack12, key, $stack21, error, $stack26, $stack32, $stack39, $stack45, $stack64, $stack80, $stack83, $stack92, $stack98, $stack107, $stack113, $stack118, $stack122;
+        boolean $stack14, $stack19, $stack70;
+        long $stack20;
+        java.lang.StringBuilder $stack24, $stack25, $stack30, $stack31, $stack36, $stack38, $stack43, $stack44, $stack62, $stack63, $stack79, $stack81, $stack82, $stack90, $stack91, $stack96, $stack97, $stack105, $stack106, $stack111, $stack112, $stack117, $stack119, $stack120, $stack121, $u0, $u3, $u4, $u5, $u6, $u7, $u11, $u12, $u13, $u14, $u15;
+        DefaultUpdateCheckManager this;
+        org.codehaus.plexus.logging.Logger $stack28, $stack60, $stack77, $stack88, $stack94, $stack103, $stack109, $stack115;
+        java.io.OutputStream $stack34;
+        java.io.InputStream $stack65;
+        java.lang.Throwable $stack85, $stack100;
+        java.io.IOException $stack87, $stack93, $stack102, $stack108, $stack114;
+        java.nio.channels.FileChannel channel;
+        java.nio.channels.FileLock lock;
+        java.util.Properties $u1;
+        java.io.RandomAccessFile $u2;
+        java.util.Date $u8;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $r0, $r1, $r2, $r5, $r6, $r7, $r8, $r9;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        touchfile := @parameter0: java.io.File;
+
+        key := @parameter1: java.lang.String;
+
+        error := @parameter2: java.lang.String;
+
+        $stack11 = virtualinvoke touchfile.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack12 = virtualinvoke $stack11.<java.lang.String: java.lang.String intern()>();
+
+        entermonitor $stack12;
+
+     label01:
+        $stack13 = virtualinvoke touchfile.<java.io.File: java.io.File getParentFile()>();
+
+        $stack14 = virtualinvoke $stack13.<java.io.File: boolean exists()>();
+
+        if $stack14 != 0 goto label03;
+
+        $stack69 = virtualinvoke touchfile.<java.io.File: java.io.File getParentFile()>();
+
+        $stack70 = virtualinvoke $stack69.<java.io.File: boolean mkdirs()>();
+
+        if $stack70 != 0 goto label03;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack77 = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack79 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to create directory: ");
+
+        $stack80 = virtualinvoke touchfile.<java.io.File: java.lang.String getParent()>();
+
+        $stack81 = virtualinvoke $stack79.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack80);
+
+        $stack82 = virtualinvoke $stack81.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" for tracking artifact metadata resolution.");
+
+        $stack83 = virtualinvoke $stack82.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack77.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack83);
+
+        exitmonitor $stack12;
+
+     label02:
+        return;
+
+     label03:
+        channel = null;
+
+        lock = null;
+
+     label04:
+        $u1 = new java.util.Properties;
+
+        specialinvoke $u1.<java.util.Properties: void <init>()>();
+
+        $u2 = new java.io.RandomAccessFile;
+
+        specialinvoke $u2.<java.io.RandomAccessFile: void <init>(java.io.File,java.lang.String)>(touchfile, "rw");
+
+        channel = virtualinvoke $u2.<java.io.RandomAccessFile: java.nio.channels.FileChannel getChannel()>();
+
+        lock = virtualinvoke channel.<java.nio.channels.FileChannel: java.nio.channels.FileLock lock()>();
+
+        $stack19 = virtualinvoke touchfile.<java.io.File: boolean canRead()>();
+
+        if $stack19 == 0 goto label05;
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack60 = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack62 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Reading resolution-state from: ");
+
+        $stack63 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack64 = virtualinvoke $stack63.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack60.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack64);
+
+        $stack65 = staticinvoke <java.nio.channels.Channels: java.io.InputStream newInputStream(java.nio.channels.ReadableByteChannel)>(channel);
+
+        virtualinvoke $u1.<java.util.Properties: void load(java.io.InputStream)>($stack65);
+
+     label05:
+        $stack20 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $stack21 = staticinvoke <java.lang.Long: java.lang.String toString(long)>($stack20);
+
+        virtualinvoke $u1.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>(key, $stack21);
+
+        if error == null goto label06;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack43 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(key);
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".error");
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $u1.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>($stack45, error);
+
+        goto label07;
+
+     label06:
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack24 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(key);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".error");
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $u1.<java.util.Properties: java.lang.Object remove(java.lang.Object)>($stack26);
+
+     label07:
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack28 = virtualinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack30 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Writing resolution-state to: ");
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack32 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack28.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack32);
+
+        virtualinvoke channel.<java.nio.channels.FileChannel: java.nio.channels.FileChannel truncate(long)>(0L);
+
+        $stack34 = staticinvoke <java.nio.channels.Channels: java.io.OutputStream newOutputStream(java.nio.channels.WritableByteChannel)>(channel);
+
+        $u7 = new java.lang.StringBuilder;
+
+        specialinvoke $u7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack36 = virtualinvoke $u7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Last modified on: ");
+
+        $u8 = new java.util.Date;
+
+        specialinvoke $u8.<java.util.Date: void <init>()>();
+
+        $stack38 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($u8);
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $u1.<java.util.Properties: void store(java.io.OutputStream,java.lang.String)>($stack34, $stack39);
+
+        virtualinvoke lock.<java.nio.channels.FileLock: void release()>();
+
+        lock = null;
+
+        virtualinvoke channel.<java.nio.channels.FileChannel: void close()>();
+
+     label08:
+        goto label09;
+
+     label09:
+        goto label29;
+
+     label10:
+        $stack114 := @caughtexception;
+
+        $r5 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack115 = virtualinvoke $r5.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u11 = new java.lang.StringBuilder;
+
+        specialinvoke $u11.<java.lang.StringBuilder: void <init>()>();
+
+        $stack117 = virtualinvoke $u11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to record lastUpdated information for resolution.\nFile: ");
+
+        $stack118 = virtualinvoke touchfile.<java.io.File: java.lang.String toString()>();
+
+        $stack119 = virtualinvoke $stack117.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack118);
+
+        $stack120 = virtualinvoke $stack119.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; key: ");
+
+        $stack121 = virtualinvoke $stack120.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(key);
+
+        $stack122 = virtualinvoke $stack121.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack115.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack122, $stack114);
+
+     label11:
+        if lock == null goto label15;
+
+     label12:
+        virtualinvoke lock.<java.nio.channels.FileLock: void release()>();
+
+     label13:
+        goto label15;
+
+     label14:
+        $stack108 := @caughtexception;
+
+        $r6 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack109 = virtualinvoke $r6.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u12 = new java.lang.StringBuilder;
+
+        specialinvoke $u12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack111 = virtualinvoke $u12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error releasing exclusive lock for resolution tracking file: ");
+
+        $stack112 = virtualinvoke $stack111.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack113 = virtualinvoke $stack112.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack109.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack113, $stack108);
+
+     label15:
+        if channel == null goto label29;
+
+     label16:
+        virtualinvoke channel.<java.nio.channels.FileChannel: void close()>();
+
+     label17:
+        goto label29;
+
+     label18:
+        $stack102 := @caughtexception;
+
+        $r7 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack103 = virtualinvoke $r7.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u13 = new java.lang.StringBuilder;
+
+        specialinvoke $u13.<java.lang.StringBuilder: void <init>()>();
+
+        $stack105 = virtualinvoke $u13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error closing FileChannel for resolution tracking file: ");
+
+        $stack106 = virtualinvoke $stack105.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack107 = virtualinvoke $stack106.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack103.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack107, $stack102);
+
+        goto label29;
+
+     label19:
+        $stack100 := @caughtexception;
+
+     label20:
+        if lock == null goto label24;
+
+     label21:
+        virtualinvoke lock.<java.nio.channels.FileLock: void release()>();
+
+     label22:
+        goto label24;
+
+     label23:
+        $stack93 := @caughtexception;
+
+        $r8 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack94 = virtualinvoke $r8.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u14 = new java.lang.StringBuilder;
+
+        specialinvoke $u14.<java.lang.StringBuilder: void <init>()>();
+
+        $stack96 = virtualinvoke $u14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error releasing exclusive lock for resolution tracking file: ");
+
+        $stack97 = virtualinvoke $stack96.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack98 = virtualinvoke $stack97.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack94.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack98, $stack93);
+
+     label24:
+        if channel == null goto label28;
+
+     label25:
+        virtualinvoke channel.<java.nio.channels.FileChannel: void close()>();
+
+     label26:
+        goto label28;
+
+     label27:
+        $stack87 := @caughtexception;
+
+        $r9 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack88 = virtualinvoke $r9.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u15 = new java.lang.StringBuilder;
+
+        specialinvoke $u15.<java.lang.StringBuilder: void <init>()>();
+
+        $stack90 = virtualinvoke $u15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error closing FileChannel for resolution tracking file: ");
+
+        $stack91 = virtualinvoke $stack90.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack92 = virtualinvoke $stack91.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack88.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack92, $stack87);
+
+     label28:
+        throw $stack100;
+
+     label29:
+        exitmonitor $stack12;
+
+     label30:
+        goto label33;
+
+     label31:
+        $stack85 := @caughtexception;
+
+        exitmonitor $stack12;
+
+     label32:
+        throw $stack85;
+
+     label33:
+        return;
+
+        catch java.io.IOException from label04 to label08 with label10;
+        catch java.io.IOException from label12 to label13 with label14;
+        catch java.io.IOException from label16 to label17 with label18;
+        catch java.lang.Throwable from label04 to label08 with label19;
+        catch java.lang.Throwable from label10 to label11 with label19;
+        catch java.io.IOException from label21 to label22 with label23;
+        catch java.io.IOException from label25 to label26 with label27;
+        catch java.lang.Throwable from label19 to label20 with label19;
+        catch java.lang.Throwable from label01 to label02 with label31;
+        catch java.lang.Throwable from label03 to label30 with label31;
+        catch java.lang.Throwable from label31 to label32 with label31;
+    }
+
+    java.util.Date readLastUpdated(java.io.File, java.lang.String)
+    {
+        DefaultUpdateCheckManager this;
+        org.codehaus.plexus.logging.Logger $stack6, $stack18;
+        java.lang.StringBuilder $stack8, $stack9, $stack10, $stack20, $stack21, $stack22, $u0, $u2;
+        java.lang.String key, $stack11, rawVal, $stack23;
+        java.io.File touchfile;
+        java.util.Properties props;
+        long $stack16;
+        java.lang.NumberFormatException $stack17;
+        java.util.Date $u1;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $r0, $r1, $r2;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        touchfile := @parameter0: java.io.File;
+
+        key := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack6 = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Searching for ");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(key);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" in resolution tracking file.");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack6.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack11);
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        props = specialinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.util.Properties read(java.io.File)>(touchfile);
+
+        if props == null goto label4;
+
+        rawVal = virtualinvoke props.<java.util.Properties: java.lang.String getProperty(java.lang.String)>(key);
+
+        if rawVal == null goto label4;
+
+     label1:
+        $u1 = new java.util.Date;
+
+        $stack16 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>(rawVal);
+
+        specialinvoke $u1.<java.util.Date: void <init>(long)>($stack16);
+
+     label2:
+        return $u1;
+
+     label3:
+        $stack17 := @caughtexception;
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack18 = virtualinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack20 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot parse lastUpdated date: \'");
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(rawVal);
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'. Ignoring.");
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack18.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack23, $stack17);
+
+     label4:
+        return null;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label3;
+    }
+
+    private java.lang.String getError(java.io.File, java.lang.String)
+    {
+        DefaultUpdateCheckManager this;
+        java.io.File touchFile;
+        java.util.Properties props;
+        java.lang.String key, $stack8, $stack9;
+        java.lang.StringBuilder $stack6, $stack7, $u0;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $r0;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        touchFile := @parameter0: java.io.File;
+
+        key := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        props = specialinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.util.Properties read(java.io.File)>(touchFile);
+
+        if props == null goto label1;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(key);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".error");
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack9 = virtualinvoke props.<java.util.Properties: java.lang.String getProperty(java.lang.String)>($stack8);
+
+        return $stack9;
+
+     label1:
+        return null;
+    }
+
+    private java.util.Properties read(java.io.File)
+    {
+        java.io.File touchfile;
+        boolean $stack11;
+        java.lang.String $stack12, $stack13, $stack22, $stack30, $stack38, $stack44, $stack53, $stack60, $stack67;
+        java.nio.channels.FileChannel $stack16;
+        DefaultUpdateCheckManager this;
+        org.codehaus.plexus.logging.Logger $stack18, $stack26, $stack34, $stack40, $stack49, $stack56, $stack63;
+        java.lang.StringBuilder $stack20, $stack21, $stack28, $stack29, $stack36, $stack37, $stack42, $stack43, $stack51, $stack52, $stack58, $stack59, $stack65, $stack66, $u0, $u3, $u6, $u7, $u8, $u9, $u10;
+        java.lang.Throwable $stack31, $stack46;
+        java.io.IOException $stack33, $stack39, $stack48, $stack55, $stack62;
+        java.io.FileInputStream in, $u2;
+        java.nio.channels.FileLock lock;
+        java.util.Properties $u1;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $r0, $r1, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        touchfile := @parameter0: java.io.File;
+
+        $stack11 = virtualinvoke touchfile.<java.io.File: boolean canRead()>();
+
+        if $stack11 != 0 goto label01;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack26 = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack28 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Skipped unreadable resolution tracking file ");
+
+        $stack29 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack30 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack26.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack30);
+
+        return null;
+
+     label01:
+        $stack12 = virtualinvoke touchfile.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack13 = virtualinvoke $stack12.<java.lang.String: java.lang.String intern()>();
+
+        entermonitor $stack13;
+
+     label02:
+        in = null;
+
+        lock = null;
+
+     label03:
+        $u1 = new java.util.Properties;
+
+        specialinvoke $u1.<java.util.Properties: void <init>()>();
+
+        $u2 = new java.io.FileInputStream;
+
+        specialinvoke $u2.<java.io.FileInputStream: void <init>(java.io.File)>(touchfile);
+
+        in = $u2;
+
+        $stack16 = virtualinvoke $u2.<java.io.FileInputStream: java.nio.channels.FileChannel getChannel()>();
+
+        lock = virtualinvoke $stack16.<java.nio.channels.FileChannel: java.nio.channels.FileLock lock(long,long,boolean)>(0L, 9223372036854775807L, 1);
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack18 = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack20 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Reading resolution-state from: ");
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack18.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack22);
+
+        virtualinvoke $u1.<java.util.Properties: void load(java.io.InputStream)>($u2);
+
+        virtualinvoke lock.<java.nio.channels.FileLock: void release()>();
+
+        lock = null;
+
+        virtualinvoke $u2.<java.io.FileInputStream: void close()>();
+
+        in = null;
+
+     label04:
+        goto label05;
+
+     label05:
+        goto label06;
+
+     label06:
+        exitmonitor $stack13;
+
+     label07:
+        return $u1;
+
+     label08:
+        $stack62 := @caughtexception;
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack63 = virtualinvoke $r4.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack65 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to read resolution tracking file ");
+
+        $stack66 = virtualinvoke $stack65.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack67 = virtualinvoke $stack66.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack63.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack67, $stack62);
+
+     label09:
+        if lock == null goto label13;
+
+     label10:
+        virtualinvoke lock.<java.nio.channels.FileLock: void release()>();
+
+     label11:
+        goto label13;
+
+     label12:
+        $stack55 := @caughtexception;
+
+        $r5 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack56 = virtualinvoke $r5.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u7 = new java.lang.StringBuilder;
+
+        specialinvoke $u7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack58 = virtualinvoke $u7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error releasing shared lock for resolution tracking file: ");
+
+        $stack59 = virtualinvoke $stack58.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack60 = virtualinvoke $stack59.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack56.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack60, $stack55);
+
+     label13:
+        if in == null goto label17;
+
+     label14:
+        virtualinvoke in.<java.io.FileInputStream: void close()>();
+
+     label15:
+        goto label17;
+
+     label16:
+        $stack48 := @caughtexception;
+
+        $r6 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack49 = virtualinvoke $r6.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u8 = new java.lang.StringBuilder;
+
+        specialinvoke $u8.<java.lang.StringBuilder: void <init>()>();
+
+        $stack51 = virtualinvoke $u8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error closing FileChannel for resolution tracking file: ");
+
+        $stack52 = virtualinvoke $stack51.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack53 = virtualinvoke $stack52.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack49.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack53, $stack48);
+
+     label17:
+        exitmonitor $stack13;
+
+     label18:
+        return null;
+
+     label19:
+        $stack46 := @caughtexception;
+
+     label20:
+        if lock == null goto label24;
+
+     label21:
+        virtualinvoke lock.<java.nio.channels.FileLock: void release()>();
+
+     label22:
+        goto label24;
+
+     label23:
+        $stack39 := @caughtexception;
+
+        $r7 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack40 = virtualinvoke $r7.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u9 = new java.lang.StringBuilder;
+
+        specialinvoke $u9.<java.lang.StringBuilder: void <init>()>();
+
+        $stack42 = virtualinvoke $u9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error releasing shared lock for resolution tracking file: ");
+
+        $stack43 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack40.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack44, $stack39);
+
+     label24:
+        if in == null goto label28;
+
+     label25:
+        virtualinvoke in.<java.io.FileInputStream: void close()>();
+
+     label26:
+        goto label28;
+
+     label27:
+        $stack33 := @caughtexception;
+
+        $r8 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManager) this;
+
+        $stack34 = virtualinvoke $r8.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: org.codehaus.plexus.logging.Logger getLogger()>();
+
+        $u10 = new java.lang.StringBuilder;
+
+        specialinvoke $u10.<java.lang.StringBuilder: void <init>()>();
+
+        $stack36 = virtualinvoke $u10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error closing FileChannel for resolution tracking file: ");
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(touchfile);
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack34.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack38, $stack33);
+
+     label28:
+        throw $stack46;
+
+     label29:
+        $stack31 := @caughtexception;
+
+        exitmonitor $stack13;
+
+     label30:
+        throw $stack31;
+
+        catch java.io.IOException from label03 to label04 with label08;
+        catch java.io.IOException from label10 to label11 with label12;
+        catch java.io.IOException from label14 to label15 with label16;
+        catch java.lang.Throwable from label03 to label04 with label19;
+        catch java.lang.Throwable from label08 to label09 with label19;
+        catch java.io.IOException from label21 to label22 with label23;
+        catch java.io.IOException from label25 to label26 with label27;
+        catch java.lang.Throwable from label19 to label20 with label19;
+        catch java.lang.Throwable from label02 to label07 with label29;
+        catch java.lang.Throwable from label08 to label18 with label29;
+        catch java.lang.Throwable from label19 to label30 with label29;
+    }
+
+    java.io.File getTouchfile(org.apache.maven.artifact.Artifact)
+    {
+        java.lang.StringBuilder $stack3, $stack6, $stack10, $stack12, $stack18;
+        org.apache.maven.artifact.Artifact artifact;
+        java.lang.String $stack4, $stack7, $stack9, $stack11, $stack17, $stack19;
+        java.io.File $stack14, $stack15, $stack16;
+        DefaultUpdateCheckManager this;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $stack3 = new java.lang.StringBuilder;
+
+        specialinvoke $stack3.<java.lang.StringBuilder: void <init>(int)>(128);
+
+        $stack4 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack4);
+
+        $stack6 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(45);
+
+        $stack7 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getBaseVersion()>();
+
+        virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack7);
+
+        $stack9 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getClassifier()>();
+
+        if $stack9 == null goto label1;
+
+        $stack18 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(45);
+
+        $stack19 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getClassifier()>();
+
+        virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+     label1:
+        $stack10 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        $stack11 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getType()>();
+
+        $stack12 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".lastUpdated");
+
+        $stack14 = new java.io.File;
+
+        $stack15 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        $stack16 = virtualinvoke $stack15.<java.io.File: java.io.File getParentFile()>();
+
+        $stack17 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack14.<java.io.File: void <init>(java.io.File,java.lang.String)>($stack16, $stack17);
+
+        return $stack14;
+    }
+
+    java.io.File getTouchfile(org.apache.maven.artifact.repository.metadata.RepositoryMetadata, java.io.File)
+    {
+        java.io.File $stack3, file;
+        java.lang.String $stack4;
+        DefaultUpdateCheckManager this;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata metadata;
+
+        this := @this: DefaultUpdateCheckManager;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.RepositoryMetadata;
+
+        file := @parameter1: java.io.File;
+
+        $stack3 = new java.io.File;
+
+        $stack4 = virtualinvoke file.<java.io.File: java.lang.String getParent()>();
+
+        specialinvoke $stack3.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack4, "resolver-status.properties");
+
+        return $stack3;
+    }
+
+    public static void <clinit>()
+    {
+        <DefaultUpdateCheckManager: java.lang.String TOUCHFILE_NAME> = "resolver-status.properties";
+
+        <DefaultUpdateCheckManager: java.lang.String LAST_UPDATE_TAG> = ".lastUpdated";
+
+        <DefaultUpdateCheckManager: java.lang.String ERROR_KEY_SUFFIX> = ".error";
+
+        return;
+    }
+}

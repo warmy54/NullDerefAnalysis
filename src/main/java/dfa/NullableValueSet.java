@@ -16,7 +16,7 @@ public class NullableValueSet implements Iterable<NullableValue>{
 	}
 	
 	public static NullableValueSet merge(NullableValueSet set1,NullableValueSet set2) {
-		System.out.println("merge "+set1.valueSet.size()+"  " +set2.valueSet.size());
+		//System.out.println("merge "+set1.valueSet.size()+"  " +set2.valueSet.size());
 		NullableValueSet outset = new NullableValueSet();
 		Iterator<NullableValue> it1 = set1.valueSet.iterator();
 		Iterator<NullableValue> it2 = set2.valueSet.iterator();
@@ -37,7 +37,7 @@ public class NullableValueSet implements Iterable<NullableValue>{
 				outset.add(currentVal.value,currentVal.status);
 			}
 		}
-		System.out.println("merge set1 = "+set1.valueSet.size()+"  set 2 = " +set2.valueSet.size() + " out =" + outset.valueSet.size());
+		//System.out.println("merge set1 = "+set1.valueSet.size()+"  set 2 = " +set2.valueSet.size() + " out =" + outset.valueSet.size());
 		return outset;
 	}
 	

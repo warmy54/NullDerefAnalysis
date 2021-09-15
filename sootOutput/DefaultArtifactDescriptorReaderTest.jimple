@@ -1,0 +1,143 @@
+public class DefaultArtifactDescriptorReaderTest extends org.apache.maven.repository.internal.AbstractRepositoryTestCase
+{
+
+    public void <init>()
+    {
+        DefaultArtifactDescriptorReaderTest this;
+
+        this := @this: DefaultArtifactDescriptorReaderTest;
+
+        specialinvoke this.<org.apache.maven.repository.internal.AbstractRepositoryTestCase: void <init>()>();
+
+        return;
+    }
+
+    public void testMng5459() throws java.lang.Exception
+    {
+        DefaultArtifactDescriptorReaderTest this;
+        org.codehaus.plexus.PlexusContainer $stack8;
+        java.lang.Object $stack9, $stack10, $stack20, $stack22, $stack27;
+        org.apache.maven.repository.internal.DefaultArtifactDescriptorReader reader;
+        org.eclipse.aether.impl.RepositoryEventDispatcher eventDispatcher, $stack21;
+        org.mockito.ArgumentCaptor event;
+        org.eclipse.aether.repository.RemoteRepository $stack14, $stack34;
+        org.eclipse.aether.RepositorySystemSession $stack18;
+        org.eclipse.aether.RepositoryEvent $stack23, evt;
+        java.util.List $stack24;
+        java.util.Iterator l6;
+        boolean $stack26, $stack30, missingArtifactDescriptor;
+        org.eclipse.aether.RepositoryEvent$EventType $stack28, $stack29;
+        java.lang.StringBuilder $stack33, $stack36, $stack37, $u2;
+        java.lang.String $stack35, $stack38, $stack40;
+        java.lang.Exception $stack39;
+        org.eclipse.aether.resolution.ArtifactDescriptorRequest $u0;
+        org.eclipse.aether.artifact.DefaultArtifact $u1;
+        org.apache.maven.repository.internal.DefaultArtifactDescriptorReaderTest $r0, $r2;
+        org.eclipse.aether.artifact.Artifact $r1;
+
+        this := @this: DefaultArtifactDescriptorReaderTest;
+
+        $r0 = (org.apache.maven.repository.internal.DefaultArtifactDescriptorReaderTest) this;
+
+        $stack8 = virtualinvoke $r0.<org.apache.maven.repository.internal.DefaultArtifactDescriptorReaderTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        $stack9 = interfaceinvoke $stack8.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/eclipse/aether/impl/ArtifactDescriptorReader;");
+
+        reader = (org.apache.maven.repository.internal.DefaultArtifactDescriptorReader) $stack9;
+
+        $stack10 = staticinvoke <org.mockito.Mockito: java.lang.Object mock(java.lang.Class)>(class "Lorg/eclipse/aether/impl/RepositoryEventDispatcher;");
+
+        eventDispatcher = (org.eclipse.aether.impl.RepositoryEventDispatcher) $stack10;
+
+        event = staticinvoke <org.mockito.ArgumentCaptor: org.mockito.ArgumentCaptor forClass(java.lang.Class)>(class "Lorg/eclipse/aether/RepositoryEvent;");
+
+        virtualinvoke reader.<org.apache.maven.repository.internal.DefaultArtifactDescriptorReader: org.apache.maven.repository.internal.DefaultArtifactDescriptorReader setRepositoryEventDispatcher(org.eclipse.aether.impl.RepositoryEventDispatcher)>(eventDispatcher);
+
+        $u0 = new org.eclipse.aether.resolution.ArtifactDescriptorRequest;
+
+        specialinvoke $u0.<org.eclipse.aether.resolution.ArtifactDescriptorRequest: void <init>()>();
+
+        $stack14 = staticinvoke <org.apache.maven.repository.internal.DefaultArtifactDescriptorReaderTest: org.eclipse.aether.repository.RemoteRepository newTestRepository()>();
+
+        virtualinvoke $u0.<org.eclipse.aether.resolution.ArtifactDescriptorRequest: org.eclipse.aether.resolution.ArtifactDescriptorRequest addRepository(org.eclipse.aether.repository.RemoteRepository)>($stack14);
+
+        $u1 = new org.eclipse.aether.artifact.DefaultArtifact;
+
+        specialinvoke $u1.<org.eclipse.aether.artifact.DefaultArtifact: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>("org.apache.maven.its", "dep-mng5459", "jar", "0.4.0-SNAPSHOT");
+
+        $r1 = (org.eclipse.aether.artifact.Artifact) $u1;
+
+        virtualinvoke $u0.<org.eclipse.aether.resolution.ArtifactDescriptorRequest: org.eclipse.aether.resolution.ArtifactDescriptorRequest setArtifact(org.eclipse.aether.artifact.Artifact)>($r1);
+
+        $r2 = (org.apache.maven.repository.internal.DefaultArtifactDescriptorReaderTest) this;
+
+        $stack18 = $r2.<org.apache.maven.repository.internal.DefaultArtifactDescriptorReaderTest: org.eclipse.aether.RepositorySystemSession session>;
+
+        virtualinvoke reader.<org.apache.maven.repository.internal.DefaultArtifactDescriptorReader: org.eclipse.aether.resolution.ArtifactDescriptorResult readArtifactDescriptor(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.resolution.ArtifactDescriptorRequest)>($stack18, $u0);
+
+        $stack20 = staticinvoke <org.mockito.Mockito: java.lang.Object verify(java.lang.Object)>(eventDispatcher);
+
+        $stack21 = (org.eclipse.aether.impl.RepositoryEventDispatcher) $stack20;
+
+        $stack22 = virtualinvoke event.<org.mockito.ArgumentCaptor: java.lang.Object capture()>();
+
+        $stack23 = (org.eclipse.aether.RepositoryEvent) $stack22;
+
+        interfaceinvoke $stack21.<org.eclipse.aether.impl.RepositoryEventDispatcher: void dispatch(org.eclipse.aether.RepositoryEvent)>($stack23);
+
+        missingArtifactDescriptor = 0;
+
+        $stack24 = virtualinvoke event.<org.mockito.ArgumentCaptor: java.util.List getAllValues()>();
+
+        l6 = interfaceinvoke $stack24.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack26 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack26 == 0 goto label3;
+
+        $stack27 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        evt = (org.eclipse.aether.RepositoryEvent) $stack27;
+
+        $stack28 = <org.eclipse.aether.RepositoryEvent$EventType: org.eclipse.aether.RepositoryEvent$EventType ARTIFACT_DESCRIPTOR_MISSING>;
+
+        $stack29 = virtualinvoke evt.<org.eclipse.aether.RepositoryEvent: org.eclipse.aether.RepositoryEvent$EventType getType()>();
+
+        $stack30 = virtualinvoke $stack28.<org.eclipse.aether.RepositoryEvent$EventType: boolean equals(java.lang.Object)>($stack29);
+
+        if $stack30 == 0 goto label2;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack33 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not find artifact org.apache.maven.its:dep-mng5459:pom:0.4.0-20130404.090532-2 in repo (");
+
+        $stack34 = staticinvoke <org.apache.maven.repository.internal.DefaultArtifactDescriptorReaderTest: org.eclipse.aether.repository.RemoteRepository newTestRepository()>();
+
+        $stack35 = virtualinvoke $stack34.<org.eclipse.aether.repository.RemoteRepository: java.lang.String getUrl()>();
+
+        $stack36 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack35);
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack39 = virtualinvoke evt.<org.eclipse.aether.RepositoryEvent: java.lang.Exception getException()>();
+
+        $stack40 = virtualinvoke $stack39.<java.lang.Exception: java.lang.String getMessage()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack38, $stack40);
+
+        missingArtifactDescriptor = 1;
+
+     label2:
+        goto label1;
+
+     label3:
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean,java.lang.String)>(missingArtifactDescriptor, "Expected missing artifact descriptor for org.apache.maven.its:dep-mng5459:pom:0.4.0-20130404.090532-2");
+
+        return;
+    }
+}

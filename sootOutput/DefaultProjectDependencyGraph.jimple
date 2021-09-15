@@ -1,0 +1,373 @@
+public class DefaultProjectDependencyGraph extends java.lang.Object implements org.apache.maven.execution.ProjectDependencyGraph
+{
+    private org.apache.maven.project.ProjectSorter sorter;
+    private java.util.List allProjects;
+
+    public void <init>(java.util.Collection) throws org.codehaus.plexus.util.dag.CycleDetectedException, org.apache.maven.project.DuplicateProjectException
+    {
+        DefaultProjectDependencyGraph this;
+        java.util.Collection projects;
+        java.util.List $stack3;
+        java.util.ArrayList $u0;
+        org.apache.maven.project.ProjectSorter $u1;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $r0, $r1;
+
+        this := @this: DefaultProjectDependencyGraph;
+
+        projects := @parameter0: java.util.Collection;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(java.util.Collection)>(projects);
+
+        $stack3 = staticinvoke <java.util.Collections: java.util.List unmodifiableList(java.util.List)>($u0);
+
+        $r0 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $r0.<org.apache.maven.graph.DefaultProjectDependencyGraph: java.util.List allProjects> = $stack3;
+
+        $u1 = new org.apache.maven.project.ProjectSorter;
+
+        specialinvoke $u1.<org.apache.maven.project.ProjectSorter: void <init>(java.util.Collection)>(projects);
+
+        $r1 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $r1.<org.apache.maven.graph.DefaultProjectDependencyGraph: org.apache.maven.project.ProjectSorter sorter> = $u1;
+
+        return;
+    }
+
+    public void <init>(java.util.List, java.util.Collection) throws org.codehaus.plexus.util.dag.CycleDetectedException, org.apache.maven.project.DuplicateProjectException
+    {
+        DefaultProjectDependencyGraph this;
+        java.util.List allProjects, $stack4;
+        java.util.Collection projects;
+        java.util.ArrayList $u0;
+        org.apache.maven.project.ProjectSorter $u1;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $r0, $r1;
+
+        this := @this: DefaultProjectDependencyGraph;
+
+        allProjects := @parameter0: java.util.List;
+
+        projects := @parameter1: java.util.Collection;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(java.util.Collection)>(allProjects);
+
+        $stack4 = staticinvoke <java.util.Collections: java.util.List unmodifiableList(java.util.List)>($u0);
+
+        $r0 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $r0.<org.apache.maven.graph.DefaultProjectDependencyGraph: java.util.List allProjects> = $stack4;
+
+        $u1 = new org.apache.maven.project.ProjectSorter;
+
+        specialinvoke $u1.<org.apache.maven.project.ProjectSorter: void <init>(java.util.Collection)>(projects);
+
+        $r1 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $r1.<org.apache.maven.graph.DefaultProjectDependencyGraph: org.apache.maven.project.ProjectSorter sorter> = $u1;
+
+        return;
+    }
+
+    public java.util.List getAllProjects()
+    {
+        DefaultProjectDependencyGraph this;
+        java.util.List $stack1;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $r0;
+
+        this := @this: DefaultProjectDependencyGraph;
+
+        $r0 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $stack1 = $r0.<org.apache.maven.graph.DefaultProjectDependencyGraph: java.util.List allProjects>;
+
+        return $stack1;
+    }
+
+    public java.util.List getSortedProjects()
+    {
+        DefaultProjectDependencyGraph this;
+        org.apache.maven.project.ProjectSorter $stack2;
+        java.util.List $stack3;
+        java.util.ArrayList $u0;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $r0;
+
+        this := @this: DefaultProjectDependencyGraph;
+
+        $u0 = new java.util.ArrayList;
+
+        $r0 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $stack2 = $r0.<org.apache.maven.graph.DefaultProjectDependencyGraph: org.apache.maven.project.ProjectSorter sorter>;
+
+        $stack3 = virtualinvoke $stack2.<org.apache.maven.project.ProjectSorter: java.util.List getSortedProjects()>();
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(java.util.Collection)>($stack3);
+
+        return $u0;
+    }
+
+    public java.util.List getDownstreamProjects(org.apache.maven.project.MavenProject, boolean)
+    {
+        org.apache.maven.project.MavenProject project;
+        DefaultProjectDependencyGraph this;
+        java.lang.String $stack6;
+        boolean transitive;
+        java.util.List $stack7;
+        java.util.HashSet $u0;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $r0, $r1;
+
+        this := @this: DefaultProjectDependencyGraph;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        transitive := @parameter1: boolean;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(project, "project cannot be null");
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        $stack6 = staticinvoke <org.apache.maven.project.ProjectSorter: java.lang.String getId(org.apache.maven.project.MavenProject)>(project);
+
+        $r0 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        specialinvoke $r0.<org.apache.maven.graph.DefaultProjectDependencyGraph: void getDownstreamProjects(java.lang.String,java.util.Set,boolean)>($stack6, $u0, transitive);
+
+        $r1 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $stack7 = specialinvoke $r1.<org.apache.maven.graph.DefaultProjectDependencyGraph: java.util.List getSortedProjects(java.util.Set)>($u0);
+
+        return $stack7;
+    }
+
+    private void getDownstreamProjects(java.lang.String, java.util.Set, boolean)
+    {
+        DefaultProjectDependencyGraph this;
+        java.lang.String projectId, id;
+        org.apache.maven.project.ProjectSorter $stack6;
+        java.util.List $stack7;
+        java.util.Iterator l4;
+        boolean $stack9, $stack11, transitive;
+        java.lang.Object $stack10;
+        java.util.Set projectIds;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $r0, $r1;
+
+        this := @this: DefaultProjectDependencyGraph;
+
+        projectId := @parameter0: java.lang.String;
+
+        projectIds := @parameter1: java.util.Set;
+
+        transitive := @parameter2: boolean;
+
+        $r0 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $stack6 = $r0.<org.apache.maven.graph.DefaultProjectDependencyGraph: org.apache.maven.project.ProjectSorter sorter>;
+
+        $stack7 = virtualinvoke $stack6.<org.apache.maven.project.ProjectSorter: java.util.List getDependents(java.lang.String)>(projectId);
+
+        l4 = interfaceinvoke $stack7.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack9 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label3;
+
+        $stack10 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        id = (java.lang.String) $stack10;
+
+        $stack11 = interfaceinvoke projectIds.<java.util.Set: boolean add(java.lang.Object)>(id);
+
+        if $stack11 == 0 goto label2;
+
+        if transitive == 0 goto label2;
+
+        $r1 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        specialinvoke $r1.<org.apache.maven.graph.DefaultProjectDependencyGraph: void getDownstreamProjects(java.lang.String,java.util.Set,boolean)>(id, projectIds, transitive);
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public java.util.List getUpstreamProjects(org.apache.maven.project.MavenProject, boolean)
+    {
+        org.apache.maven.project.MavenProject project;
+        DefaultProjectDependencyGraph this;
+        java.lang.String $stack6;
+        boolean transitive;
+        java.util.List $stack7;
+        java.util.HashSet $u0;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $r0, $r1;
+
+        this := @this: DefaultProjectDependencyGraph;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        transitive := @parameter1: boolean;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(project, "project cannot be null");
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        $stack6 = staticinvoke <org.apache.maven.project.ProjectSorter: java.lang.String getId(org.apache.maven.project.MavenProject)>(project);
+
+        $r0 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        specialinvoke $r0.<org.apache.maven.graph.DefaultProjectDependencyGraph: void getUpstreamProjects(java.lang.String,java.util.Collection,boolean)>($stack6, $u0, transitive);
+
+        $r1 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $stack7 = specialinvoke $r1.<org.apache.maven.graph.DefaultProjectDependencyGraph: java.util.List getSortedProjects(java.util.Set)>($u0);
+
+        return $stack7;
+    }
+
+    private void getUpstreamProjects(java.lang.String, java.util.Collection, boolean)
+    {
+        DefaultProjectDependencyGraph this;
+        java.lang.String projectId, id;
+        org.apache.maven.project.ProjectSorter $stack6;
+        java.util.List $stack7;
+        java.util.Iterator l4;
+        boolean $stack9, $stack11, transitive;
+        java.lang.Object $stack10;
+        java.util.Collection projectIds;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $r0, $r1;
+
+        this := @this: DefaultProjectDependencyGraph;
+
+        projectId := @parameter0: java.lang.String;
+
+        projectIds := @parameter1: java.util.Collection;
+
+        transitive := @parameter2: boolean;
+
+        $r0 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $stack6 = $r0.<org.apache.maven.graph.DefaultProjectDependencyGraph: org.apache.maven.project.ProjectSorter sorter>;
+
+        $stack7 = virtualinvoke $stack6.<org.apache.maven.project.ProjectSorter: java.util.List getDependencies(java.lang.String)>(projectId);
+
+        l4 = interfaceinvoke $stack7.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack9 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label3;
+
+        $stack10 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        id = (java.lang.String) $stack10;
+
+        $stack11 = interfaceinvoke projectIds.<java.util.Collection: boolean add(java.lang.Object)>(id);
+
+        if $stack11 == 0 goto label2;
+
+        if transitive == 0 goto label2;
+
+        $r1 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        specialinvoke $r1.<org.apache.maven.graph.DefaultProjectDependencyGraph: void getUpstreamProjects(java.lang.String,java.util.Collection,boolean)>(id, projectIds, transitive);
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    private java.util.List getSortedProjects(java.util.Set)
+    {
+        java.util.Set projectIds;
+        int $stack6;
+        DefaultProjectDependencyGraph this;
+        org.apache.maven.project.ProjectSorter $stack7;
+        java.util.List $stack8;
+        java.util.Iterator l3;
+        boolean $stack10, $stack13;
+        java.lang.Object $stack11;
+        org.apache.maven.project.MavenProject mavenProject;
+        java.lang.String $stack12;
+        java.util.ArrayList $u0;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $r0;
+
+        this := @this: DefaultProjectDependencyGraph;
+
+        projectIds := @parameter0: java.util.Set;
+
+        $u0 = new java.util.ArrayList;
+
+        $stack6 = interfaceinvoke projectIds.<java.util.Set: int size()>();
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(int)>($stack6);
+
+        $r0 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $stack7 = $r0.<org.apache.maven.graph.DefaultProjectDependencyGraph: org.apache.maven.project.ProjectSorter sorter>;
+
+        $stack8 = virtualinvoke $stack7.<org.apache.maven.project.ProjectSorter: java.util.List getSortedProjects()>();
+
+        l3 = interfaceinvoke $stack8.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label3;
+
+        $stack11 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        mavenProject = (org.apache.maven.project.MavenProject) $stack11;
+
+        $stack12 = staticinvoke <org.apache.maven.project.ProjectSorter: java.lang.String getId(org.apache.maven.project.MavenProject)>(mavenProject);
+
+        $stack13 = interfaceinvoke projectIds.<java.util.Set: boolean contains(java.lang.Object)>($stack12);
+
+        if $stack13 == 0 goto label2;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(mavenProject);
+
+     label2:
+        goto label1;
+
+     label3:
+        return $u0;
+    }
+
+    public java.lang.String toString()
+    {
+        DefaultProjectDependencyGraph this;
+        org.apache.maven.project.ProjectSorter $stack1;
+        java.util.List $stack2;
+        java.lang.String $stack3;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $r0;
+
+        this := @this: DefaultProjectDependencyGraph;
+
+        $r0 = (org.apache.maven.graph.DefaultProjectDependencyGraph) this;
+
+        $stack1 = $r0.<org.apache.maven.graph.DefaultProjectDependencyGraph: org.apache.maven.project.ProjectSorter sorter>;
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.project.ProjectSorter: java.util.List getSortedProjects()>();
+
+        $stack3 = virtualinvoke $stack2.<java.lang.Object: java.lang.String toString()>();
+
+        return $stack3;
+    }
+}

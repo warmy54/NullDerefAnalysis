@@ -1,0 +1,372 @@
+public class WrapperFactoryImpl extends java.lang.Object implements sortpom.wrapper.operation.WrapperFactory
+{
+    private static final int SORT_ORDER_INCREMENT;
+    private static final int SORT_ORDER_BASE;
+    private final sortpom.util.FileUtil fileUtil;
+    private final sortpom.wrapper.ElementSortOrderMap elementSortOrderMap;
+    private final sortpom.wrapper.ElementWrapperCreator elementWrapperCreator;
+    private final sortpom.wrapper.TextWrapperCreator textWrapperCreator;
+
+    public void <init>(sortpom.util.FileUtil)
+    {
+        WrapperFactoryImpl this;
+        sortpom.wrapper.ElementSortOrderMap $stack4, $u0;
+        sortpom.util.FileUtil fileUtil;
+        sortpom.wrapper.ElementWrapperCreator $u1;
+        sortpom.wrapper.TextWrapperCreator $u2;
+        sortpom.wrapper.WrapperFactoryImpl $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: WrapperFactoryImpl;
+
+        fileUtil := @parameter0: sortpom.util.FileUtil;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new sortpom.wrapper.ElementSortOrderMap;
+
+        specialinvoke $u0.<sortpom.wrapper.ElementSortOrderMap: void <init>()>();
+
+        $r0 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $r0.<sortpom.wrapper.WrapperFactoryImpl: sortpom.wrapper.ElementSortOrderMap elementSortOrderMap> = $u0;
+
+        $u1 = new sortpom.wrapper.ElementWrapperCreator;
+
+        $r1 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $stack4 = $r1.<sortpom.wrapper.WrapperFactoryImpl: sortpom.wrapper.ElementSortOrderMap elementSortOrderMap>;
+
+        specialinvoke $u1.<sortpom.wrapper.ElementWrapperCreator: void <init>(sortpom.wrapper.ElementSortOrderMap)>($stack4);
+
+        $r2 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $r2.<sortpom.wrapper.WrapperFactoryImpl: sortpom.wrapper.ElementWrapperCreator elementWrapperCreator> = $u1;
+
+        $u2 = new sortpom.wrapper.TextWrapperCreator;
+
+        specialinvoke $u2.<sortpom.wrapper.TextWrapperCreator: void <init>()>();
+
+        $r3 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $r3.<sortpom.wrapper.WrapperFactoryImpl: sortpom.wrapper.TextWrapperCreator textWrapperCreator> = $u2;
+
+        $r4 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $r4.<sortpom.wrapper.WrapperFactoryImpl: sortpom.util.FileUtil fileUtil> = fileUtil;
+
+        return;
+    }
+
+    public void setup(sortpom.parameter.PluginParameters)
+    {
+        WrapperFactoryImpl this;
+        sortpom.parameter.PluginParameters pluginParameters;
+        sortpom.wrapper.ElementWrapperCreator $stack2;
+        sortpom.wrapper.TextWrapperCreator $stack3;
+        sortpom.wrapper.WrapperFactoryImpl $r0, $r1;
+
+        this := @this: WrapperFactoryImpl;
+
+        pluginParameters := @parameter0: sortpom.parameter.PluginParameters;
+
+        $r0 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $stack2 = $r0.<sortpom.wrapper.WrapperFactoryImpl: sortpom.wrapper.ElementWrapperCreator elementWrapperCreator>;
+
+        virtualinvoke $stack2.<sortpom.wrapper.ElementWrapperCreator: void setup(sortpom.parameter.PluginParameters)>(pluginParameters);
+
+        $r1 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $stack3 = $r1.<sortpom.wrapper.WrapperFactoryImpl: sortpom.wrapper.TextWrapperCreator textWrapperCreator>;
+
+        virtualinvoke $stack3.<sortpom.wrapper.TextWrapperCreator: void setup(sortpom.parameter.PluginParameters)>(pluginParameters);
+
+        return;
+    }
+
+    public sortpom.wrapper.operation.HierarchyRootWrapper createFromRootElement(org.jdom.Element)
+    {
+        WrapperFactoryImpl this;
+        org.jdom.Element rootElement;
+        sortpom.wrapper.content.Wrapper $stack3;
+        sortpom.wrapper.operation.HierarchyRootWrapper $u0;
+        sortpom.wrapper.WrapperFactoryImpl $r0, $r1;
+        org.jdom.Content $r2;
+
+        this := @this: WrapperFactoryImpl;
+
+        rootElement := @parameter0: org.jdom.Element;
+
+        $r0 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        specialinvoke $r0.<sortpom.wrapper.WrapperFactoryImpl: void initializeSortOrderMap()>();
+
+        $u0 = new sortpom.wrapper.operation.HierarchyRootWrapper;
+
+        $r1 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $r2 = (org.jdom.Content) rootElement;
+
+        $stack3 = virtualinvoke $r1.<sortpom.wrapper.WrapperFactoryImpl: sortpom.wrapper.content.Wrapper create(org.jdom.Content)>($r2);
+
+        specialinvoke $u0.<sortpom.wrapper.operation.HierarchyRootWrapper: void <init>(sortpom.wrapper.content.Wrapper)>($stack3);
+
+        return $u0;
+    }
+
+    private void initializeSortOrderMap()
+    {
+        WrapperFactoryImpl this;
+        org.jdom.Element $stack3;
+        java.lang.Throwable $stack4, $r3;
+        java.lang.String $stack6;
+        org.jdom.Document document;
+        sortpom.exception.FailureException $u0;
+        sortpom.wrapper.WrapperFactoryImpl $r0, $r1;
+        java.lang.Exception $r2;
+
+        this := @this: WrapperFactoryImpl;
+
+     label1:
+        $r0 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        document = virtualinvoke $r0.<sortpom.wrapper.WrapperFactoryImpl: org.jdom.Document createDocumentFromDefaultSortOrderFile()>();
+
+        $stack3 = virtualinvoke document.<org.jdom.Document: org.jdom.Element getRootElement()>();
+
+        $r1 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        specialinvoke $r1.<sortpom.wrapper.WrapperFactoryImpl: void addElementsToSortOrderMap(org.jdom.Element,int)>($stack3, 1000);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        $u0 = new sortpom.exception.FailureException;
+
+        $r2 = (java.lang.Exception) $stack4;
+
+        $stack6 = virtualinvoke $r2.<java.lang.Exception: java.lang.String getMessage()>();
+
+        specialinvoke $u0.<sortpom.exception.FailureException: void <init>(java.lang.String,java.lang.Throwable)>($stack6, $stack4);
+
+        $r3 = (java.lang.Throwable) $u0;
+
+        throw $r3;
+
+     label4:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+        catch org.jdom.JDOMException from label1 to label2 with label3;
+    }
+
+    org.jdom.Document createDocumentFromDefaultSortOrderFile() throws org.jdom.JDOMException, java.io.IOException
+    {
+        WrapperFactoryImpl this;
+        sortpom.util.FileUtil $stack5;
+        java.lang.String $stack6;
+        java.lang.Throwable $stack9, $stack10;
+        org.jdom.Document l3;
+        java.io.StringReader $u0;
+        org.jdom.input.SAXBuilder $u1;
+        sortpom.wrapper.WrapperFactoryImpl $r0;
+
+        this := @this: WrapperFactoryImpl;
+
+        $u0 = new java.io.StringReader;
+
+        $r0 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $stack5 = $r0.<sortpom.wrapper.WrapperFactoryImpl: sortpom.util.FileUtil fileUtil>;
+
+        $stack6 = virtualinvoke $stack5.<sortpom.util.FileUtil: java.lang.String getDefaultSortOrderXml()>();
+
+        specialinvoke $u0.<java.io.StringReader: void <init>(java.lang.String)>($stack6);
+
+     label1:
+        $u1 = new org.jdom.input.SAXBuilder;
+
+        specialinvoke $u1.<org.jdom.input.SAXBuilder: void <init>()>();
+
+        l3 = virtualinvoke $u1.<org.jdom.input.SAXBuilder: org.jdom.Document build(java.io.Reader)>($u0);
+
+     label2:
+        virtualinvoke $u0.<java.io.Reader: void close()>();
+
+        return l3;
+
+     label3:
+        $stack10 := @caughtexception;
+
+     label4:
+        virtualinvoke $u0.<java.io.Reader: void close()>();
+
+     label5:
+        goto label7;
+
+     label6:
+        $stack9 := @caughtexception;
+
+        virtualinvoke $stack10.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack9);
+
+     label7:
+        throw $stack10;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label6;
+    }
+
+    private void addElementsToSortOrderMap(org.jdom.Element, int)
+    {
+        WrapperFactoryImpl this;
+        org.jdom.Element element, child;
+        int baseSortOrder, sortOrder;
+        sortpom.wrapper.ElementSortOrderMap $stack7;
+        java.util.List castToChildElementList;
+        java.util.Iterator l5;
+        boolean $stack10;
+        java.lang.Object $stack11;
+        sortpom.wrapper.WrapperFactoryImpl $r0, $r1, $r2;
+
+        this := @this: WrapperFactoryImpl;
+
+        element := @parameter0: org.jdom.Element;
+
+        baseSortOrder := @parameter1: int;
+
+        $r0 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $stack7 = $r0.<sortpom.wrapper.WrapperFactoryImpl: sortpom.wrapper.ElementSortOrderMap elementSortOrderMap>;
+
+        virtualinvoke $stack7.<sortpom.wrapper.ElementSortOrderMap: void addElement(org.jdom.Element,int)>(element, baseSortOrder);
+
+        $r1 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        castToChildElementList = specialinvoke $r1.<sortpom.wrapper.WrapperFactoryImpl: java.util.List castToChildElementList(org.jdom.Element)>(element);
+
+        sortOrder = baseSortOrder;
+
+        l5 = interfaceinvoke castToChildElementList.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label2;
+
+        $stack11 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        child = (org.jdom.Element) $stack11;
+
+        sortOrder = sortOrder + 100;
+
+        $r2 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        specialinvoke $r2.<sortpom.wrapper.WrapperFactoryImpl: void addElementsToSortOrderMap(org.jdom.Element,int)>(child, sortOrder);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public sortpom.wrapper.content.Wrapper create(org.jdom.Content)
+    {
+        org.jdom.Content content;
+        boolean $stack2, $stack3, $stack4;
+        WrapperFactoryImpl this;
+        org.jdom.Text $stack6;
+        sortpom.wrapper.TextWrapperCreator $stack7;
+        sortpom.wrapper.content.Wrapper $stack8, $stack12, $r1, $r3;
+        org.jdom.Element $stack10;
+        sortpom.wrapper.ElementWrapperCreator $stack11;
+        sortpom.wrapper.content.UnsortedWrapper $u0, $u1;
+        sortpom.wrapper.WrapperFactoryImpl $r0, $r2;
+
+        this := @this: WrapperFactoryImpl;
+
+        content := @parameter0: org.jdom.Content;
+
+        $stack2 = content instanceof org.jdom.Element;
+
+        if $stack2 == 0 goto label1;
+
+        $r0 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $stack11 = $r0.<sortpom.wrapper.WrapperFactoryImpl: sortpom.wrapper.ElementWrapperCreator elementWrapperCreator>;
+
+        $stack10 = (org.jdom.Element) content;
+
+        $stack12 = virtualinvoke $stack11.<sortpom.wrapper.ElementWrapperCreator: sortpom.wrapper.content.Wrapper createWrapper(org.jdom.Element)>($stack10);
+
+        return $stack12;
+
+     label1:
+        $stack3 = content instanceof org.jdom.Comment;
+
+        if $stack3 == 0 goto label2;
+
+        $u0 = new sortpom.wrapper.content.UnsortedWrapper;
+
+        specialinvoke $u0.<sortpom.wrapper.content.UnsortedWrapper: void <init>(org.jdom.Content)>(content);
+
+        $r1 = (sortpom.wrapper.content.Wrapper) $u0;
+
+        return $r1;
+
+     label2:
+        $stack4 = content instanceof org.jdom.Text;
+
+        if $stack4 == 0 goto label3;
+
+        $r2 = (sortpom.wrapper.WrapperFactoryImpl) this;
+
+        $stack7 = $r2.<sortpom.wrapper.WrapperFactoryImpl: sortpom.wrapper.TextWrapperCreator textWrapperCreator>;
+
+        $stack6 = (org.jdom.Text) content;
+
+        $stack8 = virtualinvoke $stack7.<sortpom.wrapper.TextWrapperCreator: sortpom.wrapper.content.Wrapper createWrapper(org.jdom.Text)>($stack6);
+
+        return $stack8;
+
+     label3:
+        $u1 = new sortpom.wrapper.content.UnsortedWrapper;
+
+        specialinvoke $u1.<sortpom.wrapper.content.UnsortedWrapper: void <init>(org.jdom.Content)>(content);
+
+        $r3 = (sortpom.wrapper.content.Wrapper) $u1;
+
+        return $r3;
+    }
+
+    private java.util.List castToChildElementList(org.jdom.Element)
+    {
+        java.util.ArrayList $stack2;
+        org.jdom.Element element;
+        java.util.List $stack3;
+        WrapperFactoryImpl this;
+
+        this := @this: WrapperFactoryImpl;
+
+        element := @parameter0: org.jdom.Element;
+
+        $stack2 = new java.util.ArrayList;
+
+        $stack3 = virtualinvoke element.<org.jdom.Element: java.util.List getChildren()>();
+
+        specialinvoke $stack2.<java.util.ArrayList: void <init>(java.util.Collection)>($stack3);
+
+        return $stack2;
+    }
+
+    public static void <clinit>()
+    {
+        <WrapperFactoryImpl: int SORT_ORDER_BASE> = 1000;
+
+        <WrapperFactoryImpl: int SORT_ORDER_INCREMENT> = 100;
+
+        return;
+    }
+}

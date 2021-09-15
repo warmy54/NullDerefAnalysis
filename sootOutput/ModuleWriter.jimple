@@ -1,0 +1,1102 @@
+public class ModuleWriter extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        ModuleWriter this;
+
+        this := @this: ModuleWriter;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void write(org.ooc.frontend.model.Module, org.ooc.backend.cdirty.CGenerator) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Module module, $stack178, $stack187, $stack196, $stack205, $stack242, $stack254, $stack255, $stack262, $stack263;
+        org.ooc.frontend.model.NodeList $stack14, $stack47, $stack50, $stack132, $stack135, $stack236, $stack141;
+        org.ooc.middle.structs.MultiMap $stack16, $stack53, $stack128;
+        java.util.List $stack17, $stack54, $stack129, $stack224;
+        boolean $stack19, $stack49, $stack52, $stack56, $stack61, $stack63, $stack103, $stack127, $stack131, $stack134, $stack137, $stack160, $stack163, $stack165, $stack171, $stack174, $stack214, $stack215, $stack226, $stack238, $stack244, $stack252, $stack256, $stack259, $stack264, $stack267, $stack247, $stack143;
+        org.ooc.backend.cdirty.CGenerator cgen;
+        org.ooc.backend.cdirty.AwesomeWriter $stack20, $stack21, $stack23, $stack26, $stack28, $stack29, $stack33, $stack35, $stack37, $stack39, $stack41, $stack43, $stack45, $stack57, $stack59, $stack64, $stack65, $stack67, $stack70, $stack72, $stack73, $stack77, $stack79, $stack81, $stack83, $stack85, $stack87, $stack89, $stack91, $stack93, $stack95, $stack98, $stack100, $stack104, $stack106, $stack107, $stack109, $stack112, $stack114, $stack115, $stack117, $stack119, $stack122, $stack124, $stack144, $stack145, $stack146, $stack147, $stack148, $stack149, $stack151, $stack152, $stack153, $stack154, $stack155, $stack156, $stack157, $stack180, $stack181, $stack182, $stack183, $stack189, $stack190, $stack191, $stack192, $stack198, $stack199, $stack200, $stack201, $stack207, $stack208, $stack209, $stack210, $stack229, $stack230, $stack231, $stack232, $stack138, $stack139;
+        java.lang.String $stack24, $stack31, $stack68, $stack75, $stack96, $stack110, $stack120, $stack219, $stack243, hFwdName#15, member#20, className#26, imp#29, selfDecl#33;
+        org.ooc.frontend.model.FunctionDecl $stack136;
+        java.lang.Object $stack159, $stack170, $stack175, $stack177, $stack186, $stack195, $stack204, $stack213, $stack220, $stack222, $stack228, $stack235, $stack240, $stack249;
+        org.ooc.frontend.BuildParams $stack164;
+        org.ooc.frontend.model.CoverDecl $stack217, coverDecl;
+        org.ooc.frontend.model.TypeDecl $stack241, $stack261, selfDecl, use#24, imp#41;
+        java.lang.Iterable $stack245;
+        org.ooc.frontend.model.Type $stack250, $stack253;
+        org.ooc.frontend.model.Declaration ref;
+        java.util.Iterator hFwdName, use, className, selfDecl#16;
+        org.ooc.frontend.model.Import imp, use#28;
+        org.ooc.frontend.model.VariableDecl member;
+        org.ooc.frontend.model.Use use#17;
+        org.ooc.middle.UseDef imp#18;
+        org.ooc.frontend.model.Include use#22;
+        org.ooc.frontend.model.ClassDecl imp#25;
+        org.ooc.frontend.model.Node imp#43;
+        org.ooc.frontend.model.Line className#44;
+        org.ooc.frontend.model.Statement member#45;
+        java.util.ArrayList $u0, $u1;
+        java.util.Collection $r0;
+        org.ooc.frontend.Visitor $r1, $r2, $r3, $r4, $r5, $r6;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        cgen := @parameter1: org.ooc.backend.cdirty.CGenerator;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        $stack14 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getAllImports()>();
+
+        $r0 = (java.util.Collection) $stack14;
+
+        interfaceinvoke $u1.<java.util.List: boolean addAll(java.util.Collection)>($r0);
+
+        $stack16 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap getTypes()>();
+
+        $stack17 = virtualinvoke $stack16.<org.ooc.middle.structs.MultiMap: java.util.List values()>();
+
+        hFwdName = interfaceinvoke $stack17.<java.util.List: java.util.Iterator iterator()>();
+
+     label01:
+        $stack19 = interfaceinvoke hFwdName.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack19 == 0 goto label12;
+
+        $stack235 = interfaceinvoke hFwdName.<java.util.Iterator: java.lang.Object next()>();
+
+        selfDecl = (org.ooc.frontend.model.TypeDecl) $stack235;
+
+        $stack236 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getAllImports()>();
+
+        use = virtualinvoke $stack236.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label02:
+        $stack238 = interfaceinvoke use.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack238 == 0 goto label11;
+
+        $stack240 = interfaceinvoke use.<java.util.Iterator: java.lang.Object next()>();
+
+        imp = (org.ooc.frontend.model.Import) $stack240;
+
+        $stack241 = virtualinvoke selfDecl.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        if $stack241 == null goto label03;
+
+        $stack261 = virtualinvoke selfDecl.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        $stack262 = virtualinvoke $stack261.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Module getModule()>();
+
+        $stack263 = virtualinvoke imp.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        $stack264 = virtualinvoke $stack262.<java.lang.Object: boolean equals(java.lang.Object)>($stack263);
+
+        if $stack264 == 0 goto label03;
+
+        $stack267 = interfaceinvoke $u1.<java.util.List: boolean remove(java.lang.Object)>(imp);
+
+        if $stack267 == 0 goto label10;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(imp);
+
+        goto label10;
+
+     label03:
+        $stack242 = virtualinvoke imp.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        $stack243 = virtualinvoke $stack242.<org.ooc.frontend.model.Module: java.lang.String getFullName()>();
+
+        $stack244 = virtualinvoke $stack243.<java.lang.String: boolean startsWith(java.lang.String)>("lang.");
+
+        if $stack244 == 0 goto label04;
+
+        $stack259 = interfaceinvoke $u1.<java.util.List: boolean remove(java.lang.Object)>(imp);
+
+        if $stack259 == 0 goto label10;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(imp);
+
+        goto label10;
+
+     label04:
+        $stack245 = virtualinvoke selfDecl.<org.ooc.frontend.model.TypeDecl: java.lang.Iterable getVariables()>();
+
+        className = interfaceinvoke $stack245.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label05:
+        $stack247 = interfaceinvoke className.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack247 == 0 goto label10;
+
+        $stack249 = interfaceinvoke className.<java.util.Iterator: java.lang.Object next()>();
+
+        member = (org.ooc.frontend.model.VariableDecl) $stack249;
+
+        $stack250 = virtualinvoke member.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Type getType()>();
+
+        ref = virtualinvoke $stack250.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        $stack252 = ref instanceof org.ooc.frontend.model.CoverDecl;
+
+        if $stack252 != 0 goto label06;
+
+        goto label05;
+
+     label06:
+        coverDecl = (org.ooc.frontend.model.CoverDecl) ref;
+
+        $stack253 = virtualinvoke coverDecl.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type getFromType()>();
+
+        if $stack253 == null goto label07;
+
+        goto label05;
+
+     label07:
+        $stack254 = virtualinvoke coverDecl.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Module getModule()>();
+
+        $stack255 = virtualinvoke imp.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        if $stack254 == $stack255 goto label08;
+
+        goto label05;
+
+     label08:
+        $stack256 = interfaceinvoke $u1.<java.util.List: boolean remove(java.lang.Object)>(imp);
+
+        if $stack256 == 0 goto label09;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(imp);
+
+     label09:
+        goto label05;
+
+     label10:
+        goto label02;
+
+     label11:
+        goto label01;
+
+     label12:
+        $stack20 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter fw>;
+
+        cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current> = $stack20;
+
+        $stack21 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack21.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("/* ");
+
+        $stack23 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack24 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getFullName()>();
+
+        virtualinvoke $stack23.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack24);
+
+        $stack26 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack26.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" header file, generated with ooc */");
+
+        $stack28 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack29 = virtualinvoke $stack28.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        virtualinvoke $stack29.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack31 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getUnderName()>();
+
+        hFwdName#15 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack31) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("__\u0001__fwd__");
+
+        $stack33 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack33.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#ifndef ");
+
+        $stack35 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack35.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(hFwdName#15);
+
+        $stack37 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack37.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack39 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack39.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#define ");
+
+        $stack41 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack41.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(hFwdName#15);
+
+        $stack43 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack43.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack45 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack45.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack47 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getUses()>();
+
+        selfDecl#16 = virtualinvoke $stack47.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label13:
+        $stack49 = interfaceinvoke selfDecl#16.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack49 == 0 goto label16;
+
+        $stack222 = interfaceinvoke selfDecl#16.<java.util.Iterator: java.lang.Object next()>();
+
+        use#17 = (org.ooc.frontend.model.Use) $stack222;
+
+        imp#18 = virtualinvoke use#17.<org.ooc.frontend.model.Use: org.ooc.middle.UseDef getUseDef()>();
+
+        $stack224 = virtualinvoke imp#18.<org.ooc.middle.UseDef: java.util.List getIncludes()>();
+
+        className = interfaceinvoke $stack224.<java.util.List: java.util.Iterator iterator()>();
+
+     label14:
+        $stack226 = interfaceinvoke className.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack226 == 0 goto label15;
+
+        $stack228 = interfaceinvoke className.<java.util.Iterator: java.lang.Object next()>();
+
+        member#20 = (java.lang.String) $stack228;
+
+        $stack229 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack230 = virtualinvoke $stack229.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack231 = virtualinvoke $stack230.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#include <");
+
+        $stack232 = virtualinvoke $stack231.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(member#20);
+
+        virtualinvoke $stack232.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(">");
+
+        goto label14;
+
+     label15:
+        goto label13;
+
+     label16:
+        $stack50 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getIncludes()>();
+
+        selfDecl#16 = virtualinvoke $stack50.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label17:
+        $stack52 = interfaceinvoke selfDecl#16.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack52 == 0 goto label18;
+
+        $stack220 = interfaceinvoke selfDecl#16.<java.util.Iterator: java.lang.Object next()>();
+
+        use#22 = (org.ooc.frontend.model.Include) $stack220;
+
+        staticinvoke <org.ooc.backend.cdirty.IncludeWriter: void write(org.ooc.frontend.model.Include,org.ooc.backend.cdirty.CGenerator)>(use#22, cgen);
+
+        goto label17;
+
+     label18:
+        $stack53 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap getTypes()>();
+
+        $stack54 = virtualinvoke $stack53.<org.ooc.middle.structs.MultiMap: java.util.List values()>();
+
+        selfDecl#16 = interfaceinvoke $stack54.<java.util.List: java.util.Iterator iterator()>();
+
+     label19:
+        $stack56 = interfaceinvoke selfDecl#16.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack56 == 0 goto label22;
+
+        $stack213 = interfaceinvoke selfDecl#16.<java.util.Iterator: java.lang.Object next()>();
+
+        use#24 = (org.ooc.frontend.model.TypeDecl) $stack213;
+
+        $stack214 = use#24 instanceof org.ooc.frontend.model.ClassDecl;
+
+        if $stack214 == 0 goto label20;
+
+        imp#25 = (org.ooc.frontend.model.ClassDecl) use#24;
+
+        className#26 = virtualinvoke imp#25.<org.ooc.frontend.model.ClassDecl: java.lang.String getUnderName()>();
+
+        staticinvoke <org.ooc.backend.cdirty.ClassDeclWriter: void writeStructTypedef(java.lang.String,org.ooc.backend.cdirty.CGenerator)>(className#26, cgen);
+
+        $stack219 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(className#26) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001Class");
+
+        staticinvoke <org.ooc.backend.cdirty.ClassDeclWriter: void writeStructTypedef(java.lang.String,org.ooc.backend.cdirty.CGenerator)>($stack219, cgen);
+
+        goto label21;
+
+     label20:
+        $stack215 = use#24 instanceof org.ooc.frontend.model.CoverDecl;
+
+        if $stack215 == 0 goto label21;
+
+        $stack217 = (org.ooc.frontend.model.CoverDecl) use#24;
+
+        staticinvoke <org.ooc.backend.cdirty.CoverDeclWriter: void writeTypedef(org.ooc.frontend.model.CoverDecl,org.ooc.backend.cdirty.CGenerator)>($stack217, cgen);
+
+     label21:
+        goto label19;
+
+     label22:
+        $stack57 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack57.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack59 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter fw>;
+
+        cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current> = $stack59;
+
+        selfDecl#16 = interfaceinvoke $u1.<java.util.List: java.util.Iterator iterator()>();
+
+     label23:
+        $stack61 = interfaceinvoke selfDecl#16.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack61 == 0 goto label24;
+
+        $stack204 = interfaceinvoke selfDecl#16.<java.util.Iterator: java.lang.Object next()>();
+
+        use#28 = (org.ooc.frontend.model.Import) $stack204;
+
+        $stack205 = virtualinvoke use#28.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        imp#29 = virtualinvoke $stack205.<org.ooc.frontend.model.Module: java.lang.String getOutPath(char)>(47);
+
+        $stack207 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack208 = virtualinvoke $stack207.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack209 = virtualinvoke $stack208.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#include <");
+
+        $stack210 = virtualinvoke $stack209.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(imp#29);
+
+        virtualinvoke $stack210.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("-fwd.h>");
+
+        goto label23;
+
+     label24:
+        selfDecl#16 = interfaceinvoke $u0.<java.util.List: java.util.Iterator iterator()>();
+
+     label25:
+        $stack63 = interfaceinvoke selfDecl#16.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack63 == 0 goto label26;
+
+        $stack195 = interfaceinvoke selfDecl#16.<java.util.Iterator: java.lang.Object next()>();
+
+        use#28 = (org.ooc.frontend.model.Import) $stack195;
+
+        $stack196 = virtualinvoke use#28.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        imp#29 = virtualinvoke $stack196.<org.ooc.frontend.model.Module: java.lang.String getOutPath(char)>(47);
+
+        $stack198 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack199 = virtualinvoke $stack198.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack200 = virtualinvoke $stack199.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#include <");
+
+        $stack201 = virtualinvoke $stack200.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(imp#29);
+
+        virtualinvoke $stack201.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("-fwd.h>");
+
+        goto label25;
+
+     label26:
+        $stack64 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter hw>;
+
+        cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current> = $stack64;
+
+        $stack65 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack65.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("/* ");
+
+        $stack67 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack68 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getFullName()>();
+
+        virtualinvoke $stack67.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack68);
+
+        $stack70 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack70.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" header file, generated with ooc */");
+
+        $stack72 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack73 = virtualinvoke $stack72.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        virtualinvoke $stack73.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack75 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getUnderName()>();
+
+        selfDecl#33 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack75) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("__\u0001__");
+
+        $stack77 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack77.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#ifndef ");
+
+        $stack79 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack79.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(selfDecl#33);
+
+        $stack81 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack81.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack83 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack83.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#define ");
+
+        $stack85 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack85.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(selfDecl#33);
+
+        $stack87 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack87.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack89 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack89.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack91 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack91.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack93 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack93.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#include \"");
+
+        $stack95 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack96 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getSimpleName()>();
+
+        virtualinvoke $stack95.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack96);
+
+        $stack98 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack98.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("-fwd.h\"");
+
+        $stack100 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack100.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        use = interfaceinvoke $u0.<java.util.List: java.util.Iterator iterator()>();
+
+     label27:
+        $stack103 = interfaceinvoke use.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack103 == 0 goto label28;
+
+        $stack186 = interfaceinvoke use.<java.util.Iterator: java.lang.Object next()>();
+
+        imp = (org.ooc.frontend.model.Import) $stack186;
+
+        $stack187 = virtualinvoke imp.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        className#26 = virtualinvoke $stack187.<org.ooc.frontend.model.Module: java.lang.String getOutPath(char)>(47);
+
+        $stack189 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack190 = virtualinvoke $stack189.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack191 = virtualinvoke $stack190.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#include <");
+
+        $stack192 = virtualinvoke $stack191.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(className#26);
+
+        virtualinvoke $stack192.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(".h>");
+
+        goto label27;
+
+     label28:
+        $stack104 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack104.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack106 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter cw>;
+
+        cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current> = $stack106;
+
+        $stack107 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack107.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("/* ");
+
+        $stack109 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack110 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getFullName()>();
+
+        virtualinvoke $stack109.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack110);
+
+        $stack112 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack112.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" source file, generated with ooc */");
+
+        $stack114 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack115 = virtualinvoke $stack114.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        virtualinvoke $stack115.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack117 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack117.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#include \"");
+
+        $stack119 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack120 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getSimpleName()>();
+
+        virtualinvoke $stack119.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack120);
+
+        $stack122 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack122.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(".h\"");
+
+        $stack124 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack124.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        use = interfaceinvoke $u1.<java.util.List: java.util.Iterator iterator()>();
+
+     label29:
+        $stack127 = interfaceinvoke use.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack127 == 0 goto label30;
+
+        $stack177 = interfaceinvoke use.<java.util.Iterator: java.lang.Object next()>();
+
+        imp = (org.ooc.frontend.model.Import) $stack177;
+
+        $stack178 = virtualinvoke imp.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        className#26 = virtualinvoke $stack178.<org.ooc.frontend.model.Module: java.lang.String getOutPath(char)>(47);
+
+        $stack180 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack181 = virtualinvoke $stack180.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#include <");
+
+        $stack182 = virtualinvoke $stack181.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(className#26);
+
+        $stack183 = virtualinvoke $stack182.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(".h>");
+
+        virtualinvoke $stack183.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        goto label29;
+
+     label30:
+        $stack128 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap getTypes()>();
+
+        $stack129 = virtualinvoke $stack128.<org.ooc.middle.structs.MultiMap: java.util.List values()>();
+
+        use = interfaceinvoke $stack129.<java.util.List: java.util.Iterator iterator()>();
+
+     label31:
+        $stack131 = interfaceinvoke use.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack131 == 0 goto label32;
+
+        $stack175 = interfaceinvoke use.<java.util.Iterator: java.lang.Object next()>();
+
+        imp#41 = (org.ooc.frontend.model.TypeDecl) $stack175;
+
+        $r1 = (org.ooc.frontend.Visitor) cgen;
+
+        virtualinvoke imp#41.<org.ooc.frontend.model.TypeDecl: void accept(org.ooc.frontend.Visitor)>($r1);
+
+        goto label31;
+
+     label32:
+        $stack132 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getBody()>();
+
+        use = virtualinvoke $stack132.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label33:
+        $stack134 = interfaceinvoke use.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack134 == 0 goto label37;
+
+        $stack170 = interfaceinvoke use.<java.util.Iterator: java.lang.Object next()>();
+
+        imp#43 = (org.ooc.frontend.model.Node) $stack170;
+
+        $stack171 = imp#43 instanceof org.ooc.frontend.model.Line;
+
+        if $stack171 == 0 goto label35;
+
+        className#44 = (org.ooc.frontend.model.Line) imp#43;
+
+        member#45 = virtualinvoke className#44.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack174 = member#45 instanceof org.ooc.frontend.model.VariableDecl;
+
+        if $stack174 != 0 goto label34;
+
+        $r2 = (org.ooc.frontend.Visitor) cgen;
+
+        virtualinvoke imp#43.<org.ooc.frontend.model.Node: void accept(org.ooc.frontend.Visitor)>($r2);
+
+     label34:
+        goto label36;
+
+     label35:
+        $r3 = (org.ooc.frontend.Visitor) cgen;
+
+        virtualinvoke imp#43.<org.ooc.frontend.model.Node: void accept(org.ooc.frontend.Visitor)>($r3);
+
+     label36:
+        goto label33;
+
+     label37:
+        $stack135 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getOps()>();
+
+        $r4 = (org.ooc.frontend.Visitor) cgen;
+
+        virtualinvoke $stack135.<org.ooc.frontend.model.NodeList: void accept(org.ooc.frontend.Visitor)>($r4);
+
+        $stack136 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.FunctionDecl getLoadFunc()>();
+
+        $r5 = (org.ooc.frontend.Visitor) cgen;
+
+        virtualinvoke $stack136.<org.ooc.frontend.model.FunctionDecl: void accept(org.ooc.frontend.Visitor)>($r5);
+
+        staticinvoke <org.ooc.backend.cdirty.ModuleWriter: void writeLoadFunc(org.ooc.backend.cdirty.CGenerator)>(cgen);
+
+        $stack137 = virtualinvoke module.<org.ooc.frontend.model.Module: boolean isMain()>();
+
+        if $stack137 == 0 goto label38;
+
+        $stack164 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.BuildParams params>;
+
+        $stack165 = $stack164.<org.ooc.frontend.BuildParams: boolean defaultMain>;
+
+        if $stack165 == 0 goto label38;
+
+        staticinvoke <org.ooc.backend.cdirty.ModuleWriter: void writeDefaultMain(org.ooc.backend.cdirty.CGenerator)>(cgen);
+
+     label38:
+        $stack138 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter hw>;
+
+        cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current> = $stack138;
+
+        $stack139 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack139.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack141 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getBody()>();
+
+        use = virtualinvoke $stack141.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label39:
+        $stack143 = interfaceinvoke use.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack143 == 0 goto label41;
+
+        $stack159 = interfaceinvoke use.<java.util.Iterator: java.lang.Object next()>();
+
+        imp#43 = (org.ooc.frontend.model.Node) $stack159;
+
+        $stack160 = imp#43 instanceof org.ooc.frontend.model.Line;
+
+        if $stack160 == 0 goto label40;
+
+        className#44 = (org.ooc.frontend.model.Line) imp#43;
+
+        member#45 = virtualinvoke className#44.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack163 = member#45 instanceof org.ooc.frontend.model.VariableDecl;
+
+        if $stack163 == 0 goto label40;
+
+        $r6 = (org.ooc.frontend.Visitor) cgen;
+
+        virtualinvoke imp#43.<org.ooc.frontend.model.Node: void accept(org.ooc.frontend.Visitor)>($r6);
+
+     label40:
+        goto label39;
+
+     label41:
+        $stack144 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack145 = virtualinvoke $stack144.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack146 = virtualinvoke $stack145.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack147 = virtualinvoke $stack146.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#endif // ");
+
+        $stack148 = virtualinvoke $stack147.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(selfDecl#33);
+
+        $stack149 = virtualinvoke $stack148.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        virtualinvoke $stack149.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack151 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter fw>;
+
+        cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current> = $stack151;
+
+        $stack152 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack153 = virtualinvoke $stack152.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack154 = virtualinvoke $stack153.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack155 = virtualinvoke $stack154.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#endif // ");
+
+        $stack156 = virtualinvoke $stack155.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(hFwdName#15);
+
+        $stack157 = virtualinvoke $stack156.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        virtualinvoke $stack157.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        return;
+    }
+
+    private static void writeDefaultMain(org.ooc.backend.cdirty.CGenerator) throws java.io.IOException
+    {
+        org.ooc.backend.cdirty.CGenerator cgen;
+        org.ooc.frontend.BuildParams $stack5, $stack14, $stack19, $stack41;
+        boolean $stack6, $stack20, $stack40, $stack42, got, $stack10;
+        org.ooc.frontend.model.Module $stack7, $stack23;
+        org.ooc.frontend.model.NodeList $stack8;
+        java.util.Iterator l2;
+        org.ooc.backend.cdirty.AwesomeWriter $stack11, $stack12, $stack13, $stack16, $stack17, $stack21, $stack22, $stack26, $stack28, $stack29, $stack30, $stack32, $stack33;
+        java.lang.String $stack15, $stack25;
+        org.ooc.frontend.model.FunctionDecl $stack24, decl;
+        java.lang.Object $stack39;
+        org.ooc.frontend.model.Node node;
+
+        cgen := @parameter0: org.ooc.backend.cdirty.CGenerator;
+
+        $stack5 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.BuildParams params>;
+
+        $stack6 = $stack5.<org.ooc.frontend.BuildParams: boolean link>;
+
+        if $stack6 != 0 goto label1;
+
+        return;
+
+     label1:
+        got = 0;
+
+        $stack7 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.model.Module module>;
+
+        $stack8 = virtualinvoke $stack7.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getBody()>();
+
+        l2 = virtualinvoke $stack8.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label2:
+        $stack10 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label5;
+
+        $stack39 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        node = (org.ooc.frontend.model.Node) $stack39;
+
+        $stack40 = node instanceof org.ooc.frontend.model.FunctionDecl;
+
+        if $stack40 != 0 goto label3;
+
+        goto label2;
+
+     label3:
+        decl = (org.ooc.frontend.model.FunctionDecl) node;
+
+        $stack41 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.BuildParams params>;
+
+        $stack42 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: boolean isEntryPoint(org.ooc.frontend.BuildParams)>($stack41);
+
+        if $stack42 == 0 goto label4;
+
+        got = 1;
+
+     label4:
+        goto label2;
+
+     label5:
+        if got != 0 goto label7;
+
+        $stack11 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack12 = virtualinvoke $stack11.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack13 = virtualinvoke $stack12.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("int ");
+
+        $stack14 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.BuildParams params>;
+
+        $stack15 = $stack14.<org.ooc.frontend.BuildParams: java.lang.String entryPoint>;
+
+        $stack16 = virtualinvoke $stack13.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack15);
+
+        $stack17 = virtualinvoke $stack16.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("()");
+
+        virtualinvoke $stack17.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter openBlock()>();
+
+        $stack19 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.BuildParams params>;
+
+        $stack20 = $stack19.<org.ooc.frontend.BuildParams: boolean enableGC>;
+
+        if $stack20 == 0 goto label6;
+
+        $stack32 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack33 = virtualinvoke $stack32.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        virtualinvoke $stack33.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("GC_INIT();");
+
+     label6:
+        $stack21 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack22 = virtualinvoke $stack21.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack23 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.model.Module module>;
+
+        $stack24 = virtualinvoke $stack23.<org.ooc.frontend.model.Module: org.ooc.frontend.model.FunctionDecl getLoadFunc()>();
+
+        $stack25 = virtualinvoke $stack24.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack26 = virtualinvoke $stack22.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack25);
+
+        virtualinvoke $stack26.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("();");
+
+        $stack28 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack29 = virtualinvoke $stack28.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter closeBlock()>();
+
+        $stack30 = virtualinvoke $stack29.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        virtualinvoke $stack30.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+     label7:
+        return;
+    }
+
+    public static void writeLoadFunc(org.ooc.backend.cdirty.CGenerator) throws java.io.IOException
+    {
+        org.ooc.backend.cdirty.CGenerator cgen;
+        org.ooc.backend.cdirty.AwesomeWriter $stack4, $stack5, $stack8, $stack9, $stack13, $stack15, $stack16, $stack19, $stack20, $stack24, $stack25, $stack27, $stack28, $stack29, $stack30, $stack31, $stack32, $stack34, $stack35, $stack51, $stack52, $stack57, $stack58, $stack62, $stack69, $stack70, $stack73;
+        org.ooc.frontend.model.Type $stack7, $stack18;
+        org.ooc.frontend.model.Module $stack10, $stack21, $stack37, $stack42, $stack46, $stack59;
+        org.ooc.frontend.model.FunctionDecl $stack11, $stack22, $stack47, $stack60, $stack71;
+        java.lang.String $stack12, $stack23, $stack61, $stack72;
+        org.ooc.middle.structs.MultiMap $stack38;
+        java.util.List $stack39;
+        boolean $stack41, $stack45, $stack50, $stack66;
+        org.ooc.frontend.model.NodeList $stack43, $stack48;
+        java.lang.Object $stack54, $stack56, $stack65;
+        org.ooc.frontend.model.ClassDecl classDecl;
+        org.ooc.frontend.model.VersionBlock $stack68, $stack75, $stack76;
+        java.util.Iterator l1;
+        org.ooc.frontend.model.TypeDecl typeDecl;
+        org.ooc.frontend.model.Import typeDecl#4;
+        org.ooc.frontend.model.Node typeDecl#6;
+        org.ooc.frontend.Visitor $r0, $r1, $r2;
+
+        cgen := @parameter0: org.ooc.backend.cdirty.CGenerator;
+
+        $stack4 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter hw>;
+
+        cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current> = $stack4;
+
+        $stack5 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack5.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack7 = staticinvoke <org.ooc.frontend.model.Type: org.ooc.frontend.model.Type getVoid()>();
+
+        $r0 = (org.ooc.frontend.Visitor) cgen;
+
+        virtualinvoke $stack7.<org.ooc.frontend.model.Type: void accept(org.ooc.frontend.Visitor)>($r0);
+
+        $stack8 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack9 = virtualinvoke $stack8.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(32);
+
+        $stack10 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.model.Module module>;
+
+        $stack11 = virtualinvoke $stack10.<org.ooc.frontend.model.Module: org.ooc.frontend.model.FunctionDecl getLoadFunc()>();
+
+        $stack12 = virtualinvoke $stack11.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack13 = virtualinvoke $stack9.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack12);
+
+        virtualinvoke $stack13.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("();");
+
+        $stack15 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter cw>;
+
+        cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current> = $stack15;
+
+        $stack16 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack16.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack18 = staticinvoke <org.ooc.frontend.model.Type: org.ooc.frontend.model.Type getVoid()>();
+
+        $r1 = (org.ooc.frontend.Visitor) cgen;
+
+        virtualinvoke $stack18.<org.ooc.frontend.model.Type: void accept(org.ooc.frontend.Visitor)>($r1);
+
+        $stack19 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack20 = virtualinvoke $stack19.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(32);
+
+        $stack21 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.model.Module module>;
+
+        $stack22 = virtualinvoke $stack21.<org.ooc.frontend.model.Module: org.ooc.frontend.model.FunctionDecl getLoadFunc()>();
+
+        $stack23 = virtualinvoke $stack22.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack24 = virtualinvoke $stack20.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack23);
+
+        $stack25 = virtualinvoke $stack24.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("()");
+
+        virtualinvoke $stack25.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter openBlock()>();
+
+        $stack27 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack28 = virtualinvoke $stack27.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack29 = virtualinvoke $stack28.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("static ");
+
+        $stack30 = virtualinvoke $stack29.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("bool __done__ = false;");
+
+        $stack31 = virtualinvoke $stack30.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack32 = virtualinvoke $stack31.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("if (!__done__)");
+
+        virtualinvoke $stack32.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter openBlock()>();
+
+        $stack34 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack35 = virtualinvoke $stack34.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        virtualinvoke $stack35.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("__done__ = true;");
+
+        $stack37 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.model.Module module>;
+
+        $stack38 = virtualinvoke $stack37.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap getTypes()>();
+
+        $stack39 = virtualinvoke $stack38.<org.ooc.middle.structs.MultiMap: java.util.List values()>();
+
+        l1 = interfaceinvoke $stack39.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack41 = interfaceinvoke l1.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack41 == 0 goto label4;
+
+        $stack65 = interfaceinvoke l1.<java.util.Iterator: java.lang.Object next()>();
+
+        typeDecl = (org.ooc.frontend.model.TypeDecl) $stack65;
+
+        $stack66 = typeDecl instanceof org.ooc.frontend.model.ClassDecl;
+
+        if $stack66 == 0 goto label3;
+
+        classDecl = (org.ooc.frontend.model.ClassDecl) typeDecl;
+
+        $stack68 = virtualinvoke classDecl.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.VersionBlock getVersion()>();
+
+        if $stack68 == null goto label2;
+
+        $stack76 = virtualinvoke classDecl.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.VersionBlock getVersion()>();
+
+        staticinvoke <org.ooc.backend.cdirty.VersionBlockWriter: void writeVersionBlockStart(org.ooc.frontend.model.VersionBlock,org.ooc.backend.cdirty.CGenerator)>($stack76, cgen);
+
+     label2:
+        $stack69 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack70 = virtualinvoke $stack69.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack71 = virtualinvoke classDecl.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall)>("__load__", "", null);
+
+        $stack72 = virtualinvoke $stack71.<org.ooc.frontend.model.FunctionDecl: java.lang.String getFullName()>();
+
+        $stack73 = virtualinvoke $stack70.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack72);
+
+        virtualinvoke $stack73.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("();");
+
+        $stack75 = virtualinvoke classDecl.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.VersionBlock getVersion()>();
+
+        if $stack75 == null goto label3;
+
+        staticinvoke <org.ooc.backend.cdirty.VersionBlockWriter: void writeVersionBlockEnd(org.ooc.backend.cdirty.CGenerator)>(cgen);
+
+     label3:
+        goto label1;
+
+     label4:
+        $stack42 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.model.Module module>;
+
+        $stack43 = virtualinvoke $stack42.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getAllImports()>();
+
+        l1 = virtualinvoke $stack43.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label5:
+        $stack45 = interfaceinvoke l1.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack45 == 0 goto label6;
+
+        $stack56 = interfaceinvoke l1.<java.util.Iterator: java.lang.Object next()>();
+
+        typeDecl#4 = (org.ooc.frontend.model.Import) $stack56;
+
+        $stack57 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack58 = virtualinvoke $stack57.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $stack59 = virtualinvoke typeDecl#4.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        $stack60 = virtualinvoke $stack59.<org.ooc.frontend.model.Module: org.ooc.frontend.model.FunctionDecl getLoadFunc()>();
+
+        $stack61 = virtualinvoke $stack60.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack62 = virtualinvoke $stack58.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack61);
+
+        virtualinvoke $stack62.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("();");
+
+        goto label5;
+
+     label6:
+        $stack46 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.model.Module module>;
+
+        $stack47 = virtualinvoke $stack46.<org.ooc.frontend.model.Module: org.ooc.frontend.model.FunctionDecl getLoadFunc()>();
+
+        $stack48 = virtualinvoke $stack47.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getBody()>();
+
+        l1 = virtualinvoke $stack48.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label7:
+        $stack50 = interfaceinvoke l1.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack50 == 0 goto label8;
+
+        $stack54 = interfaceinvoke l1.<java.util.Iterator: java.lang.Object next()>();
+
+        typeDecl#6 = (org.ooc.frontend.model.Node) $stack54;
+
+        $r2 = (org.ooc.frontend.Visitor) cgen;
+
+        virtualinvoke typeDecl#6.<org.ooc.frontend.model.Node: void accept(org.ooc.frontend.Visitor)>($r2);
+
+        goto label7;
+
+     label8:
+        $stack51 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack52 = virtualinvoke $stack51.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter closeBlock()>();
+
+        virtualinvoke $stack52.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter closeSpacedBlock()>();
+
+        return;
+    }
+}

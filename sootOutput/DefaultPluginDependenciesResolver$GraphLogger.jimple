@@ -1,0 +1,236 @@
+class DefaultPluginDependenciesResolver$GraphLogger extends java.lang.Object implements org.eclipse.aether.graph.DependencyVisitor
+{
+    private java.lang.String indent;
+    final org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver this$0;
+
+    void <init>(org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver)
+    {
+        DefaultPluginDependenciesResolver$GraphLogger this;
+        org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver this$0;
+        org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger $r0, $r1;
+
+        this := @this: DefaultPluginDependenciesResolver$GraphLogger;
+
+        this$0 := @parameter0: org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver;
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger) this;
+
+        $r0.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger: org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver this$0> = this$0;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r1 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger) this;
+
+        $r1.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger: java.lang.String indent> = "";
+
+        return;
+    }
+
+    public boolean visitEnter(org.eclipse.aether.graph.DependencyNode)
+    {
+        DefaultPluginDependenciesResolver$GraphLogger this;
+        java.lang.String $stack7, $stack20, $stack40, $stack45, $stack53, $stack61, $stack69, $stack80, premanagedScope, $stack12, $stack14, $stack17;
+        org.eclipse.aether.graph.DependencyNode node;
+        org.eclipse.aether.graph.Dependency dep;
+        org.eclipse.aether.artifact.Artifact art;
+        boolean $stack21, $stack22;
+        int $stack23, $stack24, $stack25, $stack26, $stack27, $stack28, $stack29, $stack30, $stack31, $stack32;
+        java.lang.StringBuilder $stack79, $stack15, $stack16, $u0, $u1;
+        java.lang.Boolean premanagedScope#3;
+        java.util.Collection premanagedScope#4;
+        java.util.Map premanagedScope#5;
+        org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver $stack10;
+        org.codehaus.plexus.logging.Logger $stack11;
+        org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultPluginDependenciesResolver$GraphLogger;
+
+        node := @parameter0: org.eclipse.aether.graph.DependencyNode;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(int)>(128);
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger) this;
+
+        $stack7 = $r0.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger: java.lang.String indent>;
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack7);
+
+        dep = interfaceinvoke node.<org.eclipse.aether.graph.DependencyNode: org.eclipse.aether.graph.Dependency getDependency()>();
+
+        if dep == null goto label7;
+
+        art = virtualinvoke dep.<org.eclipse.aether.graph.Dependency: org.eclipse.aether.artifact.Artifact getArtifact()>();
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(art);
+
+        $stack20 = virtualinvoke dep.<org.eclipse.aether.graph.Dependency: java.lang.String getScope()>();
+
+        $stack21 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack20);
+
+        if $stack21 == 0 goto label1;
+
+        $stack79 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack80 = virtualinvoke dep.<org.eclipse.aether.graph.Dependency: java.lang.String getScope()>();
+
+        virtualinvoke $stack79.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack80);
+
+     label1:
+        $stack22 = virtualinvoke dep.<org.eclipse.aether.graph.Dependency: boolean isOptional()>();
+
+        if $stack22 == 0 goto label2;
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (optional)");
+
+     label2:
+        $stack23 = interfaceinvoke node.<org.eclipse.aether.graph.DependencyNode: int getManagedBits()>();
+
+        $stack24 = $stack23 & 2;
+
+        if $stack24 != 2 goto label3;
+
+        premanagedScope = staticinvoke <org.eclipse.aether.util.graph.manager.DependencyManagerUtils: java.lang.String getPremanagedScope(org.eclipse.aether.graph.DependencyNode)>(node);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (scope managed from ");
+
+        $stack69 = staticinvoke <java.util.Objects: java.lang.String toString(java.lang.Object,java.lang.String)>(premanagedScope, "default");
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack69);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+     label3:
+        $stack25 = interfaceinvoke node.<org.eclipse.aether.graph.DependencyNode: int getManagedBits()>();
+
+        $stack26 = $stack25 & 1;
+
+        if $stack26 != 1 goto label4;
+
+        premanagedScope = staticinvoke <org.eclipse.aether.util.graph.manager.DependencyManagerUtils: java.lang.String getPremanagedVersion(org.eclipse.aether.graph.DependencyNode)>(node);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (version managed from ");
+
+        $stack61 = staticinvoke <java.util.Objects: java.lang.String toString(java.lang.Object,java.lang.String)>(premanagedScope, "default");
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack61);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+     label4:
+        $stack27 = interfaceinvoke node.<org.eclipse.aether.graph.DependencyNode: int getManagedBits()>();
+
+        $stack28 = $stack27 & 4;
+
+        if $stack28 != 4 goto label5;
+
+        premanagedScope#3 = staticinvoke <org.eclipse.aether.util.graph.manager.DependencyManagerUtils: java.lang.Boolean getPremanagedOptional(org.eclipse.aether.graph.DependencyNode)>(node);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (optionality managed from ");
+
+        $stack53 = staticinvoke <java.util.Objects: java.lang.String toString(java.lang.Object,java.lang.String)>(premanagedScope#3, "default");
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack53);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+     label5:
+        $stack29 = interfaceinvoke node.<org.eclipse.aether.graph.DependencyNode: int getManagedBits()>();
+
+        $stack30 = $stack29 & 16;
+
+        if $stack30 != 16 goto label6;
+
+        premanagedScope#4 = staticinvoke <org.eclipse.aether.util.graph.manager.DependencyManagerUtils: java.util.Collection getPremanagedExclusions(org.eclipse.aether.graph.DependencyNode)>(node);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (exclusions managed from ");
+
+        $stack45 = staticinvoke <java.util.Objects: java.lang.String toString(java.lang.Object,java.lang.String)>(premanagedScope#4, "default");
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack45);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+     label6:
+        $stack31 = interfaceinvoke node.<org.eclipse.aether.graph.DependencyNode: int getManagedBits()>();
+
+        $stack32 = $stack31 & 8;
+
+        if $stack32 != 8 goto label7;
+
+        premanagedScope#5 = staticinvoke <org.eclipse.aether.util.graph.manager.DependencyManagerUtils: java.util.Map getPremanagedProperties(org.eclipse.aether.graph.DependencyNode)>(node);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (properties managed from ");
+
+        $stack40 = staticinvoke <java.util.Objects: java.lang.String toString(java.lang.Object,java.lang.String)>(premanagedScope#5, "default");
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack40);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+     label7:
+        $r1 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger) this;
+
+        $stack10 = $r1.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger: org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver this$0>;
+
+        $stack11 = staticinvoke <org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver: org.codehaus.plexus.logging.Logger access$000(org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver)>($stack10);
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack11.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack12);
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger) this;
+
+        $stack14 = $r2.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger: java.lang.String indent>;
+
+        $stack15 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   ");
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger) this;
+
+        $r3.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger: java.lang.String indent> = $stack17;
+
+        return 1;
+    }
+
+    public boolean visitLeave(org.eclipse.aether.graph.DependencyNode)
+    {
+        DefaultPluginDependenciesResolver$GraphLogger this;
+        java.lang.String $stack2, $stack3, $stack7;
+        int $stack5, $stack6;
+        org.eclipse.aether.graph.DependencyNode node;
+        org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger $r0, $r1, $r2;
+
+        this := @this: DefaultPluginDependenciesResolver$GraphLogger;
+
+        node := @parameter0: org.eclipse.aether.graph.DependencyNode;
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger) this;
+
+        $stack3 = $r0.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger: java.lang.String indent>;
+
+        $r1 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger) this;
+
+        $stack2 = $r1.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger: java.lang.String indent>;
+
+        $stack5 = virtualinvoke $stack2.<java.lang.String: int length()>();
+
+        $stack6 = $stack5 - 3;
+
+        $stack7 = virtualinvoke $stack3.<java.lang.String: java.lang.String substring(int,int)>(0, $stack6);
+
+        $r2 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger) this;
+
+        $r2.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger: java.lang.String indent> = $stack7;
+
+        return 1;
+    }
+}

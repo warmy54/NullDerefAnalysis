@@ -1,0 +1,296 @@
+public class DefaultModelBuilderFactoryTest extends java.lang.Object
+{
+    private static final java.lang.String BASE_DIR;
+
+    public void <init>()
+    {
+        DefaultModelBuilderFactoryTest this;
+
+        this := @this: DefaultModelBuilderFactoryTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    private java.io.File getPom(java.lang.String)
+    {
+        java.io.File $stack2, $stack12;
+        java.lang.String[] $stack3;
+        java.lang.StringBuilder $stack4, $stack7, $stack8;
+        java.lang.String $stack5, name, $stack9, $stack11;
+        java.nio.file.Path $stack10;
+        DefaultModelBuilderFactoryTest this;
+
+        this := @this: DefaultModelBuilderFactoryTest;
+
+        name := @parameter0: java.lang.String;
+
+        $stack2 = new java.io.File;
+
+        $stack5 = <org.apache.maven.model.building.DefaultModelBuilderFactoryTest: java.lang.String BASE_DIR>;
+
+        $stack3 = newarray (java.lang.String)[1];
+
+        $stack4 = new java.lang.StringBuilder;
+
+        specialinvoke $stack4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".xml");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack3[0] = $stack9;
+
+        $stack10 = staticinvoke <java.nio.file.Paths: java.nio.file.Path get(java.lang.String,java.lang.String[])>($stack5, $stack3);
+
+        $stack11 = interfaceinvoke $stack10.<java.nio.file.Path: java.lang.String toString()>();
+
+        specialinvoke $stack2.<java.io.File: void <init>(java.lang.String)>($stack11);
+
+        $stack12 = virtualinvoke $stack2.<java.io.File: java.io.File getAbsoluteFile()>();
+
+        return $stack12;
+    }
+
+    public void testCompleteWiring() throws java.lang.Exception
+    {
+        org.apache.maven.model.building.DefaultModelBuilder builder;
+        DefaultModelBuilderFactoryTest this;
+        java.io.File $stack9;
+        org.apache.maven.model.building.ModelBuildingResult result;
+        org.apache.maven.model.Model $stack12, $stack14, $stack17;
+        java.util.Properties $stack15;
+        java.lang.Object $stack16, $stack20, $stack22;
+        org.apache.maven.model.Build $stack18;
+        java.util.List $stack19;
+        org.apache.maven.model.Plugin $stack21;
+        org.codehaus.plexus.util.xml.Xpp3Dom conf, $stack24, $stack27;
+        java.lang.String $stack25, $stack28;
+        org.apache.maven.model.building.DefaultModelBuilderFactory $u0;
+        org.apache.maven.model.building.DefaultModelBuildingRequest $u1;
+        org.apache.maven.model.building.DefaultModelBuilderFactoryTest $r0;
+        org.apache.maven.model.building.ModelBuilder $r1;
+        org.apache.maven.model.building.ModelBuildingRequest $r2;
+
+        this := @this: DefaultModelBuilderFactoryTest;
+
+        $u0 = new org.apache.maven.model.building.DefaultModelBuilderFactory;
+
+        specialinvoke $u0.<org.apache.maven.model.building.DefaultModelBuilderFactory: void <init>()>();
+
+        builder = virtualinvoke $u0.<org.apache.maven.model.building.DefaultModelBuilderFactory: org.apache.maven.model.building.DefaultModelBuilder newInstance()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(builder);
+
+        $u1 = new org.apache.maven.model.building.DefaultModelBuildingRequest;
+
+        specialinvoke $u1.<org.apache.maven.model.building.DefaultModelBuildingRequest: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.building.DefaultModelBuildingRequest: org.apache.maven.model.building.DefaultModelBuildingRequest setProcessPlugins(boolean)>(1);
+
+        $r0 = (org.apache.maven.model.building.DefaultModelBuilderFactoryTest) this;
+
+        $stack9 = specialinvoke $r0.<org.apache.maven.model.building.DefaultModelBuilderFactoryTest: java.io.File getPom(java.lang.String)>("simple");
+
+        virtualinvoke $u1.<org.apache.maven.model.building.DefaultModelBuildingRequest: org.apache.maven.model.building.DefaultModelBuildingRequest setPomFile(java.io.File)>($stack9);
+
+        $r1 = (org.apache.maven.model.building.ModelBuilder) builder;
+
+        $r2 = (org.apache.maven.model.building.ModelBuildingRequest) $u1;
+
+        result = interfaceinvoke $r1.<org.apache.maven.model.building.ModelBuilder: org.apache.maven.model.building.ModelBuildingResult build(org.apache.maven.model.building.ModelBuildingRequest)>($r2);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(result);
+
+        $stack12 = interfaceinvoke result.<org.apache.maven.model.building.ModelBuildingResult: org.apache.maven.model.Model getEffectiveModel()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack12);
+
+        $stack14 = interfaceinvoke result.<org.apache.maven.model.building.ModelBuildingResult: org.apache.maven.model.Model getEffectiveModel()>();
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.model.Model: java.util.Properties getProperties()>();
+
+        $stack16 = virtualinvoke $stack15.<java.util.Properties: java.lang.Object get(java.lang.Object)>("profile.file");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("activated", $stack16);
+
+        $stack17 = interfaceinvoke result.<org.apache.maven.model.building.ModelBuildingResult: org.apache.maven.model.Model getEffectiveModel()>();
+
+        $stack18 = virtualinvoke $stack17.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        $stack19 = virtualinvoke $stack18.<org.apache.maven.model.Build: java.util.List getPlugins()>();
+
+        $stack20 = interfaceinvoke $stack19.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack21 = (org.apache.maven.model.Plugin) $stack20;
+
+        $stack22 = virtualinvoke $stack21.<org.apache.maven.model.Plugin: java.lang.Object getConfiguration()>();
+
+        conf = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack22;
+
+        $stack24 = virtualinvoke conf.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom getChild(java.lang.String)>("source");
+
+        $stack25 = virtualinvoke $stack24.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getValue()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("1.5", $stack25);
+
+        $stack27 = virtualinvoke conf.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom getChild(java.lang.String)>("target");
+
+        $stack28 = virtualinvoke $stack27.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getValue()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("  1.5  ", $stack28);
+
+        return;
+    }
+
+    public void testPomChanges() throws java.lang.Exception
+    {
+        org.apache.maven.model.building.DefaultModelBuilder builder;
+        DefaultModelBuilderFactoryTest this;
+        java.io.File pom;
+        org.apache.maven.model.Model $stack10, $stack21, $stack28;
+        java.util.List $stack11, $stack22, $stack29;
+        java.lang.Object $stack12, $stack23, $stack30;
+        org.apache.maven.model.Profile $stack13, $stack24, $stack31;
+        org.apache.maven.model.Activation $stack14, $stack25, $stack32;
+        org.apache.maven.model.ActivationFile $stack15, $stack26, $stack33;
+        java.lang.String originalExists, resultExists, $stack34, $stack35;
+        org.apache.maven.model.building.ModelBuildingResult result;
+        boolean $stack36;
+        org.apache.maven.model.building.DefaultModelBuilderFactory $u0;
+        org.apache.maven.model.building.DefaultModelBuildingRequest $u1;
+        org.apache.maven.model.building.DefaultModelBuilderFactoryTest $r0;
+        org.apache.maven.model.building.ModelBuilder $r1;
+        org.apache.maven.model.building.ModelBuildingRequest $r2;
+
+        this := @this: DefaultModelBuilderFactoryTest;
+
+        $u0 = new org.apache.maven.model.building.DefaultModelBuilderFactory;
+
+        specialinvoke $u0.<org.apache.maven.model.building.DefaultModelBuilderFactory: void <init>()>();
+
+        builder = virtualinvoke $u0.<org.apache.maven.model.building.DefaultModelBuilderFactory: org.apache.maven.model.building.DefaultModelBuilder newInstance()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(builder);
+
+        $r0 = (org.apache.maven.model.building.DefaultModelBuilderFactoryTest) this;
+
+        pom = specialinvoke $r0.<org.apache.maven.model.building.DefaultModelBuilderFactoryTest: java.io.File getPom(java.lang.String)>("simple");
+
+        $stack10 = staticinvoke <org.apache.maven.model.building.DefaultModelBuilderFactoryTest: org.apache.maven.model.Model readPom(java.io.File)>(pom);
+
+        $stack11 = virtualinvoke $stack10.<org.apache.maven.model.Model: java.util.List getProfiles()>();
+
+        $stack12 = interfaceinvoke $stack11.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack13 = (org.apache.maven.model.Profile) $stack12;
+
+        $stack14 = virtualinvoke $stack13.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationFile getFile()>();
+
+        originalExists = virtualinvoke $stack15.<org.apache.maven.model.ActivationFile: java.lang.String getExists()>();
+
+        $u1 = new org.apache.maven.model.building.DefaultModelBuildingRequest;
+
+        specialinvoke $u1.<org.apache.maven.model.building.DefaultModelBuildingRequest: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.building.DefaultModelBuildingRequest: org.apache.maven.model.building.DefaultModelBuildingRequest setProcessPlugins(boolean)>(1);
+
+        virtualinvoke $u1.<org.apache.maven.model.building.DefaultModelBuildingRequest: org.apache.maven.model.building.DefaultModelBuildingRequest setPomFile(java.io.File)>(pom);
+
+        $r1 = (org.apache.maven.model.building.ModelBuilder) builder;
+
+        $r2 = (org.apache.maven.model.building.ModelBuildingRequest) $u1;
+
+        result = interfaceinvoke $r1.<org.apache.maven.model.building.ModelBuilder: org.apache.maven.model.building.ModelBuildingResult build(org.apache.maven.model.building.ModelBuildingRequest)>($r2);
+
+        $stack21 = interfaceinvoke result.<org.apache.maven.model.building.ModelBuildingResult: org.apache.maven.model.Model getRawModel()>();
+
+        $stack22 = virtualinvoke $stack21.<org.apache.maven.model.Model: java.util.List getProfiles()>();
+
+        $stack23 = interfaceinvoke $stack22.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack24 = (org.apache.maven.model.Profile) $stack23;
+
+        $stack25 = virtualinvoke $stack24.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        $stack26 = virtualinvoke $stack25.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationFile getFile()>();
+
+        resultExists = virtualinvoke $stack26.<org.apache.maven.model.ActivationFile: java.lang.String getExists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>(originalExists, resultExists);
+
+        $stack28 = interfaceinvoke result.<org.apache.maven.model.building.ModelBuildingResult: org.apache.maven.model.Model getEffectiveModel()>();
+
+        $stack29 = virtualinvoke $stack28.<org.apache.maven.model.Model: java.util.List getProfiles()>();
+
+        $stack30 = interfaceinvoke $stack29.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack31 = (org.apache.maven.model.Profile) $stack30;
+
+        $stack32 = virtualinvoke $stack31.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        $stack33 = virtualinvoke $stack32.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationFile getFile()>();
+
+        $stack34 = virtualinvoke $stack33.<org.apache.maven.model.ActivationFile: java.lang.String getExists()>();
+
+        $stack35 = <org.apache.maven.model.building.DefaultModelBuilderFactoryTest: java.lang.String BASE_DIR>;
+
+        $stack36 = virtualinvoke $stack34.<java.lang.String: boolean contains(java.lang.CharSequence)>($stack35);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack36);
+
+        return;
+    }
+
+    private static org.apache.maven.model.Model readPom(java.io.File) throws java.lang.Exception
+    {
+        org.apache.maven.model.io.xpp3.MavenXpp3Reader $stack2;
+        java.io.FileInputStream $stack3;
+        java.io.File file;
+        org.apache.maven.model.Model $stack4;
+
+        file := @parameter0: java.io.File;
+
+        $stack2 = new org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+
+        specialinvoke $stack2.<org.apache.maven.model.io.xpp3.MavenXpp3Reader: void <init>()>();
+
+        $stack3 = new java.io.FileInputStream;
+
+        specialinvoke $stack3.<java.io.FileInputStream: void <init>(java.io.File)>(file);
+
+        $stack4 = virtualinvoke $stack2.<org.apache.maven.model.io.xpp3.MavenXpp3Reader: org.apache.maven.model.Model read(java.io.InputStream)>($stack3);
+
+        return $stack4;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String[] $stack0;
+        java.nio.file.Path $stack1;
+        java.lang.String $stack2;
+
+        $stack0 = newarray (java.lang.String)[4];
+
+        $stack0[0] = "test";
+
+        $stack0[1] = "resources";
+
+        $stack0[2] = "poms";
+
+        $stack0[3] = "factory";
+
+        $stack1 = staticinvoke <java.nio.file.Paths: java.nio.file.Path get(java.lang.String,java.lang.String[])>("src", $stack0);
+
+        $stack2 = interfaceinvoke $stack1.<java.nio.file.Path: java.lang.String toString()>();
+
+        <org.apache.maven.model.building.DefaultModelBuilderFactoryTest: java.lang.String BASE_DIR> = $stack2;
+
+        return;
+    }
+}

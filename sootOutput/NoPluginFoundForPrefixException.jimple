@@ -1,0 +1,153 @@
+public class NoPluginFoundForPrefixException extends java.lang.Exception
+{
+
+    public void <init>(java.lang.String, java.util.List, org.eclipse.aether.repository.LocalRepository, java.util.List)
+    {
+        NoPluginFoundForPrefixException this;
+        java.lang.StringBuilder $stack5, $stack6, $stack7, $stack8, $stack9, $stack10, $stack12;
+        java.lang.String prefix, $stack11, $stack13;
+        java.util.List pluginGroups, remoteRepositories;
+        org.eclipse.aether.repository.LocalRepository localRepository;
+
+        this := @this: NoPluginFoundForPrefixException;
+
+        prefix := @parameter0: java.lang.String;
+
+        pluginGroups := @parameter1: java.util.List;
+
+        localRepository := @parameter2: org.eclipse.aether.repository.LocalRepository;
+
+        remoteRepositories := @parameter3: java.util.List;
+
+        $stack5 = new java.lang.StringBuilder;
+
+        specialinvoke $stack5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("No plugin found for prefix \'");
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' in the current project and in the plugin groups ");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(pluginGroups);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" available from the repositories ");
+
+        $stack11 = staticinvoke <org.apache.maven.plugin.prefix.NoPluginFoundForPrefixException: java.lang.String format(org.eclipse.aether.repository.LocalRepository,java.util.List)>(localRepository, remoteRepositories);
+
+        $stack12 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke this.<java.lang.Exception: void <init>(java.lang.String)>($stack13);
+
+        return;
+    }
+
+    private static java.lang.String format(org.eclipse.aether.repository.LocalRepository, java.util.List)
+    {
+        org.eclipse.aether.repository.LocalRepository localRepository;
+        java.util.List remoteRepositories;
+        boolean $stack9, $stack14;
+        java.util.Iterator l3;
+        java.lang.Object $stack15;
+        org.eclipse.aether.repository.RemoteRepository repository;
+        java.lang.StringBuilder $stack16, $stack17, $stack18, $stack21, $stack22, $stack24, $stack25, $stack27, $stack28, $stack30, $stack31, $stack33, $stack34, $stack36, $stack37, $stack5, $stack6, $stack7;
+        java.lang.String $stack23, $stack26, $stack32, repos;
+        java.io.File $stack35;
+
+        localRepository := @parameter0: org.eclipse.aether.repository.LocalRepository;
+
+        remoteRepositories := @parameter1: java.util.List;
+
+        repos = "[";
+
+        if localRepository == null goto label1;
+
+        $stack30 = new java.lang.StringBuilder;
+
+        specialinvoke $stack30.<java.lang.StringBuilder: void <init>()>();
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[");
+
+        $stack32 = virtualinvoke localRepository.<org.eclipse.aether.repository.LocalRepository: java.lang.String getId()>();
+
+        $stack33 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack32);
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack35 = virtualinvoke localRepository.<org.eclipse.aether.repository.LocalRepository: java.io.File getBasedir()>();
+
+        $stack36 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack35);
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        repos = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label1:
+        if remoteRepositories == null goto label4;
+
+        $stack9 = interfaceinvoke remoteRepositories.<java.util.List: boolean isEmpty()>();
+
+        if $stack9 != 0 goto label4;
+
+        l3 = interfaceinvoke remoteRepositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack14 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label4;
+
+        $stack15 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.eclipse.aether.repository.RemoteRepository) $stack15;
+
+        $stack16 = new java.lang.StringBuilder;
+
+        specialinvoke $stack16.<java.lang.StringBuilder: void <init>()>();
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(repos);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        repos = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        if repository == null goto label3;
+
+        $stack21 = new java.lang.StringBuilder;
+
+        specialinvoke $stack21.<java.lang.StringBuilder: void <init>()>();
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(repos);
+
+        $stack23 = virtualinvoke repository.<org.eclipse.aether.repository.RemoteRepository: java.lang.String getId()>();
+
+        $stack24 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack26 = virtualinvoke repository.<org.eclipse.aether.repository.RemoteRepository: java.lang.String getUrl()>();
+
+        $stack27 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack26);
+
+        $stack28 = virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        repos = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label3:
+        goto label2;
+
+     label4:
+        $stack5 = new java.lang.StringBuilder;
+
+        specialinvoke $stack5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(repos);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        repos = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return repos;
+    }
+}

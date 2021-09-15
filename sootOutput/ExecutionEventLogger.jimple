@@ -1,0 +1,1741 @@
+public class ExecutionEventLogger extends org.apache.maven.execution.AbstractExecutionListener
+{
+    private final org.slf4j.Logger logger;
+    private static final int MAX_LOG_PREFIX_SIZE;
+    private static final int PROJECT_STATUS_SUFFIX_SIZE;
+    private static final int MIN_TERMINAL_WIDTH;
+    private static final int DEFAULT_TERMINAL_WIDTH;
+    private static final int MAX_TERMINAL_WIDTH;
+    private static final int MAX_PADDED_BUILD_TIME_DURATION_LENGTH;
+    private final int terminalWidth;
+    private final int lineLength;
+    private final int maxProjectNameLength;
+    private int totalProjects;
+    private volatile int currentVisitedProjectCount;
+
+    public void <init>()
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack1;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0;
+
+        this := @this: ExecutionEventLogger;
+
+        $stack1 = staticinvoke <org.slf4j.LoggerFactory: org.slf4j.Logger getLogger(java.lang.Class)>(class "Lorg/apache/maven/cli/event/ExecutionEventLogger;");
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r0.<org.apache.maven.cli.event.ExecutionEventLogger: void <init>(org.slf4j.Logger)>($stack1);
+
+        return;
+    }
+
+    public void <init>(int)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack2;
+        int terminalWidth;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0;
+
+        this := @this: ExecutionEventLogger;
+
+        terminalWidth := @parameter0: int;
+
+        $stack2 = staticinvoke <org.slf4j.LoggerFactory: org.slf4j.Logger getLogger(java.lang.Class)>(class "Lorg/apache/maven/cli/event/ExecutionEventLogger;");
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r0.<org.apache.maven.cli.event.ExecutionEventLogger: void <init>(org.slf4j.Logger,int)>($stack2, terminalWidth);
+
+        return;
+    }
+
+    public void <init>(org.slf4j.Logger)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger logger;
+        int $stack2;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0;
+
+        this := @this: ExecutionEventLogger;
+
+        logger := @parameter0: org.slf4j.Logger;
+
+        $stack2 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: int getTerminalWidth()>();
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r0.<org.apache.maven.cli.event.ExecutionEventLogger: void <init>(org.slf4j.Logger,int)>(logger, $stack2);
+
+        return;
+    }
+
+    public void <init>(org.slf4j.Logger, int)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger logger, $stack4;
+        java.lang.Object $stack3;
+        int terminalWidth, $stack6, $stack7, $stack8, $stack9, $stack10, $stack11, $stack12;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: ExecutionEventLogger;
+
+        logger := @parameter0: org.slf4j.Logger;
+
+        terminalWidth := @parameter1: int;
+
+        specialinvoke this.<org.apache.maven.execution.AbstractExecutionListener: void <init>()>();
+
+        $stack3 = staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(logger, "logger cannot be null");
+
+        $stack4 = (org.slf4j.Logger) $stack3;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger> = $stack4;
+
+        if terminalWidth >= 0 goto label1;
+
+        $stack12 = 80;
+
+        goto label2;
+
+     label1:
+        $stack12 = terminalWidth;
+
+     label2:
+        $stack6 = staticinvoke <java.lang.Math: int max(int,int)>($stack12, 60);
+
+        $stack7 = staticinvoke <java.lang.Math: int min(int,int)>(130, $stack6);
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $r1.<org.apache.maven.cli.event.ExecutionEventLogger: int terminalWidth> = $stack7;
+
+        $r2 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack8 = $r2.<org.apache.maven.cli.event.ExecutionEventLogger: int terminalWidth>;
+
+        $stack9 = $stack8 - 8;
+
+        $r3 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $r3.<org.apache.maven.cli.event.ExecutionEventLogger: int lineLength> = $stack9;
+
+        $r4 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack10 = $r4.<org.apache.maven.cli.event.ExecutionEventLogger: int lineLength>;
+
+        $stack11 = $stack10 - 20;
+
+        $r5 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $r5.<org.apache.maven.cli.event.ExecutionEventLogger: int maxProjectNameLength> = $stack11;
+
+        return;
+    }
+
+    private static java.lang.String chars(char, int)
+    {
+        java.lang.StringBuilder $stack4;
+        int count, i;
+        java.lang.String $stack5;
+        char c;
+
+        c := @parameter0: char;
+
+        count := @parameter1: int;
+
+        $stack4 = new java.lang.StringBuilder;
+
+        specialinvoke $stack4.<java.lang.StringBuilder: void <init>(int)>(count);
+
+        i = count;
+
+     label1:
+        if i <= 0 goto label2;
+
+        virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(c);
+
+        i = i + -1;
+
+        goto label1;
+
+     label2:
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack5;
+    }
+
+    private void infoLine(char)
+    {
+        ExecutionEventLogger this;
+        char c;
+        int $stack2;
+        java.lang.String $stack3;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1;
+
+        this := @this: ExecutionEventLogger;
+
+        c := @parameter0: char;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack2 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: int lineLength>;
+
+        $stack3 = staticinvoke <org.apache.maven.cli.event.ExecutionEventLogger: java.lang.String chars(char,int)>(c, $stack2);
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r1.<org.apache.maven.cli.event.ExecutionEventLogger: void infoMain(java.lang.String)>($stack3);
+
+        return;
+    }
+
+    private void infoMain(java.lang.String)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack2;
+        org.apache.maven.shared.utils.logging.MessageBuilder $stack3, $stack4;
+        java.lang.String msg, $stack5;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0;
+
+        this := @this: ExecutionEventLogger;
+
+        msg := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack2 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack3 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: org.apache.maven.shared.utils.logging.MessageBuilder buffer()>();
+
+        $stack4 = interfaceinvoke $stack3.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>(msg);
+
+        $stack5 = virtualinvoke $stack4.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke $stack2.<org.slf4j.Logger: void info(java.lang.String)>($stack5);
+
+        return;
+    }
+
+    public void projectDiscoveryStarted(org.apache.maven.execution.ExecutionEvent)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack2, $stack4;
+        boolean $stack3;
+        org.apache.maven.execution.ExecutionEvent event;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1;
+
+        this := @this: ExecutionEventLogger;
+
+        event := @parameter0: org.apache.maven.execution.ExecutionEvent;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack2 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack3 = interfaceinvoke $stack2.<org.slf4j.Logger: boolean isInfoEnabled()>();
+
+        if $stack3 == 0 goto label1;
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack4 = $r1.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        interfaceinvoke $stack4.<org.slf4j.Logger: void info(java.lang.String)>("Scanning for projects...");
+
+     label1:
+        return;
+    }
+
+    public void sessionStarted(org.apache.maven.execution.ExecutionEvent)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack6, $stack11, $stack26;
+        boolean $stack7, $stack15;
+        org.apache.maven.execution.ExecutionEvent event;
+        org.apache.maven.execution.MavenSession $stack8, $stack12;
+        java.util.List $stack9, projects;
+        int $stack10, $stack16, $stack18, $stack20, $stack21, $stack23, $stack24, len, $stack36;
+        java.util.Iterator l3;
+        java.lang.Object $stack17;
+        org.apache.maven.project.MavenProject project;
+        java.lang.String $stack19, $stack22, $stack29, $stack31, $stack33;
+        java.lang.Object[] $stack25;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: ExecutionEventLogger;
+
+        event := @parameter0: org.apache.maven.execution.ExecutionEvent;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack6 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack7 = interfaceinvoke $stack6.<org.slf4j.Logger: boolean isInfoEnabled()>();
+
+        if $stack7 == 0 goto label5;
+
+        $stack8 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.execution.MavenSession getSession()>();
+
+        $stack9 = virtualinvoke $stack8.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $stack10 = interfaceinvoke $stack9.<java.util.List: int size()>();
+
+        if $stack10 <= 1 goto label5;
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r1.<org.apache.maven.cli.event.ExecutionEventLogger: void infoLine(char)>(45);
+
+        $r2 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r2.<org.apache.maven.cli.event.ExecutionEventLogger: void infoMain(java.lang.String)>("Reactor Build Order:");
+
+        $r3 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack11 = $r3.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        interfaceinvoke $stack11.<org.slf4j.Logger: void info(java.lang.String)>("");
+
+        $stack12 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.execution.MavenSession getSession()>();
+
+        projects = virtualinvoke $stack12.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        l3 = interfaceinvoke projects.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack15 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label4;
+
+        $stack17 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        project = (org.apache.maven.project.MavenProject) $stack17;
+
+        $r4 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack18 = $r4.<org.apache.maven.cli.event.ExecutionEventLogger: int lineLength>;
+
+        $stack19 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        $stack20 = virtualinvoke $stack19.<java.lang.String: int length()>();
+
+        $stack21 = $stack18 - $stack20;
+
+        $stack22 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getPackaging()>();
+
+        $stack23 = virtualinvoke $stack22.<java.lang.String: int length()>();
+
+        $stack24 = $stack21 - $stack23;
+
+        len = $stack24 - 2;
+
+        $r5 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack26 = $r5.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack25 = newarray (java.lang.Object)[3];
+
+        $stack29 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        $stack25[0] = $stack29;
+
+        if len <= 0 goto label2;
+
+        $stack36 = len;
+
+        goto label3;
+
+     label2:
+        $stack36 = 1;
+
+     label3:
+        $stack31 = staticinvoke <org.apache.maven.cli.event.ExecutionEventLogger: java.lang.String chars(char,int)>(32, $stack36);
+
+        $stack25[1] = $stack31;
+
+        $stack33 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getPackaging()>();
+
+        $stack25[2] = $stack33;
+
+        interfaceinvoke $stack26.<org.slf4j.Logger: void info(java.lang.String,java.lang.Object[])>("{}{}[{}]", $stack25);
+
+        goto label1;
+
+     label4:
+        $stack16 = interfaceinvoke projects.<java.util.List: int size()>();
+
+        $r6 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $r6.<org.apache.maven.cli.event.ExecutionEventLogger: int totalProjects> = $stack16;
+
+     label5:
+        return;
+    }
+
+    public void sessionEnded(org.apache.maven.execution.ExecutionEvent)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack4;
+        boolean $stack5, $stack10;
+        org.apache.maven.execution.ExecutionEvent event;
+        org.apache.maven.execution.MavenSession $stack6, $stack11, $stack12, $stack23;
+        java.util.List $stack7;
+        int $stack8;
+        org.slf4j.ILoggerFactory iLoggerFactory;
+        org.apache.maven.logwrapper.MavenSlf4jWrapperFactory loggerFactory;
+        java.util.Optional $stack13, $stack15;
+        java.util.function.Predicate $stack14;
+        java.util.function.Consumer $stack16;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: ExecutionEventLogger;
+
+        event := @parameter0: org.apache.maven.execution.ExecutionEvent;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack4 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack5 = interfaceinvoke $stack4.<org.slf4j.Logger: boolean isInfoEnabled()>();
+
+        if $stack5 == 0 goto label3;
+
+        $stack6 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.execution.MavenSession getSession()>();
+
+        $stack7 = virtualinvoke $stack6.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $stack8 = interfaceinvoke $stack7.<java.util.List: int size()>();
+
+        if $stack8 <= 1 goto label1;
+
+        $stack23 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.execution.MavenSession getSession()>();
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r1.<org.apache.maven.cli.event.ExecutionEventLogger: void logReactorSummary(org.apache.maven.execution.MavenSession)>($stack23);
+
+     label1:
+        iLoggerFactory = staticinvoke <org.slf4j.LoggerFactory: org.slf4j.ILoggerFactory getILoggerFactory()>();
+
+        $stack10 = iLoggerFactory instanceof org.apache.maven.logwrapper.MavenSlf4jWrapperFactory;
+
+        if $stack10 == 0 goto label2;
+
+        loggerFactory = (org.apache.maven.logwrapper.MavenSlf4jWrapperFactory) iLoggerFactory;
+
+        $stack13 = interfaceinvoke loggerFactory.<org.apache.maven.logwrapper.MavenSlf4jWrapperFactory: java.util.Optional getLogLevelRecorder()>();
+
+        $stack14 = staticinvoke <ExecutionEventLogger$metThreshold__309: java.util.function.Predicate bootstrap$()>();
+
+        $stack15 = virtualinvoke $stack13.<java.util.Optional: java.util.Optional filter(java.util.function.Predicate)>($stack14);
+
+        $stack16 = staticinvoke <ExecutionEventLogger$lambda_sessionEnded_0__310: java.util.function.Consumer bootstrap$(org.apache.maven.execution.ExecutionEvent)>(event);
+
+        virtualinvoke $stack15.<java.util.Optional: void ifPresent(java.util.function.Consumer)>($stack16);
+
+     label2:
+        $stack11 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.execution.MavenSession getSession()>();
+
+        $r2 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r2.<org.apache.maven.cli.event.ExecutionEventLogger: void logResult(org.apache.maven.execution.MavenSession)>($stack11);
+
+        $stack12 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.execution.MavenSession getSession()>();
+
+        $r3 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r3.<org.apache.maven.cli.event.ExecutionEventLogger: void logStats(org.apache.maven.execution.MavenSession)>($stack12);
+
+        $r4 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r4.<org.apache.maven.cli.event.ExecutionEventLogger: void infoLine(char)>(45);
+
+     label3:
+        return;
+    }
+
+    private boolean isSingleVersionedReactor(org.apache.maven.execution.MavenSession)
+    {
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject topProject, mavenProject;
+        org.apache.maven.execution.ProjectDependencyGraph $stack8;
+        java.util.List sortedProjects;
+        java.util.Iterator l5;
+        boolean $stack11, $stack15, result;
+        java.lang.Object $stack12;
+        java.lang.String $stack13, $stack14;
+        ExecutionEventLogger this;
+
+        this := @this: ExecutionEventLogger;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        result = 1;
+
+        topProject = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getTopLevelProject()>();
+
+        $stack8 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.ProjectDependencyGraph getProjectDependencyGraph()>();
+
+        sortedProjects = interfaceinvoke $stack8.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getSortedProjects()>();
+
+        l5 = interfaceinvoke sortedProjects.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack11 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label3;
+
+        $stack12 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        mavenProject = (org.apache.maven.project.MavenProject) $stack12;
+
+        $stack13 = virtualinvoke topProject.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        $stack14 = virtualinvoke mavenProject.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        $stack15 = virtualinvoke $stack13.<java.lang.String: boolean equals(java.lang.Object)>($stack14);
+
+        if $stack15 != 0 goto label2;
+
+        result = 0;
+
+        goto label3;
+
+     label2:
+        goto label1;
+
+     label3:
+        return result;
+    }
+
+    private void logReactorSummary(org.apache.maven.execution.MavenSession)
+    {
+        ExecutionEventLogger this;
+        org.apache.maven.execution.MavenSession session;
+        boolean isSingleVersion, $stack29, $stack30, $stack20;
+        java.lang.String $stack15, $stack23, $stack46, $stack62, $stack80, $stack87, $stack91, buildTimeDuration, $stack32;
+        org.slf4j.Logger $stack16, $stack31;
+        org.apache.maven.execution.MavenExecutionResult result;
+        java.util.List projects;
+        java.util.Iterator l6;
+        java.lang.Object $stack21;
+        org.apache.maven.project.MavenProject project, $stack86, $stack90;
+        int $stack26, $stack27, $stack41, $stack59, $stack71, $stack72, padSize;
+        org.apache.maven.execution.BuildSummary buildSummary;
+        org.apache.maven.shared.utils.logging.MessageBuilder $stack34, $stack35, $stack52, $stack53, $stack68, $stack69;
+        long $stack38, $stack56;
+        java.lang.StringBuilder $u0, $u1;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: ExecutionEventLogger;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        isSingleVersion = specialinvoke $r0.<org.apache.maven.cli.event.ExecutionEventLogger: boolean isSingleVersionedReactor(org.apache.maven.execution.MavenSession)>(session);
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r1.<org.apache.maven.cli.event.ExecutionEventLogger: void infoLine(char)>(45);
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(java.lang.String)>("Reactor Summary");
+
+        if isSingleVersion == 0 goto label01;
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" for ");
+
+        $stack86 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getTopLevelProject()>();
+
+        $stack87 = virtualinvoke $stack86.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack87);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $stack90 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getTopLevelProject()>();
+
+        $stack91 = virtualinvoke $stack90.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack91);
+
+     label01:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack15 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r2 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r2.<org.apache.maven.cli.event.ExecutionEventLogger: void infoMain(java.lang.String)>($stack15);
+
+        $r3 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack16 = $r3.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        interfaceinvoke $stack16.<org.slf4j.Logger: void info(java.lang.String)>("");
+
+        result = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionResult getResult()>();
+
+        projects = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        l6 = interfaceinvoke projects.<java.util.List: java.util.Iterator iterator()>();
+
+     label02:
+        $stack20 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack20 == 0 goto label12;
+
+        $stack21 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        project = (org.apache.maven.project.MavenProject) $stack21;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>(int)>(128);
+
+        $stack23 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        if isSingleVersion != 0 goto label03;
+
+        $stack80 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack80);
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+     label03:
+        $stack26 = virtualinvoke $u1.<java.lang.StringBuilder: int length()>();
+
+        $r4 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack27 = $r4.<org.apache.maven.cli.event.ExecutionEventLogger: int maxProjectNameLength>;
+
+        if $stack26 > $stack27 goto label06;
+
+     label04:
+        $stack71 = virtualinvoke $u1.<java.lang.StringBuilder: int length()>();
+
+        $r5 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack72 = $r5.<org.apache.maven.cli.event.ExecutionEventLogger: int maxProjectNameLength>;
+
+        if $stack71 >= $stack72 goto label05;
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        goto label04;
+
+     label05:
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+     label06:
+        buildSummary = interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.BuildSummary getBuildSummary(org.apache.maven.project.MavenProject)>(project);
+
+        if buildSummary != null goto label07;
+
+        $stack68 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: org.apache.maven.shared.utils.logging.MessageBuilder buffer()>();
+
+        $stack69 = interfaceinvoke $stack68.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder warning(java.lang.Object)>("SKIPPED");
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack69);
+
+        goto label11;
+
+     label07:
+        $stack29 = buildSummary instanceof org.apache.maven.execution.BuildSuccess;
+
+        if $stack29 == 0 goto label09;
+
+        $stack52 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: org.apache.maven.shared.utils.logging.MessageBuilder buffer()>();
+
+        $stack53 = interfaceinvoke $stack52.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder success(java.lang.Object)>("SUCCESS");
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack53);
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" [");
+
+        $stack56 = virtualinvoke buildSummary.<org.apache.maven.execution.BuildSummary: long getTime()>();
+
+        buildTimeDuration = staticinvoke <org.apache.maven.cli.CLIReportingUtils: java.lang.String formatDuration(long)>($stack56);
+
+        $stack59 = virtualinvoke buildTimeDuration.<java.lang.String: int length()>();
+
+        padSize = 9 - $stack59;
+
+        if padSize <= 0 goto label08;
+
+        $stack62 = staticinvoke <org.apache.maven.cli.event.ExecutionEventLogger: java.lang.String chars(char,int)>(32, padSize);
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack62);
+
+     label08:
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(buildTimeDuration);
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(93);
+
+        goto label11;
+
+     label09:
+        $stack30 = buildSummary instanceof org.apache.maven.execution.BuildFailure;
+
+        if $stack30 == 0 goto label11;
+
+        $stack34 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: org.apache.maven.shared.utils.logging.MessageBuilder buffer()>();
+
+        $stack35 = interfaceinvoke $stack34.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder failure(java.lang.Object)>("FAILURE");
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack35);
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" [");
+
+        $stack38 = virtualinvoke buildSummary.<org.apache.maven.execution.BuildSummary: long getTime()>();
+
+        buildTimeDuration = staticinvoke <org.apache.maven.cli.CLIReportingUtils: java.lang.String formatDuration(long)>($stack38);
+
+        $stack41 = virtualinvoke buildTimeDuration.<java.lang.String: int length()>();
+
+        padSize = 9 - $stack41;
+
+        if padSize <= 0 goto label10;
+
+        $stack46 = staticinvoke <org.apache.maven.cli.event.ExecutionEventLogger: java.lang.String chars(char,int)>(32, padSize);
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack46);
+
+     label10:
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(buildTimeDuration);
+
+        virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(93);
+
+     label11:
+        $r6 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack31 = $r6.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack32 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack31.<org.slf4j.Logger: void info(java.lang.String)>($stack32);
+
+        goto label02;
+
+     label12:
+        return;
+    }
+
+    private void logResult(org.apache.maven.execution.MavenSession)
+    {
+        ExecutionEventLogger this;
+        org.apache.maven.shared.utils.logging.MessageBuilder buffer;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.MavenExecutionResult $stack4;
+        boolean $stack5;
+        org.slf4j.Logger $stack7;
+        java.lang.String $stack8;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1;
+
+        this := @this: ExecutionEventLogger;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r0.<org.apache.maven.cli.event.ExecutionEventLogger: void infoLine(char)>(45);
+
+        buffer = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: org.apache.maven.shared.utils.logging.MessageBuilder buffer()>();
+
+        $stack4 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionResult getResult()>();
+
+        $stack5 = interfaceinvoke $stack4.<org.apache.maven.execution.MavenExecutionResult: boolean hasExceptions()>();
+
+        if $stack5 == 0 goto label1;
+
+        interfaceinvoke buffer.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder failure(java.lang.Object)>("BUILD FAILURE");
+
+        goto label2;
+
+     label1:
+        interfaceinvoke buffer.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder success(java.lang.Object)>("BUILD SUCCESS");
+
+     label2:
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack7 = $r1.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack8 = virtualinvoke buffer.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke $stack7.<org.slf4j.Logger: void info(java.lang.String)>($stack8);
+
+        return;
+    }
+
+    private void logStats(org.apache.maven.execution.MavenSession)
+    {
+        ExecutionEventLogger this;
+        long finish, $stack10, time;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.MavenExecutionRequest $stack8, $stack11;
+        java.util.Date $stack9;
+        int $stack12;
+        org.slf4j.Logger $stack13, $stack16;
+        java.lang.String $stack15, $stack18, $stack19;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1, $r2;
+
+        this := @this: ExecutionEventLogger;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r0.<org.apache.maven.cli.event.ExecutionEventLogger: void infoLine(char)>(45);
+
+        finish = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $stack8 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack9 = interfaceinvoke $stack8.<org.apache.maven.execution.MavenExecutionRequest: java.util.Date getStartTime()>();
+
+        $stack10 = virtualinvoke $stack9.<java.util.Date: long getTime()>();
+
+        time = finish - $stack10;
+
+        $stack11 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack12 = interfaceinvoke $stack11.<org.apache.maven.execution.MavenExecutionRequest: int getDegreeOfConcurrency()>();
+
+        if $stack12 <= 1 goto label1;
+
+        $stack19 = " (Wall Clock)";
+
+        goto label2;
+
+     label1:
+        $stack19 = "";
+
+     label2:
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack13 = $r1.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack15 = staticinvoke <org.apache.maven.cli.CLIReportingUtils: java.lang.String formatDuration(long)>(time);
+
+        interfaceinvoke $stack13.<org.slf4j.Logger: void info(java.lang.String,java.lang.Object,java.lang.Object)>("Total time:  {}{}", $stack15, $stack19);
+
+        $r2 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack16 = $r2.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack18 = staticinvoke <org.apache.maven.cli.CLIReportingUtils: java.lang.String formatTimestamp(long)>(finish);
+
+        interfaceinvoke $stack16.<org.slf4j.Logger: void info(java.lang.String,java.lang.Object)>("Finished at: {}", $stack18);
+
+        return;
+    }
+
+    public void projectSkipped(org.apache.maven.execution.ExecutionEvent)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack2, $stack4, $stack11;
+        boolean $stack3;
+        java.lang.StringBuilder $stack6, $stack9, $u0;
+        org.apache.maven.execution.ExecutionEvent event;
+        org.apache.maven.project.MavenProject $stack7;
+        java.lang.String $stack8, $stack10;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: ExecutionEventLogger;
+
+        event := @parameter0: org.apache.maven.execution.ExecutionEvent;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack2 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack3 = interfaceinvoke $stack2.<org.slf4j.Logger: boolean isInfoEnabled()>();
+
+        if $stack3 == 0 goto label1;
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack4 = $r1.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        interfaceinvoke $stack4.<org.slf4j.Logger: void info(java.lang.String)>("");
+
+        $r2 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r2.<org.apache.maven.cli.event.ExecutionEventLogger: void infoLine(char)>(45);
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Skipping ");
+
+        $stack7 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.project.MavenProject getProject()>();
+
+        $stack8 = virtualinvoke $stack7.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        $stack9 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r3.<org.apache.maven.cli.event.ExecutionEventLogger: void infoMain(java.lang.String)>($stack10);
+
+        $r4 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack11 = $r4.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        interfaceinvoke $stack11.<org.slf4j.Logger: void info(java.lang.String)>("This project has been banned from the build due to previous failures.");
+
+        $r5 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r5.<org.apache.maven.cli.event.ExecutionEventLogger: void infoLine(char)>(45);
+
+     label1:
+        return;
+    }
+
+    public void projectStarted(org.apache.maven.execution.ExecutionEvent)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack13, $stack16, $stack55;
+        boolean $stack14;
+        org.apache.maven.execution.ExecutionEvent event;
+        org.apache.maven.project.MavenProject project, $stack63, $stack67;
+        java.lang.String $stack18, $stack21, projectKey, $stack24, $stack27, $stack36, $stack47, $stack52, $stack60, $stack64, $stack68, building, $stack92, prefix, suffix, progress#5, $stack122, $stack96, $stack106, $stack117, $stack121;
+        java.lang.StringBuilder $stack19, $stack20, $stack22, $stack37, $stack38, $stack41, $stack53, $stack62, $stack65, $stack66, $stack69, $stack77, $stack78, $stack79, $stack81, $stack82, $stack89, $stack90, $stack91, $stack115, $stack116, $stack118, $stack119, $stack120, $u0, $u1, $u2, $u3, $u4, $u5, $u6;
+        int $stack25, $stack26, $stack28, $stack29, headerLen, $stack31, $stack32, $stack33, $stack35, $stack42, $stack45, $stack46, $stack48, $stack49, $stack50, $stack51, $stack71, $stack73, $stack74, $stack80, $stack84, $stack85, $stack86, $stack87, pad#6, $stack95, $stack97, $stack98, $stack99, $stack100, $stack101, $stack105, $stack107, $stack108, $stack109, $stack110, $stack111, $stack112;
+        org.apache.maven.shared.utils.logging.MessageBuilder $stack56, $stack57, $stack58, $stack59;
+        java.lang.Throwable $stack139;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14;
+
+        this := @this: ExecutionEventLogger;
+
+        event := @parameter0: org.apache.maven.execution.ExecutionEvent;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack13 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack14 = interfaceinvoke $stack13.<org.slf4j.Logger: boolean isInfoEnabled()>();
+
+        if $stack14 == 0 goto label10;
+
+        project = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.project.MavenProject getProject()>();
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack16 = $r1.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        interfaceinvoke $stack16.<org.slf4j.Logger: void info(java.lang.String)>("");
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack18 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        $stack19 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack18);
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack21 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        $stack22 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack21);
+
+        projectKey = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack24 = "--< ";
+
+        $stack25 = virtualinvoke $stack24.<java.lang.String: int length()>();
+
+        $stack26 = virtualinvoke projectKey.<java.lang.String: int length()>();
+
+        $stack28 = $stack25 + $stack26;
+
+        $stack27 = " >--";
+
+        $stack29 = virtualinvoke $stack27.<java.lang.String: int length()>();
+
+        headerLen = $stack28 + $stack29;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack31 = $r2.<org.apache.maven.cli.event.ExecutionEventLogger: int lineLength>;
+
+        $stack32 = $stack31 - headerLen;
+
+        $stack33 = $stack32 / 2;
+
+        $stack35 = staticinvoke <java.lang.Math: int max(int,int)>(0, $stack33);
+
+        $stack36 = staticinvoke <org.apache.maven.cli.event.ExecutionEventLogger: java.lang.String chars(char,int)>(45, $stack35);
+
+        $stack37 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack36);
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--< ");
+
+        prefix = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack41 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" >--");
+
+        $r3 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack42 = $r3.<org.apache.maven.cli.event.ExecutionEventLogger: int lineLength>;
+
+        $stack45 = $stack42 - headerLen;
+
+        $stack46 = virtualinvoke prefix.<java.lang.String: int length()>();
+
+        $stack48 = $stack45 - $stack46;
+
+        $stack47 = "--< ";
+
+        $stack49 = virtualinvoke $stack47.<java.lang.String: int length()>();
+
+        $stack50 = $stack48 + $stack49;
+
+        $stack51 = staticinvoke <java.lang.Math: int max(int,int)>(0, $stack50);
+
+        $stack52 = staticinvoke <org.apache.maven.cli.event.ExecutionEventLogger: java.lang.String chars(char,int)>(45, $stack51);
+
+        $stack53 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack52);
+
+        suffix = virtualinvoke $stack53.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r4 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack55 = $r4.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack56 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: org.apache.maven.shared.utils.logging.MessageBuilder buffer()>();
+
+        $stack57 = interfaceinvoke $stack56.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>(prefix);
+
+        $stack58 = interfaceinvoke $stack57.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder project(java.lang.Object)>(projectKey);
+
+        $stack59 = interfaceinvoke $stack58.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>(suffix);
+
+        $stack60 = virtualinvoke $stack59.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke $stack55.<org.slf4j.Logger: void info(java.lang.String)>($stack60);
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack62 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Building ");
+
+        $stack63 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.project.MavenProject getProject()>();
+
+        $stack64 = virtualinvoke $stack63.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        $stack65 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack64);
+
+        $stack66 = virtualinvoke $stack65.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $stack67 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.project.MavenProject getProject()>();
+
+        $stack68 = virtualinvoke $stack67.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        $stack69 = virtualinvoke $stack66.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack68);
+
+        building = virtualinvoke $stack69.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack71 = $r5.<org.apache.maven.cli.event.ExecutionEventLogger: int totalProjects>;
+
+        if $stack71 > 1 goto label01;
+
+        $r6 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r6.<org.apache.maven.cli.event.ExecutionEventLogger: void infoMain(java.lang.String)>(building);
+
+        goto label09;
+
+     label01:
+        entermonitor this;
+
+     label02:
+        $r7 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack73 = $r7.<org.apache.maven.cli.event.ExecutionEventLogger: int currentVisitedProjectCount>;
+
+        $stack74 = $stack73 + 1;
+
+        $r8 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $r8.<org.apache.maven.cli.event.ExecutionEventLogger: int currentVisitedProjectCount> = $stack74;
+
+        exitmonitor this;
+
+     label03:
+        goto label06;
+
+     label04:
+        $stack139 := @caughtexception;
+
+        exitmonitor this;
+
+     label05:
+        throw $stack139;
+
+     label06:
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack77 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" [");
+
+        $stack78 = virtualinvoke $stack77.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack74);
+
+        $stack79 = virtualinvoke $stack78.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+        $r9 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack80 = $r9.<org.apache.maven.cli.event.ExecutionEventLogger: int totalProjects>;
+
+        $stack81 = virtualinvoke $stack79.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack80);
+
+        $stack82 = virtualinvoke $stack81.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(93);
+
+        progress#5 = virtualinvoke $stack82.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r10 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack84 = $r10.<org.apache.maven.cli.event.ExecutionEventLogger: int lineLength>;
+
+        $stack85 = virtualinvoke building.<java.lang.String: int length()>();
+
+        $stack86 = $stack84 - $stack85;
+
+        $stack87 = virtualinvoke progress#5.<java.lang.String: int length()>();
+
+        pad#6 = $stack86 - $stack87;
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack89 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(building);
+
+        if pad#6 <= 0 goto label07;
+
+        $stack122 = staticinvoke <org.apache.maven.cli.event.ExecutionEventLogger: java.lang.String chars(char,int)>(32, pad#6);
+
+        goto label08;
+
+     label07:
+        $stack122 = "";
+
+     label08:
+        $stack90 = virtualinvoke $stack89.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack122);
+
+        $stack91 = virtualinvoke $stack90.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(progress#5);
+
+        $stack92 = virtualinvoke $stack91.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r11 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r11.<org.apache.maven.cli.event.ExecutionEventLogger: void infoMain(java.lang.String)>($stack92);
+
+     label09:
+        $r12 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack95 = $r12.<org.apache.maven.cli.event.ExecutionEventLogger: int lineLength>;
+
+        $stack96 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getPackaging()>();
+
+        $stack97 = virtualinvoke $stack96.<java.lang.String: int length()>();
+
+        $stack98 = $stack95 - $stack97;
+
+        $stack99 = $stack98 - 4;
+
+        $stack100 = $stack99 / 2;
+
+        $stack101 = staticinvoke <java.lang.Math: int max(int,int)>(0, $stack100);
+
+        prefix = staticinvoke <org.apache.maven.cli.event.ExecutionEventLogger: java.lang.String chars(char,int)>(45, $stack101);
+
+        $r13 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack105 = $r13.<org.apache.maven.cli.event.ExecutionEventLogger: int lineLength>;
+
+        $stack106 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getPackaging()>();
+
+        $stack107 = virtualinvoke $stack106.<java.lang.String: int length()>();
+
+        $stack108 = $stack105 - $stack107;
+
+        $stack109 = $stack108 - 4;
+
+        $stack110 = virtualinvoke prefix.<java.lang.String: int length()>();
+
+        $stack111 = $stack109 - $stack110;
+
+        $stack112 = staticinvoke <java.lang.Math: int max(int,int)>(0, $stack111);
+
+        suffix = staticinvoke <org.apache.maven.cli.event.ExecutionEventLogger: java.lang.String chars(char,int)>(45, $stack112);
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack115 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+
+        $stack116 = virtualinvoke $stack115.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[ ");
+
+        $stack117 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getPackaging()>();
+
+        $stack118 = virtualinvoke $stack116.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack117);
+
+        $stack119 = virtualinvoke $stack118.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ]");
+
+        $stack120 = virtualinvoke $stack119.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(suffix);
+
+        $stack121 = virtualinvoke $stack120.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r14 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r14.<org.apache.maven.cli.event.ExecutionEventLogger: void infoMain(java.lang.String)>($stack121);
+
+     label10:
+        return;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label04 to label05 with label04;
+    }
+
+    public void mojoSkipped(org.apache.maven.execution.ExecutionEvent)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack2, $stack4;
+        boolean $stack3;
+        org.apache.maven.execution.ExecutionEvent event;
+        org.apache.maven.plugin.MojoExecution $stack6;
+        java.lang.String $stack7;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1;
+
+        this := @this: ExecutionEventLogger;
+
+        event := @parameter0: org.apache.maven.execution.ExecutionEvent;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack2 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack3 = interfaceinvoke $stack2.<org.slf4j.Logger: boolean isWarnEnabled()>();
+
+        if $stack3 == 0 goto label1;
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack4 = $r1.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack6 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.plugin.MojoExecution getMojoExecution()>();
+
+        $stack7 = virtualinvoke $stack6.<org.apache.maven.plugin.MojoExecution: java.lang.String getGoal()>();
+
+        interfaceinvoke $stack4.<org.slf4j.Logger: void warn(java.lang.String,java.lang.Object)>("Goal \'{}\' requires online mode for execution but Maven is currently offline, skipping", $stack7);
+
+     label1:
+        return;
+    }
+
+    public void mojoStarted(org.apache.maven.execution.ExecutionEvent)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack3, $stack5, $stack11;
+        boolean $stack4;
+        org.apache.maven.shared.utils.logging.MessageBuilder $stack6, buffer;
+        org.apache.maven.execution.ExecutionEvent event;
+        org.apache.maven.plugin.MojoExecution $stack8;
+        org.apache.maven.project.MavenProject $stack9;
+        java.lang.String $stack12;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: ExecutionEventLogger;
+
+        event := @parameter0: org.apache.maven.execution.ExecutionEvent;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack3 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack4 = interfaceinvoke $stack3.<org.slf4j.Logger: boolean isInfoEnabled()>();
+
+        if $stack4 == 0 goto label1;
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack5 = $r1.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        interfaceinvoke $stack5.<org.slf4j.Logger: void info(java.lang.String)>("");
+
+        $stack6 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: org.apache.maven.shared.utils.logging.MessageBuilder buffer()>();
+
+        buffer = interfaceinvoke $stack6.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>("--- ");
+
+        $stack8 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.plugin.MojoExecution getMojoExecution()>();
+
+        $r2 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r2.<org.apache.maven.cli.event.ExecutionEventLogger: void append(org.apache.maven.shared.utils.logging.MessageBuilder,org.apache.maven.plugin.MojoExecution)>(buffer, $stack8);
+
+        $stack9 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.project.MavenProject getProject()>();
+
+        $r3 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r3.<org.apache.maven.cli.event.ExecutionEventLogger: void append(org.apache.maven.shared.utils.logging.MessageBuilder,org.apache.maven.project.MavenProject)>(buffer, $stack9);
+
+        interfaceinvoke buffer.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>(" ---");
+
+        $r4 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack11 = $r4.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack12 = virtualinvoke buffer.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke $stack11.<org.slf4j.Logger: void info(java.lang.String)>($stack12);
+
+     label1:
+        return;
+    }
+
+    public void forkStarted(org.apache.maven.execution.ExecutionEvent)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack3, $stack5, $stack14;
+        boolean $stack4;
+        org.apache.maven.shared.utils.logging.MessageBuilder $stack6, buffer;
+        org.apache.maven.execution.ExecutionEvent event;
+        org.apache.maven.plugin.MojoExecution $stack8, $stack10;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack11;
+        org.apache.maven.project.MavenProject $stack12;
+        java.lang.String $stack15;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: ExecutionEventLogger;
+
+        event := @parameter0: org.apache.maven.execution.ExecutionEvent;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack3 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack4 = interfaceinvoke $stack3.<org.slf4j.Logger: boolean isInfoEnabled()>();
+
+        if $stack4 == 0 goto label1;
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack5 = $r1.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        interfaceinvoke $stack5.<org.slf4j.Logger: void info(java.lang.String)>("");
+
+        $stack6 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: org.apache.maven.shared.utils.logging.MessageBuilder buffer()>();
+
+        buffer = interfaceinvoke $stack6.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>(">>> ");
+
+        $stack8 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.plugin.MojoExecution getMojoExecution()>();
+
+        $r2 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r2.<org.apache.maven.cli.event.ExecutionEventLogger: void append(org.apache.maven.shared.utils.logging.MessageBuilder,org.apache.maven.plugin.MojoExecution)>(buffer, $stack8);
+
+        interfaceinvoke buffer.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>(" > ");
+
+        $stack10 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.plugin.MojoExecution getMojoExecution()>();
+
+        $stack11 = virtualinvoke $stack10.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $r3 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r3.<org.apache.maven.cli.event.ExecutionEventLogger: void appendForkInfo(org.apache.maven.shared.utils.logging.MessageBuilder,org.apache.maven.plugin.descriptor.MojoDescriptor)>(buffer, $stack11);
+
+        $stack12 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.project.MavenProject getProject()>();
+
+        $r4 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r4.<org.apache.maven.cli.event.ExecutionEventLogger: void append(org.apache.maven.shared.utils.logging.MessageBuilder,org.apache.maven.project.MavenProject)>(buffer, $stack12);
+
+        interfaceinvoke buffer.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>(" >>>");
+
+        $r5 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack14 = $r5.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack15 = virtualinvoke buffer.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke $stack14.<org.slf4j.Logger: void info(java.lang.String)>($stack15);
+
+     label1:
+        return;
+    }
+
+    public void forkSucceeded(org.apache.maven.execution.ExecutionEvent)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack3, $stack5, $stack14, $stack16;
+        boolean $stack4;
+        org.apache.maven.shared.utils.logging.MessageBuilder $stack6, buffer;
+        org.apache.maven.execution.ExecutionEvent event;
+        org.apache.maven.plugin.MojoExecution $stack8, $stack10;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack11;
+        org.apache.maven.project.MavenProject $stack12;
+        java.lang.String $stack15;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: ExecutionEventLogger;
+
+        event := @parameter0: org.apache.maven.execution.ExecutionEvent;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack3 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack4 = interfaceinvoke $stack3.<org.slf4j.Logger: boolean isInfoEnabled()>();
+
+        if $stack4 == 0 goto label1;
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack5 = $r1.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        interfaceinvoke $stack5.<org.slf4j.Logger: void info(java.lang.String)>("");
+
+        $stack6 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: org.apache.maven.shared.utils.logging.MessageBuilder buffer()>();
+
+        buffer = interfaceinvoke $stack6.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>("<<< ");
+
+        $stack8 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.plugin.MojoExecution getMojoExecution()>();
+
+        $r2 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r2.<org.apache.maven.cli.event.ExecutionEventLogger: void append(org.apache.maven.shared.utils.logging.MessageBuilder,org.apache.maven.plugin.MojoExecution)>(buffer, $stack8);
+
+        interfaceinvoke buffer.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>(" < ");
+
+        $stack10 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.plugin.MojoExecution getMojoExecution()>();
+
+        $stack11 = virtualinvoke $stack10.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $r3 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r3.<org.apache.maven.cli.event.ExecutionEventLogger: void appendForkInfo(org.apache.maven.shared.utils.logging.MessageBuilder,org.apache.maven.plugin.descriptor.MojoDescriptor)>(buffer, $stack11);
+
+        $stack12 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.project.MavenProject getProject()>();
+
+        $r4 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r4.<org.apache.maven.cli.event.ExecutionEventLogger: void append(org.apache.maven.shared.utils.logging.MessageBuilder,org.apache.maven.project.MavenProject)>(buffer, $stack12);
+
+        interfaceinvoke buffer.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>(" <<<");
+
+        $r5 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack14 = $r5.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack15 = virtualinvoke buffer.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke $stack14.<org.slf4j.Logger: void info(java.lang.String)>($stack15);
+
+        $r6 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack16 = $r6.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        interfaceinvoke $stack16.<org.slf4j.Logger: void info(java.lang.String)>("");
+
+     label1:
+        return;
+    }
+
+    private void append(org.apache.maven.shared.utils.logging.MessageBuilder, org.apache.maven.plugin.MojoExecution)
+    {
+        org.apache.maven.shared.utils.logging.MessageBuilder buffer, $stack16;
+        java.lang.StringBuilder $stack3, $stack5, $stack6, $stack8, $stack9, $stack11, $stack17, $stack18, $stack20, $stack21;
+        org.apache.maven.plugin.MojoExecution me;
+        java.lang.String $stack4, $stack7, $stack10, $stack12, $stack14, $stack19, $stack22;
+        java.lang.Character $stack15;
+        ExecutionEventLogger this;
+
+        this := @this: ExecutionEventLogger;
+
+        buffer := @parameter0: org.apache.maven.shared.utils.logging.MessageBuilder;
+
+        me := @parameter1: org.apache.maven.plugin.MojoExecution;
+
+        $stack3 = new java.lang.StringBuilder;
+
+        specialinvoke $stack3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack4 = virtualinvoke me.<org.apache.maven.plugin.MojoExecution: java.lang.String getArtifactId()>();
+
+        $stack5 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack4);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack7 = virtualinvoke me.<org.apache.maven.plugin.MojoExecution: java.lang.String getVersion()>();
+
+        $stack8 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack7);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack10 = virtualinvoke me.<org.apache.maven.plugin.MojoExecution: java.lang.String getGoal()>();
+
+        $stack11 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke buffer.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder mojo(java.lang.Object)>($stack12);
+
+        $stack14 = virtualinvoke me.<org.apache.maven.plugin.MojoExecution: java.lang.String getExecutionId()>();
+
+        if $stack14 == null goto label1;
+
+        $stack15 = staticinvoke <java.lang.Character: java.lang.Character valueOf(char)>(32);
+
+        $stack16 = interfaceinvoke buffer.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder a(java.lang.Object)>($stack15);
+
+        $stack17 = new java.lang.StringBuilder;
+
+        specialinvoke $stack17.<java.lang.StringBuilder: void <init>()>();
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(40);
+
+        $stack19 = virtualinvoke me.<org.apache.maven.plugin.MojoExecution: java.lang.String getExecutionId()>();
+
+        $stack20 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack16.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>($stack22);
+
+     label1:
+        return;
+    }
+
+    private void appendForkInfo(org.apache.maven.shared.utils.logging.MessageBuilder, org.apache.maven.plugin.descriptor.MojoDescriptor)
+    {
+        java.lang.StringBuilder $stack4;
+        org.apache.maven.plugin.descriptor.MojoDescriptor md;
+        java.lang.String $stack5, $stack8, $stack10, $stack12, $stack14, $stack19;
+        boolean $stack6, $stack13;
+        org.apache.maven.shared.utils.logging.MessageBuilder buffer;
+        ExecutionEventLogger this;
+
+        this := @this: ExecutionEventLogger;
+
+        buffer := @parameter0: org.apache.maven.shared.utils.logging.MessageBuilder;
+
+        md := @parameter1: org.apache.maven.plugin.descriptor.MojoDescriptor;
+
+        $stack4 = new java.lang.StringBuilder;
+
+        specialinvoke $stack4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack5 = virtualinvoke md.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getExecutePhase()>();
+
+        $stack6 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack5);
+
+        if $stack6 == 0 goto label2;
+
+        $stack12 = virtualinvoke md.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getExecuteLifecycle()>();
+
+        $stack13 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack12);
+
+        if $stack13 == 0 goto label1;
+
+        virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(91);
+
+        $stack19 = virtualinvoke md.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getExecuteLifecycle()>();
+
+        virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+        virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(93);
+
+     label1:
+        $stack14 = virtualinvoke md.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getExecutePhase()>();
+
+        virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        goto label3;
+
+     label2:
+        virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack8 = virtualinvoke md.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getExecuteGoal()>();
+
+        virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+     label3:
+        $stack10 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke buffer.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder strong(java.lang.Object)>($stack10);
+
+        return;
+    }
+
+    private void append(org.apache.maven.shared.utils.logging.MessageBuilder, org.apache.maven.project.MavenProject)
+    {
+        org.apache.maven.shared.utils.logging.MessageBuilder buffer, $stack3;
+        org.apache.maven.project.MavenProject project;
+        java.lang.String $stack4;
+        ExecutionEventLogger this;
+
+        this := @this: ExecutionEventLogger;
+
+        buffer := @parameter0: org.apache.maven.shared.utils.logging.MessageBuilder;
+
+        project := @parameter1: org.apache.maven.project.MavenProject;
+
+        $stack3 = interfaceinvoke buffer.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder a(java.lang.CharSequence)>(" @ ");
+
+        $stack4 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        interfaceinvoke $stack3.<org.apache.maven.shared.utils.logging.MessageBuilder: org.apache.maven.shared.utils.logging.MessageBuilder project(java.lang.Object)>($stack4);
+
+        return;
+    }
+
+    public void forkedProjectStarted(org.apache.maven.execution.ExecutionEvent)
+    {
+        ExecutionEventLogger this;
+        org.slf4j.Logger $stack2, $stack7;
+        boolean $stack3;
+        org.apache.maven.execution.ExecutionEvent event;
+        org.apache.maven.plugin.MojoExecution $stack4;
+        java.util.Map $stack5;
+        int $stack6;
+        java.lang.StringBuilder $stack9, $stack12, $stack13, $stack16, $u0;
+        org.apache.maven.project.MavenProject $stack10, $stack14;
+        java.lang.String $stack11, $stack15, $stack17;
+        org.apache.maven.cli.event.ExecutionEventLogger $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: ExecutionEventLogger;
+
+        event := @parameter0: org.apache.maven.execution.ExecutionEvent;
+
+        $r0 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack2 = $r0.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        $stack3 = interfaceinvoke $stack2.<org.slf4j.Logger: boolean isInfoEnabled()>();
+
+        if $stack3 == 0 goto label1;
+
+        $stack4 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.plugin.MojoExecution getMojoExecution()>();
+
+        $stack5 = virtualinvoke $stack4.<org.apache.maven.plugin.MojoExecution: java.util.Map getForkedExecutions()>();
+
+        $stack6 = interfaceinvoke $stack5.<java.util.Map: int size()>();
+
+        if $stack6 <= 1 goto label1;
+
+        $r1 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        $stack7 = $r1.<org.apache.maven.cli.event.ExecutionEventLogger: org.slf4j.Logger logger>;
+
+        interfaceinvoke $stack7.<org.slf4j.Logger: void info(java.lang.String)>("");
+
+        $r2 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r2.<org.apache.maven.cli.event.ExecutionEventLogger: void infoLine(char)>(62);
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack9 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Forking ");
+
+        $stack10 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.project.MavenProject getProject()>();
+
+        $stack11 = virtualinvoke $stack10.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        $stack12 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $stack14 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.project.MavenProject getProject()>();
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        $stack16 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack15);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r3.<org.apache.maven.cli.event.ExecutionEventLogger: void infoMain(java.lang.String)>($stack17);
+
+        $r4 = (org.apache.maven.cli.event.ExecutionEventLogger) this;
+
+        specialinvoke $r4.<org.apache.maven.cli.event.ExecutionEventLogger: void infoLine(char)>(62);
+
+     label1:
+        return;
+    }
+
+    private static void lambda$sessionEnded$0(org.apache.maven.execution.ExecutionEvent, org.apache.maven.logwrapper.LogLevelRecorder)
+    {
+        org.apache.maven.execution.ExecutionEvent event;
+        org.apache.maven.execution.MavenSession $stack2;
+        org.apache.maven.execution.MavenExecutionResult $stack3;
+        java.lang.Exception $stack4;
+        org.apache.maven.logwrapper.LogLevelRecorder recorder;
+
+        event := @parameter0: org.apache.maven.execution.ExecutionEvent;
+
+        recorder := @parameter1: org.apache.maven.logwrapper.LogLevelRecorder;
+
+        $stack2 = interfaceinvoke event.<org.apache.maven.execution.ExecutionEvent: org.apache.maven.execution.MavenSession getSession()>();
+
+        $stack3 = virtualinvoke $stack2.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionResult getResult()>();
+
+        $stack4 = new java.lang.Exception;
+
+        specialinvoke $stack4.<java.lang.Exception: void <init>(java.lang.String)>("Build failed due to log statements with a higher severity than allowed. Fix the logged issues or remove flag --fail-on-severity (-fos).");
+
+        interfaceinvoke $stack3.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult addException(java.lang.Throwable)>($stack4);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <ExecutionEventLogger: int MAX_PADDED_BUILD_TIME_DURATION_LENGTH> = 9;
+
+        <ExecutionEventLogger: int MAX_TERMINAL_WIDTH> = 130;
+
+        <ExecutionEventLogger: int DEFAULT_TERMINAL_WIDTH> = 80;
+
+        <ExecutionEventLogger: int MIN_TERMINAL_WIDTH> = 60;
+
+        <ExecutionEventLogger: int PROJECT_STATUS_SUFFIX_SIZE> = 20;
+
+        <ExecutionEventLogger: int MAX_LOG_PREFIX_SIZE> = 8;
+
+        return;
+    }
+}

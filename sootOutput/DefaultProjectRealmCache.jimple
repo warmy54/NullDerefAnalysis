@@ -1,0 +1,227 @@
+public class DefaultProjectRealmCache extends java.lang.Object implements org.apache.maven.project.ProjectRealmCache, org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable
+{
+    protected final java.util.Map cache;
+
+    public void <init>()
+    {
+        DefaultProjectRealmCache this;
+        java.util.concurrent.ConcurrentHashMap $u0;
+        org.apache.maven.project.DefaultProjectRealmCache $r0;
+
+        this := @this: DefaultProjectRealmCache;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.concurrent.ConcurrentHashMap;
+
+        specialinvoke $u0.<java.util.concurrent.ConcurrentHashMap: void <init>()>();
+
+        $r0 = (org.apache.maven.project.DefaultProjectRealmCache) this;
+
+        $r0.<org.apache.maven.project.DefaultProjectRealmCache: java.util.Map cache> = $u0;
+
+        return;
+    }
+
+    public org.apache.maven.project.ProjectRealmCache$Key createKey(java.util.List)
+    {
+        java.util.List extensionRealms;
+        DefaultProjectRealmCache this;
+        org.apache.maven.project.DefaultProjectRealmCache$CacheKey $u0;
+        org.apache.maven.project.ProjectRealmCache$Key $r0;
+
+        this := @this: DefaultProjectRealmCache;
+
+        extensionRealms := @parameter0: java.util.List;
+
+        $u0 = new org.apache.maven.project.DefaultProjectRealmCache$CacheKey;
+
+        specialinvoke $u0.<org.apache.maven.project.DefaultProjectRealmCache$CacheKey: void <init>(java.util.List)>(extensionRealms);
+
+        $r0 = (org.apache.maven.project.ProjectRealmCache$Key) $u0;
+
+        return $r0;
+    }
+
+    public org.apache.maven.project.ProjectRealmCache$CacheRecord get(org.apache.maven.project.ProjectRealmCache$Key)
+    {
+        DefaultProjectRealmCache this;
+        org.apache.maven.project.ProjectRealmCache$Key key;
+        java.util.Map $stack2;
+        java.lang.Object $stack3;
+        org.apache.maven.project.ProjectRealmCache$CacheRecord $stack4;
+        org.apache.maven.project.DefaultProjectRealmCache $r0;
+
+        this := @this: DefaultProjectRealmCache;
+
+        key := @parameter0: org.apache.maven.project.ProjectRealmCache$Key;
+
+        $r0 = (org.apache.maven.project.DefaultProjectRealmCache) this;
+
+        $stack2 = $r0.<org.apache.maven.project.DefaultProjectRealmCache: java.util.Map cache>;
+
+        $stack3 = interfaceinvoke $stack2.<java.util.Map: java.lang.Object get(java.lang.Object)>(key);
+
+        $stack4 = (org.apache.maven.project.ProjectRealmCache$CacheRecord) $stack3;
+
+        return $stack4;
+    }
+
+    public org.apache.maven.project.ProjectRealmCache$CacheRecord put(org.apache.maven.project.ProjectRealmCache$Key, org.codehaus.plexus.classworlds.realm.ClassRealm, org.eclipse.aether.graph.DependencyFilter)
+    {
+        org.codehaus.plexus.classworlds.realm.ClassRealm projectRealm;
+        DefaultProjectRealmCache this;
+        org.apache.maven.project.ProjectRealmCache$Key key;
+        java.util.Map $stack6, $stack9;
+        boolean $stack7;
+        org.eclipse.aether.graph.DependencyFilter extensionArtifactFilter;
+        java.lang.StringBuilder $stack13, $stack14, $u0;
+        java.lang.String $stack15;
+        java.lang.IllegalStateException $u1;
+        org.apache.maven.project.ProjectRealmCache$CacheRecord $u2;
+        org.apache.maven.project.DefaultProjectRealmCache $r0, $r1;
+
+        this := @this: DefaultProjectRealmCache;
+
+        key := @parameter0: org.apache.maven.project.ProjectRealmCache$Key;
+
+        projectRealm := @parameter1: org.codehaus.plexus.classworlds.realm.ClassRealm;
+
+        extensionArtifactFilter := @parameter2: org.eclipse.aether.graph.DependencyFilter;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(projectRealm, "projectRealm cannot be null");
+
+        $r0 = (org.apache.maven.project.DefaultProjectRealmCache) this;
+
+        $stack6 = $r0.<org.apache.maven.project.DefaultProjectRealmCache: java.util.Map cache>;
+
+        $stack7 = interfaceinvoke $stack6.<java.util.Map: boolean containsKey(java.lang.Object)>(key);
+
+        if $stack7 == 0 goto label1;
+
+        $u1 = new java.lang.IllegalStateException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Duplicate project realm for extensions ");
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(key);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<java.lang.IllegalStateException: void <init>(java.lang.String)>($stack15);
+
+        throw $u1;
+
+     label1:
+        $u2 = new org.apache.maven.project.ProjectRealmCache$CacheRecord;
+
+        specialinvoke $u2.<org.apache.maven.project.ProjectRealmCache$CacheRecord: void <init>(org.codehaus.plexus.classworlds.realm.ClassRealm,org.eclipse.aether.graph.DependencyFilter)>(projectRealm, extensionArtifactFilter);
+
+        $r1 = (org.apache.maven.project.DefaultProjectRealmCache) this;
+
+        $stack9 = $r1.<org.apache.maven.project.DefaultProjectRealmCache: java.util.Map cache>;
+
+        interfaceinvoke $stack9.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, $u2);
+
+        return $u2;
+    }
+
+    public void flush()
+    {
+        DefaultProjectRealmCache this;
+        java.util.Map $stack5, $stack9;
+        java.util.Collection $stack6;
+        java.util.Iterator l1;
+        boolean $stack8;
+        java.lang.Object $stack10;
+        org.apache.maven.project.ProjectRealmCache$CacheRecord record;
+        org.codehaus.plexus.classworlds.realm.ClassRealm realm;
+        org.codehaus.plexus.classworlds.ClassWorld $stack12;
+        java.lang.String $stack13;
+        java.lang.Throwable $stack15;
+        org.apache.maven.project.DefaultProjectRealmCache $r0, $r1;
+
+        this := @this: DefaultProjectRealmCache;
+
+        $r0 = (org.apache.maven.project.DefaultProjectRealmCache) this;
+
+        $stack5 = $r0.<org.apache.maven.project.DefaultProjectRealmCache: java.util.Map cache>;
+
+        $stack6 = interfaceinvoke $stack5.<java.util.Map: java.util.Collection values()>();
+
+        l1 = interfaceinvoke $stack6.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke l1.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label6;
+
+        $stack10 = interfaceinvoke l1.<java.util.Iterator: java.lang.Object next()>();
+
+        record = (org.apache.maven.project.ProjectRealmCache$CacheRecord) $stack10;
+
+        realm = virtualinvoke record.<org.apache.maven.project.ProjectRealmCache$CacheRecord: org.codehaus.plexus.classworlds.realm.ClassRealm getRealm()>();
+
+     label2:
+        $stack12 = virtualinvoke realm.<org.codehaus.plexus.classworlds.realm.ClassRealm: org.codehaus.plexus.classworlds.ClassWorld getWorld()>();
+
+        $stack13 = virtualinvoke realm.<org.codehaus.plexus.classworlds.realm.ClassRealm: java.lang.String getId()>();
+
+        virtualinvoke $stack12.<org.codehaus.plexus.classworlds.ClassWorld: void disposeRealm(java.lang.String)>($stack13);
+
+     label3:
+        goto label5;
+
+     label4:
+        $stack15 := @caughtexception;
+
+     label5:
+        goto label1;
+
+     label6:
+        $r1 = (org.apache.maven.project.DefaultProjectRealmCache) this;
+
+        $stack9 = $r1.<org.apache.maven.project.DefaultProjectRealmCache: java.util.Map cache>;
+
+        interfaceinvoke $stack9.<java.util.Map: void clear()>();
+
+        return;
+
+        catch org.codehaus.plexus.classworlds.realm.NoSuchRealmException from label2 to label3 with label4;
+    }
+
+    public void register(org.apache.maven.project.MavenProject, org.apache.maven.project.ProjectRealmCache$Key, org.apache.maven.project.ProjectRealmCache$CacheRecord)
+    {
+        DefaultProjectRealmCache this;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.project.ProjectRealmCache$Key key;
+        org.apache.maven.project.ProjectRealmCache$CacheRecord record;
+
+        this := @this: DefaultProjectRealmCache;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        key := @parameter1: org.apache.maven.project.ProjectRealmCache$Key;
+
+        record := @parameter2: org.apache.maven.project.ProjectRealmCache$CacheRecord;
+
+        return;
+    }
+
+    public void dispose()
+    {
+        DefaultProjectRealmCache this;
+        org.apache.maven.project.DefaultProjectRealmCache $r0;
+
+        this := @this: DefaultProjectRealmCache;
+
+        $r0 = (org.apache.maven.project.DefaultProjectRealmCache) this;
+
+        virtualinvoke $r0.<org.apache.maven.project.DefaultProjectRealmCache: void flush()>();
+
+        return;
+    }
+}

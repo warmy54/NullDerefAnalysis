@@ -1,0 +1,391 @@
+abstract class MavenMetadata extends org.eclipse.aether.metadata.AbstractMetadata implements org.eclipse.aether.metadata.MergeableMetadata
+{
+    static final java.lang.String MAVEN_METADATA_XML;
+    protected org.apache.maven.artifact.repository.metadata.Metadata metadata;
+    private final java.io.File file;
+    protected final java.util.Date timestamp;
+    private boolean merged;
+
+    protected void <init>(org.apache.maven.artifact.repository.metadata.Metadata, java.io.File, java.util.Date)
+    {
+        MavenMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata metadata;
+        java.io.File file;
+        java.util.Date timestamp;
+        org.apache.maven.repository.internal.MavenMetadata $r0, $r1, $r2;
+
+        this := @this: MavenMetadata;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.Metadata;
+
+        file := @parameter1: java.io.File;
+
+        timestamp := @parameter2: java.util.Date;
+
+        specialinvoke this.<org.eclipse.aether.metadata.AbstractMetadata: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.internal.MavenMetadata) this;
+
+        $r0.<org.apache.maven.repository.internal.MavenMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata> = metadata;
+
+        $r1 = (org.apache.maven.repository.internal.MavenMetadata) this;
+
+        $r1.<org.apache.maven.repository.internal.MavenMetadata: java.io.File file> = file;
+
+        $r2 = (org.apache.maven.repository.internal.MavenMetadata) this;
+
+        $r2.<org.apache.maven.repository.internal.MavenMetadata: java.util.Date timestamp> = timestamp;
+
+        return;
+    }
+
+    public java.lang.String getType()
+    {
+        MavenMetadata this;
+
+        this := @this: MavenMetadata;
+
+        return "maven-metadata.xml";
+    }
+
+    public java.io.File getFile()
+    {
+        MavenMetadata this;
+        java.io.File $stack1;
+        org.apache.maven.repository.internal.MavenMetadata $r0;
+
+        this := @this: MavenMetadata;
+
+        $r0 = (org.apache.maven.repository.internal.MavenMetadata) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.internal.MavenMetadata: java.io.File file>;
+
+        return $stack1;
+    }
+
+    public void merge(java.io.File, java.io.File) throws org.eclipse.aether.RepositoryException
+    {
+        java.io.File existing, result;
+        org.apache.maven.artifact.repository.metadata.Metadata recessive, $stack5;
+        MavenMetadata this;
+        org.apache.maven.repository.internal.MavenMetadata $r0, $r1, $r2, $r3;
+
+        this := @this: MavenMetadata;
+
+        existing := @parameter0: java.io.File;
+
+        result := @parameter1: java.io.File;
+
+        recessive = staticinvoke <org.apache.maven.repository.internal.MavenMetadata: org.apache.maven.artifact.repository.metadata.Metadata read(java.io.File)>(existing);
+
+        $r0 = (org.apache.maven.repository.internal.MavenMetadata) this;
+
+        virtualinvoke $r0.<org.apache.maven.repository.internal.MavenMetadata: void merge(org.apache.maven.artifact.repository.metadata.Metadata)>(recessive);
+
+        $r1 = (org.apache.maven.repository.internal.MavenMetadata) this;
+
+        $stack5 = $r1.<org.apache.maven.repository.internal.MavenMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        $r2 = (org.apache.maven.repository.internal.MavenMetadata) this;
+
+        specialinvoke $r2.<org.apache.maven.repository.internal.MavenMetadata: void write(java.io.File,org.apache.maven.artifact.repository.metadata.Metadata)>(result, $stack5);
+
+        $r3 = (org.apache.maven.repository.internal.MavenMetadata) this;
+
+        $r3.<org.apache.maven.repository.internal.MavenMetadata: boolean merged> = 1;
+
+        return;
+    }
+
+    public boolean isMerged()
+    {
+        MavenMetadata this;
+        boolean $stack1;
+        org.apache.maven.repository.internal.MavenMetadata $r0;
+
+        this := @this: MavenMetadata;
+
+        $r0 = (org.apache.maven.repository.internal.MavenMetadata) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.internal.MavenMetadata: boolean merged>;
+
+        return $stack1;
+    }
+
+    protected abstract void merge(org.apache.maven.artifact.repository.metadata.Metadata);
+
+    static org.apache.maven.artifact.repository.metadata.Metadata read(java.io.File) throws org.eclipse.aether.RepositoryException
+    {
+        java.io.File metadataFile;
+        long $stack4;
+        byte $stack5;
+        java.lang.Throwable $stack11, $stack29, $stack30, $r3, $r5;
+        java.lang.StringBuilder $stack14, $stack15, $stack16, $stack18, $stack23, $stack24, $stack25, $stack27, $u2, $u4;
+        java.lang.String $stack17, $stack19, $stack26, $stack28;
+        java.io.IOException $stack20;
+        org.codehaus.plexus.util.xml.XmlStreamReader reader;
+        org.apache.maven.artifact.repository.metadata.Metadata l2, $u0;
+        org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader $u1;
+        org.eclipse.aether.RepositoryException $u3, $u5;
+        java.io.Reader $r0, $r1, $r2;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $r4;
+
+        metadataFile := @parameter0: java.io.File;
+
+        $stack4 = virtualinvoke metadataFile.<java.io.File: long length()>();
+
+        $stack5 = $stack4 cmp 0L;
+
+        if $stack5 > 0 goto label01;
+
+        $u0 = new org.apache.maven.artifact.repository.metadata.Metadata;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.Metadata: void <init>()>();
+
+        return $u0;
+
+     label01:
+        reader = staticinvoke <org.codehaus.plexus.util.ReaderFactory: org.codehaus.plexus.util.xml.XmlStreamReader newXmlReader(java.io.File)>(metadataFile);
+
+     label02:
+        $u1 = new org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader;
+
+        specialinvoke $u1.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: void <init>()>();
+
+        $r0 = (java.io.Reader) reader;
+
+        l2 = virtualinvoke $u1.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: org.apache.maven.artifact.repository.metadata.Metadata read(java.io.Reader,boolean)>($r0, 0);
+
+     label03:
+        if reader == null goto label04;
+
+        $r1 = (java.io.Reader) reader;
+
+        virtualinvoke $r1.<java.io.Reader: void close()>();
+
+     label04:
+        return l2;
+
+     label05:
+        $stack30 := @caughtexception;
+
+        if reader == null goto label09;
+
+     label06:
+        $r2 = (java.io.Reader) reader;
+
+        virtualinvoke $r2.<java.io.Reader: void close()>();
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack29 := @caughtexception;
+
+        virtualinvoke $stack30.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack29);
+
+     label09:
+        throw $stack30;
+
+     label10:
+        $stack20 := @caughtexception;
+
+        $u3 = new org.eclipse.aether.RepositoryException;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack23 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not read metadata ");
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadataFile);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack26 = virtualinvoke $stack20.<java.io.IOException: java.lang.String getMessage()>();
+
+        $stack27 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack26);
+
+        $stack28 = virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u3.<org.eclipse.aether.RepositoryException: void <init>(java.lang.String,java.lang.Throwable)>($stack28, $stack20);
+
+        $r3 = (java.lang.Throwable) $u3;
+
+        throw $r3;
+
+     label11:
+        $stack11 := @caughtexception;
+
+        $u5 = new org.eclipse.aether.RepositoryException;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack14 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not parse metadata ");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadataFile);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $r4 = (org.codehaus.plexus.util.xml.pull.XmlPullParserException) $stack11;
+
+        $stack17 = virtualinvoke $r4.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: java.lang.String getMessage()>();
+
+        $stack18 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack17);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u5.<org.eclipse.aether.RepositoryException: void <init>(java.lang.String,java.lang.Throwable)>($stack19, $stack11);
+
+        $r5 = (java.lang.Throwable) $u5;
+
+        throw $r5;
+
+        catch java.lang.Throwable from label02 to label03 with label05;
+        catch java.lang.Throwable from label06 to label07 with label08;
+        catch java.io.IOException from label01 to label04 with label10;
+        catch java.io.IOException from label05 to label10 with label10;
+        catch org.codehaus.plexus.util.xml.pull.XmlPullParserException from label01 to label04 with label11;
+        catch org.codehaus.plexus.util.xml.pull.XmlPullParserException from label05 to label10 with label11;
+    }
+
+    private void write(java.io.File, org.apache.maven.artifact.repository.metadata.Metadata) throws org.eclipse.aether.RepositoryException
+    {
+        java.io.File metadataFile, $stack6;
+        org.apache.maven.artifact.repository.metadata.Metadata metadata;
+        java.io.IOException $stack10;
+        java.lang.StringBuilder $stack13, $stack14, $stack15, $stack17, $u1;
+        java.lang.String $stack16, $stack18;
+        java.lang.Throwable $stack19, $stack20, $r3;
+        MavenMetadata this;
+        org.codehaus.plexus.util.xml.XmlStreamWriter writer;
+        org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer $u0;
+        org.eclipse.aether.RepositoryException $u2;
+        java.io.Writer $r0, $r1, $r2;
+
+        this := @this: MavenMetadata;
+
+        metadataFile := @parameter0: java.io.File;
+
+        metadata := @parameter1: org.apache.maven.artifact.repository.metadata.Metadata;
+
+        $stack6 = virtualinvoke metadataFile.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $stack6.<java.io.File: boolean mkdirs()>();
+
+     label01:
+        writer = staticinvoke <org.codehaus.plexus.util.WriterFactory: org.codehaus.plexus.util.xml.XmlStreamWriter newXmlWriter(java.io.File)>(metadataFile);
+
+     label02:
+        $u0 = new org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer: void <init>()>();
+
+        $r0 = (java.io.Writer) writer;
+
+        virtualinvoke $u0.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer: void write(java.io.Writer,org.apache.maven.artifact.repository.metadata.Metadata)>($r0, metadata);
+
+     label03:
+        if writer == null goto label09;
+
+        $r1 = (java.io.Writer) writer;
+
+        virtualinvoke $r1.<java.io.Writer: void close()>();
+
+        goto label09;
+
+     label04:
+        $stack20 := @caughtexception;
+
+        if writer == null goto label08;
+
+     label05:
+        $r2 = (java.io.Writer) writer;
+
+        virtualinvoke $r2.<java.io.Writer: void close()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $stack19 := @caughtexception;
+
+        virtualinvoke $stack20.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack19);
+
+     label08:
+        throw $stack20;
+
+     label09:
+        goto label11;
+
+     label10:
+        $stack10 := @caughtexception;
+
+        $u2 = new org.eclipse.aether.RepositoryException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not write metadata ");
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(metadataFile);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack16 = virtualinvoke $stack10.<java.io.IOException: java.lang.String getMessage()>();
+
+        $stack17 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack16);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.eclipse.aether.RepositoryException: void <init>(java.lang.String,java.lang.Throwable)>($stack18, $stack10);
+
+        $r3 = (java.lang.Throwable) $u2;
+
+        throw $r3;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch java.io.IOException from label01 to label09 with label10;
+    }
+
+    public java.util.Map getProperties()
+    {
+        java.util.Map $stack1;
+        MavenMetadata this;
+
+        this := @this: MavenMetadata;
+
+        $stack1 = staticinvoke <java.util.Collections: java.util.Map emptyMap()>();
+
+        return $stack1;
+    }
+
+    public org.eclipse.aether.metadata.Metadata setProperties(java.util.Map)
+    {
+        MavenMetadata this;
+        java.util.Map properties;
+        org.eclipse.aether.metadata.Metadata $r0;
+
+        this := @this: MavenMetadata;
+
+        properties := @parameter0: java.util.Map;
+
+        $r0 = (org.eclipse.aether.metadata.Metadata) this;
+
+        return $r0;
+    }
+
+    public static void <clinit>()
+    {
+        <MavenMetadata: java.lang.String MAVEN_METADATA_XML> = "maven-metadata.xml";
+
+        return;
+    }
+}

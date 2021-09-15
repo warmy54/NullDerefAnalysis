@@ -1,0 +1,2033 @@
+public class RealSense2FrameGrabber extends org.bytedeco.javacv.FrameGrabber
+{
+    private static org.bytedeco.javacv.FrameGrabber$Exception loadingException;
+    private org.bytedeco.librealsense2.rs2_error error;
+    private org.bytedeco.librealsense2.rs2_context context;
+    private org.bytedeco.librealsense2.rs2_device device;
+    private org.bytedeco.librealsense2.rs2_pipeline pipeline;
+    private org.bytedeco.librealsense2.rs2_config config;
+    private org.bytedeco.librealsense2.rs2_pipeline_profile pipelineProfile;
+    private org.bytedeco.librealsense2.rs2_frame frameset;
+    private int deviceNumber;
+    private java.util.List streams;
+    private org.bytedeco.javacv.FrameConverter converter;
+
+    public static void tryLoad() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.FrameGrabber$Exception $stack1, $stack10, $stack11, $u2;
+        java.io.PrintStream $stack4;
+        java.lang.StringBuilder $stack5, $stack8, $stack15, $stack16, $u0, $u1;
+        java.lang.String[] $stack6;
+        int $stack7;
+        java.lang.String $stack9, $stack17;
+        java.lang.Throwable $stack12, $r0, $r1;
+
+        $stack1 = <org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        if $stack1 == null goto label1;
+
+        $stack10 = <org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        virtualinvoke $stack10.<org.bytedeco.javacv.FrameGrabber$Exception: void printStackTrace()>();
+
+        $stack11 = <org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        $r0 = (java.lang.Throwable) $stack11;
+
+        throw $r0;
+
+     label1:
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/librealsense2/presets/realsense2;");
+
+        $stack4 = <java.lang.System: java.io.PrintStream out>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack5 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("RealSense2 devices found: ");
+
+        $stack6 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: java.lang.String[] getDeviceDescriptions()>();
+
+        $stack7 = lengthof $stack6;
+
+        $stack8 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack7);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack4.<java.io.PrintStream: void println(java.lang.String)>($stack9);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack12 := @caughtexception;
+
+        $u2 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack15 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to load ");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/RealSense2FrameGrabber;");
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String,java.lang.Throwable)>($stack17, $stack12);
+
+        <org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = $u2;
+
+        $r1 = (java.lang.Throwable) $u2;
+
+        throw $r1;
+
+     label4:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void <init>() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: void <init>(int)>(0);
+
+        return;
+    }
+
+    public void <init>(int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        int deviceNumber;
+        org.bytedeco.librealsense2.rs2_context $stack5;
+        org.bytedeco.librealsense2.rs2_error $u0;
+        java.util.ArrayList $u1;
+        org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage $u2;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2, $r4, $r5, $r6;
+        org.bytedeco.javacv.FrameConverter $r3;
+
+        this := @this: RealSense2FrameGrabber;
+
+        deviceNumber := @parameter0: int;
+
+        specialinvoke this.<org.bytedeco.javacv.FrameGrabber: void <init>()>();
+
+        $u0 = new org.bytedeco.librealsense2.rs2_error;
+
+        specialinvoke $u0.<org.bytedeco.librealsense2.rs2_error: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error> = $u0;
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: java.util.List streams> = $u1;
+
+        $u2 = new org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage;
+
+        specialinvoke $u2.<org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage: void <init>()>();
+
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r3 = (org.bytedeco.javacv.FrameConverter) $u2;
+
+        $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.FrameConverter converter> = $r3;
+
+        $r4 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r4.<org.bytedeco.javacv.RealSense2FrameGrabber: int deviceNumber> = deviceNumber;
+
+        $r5 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = specialinvoke $r5.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_context createContext()>();
+
+        $r6 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r6.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_context context> = $stack5;
+
+        return;
+    }
+
+    public java.util.List getDeviceInfos() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_device_list deviceList;
+        org.bytedeco.librealsense2.rs2_error $stack8, $stack10;
+        int count, i;
+        org.bytedeco.librealsense2.rs2_device device;
+        java.lang.String $stack13, $stack14, $stack15, $stack16, $stack18;
+        boolean $stack17, $stack19;
+        java.util.ArrayList $u0;
+        org.bytedeco.javacv.RealSense2FrameGrabber$RealSense2DeviceInfo $u1;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        deviceList = specialinvoke $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_device_list createDeviceList()>();
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack8 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        count = staticinvoke <org.bytedeco.librealsense2.global.realsense2: int rs2_get_device_count(org.bytedeco.librealsense2.rs2_device_list,org.bytedeco.librealsense2.rs2_error)>(deviceList, $stack8);
+
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack10 = $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack10);
+
+        i = 0;
+
+     label1:
+        if i >= count goto label2;
+
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        device = specialinvoke $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_device createDevice(org.bytedeco.librealsense2.rs2_device_list,int)>(deviceList, i);
+
+        $u1 = new org.bytedeco.javacv.RealSense2FrameGrabber$RealSense2DeviceInfo;
+
+        $r4 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack13 = specialinvoke $r4.<org.bytedeco.javacv.RealSense2FrameGrabber: java.lang.String getDeviceInfo(org.bytedeco.librealsense2.rs2_device,int)>(device, 0);
+
+        $r5 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack14 = specialinvoke $r5.<org.bytedeco.javacv.RealSense2FrameGrabber: java.lang.String getDeviceInfo(org.bytedeco.librealsense2.rs2_device,int)>(device, 1);
+
+        $r6 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack15 = specialinvoke $r6.<org.bytedeco.javacv.RealSense2FrameGrabber: java.lang.String getDeviceInfo(org.bytedeco.librealsense2.rs2_device,int)>(device, 2);
+
+        $r7 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack16 = specialinvoke $r7.<org.bytedeco.javacv.RealSense2FrameGrabber: java.lang.String getDeviceInfo(org.bytedeco.librealsense2.rs2_device,int)>(device, 6);
+
+        $stack17 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: boolean toBoolean(java.lang.String)>($stack16);
+
+        $r8 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack18 = specialinvoke $r8.<org.bytedeco.javacv.RealSense2FrameGrabber: java.lang.String getDeviceInfo(org.bytedeco.librealsense2.rs2_device,int)>(device, 8);
+
+        $stack19 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: boolean toBoolean(java.lang.String)>($stack18);
+
+        specialinvoke $u1.<org.bytedeco.javacv.RealSense2FrameGrabber$RealSense2DeviceInfo: void <init>(java.lang.String,java.lang.String,java.lang.String,boolean,boolean)>($stack13, $stack14, $stack15, $stack17, $stack19);
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($u1);
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_device(org.bytedeco.librealsense2.rs2_device)>(device);
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_device_list(org.bytedeco.librealsense2.rs2_device_list)>(deviceList);
+
+        return $u0;
+    }
+
+    public static java.lang.String[] getDeviceDescriptions() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.RealSense2FrameGrabber $stack5;
+        java.util.List infos;
+        int $stack7, $stack8, i;
+        java.lang.String[] deviceDescriptions;
+        java.lang.Object $stack9;
+        org.bytedeco.javacv.RealSense2FrameGrabber$RealSense2DeviceInfo info;
+        java.lang.String $stack10;
+
+        $stack5 = new org.bytedeco.javacv.RealSense2FrameGrabber;
+
+        specialinvoke $stack5.<org.bytedeco.javacv.RealSense2FrameGrabber: void <init>()>();
+
+        infos = virtualinvoke $stack5.<org.bytedeco.javacv.RealSense2FrameGrabber: java.util.List getDeviceInfos()>();
+
+        virtualinvoke $stack5.<org.bytedeco.javacv.RealSense2FrameGrabber: void release()>();
+
+        $stack7 = interfaceinvoke infos.<java.util.List: int size()>();
+
+        deviceDescriptions = newarray (java.lang.String)[$stack7];
+
+        i = 0;
+
+     label1:
+        $stack8 = lengthof deviceDescriptions;
+
+        if i >= $stack8 goto label2;
+
+        $stack9 = interfaceinvoke infos.<java.util.List: java.lang.Object get(int)>(i);
+
+        info = (org.bytedeco.javacv.RealSense2FrameGrabber$RealSense2DeviceInfo) $stack9;
+
+        $stack10 = virtualinvoke info.<org.bytedeco.javacv.RealSense2FrameGrabber$RealSense2DeviceInfo: java.lang.String toString()>();
+
+        deviceDescriptions[i] = $stack10;
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        return deviceDescriptions;
+    }
+
+    public void disableAllStreams()
+    {
+        RealSense2FrameGrabber this;
+        java.util.List $stack1;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: java.util.List streams>;
+
+        interfaceinvoke $stack1.<java.util.List: void clear()>();
+
+        return;
+    }
+
+    public java.util.List getEnabledStreams()
+    {
+        RealSense2FrameGrabber this;
+        java.util.List $stack1;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: java.util.List streams>;
+
+        return $stack1;
+    }
+
+    public void enableStream(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream stream;
+        java.util.List $stack2;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0;
+
+        this := @this: RealSense2FrameGrabber;
+
+        stream := @parameter0: org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: java.util.List streams>;
+
+        interfaceinvoke $stack2.<java.util.List: boolean add(java.lang.Object)>(stream);
+
+        return;
+    }
+
+    public void enableColorStream(int, int, int)
+    {
+        RealSense2FrameGrabber this;
+        int width, height, frameRate;
+        org.bytedeco.opencv.opencv_core.Size $u0;
+        org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream $u1;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0;
+
+        this := @this: RealSense2FrameGrabber;
+
+        width := @parameter0: int;
+
+        height := @parameter1: int;
+
+        frameRate := @parameter2: int;
+
+        $u1 = new org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream;
+
+        $u0 = new org.bytedeco.opencv.opencv_core.Size;
+
+        specialinvoke $u0.<org.bytedeco.opencv.opencv_core.Size: void <init>(int,int)>(width, height);
+
+        specialinvoke $u1.<org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: void <init>(int,int,org.bytedeco.opencv.opencv_core.Size,int,int)>(2, 0, $u0, frameRate, 6);
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: void enableStream(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>($u1);
+
+        return;
+    }
+
+    public void enableDepthStream(int, int, int)
+    {
+        RealSense2FrameGrabber this;
+        int width, height, frameRate;
+        org.bytedeco.opencv.opencv_core.Size $u0;
+        org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream $u1;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0;
+
+        this := @this: RealSense2FrameGrabber;
+
+        width := @parameter0: int;
+
+        height := @parameter1: int;
+
+        frameRate := @parameter2: int;
+
+        $u1 = new org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream;
+
+        $u0 = new org.bytedeco.opencv.opencv_core.Size;
+
+        specialinvoke $u0.<org.bytedeco.opencv.opencv_core.Size: void <init>(int,int)>(width, height);
+
+        specialinvoke $u1.<org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: void <init>(int,int,org.bytedeco.opencv.opencv_core.Size,int,int)>(1, 0, $u0, frameRate, 1);
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: void enableStream(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>($u1);
+
+        return;
+    }
+
+    public void enableIRStream(int, int, int, int)
+    {
+        RealSense2FrameGrabber this;
+        int index, width, height, frameRate;
+        org.bytedeco.opencv.opencv_core.Size $u0;
+        org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream $u1;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0;
+
+        this := @this: RealSense2FrameGrabber;
+
+        width := @parameter0: int;
+
+        height := @parameter1: int;
+
+        frameRate := @parameter2: int;
+
+        index := @parameter3: int;
+
+        $u1 = new org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream;
+
+        $u0 = new org.bytedeco.opencv.opencv_core.Size;
+
+        specialinvoke $u0.<org.bytedeco.opencv.opencv_core.Size: void <init>(int,int)>(width, height);
+
+        specialinvoke $u1.<org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: void <init>(int,int,org.bytedeco.opencv.opencv_core.Size,int,int)>(3, index, $u0, frameRate, 9);
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: void enableStream(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>($u1);
+
+        return;
+    }
+
+    public void enableIRStream(int, int, int)
+    {
+        RealSense2FrameGrabber this;
+        int width, height, frameRate;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0;
+
+        this := @this: RealSense2FrameGrabber;
+
+        width := @parameter0: int;
+
+        height := @parameter1: int;
+
+        frameRate := @parameter2: int;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: void enableIRStream(int,int,int,int)>(width, height, frameRate, 1);
+
+        return;
+    }
+
+    public void open() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        int $stack2, $stack4;
+        org.bytedeco.librealsense2.rs2_device_list devices;
+        org.bytedeco.librealsense2.rs2_device $stack5;
+        org.bytedeco.javacv.FrameGrabber$Exception $u0;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r2, $r3, $r4, $r5;
+        java.lang.Throwable $r1;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = specialinvoke $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: int getDeviceCount()>();
+
+        if $stack2 > 0 goto label1;
+
+        $u0 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u0.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("No realsense2 device is connected.");
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        devices = specialinvoke $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_device_list createDeviceList()>();
+
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: int deviceNumber>;
+
+        $r4 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = specialinvoke $r4.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_device createDevice(org.bytedeco.librealsense2.rs2_device_list,int)>(devices, $stack4);
+
+        $r5 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r5.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_device device> = $stack5;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_device_list(org.bytedeco.librealsense2.rs2_device_list)>(devices);
+
+        return;
+    }
+
+    public void start() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_device $stack3;
+        org.bytedeco.librealsense2.rs2_pipeline $stack4, $stack18;
+        org.bytedeco.librealsense2.rs2_config $stack5, $stack17, $stack22;
+        java.util.List $stack6, $stack8;
+        boolean $stack7, $stack10;
+        org.bytedeco.opencv.opencv_core.Size $stack12, $stack14, $stack25, $stack27;
+        int $stack13, $stack15, $stack23, $stack24, $stack26, $stack28, $stack29, $stack30;
+        org.bytedeco.librealsense2.rs2_error $stack16, $stack20, $stack31, $stack32;
+        org.bytedeco.librealsense2.rs2_pipeline_profile $stack19;
+        java.lang.Object $stack21;
+        org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream stream, largestStream#2;
+        java.util.Iterator largestStream;
+        org.bytedeco.javacv.FrameGrabber$Exception $u0;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19;
+        java.lang.Throwable $r7;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_device device>;
+
+        if $stack3 != null goto label1;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        virtualinvoke $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: void open()>();
+
+     label1:
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = specialinvoke $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_pipeline createPipeline()>();
+
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_pipeline pipeline> = $stack4;
+
+        $r4 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = specialinvoke $r4.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_config createConfig()>();
+
+        $r5 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r5.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_config config> = $stack5;
+
+        $r6 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack6 = $r6.<org.bytedeco.javacv.RealSense2FrameGrabber: java.util.List streams>;
+
+        $stack7 = interfaceinvoke $stack6.<java.util.List: boolean isEmpty()>();
+
+        if $stack7 == 0 goto label2;
+
+        $u0 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u0.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("No stream has been added to be enabled.");
+
+        $r7 = (java.lang.Throwable) $u0;
+
+        throw $r7;
+
+     label2:
+        $r8 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack8 = $r8.<org.bytedeco.javacv.RealSense2FrameGrabber: java.util.List streams>;
+
+        largestStream = interfaceinvoke $stack8.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack10 = interfaceinvoke largestStream.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label4;
+
+        $stack21 = interfaceinvoke largestStream.<java.util.Iterator: java.lang.Object next()>();
+
+        stream = (org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream) $stack21;
+
+        $r9 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack22 = $r9.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_config config>;
+
+        $stack23 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: int access$000(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>(stream);
+
+        $stack24 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: int access$100(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>(stream);
+
+        $stack25 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: org.bytedeco.opencv.opencv_core.Size access$200(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>(stream);
+
+        $stack26 = virtualinvoke $stack25.<org.bytedeco.opencv.opencv_core.Size: int width()>();
+
+        $stack27 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: org.bytedeco.opencv.opencv_core.Size access$200(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>(stream);
+
+        $stack28 = virtualinvoke $stack27.<org.bytedeco.opencv.opencv_core.Size: int height()>();
+
+        $stack29 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: int access$300(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>(stream);
+
+        $stack30 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: int access$400(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>(stream);
+
+        $r10 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack31 = $r10.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_config_enable_stream(org.bytedeco.librealsense2.rs2_config,int,int,int,int,int,int,org.bytedeco.librealsense2.rs2_error)>($stack22, $stack23, $stack24, $stack26, $stack28, $stack29, $stack30, $stack31);
+
+        $r11 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack32 = $r11.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack32);
+
+        goto label3;
+
+     label4:
+        $r12 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        largestStream#2 = specialinvoke $r12.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream getLargestStreamByArea()>();
+
+        $stack12 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: org.bytedeco.opencv.opencv_core.Size access$200(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>(largestStream#2);
+
+        $stack13 = virtualinvoke $stack12.<org.bytedeco.opencv.opencv_core.Size: int width()>();
+
+        $r13 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r13.<org.bytedeco.javacv.RealSense2FrameGrabber: int imageWidth> = $stack13;
+
+        $stack14 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: org.bytedeco.opencv.opencv_core.Size access$200(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>(largestStream#2);
+
+        $stack15 = virtualinvoke $stack14.<org.bytedeco.opencv.opencv_core.Size: int height()>();
+
+        $r14 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r14.<org.bytedeco.javacv.RealSense2FrameGrabber: int imageHeight> = $stack15;
+
+        $r15 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack18 = $r15.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_pipeline pipeline>;
+
+        $r16 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack17 = $r16.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_config config>;
+
+        $r17 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack16 = $r17.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        $stack19 = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.librealsense2.rs2_pipeline_profile rs2_pipeline_start_with_config(org.bytedeco.librealsense2.rs2_pipeline,org.bytedeco.librealsense2.rs2_config,org.bytedeco.librealsense2.rs2_error)>($stack18, $stack17, $stack16);
+
+        $r18 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r18.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_pipeline_profile pipelineProfile> = $stack19;
+
+        $r19 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack20 = $r19.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack20);
+
+        return;
+    }
+
+    public void stop() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack1, $stack3;
+        org.bytedeco.librealsense2.rs2_pipeline $stack2, $stack7;
+        org.bytedeco.librealsense2.rs2_frame $stack4;
+        org.bytedeco.librealsense2.rs2_pipeline_profile $stack5;
+        org.bytedeco.librealsense2.rs2_config $stack6;
+        org.bytedeco.librealsense2.rs2_device $stack8;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_pipeline pipeline>;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack1 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_pipeline_stop(org.bytedeco.librealsense2.rs2_pipeline,org.bytedeco.librealsense2.rs2_error)>($stack2, $stack1);
+
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack3 = $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack3);
+
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_frame frameset>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_release_frame(org.bytedeco.librealsense2.rs2_frame)>($stack4);
+
+        $r4 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = $r4.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_pipeline_profile pipelineProfile>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_pipeline_profile(org.bytedeco.librealsense2.rs2_pipeline_profile)>($stack5);
+
+        $r5 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack6 = $r5.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_config config>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_config(org.bytedeco.librealsense2.rs2_config)>($stack6);
+
+        $r6 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack7 = $r6.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_pipeline pipeline>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_pipeline(org.bytedeco.librealsense2.rs2_pipeline)>($stack7);
+
+        $r7 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack8 = $r7.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_device device>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_device(org.bytedeco.librealsense2.rs2_device)>($stack8);
+
+        $r8 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r8.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_device device> = null;
+
+        return;
+    }
+
+    private void readNextFrameSet() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_frame $stack1, $stack4;
+        org.bytedeco.librealsense2.rs2_error $stack2, $stack5;
+        org.bytedeco.librealsense2.rs2_pipeline $stack3;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_frame frameset>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_release_frame(org.bytedeco.librealsense2.rs2_frame)>($stack1);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_pipeline pipeline>;
+
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        $stack4 = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.librealsense2.rs2_frame rs2_pipeline_wait_for_frames(org.bytedeco.librealsense2.rs2_pipeline,int,org.bytedeco.librealsense2.rs2_error)>($stack3, 15000, $stack2);
+
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_frame frameset> = $stack4;
+
+        $r4 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = $r4.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack5);
+
+        return;
+    }
+
+    public void trigger() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        boolean $stack1;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: boolean triggerMode>;
+
+        if $stack1 != 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: boolean triggerMode> = 1;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        specialinvoke $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: void readNextFrameSet()>();
+
+        return;
+    }
+
+    public org.bytedeco.javacv.Frame grab() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        java.util.List $stack2;
+        java.lang.Object $stack3;
+        org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream stream;
+        int $stack4;
+        org.bytedeco.javacv.Frame $stack5, $stack6, $stack7;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2, $r3;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: java.util.List streams>;
+
+        $stack3 = interfaceinvoke $stack2.<java.util.List: java.lang.Object get(int)>(0);
+
+        stream = (org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream) $stack3;
+
+        $stack4 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: int access$000(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>(stream);
+
+        lookupswitch($stack4)
+        {
+            case 1: goto label1;
+            case 3: goto label2;
+            default: goto label3;
+        };
+
+     label1:
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack6 = virtualinvoke $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.Frame grabDepth()>();
+
+        return $stack6;
+
+     label2:
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = virtualinvoke $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.Frame grabIR()>();
+
+        return $stack5;
+
+     label3:
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack7 = virtualinvoke $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.Frame grabColor()>();
+
+        return $stack7;
+    }
+
+    public org.bytedeco.javacv.Frame grab(int, int, int, int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        boolean $stack5;
+        int streamType, streamIndex, iplDepth, channels;
+        org.bytedeco.javacv.Frame $stack6;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2;
+
+        this := @this: RealSense2FrameGrabber;
+
+        streamType := @parameter0: int;
+
+        streamIndex := @parameter1: int;
+
+        iplDepth := @parameter2: int;
+
+        channels := @parameter3: int;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: boolean triggerMode>;
+
+        if $stack5 != 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        specialinvoke $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: void readNextFrameSet()>();
+
+     label1:
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack6 = specialinvoke $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.Frame grabCVFrame(int,int,int,int)>(streamType, streamIndex, iplDepth, channels);
+
+        return $stack6;
+    }
+
+    public float getDistance(int, int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_frame $stack5, frame;
+        int x, y;
+        org.bytedeco.librealsense2.rs2_error $stack7, $stack9;
+        float distance;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2, $r3;
+
+        this := @this: RealSense2FrameGrabber;
+
+        x := @parameter0: int;
+
+        y := @parameter1: int;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_frame frameset>;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        frame = specialinvoke $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_frame findFrameByStreamType(org.bytedeco.librealsense2.rs2_frame,int,int)>($stack5, 1, 0);
+
+        if frame != null goto label1;
+
+        return -1.0F;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack7 = $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        distance = staticinvoke <org.bytedeco.librealsense2.global.realsense2: float rs2_depth_frame_get_distance(org.bytedeco.librealsense2.rs2_frame,int,int,org.bytedeco.librealsense2.rs2_error)>(frame, x, y, $stack7);
+
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack9 = $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack9);
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_release_frame(org.bytedeco.librealsense2.rs2_frame)>(frame);
+
+        return distance;
+    }
+
+    public org.bytedeco.javacv.Frame grabColor() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        boolean $stack1;
+        org.bytedeco.javacv.Frame $stack2;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: boolean triggerMode>;
+
+        if $stack1 != 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        specialinvoke $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: void readNextFrameSet()>();
+
+     label1:
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = specialinvoke $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.Frame grabCVFrame(int,int,int,int)>(2, 0, 8, 3);
+
+        return $stack2;
+    }
+
+    public org.bytedeco.javacv.Frame grabDepth() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        boolean $stack1;
+        org.bytedeco.javacv.Frame $stack2;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: boolean triggerMode>;
+
+        if $stack1 != 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        specialinvoke $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: void readNextFrameSet()>();
+
+     label1:
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = specialinvoke $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.Frame grabCVFrame(int,int,int,int)>(1, 0, 16, 1);
+
+        return $stack2;
+    }
+
+    public org.bytedeco.javacv.Frame grabIR() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.javacv.Frame $stack1;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.Frame grabIR(int)>(0);
+
+        return $stack1;
+    }
+
+    public org.bytedeco.javacv.Frame grabIR(int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        boolean $stack2;
+        int streamIndex;
+        org.bytedeco.javacv.Frame $stack3;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2;
+
+        this := @this: RealSense2FrameGrabber;
+
+        streamIndex := @parameter0: int;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: boolean triggerMode>;
+
+        if $stack2 != 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        specialinvoke $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: void readNextFrameSet()>();
+
+     label1:
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack3 = specialinvoke $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.Frame grabCVFrame(int,int,int,int)>(3, streamIndex, 8, 1);
+
+        return $stack3;
+    }
+
+    private org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream getLargestStreamByArea()
+    {
+        RealSense2FrameGrabber this;
+        java.util.List $stack4, $stack6;
+        java.lang.Object $stack5, $stack9;
+        java.util.Iterator l2;
+        boolean $stack8;
+        org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream rs, largest;
+        org.bytedeco.opencv.opencv_core.Size $stack10, $stack12;
+        int $stack11, $stack13;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: java.util.List streams>;
+
+        $stack5 = interfaceinvoke $stack4.<java.util.List: java.lang.Object get(int)>(0);
+
+        largest = (org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream) $stack5;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack6 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: java.util.List streams>;
+
+        l2 = interfaceinvoke $stack6.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label3;
+
+        $stack9 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        rs = (org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream) $stack9;
+
+        $stack10 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: org.bytedeco.opencv.opencv_core.Size access$200(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>(rs);
+
+        $stack11 = virtualinvoke $stack10.<org.bytedeco.opencv.opencv_core.Size: int area()>();
+
+        $stack12 = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream: org.bytedeco.opencv.opencv_core.Size access$200(org.bytedeco.javacv.RealSense2FrameGrabber$RealSenseStream)>(largest);
+
+        $stack13 = virtualinvoke $stack12.<org.bytedeco.opencv.opencv_core.Size: int area()>();
+
+        if $stack11 <= $stack13 goto label2;
+
+        largest = rs;
+
+     label2:
+        goto label1;
+
+     label3:
+        return largest;
+    }
+
+    private org.bytedeco.javacv.Frame grabCVFrame(int, int, int, int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        int streamType, streamIndex, $stack16, $stack17, iplDepth, iplChannels, $stack19, $stack20, $stack21, $stack22;
+        org.bytedeco.librealsense2.rs2_frame $stack12, frame;
+        org.bytedeco.javacpp.Pointer frameData;
+        org.bytedeco.opencv.opencv_core.Size size;
+        org.bytedeco.opencv.opencv_core.IplImage image;
+        org.bytedeco.javacv.FrameConverter $stack23;
+        org.bytedeco.javacv.Frame outputFrame;
+        double timestamp;
+        long $stack26;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2, $r3, $r5, $r6;
+        org.bytedeco.opencv.opencv_core.CvArr $r4;
+
+        this := @this: RealSense2FrameGrabber;
+
+        streamType := @parameter0: int;
+
+        streamIndex := @parameter1: int;
+
+        iplDepth := @parameter2: int;
+
+        iplChannels := @parameter3: int;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack12 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_frame frameset>;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        frame = specialinvoke $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_frame findFrameByStreamType(org.bytedeco.librealsense2.rs2_frame,int,int)>($stack12, streamType, streamIndex);
+
+        if frame != null goto label1;
+
+        return null;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        frameData = specialinvoke $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacpp.Pointer getFrameData(org.bytedeco.librealsense2.rs2_frame)>(frame);
+
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        size = specialinvoke $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.opencv.opencv_core.Size getFrameSize(org.bytedeco.librealsense2.rs2_frame)>(frame);
+
+        $stack16 = virtualinvoke size.<org.bytedeco.opencv.opencv_core.Size: int width()>();
+
+        $stack17 = virtualinvoke size.<org.bytedeco.opencv.opencv_core.Size: int height()>();
+
+        image = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage createHeader(int,int,int,int)>($stack16, $stack17, iplDepth, iplChannels);
+
+        $stack19 = virtualinvoke size.<org.bytedeco.opencv.opencv_core.Size: int width()>();
+
+        $stack20 = $stack19 * iplChannels;
+
+        $stack21 = $stack20 * iplDepth;
+
+        $stack22 = $stack21 / 8;
+
+        $r4 = (org.bytedeco.opencv.opencv_core.CvArr) image;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetData(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.javacpp.Pointer,int)>($r4, frameData, $stack22);
+
+        $r5 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack23 = $r5.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.FrameConverter converter>;
+
+        outputFrame = virtualinvoke $stack23.<org.bytedeco.javacv.FrameConverter: org.bytedeco.javacv.Frame convert(java.lang.Object)>(image);
+
+        $r6 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        timestamp = specialinvoke $r6.<org.bytedeco.javacv.RealSense2FrameGrabber: double getFrameTimeStamp(org.bytedeco.librealsense2.rs2_frame)>(frame);
+
+        $stack26 = staticinvoke <java.lang.Math: long round(double)>(timestamp);
+
+        outputFrame.<org.bytedeco.javacv.Frame: long timestamp> = $stack26;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_release_frame(org.bytedeco.librealsense2.rs2_frame)>(frame);
+
+        return outputFrame;
+    }
+
+    private org.bytedeco.librealsense2.rs2_frame findFrameByStreamType(org.bytedeco.librealsense2.rs2_frame, int, int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_frame frameset, frame, result;
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack11, $stack13, $stack14, $stack16;
+        int frameCount, streamType, $stack20, index, i, searchIndex;
+        org.bytedeco.librealsense2.rs2_stream_profile streamProfile;
+        org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData streamProfileData;
+        org.bytedeco.javacpp.IntPointer $stack19;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: RealSense2FrameGrabber;
+
+        frameset := @parameter0: org.bytedeco.librealsense2.rs2_frame;
+
+        streamType := @parameter1: int;
+
+        index := @parameter2: int;
+
+        result = null;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack11 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        frameCount = staticinvoke <org.bytedeco.librealsense2.global.realsense2: int rs2_embedded_frames_count(org.bytedeco.librealsense2.rs2_frame,org.bytedeco.librealsense2.rs2_error)>(frameset, $stack11);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack13 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack13);
+
+        i = 0;
+
+        searchIndex = 0;
+
+     label1:
+        if i >= frameCount goto label4;
+
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack14 = $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        frame = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.librealsense2.rs2_frame rs2_extract_frame(org.bytedeco.librealsense2.rs2_frame,int,org.bytedeco.librealsense2.rs2_error)>(frameset, i, $stack14);
+
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack16 = $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack16);
+
+        $r4 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        streamProfile = specialinvoke $r4.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_stream_profile getStreamProfile(org.bytedeco.librealsense2.rs2_frame)>(frame);
+
+        $r5 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        streamProfileData = specialinvoke $r5.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData getStreamProfileData(org.bytedeco.librealsense2.rs2_stream_profile)>(streamProfile);
+
+        $stack19 = streamProfileData.<org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData: org.bytedeco.javacpp.IntPointer nativeStreamIndex>;
+
+        $stack20 = virtualinvoke $stack19.<org.bytedeco.javacpp.IntPointer: int get()>();
+
+        if streamType != $stack20 goto label3;
+
+        if searchIndex != index goto label2;
+
+        result = frame;
+
+        goto label4;
+
+     label2:
+        searchIndex = searchIndex + 1;
+
+     label3:
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_release_frame(org.bytedeco.librealsense2.rs2_frame)>(frame);
+
+        i = i + 1;
+
+        goto label1;
+
+     label4:
+        return result;
+    }
+
+    public void release()
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_device $stack1;
+        org.bytedeco.librealsense2.rs2_context $stack2;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_device device>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_device(org.bytedeco.librealsense2.rs2_device)>($stack1);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_context context>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_context(org.bytedeco.librealsense2.rs2_context)>($stack2);
+
+        return;
+    }
+
+    public void setSensorOption(org.bytedeco.javacv.RealSense2FrameGrabber$Rs2SensorType, int, boolean) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.javacv.RealSense2FrameGrabber$Rs2SensorType sensorType;
+        int optionIndex;
+        boolean value;
+        float $stack6;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0;
+
+        this := @this: RealSense2FrameGrabber;
+
+        sensorType := @parameter0: org.bytedeco.javacv.RealSense2FrameGrabber$Rs2SensorType;
+
+        optionIndex := @parameter1: int;
+
+        value := @parameter2: boolean;
+
+        if value == 0 goto label1;
+
+        $stack6 = 1.0F;
+
+        goto label2;
+
+     label1:
+        $stack6 = 0.0F;
+
+     label2:
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: void setSensorOption(org.bytedeco.javacv.RealSense2FrameGrabber$Rs2SensorType,int,float)>(sensorType, optionIndex, $stack6);
+
+        return;
+    }
+
+    public void setSensorOption(org.bytedeco.javacv.RealSense2FrameGrabber$Rs2SensorType, int, float) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack10, $stack13, $stack14, $stack16, $stack17, $stack19;
+        org.bytedeco.librealsense2.rs2_device $stack11;
+        org.bytedeco.librealsense2.rs2_sensor_list sensorList;
+        int sensorCount, optionIndex, i;
+        org.bytedeco.librealsense2.rs2_sensor sensor;
+        java.lang.String name, $stack21;
+        org.bytedeco.javacv.RealSense2FrameGrabber$Rs2SensorType sensorType;
+        boolean $stack22;
+        float value;
+        org.bytedeco.librealsense2.rs2_options $u0;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r9;
+        org.bytedeco.javacpp.Pointer $r8;
+
+        this := @this: RealSense2FrameGrabber;
+
+        sensorType := @parameter0: org.bytedeco.javacv.RealSense2FrameGrabber$Rs2SensorType;
+
+        optionIndex := @parameter1: int;
+
+        value := @parameter2: float;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack11 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_device device>;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack10 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        sensorList = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.librealsense2.rs2_sensor_list rs2_query_sensors(org.bytedeco.librealsense2.rs2_device,org.bytedeco.librealsense2.rs2_error)>($stack11, $stack10);
+
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack13 = $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack13);
+
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack14 = $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        sensorCount = staticinvoke <org.bytedeco.librealsense2.global.realsense2: int rs2_get_sensors_count(org.bytedeco.librealsense2.rs2_sensor_list,org.bytedeco.librealsense2.rs2_error)>(sensorList, $stack14);
+
+        $r4 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack16 = $r4.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack16);
+
+        i = 0;
+
+     label1:
+        if i >= sensorCount goto label3;
+
+        $r5 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack17 = $r5.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        sensor = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.librealsense2.rs2_sensor rs2_create_sensor(org.bytedeco.librealsense2.rs2_sensor_list,int,org.bytedeco.librealsense2.rs2_error)>(sensorList, i, $stack17);
+
+        $r6 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack19 = $r6.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack19);
+
+        $r7 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        name = specialinvoke $r7.<org.bytedeco.javacv.RealSense2FrameGrabber: java.lang.String getSensorInfo(org.bytedeco.librealsense2.rs2_sensor,int)>(sensor, 0);
+
+        $stack21 = virtualinvoke sensorType.<org.bytedeco.javacv.RealSense2FrameGrabber$Rs2SensorType: java.lang.String getName()>();
+
+        $stack22 = virtualinvoke $stack21.<java.lang.String: boolean equals(java.lang.Object)>(name);
+
+        if $stack22 == 0 goto label2;
+
+        $u0 = new org.bytedeco.librealsense2.rs2_options;
+
+        $r8 = (org.bytedeco.javacpp.Pointer) sensor;
+
+        specialinvoke $u0.<org.bytedeco.librealsense2.rs2_options: void <init>(org.bytedeco.javacpp.Pointer)>($r8);
+
+        $r9 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        specialinvoke $r9.<org.bytedeco.javacv.RealSense2FrameGrabber: void setRs2Option(org.bytedeco.librealsense2.rs2_options,int,float)>($u0, optionIndex, value);
+
+     label2:
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_sensor(org.bytedeco.librealsense2.rs2_sensor)>(sensor);
+
+        i = i + 1;
+
+        goto label1;
+
+     label3:
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_sensor_list(org.bytedeco.librealsense2.rs2_sensor_list)>(sensorList);
+
+        return;
+    }
+
+    private org.bytedeco.librealsense2.rs2_context createContext() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack2, $stack4;
+        org.bytedeco.librealsense2.rs2_context context;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        context = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.librealsense2.rs2_context rs2_create_context(int,org.bytedeco.librealsense2.rs2_error)>(24400, $stack2);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack4);
+
+        return context;
+    }
+
+    private org.bytedeco.librealsense2.rs2_device_list createDeviceList() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack2, $stack5;
+        org.bytedeco.librealsense2.rs2_context $stack3;
+        org.bytedeco.librealsense2.rs2_device_list deviceList;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_context context>;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        deviceList = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.librealsense2.rs2_device_list rs2_query_devices(org.bytedeco.librealsense2.rs2_context,org.bytedeco.librealsense2.rs2_error)>($stack3, $stack2);
+
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack5);
+
+        return deviceList;
+    }
+
+    private org.bytedeco.librealsense2.rs2_device createDevice(org.bytedeco.librealsense2.rs2_device_list, int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_device_list deviceList;
+        int index;
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack4, $stack6;
+        org.bytedeco.librealsense2.rs2_device device;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1;
+
+        this := @this: RealSense2FrameGrabber;
+
+        deviceList := @parameter0: org.bytedeco.librealsense2.rs2_device_list;
+
+        index := @parameter1: int;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        device = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.librealsense2.rs2_device rs2_create_device(org.bytedeco.librealsense2.rs2_device_list,int,org.bytedeco.librealsense2.rs2_error)>(deviceList, index, $stack4);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack6 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack6);
+
+        return device;
+    }
+
+    private org.bytedeco.librealsense2.rs2_pipeline createPipeline() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack2, $stack5;
+        org.bytedeco.librealsense2.rs2_context $stack3;
+        org.bytedeco.librealsense2.rs2_pipeline pipeline;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_context context>;
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        pipeline = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.librealsense2.rs2_pipeline rs2_create_pipeline(org.bytedeco.librealsense2.rs2_context,org.bytedeco.librealsense2.rs2_error)>($stack3, $stack2);
+
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack5);
+
+        return pipeline;
+    }
+
+    private org.bytedeco.librealsense2.rs2_config createConfig() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack2, $stack4;
+        org.bytedeco.librealsense2.rs2_config config;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        config = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.librealsense2.rs2_config rs2_create_config(org.bytedeco.librealsense2.rs2_error)>($stack2);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack4);
+
+        return config;
+    }
+
+    private double getFrameTimeStamp(org.bytedeco.librealsense2.rs2_frame) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_frame frame;
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack4, $stack6;
+        double timestamp;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1;
+
+        this := @this: RealSense2FrameGrabber;
+
+        frame := @parameter0: org.bytedeco.librealsense2.rs2_frame;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        timestamp = staticinvoke <org.bytedeco.librealsense2.global.realsense2: double rs2_get_frame_timestamp(org.bytedeco.librealsense2.rs2_frame,org.bytedeco.librealsense2.rs2_error)>(frame, $stack4);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack6 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack6);
+
+        return timestamp;
+    }
+
+    private int getDeviceCount() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_device_list deviceList;
+        org.bytedeco.librealsense2.rs2_error $stack4, $stack6;
+        int count;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2;
+
+        this := @this: RealSense2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        deviceList = specialinvoke $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_device_list createDeviceList()>();
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        count = staticinvoke <org.bytedeco.librealsense2.global.realsense2: int rs2_get_device_count(org.bytedeco.librealsense2.rs2_device_list,org.bytedeco.librealsense2.rs2_error)>(deviceList, $stack4);
+
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack6 = $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack6);
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_delete_device_list(org.bytedeco.librealsense2.rs2_device_list)>(deviceList);
+
+        return count;
+    }
+
+    private java.lang.String getDeviceInfo(org.bytedeco.librealsense2.rs2_device, int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_error $stack6;
+        org.bytedeco.librealsense2.rs2_device device;
+        int info, $stack7;
+        boolean isSupported;
+        org.bytedeco.javacpp.BytePointer $stack9;
+        java.lang.String infoText;
+        RealSense2FrameGrabber this;
+
+        this := @this: RealSense2FrameGrabber;
+
+        device := @parameter0: org.bytedeco.librealsense2.rs2_device;
+
+        info := @parameter1: int;
+
+        $stack6 = new org.bytedeco.librealsense2.rs2_error;
+
+        specialinvoke $stack6.<org.bytedeco.librealsense2.rs2_error: void <init>()>();
+
+        $stack7 = staticinvoke <org.bytedeco.librealsense2.global.realsense2: int rs2_supports_device_info(org.bytedeco.librealsense2.rs2_device,int,org.bytedeco.librealsense2.rs2_error)>(device, info, $stack6);
+
+        isSupported = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: boolean toBoolean(int)>($stack7);
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack6);
+
+        if isSupported != 0 goto label1;
+
+        return null;
+
+     label1:
+        $stack9 = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.javacpp.BytePointer rs2_get_device_info(org.bytedeco.librealsense2.rs2_device,int,org.bytedeco.librealsense2.rs2_error)>(device, info, $stack6);
+
+        infoText = virtualinvoke $stack9.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack6);
+
+        return infoText;
+    }
+
+    private java.lang.String getSensorInfo(org.bytedeco.librealsense2.rs2_sensor, int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_error $stack6;
+        org.bytedeco.librealsense2.rs2_sensor sensor;
+        int info, $stack7;
+        boolean isSupported;
+        org.bytedeco.javacpp.BytePointer $stack9;
+        java.lang.String infoText;
+        RealSense2FrameGrabber this;
+
+        this := @this: RealSense2FrameGrabber;
+
+        sensor := @parameter0: org.bytedeco.librealsense2.rs2_sensor;
+
+        info := @parameter1: int;
+
+        $stack6 = new org.bytedeco.librealsense2.rs2_error;
+
+        specialinvoke $stack6.<org.bytedeco.librealsense2.rs2_error: void <init>()>();
+
+        $stack7 = staticinvoke <org.bytedeco.librealsense2.global.realsense2: int rs2_supports_sensor_info(org.bytedeco.librealsense2.rs2_sensor,int,org.bytedeco.librealsense2.rs2_error)>(sensor, info, $stack6);
+
+        isSupported = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: boolean toBoolean(int)>($stack7);
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack6);
+
+        if isSupported != 0 goto label1;
+
+        return null;
+
+     label1:
+        $stack9 = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.javacpp.BytePointer rs2_get_sensor_info(org.bytedeco.librealsense2.rs2_sensor,int,org.bytedeco.librealsense2.rs2_error)>(sensor, info, $stack6);
+
+        infoText = virtualinvoke $stack9.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack6);
+
+        return infoText;
+    }
+
+    private org.bytedeco.javacpp.Pointer getFrameData(org.bytedeco.librealsense2.rs2_frame) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_frame frame;
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack3, $stack5;
+        org.bytedeco.javacpp.Pointer frameData;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1;
+
+        this := @this: RealSense2FrameGrabber;
+
+        frame := @parameter0: org.bytedeco.librealsense2.rs2_frame;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        frameData = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.javacpp.Pointer rs2_get_frame_data(org.bytedeco.librealsense2.rs2_frame,org.bytedeco.librealsense2.rs2_error)>(frame, $stack3);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack5);
+
+        return frameData;
+    }
+
+    private org.bytedeco.opencv.opencv_core.Size getFrameSize(org.bytedeco.librealsense2.rs2_frame) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_frame frame;
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack4, $stack6, $stack7, $stack9;
+        int width, height;
+        org.bytedeco.opencv.opencv_core.Size $u0;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r2, $r3;
+
+        this := @this: RealSense2FrameGrabber;
+
+        frame := @parameter0: org.bytedeco.librealsense2.rs2_frame;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        width = staticinvoke <org.bytedeco.librealsense2.global.realsense2: int rs2_get_frame_width(org.bytedeco.librealsense2.rs2_frame,org.bytedeco.librealsense2.rs2_error)>(frame, $stack4);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack6 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack6);
+
+        $r2 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack7 = $r2.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        height = staticinvoke <org.bytedeco.librealsense2.global.realsense2: int rs2_get_frame_height(org.bytedeco.librealsense2.rs2_frame,org.bytedeco.librealsense2.rs2_error)>(frame, $stack7);
+
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack9 = $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack9);
+
+        $u0 = new org.bytedeco.opencv.opencv_core.Size;
+
+        specialinvoke $u0.<org.bytedeco.opencv.opencv_core.Size: void <init>(int,int)>(width, height);
+
+        return $u0;
+    }
+
+    private org.bytedeco.librealsense2.rs2_stream_profile getStreamProfile(org.bytedeco.librealsense2.rs2_frame) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_frame frame;
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack3, $stack5;
+        org.bytedeco.librealsense2.rs2_stream_profile streamProfile;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1;
+
+        this := @this: RealSense2FrameGrabber;
+
+        frame := @parameter0: org.bytedeco.librealsense2.rs2_frame;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        streamProfile = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.librealsense2.rs2_stream_profile rs2_get_frame_stream_profile(org.bytedeco.librealsense2.rs2_frame,org.bytedeco.librealsense2.rs2_error)>(frame, $stack3);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack5);
+
+        return streamProfile;
+    }
+
+    private org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData getStreamProfileData(org.bytedeco.librealsense2.rs2_stream_profile) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_stream_profile streamProfile;
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack4, $stack10;
+        org.bytedeco.javacpp.IntPointer $stack5, $stack6, $stack7, $stack8, $stack9;
+        org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData $u0;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1;
+
+        this := @this: RealSense2FrameGrabber;
+
+        streamProfile := @parameter0: org.bytedeco.librealsense2.rs2_stream_profile;
+
+        $u0 = new org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData;
+
+        specialinvoke $u0.<org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData: void <init>()>();
+
+        $stack9 = $u0.<org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData: org.bytedeco.javacpp.IntPointer nativeStreamIndex>;
+
+        $stack8 = $u0.<org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData: org.bytedeco.javacpp.IntPointer nativeFormatIndex>;
+
+        $stack7 = $u0.<org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData: org.bytedeco.javacpp.IntPointer index>;
+
+        $stack6 = $u0.<org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData: org.bytedeco.javacpp.IntPointer uniqueId>;
+
+        $stack5 = $u0.<org.bytedeco.javacv.RealSense2FrameGrabber$StreamProfileData: org.bytedeco.javacpp.IntPointer frameRate>;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_get_stream_profile_data(org.bytedeco.librealsense2.rs2_stream_profile,org.bytedeco.javacpp.IntPointer,org.bytedeco.javacpp.IntPointer,org.bytedeco.javacpp.IntPointer,org.bytedeco.javacpp.IntPointer,org.bytedeco.javacpp.IntPointer,org.bytedeco.librealsense2.rs2_error)>(streamProfile, $stack9, $stack8, $stack7, $stack6, $stack5, $stack4);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack10 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack10);
+
+        return $u0;
+    }
+
+    private boolean isSensorExtendableTo(org.bytedeco.librealsense2.rs2_sensor, int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_sensor sensor;
+        int extension, $stack5;
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack4, $stack7;
+        boolean isExtandable;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1;
+
+        this := @this: RealSense2FrameGrabber;
+
+        sensor := @parameter0: org.bytedeco.librealsense2.rs2_sensor;
+
+        extension := @parameter1: int;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        $stack5 = staticinvoke <org.bytedeco.librealsense2.global.realsense2: int rs2_is_sensor_extendable_to(org.bytedeco.librealsense2.rs2_sensor,int,org.bytedeco.librealsense2.rs2_error)>(sensor, extension, $stack4);
+
+        isExtandable = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: boolean toBoolean(int)>($stack5);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack7 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack7);
+
+        return isExtandable;
+    }
+
+    private void setRs2Option(org.bytedeco.librealsense2.rs2_options, int, float) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_options options;
+        int optionIndex, $stack6;
+        RealSense2FrameGrabber this;
+        org.bytedeco.librealsense2.rs2_error $stack5, $stack8, $stack9, $stack10;
+        boolean isSupported;
+        float value;
+        java.lang.StringBuilder $stack13, $stack14, $stack15, $u0;
+        java.lang.String $stack16;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        org.bytedeco.javacv.RealSense2FrameGrabber $r0, $r1, $r3, $r4;
+        java.lang.Throwable $r2;
+
+        this := @this: RealSense2FrameGrabber;
+
+        options := @parameter0: org.bytedeco.librealsense2.rs2_options;
+
+        optionIndex := @parameter1: int;
+
+        value := @parameter2: float;
+
+        $r0 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack5 = $r0.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        $stack6 = staticinvoke <org.bytedeco.librealsense2.global.realsense2: int rs2_supports_option(org.bytedeco.librealsense2.rs2_options,int,org.bytedeco.librealsense2.rs2_error)>(options, optionIndex, $stack5);
+
+        isSupported = staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: boolean toBoolean(int)>($stack6);
+
+        $r1 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack8 = $r1.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack8);
+
+        if isSupported != 0 goto label1;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Option ");
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(optionIndex);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" is not supported!");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack16);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label1:
+        $r3 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack9 = $r3.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.librealsense2.global.realsense2: void rs2_set_option(org.bytedeco.librealsense2.rs2_options,int,float,org.bytedeco.librealsense2.rs2_error)>(options, optionIndex, value, $stack9);
+
+        $r4 = (org.bytedeco.javacv.RealSense2FrameGrabber) this;
+
+        $stack10 = $r4.<org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.librealsense2.rs2_error error>;
+
+        staticinvoke <org.bytedeco.javacv.RealSense2FrameGrabber: void checkError(org.bytedeco.librealsense2.rs2_error)>($stack10);
+
+        return;
+    }
+
+    private static void checkError(org.bytedeco.librealsense2.rs2_error) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.librealsense2.rs2_error e;
+        boolean $stack1;
+        java.lang.Object[] $stack3;
+        org.bytedeco.javacpp.BytePointer $stack6, $stack9, $stack12;
+        java.lang.String $stack7, $stack10, $stack13, $stack14;
+        org.bytedeco.javacv.FrameGrabber$Exception $u0;
+        java.lang.Throwable $r0;
+
+        e := @parameter0: org.bytedeco.librealsense2.rs2_error;
+
+        $stack1 = virtualinvoke e.<org.bytedeco.librealsense2.rs2_error: boolean isNull()>();
+
+        if $stack1 != 0 goto label1;
+
+        $u0 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $stack3 = newarray (java.lang.Object)[3];
+
+        $stack6 = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.javacpp.BytePointer rs2_get_failed_function(org.bytedeco.librealsense2.rs2_error)>(e);
+
+        $stack7 = virtualinvoke $stack6.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack3[0] = $stack7;
+
+        $stack9 = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.javacpp.BytePointer rs2_get_failed_args(org.bytedeco.librealsense2.rs2_error)>(e);
+
+        $stack10 = virtualinvoke $stack9.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack3[1] = $stack10;
+
+        $stack12 = staticinvoke <org.bytedeco.librealsense2.global.realsense2: org.bytedeco.javacpp.BytePointer rs2_get_error_message(org.bytedeco.librealsense2.rs2_error)>(e);
+
+        $stack13 = virtualinvoke $stack12.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack3[2] = $stack13;
+
+        $stack14 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("rs_error was raised when calling %s(%s):\n%s\n", $stack3);
+
+        specialinvoke $u0.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack14);
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label1:
+        return;
+    }
+
+    private static boolean toBoolean(int)
+    {
+        int value;
+        boolean $stack1;
+
+        value := @parameter0: int;
+
+        if value < 1 goto label1;
+
+        $stack1 = 1;
+
+        goto label2;
+
+     label1:
+        $stack1 = 0;
+
+     label2:
+        return $stack1;
+    }
+
+    private static boolean toBoolean(java.lang.String)
+    {
+        java.lang.String value;
+        boolean $stack1;
+
+        value := @parameter0: java.lang.String;
+
+        if value != null goto label1;
+
+        return 0;
+
+     label1:
+        $stack1 = virtualinvoke value.<java.lang.String: boolean equals(java.lang.Object)>("YES");
+
+        return $stack1;
+    }
+
+    static void <clinit>()
+    {
+        <org.bytedeco.javacv.RealSense2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = null;
+
+        return;
+    }
+}

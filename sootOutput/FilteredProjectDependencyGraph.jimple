@@ -1,0 +1,251 @@
+class FilteredProjectDependencyGraph extends java.lang.Object implements org.apache.maven.execution.ProjectDependencyGraph
+{
+    private org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph;
+    private java.util.Map whiteList;
+    private java.util.List sortedProjects;
+
+    void <init>(org.apache.maven.execution.ProjectDependencyGraph, java.util.Collection)
+    {
+        FilteredProjectDependencyGraph this;
+        org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph, $stack6;
+        java.lang.Object $stack5, $stack10;
+        java.util.Collection whiteList;
+        java.util.Iterator l3;
+        boolean $stack9;
+        org.apache.maven.project.MavenProject project;
+        java.util.Map $stack11;
+        java.util.IdentityHashMap $u0;
+        org.apache.maven.graph.FilteredProjectDependencyGraph $r0, $r1, $r2;
+
+        this := @this: FilteredProjectDependencyGraph;
+
+        projectDependencyGraph := @parameter0: org.apache.maven.execution.ProjectDependencyGraph;
+
+        whiteList := @parameter1: java.util.Collection;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $stack5 = staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(projectDependencyGraph, "projectDependencyGraph cannot be null");
+
+        $stack6 = (org.apache.maven.execution.ProjectDependencyGraph) $stack5;
+
+        $r0 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $r0.<org.apache.maven.graph.FilteredProjectDependencyGraph: org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph> = $stack6;
+
+        $u0 = new java.util.IdentityHashMap;
+
+        specialinvoke $u0.<java.util.IdentityHashMap: void <init>()>();
+
+        $r1 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $r1.<org.apache.maven.graph.FilteredProjectDependencyGraph: java.util.Map whiteList> = $u0;
+
+        l3 = interfaceinvoke whiteList.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack9 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label2;
+
+        $stack10 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        project = (org.apache.maven.project.MavenProject) $stack10;
+
+        $r2 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack11 = $r2.<org.apache.maven.graph.FilteredProjectDependencyGraph: java.util.Map whiteList>;
+
+        interfaceinvoke $stack11.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(project, null);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public java.util.List getAllProjects()
+    {
+        FilteredProjectDependencyGraph this;
+        org.apache.maven.execution.ProjectDependencyGraph $stack1;
+        java.util.List $stack2;
+        org.apache.maven.graph.FilteredProjectDependencyGraph $r0;
+
+        this := @this: FilteredProjectDependencyGraph;
+
+        $r0 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack1 = $r0.<org.apache.maven.graph.FilteredProjectDependencyGraph: org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph>;
+
+        $stack2 = interfaceinvoke $stack1.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getAllProjects()>();
+
+        return $stack2;
+    }
+
+    public java.util.List getSortedProjects()
+    {
+        FilteredProjectDependencyGraph this;
+        java.util.List $stack1, $stack3, $stack5, $stack6;
+        org.apache.maven.execution.ProjectDependencyGraph $stack4;
+        java.util.ArrayList $u0;
+        org.apache.maven.graph.FilteredProjectDependencyGraph $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: FilteredProjectDependencyGraph;
+
+        $r0 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack1 = $r0.<org.apache.maven.graph.FilteredProjectDependencyGraph: java.util.List sortedProjects>;
+
+        if $stack1 != null goto label1;
+
+        $r1 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack4 = $r1.<org.apache.maven.graph.FilteredProjectDependencyGraph: org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph>;
+
+        $stack5 = interfaceinvoke $stack4.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getSortedProjects()>();
+
+        $r2 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack6 = specialinvoke $r2.<org.apache.maven.graph.FilteredProjectDependencyGraph: java.util.List applyFilter(java.util.Collection)>($stack5);
+
+        $r3 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $r3.<org.apache.maven.graph.FilteredProjectDependencyGraph: java.util.List sortedProjects> = $stack6;
+
+     label1:
+        $u0 = new java.util.ArrayList;
+
+        $r4 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack3 = $r4.<org.apache.maven.graph.FilteredProjectDependencyGraph: java.util.List sortedProjects>;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(java.util.Collection)>($stack3);
+
+        return $u0;
+    }
+
+    public java.util.List getDownstreamProjects(org.apache.maven.project.MavenProject, boolean)
+    {
+        FilteredProjectDependencyGraph this;
+        org.apache.maven.project.MavenProject project;
+        boolean transitive;
+        org.apache.maven.execution.ProjectDependencyGraph $stack3;
+        java.util.List $stack4, $stack5;
+        org.apache.maven.graph.FilteredProjectDependencyGraph $r0, $r1;
+
+        this := @this: FilteredProjectDependencyGraph;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        transitive := @parameter1: boolean;
+
+        $r0 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack3 = $r0.<org.apache.maven.graph.FilteredProjectDependencyGraph: org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph>;
+
+        $stack4 = interfaceinvoke $stack3.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getDownstreamProjects(org.apache.maven.project.MavenProject,boolean)>(project, transitive);
+
+        $r1 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack5 = specialinvoke $r1.<org.apache.maven.graph.FilteredProjectDependencyGraph: java.util.List applyFilter(java.util.Collection)>($stack4);
+
+        return $stack5;
+    }
+
+    public java.util.List getUpstreamProjects(org.apache.maven.project.MavenProject, boolean)
+    {
+        FilteredProjectDependencyGraph this;
+        org.apache.maven.project.MavenProject project;
+        boolean transitive;
+        org.apache.maven.execution.ProjectDependencyGraph $stack3;
+        java.util.List $stack4, $stack5;
+        org.apache.maven.graph.FilteredProjectDependencyGraph $r0, $r1;
+
+        this := @this: FilteredProjectDependencyGraph;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        transitive := @parameter1: boolean;
+
+        $r0 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack3 = $r0.<org.apache.maven.graph.FilteredProjectDependencyGraph: org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph>;
+
+        $stack4 = interfaceinvoke $stack3.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getUpstreamProjects(org.apache.maven.project.MavenProject,boolean)>(project, transitive);
+
+        $r1 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack5 = specialinvoke $r1.<org.apache.maven.graph.FilteredProjectDependencyGraph: java.util.List applyFilter(java.util.Collection)>($stack4);
+
+        return $stack5;
+    }
+
+    private java.util.List applyFilter(java.util.Collection)
+    {
+        java.util.Collection projects;
+        int $stack6;
+        java.util.Iterator l3;
+        boolean $stack8, $stack11;
+        java.lang.Object $stack9;
+        org.apache.maven.project.MavenProject project;
+        FilteredProjectDependencyGraph this;
+        java.util.Map $stack10;
+        java.util.ArrayList $u0;
+        org.apache.maven.graph.FilteredProjectDependencyGraph $r0;
+
+        this := @this: FilteredProjectDependencyGraph;
+
+        projects := @parameter0: java.util.Collection;
+
+        $u0 = new java.util.ArrayList;
+
+        $stack6 = interfaceinvoke projects.<java.util.Collection: int size()>();
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(int)>($stack6);
+
+        l3 = interfaceinvoke projects.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label3;
+
+        $stack9 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        project = (org.apache.maven.project.MavenProject) $stack9;
+
+        $r0 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack10 = $r0.<org.apache.maven.graph.FilteredProjectDependencyGraph: java.util.Map whiteList>;
+
+        $stack11 = interfaceinvoke $stack10.<java.util.Map: boolean containsKey(java.lang.Object)>(project);
+
+        if $stack11 == 0 goto label2;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(project);
+
+     label2:
+        goto label1;
+
+     label3:
+        return $u0;
+    }
+
+    public java.lang.String toString()
+    {
+        FilteredProjectDependencyGraph this;
+        java.util.List $stack1;
+        java.lang.String $stack2;
+        org.apache.maven.graph.FilteredProjectDependencyGraph $r0;
+
+        this := @this: FilteredProjectDependencyGraph;
+
+        $r0 = (org.apache.maven.graph.FilteredProjectDependencyGraph) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.graph.FilteredProjectDependencyGraph: java.util.List getSortedProjects()>();
+
+        $stack2 = virtualinvoke $stack1.<java.lang.Object: java.lang.String toString()>();
+
+        return $stack2;
+    }
+}

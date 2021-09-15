@@ -1,0 +1,709 @@
+public class BuilderCommon extends java.lang.Object
+{
+    private org.apache.maven.lifecycle.internal.LifecycleDebugLogger lifecycleDebugLogger;
+    private org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator lifeCycleExecutionPlanCalculator;
+    private org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult;
+    private org.codehaus.plexus.logging.Logger logger;
+
+    public void <init>()
+    {
+        BuilderCommon this;
+
+        this := @this: BuilderCommon;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(org.apache.maven.lifecycle.internal.LifecycleDebugLogger, org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator, org.codehaus.plexus.logging.Logger)
+    {
+        BuilderCommon this;
+        org.apache.maven.lifecycle.internal.LifecycleDebugLogger lifecycleDebugLogger;
+        org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator lifeCycleExecutionPlanCalculator;
+        org.codehaus.plexus.logging.Logger logger;
+        org.apache.maven.lifecycle.internal.builder.BuilderCommon $r0, $r1, $r2;
+
+        this := @this: BuilderCommon;
+
+        lifecycleDebugLogger := @parameter0: org.apache.maven.lifecycle.internal.LifecycleDebugLogger;
+
+        lifeCycleExecutionPlanCalculator := @parameter1: org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator;
+
+        logger := @parameter2: org.codehaus.plexus.logging.Logger;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $r0.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.apache.maven.lifecycle.internal.LifecycleDebugLogger lifecycleDebugLogger> = lifecycleDebugLogger;
+
+        $r1 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $r1.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator lifeCycleExecutionPlanCalculator> = lifeCycleExecutionPlanCalculator;
+
+        $r2 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $r2.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger> = logger;
+
+        return;
+    }
+
+    public org.apache.maven.lifecycle.MavenExecutionPlan resolveBuildPlan(org.apache.maven.execution.MavenSession, org.apache.maven.project.MavenProject, org.apache.maven.lifecycle.internal.TaskSegment, java.util.Set) throws org.apache.maven.plugin.PluginNotFoundException, org.apache.maven.plugin.PluginResolutionException, org.apache.maven.lifecycle.LifecyclePhaseNotFoundException, org.apache.maven.plugin.PluginDescriptorParsingException, org.apache.maven.plugin.MojoNotFoundException, org.apache.maven.plugin.InvalidPluginDescriptorException, org.apache.maven.plugin.prefix.NoPluginFoundForPrefixException, org.apache.maven.lifecycle.LifecycleNotFoundException, org.apache.maven.plugin.version.PluginVersionResolutionException, org.apache.maven.lifecycle.LifecycleExecutionException
+    {
+        BuilderCommon this;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.lifecycle.internal.TaskSegment taskSegment;
+        org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator $stack11;
+        java.util.List $stack12, $stack92, $stack20, unsafeGoals#65;
+        org.apache.maven.lifecycle.MavenExecutionPlan executionPlan;
+        org.apache.maven.lifecycle.internal.LifecycleDebugLogger $stack14;
+        java.util.Properties userProperties;
+        org.apache.maven.feature.Features$Feature $stack16, $stack103;
+        boolean $stack17, $stack44, $stack60, $stack69, $stack85, $stack97, $stack35;
+        org.apache.maven.execution.MavenExecutionRequest $stack18;
+        int $stack19;
+        org.codehaus.plexus.logging.Logger $stack37, $stack50, $stack51, $stack52, $stack53, $stack54, $stack55, $stack56, $stack57, $stack58, $stack59, $stack62, $stack70, $stack71, $stack73, $stack78, $stack89;
+        java.lang.StringBuilder $stack38, $stack39, $stack40, $stack63, $stack65, $stack66, $stack79, $stack81, $stack82, $stack102, $stack105, $stack106, $u0, $u2, $u3, $u4;
+        java.lang.String $stack41, $stack64, $stack67, $stack74, $stack80, $stack83, $stack90, $stack104, $stack107, gpgMojo#10;
+        java.lang.Object $stack72, $stack88, $stack34;
+        org.apache.maven.plugin.descriptor.MojoDescriptor unsafeGoal;
+        java.util.stream.Stream $stack93, $stack95, $stack21, $stack23, $stack25, $stack27, $stack29, $stack30, $stack32;
+        java.util.function.Predicate $stack94, $stack24, $stack26, $stack28;
+        java.util.Set projectArtifacts, gpgMojo#2, unsafeGoals;
+        java.util.Optional gpgMojo;
+        java.util.Iterator unsafePlugin, unsafeGoals#5;
+        org.apache.maven.model.Plugin unsafePlugin#6;
+        java.util.function.Function $stack22, $stack31;
+        java.util.stream.Collector $stack33;
+        org.apache.maven.lifecycle.LifecycleExecutionException $u1;
+        org.apache.maven.lifecycle.internal.builder.BuilderCommon $r0, $r1, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19;
+        java.lang.Throwable $r2;
+
+        this := @this: BuilderCommon;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        project := @parameter1: org.apache.maven.project.MavenProject;
+
+        taskSegment := @parameter2: org.apache.maven.lifecycle.internal.TaskSegment;
+
+        projectArtifacts := @parameter3: java.util.Set;
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack11 = $r0.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator lifeCycleExecutionPlanCalculator>;
+
+        $stack12 = virtualinvoke taskSegment.<org.apache.maven.lifecycle.internal.TaskSegment: java.util.List getTasks()>();
+
+        executionPlan = interfaceinvoke $stack11.<org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator: org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject,java.util.List)>(session, project, $stack12);
+
+        $r1 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack14 = $r1.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.apache.maven.lifecycle.internal.LifecycleDebugLogger lifecycleDebugLogger>;
+
+        virtualinvoke $stack14.<org.apache.maven.lifecycle.internal.LifecycleDebugLogger: void debugProjectPlan(org.apache.maven.project.MavenProject,org.apache.maven.lifecycle.MavenExecutionPlan)>(project, executionPlan);
+
+        userProperties = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.Properties getUserProperties()>();
+
+        $stack16 = staticinvoke <org.apache.maven.feature.Features: org.apache.maven.feature.Features$Feature buildConsumer(java.util.Properties)>(userProperties);
+
+        $stack17 = virtualinvoke $stack16.<org.apache.maven.feature.Features$Feature: boolean isActive()>();
+
+        if $stack17 == 0 goto label1;
+
+        $stack92 = virtualinvoke executionPlan.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List getMojoExecutions()>();
+
+        $stack93 = interfaceinvoke $stack92.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack94 = staticinvoke <BuilderCommon$lambda_resolveBuildPlan_0__314: java.util.function.Predicate bootstrap$()>();
+
+        $stack95 = interfaceinvoke $stack93.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack94);
+
+        gpgMojo = interfaceinvoke $stack95.<java.util.stream.Stream: java.util.Optional findAny()>();
+
+        $stack97 = virtualinvoke gpgMojo.<java.util.Optional: boolean isPresent()>();
+
+        if $stack97 == 0 goto label1;
+
+        $u1 = new org.apache.maven.lifecycle.LifecycleExecutionException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack102 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The maven-gpg-plugin is not supported by Maven 4. Verify if there is a compatible signing solution, add -D");
+
+        $stack103 = staticinvoke <org.apache.maven.feature.Features: org.apache.maven.feature.Features$Feature buildConsumer(java.util.Properties)>(userProperties);
+
+        $stack104 = virtualinvoke $stack103.<org.apache.maven.feature.Features$Feature: java.lang.String propertyName()>();
+
+        $stack105 = virtualinvoke $stack102.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack104);
+
+        $stack106 = virtualinvoke $stack105.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("=false or use Maven 3.");
+
+        $stack107 = virtualinvoke $stack106.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.apache.maven.lifecycle.LifecycleExecutionException: void <init>(java.lang.String)>($stack107);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label1:
+        $stack18 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack19 = interfaceinvoke $stack18.<org.apache.maven.execution.MavenExecutionRequest: int getDegreeOfConcurrency()>();
+
+        if $stack19 <= 1 goto label8;
+
+        gpgMojo#2 = virtualinvoke executionPlan.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.Set getNonThreadSafePlugins()>();
+
+        $stack44 = interfaceinvoke gpgMojo#2.<java.util.Set: boolean isEmpty()>();
+
+        if $stack44 != 0 goto label8;
+
+        $r3 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack50 = $r3.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack50.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("*****************************************************************");
+
+        $r4 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack51 = $r4.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack51.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("* Your build is requesting parallel execution, but project      *");
+
+        $r5 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack52 = $r5.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack52.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("* contains the following plugin(s) that have goals not marked   *");
+
+        $r6 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack53 = $r6.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack53.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("* as @threadSafe to support parallel building.                  *");
+
+        $r7 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack54 = $r7.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack54.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("* While this /may/ work fine, please look for plugin updates    *");
+
+        $r8 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack55 = $r8.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack55.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("* and/or request plugins be made thread-safe.                   *");
+
+        $r9 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack56 = $r9.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack56.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("* If reporting an issue, report it against the plugin in        *");
+
+        $r10 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack57 = $r10.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack57.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("* question, not against maven-core                              *");
+
+        $r11 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack58 = $r11.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack58.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("*****************************************************************");
+
+        $r12 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack59 = $r12.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack60 = interfaceinvoke $stack59.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack60 == 0 goto label4;
+
+        unsafeGoals = virtualinvoke executionPlan.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.Set getNonThreadSafeMojos()>();
+
+        $r13 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack78 = $r13.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack79 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The following goals are not marked @threadSafe in ");
+
+        $stack80 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        $stack81 = virtualinvoke $stack79.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack80);
+
+        $stack82 = virtualinvoke $stack81.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack83 = virtualinvoke $stack82.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack78.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack83);
+
+        unsafePlugin = interfaceinvoke unsafeGoals.<java.util.Set: java.util.Iterator iterator()>();
+
+     label2:
+        $stack85 = interfaceinvoke unsafePlugin.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack85 == 0 goto label3;
+
+        $stack88 = interfaceinvoke unsafePlugin.<java.util.Iterator: java.lang.Object next()>();
+
+        unsafeGoal = (org.apache.maven.plugin.descriptor.MojoDescriptor) $stack88;
+
+        $r14 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack89 = $r14.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack90 = virtualinvoke unsafeGoal.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getId()>();
+
+        interfaceinvoke $stack89.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack90);
+
+        goto label2;
+
+     label3:
+        goto label7;
+
+     label4:
+        $r15 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack62 = $r15.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack63 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The following plugins are not marked @threadSafe in ");
+
+        $stack64 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        $stack65 = virtualinvoke $stack63.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack64);
+
+        $stack66 = virtualinvoke $stack65.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack67 = virtualinvoke $stack66.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack62.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack67);
+
+        unsafeGoals#5 = interfaceinvoke gpgMojo#2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label5:
+        $stack69 = interfaceinvoke unsafeGoals#5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack69 == 0 goto label6;
+
+        $stack72 = interfaceinvoke unsafeGoals#5.<java.util.Iterator: java.lang.Object next()>();
+
+        unsafePlugin#6 = (org.apache.maven.model.Plugin) $stack72;
+
+        $r16 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack73 = $r16.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack74 = virtualinvoke unsafePlugin#6.<org.apache.maven.model.Plugin: java.lang.String getId()>();
+
+        interfaceinvoke $stack73.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack74);
+
+        goto label5;
+
+     label6:
+        $r17 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack70 = $r17.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack70.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("Enable verbose output (-X) to see more precisely which goals are not marked @threadSafe.");
+
+     label7:
+        $r18 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack71 = $r18.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack71.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("*****************************************************************");
+
+     label8:
+        gpgMojo#10 = <org.apache.maven.lifecycle.internal.DefaultLifecyclePluginAnalyzer: java.lang.String DEFAULTLIFECYCLEBINDINGS_MODELID>;
+
+        $stack20 = virtualinvoke executionPlan.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List getMojoExecutions()>();
+
+        $stack21 = interfaceinvoke $stack20.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack22 = staticinvoke <BuilderCommon$getPlugin__309: java.util.function.Function bootstrap$()>();
+
+        $stack23 = interfaceinvoke $stack21.<java.util.stream.Stream: java.util.stream.Stream map(java.util.function.Function)>($stack22);
+
+        $stack24 = staticinvoke <BuilderCommon$lambda_resolveBuildPlan_1__310: java.util.function.Predicate bootstrap$()>();
+
+        $stack25 = interfaceinvoke $stack23.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack24);
+
+        $stack26 = staticinvoke <BuilderCommon$lambda_resolveBuildPlan_2__311: java.util.function.Predicate bootstrap$()>();
+
+        $stack27 = interfaceinvoke $stack25.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack26);
+
+        $stack28 = staticinvoke <BuilderCommon$lambda_resolveBuildPlan_3__312: java.util.function.Predicate bootstrap$(java.lang.String)>(gpgMojo#10);
+
+        $stack29 = interfaceinvoke $stack27.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack28);
+
+        $stack30 = interfaceinvoke $stack29.<java.util.stream.Stream: java.util.stream.Stream distinct()>();
+
+        $stack31 = staticinvoke <BuilderCommon$getArtifactId__313: java.util.function.Function bootstrap$()>();
+
+        $stack32 = interfaceinvoke $stack30.<java.util.stream.Stream: java.util.stream.Stream map(java.util.function.Function)>($stack31);
+
+        $stack33 = staticinvoke <java.util.stream.Collectors: java.util.stream.Collector toList()>();
+
+        $stack34 = interfaceinvoke $stack32.<java.util.stream.Stream: java.lang.Object collect(java.util.stream.Collector)>($stack33);
+
+        unsafeGoals#65 = (java.util.List) $stack34;
+
+        $stack35 = interfaceinvoke unsafeGoals#65.<java.util.List: boolean isEmpty()>();
+
+        if $stack35 != 0 goto label9;
+
+        $r19 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack37 = $r19.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack38 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Version not locked for default bindings plugins ");
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(unsafeGoals#65);
+
+        $stack40 = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", you should define versions in pluginManagement section of your pom.xml or parent");
+
+        $stack41 = virtualinvoke $stack40.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack37.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack41);
+
+     label9:
+        return executionPlan;
+    }
+
+    public void handleBuildError(org.apache.maven.lifecycle.internal.ReactorContext, org.apache.maven.execution.MavenSession, org.apache.maven.execution.MavenSession, org.apache.maven.project.MavenProject, java.lang.Throwable, long)
+    {
+        long buildEndTime, buildStartTime, $stack15;
+        org.apache.maven.lifecycle.internal.ReactorContext buildContext;
+        org.apache.maven.execution.MavenExecutionResult $stack11, $stack13;
+        java.lang.Throwable t;
+        org.apache.maven.project.MavenProject mavenProject;
+        boolean $stack16, $stack19, $stack22, $stack25, $stack28, $stack39, $stack17;
+        org.apache.maven.lifecycle.internal.ReactorBuildStatus $stack18, $stack35, $stack36, $stack37;
+        org.apache.maven.execution.MavenSession rootSession, currentSession;
+        java.lang.String $stack20, $stack21, $stack23, $stack24, $stack26, $stack27, $stack32, $stack34;
+        BuilderCommon this;
+        org.codehaus.plexus.logging.Logger $stack30;
+        java.lang.StringBuilder $stack31, $stack33, $u1;
+        java.lang.Exception $stack41;
+        org.apache.maven.execution.ExecutionEvent$Type $stack42;
+        org.apache.maven.lifecycle.internal.ExecutionEventCatapult $stack43;
+        org.apache.maven.execution.BuildFailure $u0;
+        org.apache.maven.execution.BuildSummary $r0;
+        org.apache.maven.lifecycle.internal.builder.BuilderCommon $r1, $r2;
+
+        this := @this: BuilderCommon;
+
+        buildContext := @parameter0: org.apache.maven.lifecycle.internal.ReactorContext;
+
+        rootSession := @parameter1: org.apache.maven.execution.MavenSession;
+
+        currentSession := @parameter2: org.apache.maven.execution.MavenSession;
+
+        mavenProject := @parameter3: org.apache.maven.project.MavenProject;
+
+        t := @parameter4: java.lang.Throwable;
+
+        buildStartTime := @parameter5: long;
+
+        buildEndTime = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $stack11 = virtualinvoke buildContext.<org.apache.maven.lifecycle.internal.ReactorContext: org.apache.maven.execution.MavenExecutionResult getResult()>();
+
+        interfaceinvoke $stack11.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult addException(java.lang.Throwable)>(t);
+
+        $stack13 = virtualinvoke buildContext.<org.apache.maven.lifecycle.internal.ReactorContext: org.apache.maven.execution.MavenExecutionResult getResult()>();
+
+        $u0 = new org.apache.maven.execution.BuildFailure;
+
+        $stack15 = buildEndTime - buildStartTime;
+
+        specialinvoke $u0.<org.apache.maven.execution.BuildFailure: void <init>(org.apache.maven.project.MavenProject,long,java.lang.Throwable)>(mavenProject, $stack15, t);
+
+        $r0 = (org.apache.maven.execution.BuildSummary) $u0;
+
+        interfaceinvoke $stack13.<org.apache.maven.execution.MavenExecutionResult: void addBuildSummary(org.apache.maven.execution.BuildSummary)>($r0);
+
+        $stack16 = t instanceof java.lang.Exception;
+
+        if $stack16 == 0 goto label1;
+
+        $stack39 = t instanceof java.lang.RuntimeException;
+
+        if $stack39 != 0 goto label1;
+
+        $r1 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack43 = $r1.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack42 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type ProjectFailed>;
+
+        $stack41 = (java.lang.Exception) t;
+
+        interfaceinvoke $stack43.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution,java.lang.Exception)>($stack42, currentSession, null, $stack41);
+
+     label1:
+        $stack17 = t instanceof java.lang.RuntimeException;
+
+        if $stack17 != 0 goto label2;
+
+        $stack19 = t instanceof java.lang.Exception;
+
+        if $stack19 != 0 goto label3;
+
+     label2:
+        $stack18 = virtualinvoke buildContext.<org.apache.maven.lifecycle.internal.ReactorContext: org.apache.maven.lifecycle.internal.ReactorBuildStatus getReactorBuildStatus()>();
+
+        virtualinvoke $stack18.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: void halt()>();
+
+        goto label7;
+
+     label3:
+        $stack20 = "FAIL_NEVER";
+
+        $stack21 = virtualinvoke rootSession.<org.apache.maven.execution.MavenSession: java.lang.String getReactorFailureBehavior()>();
+
+        $stack22 = virtualinvoke $stack20.<java.lang.String: boolean equals(java.lang.Object)>($stack21);
+
+        if $stack22 == 0 goto label4;
+
+        goto label7;
+
+     label4:
+        $stack23 = "FAIL_AT_END";
+
+        $stack24 = virtualinvoke rootSession.<org.apache.maven.execution.MavenSession: java.lang.String getReactorFailureBehavior()>();
+
+        $stack25 = virtualinvoke $stack23.<java.lang.String: boolean equals(java.lang.Object)>($stack24);
+
+        if $stack25 == 0 goto label5;
+
+        $stack37 = virtualinvoke buildContext.<org.apache.maven.lifecycle.internal.ReactorContext: org.apache.maven.lifecycle.internal.ReactorBuildStatus getReactorBuildStatus()>();
+
+        virtualinvoke $stack37.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: void blackList(org.apache.maven.project.MavenProject)>(mavenProject);
+
+        goto label7;
+
+     label5:
+        $stack26 = "FAIL_FAST";
+
+        $stack27 = virtualinvoke rootSession.<org.apache.maven.execution.MavenSession: java.lang.String getReactorFailureBehavior()>();
+
+        $stack28 = virtualinvoke $stack26.<java.lang.String: boolean equals(java.lang.Object)>($stack27);
+
+        if $stack28 == 0 goto label6;
+
+        $stack36 = virtualinvoke buildContext.<org.apache.maven.lifecycle.internal.ReactorContext: org.apache.maven.lifecycle.internal.ReactorBuildStatus getReactorBuildStatus()>();
+
+        virtualinvoke $stack36.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: void halt()>();
+
+        goto label7;
+
+     label6:
+        $r2 = (org.apache.maven.lifecycle.internal.builder.BuilderCommon) this;
+
+        $stack30 = $r2.<org.apache.maven.lifecycle.internal.builder.BuilderCommon: org.codehaus.plexus.logging.Logger logger>;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack31 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("invalid reactor failure behavior ");
+
+        $stack32 = virtualinvoke rootSession.<org.apache.maven.execution.MavenSession: java.lang.String getReactorFailureBehavior()>();
+
+        $stack33 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack32);
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack30.<org.codehaus.plexus.logging.Logger: void error(java.lang.String)>($stack34);
+
+        $stack35 = virtualinvoke buildContext.<org.apache.maven.lifecycle.internal.ReactorContext: org.apache.maven.lifecycle.internal.ReactorBuildStatus getReactorBuildStatus()>();
+
+        virtualinvoke $stack35.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: void halt()>();
+
+     label7:
+        return;
+    }
+
+    public static void attachToThread(org.apache.maven.project.MavenProject)
+    {
+        org.apache.maven.project.MavenProject currentProject;
+        org.codehaus.plexus.classworlds.realm.ClassRealm projectRealm;
+        java.lang.Thread $stack3;
+        java.lang.ClassLoader $r0;
+
+        currentProject := @parameter0: org.apache.maven.project.MavenProject;
+
+        projectRealm = virtualinvoke currentProject.<org.apache.maven.project.MavenProject: org.codehaus.plexus.classworlds.realm.ClassRealm getClassRealm()>();
+
+        if projectRealm == null goto label1;
+
+        $stack3 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        $r0 = (java.lang.ClassLoader) projectRealm;
+
+        virtualinvoke $stack3.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>($r0);
+
+     label1:
+        return;
+    }
+
+    public static java.lang.String getKey(org.apache.maven.project.MavenProject)
+    {
+        java.lang.StringBuilder $stack1, $stack3, $stack4, $stack6, $stack7, $stack9;
+        org.apache.maven.project.MavenProject project;
+        java.lang.String $stack2, $stack5, $stack8, $stack10;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        $stack1 = new java.lang.StringBuilder;
+
+        specialinvoke $stack1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack2 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        $stack3 = virtualinvoke $stack1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack2);
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack5 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        $stack6 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack8 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        $stack9 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack10;
+    }
+
+    private static boolean lambda$resolveBuildPlan$3(java.lang.String, org.apache.maven.model.Plugin)
+    {
+        java.lang.String defaulModelId, $stack4;
+        org.apache.maven.model.Plugin p;
+        org.apache.maven.model.InputLocation $stack2;
+        org.apache.maven.model.InputSource $stack3;
+        boolean $stack5;
+
+        defaulModelId := @parameter0: java.lang.String;
+
+        p := @parameter1: org.apache.maven.model.Plugin;
+
+        $stack2 = virtualinvoke p.<org.apache.maven.model.Plugin: org.apache.maven.model.InputLocation getLocation(java.lang.Object)>("version");
+
+        $stack3 = virtualinvoke $stack2.<org.apache.maven.model.InputLocation: org.apache.maven.model.InputSource getSource()>();
+
+        $stack4 = virtualinvoke $stack3.<org.apache.maven.model.InputSource: java.lang.String getModelId()>();
+
+        $stack5 = virtualinvoke defaulModelId.<java.lang.String: boolean equals(java.lang.Object)>($stack4);
+
+        return $stack5;
+    }
+
+    private static boolean lambda$resolveBuildPlan$2(org.apache.maven.model.Plugin)
+    {
+        org.apache.maven.model.Plugin p;
+        org.apache.maven.model.InputLocation $stack1;
+        org.apache.maven.model.InputSource $stack2;
+        boolean $stack3;
+
+        p := @parameter0: org.apache.maven.model.Plugin;
+
+        $stack1 = virtualinvoke p.<org.apache.maven.model.Plugin: org.apache.maven.model.InputLocation getLocation(java.lang.Object)>("version");
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.model.InputLocation: org.apache.maven.model.InputSource getSource()>();
+
+        if $stack2 == null goto label1;
+
+        $stack3 = 1;
+
+        goto label2;
+
+     label1:
+        $stack3 = 0;
+
+     label2:
+        return $stack3;
+    }
+
+    private static boolean lambda$resolveBuildPlan$1(org.apache.maven.model.Plugin)
+    {
+        org.apache.maven.model.Plugin p;
+        org.apache.maven.model.InputLocation $stack1;
+        boolean $stack2;
+
+        p := @parameter0: org.apache.maven.model.Plugin;
+
+        $stack1 = virtualinvoke p.<org.apache.maven.model.Plugin: org.apache.maven.model.InputLocation getLocation(java.lang.Object)>("version");
+
+        if $stack1 == null goto label1;
+
+        $stack2 = 1;
+
+        goto label2;
+
+     label1:
+        $stack2 = 0;
+
+     label2:
+        return $stack2;
+    }
+
+    private static boolean lambda$resolveBuildPlan$0(org.apache.maven.plugin.MojoExecution)
+    {
+        org.apache.maven.plugin.MojoExecution m;
+        java.lang.String $stack1, $stack2, $stack4, $stack5;
+        boolean $stack3, $stack6, $stack7;
+
+        m := @parameter0: org.apache.maven.plugin.MojoExecution;
+
+        $stack1 = "maven-gpg-plugin";
+
+        $stack2 = virtualinvoke m.<org.apache.maven.plugin.MojoExecution: java.lang.String getArtifactId()>();
+
+        $stack3 = virtualinvoke $stack1.<java.lang.String: boolean equals(java.lang.Object)>($stack2);
+
+        if $stack3 == 0 goto label1;
+
+        $stack4 = "org.apache.maven.plugins";
+
+        $stack5 = virtualinvoke m.<org.apache.maven.plugin.MojoExecution: java.lang.String getGroupId()>();
+
+        $stack6 = virtualinvoke $stack4.<java.lang.String: boolean equals(java.lang.Object)>($stack5);
+
+        if $stack6 == 0 goto label1;
+
+        $stack7 = 1;
+
+        goto label2;
+
+     label1:
+        $stack7 = 0;
+
+     label2:
+        return $stack7;
+    }
+}

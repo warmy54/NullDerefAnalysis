@@ -1,0 +1,129 @@
+public class LineSeparatorUtil extends java.lang.Object
+{
+    private final java.lang.String string;
+
+    void <init>(java.lang.String)
+    {
+        LineSeparatorUtil this;
+        java.lang.String lineSeparatorString, $stack2, $stack3, $stack10, $stack12;
+        boolean $stack4;
+        java.lang.StringBuilder $stack7, $stack11, $u0;
+        java.nio.charset.Charset $stack8;
+        byte[] $stack9;
+        sortpom.exception.FailureException $u1;
+        sortpom.parameter.LineSeparatorUtil $r0, $r1;
+        java.lang.Throwable $r2;
+
+        this := @this: LineSeparatorUtil;
+
+        lineSeparatorString := @parameter0: java.lang.String;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $stack2 = virtualinvoke lineSeparatorString.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("\\r", "\r");
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("\\n", "\n");
+
+        $r0 = (sortpom.parameter.LineSeparatorUtil) this;
+
+        $r0.<sortpom.parameter.LineSeparatorUtil: java.lang.String string> = $stack3;
+
+        $r1 = (sortpom.parameter.LineSeparatorUtil) this;
+
+        $stack4 = specialinvoke $r1.<sortpom.parameter.LineSeparatorUtil: boolean isIllegalString()>();
+
+        if $stack4 == 0 goto label1;
+
+        $u1 = new sortpom.exception.FailureException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("LineSeparator must be either \\n, \\r or \\r\\n, but separator characters were ");
+
+        $stack8 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset defaultCharset()>();
+
+        $stack9 = virtualinvoke lineSeparatorString.<java.lang.String: byte[] getBytes(java.nio.charset.Charset)>($stack8);
+
+        $stack10 = staticinvoke <java.util.Arrays: java.lang.String toString(byte[])>($stack9);
+
+        $stack11 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<sortpom.exception.FailureException: void <init>(java.lang.String)>($stack12);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label1:
+        return;
+    }
+
+    private boolean isIllegalString()
+    {
+        LineSeparatorUtil this;
+        java.lang.String $stack1, $stack2, $stack4, $stack5, $stack8, $stack9;
+        boolean $stack3, $stack6, $stack10, $stack7;
+        sortpom.parameter.LineSeparatorUtil $r0, $r1, $r2;
+
+        this := @this: LineSeparatorUtil;
+
+        $stack2 = "\n";
+
+        $r0 = (sortpom.parameter.LineSeparatorUtil) this;
+
+        $stack1 = $r0.<sortpom.parameter.LineSeparatorUtil: java.lang.String string>;
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($stack1);
+
+        if $stack3 != 0 goto label1;
+
+        $stack5 = "\r";
+
+        $r1 = (sortpom.parameter.LineSeparatorUtil) this;
+
+        $stack4 = $r1.<sortpom.parameter.LineSeparatorUtil: java.lang.String string>;
+
+        $stack6 = virtualinvoke $stack5.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($stack4);
+
+        if $stack6 != 0 goto label1;
+
+        $stack9 = "\r\n";
+
+        $r2 = (sortpom.parameter.LineSeparatorUtil) this;
+
+        $stack8 = $r2.<sortpom.parameter.LineSeparatorUtil: java.lang.String string>;
+
+        $stack10 = virtualinvoke $stack9.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($stack8);
+
+        if $stack10 != 0 goto label1;
+
+        $stack7 = 1;
+
+        goto label2;
+
+     label1:
+        $stack7 = 0;
+
+     label2:
+        return $stack7;
+    }
+
+    public java.lang.String toString()
+    {
+        LineSeparatorUtil this;
+        java.lang.String $stack1;
+        sortpom.parameter.LineSeparatorUtil $r0;
+
+        this := @this: LineSeparatorUtil;
+
+        $r0 = (sortpom.parameter.LineSeparatorUtil) this;
+
+        $stack1 = $r0.<sortpom.parameter.LineSeparatorUtil: java.lang.String string>;
+
+        return $stack1;
+    }
+}

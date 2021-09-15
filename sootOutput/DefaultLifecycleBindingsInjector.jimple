@@ -1,0 +1,123 @@
+public class DefaultLifecycleBindingsInjector extends java.lang.Object implements org.apache.maven.model.plugin.LifecycleBindingsInjector
+{
+    private org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger merger;
+    private org.apache.maven.lifecycle.LifeCyclePluginAnalyzer lifecycle;
+
+    public void <init>()
+    {
+        DefaultLifecycleBindingsInjector this;
+        org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger $u0;
+        org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector $r0;
+
+        this := @this: DefaultLifecycleBindingsInjector;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger;
+
+        specialinvoke $u0.<org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger: void <init>()>();
+
+        $r0 = (org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector) this;
+
+        $r0.<org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector: org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger merger> = $u0;
+
+        return;
+    }
+
+    public void injectLifecycleBindings(org.apache.maven.model.Model, org.apache.maven.model.building.ModelBuildingRequest, org.apache.maven.model.building.ModelProblemCollector)
+    {
+        org.apache.maven.model.Model model, $u2;
+        java.lang.String packaging, $stack23;
+        DefaultLifecycleBindingsInjector this;
+        org.apache.maven.lifecycle.LifeCyclePluginAnalyzer $stack8;
+        java.util.Set defaultPlugins;
+        boolean $stack10;
+        org.apache.maven.model.Build $stack13, $u3;
+        java.util.List $stack14;
+        org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger $stack16;
+        org.apache.maven.model.building.ModelProblemCollector problems;
+        org.apache.maven.model.building.ModelProblem$Version $stack18;
+        org.apache.maven.model.building.ModelProblem$Severity $stack19;
+        java.lang.StringBuilder $stack21, $stack22, $u1;
+        org.apache.maven.model.building.ModelProblemCollectorRequest $stack24, $stack26, $u0;
+        org.apache.maven.model.InputLocation $stack25;
+        org.apache.maven.model.building.ModelBuildingRequest request;
+        org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector $r0, $r1;
+
+        this := @this: DefaultLifecycleBindingsInjector;
+
+        model := @parameter0: org.apache.maven.model.Model;
+
+        request := @parameter1: org.apache.maven.model.building.ModelBuildingRequest;
+
+        problems := @parameter2: org.apache.maven.model.building.ModelProblemCollector;
+
+        packaging = virtualinvoke model.<org.apache.maven.model.Model: java.lang.String getPackaging()>();
+
+        $r0 = (org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector) this;
+
+        $stack8 = $r0.<org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector: org.apache.maven.lifecycle.LifeCyclePluginAnalyzer lifecycle>;
+
+        defaultPlugins = interfaceinvoke $stack8.<org.apache.maven.lifecycle.LifeCyclePluginAnalyzer: java.util.Set getPluginsBoundByDefaultToAllLifecycles(java.lang.String)>(packaging);
+
+        if defaultPlugins != null goto label1;
+
+        $u0 = new org.apache.maven.model.building.ModelProblemCollectorRequest;
+
+        $stack19 = <org.apache.maven.model.building.ModelProblem$Severity: org.apache.maven.model.building.ModelProblem$Severity ERROR>;
+
+        $stack18 = <org.apache.maven.model.building.ModelProblem$Version: org.apache.maven.model.building.ModelProblem$Version BASE>;
+
+        specialinvoke $u0.<org.apache.maven.model.building.ModelProblemCollectorRequest: void <init>(org.apache.maven.model.building.ModelProblem$Severity,org.apache.maven.model.building.ModelProblem$Version)>($stack19, $stack18);
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack21 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown packaging: ");
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(packaging);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack24 = virtualinvoke $u0.<org.apache.maven.model.building.ModelProblemCollectorRequest: org.apache.maven.model.building.ModelProblemCollectorRequest setMessage(java.lang.String)>($stack23);
+
+        $stack25 = virtualinvoke model.<org.apache.maven.model.Model: org.apache.maven.model.InputLocation getLocation(java.lang.Object)>("packaging");
+
+        $stack26 = virtualinvoke $stack24.<org.apache.maven.model.building.ModelProblemCollectorRequest: org.apache.maven.model.building.ModelProblemCollectorRequest setLocation(org.apache.maven.model.InputLocation)>($stack25);
+
+        interfaceinvoke problems.<org.apache.maven.model.building.ModelProblemCollector: void add(org.apache.maven.model.building.ModelProblemCollectorRequest)>($stack26);
+
+        goto label2;
+
+     label1:
+        $stack10 = interfaceinvoke defaultPlugins.<java.util.Collection: boolean isEmpty()>();
+
+        if $stack10 != 0 goto label2;
+
+        $u2 = new org.apache.maven.model.Model;
+
+        specialinvoke $u2.<org.apache.maven.model.Model: void <init>()>();
+
+        $u3 = new org.apache.maven.model.Build;
+
+        specialinvoke $u3.<org.apache.maven.model.Build: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.Model: void setBuild(org.apache.maven.model.Build)>($u3);
+
+        $stack13 = virtualinvoke $u2.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        $stack14 = virtualinvoke $stack13.<org.apache.maven.model.Build: java.util.List getPlugins()>();
+
+        interfaceinvoke $stack14.<java.util.List: boolean addAll(java.util.Collection)>(defaultPlugins);
+
+        $r1 = (org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector) this;
+
+        $stack16 = $r1.<org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector: org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger merger>;
+
+        virtualinvoke $stack16.<org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger: void merge(org.apache.maven.model.Model,org.apache.maven.model.Model)>(model, $u2);
+
+     label2:
+        return;
+    }
+}

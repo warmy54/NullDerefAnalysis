@@ -1,0 +1,378 @@
+public class PomConstructionWithSettingsTest extends java.lang.Object
+{
+    private static final java.lang.String BASE_DIR;
+    private static final java.lang.String BASE_POM_DIR;
+    private org.apache.maven.project.DefaultProjectBuilder projectBuilder;
+    private org.apache.maven.repository.RepositorySystem repositorySystem;
+    private java.io.File testDirectory;
+
+    public void <init>()
+    {
+        PomConstructionWithSettingsTest this;
+
+        this := @this: PomConstructionWithSettingsTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void setUp() throws java.lang.Exception
+    {
+        PomConstructionWithSettingsTest this;
+        java.lang.String $stack2;
+        java.io.File $u0;
+        org.apache.maven.settings.PomConstructionWithSettingsTest $r0;
+
+        this := @this: PomConstructionWithSettingsTest;
+
+        $u0 = new java.io.File;
+
+        $stack2 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.lang.String getBasedir()>();
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack2, "src/test/resources-settings");
+
+        $r0 = (org.apache.maven.settings.PomConstructionWithSettingsTest) this;
+
+        $r0.<org.apache.maven.settings.PomConstructionWithSettingsTest: java.io.File testDirectory> = $u0;
+
+        return;
+    }
+
+    public void testSettingsNoPom() throws java.lang.Exception
+    {
+        PomConstructionWithSettingsTest this;
+        org.apache.maven.project.harness.PomTestWrapper pom;
+        java.lang.Object $stack4;
+        org.apache.maven.settings.PomConstructionWithSettingsTest $r0;
+
+        this := @this: PomConstructionWithSettingsTest;
+
+        $r0 = (org.apache.maven.settings.PomConstructionWithSettingsTest) this;
+
+        pom = specialinvoke $r0.<org.apache.maven.settings.PomConstructionWithSettingsTest: org.apache.maven.project.harness.PomTestWrapper buildPom(java.lang.String)>("settings-no-pom");
+
+        $stack4 = virtualinvoke pom.<org.apache.maven.project.harness.PomTestWrapper: java.lang.Object getValue(java.lang.String)>("properties/local-profile-prop");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("local-profile-prop-value", $stack4);
+
+        return;
+    }
+
+    public void testPomAndSettingsInterpolation() throws java.lang.Exception
+    {
+        PomConstructionWithSettingsTest this;
+        org.apache.maven.project.harness.PomTestWrapper pom;
+        java.lang.Object $stack4, $stack6, $stack8, $stack10;
+        org.apache.maven.settings.PomConstructionWithSettingsTest $r0;
+
+        this := @this: PomConstructionWithSettingsTest;
+
+        $r0 = (org.apache.maven.settings.PomConstructionWithSettingsTest) this;
+
+        pom = specialinvoke $r0.<org.apache.maven.settings.PomConstructionWithSettingsTest: org.apache.maven.project.harness.PomTestWrapper buildPom(java.lang.String)>("test-pom-and-settings-interpolation");
+
+        $stack4 = virtualinvoke pom.<org.apache.maven.project.harness.PomTestWrapper: java.lang.Object getValue(java.lang.String)>("properties/settingsProfile");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("applied", $stack4);
+
+        $stack6 = virtualinvoke pom.<org.apache.maven.project.harness.PomTestWrapper: java.lang.Object getValue(java.lang.String)>("properties/pomProfile");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("applied", $stack6);
+
+        $stack8 = virtualinvoke pom.<org.apache.maven.project.harness.PomTestWrapper: java.lang.Object getValue(java.lang.String)>("properties/pomVsSettings");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("settings", $stack8);
+
+        $stack10 = virtualinvoke pom.<org.apache.maven.project.harness.PomTestWrapper: java.lang.Object getValue(java.lang.String)>("properties/pomVsSettingsInterpolated");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("settings", $stack10);
+
+        return;
+    }
+
+    public void testRepositories() throws java.lang.Exception
+    {
+        PomConstructionWithSettingsTest this;
+        org.apache.maven.project.harness.PomTestWrapper pom;
+        java.lang.Object $stack4;
+        org.apache.maven.settings.PomConstructionWithSettingsTest $r0;
+
+        this := @this: PomConstructionWithSettingsTest;
+
+        $r0 = (org.apache.maven.settings.PomConstructionWithSettingsTest) this;
+
+        pom = specialinvoke $r0.<org.apache.maven.settings.PomConstructionWithSettingsTest: org.apache.maven.project.harness.PomTestWrapper buildPom(java.lang.String)>("repositories");
+
+        $stack4 = virtualinvoke pom.<org.apache.maven.project.harness.PomTestWrapper: java.lang.Object getValue(java.lang.String)>("repositories[1]/id");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("maven-core-it-0", $stack4);
+
+        return;
+    }
+
+    private org.apache.maven.project.harness.PomTestWrapper buildPom(java.lang.String) throws java.lang.Exception
+    {
+        PomConstructionWithSettingsTest this;
+        java.io.File $stack11, $stack19, $u1, $u3;
+        java.lang.StringBuilder $stack12, $stack14, $stack15, $stack20, $stack22, $stack23, $stack33, $stack34, $stack38, $stack39, $u0, $u2, $u5, $u6;
+        java.lang.String $stack13, pomPath, $stack16, $stack21, $stack24, $stack32, $stack35, $stack50, localRepoUrl#4;
+        org.apache.maven.settings.Settings settings;
+        java.util.List $stack27, $stack46;
+        boolean $stack29;
+        org.apache.maven.repository.RepositorySystem $stack42;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack44, $stack49;
+        org.eclipse.aether.repository.LocalRepositoryManager $stack52;
+        org.apache.maven.project.DefaultProjectBuilder $stack56;
+        org.apache.maven.project.ProjectBuildingResult $stack57;
+        org.apache.maven.project.MavenProject $stack58;
+        java.lang.Object $stack59;
+        java.util.Iterator localRepoUrl;
+        org.apache.maven.settings.Profile rawProfile;
+        org.apache.maven.model.Profile profile;
+        org.eclipse.aether.DefaultRepositorySystemSession rawProfile#6;
+        org.apache.maven.project.DefaultProjectBuildingRequest $u4;
+        org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout $u7;
+        org.eclipse.aether.repository.LocalRepository $u8;
+        org.eclipse.aether.internal.impl.SimpleLocalRepositoryManagerFactory $u9;
+        org.apache.maven.project.harness.PomTestWrapper $u10;
+        org.apache.maven.settings.PomConstructionWithSettingsTest $r0, $r1, $r3, $r11;
+        org.apache.maven.project.ProjectBuildingRequest $r2, $r5, $r6, $r7, $r9, $r12;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $r4;
+        org.eclipse.aether.RepositorySystemSession $r8, $r10;
+
+        this := @this: PomConstructionWithSettingsTest;
+
+        pomPath := @parameter0: java.lang.String;
+
+        $u1 = new java.io.File;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (org.apache.maven.settings.PomConstructionWithSettingsTest) this;
+
+        $stack11 = $r0.<org.apache.maven.settings.PomConstructionWithSettingsTest: java.io.File testDirectory>;
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack11);
+
+        $stack13 = <java.io.File: java.lang.String separator>;
+
+        $stack14 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack13);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(pomPath);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack16, "pom.xml");
+
+        $u3 = new java.io.File;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = (org.apache.maven.settings.PomConstructionWithSettingsTest) this;
+
+        $stack19 = $r1.<org.apache.maven.settings.PomConstructionWithSettingsTest: java.io.File testDirectory>;
+
+        $stack20 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack19);
+
+        $stack21 = <java.io.File: java.lang.String separator>;
+
+        $stack22 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack21);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(pomPath);
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack24, "settings.xml");
+
+        settings = staticinvoke <org.apache.maven.settings.PomConstructionWithSettingsTest: org.apache.maven.settings.Settings readSettingsFile(java.io.File)>($u3);
+
+        $u4 = new org.apache.maven.project.DefaultProjectBuildingRequest;
+
+        specialinvoke $u4.<org.apache.maven.project.DefaultProjectBuildingRequest: void <init>()>();
+
+        $stack27 = virtualinvoke settings.<org.apache.maven.settings.Settings: java.util.List getProfiles()>();
+
+        localRepoUrl = interfaceinvoke $stack27.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack29 = interfaceinvoke localRepoUrl.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack29 == 0 goto label2;
+
+        $stack59 = interfaceinvoke localRepoUrl.<java.util.Iterator: java.lang.Object next()>();
+
+        rawProfile = (org.apache.maven.settings.Profile) $stack59;
+
+        profile = staticinvoke <org.apache.maven.settings.SettingsUtils: org.apache.maven.model.Profile convertFromSettingsProfile(org.apache.maven.settings.Profile)>(rawProfile);
+
+        $r2 = (org.apache.maven.project.ProjectBuildingRequest) $u4;
+
+        interfaceinvoke $r2.<org.apache.maven.project.ProjectBuildingRequest: void addProfile(org.apache.maven.model.Profile)>(profile);
+
+        goto label1;
+
+     label2:
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack32 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("user.home");
+
+        $stack33 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack32);
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/.m2/repository");
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        localRepoUrl#4 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String,java.lang.String)>("maven.repo.local", $stack35);
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack38 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("file://");
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(localRepoUrl#4);
+
+        localRepoUrl#4 = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = (org.apache.maven.settings.PomConstructionWithSettingsTest) this;
+
+        $stack42 = $r3.<org.apache.maven.settings.PomConstructionWithSettingsTest: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        $u7 = new org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
+
+        specialinvoke $u7.<org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout: void <init>()>();
+
+        $r4 = (org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout) $u7;
+
+        $stack44 = interfaceinvoke $stack42.<org.apache.maven.repository.RepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>("local", localRepoUrl#4, $r4, null, null);
+
+        $r5 = (org.apache.maven.project.ProjectBuildingRequest) $u4;
+
+        interfaceinvoke $r5.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>($stack44);
+
+        $stack46 = virtualinvoke settings.<org.apache.maven.settings.Settings: java.util.List getActiveProfiles()>();
+
+        $r6 = (org.apache.maven.project.ProjectBuildingRequest) $u4;
+
+        interfaceinvoke $r6.<org.apache.maven.project.ProjectBuildingRequest: void setActiveProfileIds(java.util.List)>($stack46);
+
+        rawProfile#6 = staticinvoke <org.apache.maven.repository.internal.MavenRepositorySystemUtils: org.eclipse.aether.DefaultRepositorySystemSession newSession()>();
+
+        $u8 = new org.eclipse.aether.repository.LocalRepository;
+
+        $r7 = (org.apache.maven.project.ProjectBuildingRequest) $u4;
+
+        $stack49 = interfaceinvoke $r7.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        $stack50 = interfaceinvoke $stack49.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        specialinvoke $u8.<org.eclipse.aether.repository.LocalRepository: void <init>(java.lang.String)>($stack50);
+
+        $u9 = new org.eclipse.aether.internal.impl.SimpleLocalRepositoryManagerFactory;
+
+        specialinvoke $u9.<org.eclipse.aether.internal.impl.SimpleLocalRepositoryManagerFactory: void <init>()>();
+
+        $r8 = (org.eclipse.aether.RepositorySystemSession) rawProfile#6;
+
+        $stack52 = virtualinvoke $u9.<org.eclipse.aether.internal.impl.SimpleLocalRepositoryManagerFactory: org.eclipse.aether.repository.LocalRepositoryManager newInstance(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.repository.LocalRepository)>($r8, $u8);
+
+        virtualinvoke rawProfile#6.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setLocalRepositoryManager(org.eclipse.aether.repository.LocalRepositoryManager)>($stack52);
+
+        $r9 = (org.apache.maven.project.ProjectBuildingRequest) $u4;
+
+        $r10 = (org.eclipse.aether.RepositorySystemSession) rawProfile#6;
+
+        interfaceinvoke $r9.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setRepositorySession(org.eclipse.aether.RepositorySystemSession)>($r10);
+
+        $u10 = new org.apache.maven.project.harness.PomTestWrapper;
+
+        $r11 = (org.apache.maven.settings.PomConstructionWithSettingsTest) this;
+
+        $stack56 = $r11.<org.apache.maven.settings.PomConstructionWithSettingsTest: org.apache.maven.project.DefaultProjectBuilder projectBuilder>;
+
+        $r12 = (org.apache.maven.project.ProjectBuildingRequest) $u4;
+
+        $stack57 = virtualinvoke $stack56.<org.apache.maven.project.DefaultProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(java.io.File,org.apache.maven.project.ProjectBuildingRequest)>($u1, $r12);
+
+        $stack58 = interfaceinvoke $stack57.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+        specialinvoke $u10.<org.apache.maven.project.harness.PomTestWrapper: void <init>(java.io.File,org.apache.maven.project.MavenProject)>($u1, $stack58);
+
+        return $u10;
+    }
+
+    private static org.apache.maven.settings.Settings readSettingsFile(java.io.File) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.io.File settingsFile;
+        org.codehaus.plexus.util.xml.XmlStreamReader reader;
+        java.lang.Throwable $stack9, $stack10;
+        org.apache.maven.settings.Settings settings#3;
+        org.apache.maven.settings.io.xpp3.SettingsXpp3Reader $u0;
+        java.io.Reader $r0, $r1, $r2;
+
+        settingsFile := @parameter0: java.io.File;
+
+        reader = staticinvoke <org.codehaus.plexus.util.ReaderFactory: org.codehaus.plexus.util.xml.XmlStreamReader newXmlReader(java.io.File)>(settingsFile);
+
+     label1:
+        $u0 = new org.apache.maven.settings.io.xpp3.SettingsXpp3Reader;
+
+        specialinvoke $u0.<org.apache.maven.settings.io.xpp3.SettingsXpp3Reader: void <init>()>();
+
+        $r0 = (java.io.Reader) reader;
+
+        settings#3 = virtualinvoke $u0.<org.apache.maven.settings.io.xpp3.SettingsXpp3Reader: org.apache.maven.settings.Settings read(java.io.Reader)>($r0);
+
+     label2:
+        if reader == null goto label8;
+
+        $r1 = (java.io.Reader) reader;
+
+        virtualinvoke $r1.<java.io.Reader: void close()>();
+
+        goto label8;
+
+     label3:
+        $stack10 := @caughtexception;
+
+        if reader == null goto label7;
+
+     label4:
+        $r2 = (java.io.Reader) reader;
+
+        virtualinvoke $r2.<java.io.Reader: void close()>();
+
+     label5:
+        goto label7;
+
+     label6:
+        $stack9 := @caughtexception;
+
+        virtualinvoke $stack10.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack9);
+
+     label7:
+        throw $stack10;
+
+     label8:
+        return settings#3;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label6;
+    }
+
+    public static void <clinit>()
+    {
+        <PomConstructionWithSettingsTest: java.lang.String BASE_POM_DIR> = "src/test/resources-settings";
+
+        <PomConstructionWithSettingsTest: java.lang.String BASE_DIR> = "src/test";
+
+        return;
+    }
+}

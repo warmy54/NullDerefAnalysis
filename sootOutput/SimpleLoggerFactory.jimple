@@ -1,0 +1,98 @@
+public class SimpleLoggerFactory extends java.lang.Object implements org.slf4j.ILoggerFactory
+{
+    java.util.concurrent.ConcurrentMap loggerMap;
+
+    public void <init>()
+    {
+        SimpleLoggerFactory this;
+        java.util.concurrent.ConcurrentHashMap $u0;
+        org.slf4j.impl.SimpleLoggerFactory $r0;
+
+        this := @this: SimpleLoggerFactory;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.concurrent.ConcurrentHashMap;
+
+        specialinvoke $u0.<java.util.concurrent.ConcurrentHashMap: void <init>()>();
+
+        $r0 = (org.slf4j.impl.SimpleLoggerFactory) this;
+
+        $r0.<org.slf4j.impl.SimpleLoggerFactory: java.util.concurrent.ConcurrentMap loggerMap> = $u0;
+
+        staticinvoke <org.slf4j.impl.SimpleLogger: void lazyInit()>();
+
+        return;
+    }
+
+    public org.slf4j.Logger getLogger(java.lang.String)
+    {
+        SimpleLoggerFactory this;
+        java.lang.String name;
+        java.util.concurrent.ConcurrentMap $stack5, $stack8;
+        java.lang.Object $stack6, $stack9, $stack10;
+        org.slf4j.Logger simpleLogger, oldInstance, $r2;
+        org.slf4j.impl.SimpleLogger $u0;
+        org.slf4j.impl.SimpleLoggerFactory $r0, $r1;
+
+        this := @this: SimpleLoggerFactory;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = (org.slf4j.impl.SimpleLoggerFactory) this;
+
+        $stack5 = $r0.<org.slf4j.impl.SimpleLoggerFactory: java.util.concurrent.ConcurrentMap loggerMap>;
+
+        $stack6 = interfaceinvoke $stack5.<java.util.concurrent.ConcurrentMap: java.lang.Object get(java.lang.Object)>(name);
+
+        simpleLogger = (org.slf4j.Logger) $stack6;
+
+        if simpleLogger == null goto label1;
+
+        return simpleLogger;
+
+     label1:
+        $u0 = new org.slf4j.impl.SimpleLogger;
+
+        specialinvoke $u0.<org.slf4j.impl.SimpleLogger: void <init>(java.lang.String)>(name);
+
+        $r1 = (org.slf4j.impl.SimpleLoggerFactory) this;
+
+        $stack8 = $r1.<org.slf4j.impl.SimpleLoggerFactory: java.util.concurrent.ConcurrentMap loggerMap>;
+
+        $stack9 = interfaceinvoke $stack8.<java.util.concurrent.ConcurrentMap: java.lang.Object putIfAbsent(java.lang.Object,java.lang.Object)>(name, $u0);
+
+        oldInstance = (org.slf4j.Logger) $stack9;
+
+        if oldInstance != null goto label2;
+
+        $stack10 = $u0;
+
+        goto label3;
+
+     label2:
+        $stack10 = oldInstance;
+
+     label3:
+        $r2 = (org.slf4j.Logger) $stack10;
+
+        return $r2;
+    }
+
+    void reset()
+    {
+        SimpleLoggerFactory this;
+        java.util.concurrent.ConcurrentMap $stack1;
+        org.slf4j.impl.SimpleLoggerFactory $r0;
+
+        this := @this: SimpleLoggerFactory;
+
+        $r0 = (org.slf4j.impl.SimpleLoggerFactory) this;
+
+        $stack1 = $r0.<org.slf4j.impl.SimpleLoggerFactory: java.util.concurrent.ConcurrentMap loggerMap>;
+
+        interfaceinvoke $stack1.<java.util.concurrent.ConcurrentMap: void clear()>();
+
+        return;
+    }
+}

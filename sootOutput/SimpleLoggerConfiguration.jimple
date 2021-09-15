@@ -1,0 +1,643 @@
+public class SimpleLoggerConfiguration extends java.lang.Object
+{
+    private static final java.lang.String CONFIGURATION_FILE;
+    static int DEFAULT_LOG_LEVEL_DEFAULT;
+    int defaultLogLevel;
+    private static final boolean SHOW_DATE_TIME_DEFAULT;
+    boolean showDateTime;
+    private static final java.lang.String DATE_TIME_FORMAT_STR_DEFAULT;
+    private static java.lang.String dateTimeFormatStr;
+    java.text.DateFormat dateFormatter;
+    private static final boolean SHOW_THREAD_NAME_DEFAULT;
+    boolean showThreadName;
+    static final boolean SHOW_LOG_NAME_DEFAULT;
+    boolean showLogName;
+    private static final boolean SHOW_SHORT_LOG_NAME_DEFAULT;
+    boolean showShortLogName;
+    private static final boolean LEVEL_IN_BRACKETS_DEFAULT;
+    boolean levelInBrackets;
+    private static java.lang.String LOG_FILE_DEFAULT;
+    private java.lang.String logFile;
+    org.slf4j.impl.OutputChoice outputChoice;
+    private static final boolean CACHE_OUTPUT_STREAM_DEFAULT;
+    private boolean cacheOutputStream;
+    private static final java.lang.String WARN_LEVELS_STRING_DEFAULT;
+    java.lang.String warnLevelString;
+    private final java.util.Properties properties;
+
+    public void <init>()
+    {
+        SimpleLoggerConfiguration this;
+        int $stack1;
+        java.lang.String $stack2;
+        java.util.Properties $u0;
+        org.slf4j.impl.SimpleLoggerConfiguration $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11;
+
+        this := @this: SimpleLoggerConfiguration;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $stack1 = <org.slf4j.impl.SimpleLoggerConfiguration: int DEFAULT_LOG_LEVEL_DEFAULT>;
+
+        $r0 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r0.<org.slf4j.impl.SimpleLoggerConfiguration: int defaultLogLevel> = $stack1;
+
+        $r1 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r1.<org.slf4j.impl.SimpleLoggerConfiguration: boolean showDateTime> = 0;
+
+        $r2 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r2.<org.slf4j.impl.SimpleLoggerConfiguration: java.text.DateFormat dateFormatter> = null;
+
+        $r3 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r3.<org.slf4j.impl.SimpleLoggerConfiguration: boolean showThreadName> = 1;
+
+        $r4 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r4.<org.slf4j.impl.SimpleLoggerConfiguration: boolean showLogName> = 1;
+
+        $r5 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r5.<org.slf4j.impl.SimpleLoggerConfiguration: boolean showShortLogName> = 0;
+
+        $r6 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r6.<org.slf4j.impl.SimpleLoggerConfiguration: boolean levelInBrackets> = 0;
+
+        $stack2 = <org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String LOG_FILE_DEFAULT>;
+
+        $r7 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r7.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String logFile> = $stack2;
+
+        $r8 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r8.<org.slf4j.impl.SimpleLoggerConfiguration: org.slf4j.impl.OutputChoice outputChoice> = null;
+
+        $r9 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r9.<org.slf4j.impl.SimpleLoggerConfiguration: boolean cacheOutputStream> = 0;
+
+        $r10 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r10.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String warnLevelString> = "WARN";
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        $r11 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r11.<org.slf4j.impl.SimpleLoggerConfiguration: java.util.Properties properties> = $u0;
+
+        return;
+    }
+
+    void init()
+    {
+        SimpleLoggerConfiguration this;
+        java.lang.String defaultLogLevelString, $stack8, $stack9, $stack11, $stack12, $stack13, $stack16, $stack18, $stack20;
+        boolean $stack4, $stack5, $stack6, $stack7, $stack10, $stack14, $stack15;
+        org.slf4j.impl.OutputChoice $stack17;
+        int $stack21;
+        java.lang.IllegalArgumentException $stack59;
+        java.text.SimpleDateFormat $u0;
+        org.slf4j.impl.SimpleLoggerConfiguration $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24;
+
+        this := @this: SimpleLoggerConfiguration;
+
+        $r0 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        specialinvoke $r0.<org.slf4j.impl.SimpleLoggerConfiguration: void loadProperties()>();
+
+        $r1 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        defaultLogLevelString = virtualinvoke $r1.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String getStringProperty(java.lang.String,java.lang.String)>("org.slf4j.simpleLogger.defaultLogLevel", null);
+
+        if defaultLogLevelString == null goto label1;
+
+        $stack21 = staticinvoke <org.slf4j.impl.SimpleLoggerConfiguration: int stringToLevel(java.lang.String)>(defaultLogLevelString);
+
+        $r2 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r2.<org.slf4j.impl.SimpleLoggerConfiguration: int defaultLogLevel> = $stack21;
+
+     label1:
+        $r3 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack4 = virtualinvoke $r3.<org.slf4j.impl.SimpleLoggerConfiguration: boolean getBooleanProperty(java.lang.String,boolean)>("org.slf4j.simpleLogger.showLogName", 1);
+
+        $r4 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r4.<org.slf4j.impl.SimpleLoggerConfiguration: boolean showLogName> = $stack4;
+
+        $r5 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack5 = virtualinvoke $r5.<org.slf4j.impl.SimpleLoggerConfiguration: boolean getBooleanProperty(java.lang.String,boolean)>("org.slf4j.simpleLogger.showShortLogName", 0);
+
+        $r6 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r6.<org.slf4j.impl.SimpleLoggerConfiguration: boolean showShortLogName> = $stack5;
+
+        $r7 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack6 = virtualinvoke $r7.<org.slf4j.impl.SimpleLoggerConfiguration: boolean getBooleanProperty(java.lang.String,boolean)>("org.slf4j.simpleLogger.showDateTime", 0);
+
+        $r8 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r8.<org.slf4j.impl.SimpleLoggerConfiguration: boolean showDateTime> = $stack6;
+
+        $r9 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack7 = virtualinvoke $r9.<org.slf4j.impl.SimpleLoggerConfiguration: boolean getBooleanProperty(java.lang.String,boolean)>("org.slf4j.simpleLogger.showThreadName", 1);
+
+        $r10 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r10.<org.slf4j.impl.SimpleLoggerConfiguration: boolean showThreadName> = $stack7;
+
+        $stack8 = <org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String DATE_TIME_FORMAT_STR_DEFAULT>;
+
+        $r11 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack9 = virtualinvoke $r11.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String getStringProperty(java.lang.String,java.lang.String)>("org.slf4j.simpleLogger.dateTimeFormat", $stack8);
+
+        <org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String dateTimeFormatStr> = $stack9;
+
+        $r12 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack10 = virtualinvoke $r12.<org.slf4j.impl.SimpleLoggerConfiguration: boolean getBooleanProperty(java.lang.String,boolean)>("org.slf4j.simpleLogger.levelInBrackets", 0);
+
+        $r13 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r13.<org.slf4j.impl.SimpleLoggerConfiguration: boolean levelInBrackets> = $stack10;
+
+        $r14 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack11 = virtualinvoke $r14.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String getStringProperty(java.lang.String,java.lang.String)>("org.slf4j.simpleLogger.warnLevelString", "WARN");
+
+        $r15 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r15.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String warnLevelString> = $stack11;
+
+        $r16 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack12 = $r16.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String logFile>;
+
+        $r17 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack13 = virtualinvoke $r17.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String getStringProperty(java.lang.String,java.lang.String)>("org.slf4j.simpleLogger.logFile", $stack12);
+
+        $r18 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r18.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String logFile> = $stack13;
+
+        $r19 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack14 = virtualinvoke $r19.<org.slf4j.impl.SimpleLoggerConfiguration: boolean getBooleanProperty(java.lang.String,boolean)>("org.slf4j.simpleLogger.cacheOutputStream", 0);
+
+        $r20 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r20.<org.slf4j.impl.SimpleLoggerConfiguration: boolean cacheOutputStream> = $stack14;
+
+        $r21 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack16 = $r21.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String logFile>;
+
+        $r22 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack15 = $r22.<org.slf4j.impl.SimpleLoggerConfiguration: boolean cacheOutputStream>;
+
+        $stack17 = staticinvoke <org.slf4j.impl.SimpleLoggerConfiguration: org.slf4j.impl.OutputChoice computeOutputChoice(java.lang.String,boolean)>($stack16, $stack15);
+
+        $r23 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r23.<org.slf4j.impl.SimpleLoggerConfiguration: org.slf4j.impl.OutputChoice outputChoice> = $stack17;
+
+        $stack18 = <org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String dateTimeFormatStr>;
+
+        if $stack18 == null goto label5;
+
+     label2:
+        $u0 = new java.text.SimpleDateFormat;
+
+        $stack20 = <org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String dateTimeFormatStr>;
+
+        specialinvoke $u0.<java.text.SimpleDateFormat: void <init>(java.lang.String)>($stack20);
+
+        $r24 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $r24.<org.slf4j.impl.SimpleLoggerConfiguration: java.text.DateFormat dateFormatter> = $u0;
+
+     label3:
+        goto label5;
+
+     label4:
+        $stack59 := @caughtexception;
+
+        staticinvoke <org.slf4j.helpers.Util: void report(java.lang.String,java.lang.Throwable)>("Bad date format in simplelogger.properties; will output relative time", $stack59);
+
+     label5:
+        return;
+
+        catch java.lang.IllegalArgumentException from label2 to label3 with label4;
+    }
+
+    private void loadProperties()
+    {
+        SimpleLoggerConfiguration this;
+        java.lang.Object $stack6;
+        java.io.InputStream in;
+        java.util.Properties $stack7;
+        java.io.IOException $stack8, $stack11, $stack12, $stack13;
+        java.lang.Throwable $stack9;
+        org.slf4j.impl.SimpleLoggerConfiguration$1 $u0;
+        org.slf4j.impl.SimpleLoggerConfiguration $r0, $r2;
+        java.security.PrivilegedAction $r1;
+
+        this := @this: SimpleLoggerConfiguration;
+
+        $u0 = new org.slf4j.impl.SimpleLoggerConfiguration$1;
+
+        $r0 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        specialinvoke $u0.<org.slf4j.impl.SimpleLoggerConfiguration$1: void <init>(org.slf4j.impl.SimpleLoggerConfiguration)>($r0);
+
+        $r1 = (java.security.PrivilegedAction) $u0;
+
+        $stack6 = staticinvoke <java.security.AccessController: java.lang.Object doPrivileged(java.security.PrivilegedAction)>($r1);
+
+        in = (java.io.InputStream) $stack6;
+
+        if null == in goto label14;
+
+     label01:
+        $r2 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack7 = $r2.<org.slf4j.impl.SimpleLoggerConfiguration: java.util.Properties properties>;
+
+        virtualinvoke $stack7.<java.util.Properties: void load(java.io.InputStream)>(in);
+
+     label02:
+        virtualinvoke in.<java.io.InputStream: void close()>();
+
+     label03:
+        goto label14;
+
+     label04:
+        $stack13 := @caughtexception;
+
+        goto label14;
+
+     label05:
+        $stack12 := @caughtexception;
+
+     label06:
+        virtualinvoke in.<java.io.InputStream: void close()>();
+
+     label07:
+        goto label14;
+
+     label08:
+        $stack11 := @caughtexception;
+
+        goto label14;
+
+     label09:
+        $stack9 := @caughtexception;
+
+     label10:
+        virtualinvoke in.<java.io.InputStream: void close()>();
+
+     label11:
+        goto label13;
+
+     label12:
+        $stack8 := @caughtexception;
+
+     label13:
+        throw $stack9;
+
+     label14:
+        return;
+
+        catch java.io.IOException from label02 to label03 with label04;
+        catch java.io.IOException from label01 to label02 with label05;
+        catch java.io.IOException from label06 to label07 with label08;
+        catch java.lang.Throwable from label01 to label02 with label09;
+        catch java.io.IOException from label10 to label11 with label12;
+    }
+
+    java.lang.String getStringProperty(java.lang.String, java.lang.String)
+    {
+        SimpleLoggerConfiguration this;
+        java.lang.String name, prop, defaultValue, $stack5;
+        org.slf4j.impl.SimpleLoggerConfiguration $r0;
+
+        this := @this: SimpleLoggerConfiguration;
+
+        name := @parameter0: java.lang.String;
+
+        defaultValue := @parameter1: java.lang.String;
+
+        $r0 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        prop = virtualinvoke $r0.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String getStringProperty(java.lang.String)>(name);
+
+        if prop != null goto label1;
+
+        $stack5 = defaultValue;
+
+        goto label2;
+
+     label1:
+        $stack5 = prop;
+
+     label2:
+        return $stack5;
+    }
+
+    boolean getBooleanProperty(java.lang.String, boolean)
+    {
+        SimpleLoggerConfiguration this;
+        java.lang.String name, prop, $stack5;
+        boolean defaultValue, $stack6;
+        org.slf4j.impl.SimpleLoggerConfiguration $r0;
+
+        this := @this: SimpleLoggerConfiguration;
+
+        name := @parameter0: java.lang.String;
+
+        defaultValue := @parameter1: boolean;
+
+        $r0 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        prop = virtualinvoke $r0.<org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String getStringProperty(java.lang.String)>(name);
+
+        if prop != null goto label1;
+
+        $stack6 = defaultValue;
+
+        goto label2;
+
+     label1:
+        $stack5 = "true";
+
+        $stack6 = virtualinvoke $stack5.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(prop);
+
+     label2:
+        return $stack6;
+    }
+
+    java.lang.String getStringProperty(java.lang.String)
+    {
+        java.lang.String name, prop, $stack6;
+        SimpleLoggerConfiguration this;
+        java.util.Properties $stack5;
+        java.lang.SecurityException $stack7;
+        org.slf4j.impl.SimpleLoggerConfiguration $r0;
+
+        this := @this: SimpleLoggerConfiguration;
+
+        name := @parameter0: java.lang.String;
+
+        prop = null;
+
+     label1:
+        prop = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>(name);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack7 := @caughtexception;
+
+     label4:
+        if prop != null goto label5;
+
+        $r0 = (org.slf4j.impl.SimpleLoggerConfiguration) this;
+
+        $stack5 = $r0.<org.slf4j.impl.SimpleLoggerConfiguration: java.util.Properties properties>;
+
+        $stack6 = virtualinvoke $stack5.<java.util.Properties: java.lang.String getProperty(java.lang.String)>(name);
+
+        goto label6;
+
+     label5:
+        $stack6 = prop;
+
+     label6:
+        return $stack6;
+
+        catch java.lang.SecurityException from label1 to label2 with label3;
+    }
+
+    static int stringToLevel(java.lang.String)
+    {
+        java.lang.String levelStr, $stack1, $stack3, $stack5, $stack7, $stack9, $stack11;
+        boolean $stack2, $stack4, $stack6, $stack8, $stack10, $stack12;
+
+        levelStr := @parameter0: java.lang.String;
+
+        $stack1 = "trace";
+
+        $stack2 = virtualinvoke $stack1.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(levelStr);
+
+        if $stack2 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        $stack3 = "debug";
+
+        $stack4 = virtualinvoke $stack3.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(levelStr);
+
+        if $stack4 == 0 goto label2;
+
+        return 10;
+
+     label2:
+        $stack5 = "info";
+
+        $stack6 = virtualinvoke $stack5.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(levelStr);
+
+        if $stack6 == 0 goto label3;
+
+        return 20;
+
+     label3:
+        $stack7 = "warn";
+
+        $stack8 = virtualinvoke $stack7.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(levelStr);
+
+        if $stack8 == 0 goto label4;
+
+        return 30;
+
+     label4:
+        $stack9 = "error";
+
+        $stack10 = virtualinvoke $stack9.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(levelStr);
+
+        if $stack10 == 0 goto label5;
+
+        return 40;
+
+     label5:
+        $stack11 = "off";
+
+        $stack12 = virtualinvoke $stack11.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(levelStr);
+
+        if $stack12 == 0 goto label6;
+
+        return 50;
+
+     label6:
+        return 20;
+    }
+
+    private static org.slf4j.impl.OutputChoice computeOutputChoice(java.lang.String, boolean)
+    {
+        java.lang.String logFile, $stack4, $stack6, $stack24;
+        boolean $stack5, $stack7, cacheOutputStream;
+        java.io.FileOutputStream $stack8;
+        java.io.PrintStream $stack9;
+        org.slf4j.impl.OutputChoice $stack10, $stack11, $stack13, $stack15, $stack17, $stack25;
+        org.slf4j.impl.OutputChoice$OutputChoiceType $stack12, $stack14, $stack16, $stack18, $stack26;
+        java.io.FileNotFoundException $stack19;
+        java.lang.StringBuilder $stack20, $stack21, $stack22, $stack23;
+
+        logFile := @parameter0: java.lang.String;
+
+        cacheOutputStream := @parameter1: boolean;
+
+        $stack4 = "System.err";
+
+        $stack5 = virtualinvoke $stack4.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(logFile);
+
+        if $stack5 == 0 goto label2;
+
+        if cacheOutputStream == 0 goto label1;
+
+        $stack17 = new org.slf4j.impl.OutputChoice;
+
+        $stack18 = <org.slf4j.impl.OutputChoice$OutputChoiceType: org.slf4j.impl.OutputChoice$OutputChoiceType CACHED_SYS_ERR>;
+
+        specialinvoke $stack17.<org.slf4j.impl.OutputChoice: void <init>(org.slf4j.impl.OutputChoice$OutputChoiceType)>($stack18);
+
+        return $stack17;
+
+     label1:
+        $stack15 = new org.slf4j.impl.OutputChoice;
+
+        $stack16 = <org.slf4j.impl.OutputChoice$OutputChoiceType: org.slf4j.impl.OutputChoice$OutputChoiceType SYS_ERR>;
+
+        specialinvoke $stack15.<org.slf4j.impl.OutputChoice: void <init>(org.slf4j.impl.OutputChoice$OutputChoiceType)>($stack16);
+
+        return $stack15;
+
+     label2:
+        $stack6 = "System.out";
+
+        $stack7 = virtualinvoke $stack6.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(logFile);
+
+        if $stack7 == 0 goto label4;
+
+        if cacheOutputStream == 0 goto label3;
+
+        $stack13 = new org.slf4j.impl.OutputChoice;
+
+        $stack14 = <org.slf4j.impl.OutputChoice$OutputChoiceType: org.slf4j.impl.OutputChoice$OutputChoiceType CACHED_SYS_OUT>;
+
+        specialinvoke $stack13.<org.slf4j.impl.OutputChoice: void <init>(org.slf4j.impl.OutputChoice$OutputChoiceType)>($stack14);
+
+        return $stack13;
+
+     label3:
+        $stack11 = new org.slf4j.impl.OutputChoice;
+
+        $stack12 = <org.slf4j.impl.OutputChoice$OutputChoiceType: org.slf4j.impl.OutputChoice$OutputChoiceType SYS_OUT>;
+
+        specialinvoke $stack11.<org.slf4j.impl.OutputChoice: void <init>(org.slf4j.impl.OutputChoice$OutputChoiceType)>($stack12);
+
+        return $stack11;
+
+     label4:
+        $stack8 = new java.io.FileOutputStream;
+
+        specialinvoke $stack8.<java.io.FileOutputStream: void <init>(java.lang.String)>(logFile);
+
+        $stack9 = new java.io.PrintStream;
+
+        specialinvoke $stack9.<java.io.PrintStream: void <init>(java.io.OutputStream)>($stack8);
+
+        $stack10 = new org.slf4j.impl.OutputChoice;
+
+        specialinvoke $stack10.<org.slf4j.impl.OutputChoice: void <init>(java.io.PrintStream)>($stack9);
+
+     label5:
+        return $stack10;
+
+     label6:
+        $stack19 := @caughtexception;
+
+        $stack20 = new java.lang.StringBuilder;
+
+        specialinvoke $stack20.<java.lang.StringBuilder: void <init>()>();
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not open [");
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(logFile);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]. Defaulting to System.err");
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.slf4j.helpers.Util: void report(java.lang.String,java.lang.Throwable)>($stack24, $stack19);
+
+        $stack25 = new org.slf4j.impl.OutputChoice;
+
+        $stack26 = <org.slf4j.impl.OutputChoice$OutputChoiceType: org.slf4j.impl.OutputChoice$OutputChoiceType SYS_ERR>;
+
+        specialinvoke $stack25.<org.slf4j.impl.OutputChoice: void <init>(org.slf4j.impl.OutputChoice$OutputChoiceType)>($stack26);
+
+        return $stack25;
+
+        catch java.io.FileNotFoundException from label4 to label5 with label6;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String $stack0;
+
+        <SimpleLoggerConfiguration: java.lang.String WARN_LEVELS_STRING_DEFAULT> = "WARN";
+
+        <SimpleLoggerConfiguration: boolean CACHE_OUTPUT_STREAM_DEFAULT> = 0;
+
+        <SimpleLoggerConfiguration: boolean LEVEL_IN_BRACKETS_DEFAULT> = 0;
+
+        <SimpleLoggerConfiguration: boolean SHOW_SHORT_LOG_NAME_DEFAULT> = 0;
+
+        <SimpleLoggerConfiguration: boolean SHOW_LOG_NAME_DEFAULT> = 1;
+
+        <SimpleLoggerConfiguration: boolean SHOW_THREAD_NAME_DEFAULT> = 1;
+
+        <SimpleLoggerConfiguration: boolean SHOW_DATE_TIME_DEFAULT> = 0;
+
+        <SimpleLoggerConfiguration: java.lang.String CONFIGURATION_FILE> = "simplelogger.properties";
+
+        <org.slf4j.impl.SimpleLoggerConfiguration: int DEFAULT_LOG_LEVEL_DEFAULT> = 20;
+
+        <org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String DATE_TIME_FORMAT_STR_DEFAULT> = null;
+
+        $stack0 = <org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String DATE_TIME_FORMAT_STR_DEFAULT>;
+
+        <org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String dateTimeFormatStr> = $stack0;
+
+        <org.slf4j.impl.SimpleLoggerConfiguration: java.lang.String LOG_FILE_DEFAULT> = "System.err";
+
+        return;
+    }
+}

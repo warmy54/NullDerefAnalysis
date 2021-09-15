@@ -1,0 +1,69 @@
+public class ArtifactInstallerTest extends org.apache.maven.artifact.AbstractArtifactComponentTestCase
+{
+    private org.apache.maven.artifact.installer.ArtifactInstaller artifactInstaller;
+
+    public void <init>()
+    {
+        ArtifactInstallerTest this;
+
+        this := @this: ArtifactInstallerTest;
+
+        specialinvoke this.<org.apache.maven.artifact.AbstractArtifactComponentTestCase: void <init>()>();
+
+        return;
+    }
+
+    protected java.lang.String component()
+    {
+        ArtifactInstallerTest this;
+
+        this := @this: ArtifactInstallerTest;
+
+        return "installer";
+    }
+
+    public void testArtifactInstallation() throws java.lang.Exception
+    {
+        java.lang.String $stack5, artifactBasedir;
+        ArtifactInstallerTest this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.installer.ArtifactInstaller $stack9;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack10;
+        java.io.File $u0, $u1;
+        org.apache.maven.artifact.installer.ArtifactInstallerTest $r0, $r1, $r2, $r3;
+
+        this := @this: ArtifactInstallerTest;
+
+        $u0 = new java.io.File;
+
+        $stack5 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.lang.String getBasedir()>();
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack5, "src/test/resources/artifact-install");
+
+        artifactBasedir = virtualinvoke $u0.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $r0 = (org.apache.maven.artifact.installer.ArtifactInstallerTest) this;
+
+        artifact = virtualinvoke $r0.<org.apache.maven.artifact.installer.ArtifactInstallerTest: org.apache.maven.artifact.Artifact createArtifact(java.lang.String,java.lang.String)>("artifact", "1.0");
+
+        $u1 = new java.io.File;
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String,java.lang.String)>(artifactBasedir, "artifact-1.0.jar");
+
+        $r1 = (org.apache.maven.artifact.installer.ArtifactInstallerTest) this;
+
+        $stack9 = $r1.<org.apache.maven.artifact.installer.ArtifactInstallerTest: org.apache.maven.artifact.installer.ArtifactInstaller artifactInstaller>;
+
+        $r2 = (org.apache.maven.artifact.installer.ArtifactInstallerTest) this;
+
+        $stack10 = virtualinvoke $r2.<org.apache.maven.artifact.installer.ArtifactInstallerTest: org.apache.maven.artifact.repository.ArtifactRepository localRepository()>();
+
+        interfaceinvoke $stack9.<org.apache.maven.artifact.installer.ArtifactInstaller: void install(java.io.File,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>($u1, artifact, $stack10);
+
+        $r3 = (org.apache.maven.artifact.installer.ArtifactInstallerTest) this;
+
+        virtualinvoke $r3.<org.apache.maven.artifact.installer.ArtifactInstallerTest: void assertLocalArtifactPresent(org.apache.maven.artifact.Artifact)>(artifact);
+
+        return;
+    }
+}

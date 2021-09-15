@@ -1,0 +1,223 @@
+class ThreadOutputMuxer$ConsolePrinter extends java.lang.Object implements java.lang.Runnable
+{
+    private volatile boolean running;
+    private final org.apache.maven.lifecycle.internal.ProjectBuildList projectBuildList;
+    final org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer this$0;
+
+    void <init>(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer, org.apache.maven.lifecycle.internal.ProjectBuildList)
+    {
+        ThreadOutputMuxer$ConsolePrinter this;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer this$0;
+        org.apache.maven.lifecycle.internal.ProjectBuildList projectBuildList;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter $r0, $r1;
+
+        this := @this: ThreadOutputMuxer$ConsolePrinter;
+
+        this$0 := @parameter0: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer;
+
+        projectBuildList := @parameter1: org.apache.maven.lifecycle.internal.ProjectBuildList;
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter) this;
+
+        $r0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer this$0> = this$0;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r1 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter) this;
+
+        $r1.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: org.apache.maven.lifecycle.internal.ProjectBuildList projectBuildList> = projectBuildList;
+
+        return;
+    }
+
+    public void run()
+    {
+        ThreadOutputMuxer$ConsolePrinter this;
+        org.apache.maven.lifecycle.internal.ProjectBuildList $stack8;
+        java.util.Iterator l1;
+        boolean $stack10, $stack24;
+        java.lang.Object $stack11, $stack14, $stack17;
+        org.apache.maven.lifecycle.internal.ProjectSegment projectBuild;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer $stack12, $stack15, $stack19, $stack22;
+        java.util.Map $stack13, $stack16;
+        java.io.PrintStream projectStream, $stack20;
+        java.io.ByteArrayOutputStream projectOs;
+        java.util.Set $stack23;
+        java.lang.Throwable $stack28;
+        java.io.IOException $stack30;
+        java.lang.InterruptedException $stack32;
+        java.lang.RuntimeException $u0, $u1;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: ThreadOutputMuxer$ConsolePrinter;
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter) this;
+
+        $r0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: boolean running> = 1;
+
+        $r1 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter) this;
+
+        $stack8 = $r1.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: org.apache.maven.lifecycle.internal.ProjectBuildList projectBuildList>;
+
+        l1 = virtualinvoke $stack8.<org.apache.maven.lifecycle.internal.ProjectBuildList: java.util.Iterator iterator()>();
+
+     label01:
+        $stack10 = interfaceinvoke l1.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label14;
+
+        $stack11 = interfaceinvoke l1.<java.util.Iterator: java.lang.Object next()>();
+
+        projectBuild = (org.apache.maven.lifecycle.internal.ProjectSegment) $stack11;
+
+        $r2 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter) this;
+
+        $stack12 = $r2.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer this$0>;
+
+        $stack13 = staticinvoke <org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Map access$000(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer)>($stack12);
+
+        $stack14 = interfaceinvoke $stack13.<java.util.Map: java.lang.Object get(java.lang.Object)>(projectBuild);
+
+        projectStream = (java.io.PrintStream) $stack14;
+
+        $r3 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter) this;
+
+        $stack15 = $r3.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer this$0>;
+
+        $stack16 = staticinvoke <org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Map access$100(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer)>($stack15);
+
+        $stack17 = interfaceinvoke $stack16.<java.util.Map: java.lang.Object get(java.lang.Object)>(projectBuild);
+
+        projectOs = (java.io.ByteArrayOutputStream) $stack17;
+
+     label02:
+        entermonitor projectStream;
+
+     label03:
+        virtualinvoke projectStream.<java.lang.Object: void wait(long)>(100L);
+
+     label04:
+        goto label06;
+
+     label05:
+        $stack32 := @caughtexception;
+
+        $u0 = new java.lang.RuntimeException;
+
+        specialinvoke $u0.<java.lang.RuntimeException: void <init>(java.lang.Throwable)>($stack32);
+
+        throw $u0;
+
+     label06:
+        $r4 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter) this;
+
+        $stack19 = $r4.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer this$0>;
+
+        $stack20 = staticinvoke <org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.io.PrintStream access$200(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer)>($stack19);
+
+        virtualinvoke projectOs.<java.io.ByteArrayOutputStream: void writeTo(java.io.OutputStream)>($stack20);
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack30 := @caughtexception;
+
+        $u1 = new java.lang.RuntimeException;
+
+        specialinvoke $u1.<java.lang.RuntimeException: void <init>(java.lang.Throwable)>($stack30);
+
+        throw $u1;
+
+     label09:
+        virtualinvoke projectOs.<java.io.ByteArrayOutputStream: void reset()>();
+
+        exitmonitor projectStream;
+
+     label10:
+        goto label13;
+
+     label11:
+        $stack28 := @caughtexception;
+
+        exitmonitor projectStream;
+
+     label12:
+        throw $stack28;
+
+     label13:
+        $r5 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter) this;
+
+        $stack22 = $r5.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer this$0>;
+
+        $stack23 = staticinvoke <org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Set access$300(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer)>($stack22);
+
+        $stack24 = interfaceinvoke $stack23.<java.util.Set: boolean contains(java.lang.Object)>(projectBuild);
+
+        if $stack24 == 0 goto label02;
+
+        goto label01;
+
+     label14:
+        $r6 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter) this;
+
+        $r6.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: boolean running> = 0;
+
+        return;
+
+        catch java.lang.InterruptedException from label03 to label04 with label05;
+        catch java.io.IOException from label06 to label07 with label08;
+        catch java.lang.Throwable from label03 to label10 with label11;
+        catch java.lang.Throwable from label11 to label12 with label11;
+    }
+
+    public void waitUntilRunning(boolean)
+    {
+        ThreadOutputMuxer$ConsolePrinter this;
+        boolean $stack3, expect, $stack6;
+        java.lang.InterruptedException $stack7;
+        java.lang.RuntimeException $u0;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter $r0;
+
+        this := @this: ThreadOutputMuxer$ConsolePrinter;
+
+        expect := @parameter0: boolean;
+
+     label1:
+        $r0 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter) this;
+
+        $stack3 = $r0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: boolean running>;
+
+        if $stack3 != 0 goto label2;
+
+        $stack6 = 1;
+
+        goto label3;
+
+     label2:
+        $stack6 = 0;
+
+     label3:
+        if $stack6 != expect goto label7;
+
+     label4:
+        staticinvoke <java.lang.Thread: void sleep(long)>(10L);
+
+     label5:
+        goto label1;
+
+     label6:
+        $stack7 := @caughtexception;
+
+        $u0 = new java.lang.RuntimeException;
+
+        specialinvoke $u0.<java.lang.RuntimeException: void <init>(java.lang.Throwable)>($stack7);
+
+        throw $u0;
+
+     label7:
+        return;
+
+        catch java.lang.InterruptedException from label4 to label5 with label6;
+    }
+}

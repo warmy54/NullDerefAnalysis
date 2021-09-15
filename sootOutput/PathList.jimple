@@ -1,0 +1,443 @@
+public class PathList extends java.lang.Object
+{
+    protected java.util.HashMap paths;
+
+    public void <init>()
+    {
+        PathList this;
+        java.util.HashMap $u0;
+        org.ooc.frontend.PathList $r0;
+
+        this := @this: PathList;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.HashMap;
+
+        specialinvoke $u0.<java.util.HashMap: void <init>()>();
+
+        $r0 = (org.ooc.frontend.PathList) this;
+
+        $r0.<org.ooc.frontend.PathList: java.util.HashMap paths> = $u0;
+
+        return;
+    }
+
+    public void add(java.lang.String)
+    {
+        java.lang.String path, absolutePath, $stack13, $stack15;
+        boolean $stack5, $stack6, $stack9;
+        PathList this;
+        java.util.HashMap $stack8, $stack10;
+        java.io.PrintStream $stack12, $stack14;
+        java.io.File $u0;
+        org.ooc.frontend.PathList $r0, $r1;
+
+        this := @this: PathList;
+
+        path := @parameter0: java.lang.String;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>(path);
+
+        $stack5 = virtualinvoke $u0.<java.io.File: boolean exists()>();
+
+        if $stack5 != 0 goto label1;
+
+        $stack14 = <java.lang.System: java.io.PrintStream err>;
+
+        $stack15 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(path) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Classpath element cannot be found: \u0001");
+
+        virtualinvoke $stack14.<java.io.PrintStream: void println(java.lang.String)>($stack15);
+
+        return;
+
+     label1:
+        $stack6 = virtualinvoke $u0.<java.io.File: boolean isDirectory()>();
+
+        if $stack6 != 0 goto label2;
+
+        $stack12 = <java.lang.System: java.io.PrintStream err>;
+
+        $stack13 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(path) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Classpath element is not a directory: \u0001");
+
+        virtualinvoke $stack12.<java.io.PrintStream: void println(java.lang.String)>($stack13);
+
+        return;
+
+     label2:
+        absolutePath = virtualinvoke $u0.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $r0 = (org.ooc.frontend.PathList) this;
+
+        $stack8 = $r0.<org.ooc.frontend.PathList: java.util.HashMap paths>;
+
+        $stack9 = virtualinvoke $stack8.<java.util.HashMap: boolean containsKey(java.lang.Object)>(absolutePath);
+
+        if $stack9 != 0 goto label3;
+
+        $r1 = (org.ooc.frontend.PathList) this;
+
+        $stack10 = $r1.<org.ooc.frontend.PathList: java.util.HashMap paths>;
+
+        virtualinvoke $stack10.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(absolutePath, $u0);
+
+     label3:
+        return;
+    }
+
+    public void remove(java.lang.String)
+    {
+        java.lang.String path, $stack7, $stack10, $stack13, $stack14, $stack16, $stack17, $stack19, $stack20;
+        boolean $stack4, $stack5, $stack8;
+        PathList this;
+        java.util.HashMap $stack6, $stack9;
+        java.io.PrintStream $stack12, $stack15, $stack18;
+        java.io.File $u0;
+        org.ooc.frontend.PathList $r0, $r1;
+
+        this := @this: PathList;
+
+        path := @parameter0: java.lang.String;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>(path);
+
+        $stack4 = virtualinvoke $u0.<java.io.File: boolean exists()>();
+
+        if $stack4 != 0 goto label1;
+
+        $stack18 = <java.lang.System: java.io.PrintStream err>;
+
+        $stack19 = virtualinvoke $u0.<java.io.File: java.lang.String getPath()>();
+
+        $stack20 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack19) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Classpath element cannot be found: \u0001");
+
+        virtualinvoke $stack18.<java.io.PrintStream: void println(java.lang.String)>($stack20);
+
+        return;
+
+     label1:
+        $stack5 = virtualinvoke $u0.<java.io.File: boolean isDirectory()>();
+
+        if $stack5 != 0 goto label2;
+
+        $stack15 = <java.lang.System: java.io.PrintStream err>;
+
+        $stack16 = virtualinvoke $u0.<java.io.File: java.lang.String getPath()>();
+
+        $stack17 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack16) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Classpath element is not a directory: \u0001");
+
+        virtualinvoke $stack15.<java.io.PrintStream: void println(java.lang.String)>($stack17);
+
+        return;
+
+     label2:
+        $r0 = (org.ooc.frontend.PathList) this;
+
+        $stack6 = $r0.<org.ooc.frontend.PathList: java.util.HashMap paths>;
+
+        $stack7 = virtualinvoke $u0.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack8 = virtualinvoke $stack6.<java.util.HashMap: boolean containsKey(java.lang.Object)>($stack7);
+
+        if $stack8 != 0 goto label3;
+
+        $stack12 = <java.lang.System: java.io.PrintStream err>;
+
+        $stack13 = virtualinvoke $u0.<java.io.File: java.lang.String getPath()>();
+
+        $stack14 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack13) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Trying to remove a previously unexisting element: \u0001, ignoring.");
+
+        virtualinvoke $stack12.<java.io.PrintStream: void println(java.lang.String)>($stack14);
+
+        return;
+
+     label3:
+        $r1 = (org.ooc.frontend.PathList) this;
+
+        $stack9 = $r1.<org.ooc.frontend.PathList: java.util.HashMap paths>;
+
+        $stack10 = virtualinvoke $u0.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        virtualinvoke $stack9.<java.util.HashMap: java.lang.Object remove(java.lang.Object)>($stack10);
+
+        return;
+    }
+
+    public void clear()
+    {
+        PathList this;
+        java.util.HashMap $stack1;
+        org.ooc.frontend.PathList $r0;
+
+        this := @this: PathList;
+
+        $r0 = (org.ooc.frontend.PathList) this;
+
+        $stack1 = $r0.<org.ooc.frontend.PathList: java.util.HashMap paths>;
+
+        virtualinvoke $stack1.<java.util.HashMap: void clear()>();
+
+        return;
+    }
+
+    public java.util.Collection getPaths()
+    {
+        PathList this;
+        java.util.HashMap $stack1;
+        java.util.Collection $stack2;
+        org.ooc.frontend.PathList $r0;
+
+        this := @this: PathList;
+
+        $r0 = (org.ooc.frontend.PathList) this;
+
+        $stack1 = $r0.<org.ooc.frontend.PathList: java.util.HashMap paths>;
+
+        $stack2 = virtualinvoke $stack1.<java.util.HashMap: java.util.Collection values()>();
+
+        return $stack2;
+    }
+
+    public java.util.Collection getRelativePaths(java.lang.String)
+    {
+        PathList this;
+        java.util.HashMap $stack7;
+        java.util.Collection $stack8;
+        java.util.Iterator l3;
+        boolean $stack10, $stack13;
+        java.lang.Object $stack11;
+        java.io.File element, $u1;
+        java.lang.String path;
+        java.util.ArrayList $u0;
+        org.ooc.frontend.PathList $r0, $r1;
+
+        this := @this: PathList;
+
+        path := @parameter0: java.lang.String;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (org.ooc.frontend.PathList) this;
+
+        $stack7 = $r0.<org.ooc.frontend.PathList: java.util.HashMap paths>;
+
+        $stack8 = virtualinvoke $stack7.<java.util.HashMap: java.util.Collection values()>();
+
+        l3 = interfaceinvoke $stack8.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label3;
+
+        $stack11 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        element = (java.io.File) $stack11;
+
+        $u1 = new java.io.File;
+
+        specialinvoke $u1.<java.io.File: void <init>(java.io.File,java.lang.String)>(element, path);
+
+        $stack13 = virtualinvoke $u1.<java.io.File: boolean exists()>();
+
+        if $stack13 == 0 goto label2;
+
+        $r1 = (org.ooc.frontend.PathList) this;
+
+        virtualinvoke $r1.<org.ooc.frontend.PathList: void addChildren(java.lang.String,java.util.List,java.io.File)>(path, $u0, $u1);
+
+     label2:
+        goto label1;
+
+     label3:
+        return $u0;
+    }
+
+    private void addChildren(java.lang.String, java.util.List, java.io.File)
+    {
+        java.io.File parent, child;
+        java.io.File[] children;
+        int l6, l7;
+        boolean $stack10, $stack11;
+        PathList this;
+        java.lang.String basePath, $stack14, $stack15, $stack16, $stack17;
+        java.util.List list;
+        org.ooc.frontend.PathList $r0;
+
+        this := @this: PathList;
+
+        basePath := @parameter0: java.lang.String;
+
+        list := @parameter1: java.util.List;
+
+        parent := @parameter2: java.io.File;
+
+        children = virtualinvoke parent.<java.io.File: java.io.File[] listFiles()>();
+
+        l6 = lengthof children;
+
+        l7 = 0;
+
+     label1:
+        if l7 >= l6 goto label4;
+
+        child = children[l7];
+
+        $stack10 = virtualinvoke child.<java.io.File: boolean isFile()>();
+
+        if $stack10 == 0 goto label2;
+
+        $stack16 = virtualinvoke child.<java.io.File: java.lang.String getName()>();
+
+        $stack17 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>(basePath, $stack16) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001/\u0001");
+
+        interfaceinvoke list.<java.util.List: boolean add(java.lang.Object)>($stack17);
+
+        goto label3;
+
+     label2:
+        $stack11 = virtualinvoke child.<java.io.File: boolean isDirectory()>();
+
+        if $stack11 == 0 goto label3;
+
+        $stack14 = virtualinvoke child.<java.io.File: java.lang.String getName()>();
+
+        $stack15 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>(basePath, $stack14) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001/\u0001");
+
+        $r0 = (org.ooc.frontend.PathList) this;
+
+        virtualinvoke $r0.<org.ooc.frontend.PathList: void addChildren(java.lang.String,java.util.List,java.io.File)>($stack15, list, child);
+
+     label3:
+        l7 = l7 + 1;
+
+        goto label1;
+
+     label4:
+        return;
+    }
+
+    public java.io.File getFile(java.lang.String)
+    {
+        PathList this;
+        java.lang.String path;
+        java.io.File element, $stack4, $u0;
+        org.ooc.frontend.PathList $r0;
+
+        this := @this: PathList;
+
+        path := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.PathList) this;
+
+        element = virtualinvoke $r0.<org.ooc.frontend.PathList: java.io.File getElement(java.lang.String)>(path);
+
+        if element != null goto label1;
+
+        $stack4 = null;
+
+        goto label2;
+
+     label1:
+        $u0 = new java.io.File;
+
+        $stack4 = $u0;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.io.File,java.lang.String)>(element, path);
+
+     label2:
+        return $stack4;
+    }
+
+    public java.io.File getElement(java.lang.String)
+    {
+        PathList this;
+        java.util.HashMap $stack5;
+        java.util.Collection $stack6;
+        java.util.Iterator l2;
+        boolean $stack8, $stack11;
+        java.lang.Object $stack9;
+        java.io.File element, $u0;
+        java.lang.String path;
+        org.ooc.frontend.PathList $r0;
+
+        this := @this: PathList;
+
+        path := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.PathList) this;
+
+        $stack5 = $r0.<org.ooc.frontend.PathList: java.util.HashMap paths>;
+
+        $stack6 = virtualinvoke $stack5.<java.util.HashMap: java.util.Collection values()>();
+
+        l2 = interfaceinvoke $stack6.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label3;
+
+        $stack9 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        element = (java.io.File) $stack9;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.io.File,java.lang.String)>(element, path);
+
+        $stack11 = virtualinvoke $u0.<java.io.File: boolean exists()>();
+
+        if $stack11 == 0 goto label2;
+
+        return element;
+
+     label2:
+        goto label1;
+
+     label3:
+        return null;
+    }
+
+    public boolean isEmpty()
+    {
+        PathList this;
+        java.util.HashMap $stack1;
+        boolean $stack2;
+        org.ooc.frontend.PathList $r0;
+
+        this := @this: PathList;
+
+        $r0 = (org.ooc.frontend.PathList) this;
+
+        $stack1 = $r0.<org.ooc.frontend.PathList: java.util.HashMap paths>;
+
+        $stack2 = virtualinvoke $stack1.<java.util.HashMap: boolean isEmpty()>();
+
+        return $stack2;
+    }
+
+    public java.lang.String toString()
+    {
+        PathList this;
+        java.util.HashMap $stack1;
+        java.lang.String $stack2;
+        org.ooc.frontend.PathList $r0;
+
+        this := @this: PathList;
+
+        $r0 = (org.ooc.frontend.PathList) this;
+
+        $stack1 = $r0.<org.ooc.frontend.PathList: java.util.HashMap paths>;
+
+        $stack2 = virtualinvoke $stack1.<java.util.HashMap: java.lang.String toString()>();
+
+        return $stack2;
+    }
+}

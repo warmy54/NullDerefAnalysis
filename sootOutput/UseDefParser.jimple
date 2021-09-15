@@ -1,0 +1,565 @@
+public class UseDefParser extends java.lang.Object
+{
+    protected static java.util.Map cache;
+
+    public void <init>()
+    {
+        UseDefParser this;
+
+        this := @this: UseDefParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.ooc.middle.UseDef parse(java.lang.String, org.ubi.SourceReader, org.ooc.frontend.model.tokens.Token, org.ooc.frontend.BuildParams) throws java.io.IOException
+    {
+        org.ooc.frontend.BuildParams params;
+        boolean $stack13, $stack18, $stack26, $stack27, $stack37, $stack38, $stack44, $stack45, $stack46, $stack47, $stack48, $stack49, $stack50, $stack51, $stack52, $stack56, $stack57, $stack69, $stack78, $stack82, $stack92, $stack97, $stack105, $stack112, $stack119, $stack135, $stack23;
+        java.lang.String identifier, $stack16, $stack29, $stack30, $stack33, $stack39, $stack42, $stack59, $stack62, $stack66, $stack72, $stack73, $stack79, $stack87, $stack93, $stack96, $stack107, $stack108, $stack114, $stack115, $stack121, $stack122, $stack126, $stack127, $stack134, $stack137, $stack140, id, value, libPath;
+        java.util.Map $stack14, $stack20;
+        java.lang.Object $stack15, $stack32;
+        org.ooc.middle.UseDef cached, $stack34, $u1;
+        java.io.File file, st#19, $u6, $u8, $u9, $u12, $u13;
+        org.ubi.SourceReader reader, sReader;
+        java.util.List $stack24, $stack70, $stack83, $stack98, $stack106, $stack113, $stack120;
+        java.io.PrintStream $stack28, $stack61, $stack125, $stack136, $stack139;
+        org.ooc.frontend.model.tokens.Token token;
+        org.ooc.frontend.PathList $stack58;
+        int[] $stack74;
+        org.ubi.FileLocation $stack133;
+        java.util.Iterator id#30;
+        org.ooc.middle.UseDef$Requirement value#31, $u11;
+        org.ubi.CompilationFailedError $u0;
+        java.util.StringTokenizer $u2, $u3, $u4, $u5, $u7, $u10;
+        org.ubi.Locatable $r0;
+        java.lang.Throwable $r1;
+
+        identifier := @parameter0: java.lang.String;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        token := @parameter2: org.ooc.frontend.model.tokens.Token;
+
+        params := @parameter3: org.ooc.frontend.BuildParams;
+
+        $stack13 = params.<org.ooc.frontend.BuildParams: boolean veryVerbose>;
+
+        if $stack13 == 0 goto label01;
+
+        $stack139 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack140 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(identifier) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Parsing usefile \u0001");
+
+        virtualinvoke $stack139.<java.io.PrintStream: void println(java.lang.String)>($stack140);
+
+     label01:
+        $stack14 = <org.ooc.frontend.parser.UseDefParser: java.util.Map cache>;
+
+        $stack15 = interfaceinvoke $stack14.<java.util.Map: java.lang.Object get(java.lang.Object)>(identifier);
+
+        cached = (org.ooc.middle.UseDef) $stack15;
+
+        if cached == null goto label03;
+
+        $stack135 = params.<org.ooc.frontend.BuildParams: boolean veryVerbose>;
+
+        if $stack135 == 0 goto label02;
+
+        $stack136 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack137 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(identifier) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Getting usefile \u0001 from cache");
+
+        virtualinvoke $stack136.<java.io.PrintStream: void println(java.lang.String)>($stack137);
+
+     label02:
+        return cached;
+
+     label03:
+        $stack16 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(identifier) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001.use");
+
+        file = staticinvoke <org.ooc.frontend.parser.UseDefParser: java.io.File findUse(java.lang.String,org.ooc.frontend.BuildParams)>($stack16, params);
+
+        if file != null goto label04;
+
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $r0 = (org.ubi.Locatable) token;
+
+        $stack133 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($r0);
+
+        $stack134 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>(identifier, identifier) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Use not found in the ooc library path: \u0001\n\nTo install ooc libraries, copy their directories to /usr/lib/ooc/\nIf you want to install libraries elsewhere, use the OOC_LIBS environment variable,\nwhich is the path ooc will scan for .use files (in this case, \u0001.use)\nFor more informations, see http://docs.ooc-lang.org/libs.html\n-------------------");
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack133, $stack134);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label04:
+        $stack18 = params.<org.ooc.frontend.BuildParams: boolean veryVerbose>;
+
+        if $stack18 == 0 goto label05;
+
+        $stack125 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack126 = virtualinvoke file.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack127 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>(identifier, $stack126) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Found usefile \u0001 at \u0001");
+
+        virtualinvoke $stack125.<java.io.PrintStream: void println(java.lang.String)>($stack127);
+
+     label05:
+        $u1 = new org.ooc.middle.UseDef;
+
+        specialinvoke $u1.<org.ooc.middle.UseDef: void <init>(java.lang.String)>(identifier);
+
+        $stack20 = <org.ooc.frontend.parser.UseDefParser: java.util.Map cache>;
+
+        interfaceinvoke $stack20.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(identifier, $u1);
+
+        reader = staticinvoke <org.ubi.SourceReader: org.ubi.SourceReader getReaderFromFile(java.io.File)>(file);
+
+     label06:
+        $stack23 = virtualinvoke reader.<org.ubi.SourceReader: boolean hasNext()>();
+
+        if $stack23 == 0 goto label34;
+
+        virtualinvoke reader.<org.ubi.SourceReader: boolean skipWhitespace()>();
+
+        $stack37 = virtualinvoke reader.<org.ubi.SourceReader: boolean matches(java.lang.String,boolean)>("#", 0);
+
+        if $stack37 == 0 goto label07;
+
+        virtualinvoke reader.<org.ubi.SourceReader: void skipLine()>();
+
+        goto label06;
+
+     label07:
+        $stack38 = virtualinvoke reader.<org.ubi.SourceReader: boolean matches(java.lang.String,boolean)>("=", 0);
+
+        if $stack38 == 0 goto label08;
+
+        virtualinvoke reader.<org.ubi.SourceReader: void skipLine()>();
+
+        goto label06;
+
+     label08:
+        $stack39 = virtualinvoke reader.<org.ubi.SourceReader: java.lang.String readUntil(char,boolean)>(58, 0);
+
+        id = virtualinvoke $stack39.<java.lang.String: java.lang.String trim()>();
+
+        virtualinvoke reader.<org.ubi.SourceReader: char read()>();
+
+        $stack42 = virtualinvoke reader.<org.ubi.SourceReader: java.lang.String readLine()>();
+
+        value = virtualinvoke $stack42.<java.lang.String: java.lang.String trim()>();
+
+        $stack44 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>("Name");
+
+        if $stack44 == 0 goto label09;
+
+        virtualinvoke $u1.<org.ooc.middle.UseDef: void setName(java.lang.String)>(value);
+
+        goto label33;
+
+     label09:
+        $stack45 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>("Description");
+
+        if $stack45 == 0 goto label10;
+
+        virtualinvoke $u1.<org.ooc.middle.UseDef: void setDescription(java.lang.String)>(value);
+
+        goto label33;
+
+     label10:
+        $stack46 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>("Pkgs");
+
+        if $stack46 == 0 goto label13;
+
+        $u2 = new java.util.StringTokenizer;
+
+        specialinvoke $u2.<java.util.StringTokenizer: void <init>(java.lang.String,java.lang.String)>(value, ",");
+
+     label11:
+        $stack119 = virtualinvoke $u2.<java.util.StringTokenizer: boolean hasMoreTokens()>();
+
+        if $stack119 == 0 goto label12;
+
+        $stack120 = virtualinvoke $u1.<org.ooc.middle.UseDef: java.util.List getPkgs()>();
+
+        $stack121 = virtualinvoke $u2.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        $stack122 = virtualinvoke $stack121.<java.lang.String: java.lang.String trim()>();
+
+        interfaceinvoke $stack120.<java.util.List: boolean add(java.lang.Object)>($stack122);
+
+        goto label11;
+
+     label12:
+        goto label33;
+
+     label13:
+        $stack47 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>("Libs");
+
+        if $stack47 == 0 goto label16;
+
+        $u3 = new java.util.StringTokenizer;
+
+        specialinvoke $u3.<java.util.StringTokenizer: void <init>(java.lang.String,java.lang.String)>(value, ",");
+
+     label14:
+        $stack112 = virtualinvoke $u3.<java.util.StringTokenizer: boolean hasMoreTokens()>();
+
+        if $stack112 == 0 goto label15;
+
+        $stack113 = virtualinvoke $u1.<org.ooc.middle.UseDef: java.util.List getLibs()>();
+
+        $stack114 = virtualinvoke $u3.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        $stack115 = virtualinvoke $stack114.<java.lang.String: java.lang.String trim()>();
+
+        interfaceinvoke $stack113.<java.util.List: boolean add(java.lang.Object)>($stack115);
+
+        goto label14;
+
+     label15:
+        goto label33;
+
+     label16:
+        $stack48 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>("Includes");
+
+        if $stack48 == 0 goto label19;
+
+        $u4 = new java.util.StringTokenizer;
+
+        specialinvoke $u4.<java.util.StringTokenizer: void <init>(java.lang.String,java.lang.String)>(value, ",");
+
+     label17:
+        $stack105 = virtualinvoke $u4.<java.util.StringTokenizer: boolean hasMoreTokens()>();
+
+        if $stack105 == 0 goto label18;
+
+        $stack106 = virtualinvoke $u1.<org.ooc.middle.UseDef: java.util.List getIncludes()>();
+
+        $stack107 = virtualinvoke $u4.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        $stack108 = virtualinvoke $stack107.<java.lang.String: java.lang.String trim()>();
+
+        interfaceinvoke $stack106.<java.util.List: boolean add(java.lang.Object)>($stack108);
+
+        goto label17;
+
+     label18:
+        goto label33;
+
+     label19:
+        $stack49 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>("LibPaths");
+
+        if $stack49 == 0 goto label23;
+
+        $u5 = new java.util.StringTokenizer;
+
+        specialinvoke $u5.<java.util.StringTokenizer: void <init>(java.lang.String,java.lang.String)>(value, ",");
+
+     label20:
+        $stack92 = virtualinvoke $u5.<java.util.StringTokenizer: boolean hasMoreTokens()>();
+
+        if $stack92 == 0 goto label22;
+
+        $stack93 = virtualinvoke $u5.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        libPath = virtualinvoke $stack93.<java.lang.String: java.lang.String trim()>();
+
+        $u6 = new java.io.File;
+
+        $stack96 = virtualinvoke file.<java.io.File: java.lang.String getParent()>();
+
+        specialinvoke $u6.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack96, libPath);
+
+        $stack97 = virtualinvoke $u6.<java.io.File: boolean isAbsolute()>();
+
+        if $stack97 != 0 goto label21;
+
+        libPath = virtualinvoke $u6.<java.io.File: java.lang.String getCanonicalPath()>();
+
+     label21:
+        $stack98 = virtualinvoke $u1.<org.ooc.middle.UseDef: java.util.List getLibPaths()>();
+
+        interfaceinvoke $stack98.<java.util.List: boolean add(java.lang.Object)>(libPath);
+
+        goto label20;
+
+     label22:
+        goto label33;
+
+     label23:
+        $stack50 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>("IncludePaths");
+
+        if $stack50 == 0 goto label27;
+
+        $u7 = new java.util.StringTokenizer;
+
+        specialinvoke $u7.<java.util.StringTokenizer: void <init>(java.lang.String,java.lang.String)>(value, ",");
+
+     label24:
+        $stack78 = virtualinvoke $u7.<java.util.StringTokenizer: boolean hasMoreTokens()>();
+
+        if $stack78 == 0 goto label26;
+
+        $stack79 = virtualinvoke $u7.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        libPath = virtualinvoke $stack79.<java.lang.String: java.lang.String trim()>();
+
+        $u8 = new java.io.File;
+
+        specialinvoke $u8.<java.io.File: void <init>(java.lang.String)>(libPath);
+
+        $stack82 = virtualinvoke $u8.<java.io.File: boolean isAbsolute()>();
+
+        if $stack82 != 0 goto label25;
+
+        $u9 = new java.io.File;
+
+        $stack87 = virtualinvoke file.<java.io.File: java.lang.String getParent()>();
+
+        specialinvoke $u9.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack87, libPath);
+
+        libPath = virtualinvoke $u9.<java.io.File: java.lang.String getCanonicalPath()>();
+
+     label25:
+        $stack83 = virtualinvoke $u1.<org.ooc.middle.UseDef: java.util.List getIncludePaths()>();
+
+        interfaceinvoke $stack83.<java.util.List: boolean add(java.lang.Object)>(libPath);
+
+        goto label24;
+
+     label26:
+        goto label33;
+
+     label27:
+        $stack51 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>("Requires");
+
+        if $stack51 == 0 goto label30;
+
+        $u10 = new java.util.StringTokenizer;
+
+        specialinvoke $u10.<java.util.StringTokenizer: void <init>(java.lang.String,java.lang.String)>(value, ",");
+
+     label28:
+        $stack69 = virtualinvoke $u10.<java.util.StringTokenizer: boolean hasMoreTokens()>();
+
+        if $stack69 == 0 goto label29;
+
+        $stack70 = virtualinvoke $u1.<org.ooc.middle.UseDef: java.util.List getRequirements()>();
+
+        $u11 = new org.ooc.middle.UseDef$Requirement;
+
+        $stack72 = virtualinvoke $u10.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        $stack73 = virtualinvoke $stack72.<java.lang.String: java.lang.String trim()>();
+
+        $stack74 = newarray (int)[1];
+
+        $stack74[0] = 0;
+
+        specialinvoke $u11.<org.ooc.middle.UseDef$Requirement: void <init>(java.lang.String,int[])>($stack73, $stack74);
+
+        interfaceinvoke $stack70.<java.util.List: boolean add(java.lang.Object)>($u11);
+
+        goto label28;
+
+     label29:
+        goto label33;
+
+     label30:
+        $stack52 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>("SourcePath");
+
+        if $stack52 == 0 goto label33;
+
+        $u12 = new java.io.File;
+
+        specialinvoke $u12.<java.io.File: void <init>(java.lang.String)>(value);
+
+        st#19 = $u12;
+
+        $stack56 = virtualinvoke $u12.<java.io.File: boolean isAbsolute()>();
+
+        if $stack56 != 0 goto label31;
+
+        $u13 = new java.io.File;
+
+        $stack66 = virtualinvoke file.<java.io.File: java.lang.String getParent()>();
+
+        specialinvoke $u13.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack66, value);
+
+        st#19 = $u13;
+
+     label31:
+        $stack57 = params.<org.ooc.frontend.BuildParams: boolean verbose>;
+
+        if $stack57 == 0 goto label32;
+
+        $stack61 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack62 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.io.File,org.ooc.middle.UseDef)>(st#19, $u1) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Adding \u0001 to sourcePath from \u0001");
+
+        virtualinvoke $stack61.<java.io.PrintStream: void println(java.lang.String)>($stack62);
+
+     label32:
+        $stack58 = params.<org.ooc.frontend.BuildParams: org.ooc.frontend.PathList sourcePath>;
+
+        $stack59 = virtualinvoke st#19.<java.io.File: java.lang.String getPath()>();
+
+        virtualinvoke $stack58.<org.ooc.frontend.PathList: void add(java.lang.String)>($stack59);
+
+     label33:
+        virtualinvoke reader.<org.ubi.SourceReader: boolean skipWhitespace()>();
+
+        goto label06;
+
+     label34:
+        $stack24 = virtualinvoke $u1.<org.ooc.middle.UseDef: java.util.List getRequirements()>();
+
+        id#30 = interfaceinvoke $stack24.<java.util.List: java.util.Iterator iterator()>();
+
+     label35:
+        $stack26 = interfaceinvoke id#30.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack26 == 0 goto label36;
+
+        $stack32 = interfaceinvoke id#30.<java.util.Iterator: java.lang.Object next()>();
+
+        value#31 = (org.ooc.middle.UseDef$Requirement) $stack32;
+
+        $stack33 = virtualinvoke value#31.<org.ooc.middle.UseDef$Requirement: java.lang.String getName()>();
+
+        $stack34 = staticinvoke <org.ooc.frontend.parser.UseDefParser: org.ooc.middle.UseDef parse(java.lang.String,org.ubi.SourceReader,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.BuildParams)>($stack33, sReader, token, params);
+
+        virtualinvoke value#31.<org.ooc.middle.UseDef$Requirement: void setDef(org.ooc.middle.UseDef)>($stack34);
+
+        goto label35;
+
+     label36:
+        $stack27 = params.<org.ooc.frontend.BuildParams: boolean veryVerbose>;
+
+        if $stack27 == 0 goto label37;
+
+        $stack28 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack29 = virtualinvoke file.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack30 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack29) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Finished reading usefile \u0001");
+
+        virtualinvoke $stack28.<java.io.PrintStream: void println(java.lang.String)>($stack30);
+
+     label37:
+        return $u1;
+    }
+
+    private static java.io.File findUse(java.lang.String, org.ooc.frontend.BuildParams)
+    {
+        java.util.HashSet $stack10, $stack16, set;
+        org.ooc.frontend.BuildParams params;
+        java.io.File $stack11, $stack13, candidate, child;
+        boolean $stack15, $stack18, $stack22, $stack23;
+        java.util.Iterator l4;
+        java.lang.Object $stack20;
+        java.lang.String $stack21, fileName;
+        java.io.File[] l6;
+        int l7, l8;
+
+        fileName := @parameter0: java.lang.String;
+
+        params := @parameter1: org.ooc.frontend.BuildParams;
+
+        $stack10 = new java.util.HashSet;
+
+        specialinvoke $stack10.<java.util.HashSet: void <init>()>();
+
+        set = $stack10;
+
+        $stack11 = params.<org.ooc.frontend.BuildParams: java.io.File libsPath>;
+
+        interfaceinvoke $stack10.<java.util.Set: boolean add(java.lang.Object)>($stack11);
+
+        $stack13 = params.<org.ooc.frontend.BuildParams: java.io.File sdkLocation>;
+
+        interfaceinvoke $stack10.<java.util.Set: boolean add(java.lang.Object)>($stack13);
+
+     label1:
+        $stack15 = interfaceinvoke set.<java.util.Set: boolean isEmpty()>();
+
+        if $stack15 != 0 goto label7;
+
+        $stack16 = new java.util.HashSet;
+
+        specialinvoke $stack16.<java.util.HashSet: void <init>()>();
+
+        l4 = interfaceinvoke set.<java.util.Set: java.util.Iterator iterator()>();
+
+     label2:
+        $stack18 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack18 == 0 goto label6;
+
+        $stack20 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        candidate = (java.io.File) $stack20;
+
+        $stack21 = virtualinvoke candidate.<java.io.File: java.lang.String getPath()>();
+
+        $stack22 = virtualinvoke $stack21.<java.lang.String: boolean endsWith(java.lang.String)>(fileName);
+
+        if $stack22 == 0 goto label3;
+
+        return candidate;
+
+     label3:
+        $stack23 = virtualinvoke candidate.<java.io.File: boolean isDirectory()>();
+
+        if $stack23 == 0 goto label5;
+
+        l6 = virtualinvoke candidate.<java.io.File: java.io.File[] listFiles()>();
+
+        l7 = lengthof l6;
+
+        l8 = 0;
+
+     label4:
+        if l8 >= l7 goto label5;
+
+        child = l6[l8];
+
+        interfaceinvoke $stack16.<java.util.Set: boolean add(java.lang.Object)>(child);
+
+        l8 = l8 + 1;
+
+        goto label4;
+
+     label5:
+        goto label2;
+
+     label6:
+        set = $stack16;
+
+        goto label1;
+
+     label7:
+        return null;
+    }
+
+    static void <clinit>()
+    {
+        java.util.HashMap $stack0;
+
+        $stack0 = new java.util.HashMap;
+
+        specialinvoke $stack0.<java.util.HashMap: void <init>()>();
+
+        <org.ooc.frontend.parser.UseDefParser: java.util.Map cache> = $stack0;
+
+        return;
+    }
+}

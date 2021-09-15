@@ -1,0 +1,574 @@
+public class DefaultBuildPluginManager extends java.lang.Object implements org.apache.maven.plugin.BuildPluginManager
+{
+    private org.apache.maven.plugin.MavenPluginManager mavenPluginManager;
+    private org.apache.maven.plugin.LegacySupport legacySupport;
+    private org.apache.maven.execution.scope.internal.MojoExecutionScope scope;
+    private org.apache.maven.execution.MojoExecutionListener mojoExecutionListener;
+
+    public void <init>()
+    {
+        DefaultBuildPluginManager this;
+
+        this := @this: DefaultBuildPluginManager;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void setMojoExecutionListeners(java.util.List)
+    {
+        DefaultBuildPluginManager this;
+        java.util.List listeners;
+        org.apache.maven.plugin.CompoundMojoExecutionListener $u0;
+        org.apache.maven.plugin.DefaultBuildPluginManager $r0;
+        org.apache.maven.execution.MojoExecutionListener $r1;
+
+        this := @this: DefaultBuildPluginManager;
+
+        listeners := @parameter0: java.util.List;
+
+        $u0 = new org.apache.maven.plugin.CompoundMojoExecutionListener;
+
+        specialinvoke $u0.<org.apache.maven.plugin.CompoundMojoExecutionListener: void <init>(java.util.Collection)>(listeners);
+
+        $r0 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $r1 = (org.apache.maven.execution.MojoExecutionListener) $u0;
+
+        $r0.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.MojoExecutionListener mojoExecutionListener> = $r1;
+
+        return;
+    }
+
+    public org.apache.maven.plugin.descriptor.PluginDescriptor loadPlugin(org.apache.maven.model.Plugin, java.util.List, org.eclipse.aether.RepositorySystemSession) throws org.apache.maven.plugin.PluginNotFoundException, org.apache.maven.plugin.PluginResolutionException, org.apache.maven.plugin.PluginDescriptorParsingException, org.apache.maven.plugin.InvalidPluginDescriptorException
+    {
+        DefaultBuildPluginManager this;
+        org.apache.maven.model.Plugin plugin;
+        java.util.List repositories;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.apache.maven.plugin.MavenPluginManager $stack4;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack5;
+        org.apache.maven.plugin.DefaultBuildPluginManager $r0;
+
+        this := @this: DefaultBuildPluginManager;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        repositories := @parameter1: java.util.List;
+
+        session := @parameter2: org.eclipse.aether.RepositorySystemSession;
+
+        $r0 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack4 = $r0.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.plugin.MavenPluginManager mavenPluginManager>;
+
+        $stack5 = interfaceinvoke $stack4.<org.apache.maven.plugin.MavenPluginManager: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor(org.apache.maven.model.Plugin,java.util.List,org.eclipse.aether.RepositorySystemSession)>(plugin, repositories, session);
+
+        return $stack5;
+    }
+
+    public void executeMojo(org.apache.maven.execution.MavenSession, org.apache.maven.plugin.MojoExecution) throws org.apache.maven.plugin.MojoFailureException, org.apache.maven.plugin.MojoExecutionException, org.apache.maven.plugin.PluginConfigurationException, org.apache.maven.plugin.PluginManagerException
+    {
+        org.apache.maven.execution.MavenSession session, oldSession;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        org.apache.maven.plugin.descriptor.MojoDescriptor mojoDescriptor;
+        DefaultBuildPluginManager this;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack16;
+        org.codehaus.plexus.classworlds.realm.ClassRealm pluginRealm;
+        java.lang.Thread $stack18, $stack20, $stack34, $stack39;
+        org.apache.maven.plugin.LegacySupport $stack21, $stack28, $stack35, $stack40;
+        org.apache.maven.execution.scope.internal.MojoExecutionScope $stack23, $stack24, $stack25, $stack33, $stack38;
+        org.apache.maven.plugin.MavenPluginManager $stack26, $stack32, $stack37;
+        java.lang.Object $stack27;
+        org.apache.maven.execution.MojoExecutionListener $stack30, $stack31, $stack43, $stack46, $stack61, $stack81, $stack97;
+        java.lang.Throwable $stack36, $stack95, $stack102, $r2, $r12, $r18, $r21, $r24, $r26;
+        java.lang.RuntimeException $stack41, $stack99;
+        java.lang.ClassCastException $stack44, $stack101;
+        java.lang.StringBuilder $stack50, $stack52, $stack53, $stack55, $stack65, $stack67, $stack68, $stack71, $stack72, $stack74, $stack85, $stack87, $stack88, $stack90, $u8, $u14, $u20;
+        java.lang.String $stack51, $stack54, $stack56, $stack58, $stack66, $stack70, $stack73, $stack75, $stack77, $stack86, $stack89, $stack91, $stack93;
+        java.lang.LinkageError $stack59;
+        java.lang.Class $stack69;
+        java.lang.NoClassDefFoundError $stack79;
+        org.apache.maven.plugin.Mojo mojo;
+        java.lang.ClassLoader e#3, $r3;
+        org.apache.maven.plugin.PluginExecutionException $u0, $u2, $u4, $u10, $u16, $u21;
+        org.apache.maven.execution.MojoExecutionEvent $u1, $u3, $u5, $u11, $u17, $u22;
+        java.io.ByteArrayOutputStream $u6, $u12, $u18;
+        java.io.PrintStream $u7, $u13, $u19;
+        org.apache.maven.plugin.PluginContainerException $u9, $u15;
+        org.apache.maven.plugin.DefaultBuildPluginManager $r0, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r13, $r14, $r15, $r16, $r19, $r22, $r25, $r27, $r28, $r29, $r30;
+        java.lang.Exception $r1, $r17, $r20, $r23;
+
+        this := @this: DefaultBuildPluginManager;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        mojoExecution := @parameter1: org.apache.maven.plugin.MojoExecution;
+
+        project = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        mojoDescriptor = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        mojo = null;
+
+     label01:
+        $stack16 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        $r0 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        pluginRealm = virtualinvoke $r0.<org.apache.maven.plugin.DefaultBuildPluginManager: org.codehaus.plexus.classworlds.realm.ClassRealm getPluginRealm(org.apache.maven.execution.MavenSession,org.apache.maven.plugin.descriptor.PluginDescriptor)>(session, $stack16);
+
+     label02:
+        goto label04;
+
+     label03:
+        $stack102 := @caughtexception;
+
+        $u0 = new org.apache.maven.plugin.PluginExecutionException;
+
+        $r1 = (java.lang.Exception) $stack102;
+
+        specialinvoke $u0.<org.apache.maven.plugin.PluginExecutionException: void <init>(org.apache.maven.plugin.MojoExecution,org.apache.maven.project.MavenProject,java.lang.Exception)>(mojoExecution, project, $r1);
+
+        $r2 = (java.lang.Throwable) $u0;
+
+        throw $r2;
+
+     label04:
+        $stack18 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        e#3 = virtualinvoke $stack18.<java.lang.Thread: java.lang.ClassLoader getContextClassLoader()>();
+
+        $stack20 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        $r3 = (java.lang.ClassLoader) pluginRealm;
+
+        virtualinvoke $stack20.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>($r3);
+
+        $r4 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack21 = $r4.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        oldSession = interfaceinvoke $stack21.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+        $r5 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack23 = $r5.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.scope.internal.MojoExecutionScope scope>;
+
+        virtualinvoke $stack23.<org.apache.maven.execution.scope.internal.MojoExecutionScope: void enter()>();
+
+     label05:
+        $r6 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack24 = $r6.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.scope.internal.MojoExecutionScope scope>;
+
+        virtualinvoke $stack24.<org.apache.maven.execution.scope.internal.MojoExecutionScope: void seed(java.lang.Class,java.lang.Object)>(class "Lorg/apache/maven/project/MavenProject;", project);
+
+        $r7 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack25 = $r7.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.scope.internal.MojoExecutionScope scope>;
+
+        virtualinvoke $stack25.<org.apache.maven.execution.scope.internal.MojoExecutionScope: void seed(java.lang.Class,java.lang.Object)>(class "Lorg/apache/maven/plugin/MojoExecution;", mojoExecution);
+
+        $r8 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack26 = $r8.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.plugin.MavenPluginManager mavenPluginManager>;
+
+        $stack27 = interfaceinvoke $stack26.<org.apache.maven.plugin.MavenPluginManager: java.lang.Object getConfiguredMojo(java.lang.Class,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>(class "Lorg/apache/maven/plugin/Mojo;", session, mojoExecution);
+
+        mojo = (org.apache.maven.plugin.Mojo) $stack27;
+
+        $r9 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack28 = $r9.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        interfaceinvoke $stack28.<org.apache.maven.plugin.LegacySupport: void setSession(org.apache.maven.execution.MavenSession)>(session);
+
+     label06:
+        $u1 = new org.apache.maven.execution.MojoExecutionEvent;
+
+        specialinvoke $u1.<org.apache.maven.execution.MojoExecutionEvent: void <init>(org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject,org.apache.maven.plugin.MojoExecution,org.apache.maven.plugin.Mojo)>(session, project, mojoExecution, mojo);
+
+        $r10 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack30 = $r10.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.MojoExecutionListener mojoExecutionListener>;
+
+        interfaceinvoke $stack30.<org.apache.maven.execution.MojoExecutionListener: void beforeMojoExecution(org.apache.maven.execution.MojoExecutionEvent)>($u1);
+
+        interfaceinvoke mojo.<org.apache.maven.plugin.Mojo: void execute()>();
+
+        $r11 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack31 = $r11.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.MojoExecutionListener mojoExecutionListener>;
+
+        interfaceinvoke $stack31.<org.apache.maven.execution.MojoExecutionListener: void afterMojoExecutionSuccess(org.apache.maven.execution.MojoExecutionEvent)>($u1);
+
+     label07:
+        goto label10;
+
+     label08:
+        $stack101 := @caughtexception;
+
+        throw $stack101;
+
+     label09:
+        $stack99 := @caughtexception;
+
+        $u2 = new org.apache.maven.plugin.PluginExecutionException;
+
+        specialinvoke $u2.<org.apache.maven.plugin.PluginExecutionException: void <init>(org.apache.maven.plugin.MojoExecution,org.apache.maven.project.MavenProject,java.lang.Exception)>(mojoExecution, project, $stack99);
+
+        $r12 = (java.lang.Throwable) $u2;
+
+        throw $r12;
+
+     label10:
+        $r13 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack32 = $r13.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.plugin.MavenPluginManager mavenPluginManager>;
+
+        interfaceinvoke $stack32.<org.apache.maven.plugin.MavenPluginManager: void releaseMojo(java.lang.Object,org.apache.maven.plugin.MojoExecution)>(mojo, mojoExecution);
+
+        $r14 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack33 = $r14.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.scope.internal.MojoExecutionScope scope>;
+
+        virtualinvoke $stack33.<org.apache.maven.execution.scope.internal.MojoExecutionScope: void exit()>();
+
+        $stack34 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack34.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(e#3);
+
+        $r15 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack35 = $r15.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        interfaceinvoke $stack35.<org.apache.maven.plugin.LegacySupport: void setSession(org.apache.maven.execution.MavenSession)>(oldSession);
+
+        goto label18;
+
+     label11:
+        $stack95 := @caughtexception;
+
+        $r16 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack97 = $r16.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.MojoExecutionListener mojoExecutionListener>;
+
+        $u3 = new org.apache.maven.execution.MojoExecutionEvent;
+
+        specialinvoke $u3.<org.apache.maven.execution.MojoExecutionEvent: void <init>(org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject,org.apache.maven.plugin.MojoExecution,org.apache.maven.plugin.Mojo,java.lang.Throwable)>(session, project, mojoExecution, mojo, $stack95);
+
+        interfaceinvoke $stack97.<org.apache.maven.execution.MojoExecutionListener: void afterExecutionFailure(org.apache.maven.execution.MojoExecutionEvent)>($u3);
+
+        $u4 = new org.apache.maven.plugin.PluginExecutionException;
+
+        $r17 = (java.lang.Exception) $stack95;
+
+        specialinvoke $u4.<org.apache.maven.plugin.PluginExecutionException: void <init>(org.apache.maven.plugin.MojoExecution,org.apache.maven.project.MavenProject,java.lang.Exception)>(mojoExecution, project, $r17);
+
+        $r18 = (java.lang.Throwable) $u4;
+
+        throw $r18;
+
+     label12:
+        $stack79 := @caughtexception;
+
+        $r19 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack81 = $r19.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.MojoExecutionListener mojoExecutionListener>;
+
+        $u5 = new org.apache.maven.execution.MojoExecutionEvent;
+
+        specialinvoke $u5.<org.apache.maven.execution.MojoExecutionEvent: void <init>(org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject,org.apache.maven.plugin.MojoExecution,org.apache.maven.plugin.Mojo,java.lang.Throwable)>(session, project, mojoExecution, mojo, $stack79);
+
+        interfaceinvoke $stack81.<org.apache.maven.execution.MojoExecutionListener: void afterExecutionFailure(org.apache.maven.execution.MojoExecutionEvent)>($u5);
+
+        $u6 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $u6.<java.io.ByteArrayOutputStream: void <init>(int)>(1024);
+
+        $u7 = new java.io.PrintStream;
+
+        specialinvoke $u7.<java.io.PrintStream: void <init>(java.io.OutputStream)>($u6);
+
+        $u8 = new java.lang.StringBuilder;
+
+        specialinvoke $u8.<java.lang.StringBuilder: void <init>()>();
+
+        $stack85 = virtualinvoke $u8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("A required class was missing while executing ");
+
+        $stack86 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getId()>();
+
+        $stack87 = virtualinvoke $stack85.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack86);
+
+        $stack88 = virtualinvoke $stack87.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack89 = virtualinvoke $stack79.<java.lang.NoClassDefFoundError: java.lang.String getMessage()>();
+
+        $stack90 = virtualinvoke $stack88.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack89);
+
+        $stack91 = virtualinvoke $stack90.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $u7.<java.io.PrintStream: void println(java.lang.String)>($stack91);
+
+        virtualinvoke pluginRealm.<org.codehaus.plexus.classworlds.realm.ClassRealm: void display(java.io.PrintStream)>($u7);
+
+        $u9 = new org.apache.maven.plugin.PluginContainerException;
+
+        $stack93 = virtualinvoke $u6.<java.io.ByteArrayOutputStream: java.lang.String toString()>();
+
+        specialinvoke $u9.<org.apache.maven.plugin.PluginContainerException: void <init>(org.apache.maven.plugin.descriptor.MojoDescriptor,org.codehaus.plexus.classworlds.realm.ClassRealm,java.lang.String,java.lang.Throwable)>(mojoDescriptor, pluginRealm, $stack93, $stack79);
+
+        $u10 = new org.apache.maven.plugin.PluginExecutionException;
+
+        $r20 = (java.lang.Exception) $u9;
+
+        specialinvoke $u10.<org.apache.maven.plugin.PluginExecutionException: void <init>(org.apache.maven.plugin.MojoExecution,org.apache.maven.project.MavenProject,java.lang.Exception)>(mojoExecution, project, $r20);
+
+        $r21 = (java.lang.Throwable) $u10;
+
+        throw $r21;
+
+     label13:
+        $stack59 := @caughtexception;
+
+        $r22 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack61 = $r22.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.MojoExecutionListener mojoExecutionListener>;
+
+        $u11 = new org.apache.maven.execution.MojoExecutionEvent;
+
+        specialinvoke $u11.<org.apache.maven.execution.MojoExecutionEvent: void <init>(org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject,org.apache.maven.plugin.MojoExecution,org.apache.maven.plugin.Mojo,java.lang.Throwable)>(session, project, mojoExecution, mojo, $stack59);
+
+        interfaceinvoke $stack61.<org.apache.maven.execution.MojoExecutionListener: void afterExecutionFailure(org.apache.maven.execution.MojoExecutionEvent)>($u11);
+
+        $u12 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $u12.<java.io.ByteArrayOutputStream: void <init>(int)>(1024);
+
+        $u13 = new java.io.PrintStream;
+
+        specialinvoke $u13.<java.io.PrintStream: void <init>(java.io.OutputStream)>($u12);
+
+        $u14 = new java.lang.StringBuilder;
+
+        specialinvoke $u14.<java.lang.StringBuilder: void <init>()>();
+
+        $stack65 = virtualinvoke $u14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("An API incompatibility was encountered while executing ");
+
+        $stack66 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getId()>();
+
+        $stack67 = virtualinvoke $stack65.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack66);
+
+        $stack68 = virtualinvoke $stack67.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack69 = virtualinvoke $stack59.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack70 = virtualinvoke $stack69.<java.lang.Class: java.lang.String getName()>();
+
+        $stack71 = virtualinvoke $stack68.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack70);
+
+        $stack72 = virtualinvoke $stack71.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack73 = virtualinvoke $stack59.<java.lang.LinkageError: java.lang.String getMessage()>();
+
+        $stack74 = virtualinvoke $stack72.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack73);
+
+        $stack75 = virtualinvoke $stack74.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $u13.<java.io.PrintStream: void println(java.lang.String)>($stack75);
+
+        virtualinvoke pluginRealm.<org.codehaus.plexus.classworlds.realm.ClassRealm: void display(java.io.PrintStream)>($u13);
+
+        $u15 = new org.apache.maven.plugin.PluginContainerException;
+
+        $stack77 = virtualinvoke $u12.<java.io.ByteArrayOutputStream: java.lang.String toString()>();
+
+        specialinvoke $u15.<org.apache.maven.plugin.PluginContainerException: void <init>(org.apache.maven.plugin.descriptor.MojoDescriptor,org.codehaus.plexus.classworlds.realm.ClassRealm,java.lang.String,java.lang.Throwable)>(mojoDescriptor, pluginRealm, $stack77, $stack59);
+
+        $u16 = new org.apache.maven.plugin.PluginExecutionException;
+
+        $r23 = (java.lang.Exception) $u15;
+
+        specialinvoke $u16.<org.apache.maven.plugin.PluginExecutionException: void <init>(org.apache.maven.plugin.MojoExecution,org.apache.maven.project.MavenProject,java.lang.Exception)>(mojoExecution, project, $r23);
+
+        $r24 = (java.lang.Throwable) $u16;
+
+        throw $r24;
+
+     label14:
+        $stack44 := @caughtexception;
+
+        $r25 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack46 = $r25.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.MojoExecutionListener mojoExecutionListener>;
+
+        $u17 = new org.apache.maven.execution.MojoExecutionEvent;
+
+        specialinvoke $u17.<org.apache.maven.execution.MojoExecutionEvent: void <init>(org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject,org.apache.maven.plugin.MojoExecution,org.apache.maven.plugin.Mojo,java.lang.Throwable)>(session, project, mojoExecution, mojo, $stack44);
+
+        interfaceinvoke $stack46.<org.apache.maven.execution.MojoExecutionListener: void afterExecutionFailure(org.apache.maven.execution.MojoExecutionEvent)>($u17);
+
+        $u18 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $u18.<java.io.ByteArrayOutputStream: void <init>(int)>(1024);
+
+        $u19 = new java.io.PrintStream;
+
+        specialinvoke $u19.<java.io.PrintStream: void <init>(java.io.OutputStream)>($u18);
+
+        $u20 = new java.lang.StringBuilder;
+
+        specialinvoke $u20.<java.lang.StringBuilder: void <init>()>();
+
+        $stack50 = virtualinvoke $u20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("A type incompatibility occurred while executing ");
+
+        $stack51 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getId()>();
+
+        $stack52 = virtualinvoke $stack50.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack51);
+
+        $stack53 = virtualinvoke $stack52.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack54 = virtualinvoke $stack44.<java.lang.ClassCastException: java.lang.String getMessage()>();
+
+        $stack55 = virtualinvoke $stack53.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack54);
+
+        $stack56 = virtualinvoke $stack55.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $u19.<java.io.PrintStream: void println(java.lang.String)>($stack56);
+
+        virtualinvoke pluginRealm.<org.codehaus.plexus.classworlds.realm.ClassRealm: void display(java.io.PrintStream)>($u19);
+
+        $u21 = new org.apache.maven.plugin.PluginExecutionException;
+
+        $stack58 = virtualinvoke $u18.<java.io.ByteArrayOutputStream: java.lang.String toString()>();
+
+        specialinvoke $u21.<org.apache.maven.plugin.PluginExecutionException: void <init>(org.apache.maven.plugin.MojoExecution,org.apache.maven.project.MavenProject,java.lang.String,java.lang.Throwable)>(mojoExecution, project, $stack58, $stack44);
+
+        $r26 = (java.lang.Throwable) $u21;
+
+        throw $r26;
+
+     label15:
+        $stack41 := @caughtexception;
+
+        $r27 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack43 = $r27.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.MojoExecutionListener mojoExecutionListener>;
+
+        $u22 = new org.apache.maven.execution.MojoExecutionEvent;
+
+        specialinvoke $u22.<org.apache.maven.execution.MojoExecutionEvent: void <init>(org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject,org.apache.maven.plugin.MojoExecution,org.apache.maven.plugin.Mojo,java.lang.Throwable)>(session, project, mojoExecution, mojo, $stack41);
+
+        interfaceinvoke $stack43.<org.apache.maven.execution.MojoExecutionListener: void afterExecutionFailure(org.apache.maven.execution.MojoExecutionEvent)>($u22);
+
+        throw $stack41;
+
+     label16:
+        $stack36 := @caughtexception;
+
+     label17:
+        $r28 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack37 = $r28.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.plugin.MavenPluginManager mavenPluginManager>;
+
+        interfaceinvoke $stack37.<org.apache.maven.plugin.MavenPluginManager: void releaseMojo(java.lang.Object,org.apache.maven.plugin.MojoExecution)>(mojo, mojoExecution);
+
+        $r29 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack38 = $r29.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.execution.scope.internal.MojoExecutionScope scope>;
+
+        virtualinvoke $stack38.<org.apache.maven.execution.scope.internal.MojoExecutionScope: void exit()>();
+
+        $stack39 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack39.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(e#3);
+
+        $r30 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack40 = $r30.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        interfaceinvoke $stack40.<org.apache.maven.plugin.LegacySupport: void setSession(org.apache.maven.execution.MavenSession)>(oldSession);
+
+        throw $stack36;
+
+     label18:
+        return;
+
+        catch org.apache.maven.plugin.PluginResolutionException from label01 to label02 with label03;
+        catch java.lang.ClassCastException from label06 to label07 with label08;
+        catch java.lang.RuntimeException from label06 to label07 with label09;
+        catch org.apache.maven.plugin.PluginContainerException from label05 to label10 with label11;
+        catch java.lang.NoClassDefFoundError from label05 to label10 with label12;
+        catch java.lang.LinkageError from label05 to label10 with label13;
+        catch java.lang.ClassCastException from label05 to label10 with label14;
+        catch java.lang.RuntimeException from label05 to label10 with label15;
+        catch java.lang.Throwable from label05 to label10 with label16;
+        catch java.lang.Throwable from label11 to label17 with label16;
+    }
+
+    public org.codehaus.plexus.classworlds.realm.ClassRealm getPluginRealm(org.apache.maven.execution.MavenSession, org.apache.maven.plugin.descriptor.PluginDescriptor) throws org.apache.maven.plugin.PluginResolutionException, org.apache.maven.plugin.PluginManagerException
+    {
+        org.apache.maven.plugin.descriptor.PluginDescriptor pluginDescriptor;
+        org.codehaus.plexus.classworlds.realm.ClassRealm pluginRealm, $stack6;
+        DefaultBuildPluginManager this;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.plugin.MavenPluginManager $stack5;
+        org.apache.maven.plugin.DefaultBuildPluginManager $r0;
+
+        this := @this: DefaultBuildPluginManager;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        pluginDescriptor := @parameter1: org.apache.maven.plugin.descriptor.PluginDescriptor;
+
+        pluginRealm = virtualinvoke pluginDescriptor.<org.apache.maven.plugin.descriptor.PluginDescriptor: org.codehaus.plexus.classworlds.realm.ClassRealm getClassRealm()>();
+
+        if pluginRealm == null goto label1;
+
+        return pluginRealm;
+
+     label1:
+        $r0 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack5 = $r0.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.plugin.MavenPluginManager mavenPluginManager>;
+
+        interfaceinvoke $stack5.<org.apache.maven.plugin.MavenPluginManager: void setupPluginRealm(org.apache.maven.plugin.descriptor.PluginDescriptor,org.apache.maven.execution.MavenSession,java.lang.ClassLoader,java.util.List,org.eclipse.aether.graph.DependencyFilter)>(pluginDescriptor, session, null, null, null);
+
+        $stack6 = virtualinvoke pluginDescriptor.<org.apache.maven.plugin.descriptor.PluginDescriptor: org.codehaus.plexus.classworlds.realm.ClassRealm getClassRealm()>();
+
+        return $stack6;
+    }
+
+    public org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor(org.apache.maven.model.Plugin, java.lang.String, java.util.List, org.eclipse.aether.RepositorySystemSession) throws org.apache.maven.plugin.PluginNotFoundException, org.apache.maven.plugin.PluginResolutionException, org.apache.maven.plugin.PluginDescriptorParsingException, org.apache.maven.plugin.MojoNotFoundException, org.apache.maven.plugin.InvalidPluginDescriptorException
+    {
+        DefaultBuildPluginManager this;
+        org.apache.maven.model.Plugin plugin;
+        java.lang.String goal;
+        java.util.List repositories;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.apache.maven.plugin.MavenPluginManager $stack5;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack6;
+        org.apache.maven.plugin.DefaultBuildPluginManager $r0;
+
+        this := @this: DefaultBuildPluginManager;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        goal := @parameter1: java.lang.String;
+
+        repositories := @parameter2: java.util.List;
+
+        session := @parameter3: org.eclipse.aether.RepositorySystemSession;
+
+        $r0 = (org.apache.maven.plugin.DefaultBuildPluginManager) this;
+
+        $stack5 = $r0.<org.apache.maven.plugin.DefaultBuildPluginManager: org.apache.maven.plugin.MavenPluginManager mavenPluginManager>;
+
+        $stack6 = interfaceinvoke $stack5.<org.apache.maven.plugin.MavenPluginManager: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor(org.apache.maven.model.Plugin,java.lang.String,java.util.List,org.eclipse.aether.RepositorySystemSession)>(plugin, goal, repositories, session);
+
+        return $stack6;
+    }
+}

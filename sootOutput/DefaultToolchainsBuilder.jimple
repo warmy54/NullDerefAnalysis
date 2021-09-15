@@ -1,0 +1,139 @@
+public class DefaultToolchainsBuilder extends java.lang.Object implements org.apache.maven.toolchain.ToolchainsBuilder
+{
+    private org.codehaus.plexus.logging.Logger logger;
+
+    public void <init>()
+    {
+        DefaultToolchainsBuilder this;
+
+        this := @this: DefaultToolchainsBuilder;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.toolchain.model.PersistedToolchains build(java.io.File) throws org.apache.maven.toolchain.MisconfiguredToolchainException
+    {
+        java.io.File userToolchainsFile;
+        DefaultToolchainsBuilder this;
+        org.codehaus.plexus.logging.Logger $stack7;
+        java.lang.StringBuilder $stack8, $stack9, $stack20, $stack22, $u1, $u3;
+        java.lang.String $stack10, $stack21, $stack23;
+        boolean $stack12;
+        java.lang.Exception $stack17;
+        java.lang.Throwable $stack24, $stack25, $r3;
+        org.apache.maven.toolchain.model.PersistedToolchains toolchains;
+        org.codehaus.plexus.util.xml.XmlStreamReader in;
+        org.apache.maven.toolchain.model.io.xpp3.MavenToolchainsXpp3Reader $u0;
+        org.apache.maven.toolchain.MisconfiguredToolchainException $u2;
+        java.io.Reader $r0, $r1, $r2;
+        org.apache.maven.toolchain.DefaultToolchainsBuilder $r4;
+
+        this := @this: DefaultToolchainsBuilder;
+
+        userToolchainsFile := @parameter0: java.io.File;
+
+        toolchains = null;
+
+        if userToolchainsFile == null goto label11;
+
+        $stack12 = virtualinvoke userToolchainsFile.<java.io.File: boolean isFile()>();
+
+        if $stack12 == 0 goto label11;
+
+     label01:
+        in = staticinvoke <org.codehaus.plexus.util.ReaderFactory: org.codehaus.plexus.util.xml.XmlStreamReader newXmlReader(java.io.File)>(userToolchainsFile);
+
+     label02:
+        $u0 = new org.apache.maven.toolchain.model.io.xpp3.MavenToolchainsXpp3Reader;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.model.io.xpp3.MavenToolchainsXpp3Reader: void <init>()>();
+
+        $r0 = (java.io.Reader) in;
+
+        toolchains = virtualinvoke $u0.<org.apache.maven.toolchain.model.io.xpp3.MavenToolchainsXpp3Reader: org.apache.maven.toolchain.model.PersistedToolchains read(java.io.Reader)>($r0);
+
+     label03:
+        if in == null goto label09;
+
+        $r1 = (java.io.Reader) in;
+
+        virtualinvoke $r1.<java.io.Reader: void close()>();
+
+        goto label09;
+
+     label04:
+        $stack25 := @caughtexception;
+
+        if in == null goto label08;
+
+     label05:
+        $r2 = (java.io.Reader) in;
+
+        virtualinvoke $r2.<java.io.Reader: void close()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $stack24 := @caughtexception;
+
+        virtualinvoke $stack25.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack24);
+
+     label08:
+        throw $stack25;
+
+     label09:
+        goto label12;
+
+     label10:
+        $stack17 := @caughtexception;
+
+        $u2 = new org.apache.maven.toolchain.MisconfiguredToolchainException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack20 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot read toolchains file at ");
+
+        $stack21 = virtualinvoke userToolchainsFile.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack22 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack21);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.apache.maven.toolchain.MisconfiguredToolchainException: void <init>(java.lang.String,java.lang.Throwable)>($stack23, $stack17);
+
+        $r3 = (java.lang.Throwable) $u2;
+
+        throw $r3;
+
+     label11:
+        if userToolchainsFile == null goto label12;
+
+        $r4 = (org.apache.maven.toolchain.DefaultToolchainsBuilder) this;
+
+        $stack7 = $r4.<org.apache.maven.toolchain.DefaultToolchainsBuilder: org.codehaus.plexus.logging.Logger logger>;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Toolchains configuration was not found at ");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(userToolchainsFile);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack7.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack10);
+
+     label12:
+        return toolchains;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch java.lang.Exception from label01 to label09 with label10;
+    }
+}

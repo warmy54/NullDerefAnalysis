@@ -1,0 +1,140 @@
+class FileAttributeUtilTest extends java.lang.Object
+{
+    private final sortpom.util.FileAttributeUtil fileAttributeUtil;
+    private java.io.File tempFile;
+    private long oldTimestamp;
+
+    void <init>()
+    {
+        FileAttributeUtilTest this;
+        sortpom.util.FileAttributeUtil $u0;
+        sortpom.util.FileAttributeUtilTest $r0;
+
+        this := @this: FileAttributeUtilTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new sortpom.util.FileAttributeUtil;
+
+        specialinvoke $u0.<sortpom.util.FileAttributeUtil: void <init>()>();
+
+        $r0 = (sortpom.util.FileAttributeUtilTest) this;
+
+        $r0.<sortpom.util.FileAttributeUtilTest: sortpom.util.FileAttributeUtil fileAttributeUtil> = $u0;
+
+        return;
+    }
+
+    void setUp() throws java.lang.Exception
+    {
+        FileAttributeUtilTest this;
+        java.io.File $stack1, $stack2;
+        sortpom.util.FileAttributeUtil $stack3;
+        long $stack4;
+        sortpom.util.FileAttributeUtilTest $r0, $r1, $r2, $r3;
+
+        this := @this: FileAttributeUtilTest;
+
+        $stack1 = staticinvoke <java.io.File: java.io.File createTempFile(java.lang.String,java.lang.String,java.io.File)>("temp", ".txt", null);
+
+        $r0 = (sortpom.util.FileAttributeUtilTest) this;
+
+        $r0.<sortpom.util.FileAttributeUtilTest: java.io.File tempFile> = $stack1;
+
+        $r1 = (sortpom.util.FileAttributeUtilTest) this;
+
+        $stack3 = $r1.<sortpom.util.FileAttributeUtilTest: sortpom.util.FileAttributeUtil fileAttributeUtil>;
+
+        $r2 = (sortpom.util.FileAttributeUtilTest) this;
+
+        $stack2 = $r2.<sortpom.util.FileAttributeUtilTest: java.io.File tempFile>;
+
+        $stack4 = virtualinvoke $stack3.<sortpom.util.FileAttributeUtil: long getLastModifiedTimestamp(java.io.File)>($stack2);
+
+        $r3 = (sortpom.util.FileAttributeUtilTest) this;
+
+        $r3.<sortpom.util.FileAttributeUtilTest: long oldTimestamp> = $stack4;
+
+        return;
+    }
+
+    void normalTimestampsShouldNotBeZero()
+    {
+        FileAttributeUtilTest this;
+        long $stack1;
+        java.lang.Long $stack2, $stack3;
+        org.hamcrest.Matcher $stack4;
+        sortpom.util.FileAttributeUtilTest $r0;
+
+        this := @this: FileAttributeUtilTest;
+
+        $r0 = (sortpom.util.FileAttributeUtilTest) this;
+
+        $stack1 = $r0.<sortpom.util.FileAttributeUtilTest: long oldTimestamp>;
+
+        $stack2 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($stack1);
+
+        $stack3 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(0L);
+
+        $stack4 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher greaterThan(java.lang.Comparable)>($stack3);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack2, $stack4);
+
+        return;
+    }
+
+    void settingNonZeroTimestampShouldWork() throws java.io.IOException
+    {
+        FileAttributeUtilTest this;
+        long $stack3, timestamp;
+        java.lang.Long $stack4, $stack5, $stack12, $stack13;
+        org.hamcrest.Matcher $stack6, $stack14;
+        java.io.File $stack7, $stack9;
+        sortpom.util.FileAttributeUtil $stack8, $stack10;
+        sortpom.util.FileAttributeUtilTest $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: FileAttributeUtilTest;
+
+        $r0 = (sortpom.util.FileAttributeUtilTest) this;
+
+        $stack3 = $r0.<sortpom.util.FileAttributeUtilTest: long oldTimestamp>;
+
+        $stack4 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($stack3);
+
+        $stack5 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(10000L);
+
+        $stack6 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher greaterThan(java.lang.Comparable)>($stack5);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack4, $stack6);
+
+        $r1 = (sortpom.util.FileAttributeUtilTest) this;
+
+        $stack8 = $r1.<sortpom.util.FileAttributeUtilTest: sortpom.util.FileAttributeUtil fileAttributeUtil>;
+
+        $r2 = (sortpom.util.FileAttributeUtilTest) this;
+
+        $stack7 = $r2.<sortpom.util.FileAttributeUtilTest: java.io.File tempFile>;
+
+        virtualinvoke $stack8.<sortpom.util.FileAttributeUtil: void setTimestamps(java.io.File,long)>($stack7, 10000L);
+
+        $r3 = (sortpom.util.FileAttributeUtilTest) this;
+
+        $stack10 = $r3.<sortpom.util.FileAttributeUtilTest: sortpom.util.FileAttributeUtil fileAttributeUtil>;
+
+        $r4 = (sortpom.util.FileAttributeUtilTest) this;
+
+        $stack9 = $r4.<sortpom.util.FileAttributeUtilTest: java.io.File tempFile>;
+
+        timestamp = virtualinvoke $stack10.<sortpom.util.FileAttributeUtil: long getLastModifiedTimestamp(java.io.File)>($stack9);
+
+        $stack12 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(timestamp);
+
+        $stack13 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(10000L);
+
+        $stack14 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack13);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack12, $stack14);
+
+        return;
+    }
+}

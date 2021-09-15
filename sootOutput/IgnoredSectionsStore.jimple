@@ -1,0 +1,146 @@
+class IgnoredSectionsStore extends java.lang.Object
+{
+    private final java.util.List ignoredSections;
+
+    void <init>()
+    {
+        IgnoredSectionsStore this;
+        java.util.ArrayList $u0;
+        sortpom.processinstruction.IgnoredSectionsStore $r0;
+
+        this := @this: IgnoredSectionsStore;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (sortpom.processinstruction.IgnoredSectionsStore) this;
+
+        $r0.<sortpom.processinstruction.IgnoredSectionsStore: java.util.List ignoredSections> = $u0;
+
+        return;
+    }
+
+    public java.lang.String replaceIgnoredSections(java.lang.String)
+    {
+        java.lang.String originalXml, $stack10, $stack12, $stack18;
+        java.util.regex.Pattern $stack5;
+        java.util.regex.Matcher matcher;
+        boolean $stack8;
+        IgnoredSectionsStore this;
+        java.util.List $stack11;
+        java.lang.Object[] $stack14;
+        java.lang.Integer $stack17;
+        int i;
+        java.lang.StringBuffer $u0;
+        sortpom.processinstruction.IgnoredSectionsStore $r0;
+
+        this := @this: IgnoredSectionsStore;
+
+        originalXml := @parameter0: java.lang.String;
+
+        $stack5 = <sortpom.processinstruction.InstructionType: java.util.regex.Pattern IGNORE_SECTIONS_PATTERN>;
+
+        matcher = virtualinvoke $stack5.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>(originalXml);
+
+        $u0 = new java.lang.StringBuffer;
+
+        specialinvoke $u0.<java.lang.StringBuffer: void <init>()>();
+
+        i = 0;
+
+     label1:
+        $stack8 = virtualinvoke matcher.<java.util.regex.Matcher: boolean find()>();
+
+        if $stack8 == 0 goto label2;
+
+        $r0 = (sortpom.processinstruction.IgnoredSectionsStore) this;
+
+        $stack11 = $r0.<sortpom.processinstruction.IgnoredSectionsStore: java.util.List ignoredSections>;
+
+        $stack12 = virtualinvoke matcher.<java.util.regex.Matcher: java.lang.String group()>();
+
+        interfaceinvoke $stack11.<java.util.List: boolean add(java.lang.Object)>($stack12);
+
+        $stack14 = newarray (java.lang.Object)[1];
+
+        $stack17 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(i);
+
+        $stack14[0] = $stack17;
+
+        $stack18 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("<?sortpom token=\'%d\'?>", $stack14);
+
+        virtualinvoke matcher.<java.util.regex.Matcher: java.util.regex.Matcher appendReplacement(java.lang.StringBuffer,java.lang.String)>($u0, $stack18);
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        virtualinvoke matcher.<java.util.regex.Matcher: java.lang.StringBuffer appendTail(java.lang.StringBuffer)>($u0);
+
+        $stack10 = virtualinvoke $u0.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        return $stack10;
+    }
+
+    public java.lang.String revertIgnoredSections(java.lang.String)
+    {
+        java.lang.String sortedXml, $stack13, $stack14, replacement, oneBackslashBeforeBackslash, oneBackslashBeforeDollar;
+        java.util.regex.Pattern $stack8;
+        java.util.regex.Matcher matcher;
+        boolean $stack11;
+        int index;
+        IgnoredSectionsStore this;
+        java.util.List $stack16;
+        java.lang.Object $stack17;
+        java.lang.StringBuffer $u0;
+        sortpom.processinstruction.IgnoredSectionsStore $r0;
+
+        this := @this: IgnoredSectionsStore;
+
+        sortedXml := @parameter0: java.lang.String;
+
+        $stack8 = <sortpom.processinstruction.InstructionType: java.util.regex.Pattern TOKEN_PATTERN>;
+
+        matcher = virtualinvoke $stack8.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>(sortedXml);
+
+        $u0 = new java.lang.StringBuffer;
+
+        specialinvoke $u0.<java.lang.StringBuffer: void <init>()>();
+
+     label1:
+        $stack11 = virtualinvoke matcher.<java.util.regex.Matcher: boolean find()>();
+
+        if $stack11 == 0 goto label2;
+
+        $stack14 = virtualinvoke matcher.<java.util.regex.Matcher: java.lang.String group(int)>(1);
+
+        index = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($stack14);
+
+        $r0 = (sortpom.processinstruction.IgnoredSectionsStore) this;
+
+        $stack16 = $r0.<sortpom.processinstruction.IgnoredSectionsStore: java.util.List ignoredSections>;
+
+        $stack17 = interfaceinvoke $stack16.<java.util.List: java.lang.Object get(int)>(index);
+
+        replacement = (java.lang.String) $stack17;
+
+        oneBackslashBeforeBackslash = virtualinvoke replacement.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("\\", "\\\\");
+
+        oneBackslashBeforeDollar = virtualinvoke oneBackslashBeforeBackslash.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("$", "\\$");
+
+        virtualinvoke matcher.<java.util.regex.Matcher: java.util.regex.Matcher appendReplacement(java.lang.StringBuffer,java.lang.String)>($u0, oneBackslashBeforeDollar);
+
+        goto label1;
+
+     label2:
+        virtualinvoke matcher.<java.util.regex.Matcher: java.lang.StringBuffer appendTail(java.lang.StringBuffer)>($u0);
+
+        $stack13 = virtualinvoke $u0.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        return $stack13;
+    }
+}

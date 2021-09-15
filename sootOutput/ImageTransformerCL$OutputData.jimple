@@ -1,0 +1,239 @@
+public class ImageTransformerCL$OutputData extends java.lang.Object
+{
+    public int dstCount;
+    public int dstCountZero;
+    public int dstCountOutlier;
+    public java.nio.FloatBuffer srcDstDot;
+    public java.nio.FloatBuffer dstDstDot;
+    com.jogamp.opencl.CLBuffer buffer;
+    boolean autoRead;
+
+    public void <init>()
+    {
+        ImageTransformerCL$OutputData this;
+        org.bytedeco.javacv.ImageTransformerCL$OutputData $r0;
+
+        this := @this: ImageTransformerCL$OutputData;
+
+        $r0 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.ImageTransformerCL$OutputData: void <init>(boolean)>(1);
+
+        return;
+    }
+
+    public void <init>(boolean)
+    {
+        ImageTransformerCL$OutputData this;
+        boolean autoRead;
+        org.bytedeco.javacv.ImageTransformerCL$OutputData $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7;
+
+        this := @this: ImageTransformerCL$OutputData;
+
+        autoRead := @parameter0: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r0.<org.bytedeco.javacv.ImageTransformerCL$OutputData: int dstCount> = 0;
+
+        $r1 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r1.<org.bytedeco.javacv.ImageTransformerCL$OutputData: int dstCountZero> = 0;
+
+        $r2 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r2.<org.bytedeco.javacv.ImageTransformerCL$OutputData: int dstCountOutlier> = 0;
+
+        $r3 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r3.<org.bytedeco.javacv.ImageTransformerCL$OutputData: java.nio.FloatBuffer srcDstDot> = null;
+
+        $r4 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r4.<org.bytedeco.javacv.ImageTransformerCL$OutputData: java.nio.FloatBuffer dstDstDot> = null;
+
+        $r5 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r5.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer buffer> = null;
+
+        $r6 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r6.<org.bytedeco.javacv.ImageTransformerCL$OutputData: boolean autoRead> = 1;
+
+        $r7 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r7.<org.bytedeco.javacv.ImageTransformerCL$OutputData: boolean autoRead> = autoRead;
+
+        return;
+    }
+
+    com.jogamp.opencl.CLBuffer getBuffer(org.bytedeco.javacv.JavaCVCL, int, int)
+    {
+        int dotSize, $stack6, $stack7, $stack8, structSize, reduceSize, $stack13, $stack19, $stack20, $stack47;
+        ImageTransformerCL$OutputData this;
+        com.jogamp.opencl.CLBuffer $stack9, $stack10, $stack14, $stack15, $stack25, $stack45, $stack24;
+        org.bytedeco.javacv.JavaCVCL context;
+        com.jogamp.opencl.CLContext $stack11;
+        com.jogamp.opencl.CLMemory$Mem[] $stack12;
+        java.nio.Buffer $stack16;
+        java.nio.ByteBuffer byteBuffer;
+        java.nio.FloatBuffer $stack18, $stack22;
+        long $stack46, $stack48;
+        byte $stack49;
+        org.bytedeco.javacv.ImageTransformerCL$OutputData $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: ImageTransformerCL$OutputData;
+
+        context := @parameter0: org.bytedeco.javacv.JavaCVCL;
+
+        dotSize := @parameter1: int;
+
+        reduceSize := @parameter2: int;
+
+        $stack7 = 4 + dotSize;
+
+        $stack6 = dotSize * dotSize;
+
+        $stack8 = $stack7 + $stack6;
+
+        structSize = 4 * $stack8;
+
+        $r0 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $stack9 = $r0.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer buffer>;
+
+        if $stack9 == null goto label1;
+
+        $r1 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $stack45 = $r1.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer buffer>;
+
+        $stack46 = virtualinvoke $stack45.<com.jogamp.opencl.CLBuffer: long getCLSize()>();
+
+        $stack47 = structSize * reduceSize;
+
+        $stack48 = (long) $stack47;
+
+        $stack49 = $stack46 cmp $stack48;
+
+        if $stack49 >= 0 goto label3;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $stack10 = $r2.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer buffer>;
+
+        if $stack10 == null goto label2;
+
+        $r3 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $stack25 = $r3.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer buffer>;
+
+        virtualinvoke $stack25.<com.jogamp.opencl.CLBuffer: void release()>();
+
+     label2:
+        $stack11 = virtualinvoke context.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext getCLContext()>();
+
+        $stack13 = structSize * reduceSize;
+
+        $stack12 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        $stack14 = virtualinvoke $stack11.<com.jogamp.opencl.CLContext: com.jogamp.opencl.CLBuffer createByteBuffer(int,com.jogamp.opencl.CLMemory$Mem[])>($stack13, $stack12);
+
+        $r4 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r4.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer buffer> = $stack14;
+
+        $r5 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $stack15 = $r5.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer buffer>;
+
+        $stack16 = virtualinvoke $stack15.<com.jogamp.opencl.CLBuffer: java.nio.Buffer getBuffer()>();
+
+        byteBuffer = (java.nio.ByteBuffer) $stack16;
+
+        virtualinvoke byteBuffer.<java.nio.ByteBuffer: java.nio.ByteBuffer position(int)>(16);
+
+        $stack18 = virtualinvoke byteBuffer.<java.nio.ByteBuffer: java.nio.FloatBuffer asFloatBuffer()>();
+
+        $r6 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r6.<org.bytedeco.javacv.ImageTransformerCL$OutputData: java.nio.FloatBuffer srcDstDot> = $stack18;
+
+        $stack19 = 4 + dotSize;
+
+        $stack20 = 4 * $stack19;
+
+        virtualinvoke byteBuffer.<java.nio.ByteBuffer: java.nio.ByteBuffer position(int)>($stack20);
+
+        $stack22 = virtualinvoke byteBuffer.<java.nio.ByteBuffer: java.nio.FloatBuffer asFloatBuffer()>();
+
+        $r7 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r7.<org.bytedeco.javacv.ImageTransformerCL$OutputData: java.nio.FloatBuffer dstDstDot> = $stack22;
+
+        virtualinvoke byteBuffer.<java.nio.ByteBuffer: java.nio.ByteBuffer rewind()>();
+
+     label3:
+        $r8 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $stack24 = $r8.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer buffer>;
+
+        return $stack24;
+    }
+
+    public com.jogamp.opencl.CLBuffer readBuffer(org.bytedeco.javacv.JavaCVCL)
+    {
+        org.bytedeco.javacv.JavaCVCL context;
+        ImageTransformerCL$OutputData this;
+        com.jogamp.opencl.CLBuffer $stack3, $stack4, $stack9;
+        java.nio.Buffer $stack5;
+        java.nio.ByteBuffer byteBuffer;
+        int $stack6, $stack7, $stack8;
+        org.bytedeco.javacv.ImageTransformerCL$OutputData $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: ImageTransformerCL$OutputData;
+
+        context := @parameter0: org.bytedeco.javacv.JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer buffer>;
+
+        virtualinvoke context.<org.bytedeco.javacv.JavaCVCL: void readBuffer(com.jogamp.opencl.CLBuffer,boolean)>($stack3, 1);
+
+        $r1 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $stack4 = $r1.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer buffer>;
+
+        $stack5 = virtualinvoke $stack4.<com.jogamp.opencl.CLBuffer: java.nio.Buffer getBuffer()>();
+
+        byteBuffer = (java.nio.ByteBuffer) $stack5;
+
+        $stack6 = virtualinvoke byteBuffer.<java.nio.ByteBuffer: int getInt(int)>(4);
+
+        $r2 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r2.<org.bytedeco.javacv.ImageTransformerCL$OutputData: int dstCount> = $stack6;
+
+        $stack7 = virtualinvoke byteBuffer.<java.nio.ByteBuffer: int getInt(int)>(8);
+
+        $r3 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r3.<org.bytedeco.javacv.ImageTransformerCL$OutputData: int dstCountZero> = $stack7;
+
+        $stack8 = virtualinvoke byteBuffer.<java.nio.ByteBuffer: int getInt(int)>(12);
+
+        $r4 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $r4.<org.bytedeco.javacv.ImageTransformerCL$OutputData: int dstCountOutlier> = $stack8;
+
+        $r5 = (org.bytedeco.javacv.ImageTransformerCL$OutputData) this;
+
+        $stack9 = $r5.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer buffer>;
+
+        return $stack9;
+    }
+}

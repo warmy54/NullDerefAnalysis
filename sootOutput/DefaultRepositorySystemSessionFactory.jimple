@@ -1,0 +1,868 @@
+public class DefaultRepositorySystemSessionFactory extends java.lang.Object
+{
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.apache.maven.artifact.handler.manager.ArtifactHandlerManager artifactHandlerManager;
+    private org.eclipse.aether.RepositorySystem repoSystem;
+    private org.eclipse.aether.spi.localrepo.LocalRepositoryManagerFactory simpleLocalRepoMgrFactory;
+    private org.eclipse.aether.repository.WorkspaceReader workspaceRepository;
+    private org.apache.maven.settings.crypto.SettingsDecrypter settingsDecrypter;
+    private org.apache.maven.eventspy.internal.EventSpyDispatcher eventSpyDispatcher;
+    org.apache.maven.bridge.MavenRepositorySystem mavenRepositorySystem;
+
+    public void <init>()
+    {
+        DefaultRepositorySystemSessionFactory this;
+
+        this := @this: DefaultRepositorySystemSessionFactory;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.eclipse.aether.DefaultRepositorySystemSession newRepositorySession(org.apache.maven.execution.MavenExecutionRequest)
+    {
+        org.eclipse.aether.DefaultRepositorySystemSession session;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        org.eclipse.aether.RepositoryCache $stack18;
+        DefaultRepositorySystemSessionFactory this;
+        java.lang.String $stack22, $stack35, $stack50, $stack116, $stack118, $stack120, $stack121, $stack123, $stack129, $stack131, $stack132, $stack136, $stack138, $stack139, $stack147, $stack149, $stack160, $stack161, $stack166, $stack168, $stack171, $stack172, $stack175, $stack179, $stack180, $stack181, $stack184, $stack185, $stack194;
+        boolean $stack25, $stack33, $stack37, $stack38, $stack41, $stack51, $stack66, $stack75, $stack80, $stack110, $stack162, $stack183, $stack190, $stack40, $stack70;
+        java.lang.Boolean $stack26;
+        java.util.Date $stack29;
+        java.util.Properties $stack31, $stack32, $stack89, $stack91, $stack108;
+        int $stack43, $stack143, $stack173, $stack212, errorPolicy#9, i;
+        org.apache.maven.artifact.handler.manager.ArtifactHandlerManager $stack45;
+        org.eclipse.aether.artifact.ArtifactTypeRegistry $stack46;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack49;
+        org.eclipse.aether.RepositorySystem $stack52, $stack232;
+        org.eclipse.aether.repository.LocalRepositoryManager $stack53, $stack207, $stack233;
+        org.eclipse.aether.repository.WorkspaceReader $stack56, $stack197, $stack55;
+        java.util.List $stack59, $stack61, $stack68, $stack73, $stack78, $stack95, $stack96, $stack98, $stack100, $stack102, $stack103, $stack105, $stack107, $stack188;
+        org.apache.maven.settings.crypto.SettingsDecrypter $stack63;
+        org.apache.maven.settings.crypto.SettingsDecryptionResult decrypted;
+        org.codehaus.plexus.logging.Logger $stack65, $stack85, $stack193, $stack209, $stack231;
+        org.eclipse.aether.transfer.TransferListener $stack82;
+        org.apache.maven.eventspy.internal.EventSpyDispatcher $stack86;
+        org.eclipse.aether.RepositoryListener $stack87, $r21;
+        org.apache.maven.bridge.MavenRepositorySystem $stack94, $stack97, $stack99, $stack101, $stack104, $stack106;
+        org.apache.maven.feature.Features$Feature $stack109;
+        org.eclipse.aether.transform.FileTransformerManager $stack111;
+        java.lang.Object $stack114, $stack126, $stack142, $stack164, $stack178, $stack192;
+        org.eclipse.aether.util.repository.AuthenticationBuilder $stack117, $stack167, $u6, $u9;
+        org.eclipse.aether.repository.Authentication $stack124, $stack174;
+        java.lang.StringBuilder $stack128, $stack130, $stack135, $stack137, $stack146, $stack148, $u11, $u12, $u13;
+        org.codehaus.plexus.util.xml.Xpp3Dom dom, child;
+        java.lang.Exception $stack195;
+        org.eclipse.aether.spi.localrepo.LocalRepositoryManagerFactory $stack206;
+        java.lang.Throwable $stack230;
+        byte $stack222, $stack211;
+        java.util.Iterator mirrorSelector, problem#21, mirror#28, proxy#32;
+        org.apache.maven.settings.building.SettingsProblem problem;
+        org.apache.maven.settings.Mirror mirror;
+        org.apache.maven.settings.Proxy proxy;
+        org.apache.maven.settings.Server authBuilder;
+        java.util.LinkedHashMap $u0;
+        org.eclipse.aether.util.repository.SimpleResolutionErrorPolicy $u1;
+        org.eclipse.aether.repository.LocalRepository $u2;
+        org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest $u3;
+        org.eclipse.aether.util.repository.DefaultMirrorSelector $u4;
+        org.eclipse.aether.util.repository.DefaultProxySelector $u5;
+        org.eclipse.aether.repository.Proxy $u7;
+        org.eclipse.aether.util.repository.DefaultAuthenticationSelector $u8;
+        org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration $u10;
+        org.apache.maven.internal.aether.LoggingRepositoryListener $u14;
+        org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory $r0, $r2, $r3, $r5, $r6, $r7, $r9, $r11, $r12, $r14, $r15, $r19, $r20, $r22, $r23, $r25, $r27, $r28, $r30, $r32;
+        org.eclipse.aether.resolution.ResolutionErrorPolicy $r1;
+        org.eclipse.aether.RepositorySystemSession $r4, $r8, $r10, $r24, $r26, $r29, $r31;
+        org.apache.maven.settings.crypto.SettingsDecryptionRequest $r13;
+        org.eclipse.aether.repository.MirrorSelector $r16;
+        org.eclipse.aether.repository.ProxySelector $r17;
+        org.eclipse.aether.repository.AuthenticationSelector $r18;
+
+        this := @this: DefaultRepositorySystemSessionFactory;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        session = staticinvoke <org.apache.maven.repository.internal.MavenRepositorySystemUtils: org.eclipse.aether.DefaultRepositorySystemSession newSession()>();
+
+        $stack18 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.eclipse.aether.RepositoryCache getRepositoryCache()>();
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setCache(org.eclipse.aether.RepositoryCache)>($stack18);
+
+        $u0 = new java.util.LinkedHashMap;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>()>();
+
+        $r0 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack22 = specialinvoke $r0.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: java.lang.String getUserAgent()>();
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("aether.connector.userAgent", $stack22);
+
+        $stack25 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: boolean isInteractiveMode()>();
+
+        $stack26 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($stack25);
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("aether.interactive", $stack26);
+
+        $stack29 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.Date getStartTime()>();
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("maven.startTime", $stack29);
+
+        $stack31 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.Properties getSystemProperties()>();
+
+        interfaceinvoke $u0.<java.util.Map: void putAll(java.util.Map)>($stack31);
+
+        $stack32 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.Properties getUserProperties()>();
+
+        interfaceinvoke $u0.<java.util.Map: void putAll(java.util.Map)>($stack32);
+
+        $stack33 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: boolean isOffline()>();
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setOffline(boolean)>($stack33);
+
+        $stack35 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.lang.String getGlobalChecksumPolicy()>();
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setChecksumPolicy(java.lang.String)>($stack35);
+
+        $stack37 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: boolean isNoSnapshotUpdates()>();
+
+        if $stack37 == 0 goto label01;
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setUpdatePolicy(java.lang.String)>("never");
+
+        goto label03;
+
+     label01:
+        $stack38 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: boolean isUpdateSnapshots()>();
+
+        if $stack38 == 0 goto label02;
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setUpdatePolicy(java.lang.String)>("always");
+
+        goto label03;
+
+     label02:
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setUpdatePolicy(java.lang.String)>(null);
+
+     label03:
+        $stack40 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: boolean isCacheNotFound()>();
+
+        if $stack40 == 0 goto label04;
+
+        $stack222 = 1;
+
+        goto label05;
+
+     label04:
+        $stack222 = 0;
+
+     label05:
+        errorPolicy#9 = 0 | $stack222;
+
+        $stack212 = errorPolicy#9;
+
+        $stack41 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: boolean isCacheTransferError()>();
+
+        if $stack41 == 0 goto label06;
+
+        $stack211 = 2;
+
+        goto label07;
+
+     label06:
+        $stack211 = 0;
+
+     label07:
+        errorPolicy#9 = $stack212 | $stack211;
+
+        $u1 = new org.eclipse.aether.util.repository.SimpleResolutionErrorPolicy;
+
+        $stack43 = errorPolicy#9 | 1;
+
+        specialinvoke $u1.<org.eclipse.aether.util.repository.SimpleResolutionErrorPolicy: void <init>(int,int)>(errorPolicy#9, $stack43);
+
+        $r1 = (org.eclipse.aether.resolution.ResolutionErrorPolicy) $u1;
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setResolutionErrorPolicy(org.eclipse.aether.resolution.ResolutionErrorPolicy)>($r1);
+
+        $r2 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack45 = $r2.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.apache.maven.artifact.handler.manager.ArtifactHandlerManager artifactHandlerManager>;
+
+        $stack46 = staticinvoke <org.apache.maven.RepositoryUtils: org.eclipse.aether.artifact.ArtifactTypeRegistry newArtifactTypeRegistry(org.apache.maven.artifact.handler.manager.ArtifactHandlerManager)>($stack45);
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setArtifactTypeRegistry(org.eclipse.aether.artifact.ArtifactTypeRegistry)>($stack46);
+
+        $u2 = new org.eclipse.aether.repository.LocalRepository;
+
+        $stack49 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        $stack50 = interfaceinvoke $stack49.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        specialinvoke $u2.<org.eclipse.aether.repository.LocalRepository: void <init>(java.lang.String)>($stack50);
+
+        $stack51 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: boolean isUseLegacyLocalRepository()>();
+
+        if $stack51 == 0 goto label11;
+
+     label08:
+        $r3 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack206 = $r3.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.eclipse.aether.spi.localrepo.LocalRepositoryManagerFactory simpleLocalRepoMgrFactory>;
+
+        $r4 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        $stack207 = interfaceinvoke $stack206.<org.eclipse.aether.spi.localrepo.LocalRepositoryManagerFactory: org.eclipse.aether.repository.LocalRepositoryManager newInstance(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.repository.LocalRepository)>($r4, $u2);
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setLocalRepositoryManager(org.eclipse.aether.repository.LocalRepositoryManager)>($stack207);
+
+        $r5 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack209 = $r5.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack209.<org.codehaus.plexus.logging.Logger: void info(java.lang.String)>("Disabling enhanced local repository: using legacy is strongly discouraged to ensure build reproducibility.");
+
+     label09:
+        goto label12;
+
+     label10:
+        $stack230 := @caughtexception;
+
+        $r6 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack231 = $r6.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack231.<org.codehaus.plexus.logging.Logger: void error(java.lang.String)>("Failed to configure legacy local repository: falling back to default");
+
+        $r7 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack232 = $r7.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.eclipse.aether.RepositorySystem repoSystem>;
+
+        $r8 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        $stack233 = interfaceinvoke $stack232.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.repository.LocalRepositoryManager newLocalRepositoryManager(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.repository.LocalRepository)>($r8, $u2);
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setLocalRepositoryManager(org.eclipse.aether.repository.LocalRepositoryManager)>($stack233);
+
+        goto label12;
+
+     label11:
+        $r9 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack52 = $r9.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.eclipse.aether.RepositorySystem repoSystem>;
+
+        $r10 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        $stack53 = interfaceinvoke $stack52.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.repository.LocalRepositoryManager newLocalRepositoryManager(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.repository.LocalRepository)>($r10, $u2);
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setLocalRepositoryManager(org.eclipse.aether.repository.LocalRepositoryManager)>($stack53);
+
+     label12:
+        $stack55 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.eclipse.aether.repository.WorkspaceReader getWorkspaceReader()>();
+
+        if $stack55 == null goto label13;
+
+        $stack197 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.eclipse.aether.repository.WorkspaceReader getWorkspaceReader()>();
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setWorkspaceReader(org.eclipse.aether.repository.WorkspaceReader)>($stack197);
+
+        goto label14;
+
+     label13:
+        $r11 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack56 = $r11.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.eclipse.aether.repository.WorkspaceReader workspaceRepository>;
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setWorkspaceReader(org.eclipse.aether.repository.WorkspaceReader)>($stack56);
+
+     label14:
+        $u3 = new org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
+
+        specialinvoke $u3.<org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest: void <init>()>();
+
+        $stack59 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getProxies()>();
+
+        virtualinvoke $u3.<org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest: org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest setProxies(java.util.List)>($stack59);
+
+        $stack61 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getServers()>();
+
+        virtualinvoke $u3.<org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest: org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest setServers(java.util.List)>($stack61);
+
+        $r12 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack63 = $r12.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.apache.maven.settings.crypto.SettingsDecrypter settingsDecrypter>;
+
+        $r13 = (org.apache.maven.settings.crypto.SettingsDecryptionRequest) $u3;
+
+        decrypted = interfaceinvoke $stack63.<org.apache.maven.settings.crypto.SettingsDecrypter: org.apache.maven.settings.crypto.SettingsDecryptionResult decrypt(org.apache.maven.settings.crypto.SettingsDecryptionRequest)>($r13);
+
+        $r14 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack65 = $r14.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack66 = interfaceinvoke $stack65.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack66 == 0 goto label16;
+
+        $stack188 = interfaceinvoke decrypted.<org.apache.maven.settings.crypto.SettingsDecryptionResult: java.util.List getProblems()>();
+
+        mirrorSelector = interfaceinvoke $stack188.<java.util.List: java.util.Iterator iterator()>();
+
+     label15:
+        $stack190 = interfaceinvoke mirrorSelector.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack190 == 0 goto label16;
+
+        $stack192 = interfaceinvoke mirrorSelector.<java.util.Iterator: java.lang.Object next()>();
+
+        problem = (org.apache.maven.settings.building.SettingsProblem) $stack192;
+
+        $r15 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack193 = $r15.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack194 = interfaceinvoke problem.<org.apache.maven.settings.building.SettingsProblem: java.lang.String getMessage()>();
+
+        $stack195 = interfaceinvoke problem.<org.apache.maven.settings.building.SettingsProblem: java.lang.Exception getException()>();
+
+        interfaceinvoke $stack193.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack194, $stack195);
+
+        goto label15;
+
+     label16:
+        $u4 = new org.eclipse.aether.util.repository.DefaultMirrorSelector;
+
+        specialinvoke $u4.<org.eclipse.aether.util.repository.DefaultMirrorSelector: void <init>()>();
+
+        $stack68 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getMirrors()>();
+
+        problem#21 = interfaceinvoke $stack68.<java.util.List: java.util.Iterator iterator()>();
+
+     label17:
+        $stack70 = interfaceinvoke problem#21.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack70 == 0 goto label18;
+
+        $stack178 = interfaceinvoke problem#21.<java.util.Iterator: java.lang.Object next()>();
+
+        mirror = (org.apache.maven.settings.Mirror) $stack178;
+
+        $stack179 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getId()>();
+
+        $stack180 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getUrl()>();
+
+        $stack181 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getLayout()>();
+
+        $stack183 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: boolean isBlocked()>();
+
+        $stack184 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getMirrorOf()>();
+
+        $stack185 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getMirrorOfLayouts()>();
+
+        virtualinvoke $u4.<org.eclipse.aether.util.repository.DefaultMirrorSelector: org.eclipse.aether.util.repository.DefaultMirrorSelector add(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.lang.String,java.lang.String)>($stack179, $stack180, $stack181, 0, $stack183, $stack184, $stack185);
+
+        goto label17;
+
+     label18:
+        $r16 = (org.eclipse.aether.repository.MirrorSelector) $u4;
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setMirrorSelector(org.eclipse.aether.repository.MirrorSelector)>($r16);
+
+        $u5 = new org.eclipse.aether.util.repository.DefaultProxySelector;
+
+        specialinvoke $u5.<org.eclipse.aether.util.repository.DefaultProxySelector: void <init>()>();
+
+        $stack73 = interfaceinvoke decrypted.<org.apache.maven.settings.crypto.SettingsDecryptionResult: java.util.List getProxies()>();
+
+        mirror#28 = interfaceinvoke $stack73.<java.util.List: java.util.Iterator iterator()>();
+
+     label19:
+        $stack75 = interfaceinvoke mirror#28.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack75 == 0 goto label20;
+
+        $stack164 = interfaceinvoke mirror#28.<java.util.Iterator: java.lang.Object next()>();
+
+        proxy = (org.apache.maven.settings.Proxy) $stack164;
+
+        $u6 = new org.eclipse.aether.util.repository.AuthenticationBuilder;
+
+        specialinvoke $u6.<org.eclipse.aether.util.repository.AuthenticationBuilder: void <init>()>();
+
+        $stack166 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getUsername()>();
+
+        $stack167 = virtualinvoke $u6.<org.eclipse.aether.util.repository.AuthenticationBuilder: org.eclipse.aether.util.repository.AuthenticationBuilder addUsername(java.lang.String)>($stack166);
+
+        $stack168 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getPassword()>();
+
+        virtualinvoke $stack167.<org.eclipse.aether.util.repository.AuthenticationBuilder: org.eclipse.aether.util.repository.AuthenticationBuilder addPassword(java.lang.String)>($stack168);
+
+        $u7 = new org.eclipse.aether.repository.Proxy;
+
+        $stack171 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getProtocol()>();
+
+        $stack172 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getHost()>();
+
+        $stack173 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: int getPort()>();
+
+        $stack174 = virtualinvoke $u6.<org.eclipse.aether.util.repository.AuthenticationBuilder: org.eclipse.aether.repository.Authentication build()>();
+
+        specialinvoke $u7.<org.eclipse.aether.repository.Proxy: void <init>(java.lang.String,java.lang.String,int,org.eclipse.aether.repository.Authentication)>($stack171, $stack172, $stack173, $stack174);
+
+        $stack175 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getNonProxyHosts()>();
+
+        virtualinvoke $u5.<org.eclipse.aether.util.repository.DefaultProxySelector: org.eclipse.aether.util.repository.DefaultProxySelector add(org.eclipse.aether.repository.Proxy,java.lang.String)>($u7, $stack175);
+
+        goto label19;
+
+     label20:
+        $r17 = (org.eclipse.aether.repository.ProxySelector) $u5;
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setProxySelector(org.eclipse.aether.repository.ProxySelector)>($r17);
+
+        $u8 = new org.eclipse.aether.util.repository.DefaultAuthenticationSelector;
+
+        specialinvoke $u8.<org.eclipse.aether.util.repository.DefaultAuthenticationSelector: void <init>()>();
+
+        $stack78 = interfaceinvoke decrypted.<org.apache.maven.settings.crypto.SettingsDecryptionResult: java.util.List getServers()>();
+
+        proxy#32 = interfaceinvoke $stack78.<java.util.List: java.util.Iterator iterator()>();
+
+     label21:
+        $stack80 = interfaceinvoke proxy#32.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack80 == 0 goto label26;
+
+        $stack114 = interfaceinvoke proxy#32.<java.util.Iterator: java.lang.Object next()>();
+
+        authBuilder = (org.apache.maven.settings.Server) $stack114;
+
+        $u9 = new org.eclipse.aether.util.repository.AuthenticationBuilder;
+
+        specialinvoke $u9.<org.eclipse.aether.util.repository.AuthenticationBuilder: void <init>()>();
+
+        $stack116 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.String getUsername()>();
+
+        $stack117 = virtualinvoke $u9.<org.eclipse.aether.util.repository.AuthenticationBuilder: org.eclipse.aether.util.repository.AuthenticationBuilder addUsername(java.lang.String)>($stack116);
+
+        $stack118 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.String getPassword()>();
+
+        virtualinvoke $stack117.<org.eclipse.aether.util.repository.AuthenticationBuilder: org.eclipse.aether.util.repository.AuthenticationBuilder addPassword(java.lang.String)>($stack118);
+
+        $stack120 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.String getPrivateKey()>();
+
+        $stack121 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.String getPassphrase()>();
+
+        virtualinvoke $u9.<org.eclipse.aether.util.repository.AuthenticationBuilder: org.eclipse.aether.util.repository.AuthenticationBuilder addPrivateKey(java.lang.String,java.lang.String)>($stack120, $stack121);
+
+        $stack123 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.String getId()>();
+
+        $stack124 = virtualinvoke $u9.<org.eclipse.aether.util.repository.AuthenticationBuilder: org.eclipse.aether.repository.Authentication build()>();
+
+        virtualinvoke $u8.<org.eclipse.aether.util.repository.DefaultAuthenticationSelector: org.eclipse.aether.util.repository.DefaultAuthenticationSelector add(java.lang.String,org.eclipse.aether.repository.Authentication)>($stack123, $stack124);
+
+        $stack126 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.Object getConfiguration()>();
+
+        if $stack126 == null goto label25;
+
+        $stack142 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.Object getConfiguration()>();
+
+        dom = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack142;
+
+        $stack143 = virtualinvoke dom.<org.codehaus.plexus.util.xml.Xpp3Dom: int getChildCount()>();
+
+        i = $stack143 - 1;
+
+     label22:
+        if i < 0 goto label24;
+
+        child = virtualinvoke dom.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom getChild(int)>(i);
+
+        $stack160 = "wagonProvider";
+
+        $stack161 = virtualinvoke child.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getName()>();
+
+        $stack162 = virtualinvoke $stack160.<java.lang.String: boolean equals(java.lang.Object)>($stack161);
+
+        if $stack162 == 0 goto label23;
+
+        virtualinvoke dom.<org.codehaus.plexus.util.xml.Xpp3Dom: void removeChild(int)>(i);
+
+     label23:
+        i = i + -1;
+
+        goto label22;
+
+     label24:
+        $u10 = new org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+
+        specialinvoke $u10.<org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration: void <init>(org.codehaus.plexus.util.xml.Xpp3Dom)>(dom);
+
+        $u11 = new java.lang.StringBuilder;
+
+        specialinvoke $u11.<java.lang.StringBuilder: void <init>()>();
+
+        $stack146 = virtualinvoke $u11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("aether.connector.wagon.config.");
+
+        $stack147 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.String getId()>();
+
+        $stack148 = virtualinvoke $stack146.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack147);
+
+        $stack149 = virtualinvoke $stack148.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack149, $u10);
+
+     label25:
+        $u12 = new java.lang.StringBuilder;
+
+        specialinvoke $u12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack128 = virtualinvoke $u12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("aether.connector.perms.fileMode.");
+
+        $stack129 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.String getId()>();
+
+        $stack130 = virtualinvoke $stack128.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack129);
+
+        $stack131 = virtualinvoke $stack130.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack132 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.String getFilePermissions()>();
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack131, $stack132);
+
+        $u13 = new java.lang.StringBuilder;
+
+        specialinvoke $u13.<java.lang.StringBuilder: void <init>()>();
+
+        $stack135 = virtualinvoke $u13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("aether.connector.perms.dirMode.");
+
+        $stack136 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.String getId()>();
+
+        $stack137 = virtualinvoke $stack135.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack136);
+
+        $stack138 = virtualinvoke $stack137.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack139 = virtualinvoke authBuilder.<org.apache.maven.settings.Server: java.lang.String getDirectoryPermissions()>();
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack138, $stack139);
+
+        goto label21;
+
+     label26:
+        $r18 = (org.eclipse.aether.repository.AuthenticationSelector) $u8;
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setAuthenticationSelector(org.eclipse.aether.repository.AuthenticationSelector)>($r18);
+
+        $stack82 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.eclipse.aether.transfer.TransferListener getTransferListener()>();
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setTransferListener(org.eclipse.aether.transfer.TransferListener)>($stack82);
+
+        $r19 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack86 = $r19.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.apache.maven.eventspy.internal.EventSpyDispatcher eventSpyDispatcher>;
+
+        $u14 = new org.apache.maven.internal.aether.LoggingRepositoryListener;
+
+        $r20 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack85 = $r20.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.codehaus.plexus.logging.Logger logger>;
+
+        specialinvoke $u14.<org.apache.maven.internal.aether.LoggingRepositoryListener: void <init>(org.codehaus.plexus.logging.Logger)>($stack85);
+
+        $r21 = (org.eclipse.aether.RepositoryListener) $u14;
+
+        $stack87 = virtualinvoke $stack86.<org.apache.maven.eventspy.internal.EventSpyDispatcher: org.eclipse.aether.RepositoryListener chainListener(org.eclipse.aether.RepositoryListener)>($r21);
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setRepositoryListener(org.eclipse.aether.RepositoryListener)>($stack87);
+
+        $stack89 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.Properties getUserProperties()>();
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setUserProperties(java.util.Map)>($stack89);
+
+        $stack91 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.Properties getSystemProperties()>();
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setSystemProperties(java.util.Map)>($stack91);
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setConfigProperties(java.util.Map)>($u0);
+
+        $r22 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack94 = $r22.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.apache.maven.bridge.MavenRepositorySystem mavenRepositorySystem>;
+
+        $stack95 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getRemoteRepositories()>();
+
+        $stack96 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getMirrors()>();
+
+        virtualinvoke $stack94.<org.apache.maven.bridge.MavenRepositorySystem: void injectMirror(java.util.List,java.util.List)>($stack95, $stack96);
+
+        $r23 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack97 = $r23.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.apache.maven.bridge.MavenRepositorySystem mavenRepositorySystem>;
+
+        $stack98 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getRemoteRepositories()>();
+
+        $r24 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        virtualinvoke $stack97.<org.apache.maven.bridge.MavenRepositorySystem: void injectProxy(org.eclipse.aether.RepositorySystemSession,java.util.List)>($r24, $stack98);
+
+        $r25 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack99 = $r25.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.apache.maven.bridge.MavenRepositorySystem mavenRepositorySystem>;
+
+        $stack100 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getRemoteRepositories()>();
+
+        $r26 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        virtualinvoke $stack99.<org.apache.maven.bridge.MavenRepositorySystem: void injectAuthentication(org.eclipse.aether.RepositorySystemSession,java.util.List)>($r26, $stack100);
+
+        $r27 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack101 = $r27.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.apache.maven.bridge.MavenRepositorySystem mavenRepositorySystem>;
+
+        $stack102 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getPluginArtifactRepositories()>();
+
+        $stack103 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getMirrors()>();
+
+        virtualinvoke $stack101.<org.apache.maven.bridge.MavenRepositorySystem: void injectMirror(java.util.List,java.util.List)>($stack102, $stack103);
+
+        $r28 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack104 = $r28.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.apache.maven.bridge.MavenRepositorySystem mavenRepositorySystem>;
+
+        $stack105 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getPluginArtifactRepositories()>();
+
+        $r29 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        virtualinvoke $stack104.<org.apache.maven.bridge.MavenRepositorySystem: void injectProxy(org.eclipse.aether.RepositorySystemSession,java.util.List)>($r29, $stack105);
+
+        $r30 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack106 = $r30.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.apache.maven.bridge.MavenRepositorySystem mavenRepositorySystem>;
+
+        $stack107 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getPluginArtifactRepositories()>();
+
+        $r31 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        virtualinvoke $stack106.<org.apache.maven.bridge.MavenRepositorySystem: void injectAuthentication(org.eclipse.aether.RepositorySystemSession,java.util.List)>($r31, $stack107);
+
+        $stack108 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.Properties getUserProperties()>();
+
+        $stack109 = staticinvoke <org.apache.maven.feature.Features: org.apache.maven.feature.Features$Feature buildConsumer(java.util.Properties)>($stack108);
+
+        $stack110 = virtualinvoke $stack109.<org.apache.maven.feature.Features$Feature: boolean isActive()>();
+
+        if $stack110 == 0 goto label27;
+
+        $r32 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack111 = staticinvoke <DefaultRepositorySystemSessionFactory$lambda_newRepositorySession_0__309: org.eclipse.aether.transform.FileTransformerManager bootstrap$(org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory,org.eclipse.aether.DefaultRepositorySystemSession)>($r32, session);
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setFileTransformerManager(org.eclipse.aether.transform.FileTransformerManager)>($stack111);
+
+     label27:
+        return session;
+
+        catch org.eclipse.aether.repository.NoLocalRepositoryManagerException from label08 to label09 with label10;
+    }
+
+    private java.lang.String getUserAgent()
+    {
+        java.lang.StringBuilder $stack2, $stack4, $stack5, $stack7, $stack8, $stack10, $stack11, $stack13, $stack14, $u0;
+        DefaultRepositorySystemSessionFactory this;
+        java.lang.String $stack3, $stack6, $stack9, $stack12, $stack15;
+        org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory $r0;
+
+        this := @this: DefaultRepositorySystemSessionFactory;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack2 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Apache-Maven/");
+
+        $r0 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack3 = specialinvoke $r0.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: java.lang.String getMavenVersion()>();
+
+        $stack4 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack3);
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (Java ");
+
+        $stack6 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("java.version");
+
+        $stack7 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack6);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; ");
+
+        $stack9 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("os.name");
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $stack12 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("os.version");
+
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack15;
+    }
+
+    private java.lang.String getMavenVersion()
+    {
+        DefaultRepositorySystemSessionFactory this;
+        java.lang.Class $stack6;
+        java.lang.String $stack8;
+        java.io.IOException $stack10;
+        org.codehaus.plexus.logging.Logger $stack11;
+        java.lang.Throwable $stack15, $stack16;
+        java.io.InputStream is;
+        java.util.Properties $u0;
+        org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory $r0;
+
+        this := @this: DefaultRepositorySystemSessionFactory;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+     label01:
+        $stack6 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        is = virtualinvoke $stack6.<java.lang.Class: java.io.InputStream getResourceAsStream(java.lang.String)>("/META-INF/maven/org.apache.maven/maven-core/pom.properties");
+
+     label02:
+        if is == null goto label03;
+
+        virtualinvoke $u0.<java.util.Properties: void load(java.io.InputStream)>(is);
+
+     label03:
+        if is == null goto label09;
+
+        virtualinvoke is.<java.io.InputStream: void close()>();
+
+        goto label09;
+
+     label04:
+        $stack16 := @caughtexception;
+
+        if is == null goto label08;
+
+     label05:
+        virtualinvoke is.<java.io.InputStream: void close()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $stack15 := @caughtexception;
+
+        virtualinvoke $stack16.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack15);
+
+     label08:
+        throw $stack16;
+
+     label09:
+        goto label11;
+
+     label10:
+        $stack10 := @caughtexception;
+
+        $r0 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack11 = $r0.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack11.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>("Failed to read Maven version", $stack10);
+
+     label11:
+        $stack8 = virtualinvoke $u0.<java.util.Properties: java.lang.String getProperty(java.lang.String,java.lang.String)>("version", "unknown-version");
+
+        return $stack8;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch java.io.IOException from label01 to label09 with label10;
+    }
+
+    private java.util.Collection getTransformersForArtifact(org.eclipse.aether.artifact.Artifact, org.eclipse.aether.SessionData)
+    {
+        org.eclipse.aether.SessionData sessionData;
+        java.lang.Object $stack5, $stack6;
+        org.apache.maven.model.building.TransformerContext context;
+        org.eclipse.aether.artifact.Artifact artifact;
+        java.lang.String $stack8, $stack9;
+        boolean $stack10;
+        DefaultRepositorySystemSessionFactory this;
+        java.util.Collection $stack11;
+        java.util.ArrayList $u0;
+        org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory$1 $u1;
+        org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory $r0;
+
+        this := @this: DefaultRepositorySystemSessionFactory;
+
+        artifact := @parameter0: org.eclipse.aether.artifact.Artifact;
+
+        sessionData := @parameter1: org.eclipse.aether.SessionData;
+
+        $stack5 = <org.apache.maven.model.building.TransformerContext: java.lang.Object KEY>;
+
+        $stack6 = interfaceinvoke sessionData.<org.eclipse.aether.SessionData: java.lang.Object get(java.lang.Object)>($stack5);
+
+        context = (org.apache.maven.model.building.TransformerContext) $stack6;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $stack8 = "pom";
+
+        $stack9 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getExtension()>();
+
+        $stack10 = virtualinvoke $stack8.<java.lang.String: boolean equals(java.lang.Object)>($stack9);
+
+        if $stack10 == 0 goto label1;
+
+        if context == null goto label1;
+
+        $u1 = new org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory$1;
+
+        $r0 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        specialinvoke $u1.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory$1: void <init>(org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory,org.apache.maven.model.building.TransformerContext)>($r0, context);
+
+        interfaceinvoke $u0.<java.util.Collection: boolean add(java.lang.Object)>($u1);
+
+     label1:
+        $stack11 = staticinvoke <java.util.Collections: java.util.Collection unmodifiableCollection(java.util.Collection)>($u0);
+
+        return $stack11;
+    }
+
+    private java.util.Collection lambda$newRepositorySession$0(org.eclipse.aether.DefaultRepositorySystemSession, org.eclipse.aether.artifact.Artifact)
+    {
+        DefaultRepositorySystemSessionFactory this;
+        org.eclipse.aether.artifact.Artifact a;
+        org.eclipse.aether.DefaultRepositorySystemSession session;
+        org.eclipse.aether.SessionData $stack3;
+        java.util.Collection $stack4;
+        org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory $r0;
+
+        this := @this: DefaultRepositorySystemSessionFactory;
+
+        session := @parameter0: org.eclipse.aether.DefaultRepositorySystemSession;
+
+        a := @parameter1: org.eclipse.aether.artifact.Artifact;
+
+        $stack3 = virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.SessionData getData()>();
+
+        $r0 = (org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: java.util.Collection getTransformersForArtifact(org.eclipse.aether.artifact.Artifact,org.eclipse.aether.SessionData)>(a, $stack3);
+
+        return $stack4;
+    }
+}

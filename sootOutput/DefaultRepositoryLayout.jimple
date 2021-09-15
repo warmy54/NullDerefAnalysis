@@ -1,0 +1,252 @@
+public class DefaultRepositoryLayout extends java.lang.Object implements org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout
+{
+    private static final char PATH_SEPARATOR;
+    private static final char GROUP_SEPARATOR;
+    private static final char ARTIFACT_SEPARATOR;
+
+    public void <init>()
+    {
+        DefaultRepositoryLayout this;
+
+        this := @this: DefaultRepositoryLayout;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public java.lang.String getId()
+    {
+        DefaultRepositoryLayout this;
+
+        this := @this: DefaultRepositoryLayout;
+
+        return "default";
+    }
+
+    public java.lang.String pathOf(org.apache.maven.artifact.Artifact)
+    {
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.handler.ArtifactHandler artifactHandler;
+        DefaultRepositoryLayout this;
+        java.lang.String $stack6, $stack7, $stack10, $stack13, $stack16, $stack19, $stack22, $stack24, $stack28, $stack31, $stack23;
+        java.lang.StringBuilder $stack8, $stack11, $stack14, $stack17, $stack18, $stack27, $stack30, $u0;
+        boolean $stack21;
+        int $stack25;
+        org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout $r0;
+
+        this := @this: DefaultRepositoryLayout;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        artifactHandler = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.handler.ArtifactHandler getArtifactHandler()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(int)>(128);
+
+        $stack6 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $r0 = (org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout) this;
+
+        $stack7 = specialinvoke $r0.<org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout: java.lang.String formatAsDirectory(java.lang.String)>($stack6);
+
+        $stack8 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack7);
+
+        virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+        $stack10 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack11 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+        $stack13 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getBaseVersion()>();
+
+        $stack14 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack13);
+
+        virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+        $stack16 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack17 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack16);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(45);
+
+        $stack19 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+        $stack21 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: boolean hasClassifier()>();
+
+        if $stack21 == 0 goto label1;
+
+        $stack30 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(45);
+
+        $stack31 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getClassifier()>();
+
+        virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack31);
+
+     label1:
+        $stack22 = interfaceinvoke artifactHandler.<org.apache.maven.artifact.handler.ArtifactHandler: java.lang.String getExtension()>();
+
+        if $stack22 == null goto label2;
+
+        $stack24 = interfaceinvoke artifactHandler.<org.apache.maven.artifact.handler.ArtifactHandler: java.lang.String getExtension()>();
+
+        $stack25 = virtualinvoke $stack24.<java.lang.String: int length()>();
+
+        if $stack25 <= 0 goto label2;
+
+        $stack27 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        $stack28 = interfaceinvoke artifactHandler.<org.apache.maven.artifact.handler.ArtifactHandler: java.lang.String getExtension()>();
+
+        virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack28);
+
+     label2:
+        $stack23 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack23;
+    }
+
+    public java.lang.String pathOfLocalRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata, org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        DefaultRepositoryLayout this;
+        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        java.lang.String $stack3, $stack4;
+        org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout $r0;
+
+        this := @this: DefaultRepositoryLayout;
+
+        metadata := @parameter0: org.apache.maven.artifact.metadata.ArtifactMetadata;
+
+        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $stack3 = interfaceinvoke metadata.<org.apache.maven.artifact.metadata.ArtifactMetadata: java.lang.String getLocalFilename(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
+
+        $r0 = (org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout: java.lang.String pathOfRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,java.lang.String)>(metadata, $stack3);
+
+        return $stack4;
+    }
+
+    private java.lang.String pathOfRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata, java.lang.String)
+    {
+        DefaultRepositoryLayout this;
+        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
+        java.lang.String $stack5, $stack6, filename, $stack12, $stack19, $stack11;
+        java.lang.StringBuilder $stack7, $stack13, $stack20, $u0;
+        boolean $stack9, $stack15;
+        org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout $r0;
+
+        this := @this: DefaultRepositoryLayout;
+
+        metadata := @parameter0: org.apache.maven.artifact.metadata.ArtifactMetadata;
+
+        filename := @parameter1: java.lang.String;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(int)>(128);
+
+        $stack5 = interfaceinvoke metadata.<org.apache.maven.artifact.metadata.ArtifactMetadata: java.lang.String getGroupId()>();
+
+        $r0 = (org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout) this;
+
+        $stack6 = specialinvoke $r0.<org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout: java.lang.String formatAsDirectory(java.lang.String)>($stack5);
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack6);
+
+        virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+        $stack9 = interfaceinvoke metadata.<org.apache.maven.artifact.metadata.ArtifactMetadata: boolean storedInGroupDirectory()>();
+
+        if $stack9 != 0 goto label1;
+
+        $stack12 = interfaceinvoke metadata.<org.apache.maven.artifact.metadata.ArtifactMetadata: java.lang.String getArtifactId()>();
+
+        $stack13 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+        $stack15 = interfaceinvoke metadata.<org.apache.maven.artifact.metadata.ArtifactMetadata: boolean storedInArtifactVersionDirectory()>();
+
+        if $stack15 == 0 goto label1;
+
+        $stack19 = interfaceinvoke metadata.<org.apache.maven.artifact.metadata.ArtifactMetadata: java.lang.String getBaseVersion()>();
+
+        $stack20 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+        virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+     label1:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(filename);
+
+        $stack11 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack11;
+    }
+
+    public java.lang.String pathOfRemoteRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata)
+    {
+        DefaultRepositoryLayout this;
+        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
+        java.lang.String $stack2, $stack3;
+        org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout $r0;
+
+        this := @this: DefaultRepositoryLayout;
+
+        metadata := @parameter0: org.apache.maven.artifact.metadata.ArtifactMetadata;
+
+        $stack2 = interfaceinvoke metadata.<org.apache.maven.artifact.metadata.ArtifactMetadata: java.lang.String getRemoteFilename()>();
+
+        $r0 = (org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout) this;
+
+        $stack3 = specialinvoke $r0.<org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout: java.lang.String pathOfRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,java.lang.String)>(metadata, $stack2);
+
+        return $stack3;
+    }
+
+    private java.lang.String formatAsDirectory(java.lang.String)
+    {
+        java.lang.String directory, $stack2;
+        DefaultRepositoryLayout this;
+
+        this := @this: DefaultRepositoryLayout;
+
+        directory := @parameter0: java.lang.String;
+
+        $stack2 = virtualinvoke directory.<java.lang.String: java.lang.String replace(char,char)>(46, 47);
+
+        return $stack2;
+    }
+
+    public java.lang.String toString()
+    {
+        DefaultRepositoryLayout this;
+        java.lang.String $stack1;
+        org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout $r0;
+
+        this := @this: DefaultRepositoryLayout;
+
+        $r0 = (org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout: java.lang.String getId()>();
+
+        return $stack1;
+    }
+
+    public static void <clinit>()
+    {
+        <DefaultRepositoryLayout: char ARTIFACT_SEPARATOR> = 45;
+
+        <DefaultRepositoryLayout: char GROUP_SEPARATOR> = 46;
+
+        <DefaultRepositoryLayout: char PATH_SEPARATOR> = 47;
+
+        return;
+    }
+}

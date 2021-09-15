@@ -1,0 +1,266 @@
+public class DefaultMavenProjectHelper extends org.codehaus.plexus.logging.AbstractLogEnabled implements org.apache.maven.project.MavenProjectHelper
+{
+    private final org.apache.maven.artifact.handler.manager.ArtifactHandlerManager artifactHandlerManager;
+
+    public void <init>(org.apache.maven.artifact.handler.manager.ArtifactHandlerManager)
+    {
+        DefaultMavenProjectHelper this;
+        org.apache.maven.artifact.handler.manager.ArtifactHandlerManager artifactHandlerManager;
+        org.apache.maven.project.DefaultMavenProjectHelper $r0;
+
+        this := @this: DefaultMavenProjectHelper;
+
+        artifactHandlerManager := @parameter0: org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
+
+        specialinvoke this.<org.codehaus.plexus.logging.AbstractLogEnabled: void <init>()>();
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectHelper) this;
+
+        $r0.<org.apache.maven.project.DefaultMavenProjectHelper: org.apache.maven.artifact.handler.manager.ArtifactHandlerManager artifactHandlerManager> = artifactHandlerManager;
+
+        return;
+    }
+
+    public void attachArtifact(org.apache.maven.project.MavenProject, java.lang.String, java.lang.String, java.io.File)
+    {
+        java.lang.String artifactType, artifactClassifier;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.artifact.Artifact $stack9, $r2, $r3, $r5;
+        java.io.File artifactFile;
+        DefaultMavenProjectHelper this;
+        org.apache.maven.artifact.handler.manager.ArtifactHandlerManager $stack10, $stack23;
+        org.apache.maven.artifact.handler.ArtifactHandler handler;
+        org.apache.maven.project.artifact.AttachedArtifact $u0;
+        org.apache.maven.project.DefaultMavenProjectHelper $r0, $r1, $r4;
+
+        this := @this: DefaultMavenProjectHelper;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        artifactType := @parameter1: java.lang.String;
+
+        artifactClassifier := @parameter2: java.lang.String;
+
+        artifactFile := @parameter3: java.io.File;
+
+        handler = null;
+
+        if artifactType == null goto label1;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectHelper) this;
+
+        $stack23 = $r0.<org.apache.maven.project.DefaultMavenProjectHelper: org.apache.maven.artifact.handler.manager.ArtifactHandlerManager artifactHandlerManager>;
+
+        handler = interfaceinvoke $stack23.<org.apache.maven.artifact.handler.manager.ArtifactHandlerManager: org.apache.maven.artifact.handler.ArtifactHandler getArtifactHandler(java.lang.String)>(artifactType);
+
+     label1:
+        if handler != null goto label2;
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectHelper) this;
+
+        $stack10 = $r1.<org.apache.maven.project.DefaultMavenProjectHelper: org.apache.maven.artifact.handler.manager.ArtifactHandlerManager artifactHandlerManager>;
+
+        handler = interfaceinvoke $stack10.<org.apache.maven.artifact.handler.manager.ArtifactHandlerManager: org.apache.maven.artifact.handler.ArtifactHandler getArtifactHandler(java.lang.String)>("jar");
+
+     label2:
+        $u0 = new org.apache.maven.project.artifact.AttachedArtifact;
+
+        $stack9 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        specialinvoke $u0.<org.apache.maven.project.artifact.AttachedArtifact: void <init>(org.apache.maven.artifact.Artifact,java.lang.String,java.lang.String,org.apache.maven.artifact.handler.ArtifactHandler)>($stack9, artifactType, artifactClassifier, handler);
+
+        $r2 = (org.apache.maven.artifact.Artifact) $u0;
+
+        interfaceinvoke $r2.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>(artifactFile);
+
+        $r3 = (org.apache.maven.artifact.Artifact) $u0;
+
+        interfaceinvoke $r3.<org.apache.maven.artifact.Artifact: void setResolved(boolean)>(1);
+
+        $r4 = (org.apache.maven.project.DefaultMavenProjectHelper) this;
+
+        $r5 = (org.apache.maven.artifact.Artifact) $u0;
+
+        virtualinvoke $r4.<org.apache.maven.project.DefaultMavenProjectHelper: void attachArtifact(org.apache.maven.project.MavenProject,org.apache.maven.artifact.Artifact)>(project, $r5);
+
+        return;
+    }
+
+    public void attachArtifact(org.apache.maven.project.MavenProject, java.lang.String, java.io.File)
+    {
+        DefaultMavenProjectHelper this;
+        java.lang.String artifactType;
+        org.apache.maven.artifact.handler.manager.ArtifactHandlerManager $stack6;
+        org.apache.maven.artifact.handler.ArtifactHandler handler;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.artifact.Artifact $stack9, $r1, $r2, $r4;
+        java.io.File artifactFile;
+        org.apache.maven.project.artifact.AttachedArtifact $u0;
+        org.apache.maven.project.DefaultMavenProjectHelper $r0, $r3;
+
+        this := @this: DefaultMavenProjectHelper;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        artifactType := @parameter1: java.lang.String;
+
+        artifactFile := @parameter2: java.io.File;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectHelper) this;
+
+        $stack6 = $r0.<org.apache.maven.project.DefaultMavenProjectHelper: org.apache.maven.artifact.handler.manager.ArtifactHandlerManager artifactHandlerManager>;
+
+        handler = interfaceinvoke $stack6.<org.apache.maven.artifact.handler.manager.ArtifactHandlerManager: org.apache.maven.artifact.handler.ArtifactHandler getArtifactHandler(java.lang.String)>(artifactType);
+
+        $u0 = new org.apache.maven.project.artifact.AttachedArtifact;
+
+        $stack9 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        specialinvoke $u0.<org.apache.maven.project.artifact.AttachedArtifact: void <init>(org.apache.maven.artifact.Artifact,java.lang.String,org.apache.maven.artifact.handler.ArtifactHandler)>($stack9, artifactType, handler);
+
+        $r1 = (org.apache.maven.artifact.Artifact) $u0;
+
+        interfaceinvoke $r1.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>(artifactFile);
+
+        $r2 = (org.apache.maven.artifact.Artifact) $u0;
+
+        interfaceinvoke $r2.<org.apache.maven.artifact.Artifact: void setResolved(boolean)>(1);
+
+        $r3 = (org.apache.maven.project.DefaultMavenProjectHelper) this;
+
+        $r4 = (org.apache.maven.artifact.Artifact) $u0;
+
+        virtualinvoke $r3.<org.apache.maven.project.DefaultMavenProjectHelper: void attachArtifact(org.apache.maven.project.MavenProject,org.apache.maven.artifact.Artifact)>(project, $r4);
+
+        return;
+    }
+
+    public void attachArtifact(org.apache.maven.project.MavenProject, java.io.File, java.lang.String)
+    {
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.artifact.Artifact projectArtifact, $r0, $r1, $r3;
+        java.lang.String $stack8, artifactClassifier;
+        org.apache.maven.artifact.handler.ArtifactHandler $stack9;
+        java.io.File artifactFile;
+        DefaultMavenProjectHelper this;
+        org.apache.maven.project.artifact.AttachedArtifact $u0;
+        org.apache.maven.project.DefaultMavenProjectHelper $r2;
+
+        this := @this: DefaultMavenProjectHelper;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        artifactFile := @parameter1: java.io.File;
+
+        artifactClassifier := @parameter2: java.lang.String;
+
+        projectArtifact = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $u0 = new org.apache.maven.project.artifact.AttachedArtifact;
+
+        $stack8 = interfaceinvoke projectArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getType()>();
+
+        $stack9 = interfaceinvoke projectArtifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.handler.ArtifactHandler getArtifactHandler()>();
+
+        specialinvoke $u0.<org.apache.maven.project.artifact.AttachedArtifact: void <init>(org.apache.maven.artifact.Artifact,java.lang.String,java.lang.String,org.apache.maven.artifact.handler.ArtifactHandler)>(projectArtifact, $stack8, artifactClassifier, $stack9);
+
+        $r0 = (org.apache.maven.artifact.Artifact) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>(artifactFile);
+
+        $r1 = (org.apache.maven.artifact.Artifact) $u0;
+
+        interfaceinvoke $r1.<org.apache.maven.artifact.Artifact: void setResolved(boolean)>(1);
+
+        $r2 = (org.apache.maven.project.DefaultMavenProjectHelper) this;
+
+        $r3 = (org.apache.maven.artifact.Artifact) $u0;
+
+        virtualinvoke $r2.<org.apache.maven.project.DefaultMavenProjectHelper: void attachArtifact(org.apache.maven.project.MavenProject,org.apache.maven.artifact.Artifact)>(project, $r3);
+
+        return;
+    }
+
+    public void attachArtifact(org.apache.maven.project.MavenProject, org.apache.maven.artifact.Artifact)
+    {
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.artifact.Artifact artifact;
+        DefaultMavenProjectHelper this;
+
+        this := @this: DefaultMavenProjectHelper;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        artifact := @parameter1: org.apache.maven.artifact.Artifact;
+
+        virtualinvoke project.<org.apache.maven.project.MavenProject: void addAttachedArtifact(org.apache.maven.artifact.Artifact)>(artifact);
+
+        return;
+    }
+
+    public void addResource(org.apache.maven.project.MavenProject, java.lang.String, java.util.List, java.util.List)
+    {
+        org.apache.maven.model.Resource $stack6;
+        java.lang.String resourceDirectory;
+        java.util.List includes, excludes;
+        org.apache.maven.project.MavenProject project;
+        DefaultMavenProjectHelper this;
+
+        this := @this: DefaultMavenProjectHelper;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        resourceDirectory := @parameter1: java.lang.String;
+
+        includes := @parameter2: java.util.List;
+
+        excludes := @parameter3: java.util.List;
+
+        $stack6 = new org.apache.maven.model.Resource;
+
+        specialinvoke $stack6.<org.apache.maven.model.Resource: void <init>()>();
+
+        virtualinvoke $stack6.<org.apache.maven.model.Resource: void setDirectory(java.lang.String)>(resourceDirectory);
+
+        virtualinvoke $stack6.<org.apache.maven.model.Resource: void setIncludes(java.util.List)>(includes);
+
+        virtualinvoke $stack6.<org.apache.maven.model.Resource: void setExcludes(java.util.List)>(excludes);
+
+        virtualinvoke project.<org.apache.maven.project.MavenProject: void addResource(org.apache.maven.model.Resource)>($stack6);
+
+        return;
+    }
+
+    public void addTestResource(org.apache.maven.project.MavenProject, java.lang.String, java.util.List, java.util.List)
+    {
+        org.apache.maven.model.Resource $stack6;
+        java.lang.String resourceDirectory;
+        java.util.List includes, excludes;
+        org.apache.maven.project.MavenProject project;
+        DefaultMavenProjectHelper this;
+
+        this := @this: DefaultMavenProjectHelper;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        resourceDirectory := @parameter1: java.lang.String;
+
+        includes := @parameter2: java.util.List;
+
+        excludes := @parameter3: java.util.List;
+
+        $stack6 = new org.apache.maven.model.Resource;
+
+        specialinvoke $stack6.<org.apache.maven.model.Resource: void <init>()>();
+
+        virtualinvoke $stack6.<org.apache.maven.model.Resource: void setDirectory(java.lang.String)>(resourceDirectory);
+
+        virtualinvoke $stack6.<org.apache.maven.model.Resource: void setIncludes(java.util.List)>(includes);
+
+        virtualinvoke $stack6.<org.apache.maven.model.Resource: void setExcludes(java.util.List)>(excludes);
+
+        virtualinvoke project.<org.apache.maven.project.MavenProject: void addTestResource(org.apache.maven.model.Resource)>($stack6);
+
+        return;
+    }
+}

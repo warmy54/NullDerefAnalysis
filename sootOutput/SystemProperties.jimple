@@ -1,0 +1,74 @@
+public class SystemProperties extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        SystemProperties this;
+
+        this := @this: SystemProperties;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void addSystemProperties(java.util.Properties)
+    {
+        java.util.Properties props, $stack1;
+
+        props := @parameter0: java.util.Properties;
+
+        $stack1 = staticinvoke <org.apache.maven.properties.internal.SystemProperties: java.util.Properties getSystemProperties()>();
+
+        virtualinvoke props.<java.util.Properties: void putAll(java.util.Map)>($stack1);
+
+        return;
+    }
+
+    public static java.util.Properties getSystemProperties()
+    {
+        java.util.Properties $stack0, $stack1;
+
+        $stack0 = staticinvoke <java.lang.System: java.util.Properties getProperties()>();
+
+        $stack1 = staticinvoke <org.apache.maven.properties.internal.SystemProperties: java.util.Properties copyProperties(java.util.Properties)>($stack0);
+
+        return $stack1;
+    }
+
+    public static java.util.Properties copyProperties(java.util.Properties)
+    {
+        java.util.Properties $stack4, properties;
+        java.lang.Throwable $stack7;
+
+        properties := @parameter0: java.util.Properties;
+
+        $stack4 = new java.util.Properties;
+
+        specialinvoke $stack4.<java.util.Properties: void <init>()>();
+
+        entermonitor properties;
+
+     label1:
+        virtualinvoke $stack4.<java.util.Properties: void putAll(java.util.Map)>(properties);
+
+        exitmonitor properties;
+
+     label2:
+        goto label5;
+
+     label3:
+        $stack7 := @caughtexception;
+
+        exitmonitor properties;
+
+     label4:
+        throw $stack7;
+
+     label5:
+        return $stack4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+}

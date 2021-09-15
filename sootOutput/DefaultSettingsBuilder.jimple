@@ -1,0 +1,734 @@
+public class DefaultSettingsBuilder extends java.lang.Object implements org.apache.maven.settings.building.SettingsBuilder
+{
+    private org.apache.maven.settings.io.SettingsReader settingsReader;
+    private org.apache.maven.settings.io.SettingsWriter settingsWriter;
+    private org.apache.maven.settings.validation.SettingsValidator settingsValidator;
+    private final org.apache.maven.settings.merge.MavenSettingsMerger settingsMerger;
+
+    public void <init>(org.apache.maven.settings.io.SettingsReader, org.apache.maven.settings.io.SettingsWriter, org.apache.maven.settings.validation.SettingsValidator)
+    {
+        DefaultSettingsBuilder this;
+        org.apache.maven.settings.io.SettingsReader settingsReader;
+        org.apache.maven.settings.io.SettingsWriter settingsWriter;
+        org.apache.maven.settings.validation.SettingsValidator settingsValidator;
+        org.apache.maven.settings.merge.MavenSettingsMerger $u0;
+        org.apache.maven.settings.building.DefaultSettingsBuilder $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultSettingsBuilder;
+
+        settingsReader := @parameter0: org.apache.maven.settings.io.SettingsReader;
+
+        settingsWriter := @parameter1: org.apache.maven.settings.io.SettingsWriter;
+
+        settingsValidator := @parameter2: org.apache.maven.settings.validation.SettingsValidator;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new org.apache.maven.settings.merge.MavenSettingsMerger;
+
+        specialinvoke $u0.<org.apache.maven.settings.merge.MavenSettingsMerger: void <init>()>();
+
+        $r0 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $r0.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.merge.MavenSettingsMerger settingsMerger> = $u0;
+
+        $r1 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $r1.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.io.SettingsReader settingsReader> = settingsReader;
+
+        $r2 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $r2.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.io.SettingsWriter settingsWriter> = settingsWriter;
+
+        $r3 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $r3.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.validation.SettingsValidator settingsValidator> = settingsValidator;
+
+        return;
+    }
+
+    public org.apache.maven.settings.building.DefaultSettingsBuilder setSettingsReader(org.apache.maven.settings.io.SettingsReader)
+    {
+        DefaultSettingsBuilder this;
+        org.apache.maven.settings.io.SettingsReader settingsReader;
+        org.apache.maven.settings.building.DefaultSettingsBuilder $r0, $r1;
+
+        this := @this: DefaultSettingsBuilder;
+
+        settingsReader := @parameter0: org.apache.maven.settings.io.SettingsReader;
+
+        $r0 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $r0.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.io.SettingsReader settingsReader> = settingsReader;
+
+        $r1 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        return $r1;
+    }
+
+    public org.apache.maven.settings.building.DefaultSettingsBuilder setSettingsWriter(org.apache.maven.settings.io.SettingsWriter)
+    {
+        DefaultSettingsBuilder this;
+        org.apache.maven.settings.io.SettingsWriter settingsWriter;
+        org.apache.maven.settings.building.DefaultSettingsBuilder $r0, $r1;
+
+        this := @this: DefaultSettingsBuilder;
+
+        settingsWriter := @parameter0: org.apache.maven.settings.io.SettingsWriter;
+
+        $r0 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $r0.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.io.SettingsWriter settingsWriter> = settingsWriter;
+
+        $r1 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        return $r1;
+    }
+
+    public org.apache.maven.settings.building.DefaultSettingsBuilder setSettingsValidator(org.apache.maven.settings.validation.SettingsValidator)
+    {
+        DefaultSettingsBuilder this;
+        org.apache.maven.settings.validation.SettingsValidator settingsValidator;
+        org.apache.maven.settings.building.DefaultSettingsBuilder $r0, $r1;
+
+        this := @this: DefaultSettingsBuilder;
+
+        settingsValidator := @parameter0: org.apache.maven.settings.validation.SettingsValidator;
+
+        $r0 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $r0.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.validation.SettingsValidator settingsValidator> = settingsValidator;
+
+        $r1 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        return $r1;
+    }
+
+    public org.apache.maven.settings.building.SettingsBuildingResult build(org.apache.maven.settings.building.SettingsBuildingRequest) throws org.apache.maven.settings.building.SettingsBuildingException
+    {
+        DefaultSettingsBuilder this;
+        org.apache.maven.settings.building.SettingsBuildingRequest request;
+        java.io.File $stack10, $stack14, $u1;
+        org.apache.maven.settings.building.SettingsSource $stack11, $stack15;
+        org.apache.maven.building.Source globalSettingsSource, userSettingsSource, $r1, $r4;
+        org.apache.maven.settings.Settings globalSettings, userSettings;
+        org.apache.maven.settings.merge.MavenSettingsMerger $stack18;
+        java.lang.String localRepository, $stack32, $stack33, $stack35;
+        java.util.List $stack24, $stack26, $stack21;
+        int $stack27;
+        boolean $stack31, $stack34, $stack22;
+        org.apache.maven.settings.building.DefaultSettingsProblemCollector $u0;
+        org.apache.maven.settings.building.SettingsBuildingException $u2;
+        org.apache.maven.settings.building.DefaultSettingsBuildingResult $u3;
+        org.apache.maven.settings.building.DefaultSettingsBuilder $r0, $r2, $r3, $r5, $r6, $r7, $r9;
+        org.apache.maven.settings.building.SettingsProblemCollector $r8;
+        java.lang.Throwable $r10;
+        org.apache.maven.settings.building.SettingsBuildingResult $r11;
+
+        this := @this: DefaultSettingsBuilder;
+
+        request := @parameter0: org.apache.maven.settings.building.SettingsBuildingRequest;
+
+        $u0 = new org.apache.maven.settings.building.DefaultSettingsProblemCollector;
+
+        specialinvoke $u0.<org.apache.maven.settings.building.DefaultSettingsProblemCollector: void <init>(java.util.List)>(null);
+
+        $stack10 = interfaceinvoke request.<org.apache.maven.settings.building.SettingsBuildingRequest: java.io.File getGlobalSettingsFile()>();
+
+        $stack11 = interfaceinvoke request.<org.apache.maven.settings.building.SettingsBuildingRequest: org.apache.maven.settings.building.SettingsSource getGlobalSettingsSource()>();
+
+        $r0 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $r1 = (org.apache.maven.building.Source) $stack11;
+
+        globalSettingsSource = specialinvoke $r0.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.building.Source getSettingsSource(java.io.File,org.apache.maven.building.Source)>($stack10, $r1);
+
+        $r2 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        globalSettings = specialinvoke $r2.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.Settings readSettings(org.apache.maven.building.Source,org.apache.maven.settings.building.SettingsBuildingRequest,org.apache.maven.settings.building.DefaultSettingsProblemCollector)>(globalSettingsSource, request, $u0);
+
+        $stack14 = interfaceinvoke request.<org.apache.maven.settings.building.SettingsBuildingRequest: java.io.File getUserSettingsFile()>();
+
+        $stack15 = interfaceinvoke request.<org.apache.maven.settings.building.SettingsBuildingRequest: org.apache.maven.settings.building.SettingsSource getUserSettingsSource()>();
+
+        $r3 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $r4 = (org.apache.maven.building.Source) $stack15;
+
+        userSettingsSource = specialinvoke $r3.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.building.Source getSettingsSource(java.io.File,org.apache.maven.building.Source)>($stack14, $r4);
+
+        $r5 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        userSettings = specialinvoke $r5.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.Settings readSettings(org.apache.maven.building.Source,org.apache.maven.settings.building.SettingsBuildingRequest,org.apache.maven.settings.building.DefaultSettingsProblemCollector)>(userSettingsSource, request, $u0);
+
+        $r6 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $stack18 = $r6.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.merge.MavenSettingsMerger settingsMerger>;
+
+        virtualinvoke $stack18.<org.apache.maven.settings.merge.MavenSettingsMerger: void merge(org.apache.maven.settings.Settings,org.apache.maven.settings.Settings,java.lang.String)>(userSettings, globalSettings, "global-level");
+
+        virtualinvoke $u0.<org.apache.maven.settings.building.DefaultSettingsProblemCollector: void setSource(java.lang.String)>("");
+
+        $r7 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $r8 = (org.apache.maven.settings.building.SettingsProblemCollector) $u0;
+
+        userSettings = specialinvoke $r7.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.Settings interpolate(org.apache.maven.settings.Settings,org.apache.maven.settings.building.SettingsBuildingRequest,org.apache.maven.settings.building.SettingsProblemCollector)>(userSettings, request, $r8);
+
+        localRepository = virtualinvoke userSettings.<org.apache.maven.settings.Settings: java.lang.String getLocalRepository()>();
+
+        if localRepository == null goto label1;
+
+        $stack27 = virtualinvoke localRepository.<java.lang.String: int length()>();
+
+        if $stack27 <= 0 goto label1;
+
+        $u1 = new java.io.File;
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String)>(localRepository);
+
+        $stack31 = virtualinvoke $u1.<java.io.File: boolean isAbsolute()>();
+
+        if $stack31 != 0 goto label1;
+
+        $stack32 = virtualinvoke $u1.<java.io.File: java.lang.String getPath()>();
+
+        $stack33 = <java.io.File: java.lang.String separator>;
+
+        $stack34 = virtualinvoke $stack32.<java.lang.String: boolean startsWith(java.lang.String)>($stack33);
+
+        if $stack34 == 0 goto label1;
+
+        $stack35 = virtualinvoke $u1.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        virtualinvoke userSettings.<org.apache.maven.settings.Settings: void setLocalRepository(java.lang.String)>($stack35);
+
+     label1:
+        $stack21 = virtualinvoke $u0.<org.apache.maven.settings.building.DefaultSettingsProblemCollector: java.util.List getProblems()>();
+
+        $r9 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $stack22 = specialinvoke $r9.<org.apache.maven.settings.building.DefaultSettingsBuilder: boolean hasErrors(java.util.List)>($stack21);
+
+        if $stack22 == 0 goto label2;
+
+        $u2 = new org.apache.maven.settings.building.SettingsBuildingException;
+
+        $stack26 = virtualinvoke $u0.<org.apache.maven.settings.building.DefaultSettingsProblemCollector: java.util.List getProblems()>();
+
+        specialinvoke $u2.<org.apache.maven.settings.building.SettingsBuildingException: void <init>(java.util.List)>($stack26);
+
+        $r10 = (java.lang.Throwable) $u2;
+
+        throw $r10;
+
+     label2:
+        $u3 = new org.apache.maven.settings.building.DefaultSettingsBuildingResult;
+
+        $stack24 = virtualinvoke $u0.<org.apache.maven.settings.building.DefaultSettingsProblemCollector: java.util.List getProblems()>();
+
+        specialinvoke $u3.<org.apache.maven.settings.building.DefaultSettingsBuildingResult: void <init>(org.apache.maven.settings.Settings,java.util.List)>(userSettings, $stack24);
+
+        $r11 = (org.apache.maven.settings.building.SettingsBuildingResult) $u3;
+
+        return $r11;
+    }
+
+    private boolean hasErrors(java.util.List)
+    {
+        java.util.List problems;
+        java.util.Iterator l2;
+        boolean $stack5;
+        java.lang.Object $stack7;
+        org.apache.maven.settings.building.SettingsProblem problem;
+        org.apache.maven.settings.building.SettingsProblem$Severity $stack8, $stack9;
+        int $stack10;
+        DefaultSettingsBuilder this;
+        java.lang.Enum $r0;
+
+        this := @this: DefaultSettingsBuilder;
+
+        problems := @parameter0: java.util.List;
+
+        if problems == null goto label3;
+
+        l2 = interfaceinvoke problems.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack5 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack5 == 0 goto label3;
+
+        $stack7 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        problem = (org.apache.maven.settings.building.SettingsProblem) $stack7;
+
+        $stack8 = <org.apache.maven.settings.building.SettingsProblem$Severity: org.apache.maven.settings.building.SettingsProblem$Severity ERROR>;
+
+        $stack9 = interfaceinvoke problem.<org.apache.maven.settings.building.SettingsProblem: org.apache.maven.settings.building.SettingsProblem$Severity getSeverity()>();
+
+        $r0 = (java.lang.Enum) $stack9;
+
+        $stack10 = virtualinvoke $stack8.<org.apache.maven.settings.building.SettingsProblem$Severity: int compareTo(java.lang.Enum)>($r0);
+
+        if $stack10 < 0 goto label2;
+
+        return 1;
+
+     label2:
+        goto label1;
+
+     label3:
+        return 0;
+    }
+
+    private org.apache.maven.building.Source getSettingsSource(java.io.File, org.apache.maven.building.Source)
+    {
+        org.apache.maven.building.Source settingsSource, $r0;
+        java.io.File settingsFile;
+        boolean $stack3;
+        DefaultSettingsBuilder this;
+        org.apache.maven.building.FileSource $u0;
+
+        this := @this: DefaultSettingsBuilder;
+
+        settingsFile := @parameter0: java.io.File;
+
+        settingsSource := @parameter1: org.apache.maven.building.Source;
+
+        if settingsSource == null goto label1;
+
+        return settingsSource;
+
+     label1:
+        if settingsFile == null goto label2;
+
+        $stack3 = virtualinvoke settingsFile.<java.io.File: boolean exists()>();
+
+        if $stack3 == 0 goto label2;
+
+        $u0 = new org.apache.maven.building.FileSource;
+
+        specialinvoke $u0.<org.apache.maven.building.FileSource: void <init>(java.io.File)>(settingsFile);
+
+        $r0 = (org.apache.maven.building.Source) $u0;
+
+        return $r0;
+
+     label2:
+        return null;
+    }
+
+    private org.apache.maven.settings.Settings readSettings(org.apache.maven.building.Source, org.apache.maven.settings.building.SettingsBuildingRequest, org.apache.maven.settings.building.DefaultSettingsProblemCollector)
+    {
+        org.apache.maven.building.Source settingsSource;
+        org.apache.maven.settings.building.DefaultSettingsProblemCollector problems;
+        java.lang.String $stack7, $stack19, $stack22, $stack24, $stack30, $stack33, $stack35, $stack46;
+        java.lang.Boolean $stack8, $stack40;
+        DefaultSettingsBuilder this;
+        org.apache.maven.settings.io.SettingsReader $stack10, $stack42;
+        java.io.InputStream $stack11, $stack43;
+        org.apache.maven.settings.validation.SettingsValidator $stack13;
+        java.io.IOException $stack15;
+        org.apache.maven.settings.building.SettingsProblem$Severity $stack17, $stack28, $stack45;
+        java.lang.StringBuilder $stack18, $stack20, $stack21, $stack23, $stack29, $stack31, $stack32, $stack34, $u1, $u3;
+        java.lang.Throwable $stack26, $stack39;
+        int $stack36, $stack37, $stack47, $stack48;
+        org.apache.maven.settings.building.SettingsBuildingRequest request;
+        java.util.Map options;
+        org.apache.maven.settings.Settings settings, $u0, $u2, $u4;
+        org.apache.maven.settings.building.DefaultSettingsBuilder $r0, $r1, $r10;
+        org.apache.maven.settings.io.SettingsParseException $r2, $r3, $r4, $r6, $r7, $r8;
+        java.lang.Exception $r5, $r9;
+        org.apache.maven.settings.building.SettingsProblemCollector $r11;
+
+        this := @this: DefaultSettingsBuilder;
+
+        settingsSource := @parameter0: org.apache.maven.building.Source;
+
+        request := @parameter1: org.apache.maven.settings.building.SettingsBuildingRequest;
+
+        problems := @parameter2: org.apache.maven.settings.building.DefaultSettingsProblemCollector;
+
+        if settingsSource != null goto label1;
+
+        $u0 = new org.apache.maven.settings.Settings;
+
+        specialinvoke $u0.<org.apache.maven.settings.Settings: void <init>()>();
+
+        return $u0;
+
+     label1:
+        $stack7 = interfaceinvoke settingsSource.<org.apache.maven.building.Source: java.lang.String getLocation()>();
+
+        virtualinvoke problems.<org.apache.maven.settings.building.DefaultSettingsProblemCollector: void setSource(java.lang.String)>($stack7);
+
+     label2:
+        $stack8 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        options = staticinvoke <java.util.Collections: java.util.Map singletonMap(java.lang.Object,java.lang.Object)>("org.apache.maven.settings.io.isStrict", $stack8);
+
+     label3:
+        $r0 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $stack10 = $r0.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.io.SettingsReader settingsReader>;
+
+        $stack11 = interfaceinvoke settingsSource.<org.apache.maven.building.Source: java.io.InputStream getInputStream()>();
+
+        settings = interfaceinvoke $stack10.<org.apache.maven.settings.io.SettingsReader: org.apache.maven.settings.Settings read(java.io.InputStream,java.util.Map)>($stack11, options);
+
+     label4:
+        goto label6;
+
+     label5:
+        $stack39 := @caughtexception;
+
+        $stack40 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+        options = staticinvoke <java.util.Collections: java.util.Map singletonMap(java.lang.Object,java.lang.Object)>("org.apache.maven.settings.io.isStrict", $stack40);
+
+        $r1 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $stack42 = $r1.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.io.SettingsReader settingsReader>;
+
+        $stack43 = interfaceinvoke settingsSource.<org.apache.maven.building.Source: java.io.InputStream getInputStream()>();
+
+        settings = interfaceinvoke $stack42.<org.apache.maven.settings.io.SettingsReader: org.apache.maven.settings.Settings read(java.io.InputStream,java.util.Map)>($stack43, options);
+
+        $stack45 = <org.apache.maven.settings.building.SettingsProblem$Severity: org.apache.maven.settings.building.SettingsProblem$Severity WARNING>;
+
+        $r2 = (org.apache.maven.settings.io.SettingsParseException) $stack39;
+
+        $stack46 = virtualinvoke $r2.<org.apache.maven.settings.io.SettingsParseException: java.lang.String getMessage()>();
+
+        $r3 = (org.apache.maven.settings.io.SettingsParseException) $stack39;
+
+        $stack47 = virtualinvoke $r3.<org.apache.maven.settings.io.SettingsParseException: int getLineNumber()>();
+
+        $r4 = (org.apache.maven.settings.io.SettingsParseException) $stack39;
+
+        $stack48 = virtualinvoke $r4.<org.apache.maven.settings.io.SettingsParseException: int getColumnNumber()>();
+
+        $r5 = (java.lang.Exception) $stack39;
+
+        virtualinvoke problems.<org.apache.maven.settings.building.DefaultSettingsProblemCollector: void add(org.apache.maven.settings.building.SettingsProblem$Severity,java.lang.String,int,int,java.lang.Exception)>($stack45, $stack46, $stack47, $stack48, $r5);
+
+     label6:
+        goto label9;
+
+     label7:
+        $stack26 := @caughtexception;
+
+        $stack28 = <org.apache.maven.settings.building.SettingsProblem$Severity: org.apache.maven.settings.building.SettingsProblem$Severity FATAL>;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack29 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Non-parseable settings ");
+
+        $stack30 = interfaceinvoke settingsSource.<org.apache.maven.building.Source: java.lang.String getLocation()>();
+
+        $stack31 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack30);
+
+        $stack32 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $r6 = (org.apache.maven.settings.io.SettingsParseException) $stack26;
+
+        $stack33 = virtualinvoke $r6.<org.apache.maven.settings.io.SettingsParseException: java.lang.String getMessage()>();
+
+        $stack34 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack33);
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r7 = (org.apache.maven.settings.io.SettingsParseException) $stack26;
+
+        $stack36 = virtualinvoke $r7.<org.apache.maven.settings.io.SettingsParseException: int getLineNumber()>();
+
+        $r8 = (org.apache.maven.settings.io.SettingsParseException) $stack26;
+
+        $stack37 = virtualinvoke $r8.<org.apache.maven.settings.io.SettingsParseException: int getColumnNumber()>();
+
+        $r9 = (java.lang.Exception) $stack26;
+
+        virtualinvoke problems.<org.apache.maven.settings.building.DefaultSettingsProblemCollector: void add(org.apache.maven.settings.building.SettingsProblem$Severity,java.lang.String,int,int,java.lang.Exception)>($stack28, $stack35, $stack36, $stack37, $r9);
+
+        $u2 = new org.apache.maven.settings.Settings;
+
+        specialinvoke $u2.<org.apache.maven.settings.Settings: void <init>()>();
+
+        return $u2;
+
+     label8:
+        $stack15 := @caughtexception;
+
+        $stack17 = <org.apache.maven.settings.building.SettingsProblem$Severity: org.apache.maven.settings.building.SettingsProblem$Severity FATAL>;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack18 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Non-readable settings ");
+
+        $stack19 = interfaceinvoke settingsSource.<org.apache.maven.building.Source: java.lang.String getLocation()>();
+
+        $stack20 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack22 = virtualinvoke $stack15.<java.io.IOException: java.lang.String getMessage()>();
+
+        $stack23 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack22);
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke problems.<org.apache.maven.settings.building.DefaultSettingsProblemCollector: void add(org.apache.maven.settings.building.SettingsProblem$Severity,java.lang.String,int,int,java.lang.Exception)>($stack17, $stack24, -1, -1, $stack15);
+
+        $u4 = new org.apache.maven.settings.Settings;
+
+        specialinvoke $u4.<org.apache.maven.settings.Settings: void <init>()>();
+
+        return $u4;
+
+     label9:
+        $r10 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $stack13 = $r10.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.validation.SettingsValidator settingsValidator>;
+
+        $r11 = (org.apache.maven.settings.building.SettingsProblemCollector) problems;
+
+        interfaceinvoke $stack13.<org.apache.maven.settings.validation.SettingsValidator: void validate(org.apache.maven.settings.Settings,org.apache.maven.settings.building.SettingsProblemCollector)>(settings, $r11);
+
+        return settings;
+
+        catch org.apache.maven.settings.io.SettingsParseException from label3 to label4 with label5;
+        catch org.apache.maven.settings.io.SettingsParseException from label2 to label6 with label7;
+        catch java.io.IOException from label2 to label6 with label8;
+    }
+
+    private org.apache.maven.settings.Settings interpolate(org.apache.maven.settings.Settings, org.apache.maven.settings.building.SettingsBuildingRequest, org.apache.maven.settings.building.SettingsProblemCollector)
+    {
+        DefaultSettingsBuilder this;
+        org.apache.maven.settings.Settings settings, e#7;
+        org.apache.maven.settings.io.SettingsWriter $stack10;
+        org.apache.maven.settings.building.SettingsBuildingRequest request;
+        java.util.Properties $stack14, $stack16;
+        org.codehaus.plexus.interpolation.InterpolationPostProcessor $stack18;
+        java.lang.Boolean $stack20;
+        org.apache.maven.settings.io.SettingsReader $stack23;
+        java.io.IOException $stack25, $stack39, $stack50;
+        org.apache.maven.settings.building.SettingsProblemCollector problems;
+        org.apache.maven.settings.building.SettingsProblem$Severity $stack27, $stack34, $stack41;
+        java.lang.StringBuilder $stack28, $stack30, $stack35, $stack37, $stack42, $stack44, $u6, $u7, $u9;
+        java.lang.String $stack29, $stack31, $stack36, $stack38, $stack43, $stack45, e#2;
+        java.lang.Throwable $stack32;
+        java.util.Map options;
+        java.io.StringWriter $u0;
+        java.lang.IllegalStateException $u1;
+        org.codehaus.plexus.interpolation.RegexBasedInterpolator $u2;
+        org.codehaus.plexus.interpolation.PropertiesBasedValueSource $u3, $u4;
+        org.codehaus.plexus.interpolation.EnvarBasedValueSource $u5;
+        java.io.StringReader $u8;
+        org.apache.maven.settings.building.DefaultSettingsBuilder $r0, $r6;
+        org.codehaus.plexus.interpolation.ValueSource $r1, $r2, $r3;
+        org.codehaus.plexus.interpolation.InterpolationException $r4;
+        java.lang.Exception $r5;
+
+        this := @this: DefaultSettingsBuilder;
+
+        settings := @parameter0: org.apache.maven.settings.Settings;
+
+        request := @parameter1: org.apache.maven.settings.building.SettingsBuildingRequest;
+
+        problems := @parameter2: org.apache.maven.settings.building.SettingsProblemCollector;
+
+        $u0 = new java.io.StringWriter;
+
+        specialinvoke $u0.<java.io.StringWriter: void <init>(int)>(4096);
+
+     label01:
+        $r0 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $stack10 = $r0.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.io.SettingsWriter settingsWriter>;
+
+        interfaceinvoke $stack10.<org.apache.maven.settings.io.SettingsWriter: void write(java.io.Writer,java.util.Map,org.apache.maven.settings.Settings)>($u0, null, settings);
+
+     label02:
+        goto label04;
+
+     label03:
+        $stack50 := @caughtexception;
+
+        $u1 = new java.lang.IllegalStateException;
+
+        specialinvoke $u1.<java.lang.IllegalStateException: void <init>(java.lang.String,java.lang.Throwable)>("Failed to serialize settings to memory", $stack50);
+
+        throw $u1;
+
+     label04:
+        e#2 = virtualinvoke $u0.<java.io.StringWriter: java.lang.String toString()>();
+
+        $u2 = new org.codehaus.plexus.interpolation.RegexBasedInterpolator;
+
+        specialinvoke $u2.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: void <init>()>();
+
+        $u3 = new org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
+
+        $stack14 = interfaceinvoke request.<org.apache.maven.settings.building.SettingsBuildingRequest: java.util.Properties getUserProperties()>();
+
+        specialinvoke $u3.<org.codehaus.plexus.interpolation.PropertiesBasedValueSource: void <init>(java.util.Properties)>($stack14);
+
+        $r1 = (org.codehaus.plexus.interpolation.ValueSource) $u3;
+
+        virtualinvoke $u2.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: void addValueSource(org.codehaus.plexus.interpolation.ValueSource)>($r1);
+
+        $u4 = new org.codehaus.plexus.interpolation.PropertiesBasedValueSource;
+
+        $stack16 = interfaceinvoke request.<org.apache.maven.settings.building.SettingsBuildingRequest: java.util.Properties getSystemProperties()>();
+
+        specialinvoke $u4.<org.codehaus.plexus.interpolation.PropertiesBasedValueSource: void <init>(java.util.Properties)>($stack16);
+
+        $r2 = (org.codehaus.plexus.interpolation.ValueSource) $u4;
+
+        virtualinvoke $u2.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: void addValueSource(org.codehaus.plexus.interpolation.ValueSource)>($r2);
+
+     label05:
+        $u5 = new org.codehaus.plexus.interpolation.EnvarBasedValueSource;
+
+        specialinvoke $u5.<org.codehaus.plexus.interpolation.EnvarBasedValueSource: void <init>()>();
+
+        $r3 = (org.codehaus.plexus.interpolation.ValueSource) $u5;
+
+        virtualinvoke $u2.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: void addValueSource(org.codehaus.plexus.interpolation.ValueSource)>($r3);
+
+     label06:
+        goto label08;
+
+     label07:
+        $stack39 := @caughtexception;
+
+        $stack41 = <org.apache.maven.settings.building.SettingsProblem$Severity: org.apache.maven.settings.building.SettingsProblem$Severity WARNING>;
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack42 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to use environment variables for interpolation: ");
+
+        $stack43 = virtualinvoke $stack39.<java.io.IOException: java.lang.String getMessage()>();
+
+        $stack44 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack43);
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke problems.<org.apache.maven.settings.building.SettingsProblemCollector: void add(org.apache.maven.settings.building.SettingsProblem$Severity,java.lang.String,int,int,java.lang.Exception)>($stack41, $stack45, -1, -1, $stack39);
+
+     label08:
+        $stack18 = staticinvoke <DefaultSettingsBuilder$lambda_interpolate_0__309: org.codehaus.plexus.interpolation.InterpolationPostProcessor bootstrap$()>();
+
+        virtualinvoke $u2.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: void addPostProcessor(org.codehaus.plexus.interpolation.InterpolationPostProcessor)>($stack18);
+
+     label09:
+        e#2 = virtualinvoke $u2.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: java.lang.String interpolate(java.lang.String,java.lang.String)>(e#2, "settings");
+
+     label10:
+        goto label12;
+
+     label11:
+        $stack32 := @caughtexception;
+
+        $stack34 = <org.apache.maven.settings.building.SettingsProblem$Severity: org.apache.maven.settings.building.SettingsProblem$Severity ERROR>;
+
+        $u7 = new java.lang.StringBuilder;
+
+        specialinvoke $u7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack35 = virtualinvoke $u7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to interpolate settings: ");
+
+        $r4 = (org.codehaus.plexus.interpolation.InterpolationException) $stack32;
+
+        $stack36 = virtualinvoke $r4.<org.codehaus.plexus.interpolation.InterpolationException: java.lang.String getMessage()>();
+
+        $stack37 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack36);
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = (java.lang.Exception) $stack32;
+
+        interfaceinvoke problems.<org.apache.maven.settings.building.SettingsProblemCollector: void add(org.apache.maven.settings.building.SettingsProblem$Severity,java.lang.String,int,int,java.lang.Exception)>($stack34, $stack38, -1, -1, $r5);
+
+        return settings;
+
+     label12:
+        $stack20 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+        options = staticinvoke <java.util.Collections: java.util.Map singletonMap(java.lang.Object,java.lang.Object)>("org.apache.maven.settings.io.isStrict", $stack20);
+
+        $r6 = (org.apache.maven.settings.building.DefaultSettingsBuilder) this;
+
+        $stack23 = $r6.<org.apache.maven.settings.building.DefaultSettingsBuilder: org.apache.maven.settings.io.SettingsReader settingsReader>;
+
+        $u8 = new java.io.StringReader;
+
+        specialinvoke $u8.<java.io.StringReader: void <init>(java.lang.String)>(e#2);
+
+        e#7 = interfaceinvoke $stack23.<org.apache.maven.settings.io.SettingsReader: org.apache.maven.settings.Settings read(java.io.Reader,java.util.Map)>($u8, options);
+
+     label13:
+        goto label15;
+
+     label14:
+        $stack25 := @caughtexception;
+
+        $stack27 = <org.apache.maven.settings.building.SettingsProblem$Severity: org.apache.maven.settings.building.SettingsProblem$Severity ERROR>;
+
+        $u9 = new java.lang.StringBuilder;
+
+        specialinvoke $u9.<java.lang.StringBuilder: void <init>()>();
+
+        $stack28 = virtualinvoke $u9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to interpolate settings: ");
+
+        $stack29 = virtualinvoke $stack25.<java.io.IOException: java.lang.String getMessage()>();
+
+        $stack30 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack29);
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke problems.<org.apache.maven.settings.building.SettingsProblemCollector: void add(org.apache.maven.settings.building.SettingsProblem$Severity,java.lang.String,int,int,java.lang.Exception)>($stack27, $stack31, -1, -1, $stack25);
+
+        return settings;
+
+     label15:
+        return e#7;
+
+        catch java.io.IOException from label01 to label02 with label03;
+        catch java.io.IOException from label05 to label06 with label07;
+        catch org.codehaus.plexus.interpolation.InterpolationException from label09 to label10 with label11;
+        catch java.io.IOException from label12 to label13 with label14;
+    }
+
+    private static java.lang.Object lambda$interpolate$0(java.lang.String, java.lang.Object)
+    {
+        java.lang.String $stack2, $stack3, $stack4, expression, value#2;
+        java.lang.Object value;
+
+        expression := @parameter0: java.lang.String;
+
+        value := @parameter1: java.lang.Object;
+
+        if value == null goto label1;
+
+        $stack2 = virtualinvoke value.<java.lang.Object: java.lang.String toString()>();
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("&", "&amp;");
+
+        $stack4 = virtualinvoke $stack3.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("<", "&lt;");
+
+        value#2 = virtualinvoke $stack4.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>(">", "&gt;");
+
+        return value#2;
+
+     label1:
+        return null;
+    }
+}

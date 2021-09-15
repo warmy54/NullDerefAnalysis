@@ -1,0 +1,1414 @@
+public class ExpressionParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        ExpressionParser this;
+
+        this := @this: ExpressionParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader)
+    {
+        org.ooc.frontend.model.Module module;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        org.ooc.frontend.model.Expression $stack3;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        $stack3 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, 0);
+
+        return $stack3;
+    }
+
+    public static org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader, boolean)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        int mark;
+        java.lang.Object $stack12, $stack16, $stack21, $stack73, $stack108, $stack111, $stack122, $stack132, $stack141, $stack153, $stack162, $stack165, $stack172, $stack178, $stack182, $stack185, $stack197, $stack206, $stack220, $stack225, $stack228, $stack231, $stack234, inner#6, $stack33;
+        org.ooc.frontend.model.tokens.Token firstToken, $stack17, token, $stack154, $stack158, $stack176, $stack179, $stack190, $stack202, $stack218, $stack221, call#69, varAccess#70, $stack34;
+        byte $stack13, $stack14, $stack15, $stack18, $stack23, $stack24, $stack25, $stack26, $stack27, $stack28, $stack29, $stack30, $stack31, $stack37, $stack76, $stack83, $stack89, $stack90, $stack91, $stack92, $stack93, $stack94, $stack95, $stack96, $stack97, $stack98, $stack99, $stack100, $stack101, $stack102, $stack103, $stack112, $stack113, $stack123, $stack133, $stack134, $stack142, $stack155, $stack169, $stack177, $stack180, $stack191, $stack222, $stack35, $stack104;
+        org.ooc.frontend.model.Module module;
+        org.ubi.SourceReader sReader;
+        boolean noDecl, $stack22, $stack20, call#131;
+        org.ooc.frontend.model.BinaryCombination$BinaryComp $stack39, $stack44, $stack48, $stack52, $stack54, $stack126, $stack129, $stack145, $stack148;
+        org.ooc.frontend.model.Assignment$Mode $stack42, $stack46, $stack50, $stack61, $stack64, $stack67, $stack70, $stack131, $stack150;
+        org.ooc.frontend.model.Compare$CompareType $stack56, $stack58, $stack116, $stack121, $stack137, $stack140;
+        org.ubi.Locatable $stack74, $stack109, $stack163, $stack173, $stack183, $stack198, $stack207, $stack226, $stack232;
+        org.ubi.FileLocation $stack75, $stack110, $stack164, $stack174, $stack184, $stack199, $stack208, $stack227, $stack233;
+        java.lang.String $stack77, $stack166, $stack186, $stack229, $stack235;
+        org.ooc.frontend.model.NodeList $stack188;
+        org.ooc.frontend.model.IntLiteral$Format $stack239;
+        org.ooc.frontend.model.Expression inner, call#63, varAccess#65, rvalue, $r0, $r1, $r2, $r3, $r6, $r7, $r9, $r10, $r11, $r16, $r17, $r18, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r33, $r34, $r35, $r36, $r37, $r38, $r39, $r40, $r41, $r42, $r43, $r44, $r45, $r46, $r47, $r48, $r49, $r50, $r51, $r52, $r53, $r54, $r55, $r56, $r57, $r58, $r59, $r60, $r63, $r64;
+        org.ooc.frontend.model.FunctionCall call;
+        org.ooc.frontend.model.VariableAccess varAccess;
+        org.ooc.frontend.model.Type call#219;
+        org.ooc.frontend.model.Not $u0;
+        org.ooc.frontend.model.BinaryNegation $u1;
+        org.ooc.frontend.model.IntLiteral $u2;
+        org.ooc.frontend.model.Sub $u3, $u32;
+        org.ubi.CompilationFailedError $u4, $u6, $u9, $u12, $u13, $u14, $u17, $u49, $u50;
+        org.ooc.frontend.model.Parenthesis $u5;
+        org.ooc.frontend.model.MemberCall $u7;
+        org.ooc.frontend.model.MemberAccess $u8;
+        org.ooc.frontend.model.RangeLiteral $u10;
+        org.ooc.frontend.model.ArrayAccess $u11;
+        org.ooc.frontend.model.Assignment $u15, $u21, $u26, $u37, $u38, $u39, $u40, $u41, $u43, $u47;
+        org.ooc.frontend.model.AddressOf $u16;
+        org.ooc.frontend.model.Ternary $u18;
+        org.ooc.frontend.model.Dereference $u19;
+        org.ooc.frontend.model.BinaryCombination $u20, $u22, $u25, $u27, $u42, $u44, $u45, $u46, $u48;
+        org.ooc.frontend.model.Compare $u23, $u24, $u28, $u29, $u35, $u36;
+        org.ooc.frontend.model.Add $u30;
+        org.ooc.frontend.model.Mul $u31;
+        org.ooc.frontend.model.Div $u33;
+        org.ooc.frontend.model.Mod $u34;
+        org.ooc.frontend.model.Cast $u51;
+        java.lang.Throwable $r4, $r5, $r8, $r12, $r14, $r15, $r19, $r61, $r62;
+        org.ooc.frontend.model.Node $r13;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        noDecl := @parameter3: boolean;
+
+        mark = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: int mark()>();
+
+        $stack12 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        firstToken = (org.ooc.frontend.model.tokens.Token) $stack12;
+
+        $stack13 = firstToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack13 != 61 goto label02;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        inner = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        if inner != null goto label01;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void reset(int)>(mark);
+
+        return null;
+
+     label01:
+        $u0 = new org.ooc.frontend.model.Not;
+
+        specialinvoke $u0.<org.ooc.frontend.model.Not: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>(inner, firstToken);
+
+        $r0 = (org.ooc.frontend.model.Expression) $u0;
+
+        return $r0;
+
+     label02:
+        $stack14 = firstToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack14 != 44 goto label04;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        inner = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        if inner != null goto label03;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void reset(int)>(mark);
+
+        return null;
+
+     label03:
+        $u1 = new org.ooc.frontend.model.BinaryNegation;
+
+        specialinvoke $u1.<org.ooc.frontend.model.BinaryNegation: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>(inner, firstToken);
+
+        $r1 = (org.ooc.frontend.model.Expression) $u1;
+
+        return $r1;
+
+     label04:
+        $stack15 = firstToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack15 != 54 goto label06;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        inner = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        if inner != null goto label05;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void reset(int)>(mark);
+
+        return null;
+
+     label05:
+        $u3 = new org.ooc.frontend.model.Sub;
+
+        $u2 = new org.ooc.frontend.model.IntLiteral;
+
+        $stack239 = <org.ooc.frontend.model.IntLiteral$Format: org.ooc.frontend.model.IntLiteral$Format DEC>;
+
+        specialinvoke $u2.<org.ooc.frontend.model.IntLiteral: void <init>(long,org.ooc.frontend.model.IntLiteral$Format,org.ooc.frontend.model.tokens.Token)>(0L, $stack239, firstToken);
+
+        $r2 = (org.ooc.frontend.model.Expression) $u2;
+
+        specialinvoke $u3.<org.ooc.frontend.model.Sub: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r2, inner, firstToken);
+
+        $r3 = (org.ooc.frontend.model.Expression) $u3;
+
+        return $r3;
+
+     label06:
+        $stack16 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack17 = (org.ooc.frontend.model.tokens.Token) $stack16;
+
+        $stack18 = $stack17.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack18 != 82 goto label08;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        inner = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        if inner != null goto label07;
+
+        $u4 = new org.ubi.CompilationFailedError;
+
+        $stack231 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack232 = (org.ubi.Locatable) $stack231;
+
+        $stack233 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack232);
+
+        $stack234 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack235 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.Object)>($stack234) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Failed to parse expression between parenthesis, got \u0001");
+
+        specialinvoke $u4.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack233, $stack235);
+
+        $r4 = (java.lang.Throwable) $u4;
+
+        throw $r4;
+
+     label07:
+        $u5 = new org.ooc.frontend.model.Parenthesis;
+
+        $stack218 = inner.<org.ooc.frontend.model.Expression: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u5.<org.ooc.frontend.model.Parenthesis: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>(inner, $stack218);
+
+        inner#6 = $u5;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        $stack220 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        $stack221 = (org.ooc.frontend.model.tokens.Token) $stack220;
+
+        $stack222 = $stack221.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack222 == 83 goto label09;
+
+        $u6 = new org.ubi.CompilationFailedError;
+
+        $stack225 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack226 = (org.ubi.Locatable) $stack225;
+
+        $stack227 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack226);
+
+        $stack228 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack229 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.Object)>($stack228) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Expected closing parenthesis, but got \u0001");
+
+        specialinvoke $u6.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack227, $stack229);
+
+        $r5 = (java.lang.Throwable) $u6;
+
+        throw $r5;
+
+     label08:
+        inner#6 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parseFlatNoparen(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+     label09:
+        if inner#6 != null goto label10;
+
+        return null;
+
+     label10:
+        $stack20 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean hasNext()>();
+
+        if $stack20 == 0 goto label63;
+
+        $stack21 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        token = (org.ooc.frontend.model.tokens.Token) $stack21;
+
+        $stack22 = virtualinvoke token.<org.ooc.frontend.model.tokens.Token: boolean isNameToken()>();
+
+        if $stack22 == 0 goto label12;
+
+        call = staticinvoke <org.ooc.frontend.parser.FunctionCallParser: org.ooc.frontend.model.FunctionCall parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if call == null goto label11;
+
+        $u7 = new org.ooc.frontend.model.MemberCall;
+
+        $r6 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u7.<org.ooc.frontend.model.MemberCall: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.FunctionCall,org.ooc.frontend.model.tokens.Token)>($r6, call, token);
+
+        inner#6 = $u7;
+
+        goto label10;
+
+     label11:
+        varAccess = staticinvoke <org.ooc.frontend.parser.AccessParser: org.ooc.frontend.model.VariableAccess parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if varAccess == null goto label12;
+
+        $u8 = new org.ooc.frontend.model.MemberAccess;
+
+        $r7 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u8.<org.ooc.frontend.model.MemberAccess: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.VariableAccess,org.ooc.frontend.model.tokens.Token)>($r7, varAccess, token);
+
+        inner#6 = $u8;
+
+        goto label10;
+
+     label12:
+        $stack23 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack23 != 47 goto label14;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        call#63 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        if call#63 != null goto label13;
+
+        $u9 = new org.ubi.CompilationFailedError;
+
+        $stack206 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack207 = (org.ubi.Locatable) $stack206;
+
+        $stack208 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack207);
+
+        specialinvoke $u9.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack208, "Expected expression for the upper part of a range literal");
+
+        $r8 = (java.lang.Throwable) $u9;
+
+        throw $r8;
+
+     label13:
+        $u10 = new org.ooc.frontend.model.RangeLiteral;
+
+        $r9 = (org.ooc.frontend.model.Expression) inner#6;
+
+        $stack202 = $r9.<org.ooc.frontend.model.Expression: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r10 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u10.<org.ooc.frontend.model.RangeLiteral: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r10, call#63, $stack202);
+
+        inner#6 = $u10;
+
+     label14:
+        $stack24 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack24 != 86 goto label19;
+
+        $u11 = new org.ooc.frontend.model.ArrayAccess;
+
+        $r11 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u11.<org.ooc.frontend.model.ArrayAccess: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r11, token);
+
+        inner#6 = $u11;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+     label15:
+        $stack176 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: org.ooc.frontend.model.tokens.Token peekWhiteless()>();
+
+        $stack177 = $stack176.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack177 == 87 goto label18;
+
+        varAccess#65 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        if varAccess#65 != null goto label16;
+
+        $u12 = new org.ubi.CompilationFailedError;
+
+        $stack197 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack198 = (org.ubi.Locatable) $stack197;
+
+        $stack199 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack198);
+
+        specialinvoke $u12.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack199, "Expected expression for the index of an array access");
+
+        $r12 = (java.lang.Throwable) $u12;
+
+        throw $r12;
+
+     label16:
+        $stack188 = virtualinvoke $u11.<org.ooc.frontend.model.ArrayAccess: org.ooc.frontend.model.NodeList getIndices()>();
+
+        $r13 = (org.ooc.frontend.model.Node) varAccess#65;
+
+        virtualinvoke $stack188.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r13);
+
+        $stack190 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: org.ooc.frontend.model.tokens.Token peekWhiteless()>();
+
+        $stack191 = $stack190.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack191 == 45 goto label17;
+
+        goto label18;
+
+     label17:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        goto label15;
+
+     label18:
+        $stack178 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        $stack179 = (org.ooc.frontend.model.tokens.Token) $stack178;
+
+        $stack180 = $stack179.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack180 == 87 goto label10;
+
+        $u13 = new org.ubi.CompilationFailedError;
+
+        $stack182 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack183 = (org.ubi.Locatable) $stack182;
+
+        $stack184 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack183);
+
+        $stack185 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack186 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.Object)>($stack185) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Expected closing bracket to end array access, got \u0001 instead.");
+
+        specialinvoke $u13.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack184, $stack186);
+
+        $r14 = (java.lang.Throwable) $u13;
+
+        throw $r14;
+
+     label19:
+        $stack25 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack25 != 68 goto label21;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        call#63 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        if call#63 != null goto label20;
+
+        $u14 = new org.ubi.CompilationFailedError;
+
+        $stack172 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack173 = (org.ubi.Locatable) $stack172;
+
+        $stack174 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack173);
+
+        specialinvoke $u14.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack174, "Expected expression after \'=\'.");
+
+        $r15 = (java.lang.Throwable) $u14;
+
+        throw $r15;
+
+     label20:
+        $r16 = (org.ooc.frontend.model.Expression) inner#6;
+
+        staticinvoke <org.ooc.frontend.parser.ExpressionParser: void ensureAccess(org.ooc.frontend.model.Expression,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>($r16, sReader, reader);
+
+        $stack169 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack169 != 68 goto label10;
+
+        $u15 = new org.ooc.frontend.model.Assignment;
+
+        $r17 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u15.<org.ooc.frontend.model.Assignment: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r17, call#63, token);
+
+        inner#6 = $u15;
+
+        goto label10;
+
+     label21:
+        $stack26 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack26 != 73 goto label22;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $u16 = new org.ooc.frontend.model.AddressOf;
+
+        $r18 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u16.<org.ooc.frontend.model.AddressOf: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r18, token);
+
+        inner#6 = $u16;
+
+        goto label10;
+
+     label22:
+        $stack27 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack27 != 63 goto label24;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        call#63 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, 1);
+
+        $stack153 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        $stack154 = (org.ooc.frontend.model.tokens.Token) $stack153;
+
+        $stack155 = $stack154.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack155 == 50 goto label23;
+
+        $u17 = new org.ubi.CompilationFailedError;
+
+        $stack162 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack163 = (org.ubi.Locatable) $stack162;
+
+        $stack164 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack163);
+
+        $stack165 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack166 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.Object)>($stack165) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Expected \':\' after \'?\', but got \u0001");
+
+        specialinvoke $u17.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack164, $stack166);
+
+        $r19 = (java.lang.Throwable) $u17;
+
+        throw $r19;
+
+     label23:
+        varAccess#65 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, 1);
+
+        $u18 = new org.ooc.frontend.model.Ternary;
+
+        $r20 = (org.ooc.frontend.model.Expression) inner#6;
+
+        $stack158 = $r20.<org.ooc.frontend.model.Expression: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r21 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u18.<org.ooc.frontend.model.Ternary: void <init>(org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression)>($stack158, $r21, call#63, varAccess#65);
+
+        inner#6 = $u18;
+
+     label24:
+        $stack28 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack28 != 42 goto label25;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $u19 = new org.ooc.frontend.model.Dereference;
+
+        $r22 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u19.<org.ooc.frontend.model.Dereference: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r22, token);
+
+        inner#6 = $u19;
+
+        goto label10;
+
+     label25:
+        $stack29 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack29 != 64 goto label31;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $stack132 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        call#69 = (org.ooc.frontend.model.tokens.Token) $stack132;
+
+        $stack133 = call#69.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack133 != 64 goto label28;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $stack141 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        varAccess#70 = (org.ooc.frontend.model.tokens.Token) $stack141;
+
+        $stack142 = varAccess#70.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack142 != 68 goto label26;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        rvalue = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression getRvalue(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        $u20 = new org.ooc.frontend.model.BinaryCombination;
+
+        $stack148 = <org.ooc.frontend.model.BinaryCombination$BinaryComp: org.ooc.frontend.model.BinaryCombination$BinaryComp RSHIFT>;
+
+        $r23 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u20.<org.ooc.frontend.model.BinaryCombination: void <init>(org.ooc.frontend.model.BinaryCombination$BinaryComp,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack148, $r23, rvalue, token);
+
+        $u21 = new org.ooc.frontend.model.Assignment;
+
+        $stack150 = <org.ooc.frontend.model.Assignment$Mode: org.ooc.frontend.model.Assignment$Mode REGULAR>;
+
+        $r24 = (org.ooc.frontend.model.Expression) inner#6;
+
+        $r25 = (org.ooc.frontend.model.Expression) $u20;
+
+        specialinvoke $u21.<org.ooc.frontend.model.Assignment: void <init>(org.ooc.frontend.model.Assignment$Mode,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack150, $r24, $r25, token);
+
+        inner#6 = $u21;
+
+        goto label27;
+
+     label26:
+        rvalue = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression getRvalue(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        $u22 = new org.ooc.frontend.model.BinaryCombination;
+
+        $stack145 = <org.ooc.frontend.model.BinaryCombination$BinaryComp: org.ooc.frontend.model.BinaryCombination$BinaryComp RSHIFT>;
+
+        $r26 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u22.<org.ooc.frontend.model.BinaryCombination: void <init>(org.ooc.frontend.model.BinaryCombination$BinaryComp,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack145, $r26, rvalue, token);
+
+        inner#6 = $u22;
+
+     label27:
+        goto label30;
+
+     label28:
+        $stack134 = call#69.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack134 != 68 goto label29;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        varAccess#65 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression getRvalue(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        $u23 = new org.ooc.frontend.model.Compare;
+
+        $stack140 = <org.ooc.frontend.model.Compare$CompareType: org.ooc.frontend.model.Compare$CompareType GREATER_OR_EQUAL>;
+
+        $r27 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u23.<org.ooc.frontend.model.Compare: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Compare$CompareType,org.ooc.frontend.model.tokens.Token)>($r27, varAccess#65, $stack140, token);
+
+        inner#6 = $u23;
+
+        goto label30;
+
+     label29:
+        varAccess#65 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression getRvalue(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        $u24 = new org.ooc.frontend.model.Compare;
+
+        $stack137 = <org.ooc.frontend.model.Compare$CompareType: org.ooc.frontend.model.Compare$CompareType GREATER>;
+
+        $r28 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u24.<org.ooc.frontend.model.Compare: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Compare$CompareType,org.ooc.frontend.model.tokens.Token)>($r28, varAccess#65, $stack137, token);
+
+        inner#6 = $u24;
+
+     label30:
+        goto label60;
+
+     label31:
+        $stack30 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack30 != 65 goto label37;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $stack111 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        call#69 = (org.ooc.frontend.model.tokens.Token) $stack111;
+
+        $stack112 = call#69.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack112 != 65 goto label34;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $stack122 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        varAccess#70 = (org.ooc.frontend.model.tokens.Token) $stack122;
+
+        $stack123 = varAccess#70.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack123 != 68 goto label32;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        rvalue = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression getRvalue(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        $u25 = new org.ooc.frontend.model.BinaryCombination;
+
+        $stack129 = <org.ooc.frontend.model.BinaryCombination$BinaryComp: org.ooc.frontend.model.BinaryCombination$BinaryComp LSHIFT>;
+
+        $r29 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u25.<org.ooc.frontend.model.BinaryCombination: void <init>(org.ooc.frontend.model.BinaryCombination$BinaryComp,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack129, $r29, rvalue, token);
+
+        $u26 = new org.ooc.frontend.model.Assignment;
+
+        $stack131 = <org.ooc.frontend.model.Assignment$Mode: org.ooc.frontend.model.Assignment$Mode REGULAR>;
+
+        $r30 = (org.ooc.frontend.model.Expression) inner#6;
+
+        $r31 = (org.ooc.frontend.model.Expression) $u25;
+
+        specialinvoke $u26.<org.ooc.frontend.model.Assignment: void <init>(org.ooc.frontend.model.Assignment$Mode,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack131, $r30, $r31, token);
+
+        inner#6 = $u26;
+
+        goto label33;
+
+     label32:
+        rvalue = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression getRvalue(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        $u27 = new org.ooc.frontend.model.BinaryCombination;
+
+        $stack126 = <org.ooc.frontend.model.BinaryCombination$BinaryComp: org.ooc.frontend.model.BinaryCombination$BinaryComp LSHIFT>;
+
+        $r32 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u27.<org.ooc.frontend.model.BinaryCombination: void <init>(org.ooc.frontend.model.BinaryCombination$BinaryComp,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack126, $r32, rvalue, token);
+
+        inner#6 = $u27;
+
+     label33:
+        goto label36;
+
+     label34:
+        $stack113 = call#69.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack113 != 68 goto label35;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        varAccess#65 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression getRvalue(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        $u28 = new org.ooc.frontend.model.Compare;
+
+        $stack121 = <org.ooc.frontend.model.Compare$CompareType: org.ooc.frontend.model.Compare$CompareType LESSER_OR_EQUAL>;
+
+        $r33 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u28.<org.ooc.frontend.model.Compare: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Compare$CompareType,org.ooc.frontend.model.tokens.Token)>($r33, varAccess#65, $stack121, token);
+
+        inner#6 = $u28;
+
+        goto label36;
+
+     label35:
+        varAccess#65 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression getRvalue(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        $u29 = new org.ooc.frontend.model.Compare;
+
+        $stack116 = <org.ooc.frontend.model.Compare$CompareType: org.ooc.frontend.model.Compare$CompareType LESSER>;
+
+        $r34 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u29.<org.ooc.frontend.model.Compare: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Compare$CompareType,org.ooc.frontend.model.tokens.Token)>($r34, varAccess#65, $stack116, token);
+
+        inner#6 = $u29;
+
+     label36:
+        goto label60;
+
+     label37:
+        $stack31 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack31 == 52 goto label38;
+
+        $stack83 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack83 == 56 goto label38;
+
+        $stack89 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack89 == 54 goto label38;
+
+        $stack90 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack90 == 58 goto label38;
+
+        $stack91 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack91 == 60 goto label38;
+
+        $stack92 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack92 == 70 goto label38;
+
+        $stack93 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack93 == 62 goto label38;
+
+        $stack94 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack94 == 53 goto label38;
+
+        $stack95 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack95 == 55 goto label38;
+
+        $stack96 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack96 == 57 goto label38;
+
+        $stack97 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack97 == 59 goto label38;
+
+        $stack98 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack98 == 72 goto label38;
+
+        $stack99 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack99 == 71 goto label38;
+
+        $stack100 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack100 == 74 goto label38;
+
+        $stack101 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack101 == 73 goto label38;
+
+        $stack102 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack102 == 93 goto label38;
+
+        $stack103 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack103 != 94 goto label60;
+
+     label38:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        call#131 = 0;
+
+        $stack33 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack34 = (org.ooc.frontend.model.tokens.Token) $stack33;
+
+        $stack35 = $stack34.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack35 != 68 goto label39;
+
+        call#131 = 1;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+     label39:
+        varAccess#65 = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression getRvalue(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        $stack37 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        tableswitch($stack37)
+        {
+            case 52: goto label40;
+            case 53: goto label47;
+            case 54: goto label42;
+            case 55: goto label48;
+            case 56: goto label41;
+            case 57: goto label49;
+            case 58: goto label43;
+            case 59: goto label50;
+            case 60: goto label44;
+            case 61: goto label59;
+            case 62: goto label46;
+            case 63: goto label59;
+            case 64: goto label59;
+            case 65: goto label59;
+            case 66: goto label59;
+            case 67: goto label59;
+            case 68: goto label59;
+            case 69: goto label59;
+            case 70: goto label45;
+            case 71: goto label56;
+            case 72: goto label55;
+            case 73: goto label53;
+            case 74: goto label51;
+            case 75: goto label59;
+            case 76: goto label59;
+            case 77: goto label59;
+            case 78: goto label59;
+            case 79: goto label59;
+            case 80: goto label59;
+            case 81: goto label59;
+            case 82: goto label59;
+            case 83: goto label59;
+            case 84: goto label59;
+            case 85: goto label59;
+            case 86: goto label59;
+            case 87: goto label59;
+            case 88: goto label59;
+            case 89: goto label59;
+            case 90: goto label59;
+            case 91: goto label59;
+            case 92: goto label59;
+            case 93: goto label53;
+            case 94: goto label57;
+            default: goto label59;
+        };
+
+     label40:
+        $u30 = new org.ooc.frontend.model.Add;
+
+        $r35 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u30.<org.ooc.frontend.model.Add: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r35, varAccess#65, token);
+
+        inner#6 = $u30;
+
+        goto label10;
+
+     label41:
+        $u31 = new org.ooc.frontend.model.Mul;
+
+        $r36 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u31.<org.ooc.frontend.model.Mul: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r36, varAccess#65, token);
+
+        inner#6 = $u31;
+
+        goto label10;
+
+     label42:
+        $u32 = new org.ooc.frontend.model.Sub;
+
+        $r37 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u32.<org.ooc.frontend.model.Sub: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r37, varAccess#65, token);
+
+        inner#6 = $u32;
+
+        goto label10;
+
+     label43:
+        $u33 = new org.ooc.frontend.model.Div;
+
+        $r38 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u33.<org.ooc.frontend.model.Div: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r38, varAccess#65, token);
+
+        inner#6 = $u33;
+
+        goto label10;
+
+     label44:
+        $u34 = new org.ooc.frontend.model.Mod;
+
+        $r39 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u34.<org.ooc.frontend.model.Mod: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r39, varAccess#65, token);
+
+        inner#6 = $u34;
+
+        goto label10;
+
+     label45:
+        $u35 = new org.ooc.frontend.model.Compare;
+
+        $stack56 = <org.ooc.frontend.model.Compare$CompareType: org.ooc.frontend.model.Compare$CompareType EQUAL>;
+
+        $r40 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u35.<org.ooc.frontend.model.Compare: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Compare$CompareType,org.ooc.frontend.model.tokens.Token)>($r40, varAccess#65, $stack56, token);
+
+        inner#6 = $u35;
+
+        goto label10;
+
+     label46:
+        $u36 = new org.ooc.frontend.model.Compare;
+
+        $stack58 = <org.ooc.frontend.model.Compare$CompareType: org.ooc.frontend.model.Compare$CompareType NOT_EQUAL>;
+
+        $r41 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u36.<org.ooc.frontend.model.Compare: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Compare$CompareType,org.ooc.frontend.model.tokens.Token)>($r41, varAccess#65, $stack58, token);
+
+        inner#6 = $u36;
+
+        goto label10;
+
+     label47:
+        $r42 = (org.ooc.frontend.model.Expression) inner#6;
+
+        staticinvoke <org.ooc.frontend.parser.ExpressionParser: void ensureAccess(org.ooc.frontend.model.Expression,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>($r42, sReader, reader);
+
+        $u37 = new org.ooc.frontend.model.Assignment;
+
+        $stack70 = <org.ooc.frontend.model.Assignment$Mode: org.ooc.frontend.model.Assignment$Mode ADD>;
+
+        $r43 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u37.<org.ooc.frontend.model.Assignment: void <init>(org.ooc.frontend.model.Assignment$Mode,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack70, $r43, varAccess#65, token);
+
+        inner#6 = $u37;
+
+        goto label10;
+
+     label48:
+        $r44 = (org.ooc.frontend.model.Expression) inner#6;
+
+        staticinvoke <org.ooc.frontend.parser.ExpressionParser: void ensureAccess(org.ooc.frontend.model.Expression,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>($r44, sReader, reader);
+
+        $u38 = new org.ooc.frontend.model.Assignment;
+
+        $stack67 = <org.ooc.frontend.model.Assignment$Mode: org.ooc.frontend.model.Assignment$Mode SUB>;
+
+        $r45 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u38.<org.ooc.frontend.model.Assignment: void <init>(org.ooc.frontend.model.Assignment$Mode,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack67, $r45, varAccess#65, token);
+
+        inner#6 = $u38;
+
+        goto label10;
+
+     label49:
+        $r46 = (org.ooc.frontend.model.Expression) inner#6;
+
+        staticinvoke <org.ooc.frontend.parser.ExpressionParser: void ensureAccess(org.ooc.frontend.model.Expression,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>($r46, sReader, reader);
+
+        $u39 = new org.ooc.frontend.model.Assignment;
+
+        $stack64 = <org.ooc.frontend.model.Assignment$Mode: org.ooc.frontend.model.Assignment$Mode MUL>;
+
+        $r47 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u39.<org.ooc.frontend.model.Assignment: void <init>(org.ooc.frontend.model.Assignment$Mode,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack64, $r47, varAccess#65, token);
+
+        inner#6 = $u39;
+
+        goto label10;
+
+     label50:
+        $r48 = (org.ooc.frontend.model.Expression) inner#6;
+
+        staticinvoke <org.ooc.frontend.parser.ExpressionParser: void ensureAccess(org.ooc.frontend.model.Expression,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>($r48, sReader, reader);
+
+        $u40 = new org.ooc.frontend.model.Assignment;
+
+        $stack61 = <org.ooc.frontend.model.Assignment$Mode: org.ooc.frontend.model.Assignment$Mode DIV>;
+
+        $r49 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u40.<org.ooc.frontend.model.Assignment: void <init>(org.ooc.frontend.model.Assignment$Mode,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack61, $r49, varAccess#65, token);
+
+        inner#6 = $u40;
+
+        goto label10;
+
+     label51:
+        if call#131 == 0 goto label52;
+
+        $r50 = (org.ooc.frontend.model.Expression) inner#6;
+
+        staticinvoke <org.ooc.frontend.parser.ExpressionParser: void ensureAccess(org.ooc.frontend.model.Expression,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>($r50, sReader, reader);
+
+        $u41 = new org.ooc.frontend.model.Assignment;
+
+        $stack46 = <org.ooc.frontend.model.Assignment$Mode: org.ooc.frontend.model.Assignment$Mode B_OR>;
+
+        $r51 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u41.<org.ooc.frontend.model.Assignment: void <init>(org.ooc.frontend.model.Assignment$Mode,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack46, $r51, varAccess#65, token);
+
+        inner#6 = $u41;
+
+        goto label10;
+
+     label52:
+        $u42 = new org.ooc.frontend.model.BinaryCombination;
+
+        $stack44 = <org.ooc.frontend.model.BinaryCombination$BinaryComp: org.ooc.frontend.model.BinaryCombination$BinaryComp BITWISE_OR>;
+
+        $r52 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u42.<org.ooc.frontend.model.BinaryCombination: void <init>(org.ooc.frontend.model.BinaryCombination$BinaryComp,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack44, $r52, varAccess#65, token);
+
+        inner#6 = $u42;
+
+        goto label10;
+
+     label53:
+        if call#131 == 0 goto label54;
+
+        $r53 = (org.ooc.frontend.model.Expression) inner#6;
+
+        staticinvoke <org.ooc.frontend.parser.ExpressionParser: void ensureAccess(org.ooc.frontend.model.Expression,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>($r53, sReader, reader);
+
+        $u43 = new org.ooc.frontend.model.Assignment;
+
+        $stack50 = <org.ooc.frontend.model.Assignment$Mode: org.ooc.frontend.model.Assignment$Mode B_AND>;
+
+        $r54 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u43.<org.ooc.frontend.model.Assignment: void <init>(org.ooc.frontend.model.Assignment$Mode,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack50, $r54, varAccess#65, token);
+
+        inner#6 = $u43;
+
+        goto label10;
+
+     label54:
+        $u44 = new org.ooc.frontend.model.BinaryCombination;
+
+        $stack48 = <org.ooc.frontend.model.BinaryCombination$BinaryComp: org.ooc.frontend.model.BinaryCombination$BinaryComp BITWISE_AND>;
+
+        $r55 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u44.<org.ooc.frontend.model.BinaryCombination: void <init>(org.ooc.frontend.model.BinaryCombination$BinaryComp,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack48, $r55, varAccess#65, token);
+
+        inner#6 = $u44;
+
+        goto label10;
+
+     label55:
+        $u45 = new org.ooc.frontend.model.BinaryCombination;
+
+        $stack52 = <org.ooc.frontend.model.BinaryCombination$BinaryComp: org.ooc.frontend.model.BinaryCombination$BinaryComp LOGICAL_OR>;
+
+        $r56 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u45.<org.ooc.frontend.model.BinaryCombination: void <init>(org.ooc.frontend.model.BinaryCombination$BinaryComp,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack52, $r56, varAccess#65, token);
+
+        inner#6 = $u45;
+
+        goto label10;
+
+     label56:
+        $u46 = new org.ooc.frontend.model.BinaryCombination;
+
+        $stack54 = <org.ooc.frontend.model.BinaryCombination$BinaryComp: org.ooc.frontend.model.BinaryCombination$BinaryComp LOGICAL_AND>;
+
+        $r57 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u46.<org.ooc.frontend.model.BinaryCombination: void <init>(org.ooc.frontend.model.BinaryCombination$BinaryComp,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack54, $r57, varAccess#65, token);
+
+        inner#6 = $u46;
+
+        goto label10;
+
+     label57:
+        if call#131 == 0 goto label58;
+
+        $r58 = (org.ooc.frontend.model.Expression) inner#6;
+
+        staticinvoke <org.ooc.frontend.parser.ExpressionParser: void ensureAccess(org.ooc.frontend.model.Expression,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>($r58, sReader, reader);
+
+        $u47 = new org.ooc.frontend.model.Assignment;
+
+        $stack42 = <org.ooc.frontend.model.Assignment$Mode: org.ooc.frontend.model.Assignment$Mode B_XOR>;
+
+        $r59 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u47.<org.ooc.frontend.model.Assignment: void <init>(org.ooc.frontend.model.Assignment$Mode,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack42, $r59, varAccess#65, token);
+
+        inner#6 = $u47;
+
+        goto label10;
+
+     label58:
+        $u48 = new org.ooc.frontend.model.BinaryCombination;
+
+        $stack39 = <org.ooc.frontend.model.BinaryCombination$BinaryComp: org.ooc.frontend.model.BinaryCombination$BinaryComp BITWISE_XOR>;
+
+        $r60 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u48.<org.ooc.frontend.model.BinaryCombination: void <init>(org.ooc.frontend.model.BinaryCombination$BinaryComp,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($stack39, $r60, varAccess#65, token);
+
+        inner#6 = $u48;
+
+        goto label10;
+
+     label59:
+        $u49 = new org.ubi.CompilationFailedError;
+
+        $stack73 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack74 = (org.ubi.Locatable) $stack73;
+
+        $stack75 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack74);
+
+        $stack76 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        $stack77 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (byte)>($stack76) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Unknown binary operation yet \u0001");
+
+        specialinvoke $u49.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack75, $stack77);
+
+        $r61 = (java.lang.Throwable) $u49;
+
+        throw $r61;
+
+     label60:
+        $stack104 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack104 != 31 goto label62;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        call#219 = staticinvoke <org.ooc.frontend.parser.TypeParser: org.ooc.frontend.model.Type parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if call#219 != null goto label61;
+
+        $u50 = new org.ubi.CompilationFailedError;
+
+        $stack108 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack109 = (org.ubi.Locatable) $stack108;
+
+        $stack110 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack109);
+
+        specialinvoke $u50.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack110, "Expected destination type after \'as\' keyword (e.g. for casting)");
+
+        $r62 = (java.lang.Throwable) $u50;
+
+        throw $r62;
+
+     label61:
+        $u51 = new org.ooc.frontend.model.Cast;
+
+        $r63 = (org.ooc.frontend.model.Expression) inner#6;
+
+        specialinvoke $u51.<org.ooc.frontend.model.Cast: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Type,org.ooc.frontend.model.tokens.Token)>($r63, call#219, token);
+
+        inner#6 = $u51;
+
+        goto label10;
+
+     label62:
+        $r64 = (org.ooc.frontend.model.Expression) inner#6;
+
+        return $r64;
+
+     label63:
+        return null;
+    }
+
+    private static org.ooc.frontend.model.Expression getRvalue(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader, boolean)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        org.ooc.frontend.model.Module module;
+        org.ubi.SourceReader sReader;
+        boolean noDecl;
+        org.ooc.frontend.model.Expression rvalue;
+        java.lang.Object $stack8;
+        org.ubi.Locatable $stack9;
+        org.ubi.FileLocation $stack10;
+        org.ubi.CompilationFailedError $u0;
+        java.lang.Throwable $r0;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        noDecl := @parameter3: boolean;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        rvalue = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, noDecl);
+
+        if rvalue != null goto label1;
+
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $stack8 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack9 = (org.ubi.Locatable) $stack8;
+
+        $stack10 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack9);
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack10, "Expected rvalue after binary operator");
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label1:
+        return rvalue;
+    }
+
+    protected static void ensureAccess(org.ooc.frontend.model.Expression, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader)
+    {
+        org.ooc.frontend.model.Expression exprParam, expr;
+        boolean $stack4, $stack5;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        java.lang.Object $stack7;
+        org.ubi.Locatable $stack8;
+        org.ubi.FileLocation $stack9;
+        java.lang.Class $stack10;
+        java.lang.String $stack11, $stack12;
+        org.ooc.frontend.model.Parenthesis $stack13;
+        org.ubi.CompilationFailedError $u0;
+        java.lang.Throwable $r0;
+
+        exprParam := @parameter0: org.ooc.frontend.model.Expression;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        expr = exprParam;
+
+     label1:
+        $stack4 = expr instanceof org.ooc.frontend.model.Parenthesis;
+
+        if $stack4 == 0 goto label2;
+
+        $stack13 = (org.ooc.frontend.model.Parenthesis) expr;
+
+        expr = virtualinvoke $stack13.<org.ooc.frontend.model.Parenthesis: org.ooc.frontend.model.Expression getInner()>();
+
+        goto label1;
+
+     label2:
+        $stack5 = expr instanceof org.ooc.frontend.model.Access;
+
+        if $stack5 != 0 goto label3;
+
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $stack7 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack8 = (org.ubi.Locatable) $stack7;
+
+        $stack9 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack8);
+
+        $stack10 = virtualinvoke expr.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack11 = virtualinvoke $stack10.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        $stack12 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,org.ooc.frontend.model.Expression)>($stack11, expr) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Can\'t assign to a \u0001, e.g. \u0001");
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack9, $stack12);
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label3:
+        return;
+    }
+
+    protected static org.ooc.frontend.model.Expression parseFlatNoparen(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader, boolean)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        int mark;
+        org.ooc.frontend.model.Module module;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.Literal literal;
+        org.ooc.frontend.model.FunctionCall funcCall;
+        boolean noDecl;
+        org.ooc.frontend.model.Match match;
+        org.ooc.frontend.model.Declaration declaration;
+        org.ooc.frontend.model.VariableAccess declaration#2;
+        org.ooc.frontend.model.Expression $r0, $r1, $r2, $r3, $r4;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        noDecl := @parameter3: boolean;
+
+        mark = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: int mark()>();
+
+        literal = staticinvoke <org.ooc.frontend.parser.LiteralParser: org.ooc.frontend.model.Literal parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if literal == null goto label1;
+
+        $r0 = (org.ooc.frontend.model.Expression) literal;
+
+        return $r0;
+
+     label1:
+        funcCall = staticinvoke <org.ooc.frontend.parser.FunctionCallParser: org.ooc.frontend.model.FunctionCall parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if funcCall == null goto label2;
+
+        $r1 = (org.ooc.frontend.model.Expression) funcCall;
+
+        return $r1;
+
+     label2:
+        if noDecl != 0 goto label3;
+
+        declaration = staticinvoke <org.ooc.frontend.parser.DeclarationParser: org.ooc.frontend.model.Declaration parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if declaration == null goto label3;
+
+        $r2 = (org.ooc.frontend.model.Expression) declaration;
+
+        return $r2;
+
+     label3:
+        declaration#2 = staticinvoke <org.ooc.frontend.parser.AccessParser: org.ooc.frontend.model.VariableAccess parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if declaration#2 == null goto label4;
+
+        $r3 = (org.ooc.frontend.model.Expression) declaration#2;
+
+        return $r3;
+
+     label4:
+        match = staticinvoke <org.ooc.frontend.parser.MatchParser: org.ooc.frontend.model.Match parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if match == null goto label5;
+
+        $r4 = (org.ooc.frontend.model.Expression) match;
+
+        return $r4;
+
+     label5:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void reset(int)>(mark);
+
+        return null;
+    }
+}

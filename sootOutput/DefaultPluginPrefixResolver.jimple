@@ -1,0 +1,801 @@
+public class DefaultPluginPrefixResolver extends java.lang.Object implements org.apache.maven.plugin.prefix.PluginPrefixResolver
+{
+    private static final java.lang.String REPOSITORY_CONTEXT;
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.apache.maven.plugin.BuildPluginManager pluginManager;
+    private org.eclipse.aether.RepositorySystem repositorySystem;
+    private org.apache.maven.artifact.repository.metadata.io.MetadataReader metadataReader;
+
+    public void <init>()
+    {
+        DefaultPluginPrefixResolver this;
+
+        this := @this: DefaultPluginPrefixResolver;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.plugin.prefix.PluginPrefixResult resolve(org.apache.maven.plugin.prefix.PluginPrefixRequest) throws org.apache.maven.plugin.prefix.NoPluginFoundForPrefixException
+    {
+        DefaultPluginPrefixResolver this;
+        org.codehaus.plexus.logging.Logger $stack4, $stack13, $stack16, $stack32, $stack35;
+        java.lang.StringBuilder $stack5, $stack7, $stack8, $stack10, $stack17, $stack19, $stack20, $stack22, $stack23, $stack25, $stack26, $stack28, $stack36, $stack38, $stack39, $stack41, $stack42, $stack44, $stack45, $stack47, $u0, $u2, $u3;
+        org.apache.maven.plugin.prefix.PluginPrefixRequest request;
+        java.lang.String $stack6, $stack11, $stack18, $stack21, $stack24, $stack29, $stack37, $stack40, $stack43, $stack48, $stack52, $stack50;
+        java.util.List $stack9, $stack53, $stack56;
+        boolean $stack14, $stack33;
+        org.apache.maven.model.Model $stack27;
+        org.eclipse.aether.repository.ArtifactRepository $stack46, $stack49;
+        org.eclipse.aether.RepositorySystemSession $stack54;
+        org.eclipse.aether.repository.LocalRepository $stack55;
+        org.apache.maven.plugin.prefix.PluginPrefixResult result;
+        org.apache.maven.plugin.prefix.NoPluginFoundForPrefixException $u1;
+        org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver $r0, $r1, $r2, $r4, $r5, $r6, $r7;
+        java.lang.Throwable $r3;
+
+        this := @this: DefaultPluginPrefixResolver;
+
+        request := @parameter0: org.apache.maven.plugin.prefix.PluginPrefixRequest;
+
+        $r0 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack4 = $r0.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack5 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Resolving plugin prefix ");
+
+        $stack6 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.lang.String getPrefix()>();
+
+        $stack7 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack6);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" from ");
+
+        $stack9 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.util.List getPluginGroups()>();
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack4.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack11);
+
+        $r1 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        result = specialinvoke $r1.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.apache.maven.plugin.prefix.PluginPrefixResult resolveFromProject(org.apache.maven.plugin.prefix.PluginPrefixRequest)>(request);
+
+        if result != null goto label4;
+
+        $r2 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        result = specialinvoke $r2.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.apache.maven.plugin.prefix.PluginPrefixResult resolveFromRepository(org.apache.maven.plugin.prefix.PluginPrefixRequest)>(request);
+
+        if result != null goto label1;
+
+        $u1 = new org.apache.maven.plugin.prefix.NoPluginFoundForPrefixException;
+
+        $stack52 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.lang.String getPrefix()>();
+
+        $stack53 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.util.List getPluginGroups()>();
+
+        $stack54 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $stack55 = interfaceinvoke $stack54.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.LocalRepository getLocalRepository()>();
+
+        $stack56 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.util.List getRepositories()>();
+
+        specialinvoke $u1.<org.apache.maven.plugin.prefix.NoPluginFoundForPrefixException: void <init>(java.lang.String,java.util.List,org.eclipse.aether.repository.LocalRepository,java.util.List)>($stack52, $stack53, $stack55, $stack56);
+
+        $r3 = (java.lang.Throwable) $u1;
+
+        throw $r3;
+
+     label1:
+        $r4 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack32 = $r4.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack33 = interfaceinvoke $stack32.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack33 == 0 goto label5;
+
+        $r5 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack35 = $r5.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack36 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Resolved plugin prefix ");
+
+        $stack37 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.lang.String getPrefix()>();
+
+        $stack38 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack37);
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to ");
+
+        $stack40 = interfaceinvoke result.<org.apache.maven.plugin.prefix.PluginPrefixResult: java.lang.String getGroupId()>();
+
+        $stack41 = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack40);
+
+        $stack42 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack43 = interfaceinvoke result.<org.apache.maven.plugin.prefix.PluginPrefixResult: java.lang.String getArtifactId()>();
+
+        $stack44 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack43);
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" from repository ");
+
+        $stack46 = interfaceinvoke result.<org.apache.maven.plugin.prefix.PluginPrefixResult: org.eclipse.aether.repository.ArtifactRepository getRepository()>();
+
+        if $stack46 == null goto label2;
+
+        $stack49 = interfaceinvoke result.<org.apache.maven.plugin.prefix.PluginPrefixResult: org.eclipse.aether.repository.ArtifactRepository getRepository()>();
+
+        $stack50 = interfaceinvoke $stack49.<org.eclipse.aether.repository.ArtifactRepository: java.lang.String getId()>();
+
+        goto label3;
+
+     label2:
+        $stack50 = "null";
+
+     label3:
+        $stack47 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack50);
+
+        $stack48 = virtualinvoke $stack47.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack35.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack48);
+
+        goto label5;
+
+     label4:
+        $r6 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack13 = $r6.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack14 = interfaceinvoke $stack13.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack14 == 0 goto label5;
+
+        $r7 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack16 = $r7.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack17 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Resolved plugin prefix ");
+
+        $stack18 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.lang.String getPrefix()>();
+
+        $stack19 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack18);
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to ");
+
+        $stack21 = interfaceinvoke result.<org.apache.maven.plugin.prefix.PluginPrefixResult: java.lang.String getGroupId()>();
+
+        $stack22 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack21);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack24 = interfaceinvoke result.<org.apache.maven.plugin.prefix.PluginPrefixResult: java.lang.String getArtifactId()>();
+
+        $stack25 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack24);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" from POM ");
+
+        $stack27 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.apache.maven.model.Model getPom()>();
+
+        $stack28 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack27);
+
+        $stack29 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack16.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack29);
+
+     label5:
+        return result;
+    }
+
+    private org.apache.maven.plugin.prefix.PluginPrefixResult resolveFromProject(org.apache.maven.plugin.prefix.PluginPrefixRequest)
+    {
+        org.apache.maven.plugin.prefix.PluginPrefixRequest request;
+        org.apache.maven.model.Model $stack4, $stack5, $stack8;
+        org.apache.maven.model.Build $stack6, build;
+        DefaultPluginPrefixResolver this;
+        java.util.List $stack10, $stack14;
+        org.apache.maven.model.PluginManagement $stack12, $stack13;
+        org.apache.maven.plugin.prefix.PluginPrefixResult result;
+        org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver $r0, $r1;
+
+        this := @this: DefaultPluginPrefixResolver;
+
+        request := @parameter0: org.apache.maven.plugin.prefix.PluginPrefixRequest;
+
+        result = null;
+
+        $stack4 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.apache.maven.model.Model getPom()>();
+
+        if $stack4 == null goto label1;
+
+        $stack5 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.apache.maven.model.Model getPom()>();
+
+        $stack6 = virtualinvoke $stack5.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        if $stack6 == null goto label1;
+
+        $stack8 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.apache.maven.model.Model getPom()>();
+
+        build = virtualinvoke $stack8.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        $stack10 = virtualinvoke build.<org.apache.maven.model.Build: java.util.List getPlugins()>();
+
+        $r0 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        result = specialinvoke $r0.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.apache.maven.plugin.prefix.PluginPrefixResult resolveFromProject(org.apache.maven.plugin.prefix.PluginPrefixRequest,java.util.List)>(request, $stack10);
+
+        if result != null goto label1;
+
+        $stack12 = virtualinvoke build.<org.apache.maven.model.Build: org.apache.maven.model.PluginManagement getPluginManagement()>();
+
+        if $stack12 == null goto label1;
+
+        $stack13 = virtualinvoke build.<org.apache.maven.model.Build: org.apache.maven.model.PluginManagement getPluginManagement()>();
+
+        $stack14 = virtualinvoke $stack13.<org.apache.maven.model.PluginManagement: java.util.List getPlugins()>();
+
+        $r1 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        result = specialinvoke $r1.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.apache.maven.plugin.prefix.PluginPrefixResult resolveFromProject(org.apache.maven.plugin.prefix.PluginPrefixRequest,java.util.List)>(request, $stack14);
+
+     label1:
+        return result;
+    }
+
+    private org.apache.maven.plugin.prefix.PluginPrefixResult resolveFromProject(org.apache.maven.plugin.prefix.PluginPrefixRequest, java.util.List)
+    {
+        java.util.List plugins, $stack10;
+        java.util.Iterator l3;
+        boolean $stack7, $stack15, $stack20;
+        java.lang.Object $stack8;
+        org.apache.maven.model.Plugin plugin;
+        DefaultPluginPrefixResolver this;
+        org.apache.maven.plugin.prefix.PluginPrefixRequest request;
+        org.apache.maven.plugin.BuildPluginManager $stack9;
+        org.eclipse.aether.RepositorySystemSession $stack11;
+        java.lang.String $stack13, $stack14, $stack24, $stack27, $stack29, $stack33, $stack36, $stack38;
+        java.lang.Exception $stack18;
+        org.codehaus.plexus.logging.Logger $stack19, $stack22, $stack31;
+        java.lang.StringBuilder $stack23, $stack25, $stack26, $stack28, $stack32, $stack34, $stack35, $stack37, $u1, $u2;
+        org.apache.maven.plugin.descriptor.PluginDescriptor pluginDescriptor;
+        org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResult $u0;
+        org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver $r0, $r2, $r3, $r4;
+        org.apache.maven.plugin.prefix.PluginPrefixResult $r1;
+
+        this := @this: DefaultPluginPrefixResolver;
+
+        request := @parameter0: org.apache.maven.plugin.prefix.PluginPrefixRequest;
+
+        plugins := @parameter1: java.util.List;
+
+        l3 = interfaceinvoke plugins.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label8;
+
+        $stack8 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        plugin = (org.apache.maven.model.Plugin) $stack8;
+
+     label2:
+        $r0 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack9 = $r0.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.apache.maven.plugin.BuildPluginManager pluginManager>;
+
+        $stack10 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.util.List getRepositories()>();
+
+        $stack11 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        pluginDescriptor = interfaceinvoke $stack9.<org.apache.maven.plugin.BuildPluginManager: org.apache.maven.plugin.descriptor.PluginDescriptor loadPlugin(org.apache.maven.model.Plugin,java.util.List,org.eclipse.aether.RepositorySystemSession)>(plugin, $stack10, $stack11);
+
+        $stack13 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.lang.String getPrefix()>();
+
+        $stack14 = virtualinvoke pluginDescriptor.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getGoalPrefix()>();
+
+        $stack15 = virtualinvoke $stack13.<java.lang.String: boolean equals(java.lang.Object)>($stack14);
+
+        if $stack15 == 0 goto label4;
+
+        $u0 = new org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResult;
+
+        specialinvoke $u0.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResult: void <init>(org.apache.maven.model.Plugin)>(plugin);
+
+     label3:
+        $r1 = (org.apache.maven.plugin.prefix.PluginPrefixResult) $u0;
+
+        return $r1;
+
+     label4:
+        goto label7;
+
+     label5:
+        $stack18 := @caughtexception;
+
+        $r2 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack19 = $r2.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack20 = interfaceinvoke $stack19.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack20 == 0 goto label6;
+
+        $r3 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack31 = $r3.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack32 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to retrieve plugin descriptor for ");
+
+        $stack33 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getId()>();
+
+        $stack34 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack33);
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack36 = virtualinvoke $stack18.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $stack37 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack36);
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack31.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String,java.lang.Throwable)>($stack38, $stack18);
+
+        goto label7;
+
+     label6:
+        $r4 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack22 = $r4.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack23 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to retrieve plugin descriptor for ");
+
+        $stack24 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getId()>();
+
+        $stack25 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack24);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack27 = virtualinvoke $stack18.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $stack28 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack27);
+
+        $stack29 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack22.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack29);
+
+     label7:
+        goto label1;
+
+     label8:
+        return null;
+
+        catch java.lang.Exception from label2 to label3 with label5;
+    }
+
+    private org.apache.maven.plugin.prefix.PluginPrefixResult resolveFromRepository(org.apache.maven.plugin.prefix.PluginPrefixRequest)
+    {
+        org.apache.maven.plugin.prefix.PluginPrefixRequest request;
+        org.eclipse.aether.RequestTrace trace;
+        java.util.List $stack11, $stack34, results#4;
+        boolean $stack13, $stack19, $stack20, $stack36;
+        DefaultPluginPrefixResolver this;
+        org.eclipse.aether.RepositorySystem $stack14, $stack25;
+        org.eclipse.aether.RepositorySystemSession $stack15, $stack18, $stack23, $r5;
+        org.apache.maven.plugin.prefix.PluginPrefixResult $stack27, pluginGroup#5;
+        java.lang.Object $stack28, $stack38;
+        org.eclipse.aether.metadata.Metadata$Nature $stack30;
+        org.eclipse.aether.resolution.MetadataRequest $stack32, $stack40, $u2, $u3;
+        java.util.Iterator l7, results;
+        org.eclipse.aether.repository.RemoteRepository repository;
+        java.lang.String pluginGroup;
+        java.util.ArrayList $u0;
+        org.eclipse.aether.metadata.DefaultMetadata $u1;
+        org.eclipse.aether.DefaultRepositorySystemSession $u4;
+        org.eclipse.aether.metadata.Metadata $r0, $r1;
+        org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver $r2, $r3, $r4, $r6;
+
+        this := @this: DefaultPluginPrefixResolver;
+
+        request := @parameter0: org.apache.maven.plugin.prefix.PluginPrefixRequest;
+
+        trace = staticinvoke <org.eclipse.aether.RequestTrace: org.eclipse.aether.RequestTrace newChild(org.eclipse.aether.RequestTrace,java.lang.Object)>(null, request);
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $stack11 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.util.List getPluginGroups()>();
+
+        results = interfaceinvoke $stack11.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack13 = interfaceinvoke results.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label4;
+
+        $stack28 = interfaceinvoke results.<java.util.Iterator: java.lang.Object next()>();
+
+        pluginGroup = (java.lang.String) $stack28;
+
+        $u1 = new org.eclipse.aether.metadata.DefaultMetadata;
+
+        $stack30 = <org.eclipse.aether.metadata.Metadata$Nature: org.eclipse.aether.metadata.Metadata$Nature RELEASE_OR_SNAPSHOT>;
+
+        specialinvoke $u1.<org.eclipse.aether.metadata.DefaultMetadata: void <init>(java.lang.String,java.lang.String,org.eclipse.aether.metadata.Metadata$Nature)>(pluginGroup, "maven-metadata.xml", $stack30);
+
+        $u2 = new org.eclipse.aether.resolution.MetadataRequest;
+
+        $r0 = (org.eclipse.aether.metadata.Metadata) $u1;
+
+        specialinvoke $u2.<org.eclipse.aether.resolution.MetadataRequest: void <init>(org.eclipse.aether.metadata.Metadata,org.eclipse.aether.repository.RemoteRepository,java.lang.String)>($r0, null, "plugin");
+
+        $stack32 = virtualinvoke $u2.<org.eclipse.aether.resolution.MetadataRequest: org.eclipse.aether.resolution.MetadataRequest setTrace(org.eclipse.aether.RequestTrace)>(trace);
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($stack32);
+
+        $stack34 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.util.List getRepositories()>();
+
+        l7 = interfaceinvoke $stack34.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack36 = interfaceinvoke l7.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack36 == 0 goto label3;
+
+        $stack38 = interfaceinvoke l7.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.eclipse.aether.repository.RemoteRepository) $stack38;
+
+        $u3 = new org.eclipse.aether.resolution.MetadataRequest;
+
+        $r1 = (org.eclipse.aether.metadata.Metadata) $u1;
+
+        specialinvoke $u3.<org.eclipse.aether.resolution.MetadataRequest: void <init>(org.eclipse.aether.metadata.Metadata,org.eclipse.aether.repository.RemoteRepository,java.lang.String)>($r1, repository, "plugin");
+
+        $stack40 = virtualinvoke $u3.<org.eclipse.aether.resolution.MetadataRequest: org.eclipse.aether.resolution.MetadataRequest setTrace(org.eclipse.aether.RequestTrace)>(trace);
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($stack40);
+
+        goto label2;
+
+     label3:
+        goto label1;
+
+     label4:
+        $r2 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack14 = $r2.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.eclipse.aether.RepositorySystem repositorySystem>;
+
+        $stack15 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        results#4 = interfaceinvoke $stack14.<org.eclipse.aether.RepositorySystem: java.util.List resolveMetadata(org.eclipse.aether.RepositorySystemSession,java.util.Collection)>($stack15, $u0);
+
+        interfaceinvoke $u0.<java.util.List: void clear()>();
+
+        $r3 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        pluginGroup#5 = specialinvoke $r3.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.apache.maven.plugin.prefix.PluginPrefixResult processResults(org.apache.maven.plugin.prefix.PluginPrefixRequest,org.eclipse.aether.RequestTrace,java.util.List,java.util.List)>(request, trace, results#4, $u0);
+
+        if pluginGroup#5 == null goto label5;
+
+        return pluginGroup#5;
+
+     label5:
+        $stack18 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $stack19 = interfaceinvoke $stack18.<org.eclipse.aether.RepositorySystemSession: boolean isOffline()>();
+
+        if $stack19 != 0 goto label6;
+
+        $stack20 = interfaceinvoke $u0.<java.util.List: boolean isEmpty()>();
+
+        if $stack20 != 0 goto label6;
+
+        $u4 = new org.eclipse.aether.DefaultRepositorySystemSession;
+
+        $stack23 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        specialinvoke $u4.<org.eclipse.aether.DefaultRepositorySystemSession: void <init>(org.eclipse.aether.RepositorySystemSession)>($stack23);
+
+        virtualinvoke $u4.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setUpdatePolicy(java.lang.String)>("always");
+
+        $r4 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack25 = $r4.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.eclipse.aether.RepositorySystem repositorySystem>;
+
+        $r5 = (org.eclipse.aether.RepositorySystemSession) $u4;
+
+        results#4 = interfaceinvoke $stack25.<org.eclipse.aether.RepositorySystem: java.util.List resolveMetadata(org.eclipse.aether.RepositorySystemSession,java.util.Collection)>($r5, $u0);
+
+        $r6 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack27 = specialinvoke $r6.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.apache.maven.plugin.prefix.PluginPrefixResult processResults(org.apache.maven.plugin.prefix.PluginPrefixRequest,org.eclipse.aether.RequestTrace,java.util.List,java.util.List)>(request, trace, results#4, null);
+
+        return $stack27;
+
+     label6:
+        return null;
+    }
+
+    private org.apache.maven.plugin.prefix.PluginPrefixResult processResults(org.apache.maven.plugin.prefix.PluginPrefixRequest, org.eclipse.aether.RequestTrace, java.util.List, java.util.List)
+    {
+        java.util.List results, requests;
+        java.util.Iterator l5;
+        boolean $stack11, $stack15;
+        java.lang.Object $stack12, repository;
+        org.eclipse.aether.resolution.MetadataResult res;
+        org.eclipse.aether.metadata.Metadata metadata;
+        org.eclipse.aether.resolution.MetadataRequest $stack16, $stack18;
+        DefaultPluginPrefixResolver this;
+        org.apache.maven.plugin.prefix.PluginPrefixRequest request;
+        org.eclipse.aether.RequestTrace trace;
+        java.lang.String $stack20;
+        org.apache.maven.plugin.prefix.PluginPrefixResult result;
+        org.eclipse.aether.RepositorySystemSession $stack23;
+        org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver $r0;
+        org.eclipse.aether.repository.ArtifactRepository $r1;
+
+        this := @this: DefaultPluginPrefixResolver;
+
+        request := @parameter0: org.apache.maven.plugin.prefix.PluginPrefixRequest;
+
+        trace := @parameter1: org.eclipse.aether.RequestTrace;
+
+        results := @parameter2: java.util.List;
+
+        requests := @parameter3: java.util.List;
+
+        l5 = interfaceinvoke results.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack11 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label5;
+
+        $stack12 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        res = (org.eclipse.aether.resolution.MetadataResult) $stack12;
+
+        metadata = virtualinvoke res.<org.eclipse.aether.resolution.MetadataResult: org.eclipse.aether.metadata.Metadata getMetadata()>();
+
+        if metadata == null goto label3;
+
+        $stack18 = virtualinvoke res.<org.eclipse.aether.resolution.MetadataResult: org.eclipse.aether.resolution.MetadataRequest getRequest()>();
+
+        repository = virtualinvoke $stack18.<org.eclipse.aether.resolution.MetadataRequest: org.eclipse.aether.repository.RemoteRepository getRepository()>();
+
+        if repository != null goto label2;
+
+        $stack23 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        repository = interfaceinvoke $stack23.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.LocalRepository getLocalRepository()>();
+
+     label2:
+        $stack20 = interfaceinvoke metadata.<org.eclipse.aether.metadata.Metadata: java.lang.String getGroupId()>();
+
+        $r0 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $r1 = (org.eclipse.aether.repository.ArtifactRepository) repository;
+
+        result = specialinvoke $r0.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.apache.maven.plugin.prefix.PluginPrefixResult resolveFromRepository(org.apache.maven.plugin.prefix.PluginPrefixRequest,org.eclipse.aether.RequestTrace,java.lang.String,org.eclipse.aether.metadata.Metadata,org.eclipse.aether.repository.ArtifactRepository)>(request, trace, $stack20, metadata, $r1);
+
+        if result == null goto label3;
+
+        return result;
+
+     label3:
+        if requests == null goto label4;
+
+        $stack15 = virtualinvoke res.<org.eclipse.aether.resolution.MetadataResult: boolean isUpdated()>();
+
+        if $stack15 != 0 goto label4;
+
+        $stack16 = virtualinvoke res.<org.eclipse.aether.resolution.MetadataResult: org.eclipse.aether.resolution.MetadataRequest getRequest()>();
+
+        interfaceinvoke requests.<java.util.List: boolean add(java.lang.Object)>($stack16);
+
+     label4:
+        goto label1;
+
+     label5:
+        return null;
+    }
+
+    private org.apache.maven.plugin.prefix.PluginPrefixResult resolveFromRepository(org.apache.maven.plugin.prefix.PluginPrefixRequest, org.eclipse.aether.RequestTrace, java.lang.String, org.eclipse.aether.metadata.Metadata, org.eclipse.aether.repository.ArtifactRepository)
+    {
+        org.eclipse.aether.metadata.Metadata metadata;
+        java.io.File $stack11, $stack13, $stack18;
+        boolean $stack14, $stack22, $stack26;
+        java.lang.Boolean $stack15;
+        DefaultPluginPrefixResolver this;
+        org.apache.maven.artifact.repository.metadata.io.MetadataReader $stack17;
+        org.apache.maven.artifact.repository.metadata.Metadata pluginGroupMetadata;
+        java.util.List plugins;
+        java.util.Iterator l9;
+        java.lang.Object $stack23;
+        org.apache.maven.artifact.repository.metadata.Plugin plugin;
+        org.apache.maven.plugin.prefix.PluginPrefixRequest request;
+        java.lang.String $stack24, $stack25, pluginGroup, $stack29;
+        org.eclipse.aether.repository.ArtifactRepository repository;
+        java.io.IOException $stack30;
+        org.eclipse.aether.RepositorySystemSession $stack31;
+        org.eclipse.aether.RequestTrace trace;
+        java.util.Map options;
+        org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResult $u0;
+        org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver $r0, $r2;
+        org.apache.maven.plugin.prefix.PluginPrefixResult $r1;
+
+        this := @this: DefaultPluginPrefixResolver;
+
+        request := @parameter0: org.apache.maven.plugin.prefix.PluginPrefixRequest;
+
+        trace := @parameter1: org.eclipse.aether.RequestTrace;
+
+        pluginGroup := @parameter2: java.lang.String;
+
+        metadata := @parameter3: org.eclipse.aether.metadata.Metadata;
+
+        repository := @parameter4: org.eclipse.aether.repository.ArtifactRepository;
+
+        if metadata == null goto label7;
+
+        $stack11 = interfaceinvoke metadata.<org.eclipse.aether.metadata.Metadata: java.io.File getFile()>();
+
+        if $stack11 == null goto label7;
+
+        $stack13 = interfaceinvoke metadata.<org.eclipse.aether.metadata.Metadata: java.io.File getFile()>();
+
+        $stack14 = virtualinvoke $stack13.<java.io.File: boolean isFile()>();
+
+        if $stack14 == 0 goto label7;
+
+     label1:
+        $stack15 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+        options = staticinvoke <java.util.Collections: java.util.Map singletonMap(java.lang.Object,java.lang.Object)>("org.apache.maven.artifact.repository.metadata.io.isStrict", $stack15);
+
+        $r0 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        $stack17 = $r0.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: org.apache.maven.artifact.repository.metadata.io.MetadataReader metadataReader>;
+
+        $stack18 = interfaceinvoke metadata.<org.eclipse.aether.metadata.Metadata: java.io.File getFile()>();
+
+        pluginGroupMetadata = interfaceinvoke $stack17.<org.apache.maven.artifact.repository.metadata.io.MetadataReader: org.apache.maven.artifact.repository.metadata.Metadata read(java.io.File,java.util.Map)>($stack18, options);
+
+        plugins = virtualinvoke pluginGroupMetadata.<org.apache.maven.artifact.repository.metadata.Metadata: java.util.List getPlugins()>();
+
+        if plugins == null goto label5;
+
+        l9 = interfaceinvoke plugins.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack22 = interfaceinvoke l9.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack22 == 0 goto label5;
+
+        $stack23 = interfaceinvoke l9.<java.util.Iterator: java.lang.Object next()>();
+
+        plugin = (org.apache.maven.artifact.repository.metadata.Plugin) $stack23;
+
+        $stack24 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: java.lang.String getPrefix()>();
+
+        $stack25 = virtualinvoke plugin.<org.apache.maven.artifact.repository.metadata.Plugin: java.lang.String getPrefix()>();
+
+        $stack26 = virtualinvoke $stack24.<java.lang.String: boolean equals(java.lang.Object)>($stack25);
+
+        if $stack26 == 0 goto label4;
+
+        $u0 = new org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResult;
+
+        $stack29 = virtualinvoke plugin.<org.apache.maven.artifact.repository.metadata.Plugin: java.lang.String getArtifactId()>();
+
+        specialinvoke $u0.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResult: void <init>(java.lang.String,java.lang.String,org.eclipse.aether.repository.ArtifactRepository)>(pluginGroup, $stack29, repository);
+
+     label3:
+        $r1 = (org.apache.maven.plugin.prefix.PluginPrefixResult) $u0;
+
+        return $r1;
+
+     label4:
+        goto label2;
+
+     label5:
+        goto label7;
+
+     label6:
+        $stack30 := @caughtexception;
+
+        $stack31 = interfaceinvoke request.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $r2 = (org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver) this;
+
+        specialinvoke $r2.<org.apache.maven.plugin.prefix.internal.DefaultPluginPrefixResolver: void invalidMetadata(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.RequestTrace,org.eclipse.aether.metadata.Metadata,org.eclipse.aether.repository.ArtifactRepository,java.lang.Exception)>($stack31, trace, metadata, repository, $stack30);
+
+     label7:
+        return null;
+
+        catch java.io.IOException from label1 to label3 with label6;
+        catch java.io.IOException from label4 to label5 with label6;
+    }
+
+    private void invalidMetadata(org.eclipse.aether.RepositorySystemSession, org.eclipse.aether.RequestTrace, org.eclipse.aether.metadata.Metadata, org.eclipse.aether.repository.ArtifactRepository, java.lang.Exception)
+    {
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.RepositoryListener listener;
+        org.eclipse.aether.RepositoryEvent$Builder $stack9;
+        org.eclipse.aether.RepositoryEvent$EventType $stack10;
+        org.eclipse.aether.RequestTrace trace;
+        org.eclipse.aether.metadata.Metadata metadata;
+        java.lang.Exception exception;
+        org.eclipse.aether.repository.ArtifactRepository repository;
+        org.eclipse.aether.RepositoryEvent $stack15;
+        DefaultPluginPrefixResolver this;
+
+        this := @this: DefaultPluginPrefixResolver;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        trace := @parameter1: org.eclipse.aether.RequestTrace;
+
+        metadata := @parameter2: org.eclipse.aether.metadata.Metadata;
+
+        repository := @parameter3: org.eclipse.aether.repository.ArtifactRepository;
+
+        exception := @parameter4: java.lang.Exception;
+
+        listener = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.RepositoryListener getRepositoryListener()>();
+
+        if listener == null goto label1;
+
+        $stack9 = new org.eclipse.aether.RepositoryEvent$Builder;
+
+        $stack10 = <org.eclipse.aether.RepositoryEvent$EventType: org.eclipse.aether.RepositoryEvent$EventType METADATA_INVALID>;
+
+        specialinvoke $stack9.<org.eclipse.aether.RepositoryEvent$Builder: void <init>(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.RepositoryEvent$EventType)>(session, $stack10);
+
+        virtualinvoke $stack9.<org.eclipse.aether.RepositoryEvent$Builder: org.eclipse.aether.RepositoryEvent$Builder setTrace(org.eclipse.aether.RequestTrace)>(trace);
+
+        virtualinvoke $stack9.<org.eclipse.aether.RepositoryEvent$Builder: org.eclipse.aether.RepositoryEvent$Builder setMetadata(org.eclipse.aether.metadata.Metadata)>(metadata);
+
+        virtualinvoke $stack9.<org.eclipse.aether.RepositoryEvent$Builder: org.eclipse.aether.RepositoryEvent$Builder setException(java.lang.Exception)>(exception);
+
+        virtualinvoke $stack9.<org.eclipse.aether.RepositoryEvent$Builder: org.eclipse.aether.RepositoryEvent$Builder setRepository(org.eclipse.aether.repository.ArtifactRepository)>(repository);
+
+        $stack15 = virtualinvoke $stack9.<org.eclipse.aether.RepositoryEvent$Builder: org.eclipse.aether.RepositoryEvent build()>();
+
+        interfaceinvoke listener.<org.eclipse.aether.RepositoryListener: void metadataInvalid(org.eclipse.aether.RepositoryEvent)>($stack15);
+
+     label1:
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <DefaultPluginPrefixResolver: java.lang.String REPOSITORY_CONTEXT> = "plugin";
+
+        return;
+    }
+}

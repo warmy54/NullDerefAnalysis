@@ -1,0 +1,183 @@
+public class XmlProcessingInstructionParser extends java.lang.Object
+{
+    private final sortpom.processinstruction.IgnoredSectionsStore ignoredSectionsStore;
+    private java.lang.String originalXml;
+    private sortpom.logger.SortPomLogger logger;
+    private boolean containsIgnoredSections;
+
+    public void <init>()
+    {
+        XmlProcessingInstructionParser this;
+        sortpom.processinstruction.IgnoredSectionsStore $u0;
+        sortpom.processinstruction.XmlProcessingInstructionParser $r0, $r1;
+
+        this := @this: XmlProcessingInstructionParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new sortpom.processinstruction.IgnoredSectionsStore;
+
+        specialinvoke $u0.<sortpom.processinstruction.IgnoredSectionsStore: void <init>()>();
+
+        $r0 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $r0.<sortpom.processinstruction.XmlProcessingInstructionParser: sortpom.processinstruction.IgnoredSectionsStore ignoredSectionsStore> = $u0;
+
+        $r1 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $r1.<sortpom.processinstruction.XmlProcessingInstructionParser: boolean containsIgnoredSections> = 0;
+
+        return;
+    }
+
+    public void setup(sortpom.logger.SortPomLogger)
+    {
+        XmlProcessingInstructionParser this;
+        sortpom.logger.SortPomLogger logger;
+        sortpom.processinstruction.XmlProcessingInstructionParser $r0;
+
+        this := @this: XmlProcessingInstructionParser;
+
+        logger := @parameter0: sortpom.logger.SortPomLogger;
+
+        $r0 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $r0.<sortpom.processinstruction.XmlProcessingInstructionParser: sortpom.logger.SortPomLogger logger> = logger;
+
+        return;
+    }
+
+    public void scanForIgnoredSections(java.lang.String)
+    {
+        XmlProcessingInstructionParser this;
+        java.lang.String originalXml, $stack8;
+        sortpom.logger.SortPomLogger $stack4;
+        boolean $stack5, $stack6;
+        sortpom.processinstruction.SortpomPiScanner $u0;
+        sortpom.exception.FailureException $u1;
+        sortpom.processinstruction.XmlProcessingInstructionParser $r0, $r1, $r3;
+        java.lang.Throwable $r2;
+
+        this := @this: XmlProcessingInstructionParser;
+
+        originalXml := @parameter0: java.lang.String;
+
+        $r0 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $r0.<sortpom.processinstruction.XmlProcessingInstructionParser: java.lang.String originalXml> = originalXml;
+
+        $u0 = new sortpom.processinstruction.SortpomPiScanner;
+
+        $r1 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $stack4 = $r1.<sortpom.processinstruction.XmlProcessingInstructionParser: sortpom.logger.SortPomLogger logger>;
+
+        specialinvoke $u0.<sortpom.processinstruction.SortpomPiScanner: void <init>(sortpom.logger.SortPomLogger)>($stack4);
+
+        virtualinvoke $u0.<sortpom.processinstruction.SortpomPiScanner: void scan(java.lang.String)>(originalXml);
+
+        $stack5 = virtualinvoke $u0.<sortpom.processinstruction.SortpomPiScanner: boolean isScanError()>();
+
+        if $stack5 == 0 goto label1;
+
+        $u1 = new sortpom.exception.FailureException;
+
+        $stack8 = virtualinvoke $u0.<sortpom.processinstruction.SortpomPiScanner: java.lang.String getFirstError()>();
+
+        specialinvoke $u1.<sortpom.exception.FailureException: void <init>(java.lang.String)>($stack8);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label1:
+        $stack6 = virtualinvoke $u0.<sortpom.processinstruction.SortpomPiScanner: boolean containsIgnoredSections()>();
+
+        $r3 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $r3.<sortpom.processinstruction.XmlProcessingInstructionParser: boolean containsIgnoredSections> = $stack6;
+
+        return;
+    }
+
+    public boolean existsIgnoredSections()
+    {
+        XmlProcessingInstructionParser this;
+        boolean $stack1;
+        sortpom.processinstruction.XmlProcessingInstructionParser $r0;
+
+        this := @this: XmlProcessingInstructionParser;
+
+        $r0 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $stack1 = $r0.<sortpom.processinstruction.XmlProcessingInstructionParser: boolean containsIgnoredSections>;
+
+        return $stack1;
+    }
+
+    public java.lang.String replaceIgnoredSections()
+    {
+        XmlProcessingInstructionParser this;
+        boolean $stack1;
+        java.lang.String $stack2, $stack3, $stack5;
+        sortpom.processinstruction.IgnoredSectionsStore $stack4;
+        sortpom.processinstruction.XmlProcessingInstructionParser $r0, $r1, $r2, $r3;
+
+        this := @this: XmlProcessingInstructionParser;
+
+        $r0 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $stack1 = $r0.<sortpom.processinstruction.XmlProcessingInstructionParser: boolean containsIgnoredSections>;
+
+        if $stack1 == 0 goto label1;
+
+        $r1 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $stack4 = $r1.<sortpom.processinstruction.XmlProcessingInstructionParser: sortpom.processinstruction.IgnoredSectionsStore ignoredSectionsStore>;
+
+        $r2 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $stack3 = $r2.<sortpom.processinstruction.XmlProcessingInstructionParser: java.lang.String originalXml>;
+
+        $stack5 = virtualinvoke $stack4.<sortpom.processinstruction.IgnoredSectionsStore: java.lang.String replaceIgnoredSections(java.lang.String)>($stack3);
+
+        return $stack5;
+
+     label1:
+        $r3 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $stack2 = $r3.<sortpom.processinstruction.XmlProcessingInstructionParser: java.lang.String originalXml>;
+
+        return $stack2;
+    }
+
+    public java.lang.String revertIgnoredSections(java.lang.String)
+    {
+        XmlProcessingInstructionParser this;
+        boolean $stack2;
+        java.lang.String sortedXml, $stack4;
+        sortpom.processinstruction.IgnoredSectionsStore $stack3;
+        sortpom.processinstruction.XmlProcessingInstructionParser $r0, $r1;
+
+        this := @this: XmlProcessingInstructionParser;
+
+        sortedXml := @parameter0: java.lang.String;
+
+        $r0 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $stack2 = $r0.<sortpom.processinstruction.XmlProcessingInstructionParser: boolean containsIgnoredSections>;
+
+        if $stack2 == 0 goto label1;
+
+        $r1 = (sortpom.processinstruction.XmlProcessingInstructionParser) this;
+
+        $stack3 = $r1.<sortpom.processinstruction.XmlProcessingInstructionParser: sortpom.processinstruction.IgnoredSectionsStore ignoredSectionsStore>;
+
+        $stack4 = virtualinvoke $stack3.<sortpom.processinstruction.IgnoredSectionsStore: java.lang.String revertIgnoredSections(java.lang.String)>(sortedXml);
+
+        return $stack4;
+
+     label1:
+        return sortedXml;
+    }
+}

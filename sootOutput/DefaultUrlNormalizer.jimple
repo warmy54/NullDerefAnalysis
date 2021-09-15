@@ -1,0 +1,93 @@
+public class DefaultUrlNormalizer extends java.lang.Object implements org.apache.maven.model.path.UrlNormalizer
+{
+
+    public void <init>()
+    {
+        DefaultUrlNormalizer this;
+
+        this := @this: DefaultUrlNormalizer;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public java.lang.String normalize(java.lang.String)
+    {
+        java.lang.String url, $stack8, $stack11, result;
+        int idx, $stack10, $stack17, parent;
+        java.lang.StringBuilder $stack7, $stack9, $stack12;
+        char $stack19;
+        DefaultUrlNormalizer this;
+
+        this := @this: DefaultUrlNormalizer;
+
+        url := @parameter0: java.lang.String;
+
+        result = url;
+
+        if url == null goto label8;
+
+     label1:
+        idx = virtualinvoke result.<java.lang.String: int indexOf(java.lang.String)>("/../");
+
+        if idx >= 0 goto label2;
+
+        goto label8;
+
+     label2:
+        if idx != 0 goto label3;
+
+        result = virtualinvoke result.<java.lang.String: java.lang.String substring(int)>(3);
+
+        goto label1;
+
+     label3:
+        parent = idx - 1;
+
+     label4:
+        if parent < 0 goto label5;
+
+        $stack19 = virtualinvoke result.<java.lang.String: char charAt(int)>(parent);
+
+        if $stack19 != 47 goto label5;
+
+        parent = parent + -1;
+
+        goto label4;
+
+     label5:
+        parent = virtualinvoke result.<java.lang.String: int lastIndexOf(int,int)>(47, parent);
+
+        if parent >= 0 goto label6;
+
+        $stack17 = idx + 4;
+
+        result = virtualinvoke result.<java.lang.String: java.lang.String substring(int)>($stack17);
+
+        goto label7;
+
+     label6:
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke result.<java.lang.String: java.lang.String substring(int,int)>(0, parent);
+
+        $stack9 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = idx + 3;
+
+        $stack11 = virtualinvoke result.<java.lang.String: java.lang.String substring(int)>($stack10);
+
+        $stack12 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        result = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label7:
+        goto label1;
+
+     label8:
+        return result;
+    }
+}

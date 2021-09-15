@@ -1,0 +1,426 @@
+public class MavenExecutionPlan extends java.lang.Object implements java.lang.Iterable
+{
+    private final java.util.List planItem;
+    private final java.util.Map lastMojoExecutionForAllPhases;
+    final java.util.List phasesInExecutionPlan;
+
+    public void <init>(java.util.List, org.apache.maven.lifecycle.DefaultLifecycles)
+    {
+        MavenExecutionPlan this;
+        java.util.List planItem, $stack13, $stack39;
+        org.apache.maven.lifecycle.DefaultLifecycles defaultLifecycles;
+        boolean $stack17, $stack32, $stack15;
+        java.lang.Object $stack18, $stack19, $stack26, $stack36;
+        java.lang.String phase, $stack27;
+        org.apache.maven.lifecycle.internal.ExecutionPlanItem forThisPhase, lifecycle#10, phase#11;
+        java.util.Map $stack20;
+        java.lang.Iterable $stack30;
+        java.util.Iterator lastInExistingPhases, phase, lifecycle#12;
+        org.apache.maven.lifecycle.Lifecycle lifecycle;
+        java.util.LinkedHashMap $u0;
+        java.util.LinkedHashSet $u1;
+        java.util.ArrayList $u2;
+        java.util.HashMap $u3;
+        org.apache.maven.lifecycle.MavenExecutionPlan $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: MavenExecutionPlan;
+
+        planItem := @parameter0: java.util.List;
+
+        defaultLifecycles := @parameter1: org.apache.maven.lifecycle.DefaultLifecycles;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $r0.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List planItem> = planItem;
+
+        $u0 = new java.util.LinkedHashMap;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>()>();
+
+        $r1 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $r1.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.Map lastMojoExecutionForAllPhases> = $u0;
+
+        $u1 = new java.util.LinkedHashSet;
+
+        specialinvoke $u1.<java.util.LinkedHashSet: void <init>()>();
+
+        if defaultLifecycles == null goto label3;
+
+        $stack30 = staticinvoke <org.apache.maven.lifecycle.MavenExecutionPlan: java.lang.Iterable getDistinctPhasesInOrderOfExecutionPlanAppearance(java.util.List)>(planItem);
+
+        lastInExistingPhases = interfaceinvoke $stack30.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label1:
+        $stack32 = interfaceinvoke lastInExistingPhases.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack32 == 0 goto label3;
+
+        $stack36 = interfaceinvoke lastInExistingPhases.<java.util.Iterator: java.lang.Object next()>();
+
+        phase = (java.lang.String) $stack36;
+
+        lifecycle = virtualinvoke defaultLifecycles.<org.apache.maven.lifecycle.DefaultLifecycles: org.apache.maven.lifecycle.Lifecycle get(java.lang.String)>(phase);
+
+        if lifecycle == null goto label2;
+
+        $stack39 = virtualinvoke lifecycle.<org.apache.maven.lifecycle.Lifecycle: java.util.List getPhases()>();
+
+        virtualinvoke $u1.<java.util.LinkedHashSet: boolean addAll(java.util.Collection)>($stack39);
+
+     label2:
+        goto label1;
+
+     label3:
+        $u2 = new java.util.ArrayList;
+
+        specialinvoke $u2.<java.util.ArrayList: void <init>(java.util.Collection)>($u1);
+
+        $r2 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $r2.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List phasesInExecutionPlan> = $u2;
+
+        $u3 = new java.util.HashMap;
+
+        specialinvoke $u3.<java.util.HashMap: void <init>()>();
+
+        $r3 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $stack13 = specialinvoke $r3.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List getExecutionPlanItems()>();
+
+        phase = interfaceinvoke $stack13.<java.util.List: java.util.Iterator iterator()>();
+
+     label4:
+        $stack15 = interfaceinvoke phase.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label5;
+
+        $stack26 = interfaceinvoke phase.<java.util.Iterator: java.lang.Object next()>();
+
+        lifecycle#10 = (org.apache.maven.lifecycle.internal.ExecutionPlanItem) $stack26;
+
+        $stack27 = virtualinvoke lifecycle#10.<org.apache.maven.lifecycle.internal.ExecutionPlanItem: java.lang.String getLifecyclePhase()>();
+
+        interfaceinvoke $u3.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack27, lifecycle#10);
+
+        goto label4;
+
+     label5:
+        phase#11 = null;
+
+        lifecycle#12 = virtualinvoke $u1.<java.util.LinkedHashSet: java.util.Iterator iterator()>();
+
+     label6:
+        $stack17 = interfaceinvoke lifecycle#12.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack17 == 0 goto label8;
+
+        $stack18 = interfaceinvoke lifecycle#12.<java.util.Iterator: java.lang.Object next()>();
+
+        phase = (java.lang.String) $stack18;
+
+        $stack19 = interfaceinvoke $u3.<java.util.Map: java.lang.Object get(java.lang.Object)>(phase);
+
+        forThisPhase = (org.apache.maven.lifecycle.internal.ExecutionPlanItem) $stack19;
+
+        if forThisPhase == null goto label7;
+
+        phase#11 = forThisPhase;
+
+     label7:
+        $r4 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $stack20 = $r4.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.Map lastMojoExecutionForAllPhases>;
+
+        interfaceinvoke $stack20.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(phase, phase#11);
+
+        goto label6;
+
+     label8:
+        return;
+    }
+
+    public java.util.Iterator iterator()
+    {
+        MavenExecutionPlan this;
+        java.util.List $stack1;
+        java.util.Iterator $stack2;
+        org.apache.maven.lifecycle.MavenExecutionPlan $r0;
+
+        this := @this: MavenExecutionPlan;
+
+        $r0 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $stack1 = specialinvoke $r0.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List getExecutionPlanItems()>();
+
+        $stack2 = interfaceinvoke $stack1.<java.util.List: java.util.Iterator iterator()>();
+
+        return $stack2;
+    }
+
+    public org.apache.maven.lifecycle.internal.ExecutionPlanItem findLastInPhase(java.lang.String)
+    {
+        MavenExecutionPlan this;
+        java.lang.String requestedPhase;
+        java.util.Map $stack2;
+        java.lang.Object $stack3;
+        org.apache.maven.lifecycle.internal.ExecutionPlanItem $stack4;
+        org.apache.maven.lifecycle.MavenExecutionPlan $r0;
+
+        this := @this: MavenExecutionPlan;
+
+        requestedPhase := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $stack2 = $r0.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.Map lastMojoExecutionForAllPhases>;
+
+        $stack3 = interfaceinvoke $stack2.<java.util.Map: java.lang.Object get(java.lang.Object)>(requestedPhase);
+
+        $stack4 = (org.apache.maven.lifecycle.internal.ExecutionPlanItem) $stack3;
+
+        return $stack4;
+    }
+
+    private java.util.List getExecutionPlanItems()
+    {
+        MavenExecutionPlan this;
+        java.util.List $stack1;
+        org.apache.maven.lifecycle.MavenExecutionPlan $r0;
+
+        this := @this: MavenExecutionPlan;
+
+        $r0 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $stack1 = $r0.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List planItem>;
+
+        return $stack1;
+    }
+
+    private static java.lang.Iterable getDistinctPhasesInOrderOfExecutionPlanAppearance(java.util.List)
+    {
+        java.util.LinkedHashSet $stack5;
+        java.util.List planItems;
+        java.util.Iterator l2;
+        boolean $stack7, $stack10;
+        java.lang.Object $stack8;
+        org.apache.maven.lifecycle.internal.ExecutionPlanItem executionPlanItem;
+        java.lang.String phase;
+
+        planItems := @parameter0: java.util.List;
+
+        $stack5 = new java.util.LinkedHashSet;
+
+        specialinvoke $stack5.<java.util.LinkedHashSet: void <init>()>();
+
+        l2 = interfaceinvoke planItems.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label3;
+
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        executionPlanItem = (org.apache.maven.lifecycle.internal.ExecutionPlanItem) $stack8;
+
+        phase = virtualinvoke executionPlanItem.<org.apache.maven.lifecycle.internal.ExecutionPlanItem: java.lang.String getLifecyclePhase()>();
+
+        $stack10 = virtualinvoke $stack5.<java.util.LinkedHashSet: boolean contains(java.lang.Object)>(phase);
+
+        if $stack10 != 0 goto label2;
+
+        virtualinvoke $stack5.<java.util.LinkedHashSet: boolean add(java.lang.Object)>(phase);
+
+     label2:
+        goto label1;
+
+     label3:
+        return $stack5;
+    }
+
+    public java.util.List getMojoExecutions()
+    {
+        MavenExecutionPlan this;
+        java.util.List $stack5;
+        java.util.Iterator l2;
+        boolean $stack7;
+        java.lang.Object $stack8;
+        org.apache.maven.lifecycle.internal.ExecutionPlanItem executionPlanItem;
+        org.apache.maven.plugin.MojoExecution $stack9;
+        java.util.ArrayList $u0;
+        org.apache.maven.lifecycle.MavenExecutionPlan $r0;
+
+        this := @this: MavenExecutionPlan;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $stack5 = $r0.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List planItem>;
+
+        l2 = interfaceinvoke $stack5.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label2;
+
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        executionPlanItem = (org.apache.maven.lifecycle.internal.ExecutionPlanItem) $stack8;
+
+        $stack9 = virtualinvoke executionPlanItem.<org.apache.maven.lifecycle.internal.ExecutionPlanItem: org.apache.maven.plugin.MojoExecution getMojoExecution()>();
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($stack9);
+
+        goto label1;
+
+     label2:
+        return $u0;
+    }
+
+    public java.util.Set getNonThreadSafePlugins()
+    {
+        MavenExecutionPlan this;
+        java.util.List $stack6;
+        java.util.Iterator l2;
+        boolean $stack8, $stack12;
+        java.lang.Object $stack9;
+        org.apache.maven.lifecycle.internal.ExecutionPlanItem executionPlanItem;
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack11;
+        org.apache.maven.model.Plugin $stack14;
+        java.util.HashSet $u0;
+        org.apache.maven.lifecycle.MavenExecutionPlan $r0;
+
+        this := @this: MavenExecutionPlan;
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $stack6 = $r0.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List planItem>;
+
+        l2 = interfaceinvoke $stack6.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label3;
+
+        $stack9 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        executionPlanItem = (org.apache.maven.lifecycle.internal.ExecutionPlanItem) $stack9;
+
+        mojoExecution = virtualinvoke executionPlanItem.<org.apache.maven.lifecycle.internal.ExecutionPlanItem: org.apache.maven.plugin.MojoExecution getMojoExecution()>();
+
+        $stack11 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack12 = virtualinvoke $stack11.<org.apache.maven.plugin.descriptor.MojoDescriptor: boolean isThreadSafe()>();
+
+        if $stack12 != 0 goto label2;
+
+        $stack14 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.model.Plugin getPlugin()>();
+
+        interfaceinvoke $u0.<java.util.Set: boolean add(java.lang.Object)>($stack14);
+
+     label2:
+        goto label1;
+
+     label3:
+        return $u0;
+    }
+
+    public java.util.Set getNonThreadSafeMojos()
+    {
+        MavenExecutionPlan this;
+        java.util.List $stack6;
+        java.util.Iterator l2;
+        boolean $stack8, $stack12;
+        java.lang.Object $stack9;
+        org.apache.maven.lifecycle.internal.ExecutionPlanItem executionPlanItem;
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack11, $stack14;
+        java.util.HashSet $u0;
+        org.apache.maven.lifecycle.MavenExecutionPlan $r0;
+
+        this := @this: MavenExecutionPlan;
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $stack6 = $r0.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List planItem>;
+
+        l2 = interfaceinvoke $stack6.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label3;
+
+        $stack9 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        executionPlanItem = (org.apache.maven.lifecycle.internal.ExecutionPlanItem) $stack9;
+
+        mojoExecution = virtualinvoke executionPlanItem.<org.apache.maven.lifecycle.internal.ExecutionPlanItem: org.apache.maven.plugin.MojoExecution getMojoExecution()>();
+
+        $stack11 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack12 = virtualinvoke $stack11.<org.apache.maven.plugin.descriptor.MojoDescriptor: boolean isThreadSafe()>();
+
+        if $stack12 != 0 goto label2;
+
+        $stack14 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        interfaceinvoke $u0.<java.util.Set: boolean add(java.lang.Object)>($stack14);
+
+     label2:
+        goto label1;
+
+     label3:
+        return $u0;
+    }
+
+    public java.util.List getExecutions()
+    {
+        MavenExecutionPlan this;
+        java.util.List $stack1;
+        org.apache.maven.lifecycle.MavenExecutionPlan $r0;
+
+        this := @this: MavenExecutionPlan;
+
+        $r0 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List getMojoExecutions()>();
+
+        return $stack1;
+    }
+
+    public int size()
+    {
+        MavenExecutionPlan this;
+        java.util.List $stack1;
+        int $stack2;
+        org.apache.maven.lifecycle.MavenExecutionPlan $r0;
+
+        this := @this: MavenExecutionPlan;
+
+        $r0 = (org.apache.maven.lifecycle.MavenExecutionPlan) this;
+
+        $stack1 = $r0.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List planItem>;
+
+        $stack2 = interfaceinvoke $stack1.<java.util.List: int size()>();
+
+        return $stack2;
+    }
+}

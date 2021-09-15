@@ -1,0 +1,1511 @@
+public class LifecycleExecutorTest extends org.apache.maven.AbstractCoreMavenComponentTestCase
+{
+    private org.apache.maven.lifecycle.DefaultLifecycleExecutor lifecycleExecutor;
+    private org.apache.maven.lifecycle.internal.DefaultLifecycleTaskSegmentCalculator lifeCycleTaskSegmentCalculator;
+    private org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator lifeCycleExecutionPlanCalculator;
+    private org.apache.maven.lifecycle.internal.MojoDescriptorCreator mojoDescriptorCreator;
+
+    public void <init>()
+    {
+        LifecycleExecutorTest this;
+
+        this := @this: LifecycleExecutorTest;
+
+        specialinvoke this.<org.apache.maven.AbstractCoreMavenComponentTestCase: void <init>()>();
+
+        return;
+    }
+
+    protected java.lang.String getProjectsDirectory()
+    {
+        LifecycleExecutorTest this;
+
+        this := @this: LifecycleExecutorTest;
+
+        return "src/test/projects/lifecycle-executor";
+    }
+
+    public void testCalculationOfBuildPlanWithIndividualTaskWherePluginIsSpecifiedInThePom() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject $stack8, $stack11;
+        java.lang.String $stack9, $stack12, $stack22, $stack26, $stack30;
+        java.lang.String[] $stack13;
+        org.apache.maven.lifecycle.MavenExecutionPlan $stack14;
+        java.util.List executionPlan;
+        int $stack17;
+        java.lang.Object $stack18;
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack20, $stack24, $stack28;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack21, $stack25, $stack29;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2, $r3;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("project-basic");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $stack8 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack9 = virtualinvoke $stack8.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("project-basic", $stack9);
+
+        $stack11 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack12 = virtualinvoke $stack11.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("1.0", $stack12);
+
+        $stack13 = newarray (java.lang.String)[1];
+
+        $stack13[0] = "resources:resources";
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack14 = virtualinvoke $r2.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession,java.lang.String[])>(session, $stack13);
+
+        $r3 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        executionPlan = virtualinvoke $r3.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.util.List getExecutions(org.apache.maven.lifecycle.MavenExecutionPlan)>($stack14);
+
+        $stack17 = interfaceinvoke executionPlan.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack17);
+
+        $stack18 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(0);
+
+        mojoExecution = (org.apache.maven.plugin.MojoExecution) $stack18;
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(mojoExecution);
+
+        $stack20 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack21 = virtualinvoke $stack20.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        $stack22 = virtualinvoke $stack21.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getGroupId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("org.apache.maven.plugins", $stack22);
+
+        $stack24 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack25 = virtualinvoke $stack24.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        $stack26 = virtualinvoke $stack25.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("maven-resources-plugin", $stack26);
+
+        $stack28 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack29 = virtualinvoke $stack28.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        $stack30 = virtualinvoke $stack29.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("0.1", $stack30);
+
+        return;
+    }
+
+    public void testCalculationOfBuildPlanWithIndividualTaskOfTheCleanLifecycle() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject $stack8, $stack11;
+        java.lang.String $stack9, $stack12, $stack22, $stack26, $stack30;
+        java.lang.String[] $stack13;
+        org.apache.maven.lifecycle.MavenExecutionPlan $stack14;
+        java.util.List executionPlan;
+        int $stack17;
+        java.lang.Object $stack18;
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack20, $stack24, $stack28;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack21, $stack25, $stack29;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2, $r3;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("project-basic");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $stack8 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack9 = virtualinvoke $stack8.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("project-basic", $stack9);
+
+        $stack11 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack12 = virtualinvoke $stack11.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("1.0", $stack12);
+
+        $stack13 = newarray (java.lang.String)[1];
+
+        $stack13[0] = "clean";
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack14 = virtualinvoke $r2.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession,java.lang.String[])>(session, $stack13);
+
+        $r3 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        executionPlan = virtualinvoke $r3.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.util.List getExecutions(org.apache.maven.lifecycle.MavenExecutionPlan)>($stack14);
+
+        $stack17 = interfaceinvoke executionPlan.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack17);
+
+        $stack18 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(0);
+
+        mojoExecution = (org.apache.maven.plugin.MojoExecution) $stack18;
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(mojoExecution);
+
+        $stack20 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack21 = virtualinvoke $stack20.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        $stack22 = virtualinvoke $stack21.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getGroupId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("org.apache.maven.plugins", $stack22);
+
+        $stack24 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack25 = virtualinvoke $stack24.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        $stack26 = virtualinvoke $stack25.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("maven-clean-plugin", $stack26);
+
+        $stack28 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack29 = virtualinvoke $stack28.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        $stack30 = virtualinvoke $stack29.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("0.1", $stack30);
+
+        return;
+    }
+
+    public void testCalculationOfBuildPlanWithIndividualTaskOfTheCleanCleanGoal() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject $stack8, $stack11;
+        java.lang.String $stack9, $stack12, $stack22, $stack26, $stack30;
+        java.lang.String[] $stack13;
+        org.apache.maven.lifecycle.MavenExecutionPlan $stack14;
+        java.util.List executionPlan;
+        int $stack17;
+        java.lang.Object $stack18;
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack20, $stack24, $stack28;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack21, $stack25, $stack29;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2, $r3;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("project-basic");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $stack8 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack9 = virtualinvoke $stack8.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("project-basic", $stack9);
+
+        $stack11 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack12 = virtualinvoke $stack11.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("1.0", $stack12);
+
+        $stack13 = newarray (java.lang.String)[1];
+
+        $stack13[0] = "clean:clean";
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack14 = virtualinvoke $r2.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession,java.lang.String[])>(session, $stack13);
+
+        $r3 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        executionPlan = virtualinvoke $r3.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.util.List getExecutions(org.apache.maven.lifecycle.MavenExecutionPlan)>($stack14);
+
+        $stack17 = interfaceinvoke executionPlan.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack17);
+
+        $stack18 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(0);
+
+        mojoExecution = (org.apache.maven.plugin.MojoExecution) $stack18;
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(mojoExecution);
+
+        $stack20 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack21 = virtualinvoke $stack20.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        $stack22 = virtualinvoke $stack21.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getGroupId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("org.apache.maven.plugins", $stack22);
+
+        $stack24 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack25 = virtualinvoke $stack24.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        $stack26 = virtualinvoke $stack25.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("maven-clean-plugin", $stack26);
+
+        $stack28 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack29 = virtualinvoke $stack28.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        $stack30 = virtualinvoke $stack29.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("0.1", $stack30);
+
+        return;
+    }
+
+    java.util.List getExecutions(org.apache.maven.lifecycle.MavenExecutionPlan)
+    {
+        java.util.ArrayList $stack5;
+        org.apache.maven.lifecycle.MavenExecutionPlan mavenExecutionPlan;
+        java.util.Iterator l3;
+        boolean $stack7;
+        java.lang.Object $stack8;
+        org.apache.maven.lifecycle.internal.ExecutionPlanItem executionPlanItem;
+        org.apache.maven.plugin.MojoExecution $stack9;
+        LifecycleExecutorTest this;
+
+        this := @this: LifecycleExecutorTest;
+
+        mavenExecutionPlan := @parameter0: org.apache.maven.lifecycle.MavenExecutionPlan;
+
+        $stack5 = new java.util.ArrayList;
+
+        specialinvoke $stack5.<java.util.ArrayList: void <init>()>();
+
+        l3 = virtualinvoke mavenExecutionPlan.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label2;
+
+        $stack8 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        executionPlanItem = (org.apache.maven.lifecycle.internal.ExecutionPlanItem) $stack8;
+
+        $stack9 = virtualinvoke executionPlanItem.<org.apache.maven.lifecycle.internal.ExecutionPlanItem: org.apache.maven.plugin.MojoExecution getMojoExecution()>();
+
+        interfaceinvoke $stack5.<java.util.List: boolean add(java.lang.Object)>($stack9);
+
+        goto label1;
+
+     label2:
+        return $stack5;
+    }
+
+    public void testCalculationOfBuildPlanTasksOfTheCleanLifecycleAndTheInstallLifecycle() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject $stack7, $stack10;
+        java.lang.String $stack8, $stack11, $stack21, $stack26, $stack31, $stack36, $stack41, $stack46, $stack51, $stack56, $stack61, $stack66;
+        java.lang.String[] $stack12;
+        org.apache.maven.lifecycle.MavenExecutionPlan $stack13;
+        java.util.List executionPlan;
+        int $stack16;
+        java.lang.Object $stack18, $stack23, $stack28, $stack33, $stack38, $stack43, $stack48, $stack53, $stack58, $stack63;
+        org.apache.maven.plugin.MojoExecution $stack19, $stack24, $stack29, $stack34, $stack39, $stack44, $stack49, $stack54, $stack59, $stack64;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack20, $stack25, $stack30, $stack35, $stack40, $stack45, $stack50, $stack55, $stack60, $stack65;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2, $r3;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("project-with-additional-lifecycle-elements");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $stack7 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack8 = virtualinvoke $stack7.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("project-with-additional-lifecycle-elements", $stack8);
+
+        $stack10 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack11 = virtualinvoke $stack10.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("1.0", $stack11);
+
+        $stack12 = newarray (java.lang.String)[2];
+
+        $stack12[0] = "clean";
+
+        $stack12[1] = "install";
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack13 = virtualinvoke $r2.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession,java.lang.String[])>(session, $stack12);
+
+        $r3 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        executionPlan = virtualinvoke $r3.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.util.List getExecutions(org.apache.maven.lifecycle.MavenExecutionPlan)>($stack13);
+
+        $stack16 = interfaceinvoke executionPlan.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(10, $stack16);
+
+        $stack18 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack19 = (org.apache.maven.plugin.MojoExecution) $stack18;
+
+        $stack20 = virtualinvoke $stack19.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack21 = virtualinvoke $stack20.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("clean:clean", $stack21);
+
+        $stack23 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack24 = (org.apache.maven.plugin.MojoExecution) $stack23;
+
+        $stack25 = virtualinvoke $stack24.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack26 = virtualinvoke $stack25.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("resources:resources", $stack26);
+
+        $stack28 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(2);
+
+        $stack29 = (org.apache.maven.plugin.MojoExecution) $stack28;
+
+        $stack30 = virtualinvoke $stack29.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack31 = virtualinvoke $stack30.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("compiler:compile", $stack31);
+
+        $stack33 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(3);
+
+        $stack34 = (org.apache.maven.plugin.MojoExecution) $stack33;
+
+        $stack35 = virtualinvoke $stack34.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack36 = virtualinvoke $stack35.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("it:generate-metadata", $stack36);
+
+        $stack38 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(4);
+
+        $stack39 = (org.apache.maven.plugin.MojoExecution) $stack38;
+
+        $stack40 = virtualinvoke $stack39.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack41 = virtualinvoke $stack40.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("resources:testResources", $stack41);
+
+        $stack43 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(5);
+
+        $stack44 = (org.apache.maven.plugin.MojoExecution) $stack43;
+
+        $stack45 = virtualinvoke $stack44.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack46 = virtualinvoke $stack45.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("compiler:testCompile", $stack46);
+
+        $stack48 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(6);
+
+        $stack49 = (org.apache.maven.plugin.MojoExecution) $stack48;
+
+        $stack50 = virtualinvoke $stack49.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack51 = virtualinvoke $stack50.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("it:generate-test-metadata", $stack51);
+
+        $stack53 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(7);
+
+        $stack54 = (org.apache.maven.plugin.MojoExecution) $stack53;
+
+        $stack55 = virtualinvoke $stack54.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack56 = virtualinvoke $stack55.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("surefire:test", $stack56);
+
+        $stack58 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(8);
+
+        $stack59 = (org.apache.maven.plugin.MojoExecution) $stack58;
+
+        $stack60 = virtualinvoke $stack59.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack61 = virtualinvoke $stack60.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("jar:jar", $stack61);
+
+        $stack63 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(9);
+
+        $stack64 = (org.apache.maven.plugin.MojoExecution) $stack63;
+
+        $stack65 = virtualinvoke $stack64.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack66 = virtualinvoke $stack65.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("install:install", $stack66);
+
+        return;
+    }
+
+    public void testCalculationOfBuildPlanWithMultipleExecutionsOfModello() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject $stack8, $stack11;
+        java.lang.String $stack9, $stack12, $stack22, $stack27, $stack32, $stack37, $stack42, $stack47, $stack52, $stack57, $stack62, $stack67, $stack72, $stack77, $stack82, $stack87, $stack92, $stack97;
+        java.lang.String[] $stack13;
+        org.apache.maven.lifecycle.MavenExecutionPlan plan;
+        java.util.List executions;
+        int $stack17;
+        java.lang.Object $stack19, $stack24, $stack29, $stack34, $stack39, $stack44, $stack49, $stack54, $stack59, $stack64, $stack69, $stack74, $stack79, $stack84, $stack89, $stack94, $stack100, $stack102, $stack105, $stack107;
+        org.apache.maven.plugin.MojoExecution $stack20, $stack25, $stack30, $stack35, $stack40, $stack45, $stack50, $stack55, $stack60, $stack65, $stack70, $stack75, $stack80, $stack85, $stack90, $stack95, $stack101, $stack106;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack21, $stack26, $stack31, $stack36, $stack41, $stack46, $stack51, $stack56, $stack61, $stack66, $stack71, $stack76, $stack81, $stack86, $stack91, $stack96;
+        org.apache.maven.lifecycle.MojoExecutionXPathContainer $u0, $u1;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2, $r3;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("project-with-multiple-executions");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $stack8 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack9 = virtualinvoke $stack8.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("project-with-multiple-executions", $stack9);
+
+        $stack11 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack12 = virtualinvoke $stack11.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("1.0.1", $stack12);
+
+        $stack13 = newarray (java.lang.String)[2];
+
+        $stack13[0] = "clean";
+
+        $stack13[1] = "install";
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        plan = virtualinvoke $r2.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession,java.lang.String[])>(session, $stack13);
+
+        $r3 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        executions = virtualinvoke $r3.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.util.List getExecutions(org.apache.maven.lifecycle.MavenExecutionPlan)>(plan);
+
+        $stack17 = interfaceinvoke executions.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(16, $stack17);
+
+        $stack19 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack20 = (org.apache.maven.plugin.MojoExecution) $stack19;
+
+        $stack21 = virtualinvoke $stack20.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack22 = virtualinvoke $stack21.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("clean:clean", $stack22);
+
+        $stack24 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack25 = (org.apache.maven.plugin.MojoExecution) $stack24;
+
+        $stack26 = virtualinvoke $stack25.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack27 = virtualinvoke $stack26.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("it:xpp3-writer", $stack27);
+
+        $stack29 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(2);
+
+        $stack30 = (org.apache.maven.plugin.MojoExecution) $stack29;
+
+        $stack31 = virtualinvoke $stack30.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack32 = virtualinvoke $stack31.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("it:java", $stack32);
+
+        $stack34 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(3);
+
+        $stack35 = (org.apache.maven.plugin.MojoExecution) $stack34;
+
+        $stack36 = virtualinvoke $stack35.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack37 = virtualinvoke $stack36.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("it:xpp3-reader", $stack37);
+
+        $stack39 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(4);
+
+        $stack40 = (org.apache.maven.plugin.MojoExecution) $stack39;
+
+        $stack41 = virtualinvoke $stack40.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack42 = virtualinvoke $stack41.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("it:xpp3-writer", $stack42);
+
+        $stack44 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(5);
+
+        $stack45 = (org.apache.maven.plugin.MojoExecution) $stack44;
+
+        $stack46 = virtualinvoke $stack45.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack47 = virtualinvoke $stack46.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("it:java", $stack47);
+
+        $stack49 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(6);
+
+        $stack50 = (org.apache.maven.plugin.MojoExecution) $stack49;
+
+        $stack51 = virtualinvoke $stack50.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack52 = virtualinvoke $stack51.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("it:xpp3-reader", $stack52);
+
+        $stack54 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(7);
+
+        $stack55 = (org.apache.maven.plugin.MojoExecution) $stack54;
+
+        $stack56 = virtualinvoke $stack55.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack57 = virtualinvoke $stack56.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("resources:resources", $stack57);
+
+        $stack59 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(8);
+
+        $stack60 = (org.apache.maven.plugin.MojoExecution) $stack59;
+
+        $stack61 = virtualinvoke $stack60.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack62 = virtualinvoke $stack61.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("compiler:compile", $stack62);
+
+        $stack64 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(9);
+
+        $stack65 = (org.apache.maven.plugin.MojoExecution) $stack64;
+
+        $stack66 = virtualinvoke $stack65.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack67 = virtualinvoke $stack66.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("plugin:descriptor", $stack67);
+
+        $stack69 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(10);
+
+        $stack70 = (org.apache.maven.plugin.MojoExecution) $stack69;
+
+        $stack71 = virtualinvoke $stack70.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack72 = virtualinvoke $stack71.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("resources:testResources", $stack72);
+
+        $stack74 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(11);
+
+        $stack75 = (org.apache.maven.plugin.MojoExecution) $stack74;
+
+        $stack76 = virtualinvoke $stack75.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack77 = virtualinvoke $stack76.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("compiler:testCompile", $stack77);
+
+        $stack79 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(12);
+
+        $stack80 = (org.apache.maven.plugin.MojoExecution) $stack79;
+
+        $stack81 = virtualinvoke $stack80.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack82 = virtualinvoke $stack81.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("surefire:test", $stack82);
+
+        $stack84 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(13);
+
+        $stack85 = (org.apache.maven.plugin.MojoExecution) $stack84;
+
+        $stack86 = virtualinvoke $stack85.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack87 = virtualinvoke $stack86.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("jar:jar", $stack87);
+
+        $stack89 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(14);
+
+        $stack90 = (org.apache.maven.plugin.MojoExecution) $stack89;
+
+        $stack91 = virtualinvoke $stack90.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack92 = virtualinvoke $stack91.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("plugin:addPluginArtifactMetadata", $stack92);
+
+        $stack94 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(15);
+
+        $stack95 = (org.apache.maven.plugin.MojoExecution) $stack94;
+
+        $stack96 = virtualinvoke $stack95.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack97 = virtualinvoke $stack96.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("install:install", $stack97);
+
+        $u0 = new org.apache.maven.lifecycle.MojoExecutionXPathContainer;
+
+        $stack100 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack101 = (org.apache.maven.plugin.MojoExecution) $stack100;
+
+        specialinvoke $u0.<org.apache.maven.lifecycle.MojoExecutionXPathContainer: void <init>(org.apache.maven.plugin.MojoExecution)>($stack101);
+
+        $stack102 = virtualinvoke $u0.<org.apache.maven.lifecycle.MojoExecutionXPathContainer: java.lang.Object getValue(java.lang.String)>("configuration/models[1]/model");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("src/main/mdo/remote-resources.mdo", $stack102);
+
+        $u1 = new org.apache.maven.lifecycle.MojoExecutionXPathContainer;
+
+        $stack105 = interfaceinvoke executions.<java.util.List: java.lang.Object get(int)>(4);
+
+        $stack106 = (org.apache.maven.plugin.MojoExecution) $stack105;
+
+        specialinvoke $u1.<org.apache.maven.lifecycle.MojoExecutionXPathContainer: void <init>(org.apache.maven.plugin.MojoExecution)>($stack106);
+
+        $stack107 = virtualinvoke $u1.<org.apache.maven.lifecycle.MojoExecutionXPathContainer: java.lang.Object getValue(java.lang.String)>("configuration/models[1]/model");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("src/main/mdo/supplemental-model.mdo", $stack107);
+
+        return;
+    }
+
+    public void testLifecycleQueryingUsingADefaultLifecyclePhase() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject $stack7, $stack10;
+        java.lang.String $stack8, $stack11, $stack21, $stack26, $stack31, $stack36, $stack41, $stack46, $stack51, $stack56;
+        java.lang.String[] $stack12;
+        org.apache.maven.lifecycle.MavenExecutionPlan $stack13;
+        java.util.List executionPlan;
+        int $stack16;
+        java.lang.Object $stack18, $stack23, $stack28, $stack33, $stack38, $stack43, $stack48, $stack53;
+        org.apache.maven.plugin.MojoExecution $stack19, $stack24, $stack29, $stack34, $stack39, $stack44, $stack49, $stack54;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack20, $stack25, $stack30, $stack35, $stack40, $stack45, $stack50, $stack55;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2, $r3;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("project-with-additional-lifecycle-elements");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $stack7 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack8 = virtualinvoke $stack7.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("project-with-additional-lifecycle-elements", $stack8);
+
+        $stack10 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack11 = virtualinvoke $stack10.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("1.0", $stack11);
+
+        $stack12 = newarray (java.lang.String)[1];
+
+        $stack12[0] = "package";
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack13 = virtualinvoke $r2.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession,java.lang.String[])>(session, $stack12);
+
+        $r3 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        executionPlan = virtualinvoke $r3.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.util.List getExecutions(org.apache.maven.lifecycle.MavenExecutionPlan)>($stack13);
+
+        $stack16 = interfaceinvoke executionPlan.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(8, $stack16);
+
+        $stack18 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack19 = (org.apache.maven.plugin.MojoExecution) $stack18;
+
+        $stack20 = virtualinvoke $stack19.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack21 = virtualinvoke $stack20.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("resources:resources", $stack21);
+
+        $stack23 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack24 = (org.apache.maven.plugin.MojoExecution) $stack23;
+
+        $stack25 = virtualinvoke $stack24.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack26 = virtualinvoke $stack25.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("compiler:compile", $stack26);
+
+        $stack28 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(2);
+
+        $stack29 = (org.apache.maven.plugin.MojoExecution) $stack28;
+
+        $stack30 = virtualinvoke $stack29.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack31 = virtualinvoke $stack30.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("it:generate-metadata", $stack31);
+
+        $stack33 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(3);
+
+        $stack34 = (org.apache.maven.plugin.MojoExecution) $stack33;
+
+        $stack35 = virtualinvoke $stack34.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack36 = virtualinvoke $stack35.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("resources:testResources", $stack36);
+
+        $stack38 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(4);
+
+        $stack39 = (org.apache.maven.plugin.MojoExecution) $stack38;
+
+        $stack40 = virtualinvoke $stack39.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack41 = virtualinvoke $stack40.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("compiler:testCompile", $stack41);
+
+        $stack43 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(5);
+
+        $stack44 = (org.apache.maven.plugin.MojoExecution) $stack43;
+
+        $stack45 = virtualinvoke $stack44.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack46 = virtualinvoke $stack45.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("it:generate-test-metadata", $stack46);
+
+        $stack48 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(6);
+
+        $stack49 = (org.apache.maven.plugin.MojoExecution) $stack48;
+
+        $stack50 = virtualinvoke $stack49.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack51 = virtualinvoke $stack50.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("surefire:test", $stack51);
+
+        $stack53 = interfaceinvoke executionPlan.<java.util.List: java.lang.Object get(int)>(7);
+
+        $stack54 = (org.apache.maven.plugin.MojoExecution) $stack53;
+
+        $stack55 = virtualinvoke $stack54.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack56 = virtualinvoke $stack55.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getFullGoalName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("jar:jar", $stack56);
+
+        return;
+    }
+
+    public void testLifecyclePluginsRetrievalForDefaultLifecycle() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        org.apache.maven.lifecycle.DefaultLifecycleExecutor $stack3;
+        java.util.Set $stack4;
+        java.lang.String $stack5;
+        org.hamcrest.Matcher $stack6;
+        java.util.ArrayList $u0;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0;
+
+        this := @this: LifecycleExecutorTest;
+
+        $u0 = new java.util.ArrayList;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack3 = $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.DefaultLifecycleExecutor lifecycleExecutor>;
+
+        $stack4 = virtualinvoke $stack3.<org.apache.maven.lifecycle.DefaultLifecycleExecutor: java.util.Set getPluginsBoundByDefaultToAllLifecycles(java.lang.String)>("jar");
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(java.util.Collection)>($stack4);
+
+        $stack5 = virtualinvoke $u0.<java.lang.Object: java.lang.String toString()>();
+
+        $stack6 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher hasSize(int)>(9);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.String,java.lang.Object,org.hamcrest.Matcher)>($stack5, $u0, $stack6);
+
+        return;
+    }
+
+    public void testPluginConfigurationCreation() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.lifecycle.internal.MojoDescriptorCreator $stack7;
+        org.apache.maven.project.MavenProject $stack9;
+        org.apache.maven.plugin.descriptor.MojoDescriptor mojoDescriptor;
+        org.codehaus.plexus.util.xml.Xpp3Dom dom;
+        java.io.PrintStream $stack12;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("project-with-additional-lifecycle-elements");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack7 = $r2.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.internal.MojoDescriptorCreator mojoDescriptorCreator>;
+
+        $stack9 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        mojoDescriptor = virtualinvoke $stack7.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor(java.lang.String,org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject)>("org.apache.maven.its.plugins:maven-it-plugin:0.1:java", session, $stack9);
+
+        dom = staticinvoke <org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.codehaus.plexus.util.xml.Xpp3Dom convert(org.apache.maven.plugin.descriptor.MojoDescriptor)>(mojoDescriptor);
+
+        $stack12 = <java.lang.System: java.io.PrintStream out>;
+
+        virtualinvoke $stack12.<java.io.PrintStream: void println(java.lang.Object)>(dom);
+
+        return;
+    }
+
+    transient org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession, java.lang.String[]) throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.String[] tasks;
+        org.apache.maven.lifecycle.internal.DefaultLifecycleTaskSegmentCalculator $stack7;
+        java.util.List $stack8, taskSegments, $stack15, $stack18, $stack19;
+        java.util.Iterator l5;
+        boolean $stack12;
+        org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator $stack13;
+        org.apache.maven.project.MavenProject $stack14;
+        org.apache.maven.lifecycle.MavenExecutionPlan $stack16;
+        java.lang.Object $stack17;
+        org.apache.maven.lifecycle.internal.TaskSegment taskSegment, $u0;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1;
+
+        this := @this: LifecycleExecutorTest;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        tasks := @parameter1: java.lang.String[];
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack7 = $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.internal.DefaultLifecycleTaskSegmentCalculator lifeCycleTaskSegmentCalculator>;
+
+        $stack8 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>(tasks);
+
+        taskSegments = virtualinvoke $stack7.<org.apache.maven.lifecycle.internal.DefaultLifecycleTaskSegmentCalculator: java.util.List calculateTaskSegments(org.apache.maven.execution.MavenSession,java.util.List)>(session, $stack8);
+
+        $u0 = new org.apache.maven.lifecycle.internal.TaskSegment;
+
+        specialinvoke $u0.<org.apache.maven.lifecycle.internal.TaskSegment: void <init>(boolean)>(0);
+
+        l5 = interfaceinvoke taskSegments.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack12 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack12 == 0 goto label2;
+
+        $stack17 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        taskSegment = (org.apache.maven.lifecycle.internal.TaskSegment) $stack17;
+
+        $stack18 = virtualinvoke $u0.<org.apache.maven.lifecycle.internal.TaskSegment: java.util.List getTasks()>();
+
+        $stack19 = virtualinvoke taskSegment.<org.apache.maven.lifecycle.internal.TaskSegment: java.util.List getTasks()>();
+
+        interfaceinvoke $stack18.<java.util.List: boolean addAll(java.util.Collection)>($stack19);
+
+        goto label1;
+
+     label2:
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack13 = $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator lifeCycleExecutionPlanCalculator>;
+
+        $stack14 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack15 = virtualinvoke $u0.<org.apache.maven.lifecycle.internal.TaskSegment: java.util.List getTasks()>();
+
+        $stack16 = interfaceinvoke $stack13.<org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator: org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject,java.util.List)>(session, $stack14, $stack15);
+
+        return $stack16;
+    }
+
+    public void testInvalidGoalName() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.junit.jupiter.api.function.Executable $stack7, $stack12;
+        java.lang.Throwable $stack8, $stack13;
+        java.lang.String $stack10, $stack15;
+        org.apache.maven.plugin.MojoNotFoundException e;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2, $r3;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("project-basic");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack7 = staticinvoke <LifecycleExecutorTest$lambda_testInvalidGoalName_0__309: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.lifecycle.LifecycleExecutorTest,org.apache.maven.execution.MavenSession)>($r2, session);
+
+        $stack8 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/plugin/MojoNotFoundException;", $stack7, "expected a MojoNotFoundException");
+
+        e = (org.apache.maven.plugin.MojoNotFoundException) $stack8;
+
+        $stack10 = virtualinvoke e.<org.apache.maven.plugin.MojoNotFoundException: java.lang.String getGoal()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("", $stack10);
+
+        $r3 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack12 = staticinvoke <LifecycleExecutorTest$lambda_testInvalidGoalName_1__310: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.lifecycle.LifecycleExecutorTest,org.apache.maven.execution.MavenSession)>($r3, session);
+
+        $stack13 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/plugin/MojoNotFoundException;", $stack12, "expected a MojoNotFoundException");
+
+        e = (org.apache.maven.plugin.MojoNotFoundException) $stack13;
+
+        $stack15 = virtualinvoke e.<org.apache.maven.plugin.MojoNotFoundException: java.lang.String getGoal()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("resources:toomany", $stack15);
+
+        return;
+    }
+
+    public void testPluginPrefixRetrieval() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.lifecycle.internal.MojoDescriptorCreator $stack6;
+        org.apache.maven.model.Plugin plugin;
+        java.lang.String $stack9, $stack11;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("project-basic");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack6 = $r2.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.internal.MojoDescriptorCreator mojoDescriptorCreator>;
+
+        plugin = virtualinvoke $stack6.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.model.Plugin findPluginForPrefix(java.lang.String,org.apache.maven.execution.MavenSession)>("resources", session);
+
+        $stack9 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("org.apache.maven.plugins", $stack9);
+
+        $stack11 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("maven-resources-plugin", $stack11);
+
+        return;
+    }
+
+    public void testFindingPluginPrefixforCleanClean() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.lifecycle.internal.MojoDescriptorCreator $stack6;
+        org.apache.maven.model.Plugin plugin;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("project-basic");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack6 = $r2.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.internal.MojoDescriptorCreator mojoDescriptorCreator>;
+
+        plugin = virtualinvoke $stack6.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.model.Plugin findPluginForPrefix(java.lang.String,org.apache.maven.execution.MavenSession)>("clean", session);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(plugin);
+
+        return;
+    }
+
+    public void testSetupMojoExecution() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator $stack9, $stack20;
+        org.apache.maven.project.MavenProject $stack10, $stack21;
+        java.lang.Object[] $stack11;
+        java.util.List $stack12, $stack14;
+        org.apache.maven.lifecycle.MavenExecutionPlan executionPlan;
+        java.lang.Object $stack15;
+        org.apache.maven.plugin.MojoExecution execution;
+        java.lang.String $stack17, $stack18, $stack27;
+        org.codehaus.plexus.util.xml.Xpp3Dom $stack19, $stack23, $stack25, $stack26;
+        org.apache.maven.lifecycle.internal.LifecycleTask $u0;
+        java.util.HashSet $u1;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2, $r3;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("mojo-configuration");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $u0 = new org.apache.maven.lifecycle.internal.LifecycleTask;
+
+        specialinvoke $u0.<org.apache.maven.lifecycle.internal.LifecycleTask: void <init>(java.lang.String)>("generate-sources");
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack9 = $r2.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator lifeCycleExecutionPlanCalculator>;
+
+        $stack10 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack11 = newarray (java.lang.Object)[1];
+
+        $stack11[0] = $u0;
+
+        $stack12 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack11);
+
+        executionPlan = interfaceinvoke $stack9.<org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator: org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject,java.util.List,boolean)>(session, $stack10, $stack12, 0);
+
+        $stack14 = virtualinvoke executionPlan.<org.apache.maven.lifecycle.MavenExecutionPlan: java.util.List getMojoExecutions()>();
+
+        $stack15 = interfaceinvoke $stack14.<java.util.List: java.lang.Object get(int)>(0);
+
+        execution = (org.apache.maven.plugin.MojoExecution) $stack15;
+
+        $stack17 = virtualinvoke execution.<org.apache.maven.plugin.MojoExecution: java.lang.String getArtifactId()>();
+
+        $stack18 = virtualinvoke execution.<org.apache.maven.plugin.MojoExecution: java.lang.String toString()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object,java.lang.String)>("maven-it-plugin", $stack17, $stack18);
+
+        $stack19 = virtualinvoke execution.<org.apache.maven.plugin.MojoExecution: org.codehaus.plexus.util.xml.Xpp3Dom getConfiguration()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNull(java.lang.Object)>($stack19);
+
+        $r3 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack20 = $r3.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator lifeCycleExecutionPlanCalculator>;
+
+        $stack21 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $u1 = new java.util.HashSet;
+
+        specialinvoke $u1.<java.util.HashSet: void <init>()>();
+
+        interfaceinvoke $stack20.<org.apache.maven.lifecycle.internal.LifecycleExecutionPlanCalculator: void setupMojoExecution(org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject,org.apache.maven.plugin.MojoExecution,java.util.Set)>(session, $stack21, execution, $u1);
+
+        $stack23 = virtualinvoke execution.<org.apache.maven.plugin.MojoExecution: org.codehaus.plexus.util.xml.Xpp3Dom getConfiguration()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack23);
+
+        $stack25 = virtualinvoke execution.<org.apache.maven.plugin.MojoExecution: org.codehaus.plexus.util.xml.Xpp3Dom getConfiguration()>();
+
+        $stack26 = virtualinvoke $stack25.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom getChild(java.lang.String)>("version");
+
+        $stack27 = virtualinvoke $stack26.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getAttribute(java.lang.String)>("default-value");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("1.0", $stack27);
+
+        return;
+    }
+
+    public void testExecutionListeners() throws java.lang.Exception
+    {
+        LifecycleExecutorTest this;
+        java.io.File pom;
+        org.apache.maven.execution.MavenSession session;
+        org.codehaus.plexus.PlexusContainer $stack13, $stack16, $stack20, $stack23, $stack29, $stack32;
+        java.lang.Object $stack14, $stack17, $stack21, $stack24, $stack30, $stack33;
+        org.apache.maven.lifecycle.DelegatingProjectExecutionListener $stack15, $stack22, $stack31;
+        org.apache.maven.lifecycle.DelegatingMojoExecutionListener $stack18, $stack25, $stack34;
+        org.apache.maven.lifecycle.DefaultLifecycleExecutor $stack19;
+        java.lang.String[] $stack26;
+        java.lang.Throwable $stack28;
+        java.util.List expectedLog#2;
+        org.apache.maven.lifecycle.LifecycleExecutorTest$1 $u0;
+        java.util.ArrayList $u1;
+        org.apache.maven.lifecycle.LifecycleExecutorTest$2 $u2;
+        org.apache.maven.lifecycle.LifecycleExecutorTest$3 $u3;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1, $r2, $r4, $r5, $r6, $r8, $r10, $r11, $r13, $r15, $r17;
+        org.apache.maven.execution.ProjectDependencyGraph $r3;
+        org.apache.maven.execution.ProjectExecutionListener $r7, $r12, $r16;
+        org.apache.maven.execution.MojoExecutionListener $r9, $r14, $r18;
+
+        this := @this: LifecycleExecutorTest;
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        pom = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.io.File getProject(java.lang.String)>("project-basic");
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        session = virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(pom);
+
+        $u0 = new org.apache.maven.lifecycle.LifecycleExecutorTest$1;
+
+        $r2 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        specialinvoke $u0.<org.apache.maven.lifecycle.LifecycleExecutorTest$1: void <init>(org.apache.maven.lifecycle.LifecycleExecutorTest,org.apache.maven.execution.MavenSession)>($r2, session);
+
+        $r3 = (org.apache.maven.execution.ProjectDependencyGraph) $u0;
+
+        virtualinvoke session.<org.apache.maven.execution.MavenSession: void setProjectDependencyGraph(org.apache.maven.execution.ProjectDependencyGraph)>($r3);
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        $u2 = new org.apache.maven.lifecycle.LifecycleExecutorTest$2;
+
+        $r4 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        specialinvoke $u2.<org.apache.maven.lifecycle.LifecycleExecutorTest$2: void <init>(org.apache.maven.lifecycle.LifecycleExecutorTest,java.util.List)>($r4, $u1);
+
+        $u3 = new org.apache.maven.lifecycle.LifecycleExecutorTest$3;
+
+        $r5 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        specialinvoke $u3.<org.apache.maven.lifecycle.LifecycleExecutorTest$3: void <init>(org.apache.maven.lifecycle.LifecycleExecutorTest,java.util.List)>($r5, $u1);
+
+        $r6 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack13 = virtualinvoke $r6.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        $stack14 = interfaceinvoke $stack13.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/apache/maven/lifecycle/DelegatingProjectExecutionListener;");
+
+        $stack15 = (org.apache.maven.lifecycle.DelegatingProjectExecutionListener) $stack14;
+
+        $r7 = (org.apache.maven.execution.ProjectExecutionListener) $u3;
+
+        virtualinvoke $stack15.<org.apache.maven.lifecycle.DelegatingProjectExecutionListener: void addProjectExecutionListener(org.apache.maven.execution.ProjectExecutionListener)>($r7);
+
+        $r8 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack16 = virtualinvoke $r8.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        $stack17 = interfaceinvoke $stack16.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/apache/maven/lifecycle/DelegatingMojoExecutionListener;");
+
+        $stack18 = (org.apache.maven.lifecycle.DelegatingMojoExecutionListener) $stack17;
+
+        $r9 = (org.apache.maven.execution.MojoExecutionListener) $u2;
+
+        virtualinvoke $stack18.<org.apache.maven.lifecycle.DelegatingMojoExecutionListener: void addMojoExecutionListener(org.apache.maven.execution.MojoExecutionListener)>($r9);
+
+     label1:
+        $r10 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack19 = $r10.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.DefaultLifecycleExecutor lifecycleExecutor>;
+
+        virtualinvoke $stack19.<org.apache.maven.lifecycle.DefaultLifecycleExecutor: void execute(org.apache.maven.execution.MavenSession)>(session);
+
+     label2:
+        $r11 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack20 = virtualinvoke $r11.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        $stack21 = interfaceinvoke $stack20.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/apache/maven/lifecycle/DelegatingProjectExecutionListener;");
+
+        $stack22 = (org.apache.maven.lifecycle.DelegatingProjectExecutionListener) $stack21;
+
+        $r12 = (org.apache.maven.execution.ProjectExecutionListener) $u3;
+
+        virtualinvoke $stack22.<org.apache.maven.lifecycle.DelegatingProjectExecutionListener: void removeProjectExecutionListener(org.apache.maven.execution.ProjectExecutionListener)>($r12);
+
+        $r13 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack23 = virtualinvoke $r13.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        $stack24 = interfaceinvoke $stack23.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/apache/maven/lifecycle/DelegatingMojoExecutionListener;");
+
+        $stack25 = (org.apache.maven.lifecycle.DelegatingMojoExecutionListener) $stack24;
+
+        $r14 = (org.apache.maven.execution.MojoExecutionListener) $u2;
+
+        virtualinvoke $stack25.<org.apache.maven.lifecycle.DelegatingMojoExecutionListener: void removeMojoExecutionListener(org.apache.maven.execution.MojoExecutionListener)>($r14);
+
+        goto label5;
+
+     label3:
+        $stack28 := @caughtexception;
+
+     label4:
+        $r15 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack29 = virtualinvoke $r15.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        $stack30 = interfaceinvoke $stack29.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/apache/maven/lifecycle/DelegatingProjectExecutionListener;");
+
+        $stack31 = (org.apache.maven.lifecycle.DelegatingProjectExecutionListener) $stack30;
+
+        $r16 = (org.apache.maven.execution.ProjectExecutionListener) $u3;
+
+        virtualinvoke $stack31.<org.apache.maven.lifecycle.DelegatingProjectExecutionListener: void removeProjectExecutionListener(org.apache.maven.execution.ProjectExecutionListener)>($r16);
+
+        $r17 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack32 = virtualinvoke $r17.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        $stack33 = interfaceinvoke $stack32.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/apache/maven/lifecycle/DelegatingMojoExecutionListener;");
+
+        $stack34 = (org.apache.maven.lifecycle.DelegatingMojoExecutionListener) $stack33;
+
+        $r18 = (org.apache.maven.execution.MojoExecutionListener) $u2;
+
+        virtualinvoke $stack34.<org.apache.maven.lifecycle.DelegatingMojoExecutionListener: void removeMojoExecutionListener(org.apache.maven.execution.MojoExecutionListener)>($r18);
+
+        throw $stack28;
+
+     label5:
+        $stack26 = newarray (java.lang.String)[15];
+
+        $stack26[0] = "beforeProjectExecution project-basic";
+
+        $stack26[1] = "beforeProjectLifecycleExecution project-basic";
+
+        $stack26[2] = "beforeMojoExecution project-basic:default-resources";
+
+        $stack26[3] = "afterMojoExecutionSuccess project-basic:default-resources";
+
+        $stack26[4] = "beforeMojoExecution project-basic:default-compile";
+
+        $stack26[5] = "afterMojoExecutionSuccess project-basic:default-compile";
+
+        $stack26[6] = "beforeMojoExecution project-basic:default-testResources";
+
+        $stack26[7] = "afterMojoExecutionSuccess project-basic:default-testResources";
+
+        $stack26[8] = "beforeMojoExecution project-basic:default-testCompile";
+
+        $stack26[9] = "afterMojoExecutionSuccess project-basic:default-testCompile";
+
+        $stack26[10] = "beforeMojoExecution project-basic:default-test";
+
+        $stack26[11] = "afterMojoExecutionSuccess project-basic:default-test";
+
+        $stack26[12] = "beforeMojoExecution project-basic:default-jar";
+
+        $stack26[13] = "afterMojoExecutionSuccess project-basic:default-jar";
+
+        $stack26[14] = "afterProjectExecutionSuccess project-basic";
+
+        expectedLog#2 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack26);
+
+        staticinvoke <org.apache.maven.lifecycle.LifecycleExecutorTest: void assertEventLog(java.util.List,java.util.List)>(expectedLog#2, $u1);
+
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    private static void assertEventLog(java.util.List, java.util.List)
+    {
+        java.util.List expectedList, actualList;
+        java.lang.String $stack2, $stack3;
+
+        expectedList := @parameter0: java.util.List;
+
+        actualList := @parameter1: java.util.List;
+
+        $stack2 = staticinvoke <org.apache.maven.lifecycle.LifecycleExecutorTest: java.lang.String toString(java.util.List)>(expectedList);
+
+        $stack3 = staticinvoke <org.apache.maven.lifecycle.LifecycleExecutorTest: java.lang.String toString(java.util.List)>(actualList);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack2, $stack3);
+
+        return;
+    }
+
+    private static java.lang.String toString(java.util.List)
+    {
+        java.lang.StringBuilder $stack4, $stack9;
+        java.util.List lines;
+        java.util.Iterator l2;
+        boolean $stack6;
+        java.lang.String $stack7, line;
+        java.lang.Object $stack8;
+
+        lines := @parameter0: java.util.List;
+
+        $stack4 = new java.lang.StringBuilder;
+
+        specialinvoke $stack4.<java.lang.StringBuilder: void <init>()>();
+
+        l2 = interfaceinvoke lines.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label2;
+
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        line = (java.lang.String) $stack8;
+
+        $stack9 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(line);
+
+        virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(10);
+
+        goto label1;
+
+     label2:
+        $stack7 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack7;
+    }
+
+    private void lambda$testInvalidGoalName$1(org.apache.maven.execution.MavenSession) throws java.lang.Throwable
+    {
+        LifecycleExecutorTest this;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.String[] $stack2;
+        org.apache.maven.lifecycle.MavenExecutionPlan $stack3;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1;
+
+        this := @this: LifecycleExecutorTest;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $stack2 = newarray (java.lang.String)[1];
+
+        $stack2[0] = "org.apache.maven.plugins:maven-resources-plugin:0.1:resources:toomany";
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack3 = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession,java.lang.String[])>(session, $stack2);
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.util.List getExecutions(org.apache.maven.lifecycle.MavenExecutionPlan)>($stack3);
+
+        return;
+    }
+
+    private void lambda$testInvalidGoalName$0(org.apache.maven.execution.MavenSession) throws java.lang.Throwable
+    {
+        LifecycleExecutorTest this;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.String[] $stack2;
+        org.apache.maven.lifecycle.MavenExecutionPlan $stack3;
+        org.apache.maven.lifecycle.LifecycleExecutorTest $r0, $r1;
+
+        this := @this: LifecycleExecutorTest;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $stack2 = newarray (java.lang.String)[1];
+
+        $stack2[0] = "resources:";
+
+        $r0 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        $stack3 = virtualinvoke $r0.<org.apache.maven.lifecycle.LifecycleExecutorTest: org.apache.maven.lifecycle.MavenExecutionPlan calculateExecutionPlan(org.apache.maven.execution.MavenSession,java.lang.String[])>(session, $stack2);
+
+        $r1 = (org.apache.maven.lifecycle.LifecycleExecutorTest) this;
+
+        virtualinvoke $r1.<org.apache.maven.lifecycle.LifecycleExecutorTest: java.util.List getExecutions(org.apache.maven.lifecycle.MavenExecutionPlan)>($stack3);
+
+        return;
+    }
+}

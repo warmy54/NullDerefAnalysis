@@ -1,0 +1,280 @@
+public class DefaultBuildResumptionDataRepositoryTest extends java.lang.Object
+{
+    private final org.apache.maven.execution.DefaultBuildResumptionDataRepository repository;
+
+    public void <init>()
+    {
+        DefaultBuildResumptionDataRepositoryTest this;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepository $u0;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest $r0;
+
+        this := @this: DefaultBuildResumptionDataRepositoryTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new org.apache.maven.execution.DefaultBuildResumptionDataRepository;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultBuildResumptionDataRepository: void <init>()>();
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest) this;
+
+        $r0.<org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest: org.apache.maven.execution.DefaultBuildResumptionDataRepository repository> = $u0;
+
+        return;
+    }
+
+    public void resumeFromPropertyGetsApplied()
+    {
+        DefaultBuildResumptionDataRepositoryTest this;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepository $stack6;
+        java.util.List $stack7, $stack9;
+        java.lang.String[] $stack8;
+        org.hamcrest.Matcher $stack10;
+        org.apache.maven.execution.DefaultMavenExecutionRequest $u0;
+        java.util.Properties $u1;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest $r0;
+        org.apache.maven.execution.MavenExecutionRequest $r1, $r2;
+
+        this := @this: DefaultBuildResumptionDataRepositoryTest;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: void <init>()>();
+
+        $u1 = new java.util.Properties;
+
+        specialinvoke $u1.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u1.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("remainingProjects", ":module-a");
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest) this;
+
+        $stack6 = $r0.<org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest: org.apache.maven.execution.DefaultBuildResumptionDataRepository repository>;
+
+        $r1 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        virtualinvoke $stack6.<org.apache.maven.execution.DefaultBuildResumptionDataRepository: void applyResumptionProperties(org.apache.maven.execution.MavenExecutionRequest,java.util.Properties)>($r1, $u1);
+
+        $r2 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        $stack7 = interfaceinvoke $r2.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getSelectedProjects()>();
+
+        $stack8 = newarray (java.lang.String)[1];
+
+        $stack8[0] = ":module-a";
+
+        $stack9 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack8);
+
+        $stack10 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack9);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack7, $stack10);
+
+        return;
+    }
+
+    public void resumeFromPropertyDoesNotOverrideExistingRequestParameters()
+    {
+        DefaultBuildResumptionDataRepositoryTest this;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepository $stack7;
+        java.lang.String $stack8;
+        org.hamcrest.Matcher $stack9;
+        org.apache.maven.execution.DefaultMavenExecutionRequest $u0;
+        java.util.Properties $u1;
+        org.apache.maven.execution.MavenExecutionRequest $r0, $r2, $r3;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest $r1;
+
+        this := @this: DefaultBuildResumptionDataRepositoryTest;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: void <init>()>();
+
+        $r0 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setResumeFrom(java.lang.String)>(":module-b");
+
+        $u1 = new java.util.Properties;
+
+        specialinvoke $u1.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u1.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("remainingProjects", ":module-a");
+
+        $r1 = (org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest) this;
+
+        $stack7 = $r1.<org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest: org.apache.maven.execution.DefaultBuildResumptionDataRepository repository>;
+
+        $r2 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        virtualinvoke $stack7.<org.apache.maven.execution.DefaultBuildResumptionDataRepository: void applyResumptionProperties(org.apache.maven.execution.MavenExecutionRequest,java.util.Properties)>($r2, $u1);
+
+        $r3 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        $stack8 = interfaceinvoke $r3.<org.apache.maven.execution.MavenExecutionRequest: java.lang.String getResumeFrom()>();
+
+        $stack9 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>(":module-b");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack8, $stack9);
+
+        return;
+    }
+
+    public void projectsFromPropertyGetsAddedToExistingRequestParameters()
+    {
+        DefaultBuildResumptionDataRepositoryTest this;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepository $stack10;
+        java.util.List $stack11;
+        java.lang.String[] $stack12;
+        org.hamcrest.Matcher $stack13;
+        org.apache.maven.execution.DefaultMavenExecutionRequest $u0;
+        java.util.ArrayList $u1;
+        java.util.Properties $u2;
+        org.apache.maven.execution.MavenExecutionRequest $r0, $r2, $r3;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest $r1;
+
+        this := @this: DefaultBuildResumptionDataRepositoryTest;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: void <init>()>();
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        interfaceinvoke $u1.<java.util.List: boolean add(java.lang.Object)>(":module-a");
+
+        $r0 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setSelectedProjects(java.util.List)>($u1);
+
+        $u2 = new java.util.Properties;
+
+        specialinvoke $u2.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u2.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("remainingProjects", ":module-b, :module-c");
+
+        $r1 = (org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest) this;
+
+        $stack10 = $r1.<org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest: org.apache.maven.execution.DefaultBuildResumptionDataRepository repository>;
+
+        $r2 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        virtualinvoke $stack10.<org.apache.maven.execution.DefaultBuildResumptionDataRepository: void applyResumptionProperties(org.apache.maven.execution.MavenExecutionRequest,java.util.Properties)>($r2, $u2);
+
+        $r3 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        $stack11 = interfaceinvoke $r3.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getSelectedProjects()>();
+
+        $stack12 = newarray (java.lang.String)[3];
+
+        $stack12[0] = ":module-a";
+
+        $stack12[1] = ":module-b";
+
+        $stack12[2] = ":module-c";
+
+        $stack13 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack12);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack11, $stack13);
+
+        return;
+    }
+
+    public void selectedProjectsAreNotAddedWhenPropertyValueIsEmpty()
+    {
+        DefaultBuildResumptionDataRepositoryTest this;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepository $stack6;
+        java.util.List $stack7;
+        org.hamcrest.Matcher $stack8, $stack9;
+        org.apache.maven.execution.DefaultMavenExecutionRequest $u0;
+        java.util.Properties $u1;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest $r0;
+        org.apache.maven.execution.MavenExecutionRequest $r1, $r2;
+
+        this := @this: DefaultBuildResumptionDataRepositoryTest;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: void <init>()>();
+
+        $u1 = new java.util.Properties;
+
+        specialinvoke $u1.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u1.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("remainingProjects", "");
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest) this;
+
+        $stack6 = $r0.<org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest: org.apache.maven.execution.DefaultBuildResumptionDataRepository repository>;
+
+        $r1 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        virtualinvoke $stack6.<org.apache.maven.execution.DefaultBuildResumptionDataRepository: void applyResumptionProperties(org.apache.maven.execution.MavenExecutionRequest,java.util.Properties)>($r1, $u1);
+
+        $r2 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        $stack7 = interfaceinvoke $r2.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getSelectedProjects()>();
+
+        $stack8 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher empty()>();
+
+        $stack9 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack8);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack7, $stack9);
+
+        return;
+    }
+
+    public void applyResumptionData_shouldLoadData()
+    {
+        DefaultBuildResumptionDataRepositoryTest this;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepository $stack7;
+        java.util.List $stack8;
+        java.lang.String[] $stack9;
+        org.hamcrest.Matcher $stack10;
+        org.apache.maven.execution.DefaultMavenExecutionRequest $u0;
+        org.apache.maven.model.Build $u1;
+        org.apache.maven.project.MavenProject $u2;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest $r0;
+        org.apache.maven.execution.MavenExecutionRequest $r1, $r2;
+
+        this := @this: DefaultBuildResumptionDataRepositoryTest;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: void <init>()>();
+
+        $u1 = new org.apache.maven.model.Build;
+
+        specialinvoke $u1.<org.apache.maven.model.Build: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Build: void setDirectory(java.lang.String)>("src/test/resources/org/apache/maven/execution/");
+
+        $u2 = new org.apache.maven.project.MavenProject;
+
+        specialinvoke $u2.<org.apache.maven.project.MavenProject: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.project.MavenProject: void setBuild(org.apache.maven.model.Build)>($u1);
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest) this;
+
+        $stack7 = $r0.<org.apache.maven.execution.DefaultBuildResumptionDataRepositoryTest: org.apache.maven.execution.DefaultBuildResumptionDataRepository repository>;
+
+        $r1 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        virtualinvoke $stack7.<org.apache.maven.execution.DefaultBuildResumptionDataRepository: void applyResumptionData(org.apache.maven.execution.MavenExecutionRequest,org.apache.maven.project.MavenProject)>($r1, $u2);
+
+        $r2 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        $stack8 = interfaceinvoke $r2.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getSelectedProjects()>();
+
+        $stack9 = newarray (java.lang.String)[1];
+
+        $stack9[0] = "example:module-c";
+
+        $stack10 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack9);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack8, $stack10);
+
+        return;
+    }
+}

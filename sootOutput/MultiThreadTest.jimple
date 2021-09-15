@@ -1,0 +1,176 @@
+class MultiThreadTest extends java.lang.Object
+{
+    private final java.util.concurrent.atomic.AtomicInteger counter;
+
+    void <init>()
+    {
+        MultiThreadTest this;
+        java.util.concurrent.atomic.AtomicInteger $u0;
+        sortpom.sort.MultiThreadTest $r0;
+
+        this := @this: MultiThreadTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.concurrent.atomic.AtomicInteger;
+
+        specialinvoke $u0.<java.util.concurrent.atomic.AtomicInteger: void <init>(int)>(1);
+
+        $r0 = (sortpom.sort.MultiThreadTest) this;
+
+        $r0.<sortpom.sort.MultiThreadTest: java.util.concurrent.atomic.AtomicInteger counter> = $u0;
+
+        return;
+    }
+
+    final void multipleSortingsShouldNotInterfereWithEachOther() throws java.lang.InterruptedException, java.util.concurrent.ExecutionException
+    {
+        MultiThreadTest this;
+        int a;
+        java.util.concurrent.ScheduledThreadPoolExecutor $u0;
+        sortpom.sort.MultiThreadTest $r0;
+
+        this := @this: MultiThreadTest;
+
+        $u0 = new java.util.concurrent.ScheduledThreadPoolExecutor;
+
+        specialinvoke $u0.<java.util.concurrent.ScheduledThreadPoolExecutor: void <init>(int)>(10);
+
+        a = 0;
+
+     label1:
+        if a >= 10 goto label2;
+
+        $r0 = (sortpom.sort.MultiThreadTest) this;
+
+        specialinvoke $r0.<sortpom.sort.MultiThreadTest: void testOneConcurrentLoop(java.util.concurrent.ExecutorService)>($u0);
+
+        a = a + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    private void testOneConcurrentLoop(java.util.concurrent.ExecutorService) throws java.lang.InterruptedException, java.util.concurrent.ExecutionException
+    {
+        MultiThreadTest this;
+        java.util.List testThreads, futures;
+        java.util.concurrent.ExecutorService executorService;
+        sortpom.sort.MultiThreadTest $r0, $r1;
+
+        this := @this: MultiThreadTest;
+
+        executorService := @parameter0: java.util.concurrent.ExecutorService;
+
+        $r0 = (sortpom.sort.MultiThreadTest) this;
+
+        testThreads = specialinvoke $r0.<sortpom.sort.MultiThreadTest: java.util.List getTestThreads()>();
+
+        futures = interfaceinvoke executorService.<java.util.concurrent.ExecutorService: java.util.List invokeAll(java.util.Collection)>(testThreads);
+
+        $r1 = (sortpom.sort.MultiThreadTest) this;
+
+        specialinvoke $r1.<sortpom.sort.MultiThreadTest: void assertAllThreadsReturnedTrue(java.util.List)>(futures);
+
+        return;
+    }
+
+    private java.util.List getTestThreads()
+    {
+        MultiThreadTest this;
+        java.util.ArrayList $u0;
+        sortpom.sort.MultiThreadTest$TestThread $u1, $u2, $u3, $u4;
+        sortpom.sort.MultiThreadTest $r0, $r1, $r2, $r3;
+
+        this := @this: MultiThreadTest;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $u1 = new sortpom.sort.MultiThreadTest$TestThread;
+
+        $r0 = (sortpom.sort.MultiThreadTest) this;
+
+        specialinvoke $u1.<sortpom.sort.MultiThreadTest$TestThread: void <init>(sortpom.sort.MultiThreadTest,java.lang.String,java.lang.String,java.lang.String)>($r0, "/full_unsorted_input.xml", "/sortOrderFiles/sorted_default_0_4_0.xml", "default_0_4_0");
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($u1);
+
+        $u2 = new sortpom.sort.MultiThreadTest$TestThread;
+
+        $r1 = (sortpom.sort.MultiThreadTest) this;
+
+        specialinvoke $u2.<sortpom.sort.MultiThreadTest$TestThread: void <init>(sortpom.sort.MultiThreadTest,java.lang.String,java.lang.String,java.lang.String)>($r1, "/full_unsorted_input.xml", "/sortOrderFiles/sorted_custom_1.xml", "custom_1");
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($u2);
+
+        $u3 = new sortpom.sort.MultiThreadTest$TestThread;
+
+        $r2 = (sortpom.sort.MultiThreadTest) this;
+
+        specialinvoke $u3.<sortpom.sort.MultiThreadTest$TestThread: void <init>(sortpom.sort.MultiThreadTest,java.lang.String,java.lang.String,java.lang.String)>($r2, "/full_unsorted_input.xml", "/sortOrderFiles/sorted_recommended_2008_06.xml", "recommended_2008_06");
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($u3);
+
+        $u4 = new sortpom.sort.MultiThreadTest$TestThread;
+
+        $r3 = (sortpom.sort.MultiThreadTest) this;
+
+        specialinvoke $u4.<sortpom.sort.MultiThreadTest$TestThread: void <init>(sortpom.sort.MultiThreadTest,java.lang.String,java.lang.String,java.lang.String)>($r3, "/full_unsorted_input.xml", "/sortOrderFiles/sorted_default_1_0_0.xml", "default_1_0_0");
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($u4);
+
+        return $u0;
+    }
+
+    private void assertAllThreadsReturnedTrue(java.util.List) throws java.lang.InterruptedException, java.util.concurrent.ExecutionException
+    {
+        java.util.List futures;
+        java.util.Iterator l2;
+        boolean $stack5;
+        java.lang.Object $stack6, $stack8;
+        java.util.concurrent.Future future;
+        java.lang.Boolean $stack7;
+        MultiThreadTest this;
+
+        this := @this: MultiThreadTest;
+
+        futures := @parameter0: java.util.List;
+
+        l2 = interfaceinvoke futures.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack5 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack5 == 0 goto label2;
+
+        $stack6 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        future = (java.util.concurrent.Future) $stack6;
+
+        $stack7 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        $stack8 = interfaceinvoke future.<java.util.concurrent.Future: java.lang.Object get()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack7, $stack8);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    static java.util.concurrent.atomic.AtomicInteger access$000(sortpom.sort.MultiThreadTest)
+    {
+        sortpom.sort.MultiThreadTest x0;
+        java.util.concurrent.atomic.AtomicInteger $stack1;
+
+        x0 := @parameter0: sortpom.sort.MultiThreadTest;
+
+        $stack1 = x0.<sortpom.sort.MultiThreadTest: java.util.concurrent.atomic.AtomicInteger counter>;
+
+        return $stack1;
+    }
+}

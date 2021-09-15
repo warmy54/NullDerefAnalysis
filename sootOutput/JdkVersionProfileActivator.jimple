@@ -1,0 +1,496 @@
+public class JdkVersionProfileActivator extends java.lang.Object implements org.apache.maven.model.profile.activation.ProfileActivator
+{
+
+    public void <init>()
+    {
+        JdkVersionProfileActivator this;
+
+        this := @this: JdkVersionProfileActivator;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean isActive(org.apache.maven.model.Profile, org.apache.maven.model.profile.ProfileActivationContext, org.apache.maven.model.building.ModelProblemCollector)
+    {
+        org.apache.maven.model.Profile profile;
+        org.apache.maven.model.Activation activation;
+        java.lang.String jdk, version, $stack16, $stack18, $stack28;
+        org.apache.maven.model.profile.ProfileActivationContext context;
+        java.util.Map $stack9;
+        java.lang.Object $stack10;
+        org.apache.maven.model.building.ModelProblemCollector problems;
+        org.apache.maven.model.building.ModelProblemCollectorRequest $stack11, $stack19, $stack21;
+        org.apache.maven.model.building.ModelProblem$Version $stack12;
+        org.apache.maven.model.building.ModelProblem$Severity $stack13;
+        java.lang.StringBuilder $stack14, $stack15, $stack17;
+        org.apache.maven.model.InputLocation $stack20;
+        int $stack22;
+        boolean $stack23, $stack24, $stack25, $stack27, $stack29, $stack30;
+        java.util.List $stack26;
+        JdkVersionProfileActivator this;
+
+        this := @this: JdkVersionProfileActivator;
+
+        profile := @parameter0: org.apache.maven.model.Profile;
+
+        context := @parameter1: org.apache.maven.model.profile.ProfileActivationContext;
+
+        problems := @parameter2: org.apache.maven.model.building.ModelProblemCollector;
+
+        activation = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        if activation != null goto label1;
+
+        return 0;
+
+     label1:
+        jdk = virtualinvoke activation.<org.apache.maven.model.Activation: java.lang.String getJdk()>();
+
+        if jdk != null goto label2;
+
+        return 0;
+
+     label2:
+        $stack9 = interfaceinvoke context.<org.apache.maven.model.profile.ProfileActivationContext: java.util.Map getSystemProperties()>();
+
+        $stack10 = interfaceinvoke $stack9.<java.util.Map: java.lang.Object get(java.lang.Object)>("java.version");
+
+        version = (java.lang.String) $stack10;
+
+        if version == null goto label3;
+
+        $stack22 = virtualinvoke version.<java.lang.String: int length()>();
+
+        if $stack22 > 0 goto label4;
+
+     label3:
+        $stack11 = new org.apache.maven.model.building.ModelProblemCollectorRequest;
+
+        $stack13 = <org.apache.maven.model.building.ModelProblem$Severity: org.apache.maven.model.building.ModelProblem$Severity ERROR>;
+
+        $stack12 = <org.apache.maven.model.building.ModelProblem$Version: org.apache.maven.model.building.ModelProblem$Version BASE>;
+
+        specialinvoke $stack11.<org.apache.maven.model.building.ModelProblemCollectorRequest: void <init>(org.apache.maven.model.building.ModelProblem$Severity,org.apache.maven.model.building.ModelProblem$Version)>($stack13, $stack12);
+
+        $stack14 = new java.lang.StringBuilder;
+
+        specialinvoke $stack14.<java.lang.StringBuilder: void <init>()>();
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to determine Java version for profile ");
+
+        $stack16 = virtualinvoke profile.<org.apache.maven.model.Profile: java.lang.String getId()>();
+
+        $stack17 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack16);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack19 = virtualinvoke $stack11.<org.apache.maven.model.building.ModelProblemCollectorRequest: org.apache.maven.model.building.ModelProblemCollectorRequest setMessage(java.lang.String)>($stack18);
+
+        $stack20 = virtualinvoke activation.<org.apache.maven.model.Activation: org.apache.maven.model.InputLocation getLocation(java.lang.Object)>("jdk");
+
+        $stack21 = virtualinvoke $stack19.<org.apache.maven.model.building.ModelProblemCollectorRequest: org.apache.maven.model.building.ModelProblemCollectorRequest setLocation(org.apache.maven.model.InputLocation)>($stack20);
+
+        interfaceinvoke problems.<org.apache.maven.model.building.ModelProblemCollector: void add(org.apache.maven.model.building.ModelProblemCollectorRequest)>($stack21);
+
+        return 0;
+
+     label4:
+        $stack23 = virtualinvoke jdk.<java.lang.String: boolean startsWith(java.lang.String)>("!");
+
+        if $stack23 == 0 goto label7;
+
+        $stack28 = virtualinvoke jdk.<java.lang.String: java.lang.String substring(int)>(1);
+
+        $stack29 = virtualinvoke version.<java.lang.String: boolean startsWith(java.lang.String)>($stack28);
+
+        if $stack29 != 0 goto label5;
+
+        $stack30 = 1;
+
+        goto label6;
+
+     label5:
+        $stack30 = 0;
+
+     label6:
+        return $stack30;
+
+     label7:
+        $stack24 = staticinvoke <org.apache.maven.model.profile.activation.JdkVersionProfileActivator: boolean isRange(java.lang.String)>(jdk);
+
+        if $stack24 == 0 goto label8;
+
+        $stack26 = staticinvoke <org.apache.maven.model.profile.activation.JdkVersionProfileActivator: java.util.List getRange(java.lang.String)>(jdk);
+
+        $stack27 = staticinvoke <org.apache.maven.model.profile.activation.JdkVersionProfileActivator: boolean isInRange(java.lang.String,java.util.List)>(version, $stack26);
+
+        return $stack27;
+
+     label8:
+        $stack25 = virtualinvoke version.<java.lang.String: boolean startsWith(java.lang.String)>(jdk);
+
+        return $stack25;
+    }
+
+    public boolean presentInConfig(org.apache.maven.model.Profile, org.apache.maven.model.profile.ProfileActivationContext, org.apache.maven.model.building.ModelProblemCollector)
+    {
+        org.apache.maven.model.Profile profile;
+        org.apache.maven.model.Activation activation;
+        java.lang.String jdk;
+        JdkVersionProfileActivator this;
+        org.apache.maven.model.profile.ProfileActivationContext context;
+        org.apache.maven.model.building.ModelProblemCollector problems;
+
+        this := @this: JdkVersionProfileActivator;
+
+        profile := @parameter0: org.apache.maven.model.Profile;
+
+        context := @parameter1: org.apache.maven.model.profile.ProfileActivationContext;
+
+        problems := @parameter2: org.apache.maven.model.building.ModelProblemCollector;
+
+        activation = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        if activation != null goto label1;
+
+        return 0;
+
+     label1:
+        jdk = virtualinvoke activation.<org.apache.maven.model.Activation: java.lang.String getJdk()>();
+
+        if jdk != null goto label2;
+
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    private static boolean isInRange(java.lang.String, java.util.List)
+    {
+        java.lang.String value;
+        java.util.List range;
+        java.lang.Object $stack3, $stack6;
+        org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue $stack4, $stack7;
+        int leftRelation, $stack8;
+        boolean $stack9;
+
+        value := @parameter0: java.lang.String;
+
+        range := @parameter1: java.util.List;
+
+        $stack3 = interfaceinvoke range.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack4 = (org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue) $stack3;
+
+        leftRelation = staticinvoke <org.apache.maven.model.profile.activation.JdkVersionProfileActivator: int getRelationOrder(java.lang.String,org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue,boolean)>(value, $stack4, 1);
+
+        if leftRelation != 0 goto label1;
+
+        return 1;
+
+     label1:
+        if leftRelation >= 0 goto label2;
+
+        return 0;
+
+     label2:
+        $stack6 = interfaceinvoke range.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack7 = (org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue) $stack6;
+
+        $stack8 = staticinvoke <org.apache.maven.model.profile.activation.JdkVersionProfileActivator: int getRelationOrder(java.lang.String,org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue,boolean)>(value, $stack7, 0);
+
+        if $stack8 > 0 goto label3;
+
+        $stack9 = 1;
+
+        goto label4;
+
+     label3:
+        $stack9 = 0;
+
+     label4:
+        return $stack9;
+    }
+
+    private static int getRelationOrder(java.lang.String, org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue, boolean)
+    {
+        org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue rangeValue;
+        java.lang.String $stack8, $stack15, $stack21, $stack24, value, value#3;
+        int $stack9, x, y, i;
+        java.util.ArrayList $stack11, $stack14;
+        java.lang.String[] $stack12, $stack16;
+        java.util.List $stack13, $stack17;
+        boolean $stack18, isLeft;
+        java.lang.Object $stack20, $stack23;
+        byte $stack28, $stack19;
+
+        value := @parameter0: java.lang.String;
+
+        rangeValue := @parameter1: org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue;
+
+        isLeft := @parameter2: boolean;
+
+        $stack8 = staticinvoke <org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue: java.lang.String access$000(org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue)>(rangeValue);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.String: int length()>();
+
+        if $stack9 > 0 goto label03;
+
+        if isLeft == 0 goto label01;
+
+        $stack28 = 1;
+
+        goto label02;
+
+     label01:
+        $stack28 = -1;
+
+     label02:
+        return $stack28;
+
+     label03:
+        value#3 = virtualinvoke value.<java.lang.String: java.lang.String replaceAll(java.lang.String,java.lang.String)>("[^0-9\\.\\-\\_]", "");
+
+        $stack11 = new java.util.ArrayList;
+
+        $stack12 = virtualinvoke value#3.<java.lang.String: java.lang.String[] split(java.lang.String)>("[\\.\\-\\_]");
+
+        $stack13 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack12);
+
+        specialinvoke $stack11.<java.util.ArrayList: void <init>(java.util.Collection)>($stack13);
+
+        $stack14 = new java.util.ArrayList;
+
+        $stack15 = staticinvoke <org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue: java.lang.String access$000(org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue)>(rangeValue);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.String: java.lang.String[] split(java.lang.String)>("\\.");
+
+        $stack17 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack16);
+
+        specialinvoke $stack14.<java.util.ArrayList: void <init>(java.util.Collection)>($stack17);
+
+        staticinvoke <org.apache.maven.model.profile.activation.JdkVersionProfileActivator: void addZeroTokens(java.util.List,int)>($stack11, 3);
+
+        staticinvoke <org.apache.maven.model.profile.activation.JdkVersionProfileActivator: void addZeroTokens(java.util.List,int)>($stack14, 3);
+
+        i = 0;
+
+     label04:
+        if i >= 3 goto label07;
+
+        $stack20 = interfaceinvoke $stack11.<java.util.List: java.lang.Object get(int)>(i);
+
+        $stack21 = (java.lang.String) $stack20;
+
+        x = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($stack21);
+
+        $stack23 = interfaceinvoke $stack14.<java.util.List: java.lang.Object get(int)>(i);
+
+        $stack24 = (java.lang.String) $stack23;
+
+        y = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($stack24);
+
+        if x >= y goto label05;
+
+        return -1;
+
+     label05:
+        if x <= y goto label06;
+
+        return 1;
+
+     label06:
+        i = i + 1;
+
+        goto label04;
+
+     label07:
+        $stack18 = staticinvoke <org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue: boolean access$100(org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue)>(rangeValue);
+
+        if $stack18 != 0 goto label10;
+
+        if isLeft == 0 goto label08;
+
+        $stack19 = -1;
+
+        goto label09;
+
+     label08:
+        $stack19 = 1;
+
+     label09:
+        return $stack19;
+
+     label10:
+        return 0;
+    }
+
+    private static void addZeroTokens(java.util.List, int)
+    {
+        java.util.List tokens;
+        int $stack2, max;
+
+        tokens := @parameter0: java.util.List;
+
+        max := @parameter1: int;
+
+     label1:
+        $stack2 = interfaceinvoke tokens.<java.util.List: int size()>();
+
+        if $stack2 >= max goto label2;
+
+        interfaceinvoke tokens.<java.util.List: boolean add(java.lang.Object)>("0");
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    private static boolean isRange(java.lang.String)
+    {
+        java.lang.String value;
+        boolean $stack1, $stack2, $stack3;
+
+        value := @parameter0: java.lang.String;
+
+        $stack1 = virtualinvoke value.<java.lang.String: boolean startsWith(java.lang.String)>("[");
+
+        if $stack1 != 0 goto label1;
+
+        $stack2 = virtualinvoke value.<java.lang.String: boolean startsWith(java.lang.String)>("(");
+
+        if $stack2 == 0 goto label2;
+
+     label1:
+        $stack3 = 1;
+
+        goto label3;
+
+     label2:
+        $stack3 = 0;
+
+     label3:
+        return $stack3;
+    }
+
+    private static java.util.List getRange(java.lang.String)
+    {
+        java.util.ArrayList $stack6;
+        java.lang.String range, token, $stack22, $stack25, $stack28, $stack31;
+        java.lang.String[] l2;
+        int l3, $stack8, $stack16, l4;
+        org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue $stack9, $stack19, $stack21, $stack24, $stack27, $stack30;
+        boolean $stack12, $stack13, $stack14, $stack15;
+
+        range := @parameter0: java.lang.String;
+
+        $stack6 = new java.util.ArrayList;
+
+        specialinvoke $stack6.<java.util.ArrayList: void <init>()>();
+
+        l2 = virtualinvoke range.<java.lang.String: java.lang.String[] split(java.lang.String)>(",");
+
+        l3 = lengthof l2;
+
+        l4 = 0;
+
+     label1:
+        if l4 >= l3 goto label7;
+
+        token = l2[l4];
+
+        $stack12 = virtualinvoke token.<java.lang.String: boolean startsWith(java.lang.String)>("[");
+
+        if $stack12 == 0 goto label2;
+
+        $stack30 = new org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue;
+
+        $stack31 = virtualinvoke token.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("[", "");
+
+        specialinvoke $stack30.<org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue: void <init>(java.lang.String,boolean)>($stack31, 1);
+
+        interfaceinvoke $stack6.<java.util.List: boolean add(java.lang.Object)>($stack30);
+
+        goto label6;
+
+     label2:
+        $stack13 = virtualinvoke token.<java.lang.String: boolean startsWith(java.lang.String)>("(");
+
+        if $stack13 == 0 goto label3;
+
+        $stack27 = new org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue;
+
+        $stack28 = virtualinvoke token.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("(", "");
+
+        specialinvoke $stack27.<org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue: void <init>(java.lang.String,boolean)>($stack28, 0);
+
+        interfaceinvoke $stack6.<java.util.List: boolean add(java.lang.Object)>($stack27);
+
+        goto label6;
+
+     label3:
+        $stack14 = virtualinvoke token.<java.lang.String: boolean endsWith(java.lang.String)>("]");
+
+        if $stack14 == 0 goto label4;
+
+        $stack24 = new org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue;
+
+        $stack25 = virtualinvoke token.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("]", "");
+
+        specialinvoke $stack24.<org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue: void <init>(java.lang.String,boolean)>($stack25, 1);
+
+        interfaceinvoke $stack6.<java.util.List: boolean add(java.lang.Object)>($stack24);
+
+        goto label6;
+
+     label4:
+        $stack15 = virtualinvoke token.<java.lang.String: boolean endsWith(java.lang.String)>(")");
+
+        if $stack15 == 0 goto label5;
+
+        $stack21 = new org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue;
+
+        $stack22 = virtualinvoke token.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>(")", "");
+
+        specialinvoke $stack21.<org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue: void <init>(java.lang.String,boolean)>($stack22, 0);
+
+        interfaceinvoke $stack6.<java.util.List: boolean add(java.lang.Object)>($stack21);
+
+        goto label6;
+
+     label5:
+        $stack16 = virtualinvoke token.<java.lang.String: int length()>();
+
+        if $stack16 > 0 goto label6;
+
+        $stack19 = new org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue;
+
+        specialinvoke $stack19.<org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue: void <init>(java.lang.String,boolean)>("", 0);
+
+        interfaceinvoke $stack6.<java.util.List: boolean add(java.lang.Object)>($stack19);
+
+     label6:
+        l4 = l4 + 1;
+
+        goto label1;
+
+     label7:
+        $stack8 = interfaceinvoke $stack6.<java.util.List: int size()>();
+
+        if $stack8 >= 2 goto label8;
+
+        $stack9 = new org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue;
+
+        specialinvoke $stack9.<org.apache.maven.model.profile.activation.JdkVersionProfileActivator$RangeValue: void <init>(java.lang.String,boolean)>("99999999", 0);
+
+        interfaceinvoke $stack6.<java.util.List: boolean add(java.lang.Object)>($stack9);
+
+     label8:
+        return $stack6;
+    }
+}

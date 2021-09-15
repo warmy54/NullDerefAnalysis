@@ -1,0 +1,203 @@
+public class ShellUtils extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        ShellUtils this;
+
+        this := @this: ShellUtils;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.io.File findExecutable(java.lang.String)
+    {
+        java.lang.String executableName;
+        java.io.File $stack1;
+
+        executableName := @parameter0: java.lang.String;
+
+        $stack1 = staticinvoke <org.ooc.utils.ShellUtils: java.io.File findExecutable(java.lang.String,boolean)>(executableName, 0);
+
+        return $stack1;
+    }
+
+    public static java.io.File findExecutable(java.lang.String, boolean)
+    {
+        java.lang.Object $stack8, $stack22, $stack24, $stack25, $stack26, $stack28;
+        java.lang.String $stack10, executableName, $stack14, path, e#3;
+        boolean $stack11, crucial, $stack17, $stack19;
+        java.io.PrintStream $stack20;
+        java.lang.Exception $stack29;
+        java.util.Map env;
+        java.util.StringTokenizer $u0;
+        java.io.File $u1;
+        org.ubi.CompilationFailedError $u2;
+        java.lang.Throwable $r0;
+
+        executableName := @parameter0: java.lang.String;
+
+        crucial := @parameter1: boolean;
+
+     label01:
+        env = staticinvoke <java.lang.System: java.util.Map getenv()>();
+
+     label02:
+        goto label04;
+
+     label03:
+        $stack29 := @caughtexception;
+
+        virtualinvoke $stack29.<java.lang.Exception: void printStackTrace()>();
+
+        return null;
+
+     label04:
+        $stack8 = interfaceinvoke env.<java.util.Map: java.lang.Object get(java.lang.Object)>("PATH");
+
+        e#3 = (java.lang.String) $stack8;
+
+        if e#3 != null goto label05;
+
+        $stack26 = interfaceinvoke env.<java.util.Map: java.lang.Object get(java.lang.Object)>("Path");
+
+        e#3 = (java.lang.String) $stack26;
+
+        if e#3 != null goto label05;
+
+        $stack28 = interfaceinvoke env.<java.util.Map: java.lang.Object get(java.lang.Object)>("path");
+
+        e#3 = (java.lang.String) $stack28;
+
+     label05:
+        if e#3 != null goto label06;
+
+        env = staticinvoke <org.ooc.utils.ReadEnv: java.util.Map getEnv()>();
+
+        $stack22 = interfaceinvoke env.<java.util.Map: java.lang.Object get(java.lang.Object)>("PATH");
+
+        e#3 = (java.lang.String) $stack22;
+
+        if e#3 != null goto label06;
+
+        $stack24 = interfaceinvoke env.<java.util.Map: java.lang.Object get(java.lang.Object)>("Path");
+
+        e#3 = (java.lang.String) $stack24;
+
+        if e#3 != null goto label06;
+
+        $stack25 = interfaceinvoke env.<java.util.Map: java.lang.Object get(java.lang.Object)>("path");
+
+        e#3 = (java.lang.String) $stack25;
+
+     label06:
+        if e#3 != null goto label07;
+
+        $stack20 = <java.lang.System: java.io.PrintStream err>;
+
+        virtualinvoke $stack20.<java.io.PrintStream: void println(java.lang.String)>("PATH environment variable not found!");
+
+        return null;
+
+     label07:
+        $u0 = new java.util.StringTokenizer;
+
+        $stack10 = <java.io.File: java.lang.String pathSeparator>;
+
+        specialinvoke $u0.<java.util.StringTokenizer: void <init>(java.lang.String,java.lang.String)>(e#3, $stack10);
+
+     label08:
+        $stack11 = virtualinvoke $u0.<java.util.StringTokenizer: boolean hasMoreTokens()>();
+
+        if $stack11 == 0 goto label10;
+
+        path = virtualinvoke $u0.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        $u1 = new java.io.File;
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String,java.lang.String)>(path, executableName);
+
+        $stack17 = virtualinvoke $u1.<java.io.File: boolean exists()>();
+
+        if $stack17 == 0 goto label09;
+
+        $stack19 = virtualinvoke $u1.<java.io.File: boolean isFile()>();
+
+        if $stack19 == 0 goto label09;
+
+        return $u1;
+
+     label09:
+        goto label08;
+
+     label10:
+        if crucial == 0 goto label11;
+
+        $u2 = new org.ubi.CompilationFailedError;
+
+        $stack14 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>(executableName, e#3) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Couldn\'t find \'\u0001\' on your system. PATH = \u0001");
+
+        specialinvoke $u2.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>(null, $stack14);
+
+        $r0 = (java.lang.Throwable) $u2;
+
+        throw $r0;
+
+     label11:
+        return null;
+
+        catch java.lang.Exception from label01 to label02 with label03;
+    }
+
+    public static transient java.lang.String getOutput(java.lang.String[])
+    {
+        java.io.StringWriter $stack5;
+        java.lang.ProcessBuilder $stack6;
+        java.lang.String[] command;
+        java.lang.Process p;
+        int exitCode;
+        java.lang.Exception $stack11;
+        java.lang.String result;
+
+        command := @parameter0: java.lang.String[];
+
+        result = null;
+
+     label1:
+        $stack5 = new java.io.StringWriter;
+
+        specialinvoke $stack5.<java.io.StringWriter: void <init>()>();
+
+        $stack6 = new java.lang.ProcessBuilder;
+
+        specialinvoke $stack6.<java.lang.ProcessBuilder: void <init>(java.lang.String[])>(command);
+
+        p = virtualinvoke $stack6.<java.lang.ProcessBuilder: java.lang.Process start()>();
+
+        staticinvoke <org.ooc.utils.ProcessUtils: void redirectIO(java.lang.Process,java.io.Writer)>(p, $stack5);
+
+        exitCode = virtualinvoke p.<java.lang.Process: int waitFor()>();
+
+        if exitCode != 0 goto label2;
+
+        result = virtualinvoke $stack5.<java.io.StringWriter: java.lang.String toString()>();
+
+     label2:
+        virtualinvoke $stack5.<java.io.StringWriter: void close()>();
+
+     label3:
+        goto label5;
+
+     label4:
+        $stack11 := @caughtexception;
+
+        virtualinvoke $stack11.<java.lang.Exception: void printStackTrace()>();
+
+     label5:
+        return result;
+
+        catch java.lang.Exception from label1 to label3 with label4;
+    }
+}

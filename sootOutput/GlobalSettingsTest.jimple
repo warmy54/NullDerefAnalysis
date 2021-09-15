@@ -1,0 +1,88 @@
+public class GlobalSettingsTest extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        GlobalSettingsTest this;
+
+        this := @this: GlobalSettingsTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void testValidGlobalSettings() throws java.lang.Exception
+    {
+        java.lang.String $stack7, basedir, $stack11;
+        java.io.File $stack9;
+        boolean $stack10;
+        java.io.InputStreamReader $stack12;
+        java.io.FileInputStream $stack13;
+        java.nio.charset.Charset $stack14;
+        org.apache.maven.settings.io.xpp3.SettingsXpp3Reader $stack15;
+        java.lang.Throwable $stack17, $stack18;
+        GlobalSettingsTest this;
+
+        this := @this: GlobalSettingsTest;
+
+        $stack7 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("user.dir");
+
+        basedir = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String,java.lang.String)>("basedir", $stack7);
+
+        $stack9 = new java.io.File;
+
+        specialinvoke $stack9.<java.io.File: void <init>(java.lang.String,java.lang.String)>(basedir, "src/assembly/maven/conf/settings.xml");
+
+        $stack10 = virtualinvoke $stack9.<java.io.File: boolean isFile()>();
+
+        $stack11 = virtualinvoke $stack9.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean,java.lang.String)>($stack10, $stack11);
+
+        $stack12 = new java.io.InputStreamReader;
+
+        $stack13 = new java.io.FileInputStream;
+
+        specialinvoke $stack13.<java.io.FileInputStream: void <init>(java.io.File)>($stack9);
+
+        $stack14 = <java.nio.charset.StandardCharsets: java.nio.charset.Charset UTF_8>;
+
+        specialinvoke $stack12.<java.io.InputStreamReader: void <init>(java.io.InputStream,java.nio.charset.Charset)>($stack13, $stack14);
+
+     label1:
+        $stack15 = new org.apache.maven.settings.io.xpp3.SettingsXpp3Reader;
+
+        specialinvoke $stack15.<org.apache.maven.settings.io.xpp3.SettingsXpp3Reader: void <init>()>();
+
+        virtualinvoke $stack15.<org.apache.maven.settings.io.xpp3.SettingsXpp3Reader: org.apache.maven.settings.Settings read(java.io.Reader)>($stack12);
+
+     label2:
+        virtualinvoke $stack12.<java.io.Reader: void close()>();
+
+        goto label8;
+
+     label3:
+        $stack18 := @caughtexception;
+
+     label4:
+        virtualinvoke $stack12.<java.io.Reader: void close()>();
+
+     label5:
+        goto label7;
+
+     label6:
+        $stack17 := @caughtexception;
+
+        virtualinvoke $stack18.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack17);
+
+     label7:
+        throw $stack18;
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label6;
+    }
+}

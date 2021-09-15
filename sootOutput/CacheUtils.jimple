@@ -1,0 +1,452 @@
+class CacheUtils extends java.lang.Object
+{
+
+    void <init>()
+    {
+        CacheUtils this;
+
+        this := @this: CacheUtils;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static boolean eq(java.lang.Object, java.lang.Object)
+    {
+        java.lang.Object s1, s2;
+        boolean $stack2;
+
+        s1 := @parameter0: java.lang.Object;
+
+        s2 := @parameter1: java.lang.Object;
+
+        $stack2 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>(s1, s2);
+
+        return $stack2;
+    }
+
+    public static int hash(java.lang.Object)
+    {
+        java.lang.Object obj;
+        int $stack1;
+
+        obj := @parameter0: java.lang.Object;
+
+        if obj == null goto label1;
+
+        $stack1 = virtualinvoke obj.<java.lang.Object: int hashCode()>();
+
+        goto label2;
+
+     label1:
+        $stack1 = 0;
+
+     label2:
+        return $stack1;
+    }
+
+    public static int pluginHashCode(org.apache.maven.model.Plugin)
+    {
+        org.apache.maven.model.Plugin plugin;
+        int $stack6, $stack8, $stack9, $stack11, $stack12, $stack14, $stack15, $stack21, $stack23, $stack24, $stack26, $stack27, $stack29, $stack30, $stack32, $stack33, $stack35, $stack36, $stack38, $stack44, $stack46, $stack47, $stack49, hash#2;
+        java.lang.String $stack7, $stack10, $stack13, $stack22, $stack25, $stack28, $stack31, $stack34, $stack37, $stack45, $stack48;
+        boolean $stack16, $stack41, $stack19;
+        java.util.List $stack17, $stack39;
+        java.util.Iterator l2, l4;
+        java.lang.Object $stack20, $stack43;
+        org.apache.maven.model.Dependency dependency;
+        org.apache.maven.model.Exclusion exclusion;
+        byte $stack51;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        $stack6 = 17 * 31;
+
+        $stack7 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        $stack8 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack7);
+
+        hash#2 = $stack6 + $stack8;
+
+        $stack9 = hash#2 * 31;
+
+        $stack10 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        $stack11 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack10);
+
+        hash#2 = $stack9 + $stack11;
+
+        $stack12 = hash#2 * 31;
+
+        $stack13 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        $stack14 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack13);
+
+        hash#2 = $stack12 + $stack14;
+
+        $stack15 = hash#2 * 31;
+
+        $stack16 = virtualinvoke plugin.<org.apache.maven.model.Plugin: boolean isExtensions()>();
+
+        if $stack16 == 0 goto label1;
+
+        $stack51 = 1;
+
+        goto label2;
+
+     label1:
+        $stack51 = 0;
+
+     label2:
+        hash#2 = $stack15 + $stack51;
+
+        $stack17 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.util.List getDependencies()>();
+
+        l2 = interfaceinvoke $stack17.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack19 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack19 == 0 goto label6;
+
+        $stack20 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.Dependency) $stack20;
+
+        $stack21 = hash#2 * 31;
+
+        $stack22 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack23 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack22);
+
+        hash#2 = $stack21 + $stack23;
+
+        $stack24 = hash#2 * 31;
+
+        $stack25 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack26 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack25);
+
+        hash#2 = $stack24 + $stack26;
+
+        $stack27 = hash#2 * 31;
+
+        $stack28 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        $stack29 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack28);
+
+        hash#2 = $stack27 + $stack29;
+
+        $stack30 = hash#2 * 31;
+
+        $stack31 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getType()>();
+
+        $stack32 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack31);
+
+        hash#2 = $stack30 + $stack32;
+
+        $stack33 = hash#2 * 31;
+
+        $stack34 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getClassifier()>();
+
+        $stack35 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack34);
+
+        hash#2 = $stack33 + $stack35;
+
+        $stack36 = hash#2 * 31;
+
+        $stack37 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getScope()>();
+
+        $stack38 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack37);
+
+        hash#2 = $stack36 + $stack38;
+
+        $stack39 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.util.List getExclusions()>();
+
+        l4 = interfaceinvoke $stack39.<java.util.List: java.util.Iterator iterator()>();
+
+     label4:
+        $stack41 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack41 == 0 goto label5;
+
+        $stack43 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        exclusion = (org.apache.maven.model.Exclusion) $stack43;
+
+        $stack44 = hash#2 * 31;
+
+        $stack45 = virtualinvoke exclusion.<org.apache.maven.model.Exclusion: java.lang.String getGroupId()>();
+
+        $stack46 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack45);
+
+        hash#2 = $stack44 + $stack46;
+
+        $stack47 = hash#2 * 31;
+
+        $stack48 = virtualinvoke exclusion.<org.apache.maven.model.Exclusion: java.lang.String getArtifactId()>();
+
+        $stack49 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack48);
+
+        hash#2 = $stack47 + $stack49;
+
+        goto label4;
+
+     label5:
+        goto label3;
+
+     label6:
+        return hash#2;
+    }
+
+    public static boolean pluginEquals(org.apache.maven.model.Plugin, org.apache.maven.model.Plugin)
+    {
+        org.apache.maven.model.Plugin a, b;
+        java.lang.String $stack2, $stack3, $stack5, $stack6, $stack9, $stack10;
+        boolean $stack4, $stack7, $stack11, $stack12, $stack13, $stack16, $stack8;
+        java.util.List $stack14, $stack15;
+
+        a := @parameter0: org.apache.maven.model.Plugin;
+
+        b := @parameter1: org.apache.maven.model.Plugin;
+
+        $stack2 = virtualinvoke a.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        $stack3 = virtualinvoke b.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        $stack4 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack2, $stack3);
+
+        if $stack4 == 0 goto label1;
+
+        $stack5 = virtualinvoke a.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        $stack6 = virtualinvoke b.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        $stack7 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack5, $stack6);
+
+        if $stack7 == 0 goto label1;
+
+        $stack9 = virtualinvoke a.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        $stack10 = virtualinvoke b.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        $stack11 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack9, $stack10);
+
+        if $stack11 == 0 goto label1;
+
+        $stack12 = virtualinvoke a.<org.apache.maven.model.Plugin: boolean isExtensions()>();
+
+        $stack13 = virtualinvoke b.<org.apache.maven.model.Plugin: boolean isExtensions()>();
+
+        if $stack12 != $stack13 goto label1;
+
+        $stack14 = virtualinvoke a.<org.apache.maven.model.Plugin: java.util.List getDependencies()>();
+
+        $stack15 = virtualinvoke b.<org.apache.maven.model.Plugin: java.util.List getDependencies()>();
+
+        $stack16 = staticinvoke <org.apache.maven.plugin.CacheUtils: boolean dependenciesEquals(java.util.List,java.util.List)>($stack14, $stack15);
+
+        if $stack16 == 0 goto label1;
+
+        $stack8 = 1;
+
+        goto label2;
+
+     label1:
+        $stack8 = 0;
+
+     label2:
+        return $stack8;
+    }
+
+    private static boolean dependenciesEquals(java.util.List, java.util.List)
+    {
+        java.util.List a, b, $stack17, $stack18;
+        int $stack7, $stack8;
+        java.util.Iterator aI, bI;
+        boolean $stack11, $stack16, $stack23, $stack32, $stack35, $stack38, $stack41, $stack24, r, $stack19;
+        java.lang.Object $stack12, $stack13;
+        org.apache.maven.model.Dependency aD, bD;
+        java.lang.String $stack14, $stack15, $stack21, $stack22, $stack30, $stack31, $stack33, $stack34, $stack36, $stack37, $stack39, $stack40;
+
+        a := @parameter0: java.util.List;
+
+        b := @parameter1: java.util.List;
+
+        $stack7 = interfaceinvoke a.<java.util.List: int size()>();
+
+        $stack8 = interfaceinvoke b.<java.util.List: int size()>();
+
+        if $stack7 == $stack8 goto label1;
+
+        return 0;
+
+     label1:
+        aI = interfaceinvoke a.<java.util.List: java.util.Iterator iterator()>();
+
+        bI = interfaceinvoke b.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack11 = interfaceinvoke aI.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label6;
+
+        $stack12 = interfaceinvoke aI.<java.util.Iterator: java.lang.Object next()>();
+
+        aD = (org.apache.maven.model.Dependency) $stack12;
+
+        $stack13 = interfaceinvoke bI.<java.util.Iterator: java.lang.Object next()>();
+
+        bD = (org.apache.maven.model.Dependency) $stack13;
+
+        $stack14 = virtualinvoke aD.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack15 = virtualinvoke bD.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack16 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack14, $stack15);
+
+        if $stack16 == 0 goto label3;
+
+        $stack21 = virtualinvoke aD.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack22 = virtualinvoke bD.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack23 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack21, $stack22);
+
+        if $stack23 == 0 goto label3;
+
+        $stack30 = virtualinvoke aD.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        $stack31 = virtualinvoke bD.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        $stack32 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack30, $stack31);
+
+        if $stack32 == 0 goto label3;
+
+        $stack33 = virtualinvoke aD.<org.apache.maven.model.Dependency: java.lang.String getType()>();
+
+        $stack34 = virtualinvoke bD.<org.apache.maven.model.Dependency: java.lang.String getType()>();
+
+        $stack35 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack33, $stack34);
+
+        if $stack35 == 0 goto label3;
+
+        $stack36 = virtualinvoke aD.<org.apache.maven.model.Dependency: java.lang.String getClassifier()>();
+
+        $stack37 = virtualinvoke bD.<org.apache.maven.model.Dependency: java.lang.String getClassifier()>();
+
+        $stack38 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack36, $stack37);
+
+        if $stack38 == 0 goto label3;
+
+        $stack39 = virtualinvoke aD.<org.apache.maven.model.Dependency: java.lang.String getScope()>();
+
+        $stack40 = virtualinvoke bD.<org.apache.maven.model.Dependency: java.lang.String getScope()>();
+
+        $stack41 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack39, $stack40);
+
+        if $stack41 == 0 goto label3;
+
+        $stack24 = 1;
+
+        goto label4;
+
+     label3:
+        $stack24 = 0;
+
+     label4:
+        $stack17 = virtualinvoke aD.<org.apache.maven.model.Dependency: java.util.List getExclusions()>();
+
+        $stack18 = virtualinvoke bD.<org.apache.maven.model.Dependency: java.util.List getExclusions()>();
+
+        $stack19 = staticinvoke <org.apache.maven.plugin.CacheUtils: boolean exclusionsEquals(java.util.List,java.util.List)>($stack17, $stack18);
+
+        r = $stack24 & $stack19;
+
+        if r != 0 goto label5;
+
+        return 0;
+
+     label5:
+        goto label2;
+
+     label6:
+        return 1;
+    }
+
+    private static boolean exclusionsEquals(java.util.List, java.util.List)
+    {
+        java.util.List a, b;
+        int $stack7, $stack8;
+        java.util.Iterator aI, bI;
+        boolean $stack11, $stack16, $stack20, $stack21;
+        java.lang.Object $stack12, $stack13;
+        org.apache.maven.model.Exclusion aD, bD;
+        java.lang.String $stack14, $stack15, $stack18, $stack19;
+
+        a := @parameter0: java.util.List;
+
+        b := @parameter1: java.util.List;
+
+        $stack7 = interfaceinvoke a.<java.util.List: int size()>();
+
+        $stack8 = interfaceinvoke b.<java.util.List: int size()>();
+
+        if $stack7 == $stack8 goto label1;
+
+        return 0;
+
+     label1:
+        aI = interfaceinvoke a.<java.util.List: java.util.Iterator iterator()>();
+
+        bI = interfaceinvoke b.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack11 = interfaceinvoke aI.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label6;
+
+        $stack12 = interfaceinvoke aI.<java.util.Iterator: java.lang.Object next()>();
+
+        aD = (org.apache.maven.model.Exclusion) $stack12;
+
+        $stack13 = interfaceinvoke bI.<java.util.Iterator: java.lang.Object next()>();
+
+        bD = (org.apache.maven.model.Exclusion) $stack13;
+
+        $stack14 = virtualinvoke aD.<org.apache.maven.model.Exclusion: java.lang.String getGroupId()>();
+
+        $stack15 = virtualinvoke bD.<org.apache.maven.model.Exclusion: java.lang.String getGroupId()>();
+
+        $stack16 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack14, $stack15);
+
+        if $stack16 == 0 goto label3;
+
+        $stack18 = virtualinvoke aD.<org.apache.maven.model.Exclusion: java.lang.String getArtifactId()>();
+
+        $stack19 = virtualinvoke bD.<org.apache.maven.model.Exclusion: java.lang.String getArtifactId()>();
+
+        $stack20 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack18, $stack19);
+
+        if $stack20 == 0 goto label3;
+
+        $stack21 = 1;
+
+        goto label4;
+
+     label3:
+        $stack21 = 0;
+
+     label4:
+        if $stack21 != 0 goto label5;
+
+        return 0;
+
+     label5:
+        goto label2;
+
+     label6:
+        return 1;
+    }
+}

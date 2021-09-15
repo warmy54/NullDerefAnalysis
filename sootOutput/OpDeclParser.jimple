@@ -1,0 +1,285 @@
+public class OpDeclParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        OpDeclParser this;
+
+        this := @this: OpDeclParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.ooc.frontend.model.OpDecl parse(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        java.lang.Object $stack7, $stack9, $stack41, $stack46, $stack48;
+        org.ooc.frontend.model.tokens.Token startToken, token, $stack42, $stack49;
+        byte $stack8, $stack10, $stack11, $stack12, $stack13, $stack14, $stack15, $stack16, $stack17, $stack18, $stack19, $stack20, $stack21, $stack22, $stack23, $stack24, $stack25, $stack26, $stack27, $stack43, $stack50;
+        java.lang.String $stack30, $stack35, $stack47;
+        org.ooc.frontend.model.Module module;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.FunctionDecl decl;
+        org.ooc.frontend.model.OpDecl$OpType type;
+        org.ubi.CompilationFailedError $u0, $u1, $u2;
+        org.ooc.frontend.model.OpDecl $u3;
+        java.lang.Throwable $r0, $r1, $r2;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        $stack7 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        startToken = (org.ooc.frontend.model.tokens.Token) $stack7;
+
+        $stack8 = startToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack8 == 23 goto label01;
+
+        return null;
+
+     label01:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $stack9 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        token = (org.ooc.frontend.model.tokens.Token) $stack9;
+
+        $stack10 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack10 != 52 goto label02;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType ADD>;
+
+        goto label22;
+
+     label02:
+        $stack11 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack11 != 54 goto label03;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType SUB>;
+
+        goto label22;
+
+     label03:
+        $stack12 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack12 != 56 goto label04;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType MUL>;
+
+        goto label22;
+
+     label04:
+        $stack13 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack13 != 58 goto label05;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType DIV>;
+
+        goto label22;
+
+     label05:
+        $stack14 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack14 != 53 goto label06;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType ADD_ASS>;
+
+        goto label22;
+
+     label06:
+        $stack15 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack15 != 55 goto label07;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType SUB_ASS>;
+
+        goto label22;
+
+     label07:
+        $stack16 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack16 != 57 goto label08;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType MUL_ASS>;
+
+        goto label22;
+
+     label08:
+        $stack17 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack17 != 59 goto label09;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType DIV_ASS>;
+
+        goto label22;
+
+     label09:
+        $stack18 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack18 != 68 goto label10;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType ASS>;
+
+        goto label22;
+
+     label10:
+        $stack19 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack19 != 70 goto label11;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType EQ>;
+
+        goto label22;
+
+     label11:
+        $stack20 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack20 != 62 goto label12;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType NE>;
+
+        goto label22;
+
+     label12:
+        $stack21 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack21 != 64 goto label13;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType GT>;
+
+        goto label22;
+
+     label13:
+        $stack22 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack22 != 66 goto label14;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType GTE>;
+
+        goto label22;
+
+     label14:
+        $stack23 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack23 != 65 goto label15;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType LT>;
+
+        goto label22;
+
+     label15:
+        $stack24 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack24 != 67 goto label16;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType LTE>;
+
+        goto label22;
+
+     label16:
+        $stack25 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack25 != 86 goto label19;
+
+        $stack41 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack42 = (org.ooc.frontend.model.tokens.Token) $stack41;
+
+        $stack43 = $stack42.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack43 != 87 goto label18;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $stack48 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack49 = (org.ooc.frontend.model.tokens.Token) $stack48;
+
+        $stack50 = $stack49.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack50 != 68 goto label17;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType IDX_ASS>;
+
+        goto label22;
+
+     label17:
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType IDX>;
+
+        goto label22;
+
+     label18:
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $stack46 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack47 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.Object)>($stack46) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Unexpected token \u0001. You\'re probably trying to override [] (indexing) or []= (indexed assign)");
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>(null, $stack47);
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label19:
+        $stack26 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack26 != 31 goto label20;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType AS>;
+
+        goto label22;
+
+     label20:
+        $stack27 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack27 != 94 goto label21;
+
+        type = <org.ooc.frontend.model.OpDecl$OpType: org.ooc.frontend.model.OpDecl$OpType B_XOR>;
+
+        goto label22;
+
+     label21:
+        $u1 = new org.ubi.CompilationFailedError;
+
+        $stack30 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (org.ooc.frontend.model.tokens.Token)>(token) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Trying to overload unknown operator \u0001");
+
+        specialinvoke $u1.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>(null, $stack30);
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label22:
+        decl = staticinvoke <org.ooc.frontend.parser.FunctionDeclParser: org.ooc.frontend.model.FunctionDecl parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, 1);
+
+        if decl != null goto label23;
+
+        $u2 = new org.ubi.CompilationFailedError;
+
+        $stack35 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (org.ooc.frontend.model.OpDecl$OpType)>(type) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Expected function after operator overloading of \u0001");
+
+        specialinvoke $u2.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>(null, $stack35);
+
+        $r2 = (java.lang.Throwable) $u2;
+
+        throw $r2;
+
+     label23:
+        $u3 = new org.ooc.frontend.model.OpDecl;
+
+        specialinvoke $u3.<org.ooc.frontend.model.OpDecl: void <init>(org.ooc.frontend.model.OpDecl$OpType,org.ooc.frontend.model.FunctionDecl,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>(type, decl, startToken, module);
+
+        return $u3;
+    }
+}

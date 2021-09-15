@@ -1,0 +1,68 @@
+public class ReturnParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        ReturnParser this;
+
+        this := @this: ReturnParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.ooc.frontend.model.Return parse(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        int mark;
+        java.lang.Object $stack7;
+        org.ooc.frontend.model.tokens.Token startToken;
+        byte $stack8;
+        org.ooc.frontend.model.Module module;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.Expression expr;
+        org.ooc.frontend.model.Return $u0, $r0;
+        org.ooc.frontend.model.ValuedReturn $u1;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        mark = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: int mark()>();
+
+        $stack7 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        startToken = (org.ooc.frontend.model.tokens.Token) $stack7;
+
+        $stack8 = startToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack8 != 34 goto label2;
+
+        expr = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if expr != null goto label1;
+
+        $u0 = new org.ooc.frontend.model.Return;
+
+        specialinvoke $u0.<org.ooc.frontend.model.Return: void <init>(org.ooc.frontend.model.tokens.Token)>(startToken);
+
+        return $u0;
+
+     label1:
+        $u1 = new org.ooc.frontend.model.ValuedReturn;
+
+        specialinvoke $u1.<org.ooc.frontend.model.ValuedReturn: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>(expr, startToken);
+
+        $r0 = (org.ooc.frontend.model.Return) $u1;
+
+        return $r0;
+
+     label2:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void reset(int)>(mark);
+
+        return null;
+    }
+}

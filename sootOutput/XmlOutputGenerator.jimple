@@ -1,0 +1,218 @@
+public class XmlOutputGenerator extends java.lang.Object
+{
+    private java.lang.String encoding;
+    private java.lang.String indentCharacters;
+    private boolean expandEmptyElements;
+    private boolean indentBlankLines;
+    private boolean indentSchemaLocation;
+    private final sortpom.util.WriterFactory writerFactory;
+
+    public void <init>()
+    {
+        XmlOutputGenerator this;
+        sortpom.util.WriterFactory $u0;
+        sortpom.XmlOutputGenerator $r0;
+
+        this := @this: XmlOutputGenerator;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new sortpom.util.WriterFactory;
+
+        specialinvoke $u0.<sortpom.util.WriterFactory: void <init>()>();
+
+        $r0 = (sortpom.XmlOutputGenerator) this;
+
+        $r0.<sortpom.XmlOutputGenerator: sortpom.util.WriterFactory writerFactory> = $u0;
+
+        return;
+    }
+
+    public void setup(sortpom.parameter.PluginParameters)
+    {
+        XmlOutputGenerator this;
+        sortpom.parameter.PluginParameters pluginParameters;
+        sortpom.util.WriterFactory $stack2;
+        java.lang.String $stack3, $stack4;
+        boolean $stack5, $stack6, $stack7;
+        sortpom.XmlOutputGenerator $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: XmlOutputGenerator;
+
+        pluginParameters := @parameter0: sortpom.parameter.PluginParameters;
+
+        $r0 = (sortpom.XmlOutputGenerator) this;
+
+        $stack2 = $r0.<sortpom.XmlOutputGenerator: sortpom.util.WriterFactory writerFactory>;
+
+        virtualinvoke $stack2.<sortpom.util.WriterFactory: void setup(sortpom.parameter.PluginParameters)>(pluginParameters);
+
+        $stack3 = pluginParameters.<sortpom.parameter.PluginParameters: java.lang.String indentCharacters>;
+
+        $r1 = (sortpom.XmlOutputGenerator) this;
+
+        $r1.<sortpom.XmlOutputGenerator: java.lang.String indentCharacters> = $stack3;
+
+        $stack4 = pluginParameters.<sortpom.parameter.PluginParameters: java.lang.String encoding>;
+
+        $r2 = (sortpom.XmlOutputGenerator) this;
+
+        $r2.<sortpom.XmlOutputGenerator: java.lang.String encoding> = $stack4;
+
+        $stack5 = pluginParameters.<sortpom.parameter.PluginParameters: boolean expandEmptyElements>;
+
+        $r3 = (sortpom.XmlOutputGenerator) this;
+
+        $r3.<sortpom.XmlOutputGenerator: boolean expandEmptyElements> = $stack5;
+
+        $stack6 = pluginParameters.<sortpom.parameter.PluginParameters: boolean indentBlankLines>;
+
+        $r4 = (sortpom.XmlOutputGenerator) this;
+
+        $r4.<sortpom.XmlOutputGenerator: boolean indentBlankLines> = $stack6;
+
+        $stack7 = pluginParameters.<sortpom.parameter.PluginParameters: boolean indentSchemaLocation>;
+
+        $r5 = (sortpom.XmlOutputGenerator) this;
+
+        $r5.<sortpom.XmlOutputGenerator: boolean indentSchemaLocation> = $stack7;
+
+        return;
+    }
+
+    public java.lang.String getSortedXml(org.jdom.Document)
+    {
+        XmlOutputGenerator this;
+        sortpom.util.WriterFactory $stack5;
+        boolean $stack8, $stack9;
+        org.jdom.output.Format $stack10;
+        org.jdom.Document newDocument;
+        java.io.IOException $stack13;
+        java.lang.Throwable $stack15, $stack16, $r7;
+        sortpom.util.XmlWriter writer;
+        java.lang.String l4;
+        sortpom.XmlOutputGenerator$PatchedXMLOutputter $u0;
+        sortpom.exception.FailureException $u1;
+        sortpom.XmlOutputGenerator $r0, $r1, $r2, $r3;
+        org.jdom.output.XMLOutputter $r4, $r5;
+        java.io.Writer $r6;
+
+        this := @this: XmlOutputGenerator;
+
+        newDocument := @parameter0: org.jdom.Document;
+
+     label01:
+        $r0 = (sortpom.XmlOutputGenerator) this;
+
+        $stack5 = $r0.<sortpom.XmlOutputGenerator: sortpom.util.WriterFactory writerFactory>;
+
+        writer = virtualinvoke $stack5.<sortpom.util.WriterFactory: sortpom.util.XmlWriter getWriter()>();
+
+     label02:
+        $u0 = new sortpom.XmlOutputGenerator$PatchedXMLOutputter;
+
+        $r1 = (sortpom.XmlOutputGenerator) this;
+
+        $stack9 = $r1.<sortpom.XmlOutputGenerator: boolean indentBlankLines>;
+
+        $r2 = (sortpom.XmlOutputGenerator) this;
+
+        $stack8 = $r2.<sortpom.XmlOutputGenerator: boolean indentSchemaLocation>;
+
+        specialinvoke $u0.<sortpom.XmlOutputGenerator$PatchedXMLOutputter: void <init>(sortpom.util.XmlWriter,boolean,boolean)>(writer, $stack9, $stack8);
+
+        $r3 = (sortpom.XmlOutputGenerator) this;
+
+        $stack10 = specialinvoke $r3.<sortpom.XmlOutputGenerator: org.jdom.output.Format createPrettyFormat()>();
+
+        $r4 = (org.jdom.output.XMLOutputter) $u0;
+
+        virtualinvoke $r4.<org.jdom.output.XMLOutputter: void setFormat(org.jdom.output.Format)>($stack10);
+
+        $r5 = (org.jdom.output.XMLOutputter) $u0;
+
+        $r6 = (java.io.Writer) writer;
+
+        virtualinvoke $r5.<org.jdom.output.XMLOutputter: void output(org.jdom.Document,java.io.Writer)>(newDocument, $r6);
+
+        l4 = virtualinvoke writer.<java.lang.Object: java.lang.String toString()>();
+
+     label03:
+        if writer == null goto label04;
+
+        virtualinvoke writer.<sortpom.util.XmlWriter: void close()>();
+
+     label04:
+        return l4;
+
+     label05:
+        $stack16 := @caughtexception;
+
+        if writer == null goto label09;
+
+     label06:
+        virtualinvoke writer.<sortpom.util.XmlWriter: void close()>();
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack15 := @caughtexception;
+
+        virtualinvoke $stack16.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack15);
+
+     label09:
+        throw $stack16;
+
+     label10:
+        $stack13 := @caughtexception;
+
+        $u1 = new sortpom.exception.FailureException;
+
+        specialinvoke $u1.<sortpom.exception.FailureException: void <init>(java.lang.String,java.lang.Throwable)>("Could not format pom files content", $stack13);
+
+        $r7 = (java.lang.Throwable) $u1;
+
+        throw $r7;
+
+        catch java.lang.Throwable from label02 to label03 with label05;
+        catch java.lang.Throwable from label06 to label07 with label08;
+        catch java.io.IOException from label01 to label04 with label10;
+        catch java.io.IOException from label05 to label10 with label10;
+    }
+
+    private org.jdom.output.Format createPrettyFormat()
+    {
+        org.jdom.output.Format prettyFormat;
+        XmlOutputGenerator this;
+        boolean $stack3;
+        java.lang.String $stack5, $stack8;
+        sortpom.XmlOutputGenerator $r0, $r1, $r2;
+
+        this := @this: XmlOutputGenerator;
+
+        prettyFormat = staticinvoke <org.jdom.output.Format: org.jdom.output.Format getPrettyFormat()>();
+
+        $r0 = (sortpom.XmlOutputGenerator) this;
+
+        $stack3 = $r0.<sortpom.XmlOutputGenerator: boolean expandEmptyElements>;
+
+        virtualinvoke prettyFormat.<org.jdom.output.Format: org.jdom.output.Format setExpandEmptyElements(boolean)>($stack3);
+
+        $r1 = (sortpom.XmlOutputGenerator) this;
+
+        $stack5 = $r1.<sortpom.XmlOutputGenerator: java.lang.String encoding>;
+
+        virtualinvoke prettyFormat.<org.jdom.output.Format: org.jdom.output.Format setEncoding(java.lang.String)>($stack5);
+
+        virtualinvoke prettyFormat.<org.jdom.output.Format: org.jdom.output.Format setLineSeparator(java.lang.String)>("\n");
+
+        $r2 = (sortpom.XmlOutputGenerator) this;
+
+        $stack8 = $r2.<sortpom.XmlOutputGenerator: java.lang.String indentCharacters>;
+
+        virtualinvoke prettyFormat.<org.jdom.output.Format: org.jdom.output.Format setIndent(java.lang.String)>($stack8);
+
+        return prettyFormat;
+    }
+}

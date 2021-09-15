@@ -1,0 +1,531 @@
+final class LocalSnapshotMetadata extends org.apache.maven.repository.internal.MavenMetadata
+{
+    private final java.util.Collection artifacts;
+    private final boolean legacyFormat;
+
+    void <init>(org.eclipse.aether.artifact.Artifact, boolean, java.util.Date)
+    {
+        LocalSnapshotMetadata this;
+        org.eclipse.aether.artifact.Artifact artifact;
+        boolean legacyFormat;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack4;
+        java.util.Date timestamp;
+        java.util.ArrayList $u0;
+        org.apache.maven.repository.internal.LocalSnapshotMetadata $r0, $r1;
+
+        this := @this: LocalSnapshotMetadata;
+
+        artifact := @parameter0: org.eclipse.aether.artifact.Artifact;
+
+        legacyFormat := @parameter1: boolean;
+
+        timestamp := @parameter2: java.util.Date;
+
+        $stack4 = staticinvoke <org.apache.maven.repository.internal.LocalSnapshotMetadata: org.apache.maven.artifact.repository.metadata.Metadata createMetadata(org.eclipse.aether.artifact.Artifact,boolean)>(artifact, legacyFormat);
+
+        specialinvoke this.<org.apache.maven.repository.internal.MavenMetadata: void <init>(org.apache.maven.artifact.repository.metadata.Metadata,java.io.File,java.util.Date)>($stack4, null, timestamp);
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $r0.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.util.Collection artifacts> = $u0;
+
+        $r1 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $r1.<org.apache.maven.repository.internal.LocalSnapshotMetadata: boolean legacyFormat> = legacyFormat;
+
+        return;
+    }
+
+    void <init>(org.apache.maven.artifact.repository.metadata.Metadata, java.io.File, boolean, java.util.Date)
+    {
+        LocalSnapshotMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata metadata;
+        java.io.File file;
+        java.util.Date timestamp;
+        boolean legacyFormat;
+        java.util.ArrayList $u0;
+        org.apache.maven.repository.internal.LocalSnapshotMetadata $r0, $r1;
+
+        this := @this: LocalSnapshotMetadata;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.Metadata;
+
+        file := @parameter1: java.io.File;
+
+        legacyFormat := @parameter2: boolean;
+
+        timestamp := @parameter3: java.util.Date;
+
+        specialinvoke this.<org.apache.maven.repository.internal.MavenMetadata: void <init>(org.apache.maven.artifact.repository.metadata.Metadata,java.io.File,java.util.Date)>(metadata, file, timestamp);
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $r0.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.util.Collection artifacts> = $u0;
+
+        $r1 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $r1.<org.apache.maven.repository.internal.LocalSnapshotMetadata: boolean legacyFormat> = legacyFormat;
+
+        return;
+    }
+
+    private static org.apache.maven.artifact.repository.metadata.Metadata createMetadata(org.eclipse.aether.artifact.Artifact, boolean)
+    {
+        org.apache.maven.artifact.repository.metadata.Snapshot $stack5;
+        org.apache.maven.artifact.repository.metadata.Versioning $stack6;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack7;
+        org.eclipse.aether.artifact.Artifact artifact;
+        java.lang.String $stack8, $stack9, $stack10;
+        boolean legacyFormat;
+
+        artifact := @parameter0: org.eclipse.aether.artifact.Artifact;
+
+        legacyFormat := @parameter1: boolean;
+
+        $stack5 = new org.apache.maven.artifact.repository.metadata.Snapshot;
+
+        specialinvoke $stack5.<org.apache.maven.artifact.repository.metadata.Snapshot: void <init>()>();
+
+        virtualinvoke $stack5.<org.apache.maven.artifact.repository.metadata.Snapshot: void setLocalCopy(boolean)>(1);
+
+        $stack6 = new org.apache.maven.artifact.repository.metadata.Versioning;
+
+        specialinvoke $stack6.<org.apache.maven.artifact.repository.metadata.Versioning: void <init>()>();
+
+        virtualinvoke $stack6.<org.apache.maven.artifact.repository.metadata.Versioning: void setSnapshot(org.apache.maven.artifact.repository.metadata.Snapshot)>($stack5);
+
+        $stack7 = new org.apache.maven.artifact.repository.metadata.Metadata;
+
+        specialinvoke $stack7.<org.apache.maven.artifact.repository.metadata.Metadata: void <init>()>();
+
+        virtualinvoke $stack7.<org.apache.maven.artifact.repository.metadata.Metadata: void setVersioning(org.apache.maven.artifact.repository.metadata.Versioning)>($stack6);
+
+        $stack8 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getGroupId()>();
+
+        virtualinvoke $stack7.<org.apache.maven.artifact.repository.metadata.Metadata: void setGroupId(java.lang.String)>($stack8);
+
+        $stack9 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        virtualinvoke $stack7.<org.apache.maven.artifact.repository.metadata.Metadata: void setArtifactId(java.lang.String)>($stack9);
+
+        $stack10 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getBaseVersion()>();
+
+        virtualinvoke $stack7.<org.apache.maven.artifact.repository.metadata.Metadata: void setVersion(java.lang.String)>($stack10);
+
+        if legacyFormat != 0 goto label1;
+
+        virtualinvoke $stack7.<org.apache.maven.artifact.repository.metadata.Metadata: void setModelVersion(java.lang.String)>("1.1.0");
+
+     label1:
+        return $stack7;
+    }
+
+    public void bind(org.eclipse.aether.artifact.Artifact)
+    {
+        LocalSnapshotMetadata this;
+        org.eclipse.aether.artifact.Artifact artifact;
+        java.util.Collection $stack2;
+        org.apache.maven.repository.internal.LocalSnapshotMetadata $r0;
+
+        this := @this: LocalSnapshotMetadata;
+
+        artifact := @parameter0: org.eclipse.aether.artifact.Artifact;
+
+        $r0 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack2 = $r0.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.util.Collection artifacts>;
+
+        interfaceinvoke $stack2.<java.util.Collection: boolean add(java.lang.Object)>(artifact);
+
+        return;
+    }
+
+    public org.apache.maven.repository.internal.MavenMetadata setFile(java.io.File)
+    {
+        LocalSnapshotMetadata this;
+        java.io.File file;
+        java.util.Date $stack3;
+        boolean $stack4;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack5;
+        org.apache.maven.repository.internal.LocalSnapshotMetadata $u0, $r0, $r1, $r2;
+        org.apache.maven.repository.internal.MavenMetadata $r3;
+
+        this := @this: LocalSnapshotMetadata;
+
+        file := @parameter0: java.io.File;
+
+        $u0 = new org.apache.maven.repository.internal.LocalSnapshotMetadata;
+
+        $r0 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack5 = $r0.<org.apache.maven.repository.internal.LocalSnapshotMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        $r1 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack4 = $r1.<org.apache.maven.repository.internal.LocalSnapshotMetadata: boolean legacyFormat>;
+
+        $r2 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack3 = $r2.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.util.Date timestamp>;
+
+        specialinvoke $u0.<org.apache.maven.repository.internal.LocalSnapshotMetadata: void <init>(org.apache.maven.artifact.repository.metadata.Metadata,java.io.File,boolean,java.util.Date)>($stack5, file, $stack4, $stack3);
+
+        $r3 = (org.apache.maven.repository.internal.MavenMetadata) $u0;
+
+        return $r3;
+    }
+
+    public java.lang.Object getKey()
+    {
+        LocalSnapshotMetadata this;
+        java.lang.String $stack2, $stack5, $stack8, $stack10;
+        java.lang.StringBuilder $stack3, $stack4, $stack6, $stack7, $stack9, $u0;
+        org.apache.maven.repository.internal.LocalSnapshotMetadata $r0, $r1, $r2;
+
+        this := @this: LocalSnapshotMetadata;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.lang.String getGroupId()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack2);
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $r1 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack5 = virtualinvoke $r1.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.lang.String getArtifactId()>();
+
+        $stack6 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $r2 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack8 = virtualinvoke $r2.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.lang.String getVersion()>();
+
+        $stack9 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack10;
+    }
+
+    public static java.lang.Object getKey(org.eclipse.aether.artifact.Artifact)
+    {
+        java.lang.StringBuilder $stack1, $stack3, $stack4, $stack6, $stack7, $stack9;
+        org.eclipse.aether.artifact.Artifact artifact;
+        java.lang.String $stack2, $stack5, $stack8, $stack10;
+
+        artifact := @parameter0: org.eclipse.aether.artifact.Artifact;
+
+        $stack1 = new java.lang.StringBuilder;
+
+        specialinvoke $stack1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack2 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack3 = virtualinvoke $stack1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack2);
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack5 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack6 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack8 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getBaseVersion()>();
+
+        $stack9 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack10;
+    }
+
+    protected void merge(org.apache.maven.artifact.repository.metadata.Metadata)
+    {
+        LocalSnapshotMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack8, $stack13, recessive, $stack21;
+        org.apache.maven.artifact.repository.metadata.Versioning $stack9, $stack14, $stack22, versioning#4;
+        java.util.Date $stack10;
+        boolean $stack11, $stack19, $stack28, $stack35;
+        java.lang.String lastUpdated, $stack32, $stack33, key, $stack40, $stack41, $stack42, $stack43, $stack44, $stack45;
+        java.util.Collection $stack17, $stack24, $stack12;
+        java.util.List $stack26;
+        java.lang.Object $stack31, $stack38;
+        java.util.Iterator versioning, artifact#5;
+        org.eclipse.aether.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.metadata.SnapshotVersion sv, $u1;
+        java.util.LinkedHashMap $u0;
+        java.util.ArrayList $u2;
+        org.apache.maven.repository.internal.LocalSnapshotMetadata $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9;
+
+        this := @this: LocalSnapshotMetadata;
+
+        recessive := @parameter0: org.apache.maven.artifact.repository.metadata.Metadata;
+
+        $r0 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack8 = $r0.<org.apache.maven.repository.internal.LocalSnapshotMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        $stack9 = virtualinvoke $stack8.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        $r1 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack10 = $r1.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.util.Date timestamp>;
+
+        virtualinvoke $stack9.<org.apache.maven.artifact.repository.metadata.Versioning: void setLastUpdatedTimestamp(java.util.Date)>($stack10);
+
+        $r2 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack11 = $r2.<org.apache.maven.repository.internal.LocalSnapshotMetadata: boolean legacyFormat>;
+
+        if $stack11 != 0 goto label6;
+
+        $r3 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack13 = $r3.<org.apache.maven.repository.internal.LocalSnapshotMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        $stack14 = virtualinvoke $stack13.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        lastUpdated = virtualinvoke $stack14.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getLastUpdated()>();
+
+        $u0 = new java.util.LinkedHashMap;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>()>();
+
+        $r4 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack17 = $r4.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.util.Collection artifacts>;
+
+        versioning = interfaceinvoke $stack17.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack19 = interfaceinvoke versioning.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack19 == 0 goto label2;
+
+        $stack38 = interfaceinvoke versioning.<java.util.Iterator: java.lang.Object next()>();
+
+        artifact = (org.eclipse.aether.artifact.Artifact) $stack38;
+
+        $u1 = new org.apache.maven.artifact.repository.metadata.SnapshotVersion;
+
+        specialinvoke $u1.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: void <init>()>();
+
+        $stack40 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getClassifier()>();
+
+        virtualinvoke $u1.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: void setClassifier(java.lang.String)>($stack40);
+
+        $stack41 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getExtension()>();
+
+        virtualinvoke $u1.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: void setExtension(java.lang.String)>($stack41);
+
+        $r5 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack42 = virtualinvoke $r5.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.lang.String getVersion()>();
+
+        virtualinvoke $u1.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: void setVersion(java.lang.String)>($stack42);
+
+        virtualinvoke $u1.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: void setUpdated(java.lang.String)>(lastUpdated);
+
+        $stack43 = virtualinvoke $u1.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: java.lang.String getClassifier()>();
+
+        $stack44 = virtualinvoke $u1.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: java.lang.String getExtension()>();
+
+        $r6 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack45 = specialinvoke $r6.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.lang.String getKey(java.lang.String,java.lang.String)>($stack43, $stack44);
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack45, $u1);
+
+        goto label1;
+
+     label2:
+        versioning#4 = virtualinvoke recessive.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        if versioning#4 == null goto label5;
+
+        $stack26 = virtualinvoke versioning#4.<org.apache.maven.artifact.repository.metadata.Versioning: java.util.List getSnapshotVersions()>();
+
+        artifact#5 = interfaceinvoke $stack26.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack28 = interfaceinvoke artifact#5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack28 == 0 goto label5;
+
+        $stack31 = interfaceinvoke artifact#5.<java.util.Iterator: java.lang.Object next()>();
+
+        sv = (org.apache.maven.artifact.repository.metadata.SnapshotVersion) $stack31;
+
+        $stack32 = virtualinvoke sv.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: java.lang.String getClassifier()>();
+
+        $stack33 = virtualinvoke sv.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: java.lang.String getExtension()>();
+
+        $r7 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        key = specialinvoke $r7.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.lang.String getKey(java.lang.String,java.lang.String)>($stack32, $stack33);
+
+        $stack35 = interfaceinvoke $u0.<java.util.Map: boolean containsKey(java.lang.Object)>(key);
+
+        if $stack35 != 0 goto label4;
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, sv);
+
+     label4:
+        goto label3;
+
+     label5:
+        $r8 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack21 = $r8.<org.apache.maven.repository.internal.LocalSnapshotMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        $stack22 = virtualinvoke $stack21.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        $u2 = new java.util.ArrayList;
+
+        $stack24 = interfaceinvoke $u0.<java.util.Map: java.util.Collection values()>();
+
+        specialinvoke $u2.<java.util.ArrayList: void <init>(java.util.Collection)>($stack24);
+
+        virtualinvoke $stack22.<org.apache.maven.artifact.repository.metadata.Versioning: void setSnapshotVersions(java.util.List)>($u2);
+
+     label6:
+        $r9 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack12 = $r9.<org.apache.maven.repository.internal.LocalSnapshotMetadata: java.util.Collection artifacts>;
+
+        interfaceinvoke $stack12.<java.util.Collection: void clear()>();
+
+        return;
+    }
+
+    private java.lang.String getKey(java.lang.String, java.lang.String)
+    {
+        java.lang.StringBuilder $stack3, $stack4, $stack5, $stack6;
+        java.lang.String classifier, extension, $stack7;
+        LocalSnapshotMetadata this;
+
+        this := @this: LocalSnapshotMetadata;
+
+        classifier := @parameter0: java.lang.String;
+
+        extension := @parameter1: java.lang.String;
+
+        $stack3 = new java.lang.StringBuilder;
+
+        specialinvoke $stack3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(classifier);
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(extension);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack7;
+    }
+
+    public java.lang.String getGroupId()
+    {
+        LocalSnapshotMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack1;
+        java.lang.String $stack2;
+        org.apache.maven.repository.internal.LocalSnapshotMetadata $r0;
+
+        this := @this: LocalSnapshotMetadata;
+
+        $r0 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.internal.LocalSnapshotMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.artifact.repository.metadata.Metadata: java.lang.String getGroupId()>();
+
+        return $stack2;
+    }
+
+    public java.lang.String getArtifactId()
+    {
+        LocalSnapshotMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack1;
+        java.lang.String $stack2;
+        org.apache.maven.repository.internal.LocalSnapshotMetadata $r0;
+
+        this := @this: LocalSnapshotMetadata;
+
+        $r0 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.internal.LocalSnapshotMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.artifact.repository.metadata.Metadata: java.lang.String getArtifactId()>();
+
+        return $stack2;
+    }
+
+    public java.lang.String getVersion()
+    {
+        LocalSnapshotMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack1;
+        java.lang.String $stack2;
+        org.apache.maven.repository.internal.LocalSnapshotMetadata $r0;
+
+        this := @this: LocalSnapshotMetadata;
+
+        $r0 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.internal.LocalSnapshotMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.artifact.repository.metadata.Metadata: java.lang.String getVersion()>();
+
+        return $stack2;
+    }
+
+    public org.eclipse.aether.metadata.Metadata$Nature getNature()
+    {
+        org.eclipse.aether.metadata.Metadata$Nature $stack1;
+        LocalSnapshotMetadata this;
+
+        this := @this: LocalSnapshotMetadata;
+
+        $stack1 = <org.eclipse.aether.metadata.Metadata$Nature: org.eclipse.aether.metadata.Metadata$Nature SNAPSHOT>;
+
+        return $stack1;
+    }
+
+    public volatile org.eclipse.aether.metadata.Metadata setFile(java.io.File)
+    {
+        LocalSnapshotMetadata this;
+        java.io.File l1;
+        org.apache.maven.repository.internal.MavenMetadata $stack2;
+        org.apache.maven.repository.internal.LocalSnapshotMetadata $r0;
+        org.eclipse.aether.metadata.Metadata $r1;
+
+        this := @this: LocalSnapshotMetadata;
+
+        l1 := @parameter0: java.io.File;
+
+        $r0 = (org.apache.maven.repository.internal.LocalSnapshotMetadata) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.repository.internal.LocalSnapshotMetadata: org.apache.maven.repository.internal.MavenMetadata setFile(java.io.File)>(l1);
+
+        $r1 = (org.eclipse.aether.metadata.Metadata) $stack2;
+
+        return $r1;
+    }
+}

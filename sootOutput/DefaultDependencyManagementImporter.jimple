@@ -1,0 +1,138 @@
+public class DefaultDependencyManagementImporter extends java.lang.Object implements org.apache.maven.model.composition.DependencyManagementImporter
+{
+
+    public void <init>()
+    {
+        DefaultDependencyManagementImporter this;
+
+        this := @this: DefaultDependencyManagementImporter;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void importManagement(org.apache.maven.model.Model, java.util.List, org.apache.maven.model.building.ModelBuildingRequest, org.apache.maven.model.building.ModelProblemCollector)
+    {
+        java.util.List sources, $stack21, $stack30;
+        boolean $stack12, $stack23, $stack27, $stack32, $stack17;
+        java.util.LinkedHashMap $stack13;
+        org.apache.maven.model.Model target;
+        org.apache.maven.model.DependencyManagement $stack15, depMgmt, dependency;
+        java.util.ArrayList $stack18;
+        java.util.Collection $stack19;
+        java.lang.Object $stack20, $stack25, $stack34;
+        java.util.Iterator l9, l7;
+        org.apache.maven.model.Dependency dependency;
+        java.lang.String key, $stack35;
+        DefaultDependencyManagementImporter this;
+        org.apache.maven.model.building.ModelBuildingRequest request;
+        org.apache.maven.model.building.ModelProblemCollector problems;
+
+        this := @this: DefaultDependencyManagementImporter;
+
+        target := @parameter0: org.apache.maven.model.Model;
+
+        sources := @parameter1: java.util.List;
+
+        request := @parameter2: org.apache.maven.model.building.ModelBuildingRequest;
+
+        problems := @parameter3: org.apache.maven.model.building.ModelProblemCollector;
+
+        if sources == null goto label10;
+
+        $stack12 = interfaceinvoke sources.<java.util.List: boolean isEmpty()>();
+
+        if $stack12 != 0 goto label10;
+
+        $stack13 = new java.util.LinkedHashMap;
+
+        specialinvoke $stack13.<java.util.LinkedHashMap: void <init>()>();
+
+        depMgmt = virtualinvoke target.<org.apache.maven.model.Model: org.apache.maven.model.DependencyManagement getDependencyManagement()>();
+
+        if depMgmt == null goto label03;
+
+        $stack30 = virtualinvoke depMgmt.<org.apache.maven.model.DependencyManagement: java.util.List getDependencies()>();
+
+        l7 = interfaceinvoke $stack30.<java.util.List: java.util.Iterator iterator()>();
+
+     label01:
+        $stack32 = interfaceinvoke l7.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack32 == 0 goto label02;
+
+        $stack34 = interfaceinvoke l7.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.Dependency) $stack34;
+
+        $stack35 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        interfaceinvoke $stack13.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack35, dependency);
+
+        goto label01;
+
+     label02:
+        goto label04;
+
+     label03:
+        $stack15 = new org.apache.maven.model.DependencyManagement;
+
+        specialinvoke $stack15.<org.apache.maven.model.DependencyManagement: void <init>()>();
+
+        depMgmt = $stack15;
+
+        virtualinvoke target.<org.apache.maven.model.Model: void setDependencyManagement(org.apache.maven.model.DependencyManagement)>($stack15);
+
+     label04:
+        l7 = interfaceinvoke sources.<java.util.List: java.util.Iterator iterator()>();
+
+     label05:
+        $stack17 = interfaceinvoke l7.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack17 == 0 goto label09;
+
+        $stack20 = interfaceinvoke l7.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.DependencyManagement) $stack20;
+
+        $stack21 = virtualinvoke dependency.<org.apache.maven.model.DependencyManagement: java.util.List getDependencies()>();
+
+        l9 = interfaceinvoke $stack21.<java.util.List: java.util.Iterator iterator()>();
+
+     label06:
+        $stack23 = interfaceinvoke l9.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack23 == 0 goto label08;
+
+        $stack25 = interfaceinvoke l9.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.Dependency) $stack25;
+
+        key = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        $stack27 = interfaceinvoke $stack13.<java.util.Map: boolean containsKey(java.lang.Object)>(key);
+
+        if $stack27 != 0 goto label07;
+
+        interfaceinvoke $stack13.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, dependency);
+
+     label07:
+        goto label06;
+
+     label08:
+        goto label05;
+
+     label09:
+        $stack18 = new java.util.ArrayList;
+
+        $stack19 = interfaceinvoke $stack13.<java.util.Map: java.util.Collection values()>();
+
+        specialinvoke $stack18.<java.util.ArrayList: void <init>(java.util.Collection)>($stack19);
+
+        virtualinvoke depMgmt.<org.apache.maven.model.DependencyManagement: void setDependencies(java.util.List)>($stack18);
+
+     label10:
+        return;
+    }
+}

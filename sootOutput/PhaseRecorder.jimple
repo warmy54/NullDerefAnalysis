@@ -1,0 +1,149 @@
+public class PhaseRecorder extends java.lang.Object
+{
+    private java.lang.String lastLifecyclePhase;
+    private final org.apache.maven.project.MavenProject project;
+
+    public void <init>(org.apache.maven.project.MavenProject)
+    {
+        PhaseRecorder this;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.lifecycle.internal.PhaseRecorder $r0;
+
+        this := @this: PhaseRecorder;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $r0.<org.apache.maven.lifecycle.internal.PhaseRecorder: org.apache.maven.project.MavenProject project> = project;
+
+        return;
+    }
+
+    public void observeExecution(org.apache.maven.plugin.MojoExecution)
+    {
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        java.lang.String lifecyclePhase, $stack5, $stack7, $stack8, $stack11, $stack4;
+        PhaseRecorder this;
+        org.apache.maven.project.MavenProject $stack6, $stack12;
+        boolean $stack9;
+        org.apache.maven.lifecycle.internal.PhaseRecorder $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: PhaseRecorder;
+
+        mojoExecution := @parameter0: org.apache.maven.plugin.MojoExecution;
+
+        lifecyclePhase = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: java.lang.String getLifecyclePhase()>();
+
+        if lifecyclePhase == null goto label2;
+
+        $r0 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $stack7 = $r0.<org.apache.maven.lifecycle.internal.PhaseRecorder: java.lang.String lastLifecyclePhase>;
+
+        if $stack7 != null goto label1;
+
+        $r1 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $r1.<org.apache.maven.lifecycle.internal.PhaseRecorder: java.lang.String lastLifecyclePhase> = lifecyclePhase;
+
+        goto label2;
+
+     label1:
+        $r2 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $stack8 = $r2.<org.apache.maven.lifecycle.internal.PhaseRecorder: java.lang.String lastLifecyclePhase>;
+
+        $stack9 = virtualinvoke lifecyclePhase.<java.lang.String: boolean equals(java.lang.Object)>($stack8);
+
+        if $stack9 != 0 goto label2;
+
+        $r3 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $stack12 = $r3.<org.apache.maven.lifecycle.internal.PhaseRecorder: org.apache.maven.project.MavenProject project>;
+
+        $r4 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $stack11 = $r4.<org.apache.maven.lifecycle.internal.PhaseRecorder: java.lang.String lastLifecyclePhase>;
+
+        virtualinvoke $stack12.<org.apache.maven.project.MavenProject: void addLifecyclePhase(java.lang.String)>($stack11);
+
+        $r5 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $r5.<org.apache.maven.lifecycle.internal.PhaseRecorder: java.lang.String lastLifecyclePhase> = lifecyclePhase;
+
+     label2:
+        $r6 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $stack4 = $r6.<org.apache.maven.lifecycle.internal.PhaseRecorder: java.lang.String lastLifecyclePhase>;
+
+        if $stack4 == null goto label3;
+
+        $r7 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $stack6 = $r7.<org.apache.maven.lifecycle.internal.PhaseRecorder: org.apache.maven.project.MavenProject project>;
+
+        $r8 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $stack5 = $r8.<org.apache.maven.lifecycle.internal.PhaseRecorder: java.lang.String lastLifecyclePhase>;
+
+        virtualinvoke $stack6.<org.apache.maven.project.MavenProject: void addLifecyclePhase(java.lang.String)>($stack5);
+
+     label3:
+        return;
+    }
+
+    public boolean isDifferentPhase(org.apache.maven.plugin.MojoExecution)
+    {
+        org.apache.maven.plugin.MojoExecution nextMojoExecution;
+        java.lang.String lifecyclePhase, $stack4, $stack7;
+        PhaseRecorder this;
+        boolean $stack5, $stack8, $stack6;
+        org.apache.maven.lifecycle.internal.PhaseRecorder $r0, $r1;
+
+        this := @this: PhaseRecorder;
+
+        nextMojoExecution := @parameter0: org.apache.maven.plugin.MojoExecution;
+
+        lifecyclePhase = virtualinvoke nextMojoExecution.<org.apache.maven.plugin.MojoExecution: java.lang.String getLifecyclePhase()>();
+
+        if lifecyclePhase != null goto label3;
+
+        $r0 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $stack7 = $r0.<org.apache.maven.lifecycle.internal.PhaseRecorder: java.lang.String lastLifecyclePhase>;
+
+        if $stack7 == null goto label1;
+
+        $stack8 = 1;
+
+        goto label2;
+
+     label1:
+        $stack8 = 0;
+
+     label2:
+        return $stack8;
+
+     label3:
+        $r1 = (org.apache.maven.lifecycle.internal.PhaseRecorder) this;
+
+        $stack4 = $r1.<org.apache.maven.lifecycle.internal.PhaseRecorder: java.lang.String lastLifecyclePhase>;
+
+        $stack5 = virtualinvoke lifecyclePhase.<java.lang.String: boolean equals(java.lang.Object)>($stack4);
+
+        if $stack5 != 0 goto label4;
+
+        $stack6 = 1;
+
+        goto label5;
+
+     label4:
+        $stack6 = 0;
+
+     label5:
+        return $stack6;
+    }
+}

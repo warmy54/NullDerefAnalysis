@@ -1,0 +1,84 @@
+public class ProcessUtils$CharRelay extends java.lang.Object
+{
+    protected final java.io.Reader reader;
+    protected final java.io.Writer writer;
+
+    public void <init>(java.io.InputStream, java.io.Writer)
+    {
+        ProcessUtils$CharRelay this;
+        java.io.InputStream inStream;
+        java.io.Writer writer;
+        java.io.InputStreamReader $u0;
+        org.ooc.utils.ProcessUtils$CharRelay $r0, $r1;
+
+        this := @this: ProcessUtils$CharRelay;
+
+        inStream := @parameter0: java.io.InputStream;
+
+        writer := @parameter1: java.io.Writer;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.io.InputStreamReader;
+
+        specialinvoke $u0.<java.io.InputStreamReader: void <init>(java.io.InputStream)>(inStream);
+
+        $r0 = (org.ooc.utils.ProcessUtils$CharRelay) this;
+
+        $r0.<org.ooc.utils.ProcessUtils$CharRelay: java.io.Reader reader> = $u0;
+
+        $r1 = (org.ooc.utils.ProcessUtils$CharRelay) this;
+
+        $r1.<org.ooc.utils.ProcessUtils$CharRelay: java.io.Writer writer> = writer;
+
+        return;
+    }
+
+    public void start()
+    {
+        int $stack3, $stack5;
+        ProcessUtils$CharRelay this;
+        java.io.Reader $stack4;
+        java.io.Writer $stack6;
+        java.io.IOException $stack10;
+        char[] buffer;
+        org.ooc.utils.ProcessUtils$CharRelay $r0, $r1;
+
+        this := @this: ProcessUtils$CharRelay;
+
+     label1:
+        $stack3 = <org.ooc.utils.ProcessUtils: int BUFFER_SIZE>;
+
+        buffer = newarray (char)[$stack3];
+
+     label2:
+        $r0 = (org.ooc.utils.ProcessUtils$CharRelay) this;
+
+        $stack4 = $r0.<org.ooc.utils.ProcessUtils$CharRelay: java.io.Reader reader>;
+
+        $stack5 = virtualinvoke $stack4.<java.io.Reader: int read(char[])>(buffer);
+
+        if $stack5 == -1 goto label3;
+
+        $r1 = (org.ooc.utils.ProcessUtils$CharRelay) this;
+
+        $stack6 = $r1.<org.ooc.utils.ProcessUtils$CharRelay: java.io.Writer writer>;
+
+        virtualinvoke $stack6.<java.io.Writer: void write(char[],int,int)>(buffer, 0, $stack5);
+
+        goto label2;
+
+     label3:
+        goto label5;
+
+     label4:
+        $stack10 := @caughtexception;
+
+        virtualinvoke $stack10.<java.io.IOException: void printStackTrace()>();
+
+     label5:
+        return;
+
+        catch java.io.IOException from label1 to label3 with label4;
+    }
+}

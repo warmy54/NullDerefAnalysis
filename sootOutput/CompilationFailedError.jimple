@@ -1,0 +1,286 @@
+public class CompilationFailedError extends java.lang.Error
+{
+    protected static final long serialVersionUID;
+    protected boolean printed;
+    protected final org.ubi.FileLocation location;
+    protected java.lang.String line;
+    protected java.lang.String cursor;
+
+    public void <init>(java.lang.Throwable)
+    {
+        CompilationFailedError this;
+        java.lang.Throwable throwable;
+        org.ubi.CompilationFailedError $r0;
+
+        this := @this: CompilationFailedError;
+
+        throwable := @parameter0: java.lang.Throwable;
+
+        specialinvoke this.<java.lang.Error: void <init>(java.lang.Throwable)>(throwable);
+
+        $r0 = (org.ubi.CompilationFailedError) this;
+
+        $r0.<org.ubi.CompilationFailedError: org.ubi.FileLocation location> = null;
+
+        return;
+    }
+
+    public void <init>(org.ubi.FileLocation, java.lang.String)
+    {
+        CompilationFailedError this;
+        org.ubi.FileLocation location;
+        java.lang.String message, $stack3;
+        org.ubi.CompilationFailedError $r0, $r1;
+
+        this := @this: CompilationFailedError;
+
+        location := @parameter0: org.ubi.FileLocation;
+
+        message := @parameter1: java.lang.String;
+
+        if location != null goto label1;
+
+        $stack3 = message;
+
+        goto label2;
+
+     label1:
+        $stack3 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (org.ubi.FileLocation,java.lang.String)>(location, message) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001: \u0001");
+
+     label2:
+        specialinvoke this.<java.lang.Error: void <init>(java.lang.String)>($stack3);
+
+        $r0 = (org.ubi.CompilationFailedError) this;
+
+        $r0.<org.ubi.CompilationFailedError: org.ubi.FileLocation location> = location;
+
+        $r1 = (org.ubi.CompilationFailedError) this;
+
+        virtualinvoke $r1.<org.ubi.CompilationFailedError: void fillLine(org.ubi.FileLocation)>(location);
+
+        return;
+    }
+
+    protected void fillLine(org.ubi.FileLocation)
+    {
+        org.ubi.FileLocation location;
+        java.lang.String $stack6, $stack9, $stack11, $stack16, $stack20, $stack22;
+        CompilationFailedError this;
+        int $stack8, $stack12, $stack13, $stack14, $stack21, i, $stack15;
+        char c;
+        java.io.IOException $stack30;
+        org.ubi.SourceReader reader;
+        java.lang.StringBuffer $u0;
+        org.ubi.CompilationFailedError $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: CompilationFailedError;
+
+        location := @parameter0: org.ubi.FileLocation;
+
+        if location == null goto label11;
+
+     label01:
+        $stack6 = virtualinvoke location.<org.ubi.FileLocation: java.lang.String getFileName()>();
+
+        reader = staticinvoke <org.ubi.SourceReader: org.ubi.SourceReader getReaderFromPath(java.lang.String)>($stack6);
+
+        $stack8 = virtualinvoke location.<org.ubi.FileLocation: int getLineNumber()>();
+
+        $stack9 = virtualinvoke reader.<org.ubi.SourceReader: java.lang.String getLine(int)>($stack8);
+
+        $r0 = (org.ubi.CompilationFailedError) this;
+
+        $r0.<org.ubi.CompilationFailedError: java.lang.String line> = $stack9;
+
+        $u0 = new java.lang.StringBuffer;
+
+        $r1 = (org.ubi.CompilationFailedError) this;
+
+        $stack11 = $r1.<org.ubi.CompilationFailedError: java.lang.String line>;
+
+        $stack12 = virtualinvoke $stack11.<java.lang.String: int length()>();
+
+        specialinvoke $u0.<java.lang.StringBuffer: void <init>(int)>($stack12);
+
+        i = 0;
+
+     label02:
+        $stack13 = location.<org.ubi.FileLocation: int linePos>;
+
+        $stack14 = $stack13 - 1;
+
+        if i >= $stack14 goto label06;
+
+        $r2 = (org.ubi.CompilationFailedError) this;
+
+        $stack20 = $r2.<org.ubi.CompilationFailedError: java.lang.String line>;
+
+        $stack21 = virtualinvoke $stack20.<java.lang.String: int length()>();
+
+        if i < $stack21 goto label03;
+
+        goto label06;
+
+     label03:
+        $r3 = (org.ubi.CompilationFailedError) this;
+
+        $stack22 = $r3.<org.ubi.CompilationFailedError: java.lang.String line>;
+
+        c = virtualinvoke $stack22.<java.lang.String: char charAt(int)>(i);
+
+        if c != 9 goto label04;
+
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(9);
+
+        goto label05;
+
+     label04:
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(32);
+
+     label05:
+        i = i + 1;
+
+        goto label02;
+
+     label06:
+        i = 0;
+
+     label07:
+        $stack15 = location.<org.ubi.FileLocation: int length>;
+
+        if i >= $stack15 goto label08;
+
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("^");
+
+        i = i + 1;
+
+        goto label07;
+
+     label08:
+        $stack16 = virtualinvoke $u0.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        $r4 = (org.ubi.CompilationFailedError) this;
+
+        $r4.<org.ubi.CompilationFailedError: java.lang.String cursor> = $stack16;
+
+     label09:
+        goto label11;
+
+     label10:
+        $stack30 := @caughtexception;
+
+        virtualinvoke $stack30.<java.io.IOException: void printStackTrace()>();
+
+     label11:
+        return;
+
+        catch java.io.IOException from label01 to label09 with label10;
+    }
+
+    public void printStackTrace()
+    {
+        CompilationFailedError this;
+        java.io.PrintStream $stack1;
+        java.lang.String $stack2;
+        boolean $stack3;
+        org.ubi.CompilationFailedError $r0, $r1, $r2;
+
+        this := @this: CompilationFailedError;
+
+        $stack1 = <java.lang.System: java.io.PrintStream err>;
+
+        $r0 = (org.ubi.CompilationFailedError) this;
+
+        $stack2 = virtualinvoke $r0.<org.ubi.CompilationFailedError: java.lang.String getMessage()>();
+
+        virtualinvoke $stack1.<java.io.PrintStream: void println(java.lang.String)>($stack2);
+
+        $r1 = (org.ubi.CompilationFailedError) this;
+
+        $stack3 = $r1.<org.ubi.CompilationFailedError: boolean printed>;
+
+        if $stack3 != 0 goto label1;
+
+        $r2 = (org.ubi.CompilationFailedError) this;
+
+        $r2.<org.ubi.CompilationFailedError: boolean printed> = 1;
+
+        specialinvoke this.<java.lang.Error: void printStackTrace()>();
+
+     label1:
+        return;
+    }
+
+    public org.ubi.FileLocation getLocation()
+    {
+        CompilationFailedError this;
+        org.ubi.FileLocation $stack1;
+        org.ubi.CompilationFailedError $r0;
+
+        this := @this: CompilationFailedError;
+
+        $r0 = (org.ubi.CompilationFailedError) this;
+
+        $stack1 = $r0.<org.ubi.CompilationFailedError: org.ubi.FileLocation location>;
+
+        return $stack1;
+    }
+
+    public java.lang.String toString()
+    {
+        CompilationFailedError this;
+        java.lang.String $stack1;
+        org.ubi.CompilationFailedError $r0;
+
+        this := @this: CompilationFailedError;
+
+        $r0 = (org.ubi.CompilationFailedError) this;
+
+        $stack1 = virtualinvoke $r0.<org.ubi.CompilationFailedError: java.lang.String getMessage()>();
+
+        return $stack1;
+    }
+
+    public java.lang.String getMessage()
+    {
+        CompilationFailedError this;
+        java.lang.String $stack1, $stack2, $stack3, $stack4, $stack5, $stack6, $stack7;
+        org.ubi.CompilationFailedError $r0, $r1, $r2;
+
+        this := @this: CompilationFailedError;
+
+        $r0 = (org.ubi.CompilationFailedError) this;
+
+        $stack1 = $r0.<org.ubi.CompilationFailedError: java.lang.String line>;
+
+        if $stack1 != null goto label1;
+
+        $stack7 = specialinvoke this.<java.lang.Error: java.lang.String getMessage()>();
+
+        return $stack7;
+
+     label1:
+        $stack2 = specialinvoke this.<java.lang.Error: java.lang.String getMessage()>();
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: java.lang.String trim()>();
+
+        $r1 = (org.ubi.CompilationFailedError) this;
+
+        $stack5 = $r1.<org.ubi.CompilationFailedError: java.lang.String line>;
+
+        $r2 = (org.ubi.CompilationFailedError) this;
+
+        $stack4 = $r2.<org.ubi.CompilationFailedError: java.lang.String cursor>;
+
+        $stack6 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String,java.lang.String)>($stack3, $stack5, $stack4) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\n\u0001\n\u0001\u0001");
+
+        return $stack6;
+    }
+
+    public static void <clinit>()
+    {
+        <CompilationFailedError: long serialVersionUID> = 2065923195896492204L;
+
+        return;
+    }
+}

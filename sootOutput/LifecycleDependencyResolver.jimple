@@ -1,0 +1,829 @@
+public class LifecycleDependencyResolver extends java.lang.Object
+{
+    private org.apache.maven.project.ProjectDependenciesResolver dependenciesResolver;
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.apache.maven.lifecycle.internal.ProjectArtifactFactory artifactFactory;
+    private org.apache.maven.eventspy.internal.EventSpyDispatcher eventSpyDispatcher;
+    private org.apache.maven.project.artifact.ProjectArtifactsCache projectArtifactsCache;
+
+    public void <init>()
+    {
+        LifecycleDependencyResolver this;
+
+        this := @this: LifecycleDependencyResolver;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(org.apache.maven.project.ProjectDependenciesResolver, org.codehaus.plexus.logging.Logger)
+    {
+        LifecycleDependencyResolver this;
+        org.apache.maven.project.ProjectDependenciesResolver projectDependenciesResolver;
+        org.codehaus.plexus.logging.Logger logger;
+        org.apache.maven.lifecycle.internal.LifecycleDependencyResolver $r0, $r1;
+
+        this := @this: LifecycleDependencyResolver;
+
+        projectDependenciesResolver := @parameter0: org.apache.maven.project.ProjectDependenciesResolver;
+
+        logger := @parameter1: org.codehaus.plexus.logging.Logger;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $r0.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.apache.maven.project.ProjectDependenciesResolver dependenciesResolver> = projectDependenciesResolver;
+
+        $r1 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $r1.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.codehaus.plexus.logging.Logger logger> = logger;
+
+        return;
+    }
+
+    public static java.util.List getProjects(org.apache.maven.project.MavenProject, org.apache.maven.execution.MavenSession, boolean)
+    {
+        boolean aggregator;
+        org.apache.maven.project.MavenProject project;
+        java.util.List $stack3, $stack4;
+        org.apache.maven.execution.MavenSession session;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        session := @parameter1: org.apache.maven.execution.MavenSession;
+
+        aggregator := @parameter2: boolean;
+
+        if aggregator == 0 goto label1;
+
+        $stack4 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        return $stack4;
+
+     label1:
+        $stack3 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>(project);
+
+        return $stack3;
+    }
+
+    public void resolveProjectDependencies(org.apache.maven.project.MavenProject, java.util.Collection, java.util.Collection, org.apache.maven.execution.MavenSession, boolean, java.util.Set) throws org.apache.maven.lifecycle.LifecycleExecutionException
+    {
+        java.lang.Thread $stack18, $stack43, $stack85, $stack87;
+        java.lang.ClassLoader tccl, $r0;
+        org.apache.maven.project.MavenProject project, reactorProject;
+        org.codehaus.plexus.classworlds.realm.ClassRealm projectRealm;
+        LifecycleDependencyResolver this;
+        java.util.Collection scopesToCollect, scopesToResolve;
+        boolean aggregating, $stack39, $stack42, $stack36;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.artifact.ProjectArtifactsCache $stack22, $stack25, $stack28, $stack30, $stack89, $stack91;
+        org.eclipse.aether.RepositorySystemSession $stack23;
+        org.apache.maven.project.artifact.ProjectArtifactsCache$Key cacheKey;
+        java.util.Set projectArtifacts, $stack40, $stack74, $stack21, e#7;
+        java.util.List $stack32, $stack34, $stack50;
+        int $stack33;
+        java.lang.Object $stack44, $stack48, $stack52, $stack53, $stack60;
+        java.io.File $stack45, $stack49, $stack63, reactorProjectFile;
+        java.lang.String $stack47, $stack51, $stack54;
+        org.apache.maven.artifact.Artifact $stack61, $stack62, artifact, reactorProjectFile#22;
+        org.apache.maven.lifecycle.internal.ProjectArtifactFactory $stack73;
+        java.lang.Throwable $stack86, $stack88, $stack92, $r2;
+        org.apache.maven.project.artifact.ProjectArtifactsCache$CacheRecord recordArtifacts;
+        java.util.Iterator map, reactorProject#17;
+        org.apache.maven.lifecycle.LifecycleExecutionException $u0, $r8;
+        java.util.HashMap $u1, $u2;
+        org.apache.maven.lifecycle.internal.LifecycleDependencyResolver $r1, $r3, $r4, $r5, $r6, $r7, $r9, $r10;
+
+        this := @this: LifecycleDependencyResolver;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        scopesToCollect := @parameter1: java.util.Collection;
+
+        scopesToResolve := @parameter2: java.util.Collection;
+
+        session := @parameter3: org.apache.maven.execution.MavenSession;
+
+        aggregating := @parameter4: boolean;
+
+        projectArtifacts := @parameter5: java.util.Set;
+
+        $stack18 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        tccl = virtualinvoke $stack18.<java.lang.Thread: java.lang.ClassLoader getContextClassLoader()>();
+
+     label01:
+        projectRealm = virtualinvoke project.<org.apache.maven.project.MavenProject: org.codehaus.plexus.classworlds.realm.ClassRealm getClassRealm()>();
+
+        if projectRealm == null goto label02;
+
+        if projectRealm == tccl goto label02;
+
+        $stack85 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        $r0 = (java.lang.ClassLoader) projectRealm;
+
+        virtualinvoke $stack85.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>($r0);
+
+     label02:
+        $stack21 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.Set getDependencyArtifacts()>();
+
+        if $stack21 != null goto label06;
+
+     label03:
+        $r1 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack73 = $r1.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.apache.maven.lifecycle.internal.ProjectArtifactFactory artifactFactory>;
+
+        $stack74 = interfaceinvoke $stack73.<org.apache.maven.lifecycle.internal.ProjectArtifactFactory: java.util.Set createArtifacts(org.apache.maven.project.MavenProject)>(project);
+
+        virtualinvoke project.<org.apache.maven.project.MavenProject: void setDependencyArtifacts(java.util.Set)>($stack74);
+
+     label04:
+        goto label06;
+
+     label05:
+        $stack92 := @caughtexception;
+
+        $u0 = new org.apache.maven.lifecycle.LifecycleExecutionException;
+
+        specialinvoke $u0.<org.apache.maven.lifecycle.LifecycleExecutionException: void <init>(java.lang.Throwable)>($stack92);
+
+        $r2 = (java.lang.Throwable) $u0;
+
+        throw $r2;
+
+     label06:
+        $r3 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack22 = $r3.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.apache.maven.project.artifact.ProjectArtifactsCache projectArtifactsCache>;
+
+        $stack23 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        cacheKey = interfaceinvoke $stack22.<org.apache.maven.project.artifact.ProjectArtifactsCache: org.apache.maven.project.artifact.ProjectArtifactsCache$Key createKey(org.apache.maven.project.MavenProject,java.util.Collection,java.util.Collection,boolean,org.eclipse.aether.RepositorySystemSession)>(project, scopesToCollect, scopesToResolve, aggregating, $stack23);
+
+        $r4 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack25 = $r4.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.apache.maven.project.artifact.ProjectArtifactsCache projectArtifactsCache>;
+
+        recordArtifacts = interfaceinvoke $stack25.<org.apache.maven.project.artifact.ProjectArtifactsCache: org.apache.maven.project.artifact.ProjectArtifactsCache$CacheRecord get(org.apache.maven.project.artifact.ProjectArtifactsCache$Key)>(cacheKey);
+
+        if recordArtifacts == null goto label07;
+
+        e#7 = virtualinvoke recordArtifacts.<org.apache.maven.project.artifact.ProjectArtifactsCache$CacheRecord: java.util.Set getArtifacts()>();
+
+        goto label10;
+
+     label07:
+        $r5 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        e#7 = specialinvoke $r5.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: java.util.Set getDependencies(org.apache.maven.project.MavenProject,java.util.Collection,java.util.Collection,org.apache.maven.execution.MavenSession,boolean,java.util.Set)>(project, scopesToCollect, scopesToResolve, session, aggregating, projectArtifacts);
+
+        $r6 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack28 = $r6.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.apache.maven.project.artifact.ProjectArtifactsCache projectArtifactsCache>;
+
+        recordArtifacts = interfaceinvoke $stack28.<org.apache.maven.project.artifact.ProjectArtifactsCache: org.apache.maven.project.artifact.ProjectArtifactsCache$CacheRecord put(org.apache.maven.project.artifact.ProjectArtifactsCache$Key,java.util.Set)>(cacheKey, e#7);
+
+     label08:
+        goto label10;
+
+     label09:
+        $stack88 := @caughtexception;
+
+        $r7 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack89 = $r7.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.apache.maven.project.artifact.ProjectArtifactsCache projectArtifactsCache>;
+
+        $r8 = (org.apache.maven.lifecycle.LifecycleExecutionException) $stack88;
+
+        interfaceinvoke $stack89.<org.apache.maven.project.artifact.ProjectArtifactsCache: org.apache.maven.project.artifact.ProjectArtifactsCache$CacheRecord put(org.apache.maven.project.artifact.ProjectArtifactsCache$Key,org.apache.maven.lifecycle.LifecycleExecutionException)>(cacheKey, $r8);
+
+        $r9 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack91 = $r9.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.apache.maven.project.artifact.ProjectArtifactsCache projectArtifactsCache>;
+
+        interfaceinvoke $stack91.<org.apache.maven.project.artifact.ProjectArtifactsCache: void register(org.apache.maven.project.MavenProject,org.apache.maven.project.artifact.ProjectArtifactsCache$Key,org.apache.maven.project.artifact.ProjectArtifactsCache$CacheRecord)>(project, cacheKey, recordArtifacts);
+
+        throw $stack88;
+
+     label10:
+        $r10 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack30 = $r10.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.apache.maven.project.artifact.ProjectArtifactsCache projectArtifactsCache>;
+
+        interfaceinvoke $stack30.<org.apache.maven.project.artifact.ProjectArtifactsCache: void register(org.apache.maven.project.MavenProject,org.apache.maven.project.artifact.ProjectArtifactsCache$Key,org.apache.maven.project.artifact.ProjectArtifactsCache$CacheRecord)>(project, cacheKey, recordArtifacts);
+
+        $u1 = new java.util.HashMap;
+
+        $stack32 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $stack33 = interfaceinvoke $stack32.<java.util.List: int size()>();
+
+        specialinvoke $u1.<java.util.HashMap: void <init>(int)>($stack33);
+
+        $stack34 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        map = interfaceinvoke $stack34.<java.util.List: java.util.Iterator iterator()>();
+
+     label11:
+        $stack36 = interfaceinvoke map.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack36 == 0 goto label12;
+
+        $stack60 = interfaceinvoke map.<java.util.Iterator: java.lang.Object next()>();
+
+        reactorProject = (org.apache.maven.project.MavenProject) $stack60;
+
+        $stack61 = virtualinvoke reactorProject.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack62 = virtualinvoke reactorProject.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack63 = interfaceinvoke $stack62.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        interfaceinvoke $u1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack61, $stack63);
+
+        goto label11;
+
+     label12:
+        $u2 = new java.util.HashMap;
+
+        specialinvoke $u2.<java.util.HashMap: void <init>()>();
+
+        reactorProject#17 = interfaceinvoke e#7.<java.util.Set: java.util.Iterator iterator()>();
+
+     label13:
+        $stack39 = interfaceinvoke reactorProject#17.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack39 == 0 goto label15;
+
+        $stack52 = interfaceinvoke reactorProject#17.<java.util.Iterator: java.lang.Object next()>();
+
+        artifact = (org.apache.maven.artifact.Artifact) $stack52;
+
+        $stack53 = interfaceinvoke $u1.<java.util.Map: java.lang.Object get(java.lang.Object)>(artifact);
+
+        reactorProjectFile = (java.io.File) $stack53;
+
+        if reactorProjectFile == null goto label14;
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>(reactorProjectFile);
+
+     label14:
+        $stack54 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getDependencyConflictId()>();
+
+        interfaceinvoke $u2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack54, artifact);
+
+        goto label13;
+
+     label15:
+        virtualinvoke project.<org.apache.maven.project.MavenProject: void setResolvedArtifacts(java.util.Set)>(e#7);
+
+        $stack40 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.Set getDependencyArtifacts()>();
+
+        reactorProject#17 = interfaceinvoke $stack40.<java.util.Set: java.util.Iterator iterator()>();
+
+     label16:
+        $stack42 = interfaceinvoke reactorProject#17.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack42 == 0 goto label18;
+
+        $stack44 = interfaceinvoke reactorProject#17.<java.util.Iterator: java.lang.Object next()>();
+
+        artifact = (org.apache.maven.artifact.Artifact) $stack44;
+
+        $stack45 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        if $stack45 != null goto label17;
+
+        $stack47 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getDependencyConflictId()>();
+
+        $stack48 = interfaceinvoke $u2.<java.util.Map: java.lang.Object get(java.lang.Object)>($stack47);
+
+        reactorProjectFile#22 = (org.apache.maven.artifact.Artifact) $stack48;
+
+        if reactorProjectFile#22 == null goto label17;
+
+        $stack49 = interfaceinvoke reactorProjectFile#22.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($stack49);
+
+        $stack50 = interfaceinvoke reactorProjectFile#22.<org.apache.maven.artifact.Artifact: java.util.List getDependencyTrail()>();
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setDependencyTrail(java.util.List)>($stack50);
+
+        $stack51 = interfaceinvoke reactorProjectFile#22.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setResolvedVersion(java.lang.String)>($stack51);
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setResolved(boolean)>(1);
+
+     label17:
+        goto label16;
+
+     label18:
+        $stack43 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack43.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(tccl);
+
+        goto label21;
+
+     label19:
+        $stack86 := @caughtexception;
+
+     label20:
+        $stack87 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack87.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(tccl);
+
+        throw $stack86;
+
+     label21:
+        return;
+
+        catch org.apache.maven.project.artifact.InvalidDependencyVersionException from label03 to label04 with label05;
+        catch org.apache.maven.lifecycle.LifecycleExecutionException from label07 to label08 with label09;
+        catch java.lang.Throwable from label01 to label18 with label19;
+        catch java.lang.Throwable from label19 to label20 with label19;
+    }
+
+    private java.util.Set getDependencies(org.apache.maven.project.MavenProject, java.util.Collection, java.util.Collection, org.apache.maven.execution.MavenSession, boolean, java.util.Set) throws org.apache.maven.lifecycle.LifecycleExecutionException
+    {
+        boolean $stack13, $stack36, $stack43, aggregating, $stack73, $stack80;
+        LifecycleDependencyResolver this;
+        java.util.Collection $stack18, $stack21, scopesToCollect, scopesToResolve;
+        java.util.Set projectArtifacts;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.execution.MavenSession session;
+        org.eclipse.aether.RepositorySystemSession $stack26;
+        org.apache.maven.eventspy.internal.EventSpyDispatcher $stack28, $stack31;
+        org.apache.maven.project.ProjectDependenciesResolver $stack29;
+        org.eclipse.aether.graph.DependencyNode $stack33, $stack34, $stack38;
+        java.util.List $stack35, $stack39, $stack42, $stack71, $stack72, $stack78;
+        org.apache.maven.artifact.Artifact $stack40;
+        java.lang.String $stack41, $stack90;
+        java.lang.Throwable $stack68, $r13;
+        org.codehaus.plexus.logging.Logger $stack77, $stack81, $stack87;
+        java.util.Iterator l11;
+        java.lang.Object $stack85;
+        org.eclipse.aether.graph.Dependency dependency;
+        java.lang.StringBuilder $stack88, $stack89, $u6;
+        org.eclipse.aether.graph.DependencyFilter resolutionFilter#5, $r2, $r3, $r4, $r15;
+        org.apache.maven.project.DependencyResolutionResult result;
+        java.util.LinkedHashSet $u0, $u8;
+        java.util.HashSet $u1;
+        org.eclipse.aether.util.filter.ScopeDependencyFilter $u2, $u3;
+        org.apache.maven.lifecycle.internal.LifecycleDependencyResolver$ReactorDependencyFilter $u4;
+        org.apache.maven.project.DefaultDependencyResolutionRequest $u5;
+        org.apache.maven.lifecycle.LifecycleExecutionException $u7;
+        org.apache.maven.lifecycle.internal.LifecycleDependencyResolver $r0, $r1, $r5, $r6, $r9, $r10, $r11, $r12, $r14;
+        org.apache.maven.project.DependencyResolutionRequest $r7;
+        org.apache.maven.project.DependencyResolutionException $r8;
+
+        this := @this: LifecycleDependencyResolver;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        scopesToCollect := @parameter1: java.util.Collection;
+
+        scopesToResolve := @parameter2: java.util.Collection;
+
+        session := @parameter3: org.apache.maven.execution.MavenSession;
+
+        aggregating := @parameter4: boolean;
+
+        projectArtifacts := @parameter5: java.util.Set;
+
+        if scopesToCollect != null goto label01;
+
+        scopesToCollect = staticinvoke <java.util.Collections: java.util.Set emptySet()>();
+
+     label01:
+        if scopesToResolve != null goto label02;
+
+        scopesToResolve = staticinvoke <java.util.Collections: java.util.Set emptySet()>();
+
+     label02:
+        $stack13 = interfaceinvoke scopesToCollect.<java.util.Collection: boolean isEmpty()>();
+
+        if $stack13 == 0 goto label03;
+
+        $stack43 = interfaceinvoke scopesToResolve.<java.util.Collection: boolean isEmpty()>();
+
+        if $stack43 == 0 goto label03;
+
+        $u0 = new java.util.LinkedHashSet;
+
+        specialinvoke $u0.<java.util.LinkedHashSet: void <init>()>();
+
+        return $u0;
+
+     label03:
+        $u1 = new java.util.HashSet;
+
+        specialinvoke $u1.<java.util.HashSet: void <init>(java.util.Collection)>(scopesToCollect);
+
+        interfaceinvoke $u1.<java.util.Collection: boolean addAll(java.util.Collection)>(scopesToResolve);
+
+        $u2 = new org.eclipse.aether.util.filter.ScopeDependencyFilter;
+
+        $r0 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack18 = specialinvoke $r0.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: java.util.Collection negate(java.util.Collection)>($u1);
+
+        specialinvoke $u2.<org.eclipse.aether.util.filter.ScopeDependencyFilter: void <init>(java.util.Collection,java.util.Collection)>(null, $stack18);
+
+        $u3 = new org.eclipse.aether.util.filter.ScopeDependencyFilter;
+
+        $r1 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack21 = specialinvoke $r1.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: java.util.Collection negate(java.util.Collection)>(scopesToResolve);
+
+        specialinvoke $u3.<org.eclipse.aether.util.filter.ScopeDependencyFilter: void <init>(java.util.Collection,java.util.Collection)>(null, $stack21);
+
+        $r2 = (org.eclipse.aether.graph.DependencyFilter) $u2;
+
+        $r3 = (org.eclipse.aether.graph.DependencyFilter) $u3;
+
+        resolutionFilter#5 = staticinvoke <org.eclipse.aether.util.filter.AndDependencyFilter: org.eclipse.aether.graph.DependencyFilter newInstance(org.eclipse.aether.graph.DependencyFilter,org.eclipse.aether.graph.DependencyFilter)>($r2, $r3);
+
+        $u4 = new org.apache.maven.lifecycle.internal.LifecycleDependencyResolver$ReactorDependencyFilter;
+
+        specialinvoke $u4.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver$ReactorDependencyFilter: void <init>(java.util.Collection)>(projectArtifacts);
+
+        $r4 = (org.eclipse.aether.graph.DependencyFilter) $u4;
+
+        resolutionFilter#5 = staticinvoke <org.eclipse.aether.util.filter.AndDependencyFilter: org.eclipse.aether.graph.DependencyFilter newInstance(org.eclipse.aether.graph.DependencyFilter,org.eclipse.aether.graph.DependencyFilter)>(resolutionFilter#5, $r4);
+
+     label04:
+        $u5 = new org.apache.maven.project.DefaultDependencyResolutionRequest;
+
+        $stack26 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        specialinvoke $u5.<org.apache.maven.project.DefaultDependencyResolutionRequest: void <init>(org.apache.maven.project.MavenProject,org.eclipse.aether.RepositorySystemSession)>(project, $stack26);
+
+        virtualinvoke $u5.<org.apache.maven.project.DefaultDependencyResolutionRequest: org.apache.maven.project.DependencyResolutionRequest setResolutionFilter(org.eclipse.aether.graph.DependencyFilter)>(resolutionFilter#5);
+
+        $r5 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack28 = $r5.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.apache.maven.eventspy.internal.EventSpyDispatcher eventSpyDispatcher>;
+
+        virtualinvoke $stack28.<org.apache.maven.eventspy.internal.EventSpyDispatcher: void onEvent(java.lang.Object)>($u5);
+
+        $r6 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack29 = $r6.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.apache.maven.project.ProjectDependenciesResolver dependenciesResolver>;
+
+        $r7 = (org.apache.maven.project.DependencyResolutionRequest) $u5;
+
+        result = interfaceinvoke $stack29.<org.apache.maven.project.ProjectDependenciesResolver: org.apache.maven.project.DependencyResolutionResult resolve(org.apache.maven.project.DependencyResolutionRequest)>($r7);
+
+     label05:
+        goto label10;
+
+     label06:
+        $stack68 := @caughtexception;
+
+        $r8 = (org.apache.maven.project.DependencyResolutionException) $stack68;
+
+        result = virtualinvoke $r8.<org.apache.maven.project.DependencyResolutionException: org.apache.maven.project.DependencyResolutionResult getResult()>();
+
+        if aggregating == 0 goto label09;
+
+        $stack71 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $stack72 = interfaceinvoke result.<org.apache.maven.project.DependencyResolutionResult: java.util.List getUnresolvedDependencies()>();
+
+        $r9 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack73 = specialinvoke $r9.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: boolean areAllDependenciesInReactor(java.util.Collection,java.util.Collection)>($stack71, $stack72);
+
+        if $stack73 == 0 goto label09;
+
+        $r10 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack77 = $r10.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack77.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("The following dependencies could not be resolved at this point of the build but seem to be part of the reactor:");
+
+        $stack78 = interfaceinvoke result.<org.apache.maven.project.DependencyResolutionResult: java.util.List getUnresolvedDependencies()>();
+
+        l11 = interfaceinvoke $stack78.<java.util.List: java.util.Iterator iterator()>();
+
+     label07:
+        $stack80 = interfaceinvoke l11.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack80 == 0 goto label08;
+
+        $stack85 = interfaceinvoke l11.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.eclipse.aether.graph.Dependency) $stack85;
+
+        $r11 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack87 = $r11.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack88 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("o ");
+
+        $stack89 = virtualinvoke $stack88.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(dependency);
+
+        $stack90 = virtualinvoke $stack89.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack87.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack90);
+
+        goto label07;
+
+     label08:
+        $r12 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack81 = $r12.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack81.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>("Try running the build up to the lifecycle phase \"package\"");
+
+        goto label10;
+
+     label09:
+        $u7 = new org.apache.maven.lifecycle.LifecycleExecutionException;
+
+        specialinvoke $u7.<org.apache.maven.lifecycle.LifecycleExecutionException: void <init>(org.apache.maven.plugin.MojoExecution,org.apache.maven.project.MavenProject,java.lang.Throwable)>(null, project, $stack68);
+
+        $r13 = (java.lang.Throwable) $u7;
+
+        throw $r13;
+
+     label10:
+        $r14 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        $stack31 = $r14.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: org.apache.maven.eventspy.internal.EventSpyDispatcher eventSpyDispatcher>;
+
+        virtualinvoke $stack31.<org.apache.maven.eventspy.internal.EventSpyDispatcher: void onEvent(java.lang.Object)>(result);
+
+        $u8 = new java.util.LinkedHashSet;
+
+        specialinvoke $u8.<java.util.LinkedHashSet: void <init>()>();
+
+        $stack33 = interfaceinvoke result.<org.apache.maven.project.DependencyResolutionResult: org.eclipse.aether.graph.DependencyNode getDependencyGraph()>();
+
+        if $stack33 == null goto label11;
+
+        $stack34 = interfaceinvoke result.<org.apache.maven.project.DependencyResolutionResult: org.eclipse.aether.graph.DependencyNode getDependencyGraph()>();
+
+        $stack35 = interfaceinvoke $stack34.<org.eclipse.aether.graph.DependencyNode: java.util.List getChildren()>();
+
+        $stack36 = interfaceinvoke $stack35.<java.util.List: boolean isEmpty()>();
+
+        if $stack36 != 0 goto label11;
+
+        $stack38 = interfaceinvoke result.<org.apache.maven.project.DependencyResolutionResult: org.eclipse.aether.graph.DependencyNode getDependencyGraph()>();
+
+        $stack39 = interfaceinvoke $stack38.<org.eclipse.aether.graph.DependencyNode: java.util.List getChildren()>();
+
+        $stack40 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack41 = interfaceinvoke $stack40.<org.apache.maven.artifact.Artifact: java.lang.String getId()>();
+
+        $stack42 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($stack41);
+
+        $r15 = (org.eclipse.aether.graph.DependencyFilter) $u2;
+
+        staticinvoke <org.apache.maven.RepositoryUtils: void toArtifacts(java.util.Collection,java.util.Collection,java.util.List,org.eclipse.aether.graph.DependencyFilter)>($u8, $stack39, $stack42, $r15);
+
+     label11:
+        return $u8;
+
+        catch org.apache.maven.project.DependencyResolutionException from label04 to label05 with label06;
+    }
+
+    private boolean areAllDependenciesInReactor(java.util.Collection, java.util.Collection)
+    {
+        LifecycleDependencyResolver this;
+        java.util.Collection projects, dependencies;
+        java.util.Set projectKeys;
+        java.util.Iterator l4;
+        boolean $stack10, $stack17;
+        java.lang.Object $stack11;
+        org.eclipse.aether.graph.Dependency dependency;
+        org.eclipse.aether.artifact.Artifact a;
+        java.lang.String $stack13, $stack14, $stack15, key;
+        org.apache.maven.lifecycle.internal.LifecycleDependencyResolver $r0;
+
+        this := @this: LifecycleDependencyResolver;
+
+        projects := @parameter0: java.util.Collection;
+
+        dependencies := @parameter1: java.util.Collection;
+
+        $r0 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolver) this;
+
+        projectKeys = specialinvoke $r0.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: java.util.Set getReactorProjectKeys(java.util.Collection)>(projects);
+
+        l4 = interfaceinvoke dependencies.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label3;
+
+        $stack11 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.eclipse.aether.graph.Dependency) $stack11;
+
+        a = virtualinvoke dependency.<org.eclipse.aether.graph.Dependency: org.eclipse.aether.artifact.Artifact getArtifact()>();
+
+        $stack13 = interfaceinvoke a.<org.eclipse.aether.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack14 = interfaceinvoke a.<org.eclipse.aether.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack15 = interfaceinvoke a.<org.eclipse.aether.artifact.Artifact: java.lang.String getVersion()>();
+
+        key = staticinvoke <org.apache.maven.artifact.ArtifactUtils: java.lang.String key(java.lang.String,java.lang.String,java.lang.String)>($stack13, $stack14, $stack15);
+
+        $stack17 = interfaceinvoke projectKeys.<java.util.Set: boolean contains(java.lang.Object)>(key);
+
+        if $stack17 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        goto label1;
+
+     label3:
+        return 1;
+    }
+
+    private java.util.Set getReactorProjectKeys(java.util.Collection)
+    {
+        java.util.HashSet $stack6;
+        java.util.Collection projects;
+        int $stack7, $stack8;
+        java.util.Iterator l3;
+        boolean $stack10;
+        java.lang.Object $stack11;
+        org.apache.maven.project.MavenProject project;
+        java.lang.String $stack12, $stack13, $stack14, key;
+        LifecycleDependencyResolver this;
+
+        this := @this: LifecycleDependencyResolver;
+
+        projects := @parameter0: java.util.Collection;
+
+        $stack6 = new java.util.HashSet;
+
+        $stack7 = interfaceinvoke projects.<java.util.Collection: int size()>();
+
+        $stack8 = $stack7 * 2;
+
+        specialinvoke $stack6.<java.util.HashSet: void <init>(int)>($stack8);
+
+        l3 = interfaceinvoke projects.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label2;
+
+        $stack11 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        project = (org.apache.maven.project.MavenProject) $stack11;
+
+        $stack12 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        $stack13 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        $stack14 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        key = staticinvoke <org.apache.maven.artifact.ArtifactUtils: java.lang.String key(java.lang.String,java.lang.String,java.lang.String)>($stack12, $stack13, $stack14);
+
+        interfaceinvoke $stack6.<java.util.Set: boolean add(java.lang.Object)>(key);
+
+        goto label1;
+
+     label2:
+        return $stack6;
+    }
+
+    private java.util.Collection negate(java.util.Collection)
+    {
+        java.util.HashSet $stack5;
+        java.lang.String[] $stack6;
+        java.util.Collection scopes;
+        java.util.Iterator l3;
+        boolean $stack9, $stack12, $stack14, $stack16, $stack18, $stack20;
+        java.lang.Object $stack10;
+        java.lang.String scope, $stack11, $stack13, $stack15, $stack17, $stack19;
+        LifecycleDependencyResolver this;
+
+        this := @this: LifecycleDependencyResolver;
+
+        scopes := @parameter0: java.util.Collection;
+
+        $stack5 = new java.util.HashSet;
+
+        specialinvoke $stack5.<java.util.HashSet: void <init>()>();
+
+        $stack6 = newarray (java.lang.String)[5];
+
+        $stack6[0] = "system";
+
+        $stack6[1] = "compile";
+
+        $stack6[2] = "provided";
+
+        $stack6[3] = "runtime";
+
+        $stack6[4] = "test";
+
+        staticinvoke <java.util.Collections: boolean addAll(java.util.Collection,java.lang.Object[])>($stack5, $stack6);
+
+        l3 = interfaceinvoke scopes.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack9 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label7;
+
+        $stack10 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        scope = (java.lang.String) $stack10;
+
+        $stack11 = "compile";
+
+        $stack12 = virtualinvoke $stack11.<java.lang.String: boolean equals(java.lang.Object)>(scope);
+
+        if $stack12 == 0 goto label2;
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("compile");
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("system");
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("provided");
+
+        goto label6;
+
+     label2:
+        $stack13 = "runtime";
+
+        $stack14 = virtualinvoke $stack13.<java.lang.String: boolean equals(java.lang.Object)>(scope);
+
+        if $stack14 == 0 goto label3;
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("compile");
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("runtime");
+
+        goto label6;
+
+     label3:
+        $stack15 = "compile+runtime";
+
+        $stack16 = virtualinvoke $stack15.<java.lang.String: boolean equals(java.lang.Object)>(scope);
+
+        if $stack16 == 0 goto label4;
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("compile");
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("system");
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("provided");
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("runtime");
+
+        goto label6;
+
+     label4:
+        $stack17 = "runtime+system";
+
+        $stack18 = virtualinvoke $stack17.<java.lang.String: boolean equals(java.lang.Object)>(scope);
+
+        if $stack18 == 0 goto label5;
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("compile");
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("system");
+
+        interfaceinvoke $stack5.<java.util.Collection: boolean remove(java.lang.Object)>("runtime");
+
+        goto label6;
+
+     label5:
+        $stack19 = "test";
+
+        $stack20 = virtualinvoke $stack19.<java.lang.String: boolean equals(java.lang.Object)>(scope);
+
+        if $stack20 == 0 goto label6;
+
+        interfaceinvoke $stack5.<java.util.Collection: void clear()>();
+
+     label6:
+        goto label1;
+
+     label7:
+        return $stack5;
+    }
+}

@@ -1,0 +1,2760 @@
+public class JavaCVCL extends java.lang.Object
+{
+    public static final java.lang.String fastCompilerOptions;
+    private static final java.util.logging.Logger logger;
+    private final com.jogamp.opencl.CLContext context;
+    private final com.jogamp.opencl.CLCommandQueue commandQueue;
+    private final com.jogamp.opengl.glu.GLU glu;
+    private final com.jogamp.opencl.CLKernel pyrDownKernel;
+    private final com.jogamp.opencl.CLKernel remapKernel;
+    private final com.jogamp.opencl.CLKernel remapBayerKernel;
+    static final boolean $assertionsDisabled;
+
+    public void <init>(com.jogamp.opencl.CLContext)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLContext context;
+        com.jogamp.opencl.CLDevice[] $stack2;
+        com.jogamp.opencl.CLDevice $stack3;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        context := @parameter0: com.jogamp.opencl.CLContext;
+
+        $stack2 = virtualinvoke context.<com.jogamp.opencl.CLContext: com.jogamp.opencl.CLDevice[] getDevices()>();
+
+        $stack3 = $stack2[0];
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.JavaCVCL: void <init>(com.jogamp.opencl.CLContext,com.jogamp.opencl.CLDevice)>(context, $stack3);
+
+        return;
+    }
+
+    public void <init>(com.jogamp.opencl.CLContext, com.jogamp.opencl.CLDevice)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLContext context;
+        boolean $stack4;
+        com.jogamp.opencl.CLDevice device;
+        com.jogamp.opencl.CLCommandQueue $stack5;
+        java.lang.String[] $stack6;
+        com.jogamp.opencl.CLKernel[] kernels;
+        com.jogamp.opencl.CLKernel $stack8, $stack9, $stack10;
+        com.jogamp.opengl.glu.GLU $stack11, $u0;
+        org.bytedeco.javacv.JavaCVCL $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: JavaCVCL;
+
+        context := @parameter0: com.jogamp.opencl.CLContext;
+
+        device := @parameter1: com.jogamp.opencl.CLDevice;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context> = context;
+
+        $stack4 = context instanceof com.jogamp.opencl.gl.CLGLContext;
+
+        if $stack4 == 0 goto label1;
+
+        $u0 = new com.jogamp.opengl.glu.GLU;
+
+        $stack11 = $u0;
+
+        specialinvoke $u0.<com.jogamp.opengl.glu.GLU: void <init>()>();
+
+        goto label2;
+
+     label1:
+        $stack11 = null;
+
+     label2:
+        $r1 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r1.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.glu.GLU glu> = $stack11;
+
+        $stack5 = virtualinvoke device.<com.jogamp.opencl.CLDevice: com.jogamp.opencl.CLCommandQueue createCommandQueue()>();
+
+        $r2 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r2.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue> = $stack5;
+
+        $stack6 = newarray (java.lang.String)[3];
+
+        $stack6[0] = "pyrDown";
+
+        $stack6[1] = "remap";
+
+        $stack6[2] = "remapBayer";
+
+        $r3 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        kernels = virtualinvoke $r3.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel[] buildKernels(java.lang.String,java.lang.String,java.lang.String[])>("-cl-fast-relaxed-math -cl-mad-enable", "JavaCV.cl", $stack6);
+
+        $stack8 = kernels[0];
+
+        $r4 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r4.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel pyrDownKernel> = $stack8;
+
+        $stack9 = kernels[1];
+
+        $r5 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r5.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel remapKernel> = $stack9;
+
+        $stack10 = kernels[2];
+
+        $r6 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r6.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel remapBayerKernel> = $stack10;
+
+        return;
+    }
+
+    public static com.jogamp.opengl.GLCapabilities getDefaultGLCapabilities(com.jogamp.opengl.GLProfile)
+    {
+        com.jogamp.opengl.GLCapabilities $stack2;
+        com.jogamp.opengl.GLProfile profile, $stack3;
+
+        profile := @parameter0: com.jogamp.opengl.GLProfile;
+
+        $stack2 = new com.jogamp.opengl.GLCapabilities;
+
+        if profile == null goto label1;
+
+        $stack3 = profile;
+
+        goto label2;
+
+     label1:
+        $stack3 = staticinvoke <com.jogamp.opengl.GLProfile: com.jogamp.opengl.GLProfile getDefault()>();
+
+     label2:
+        specialinvoke $stack2.<com.jogamp.opengl.GLCapabilities: void <init>(com.jogamp.opengl.GLProfile)>($stack3);
+
+        virtualinvoke $stack2.<com.jogamp.opengl.GLCapabilities: void setDoubleBuffered(boolean)>(0);
+
+        return $stack2;
+    }
+
+    public void <init>()
+    {
+        JavaCVCL this;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.JavaCVCL: void <init>(boolean)>(0);
+
+        return;
+    }
+
+    public void <init>(boolean)
+    {
+        JavaCVCL this;
+        boolean createPbuffer;
+        com.jogamp.opengl.GLCapabilities $stack2;
+        org.bytedeco.javacv.JavaCVCL $r0;
+        com.jogamp.opengl.GLCapabilitiesImmutable $r1;
+
+        this := @this: JavaCVCL;
+
+        createPbuffer := @parameter0: boolean;
+
+        if createPbuffer == 0 goto label1;
+
+        $stack2 = staticinvoke <org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.GLCapabilities getDefaultGLCapabilities(com.jogamp.opengl.GLProfile)>(null);
+
+        goto label2;
+
+     label1:
+        $stack2 = null;
+
+     label2:
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r1 = (com.jogamp.opengl.GLCapabilitiesImmutable) $stack2;
+
+        specialinvoke $r0.<org.bytedeco.javacv.JavaCVCL: void <init>(com.jogamp.opengl.GLCapabilitiesImmutable,com.jogamp.opengl.GLContext,com.jogamp.opencl.CLDevice)>($r1, null, null);
+
+        return;
+    }
+
+    public void <init>(com.jogamp.opengl.GLContext)
+    {
+        JavaCVCL this;
+        com.jogamp.opengl.GLContext shareWith;
+        com.jogamp.opengl.GLDrawable $stack2;
+        com.jogamp.opengl.GLCapabilities $stack4;
+        com.jogamp.opengl.GLProfile $stack3;
+        org.bytedeco.javacv.JavaCVCL $r0;
+        com.jogamp.opengl.GLCapabilitiesImmutable $r1;
+
+        this := @this: JavaCVCL;
+
+        shareWith := @parameter0: com.jogamp.opengl.GLContext;
+
+        if shareWith != null goto label1;
+
+        $stack3 = null;
+
+        goto label2;
+
+     label1:
+        $stack2 = virtualinvoke shareWith.<com.jogamp.opengl.GLContext: com.jogamp.opengl.GLDrawable getGLDrawable()>();
+
+        $stack3 = interfaceinvoke $stack2.<com.jogamp.opengl.GLDrawable: com.jogamp.opengl.GLProfile getGLProfile()>();
+
+     label2:
+        $stack4 = staticinvoke <org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.GLCapabilities getDefaultGLCapabilities(com.jogamp.opengl.GLProfile)>($stack3);
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r1 = (com.jogamp.opengl.GLCapabilitiesImmutable) $stack4;
+
+        specialinvoke $r0.<org.bytedeco.javacv.JavaCVCL: void <init>(com.jogamp.opengl.GLCapabilitiesImmutable,com.jogamp.opengl.GLContext,com.jogamp.opencl.CLDevice)>($r1, shareWith, null);
+
+        return;
+    }
+
+    public void <init>(com.jogamp.opengl.GLCapabilitiesImmutable, com.jogamp.opengl.GLContext, com.jogamp.opencl.CLDevice)
+    {
+        JavaCVCL this;
+        com.jogamp.opengl.GLContext glContext, shareWith;
+        com.jogamp.opencl.CLContext $stack11, $stack12, $stack21, $r1;
+        com.jogamp.opencl.CLDevice[] $stack13, $stack20, $stack44, devices;
+        com.jogamp.opencl.gl.CLGLContext $stack45;
+        com.jogamp.opengl.glu.GLU $stack46;
+        com.jogamp.opencl.CLPlatform $stack48;
+        int l7, l8;
+        com.jogamp.opencl.CLDevice d, device;
+        boolean $stack50;
+        com.jogamp.opengl.GLCapabilitiesImmutable caps;
+        com.jogamp.opencl.CLCommandQueue $stack14;
+        java.lang.String[] $stack15;
+        com.jogamp.opencl.CLKernel[] devices#40;
+        com.jogamp.opencl.CLKernel $stack17, $stack18, $stack19;
+        org.bytedeco.javacv.JavaCVCL $r0, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12;
+
+        this := @this: JavaCVCL;
+
+        caps := @parameter0: com.jogamp.opengl.GLCapabilitiesImmutable;
+
+        shareWith := @parameter1: com.jogamp.opengl.GLContext;
+
+        device := @parameter2: com.jogamp.opencl.CLDevice;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        glContext = staticinvoke <com.jogamp.opengl.GLContext: com.jogamp.opengl.GLContext getCurrent()>();
+
+        if device != null goto label3;
+
+        if glContext == null goto label3;
+
+        $stack48 = staticinvoke <com.jogamp.opencl.CLPlatform: com.jogamp.opencl.CLPlatform getDefault()>();
+
+        devices = virtualinvoke $stack48.<com.jogamp.opencl.CLPlatform: com.jogamp.opencl.CLDevice[] listCLDevices()>();
+
+        l7 = lengthof devices;
+
+        l8 = 0;
+
+     label1:
+        if l8 >= l7 goto label3;
+
+        d = devices[l8];
+
+        $stack50 = virtualinvoke d.<com.jogamp.opencl.CLDevice: boolean isGLMemorySharingSupported()>();
+
+        if $stack50 == 0 goto label2;
+
+        device = d;
+
+        goto label3;
+
+     label2:
+        l8 = l8 + 1;
+
+        goto label1;
+
+     label3:
+        if glContext == null goto label4;
+
+        if device == null goto label4;
+
+        $stack44 = newarray (com.jogamp.opencl.CLDevice)[1];
+
+        $stack44[0] = device;
+
+        $stack45 = staticinvoke <com.jogamp.opencl.gl.CLGLContext: com.jogamp.opencl.gl.CLGLContext create(com.jogamp.opengl.GLContext,com.jogamp.opencl.CLDevice[])>(glContext, $stack44);
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r1 = (com.jogamp.opencl.CLContext) $stack45;
+
+        $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context> = $r1;
+
+        $stack46 = staticinvoke <com.jogamp.opengl.glu.GLU: com.jogamp.opengl.glu.GLU createGLU()>();
+
+        $r2 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r2.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.glu.GLU glu> = $stack46;
+
+        goto label6;
+
+     label4:
+        if device == null goto label5;
+
+        $stack20 = newarray (com.jogamp.opencl.CLDevice)[1];
+
+        $stack20[0] = device;
+
+        $stack21 = staticinvoke <com.jogamp.opencl.CLContext: com.jogamp.opencl.CLContext create(com.jogamp.opencl.CLDevice[])>($stack20);
+
+        $r3 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r3.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context> = $stack21;
+
+        $r4 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r4.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.glu.GLU glu> = null;
+
+        goto label6;
+
+     label5:
+        $stack11 = staticinvoke <com.jogamp.opencl.CLContext: com.jogamp.opencl.CLContext create()>();
+
+        $r5 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r5.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context> = $stack11;
+
+        $r6 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack12 = $r6.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context>;
+
+        $stack13 = virtualinvoke $stack12.<com.jogamp.opencl.CLContext: com.jogamp.opencl.CLDevice[] getDevices()>();
+
+        device = $stack13[0];
+
+        $r7 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r7.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.glu.GLU glu> = null;
+
+     label6:
+        $stack14 = virtualinvoke device.<com.jogamp.opencl.CLDevice: com.jogamp.opencl.CLCommandQueue createCommandQueue()>();
+
+        $r8 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r8.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue> = $stack14;
+
+        $stack15 = newarray (java.lang.String)[3];
+
+        $stack15[0] = "pyrDown";
+
+        $stack15[1] = "remap";
+
+        $stack15[2] = "remapBayer";
+
+        $r9 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        devices#40 = virtualinvoke $r9.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel[] buildKernels(java.lang.String,java.lang.String,java.lang.String[])>("-cl-fast-relaxed-math -cl-mad-enable", "JavaCV.cl", $stack15);
+
+        $stack17 = devices#40[0];
+
+        $r10 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r10.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel pyrDownKernel> = $stack17;
+
+        $stack18 = devices#40[1];
+
+        $r11 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r11.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel remapKernel> = $stack18;
+
+        $stack19 = devices#40[2];
+
+        $r12 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $r12.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel remapBayerKernel> = $stack19;
+
+        return;
+    }
+
+    public void release()
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLContext $stack1, $stack3;
+        boolean $stack2;
+        org.bytedeco.javacv.JavaCVCL $r0, $r1;
+
+        this := @this: JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context>;
+
+        $stack2 = virtualinvoke $stack1.<com.jogamp.opencl.CLContext: boolean isReleased()>();
+
+        if $stack2 != 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context>;
+
+        virtualinvoke $stack3.<com.jogamp.opencl.CLContext: void release()>();
+
+     label1:
+        return;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        JavaCVCL this;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.JavaCVCL: void release()>();
+
+        return;
+    }
+
+    public com.jogamp.opencl.CLContext getCLContext()
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLContext $stack1;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context>;
+
+        return $stack1;
+    }
+
+    public com.jogamp.opencl.CLCommandQueue getCLCommandQueue()
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLCommandQueue $stack1;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        return $stack1;
+    }
+
+    public com.jogamp.opencl.gl.CLGLContext getCLGLContext()
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLContext $stack1, $stack3;
+        boolean $stack2;
+        com.jogamp.opencl.gl.CLGLContext $stack4;
+        org.bytedeco.javacv.JavaCVCL $r0, $r1;
+
+        this := @this: JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context>;
+
+        $stack2 = $stack1 instanceof com.jogamp.opencl.gl.CLGLContext;
+
+        if $stack2 == 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context>;
+
+        $stack4 = (com.jogamp.opencl.gl.CLGLContext) $stack3;
+
+        goto label2;
+
+     label1:
+        $stack4 = null;
+
+     label2:
+        return $stack4;
+    }
+
+    public com.jogamp.opengl.GLContext getGLContext()
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLContext $stack1, $stack3;
+        boolean $stack2;
+        com.jogamp.opencl.gl.CLGLContext $stack4;
+        com.jogamp.opengl.GLContext $stack5;
+        org.bytedeco.javacv.JavaCVCL $r0, $r1;
+
+        this := @this: JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context>;
+
+        $stack2 = $stack1 instanceof com.jogamp.opencl.gl.CLGLContext;
+
+        if $stack2 == 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context>;
+
+        $stack4 = (com.jogamp.opencl.gl.CLGLContext) $stack3;
+
+        $stack5 = virtualinvoke $stack4.<com.jogamp.opencl.gl.CLGLContext: com.jogamp.opengl.GLContext getGLContext()>();
+
+        goto label2;
+
+     label1:
+        $stack5 = null;
+
+     label2:
+        return $stack5;
+    }
+
+    public com.jogamp.opengl.GL getGL()
+    {
+        JavaCVCL this;
+        com.jogamp.opengl.GLContext glContext;
+        com.jogamp.opengl.GL $stack3;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        glContext = virtualinvoke $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.GLContext getGLContext()>();
+
+        if glContext == null goto label1;
+
+        $stack3 = virtualinvoke glContext.<com.jogamp.opengl.GLContext: com.jogamp.opengl.GL getGL()>();
+
+        goto label2;
+
+     label1:
+        $stack3 = null;
+
+     label2:
+        return $stack3;
+    }
+
+    public com.jogamp.opengl.GL2 getGL2()
+    {
+        JavaCVCL this;
+        com.jogamp.opengl.GL gl;
+        com.jogamp.opengl.GL2 $stack3;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        gl = virtualinvoke $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.GL getGL()>();
+
+        if gl == null goto label1;
+
+        $stack3 = interfaceinvoke gl.<com.jogamp.opengl.GL: com.jogamp.opengl.GL2 getGL2()>();
+
+        goto label2;
+
+     label1:
+        $stack3 = null;
+
+     label2:
+        return $stack3;
+    }
+
+    public com.jogamp.opengl.glu.GLU getGLU()
+    {
+        JavaCVCL this;
+        com.jogamp.opengl.glu.GLU $stack1;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.glu.GLU glu>;
+
+        return $stack1;
+    }
+
+    public com.jogamp.opencl.CLKernel buildKernel(java.lang.String, java.lang.String)
+    {
+        JavaCVCL this;
+        java.lang.Class $stack4;
+        java.lang.String resourceNames, kernelName;
+        java.lang.String[] $stack5;
+        com.jogamp.opencl.CLKernel[] $stack6;
+        com.jogamp.opencl.CLKernel $stack7;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        resourceNames := @parameter0: java.lang.String;
+
+        kernelName := @parameter1: java.lang.String;
+
+        $stack4 = staticinvoke <org.bytedeco.javacpp.Loader: java.lang.Class getCallerClass(int)>(2);
+
+        $stack5 = newarray (java.lang.String)[1];
+
+        $stack5[0] = kernelName;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack6 = virtualinvoke $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel[] buildKernels(java.lang.String,java.lang.Class,java.lang.String,java.lang.String[])>("-cl-fast-relaxed-math -cl-mad-enable", $stack4, resourceNames, $stack5);
+
+        $stack7 = $stack6[0];
+
+        return $stack7;
+    }
+
+    public com.jogamp.opencl.CLKernel buildKernel(java.lang.String, java.lang.String, java.lang.String)
+    {
+        JavaCVCL this;
+        java.lang.String compilerOptions, resourceNames, kernelName;
+        java.lang.Class $stack4;
+        java.lang.String[] $stack5;
+        com.jogamp.opencl.CLKernel[] $stack6;
+        com.jogamp.opencl.CLKernel $stack7;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        compilerOptions := @parameter0: java.lang.String;
+
+        resourceNames := @parameter1: java.lang.String;
+
+        kernelName := @parameter2: java.lang.String;
+
+        $stack4 = staticinvoke <org.bytedeco.javacpp.Loader: java.lang.Class getCallerClass(int)>(2);
+
+        $stack5 = newarray (java.lang.String)[1];
+
+        $stack5[0] = kernelName;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack6 = virtualinvoke $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel[] buildKernels(java.lang.String,java.lang.Class,java.lang.String,java.lang.String[])>(compilerOptions, $stack4, resourceNames, $stack5);
+
+        $stack7 = $stack6[0];
+
+        return $stack7;
+    }
+
+    public transient com.jogamp.opencl.CLKernel[] buildKernels(java.lang.String, java.lang.String, java.lang.String[])
+    {
+        JavaCVCL this;
+        java.lang.String compilerOptions, resourceNames;
+        java.lang.Class $stack4;
+        java.lang.String[] kernelNames;
+        com.jogamp.opencl.CLKernel[] $stack5;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        compilerOptions := @parameter0: java.lang.String;
+
+        resourceNames := @parameter1: java.lang.String;
+
+        kernelNames := @parameter2: java.lang.String[];
+
+        $stack4 = staticinvoke <org.bytedeco.javacpp.Loader: java.lang.Class getCallerClass(int)>(2);
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack5 = virtualinvoke $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel[] buildKernels(java.lang.String,java.lang.Class,java.lang.String,java.lang.String[])>(compilerOptions, $stack4, resourceNames, kernelNames);
+
+        return $stack5;
+    }
+
+    public transient com.jogamp.opencl.CLKernel[] buildKernels(java.lang.String, java.lang.Class, java.lang.String, java.lang.String[])
+    {
+        java.lang.String resourceNames, compilerOptions, $stack24, name, $stack36, $stack44;
+        java.lang.String[] a, kernelNames;
+        int $stack13, $stack15, $stack22, i, l10, $stack23;
+        java.util.Enumeration $stack17;
+        JavaCVCL this;
+        com.jogamp.opencl.CLContext $stack18;
+        boolean $stack21, $stack28;
+        com.jogamp.opencl.CLKernel $stack25;
+        java.lang.Class resourceClass;
+        java.io.InputStream $stack33, s;
+        java.io.IOException $stack42;
+        java.lang.Throwable $stack45;
+        java.lang.Error $stack46;
+        com.jogamp.opencl.CLProgram vs#6;
+        com.jogamp.opencl.CLKernel[] kernels#7;
+        java.util.Vector $u0;
+        java.io.SequenceInputStream $u1;
+        java.lang.AssertionError $u2;
+        java.lang.LinkageError $u3;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        compilerOptions := @parameter0: java.lang.String;
+
+        resourceClass := @parameter1: java.lang.Class;
+
+        resourceNames := @parameter2: java.lang.String;
+
+        kernelNames := @parameter3: java.lang.String[];
+
+     label1:
+        a = virtualinvoke resourceNames.<java.lang.String: java.lang.String[] split(java.lang.String)>(":");
+
+        $stack13 = lengthof a;
+
+        if $stack13 != 1 goto label2;
+
+        $stack36 = a[0];
+
+        s = virtualinvoke resourceClass.<java.lang.Class: java.io.InputStream getResourceAsStream(java.lang.String)>($stack36);
+
+        goto label5;
+
+     label2:
+        $u0 = new java.util.Vector;
+
+        $stack15 = lengthof a;
+
+        specialinvoke $u0.<java.util.Vector: void <init>(int)>($stack15);
+
+        i = lengthof a;
+
+        l10 = 0;
+
+     label3:
+        if l10 >= i goto label4;
+
+        name = a[l10];
+
+        $stack33 = virtualinvoke resourceClass.<java.lang.Class: java.io.InputStream getResourceAsStream(java.lang.String)>(name);
+
+        virtualinvoke $u0.<java.util.Vector: void addElement(java.lang.Object)>($stack33);
+
+        l10 = l10 + 1;
+
+        goto label3;
+
+     label4:
+        $u1 = new java.io.SequenceInputStream;
+
+        $stack17 = virtualinvoke $u0.<java.util.Vector: java.util.Enumeration elements()>();
+
+        specialinvoke $u1.<java.io.SequenceInputStream: void <init>(java.util.Enumeration)>($stack17);
+
+        s = $u1;
+
+     label5:
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack18 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context>;
+
+        vs#6 = virtualinvoke $stack18.<com.jogamp.opencl.CLContext: com.jogamp.opencl.CLProgram createProgram(java.io.InputStream)>(s);
+
+        virtualinvoke vs#6.<com.jogamp.opencl.CLProgram: com.jogamp.opencl.CLProgram build(java.lang.String)>(compilerOptions);
+
+        $stack21 = <org.bytedeco.javacv.JavaCVCL: boolean $assertionsDisabled>;
+
+        if $stack21 != 0 goto label6;
+
+        $stack28 = virtualinvoke vs#6.<com.jogamp.opencl.CLProgram: boolean isExecutable()>();
+
+        if $stack28 != 0 goto label6;
+
+        $u2 = new java.lang.AssertionError;
+
+        specialinvoke $u2.<java.lang.AssertionError: void <init>()>();
+
+        throw $u2;
+
+     label6:
+        $stack22 = lengthof kernelNames;
+
+        kernels#7 = newarray (com.jogamp.opencl.CLKernel)[$stack22];
+
+        i = 0;
+
+     label7:
+        $stack23 = lengthof kernelNames;
+
+        if i >= $stack23 goto label8;
+
+        $stack24 = kernelNames[i];
+
+        $stack25 = virtualinvoke vs#6.<com.jogamp.opencl.CLProgram: com.jogamp.opencl.CLKernel createCLKernel(java.lang.String)>($stack24);
+
+        kernels#7[i] = $stack25;
+
+        i = i + 1;
+
+        goto label7;
+
+     label8:
+        return kernels#7;
+
+     label9:
+        $stack42 := @caughtexception;
+
+        $u3 = new java.lang.LinkageError;
+
+        $stack44 = virtualinvoke $stack42.<java.io.IOException: java.lang.String toString()>();
+
+        specialinvoke $u3.<java.lang.LinkageError: void <init>(java.lang.String)>($stack44);
+
+        $stack45 = virtualinvoke $u3.<java.lang.LinkageError: java.lang.Throwable initCause(java.lang.Throwable)>($stack42);
+
+        $stack46 = (java.lang.Error) $stack45;
+
+        throw $stack46;
+
+        catch java.io.IOException from label1 to label8 with label9;
+    }
+
+    public transient com.jogamp.opencl.CLImage2d createCLImageFrom(org.bytedeco.opencv.opencv_core.IplImage, com.jogamp.opencl.CLMemory$Mem[])
+    {
+        org.bytedeco.opencv.opencv_core.IplImage image;
+        int height, pitch, $stack15, width, size, $stack16, $stack17;
+        java.nio.ByteBuffer buffer;
+        JavaCVCL this;
+        com.jogamp.opencl.CLMemory$Mem[] flags;
+        com.jogamp.opencl.CLContext $stack19;
+        com.jogamp.opencl.CLImage2d $stack20;
+        boolean $stack32, $stack35;
+        com.jogamp.opencl.CLImageFormat$ChannelOrder order;
+        com.jogamp.opencl.CLImageFormat$ChannelType type;
+        java.lang.AssertionError $u0, $u1;
+        com.jogamp.opencl.CLImageFormat $u2;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        image := @parameter0: org.bytedeco.opencv.opencv_core.IplImage;
+
+        flags := @parameter1: com.jogamp.opencl.CLMemory$Mem[];
+
+        width = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        height = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        pitch = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int widthStep()>();
+
+        buffer = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.ByteBuffer getByteBuffer()>();
+
+        order = null;
+
+        type = null;
+
+        size = 0;
+
+        $stack15 = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int depth()>();
+
+        lookupswitch($stack15)
+        {
+            case -2147483640: goto label01;
+            case -2147483632: goto label03;
+            case -2147483616: goto label05;
+            case 8: goto label02;
+            case 16: goto label04;
+            case 32: goto label06;
+            default: goto label07;
+        };
+
+     label01:
+        type = <com.jogamp.opencl.CLImageFormat$ChannelType: com.jogamp.opencl.CLImageFormat$ChannelType SNORM_INT8>;
+
+        size = 1;
+
+        goto label08;
+
+     label02:
+        type = <com.jogamp.opencl.CLImageFormat$ChannelType: com.jogamp.opencl.CLImageFormat$ChannelType UNORM_INT8>;
+
+        size = 1;
+
+        goto label08;
+
+     label03:
+        type = <com.jogamp.opencl.CLImageFormat$ChannelType: com.jogamp.opencl.CLImageFormat$ChannelType SNORM_INT16>;
+
+        size = 2;
+
+        goto label08;
+
+     label04:
+        type = <com.jogamp.opencl.CLImageFormat$ChannelType: com.jogamp.opencl.CLImageFormat$ChannelType UNORM_INT16>;
+
+        size = 2;
+
+        goto label08;
+
+     label05:
+        type = <com.jogamp.opencl.CLImageFormat$ChannelType: com.jogamp.opencl.CLImageFormat$ChannelType SIGNED_INT32>;
+
+        size = 4;
+
+        goto label08;
+
+     label06:
+        type = <com.jogamp.opencl.CLImageFormat$ChannelType: com.jogamp.opencl.CLImageFormat$ChannelType FLOAT>;
+
+        size = 4;
+
+        goto label08;
+
+     label07:
+        $stack35 = <org.bytedeco.javacv.JavaCVCL: boolean $assertionsDisabled>;
+
+        if $stack35 != 0 goto label08;
+
+        $u0 = new java.lang.AssertionError;
+
+        specialinvoke $u0.<java.lang.AssertionError: void <init>()>();
+
+        throw $u0;
+
+     label08:
+        $stack16 = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int nChannels()>();
+
+        tableswitch($stack16)
+        {
+            case 1: goto label09;
+            case 2: goto label10;
+            case 3: goto label11;
+            case 4: goto label12;
+            default: goto label13;
+        };
+
+     label09:
+        order = <com.jogamp.opencl.CLImageFormat$ChannelOrder: com.jogamp.opencl.CLImageFormat$ChannelOrder LUMINANCE>;
+
+        goto label14;
+
+     label10:
+        order = <com.jogamp.opencl.CLImageFormat$ChannelOrder: com.jogamp.opencl.CLImageFormat$ChannelOrder RG>;
+
+        size = size * 2;
+
+        goto label14;
+
+     label11:
+        order = <com.jogamp.opencl.CLImageFormat$ChannelOrder: com.jogamp.opencl.CLImageFormat$ChannelOrder RGB>;
+
+        size = size * 3;
+
+        goto label14;
+
+     label12:
+        order = <com.jogamp.opencl.CLImageFormat$ChannelOrder: com.jogamp.opencl.CLImageFormat$ChannelOrder RGBA>;
+
+        size = size * 4;
+
+        goto label14;
+
+     label13:
+        $stack32 = <org.bytedeco.javacv.JavaCVCL: boolean $assertionsDisabled>;
+
+        if $stack32 != 0 goto label14;
+
+        $u1 = new java.lang.AssertionError;
+
+        specialinvoke $u1.<java.lang.AssertionError: void <init>()>();
+
+        throw $u1;
+
+     label14:
+        $stack17 = pitch / size;
+
+        if width == $stack17 goto label15;
+
+        width = pitch / size;
+
+     label15:
+        $u2 = new com.jogamp.opencl.CLImageFormat;
+
+        specialinvoke $u2.<com.jogamp.opencl.CLImageFormat: void <init>(com.jogamp.opencl.CLImageFormat$ChannelOrder,com.jogamp.opencl.CLImageFormat$ChannelType)>(order, type);
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack19 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context>;
+
+        $stack20 = virtualinvoke $stack19.<com.jogamp.opencl.CLContext: com.jogamp.opencl.CLImage2d createImage2d(java.nio.Buffer,int,int,com.jogamp.opencl.CLImageFormat,com.jogamp.opencl.CLMemory$Mem[])>(buffer, width, height, $u2, flags);
+
+        return $stack20;
+    }
+
+    public transient com.jogamp.opencl.gl.CLGLImage2d createCLGLImageFrom(org.bytedeco.opencv.opencv_core.IplImage, com.jogamp.opencl.CLMemory$Mem[])
+    {
+        JavaCVCL this;
+        com.jogamp.opengl.GL2 gl;
+        org.bytedeco.opencv.opencv_core.IplImage image;
+        int height, pitch, $stack14, $stack15, $stack17, $stack19, $stack45, $stack48, $stack51, width, $stack16;
+        int[] renderBuffer;
+        com.jogamp.opencl.gl.CLGLContext $stack18;
+        com.jogamp.opencl.CLMemory$Mem[] flags;
+        com.jogamp.opencl.gl.CLGLImage2d $stack20;
+        boolean $stack43, $stack46, $stack49, $stack52, $stack54;
+        char format;
+        byte size;
+        java.lang.AssertionError $u0, $u1, $u2, $u3, $u4;
+        org.bytedeco.javacv.JavaCVCL $r0, $r1;
+
+        this := @this: JavaCVCL;
+
+        image := @parameter0: org.bytedeco.opencv.opencv_core.IplImage;
+
+        flags := @parameter1: com.jogamp.opencl.CLMemory$Mem[];
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        gl = virtualinvoke $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.GL2 getGL2()>();
+
+        if gl != null goto label01;
+
+        return null;
+
+     label01:
+        width = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        height = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        pitch = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int widthStep()>();
+
+        format = 0;
+
+        size = 0;
+
+        $stack14 = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int nChannels()>();
+
+        tableswitch($stack14)
+        {
+            case 1: goto label02;
+            case 2: goto label10;
+            case 3: goto label18;
+            case 4: goto label26;
+            default: goto label34;
+        };
+
+     label02:
+        $stack51 = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int depth()>();
+
+        lookupswitch($stack51)
+        {
+            case -2147483640: goto label03;
+            case -2147483632: goto label05;
+            case -2147483616: goto label07;
+            case 8: goto label04;
+            case 16: goto label06;
+            case 32: goto label08;
+            default: goto label09;
+        };
+
+     label03:
+        format = 36885;
+
+        size = 1;
+
+        goto label35;
+
+     label04:
+        format = 32832;
+
+        size = 1;
+
+        goto label35;
+
+     label05:
+        format = 36889;
+
+        size = 2;
+
+        goto label35;
+
+     label06:
+        format = 32834;
+
+        size = 2;
+
+        goto label35;
+
+     label07:
+        format = 36230;
+
+        size = 4;
+
+        goto label35;
+
+     label08:
+        format = 34840;
+
+        size = 4;
+
+        goto label35;
+
+     label09:
+        $stack52 = <org.bytedeco.javacv.JavaCVCL: boolean $assertionsDisabled>;
+
+        if $stack52 != 0 goto label35;
+
+        $u0 = new java.lang.AssertionError;
+
+        specialinvoke $u0.<java.lang.AssertionError: void <init>()>();
+
+        throw $u0;
+
+     label10:
+        $stack48 = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int depth()>();
+
+        lookupswitch($stack48)
+        {
+            case -2147483640: goto label11;
+            case -2147483632: goto label13;
+            case -2147483616: goto label15;
+            case 8: goto label12;
+            case 16: goto label14;
+            case 32: goto label16;
+            default: goto label17;
+        };
+
+     label11:
+        format = 36757;
+
+        size = 2;
+
+        goto label35;
+
+     label12:
+        format = 33323;
+
+        size = 2;
+
+        goto label35;
+
+     label13:
+        format = 36761;
+
+        size = 4;
+
+        goto label35;
+
+     label14:
+        format = 33324;
+
+        size = 4;
+
+        goto label35;
+
+     label15:
+        format = 33339;
+
+        size = 8;
+
+        goto label35;
+
+     label16:
+        format = 33328;
+
+        size = 8;
+
+        goto label35;
+
+     label17:
+        $stack49 = <org.bytedeco.javacv.JavaCVCL: boolean $assertionsDisabled>;
+
+        if $stack49 != 0 goto label35;
+
+        $u1 = new java.lang.AssertionError;
+
+        specialinvoke $u1.<java.lang.AssertionError: void <init>()>();
+
+        throw $u1;
+
+     label18:
+        $stack45 = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int depth()>();
+
+        lookupswitch($stack45)
+        {
+            case -2147483640: goto label19;
+            case -2147483632: goto label21;
+            case -2147483616: goto label23;
+            case 8: goto label20;
+            case 16: goto label22;
+            case 32: goto label24;
+            default: goto label25;
+        };
+
+     label19:
+        format = 36758;
+
+        size = 3;
+
+        goto label35;
+
+     label20:
+        format = 32849;
+
+        size = 3;
+
+        goto label35;
+
+     label21:
+        format = 36762;
+
+        size = 6;
+
+        goto label35;
+
+     label22:
+        format = 32852;
+
+        size = 6;
+
+        goto label35;
+
+     label23:
+        format = 36227;
+
+        size = 12;
+
+        goto label35;
+
+     label24:
+        format = 34837;
+
+        size = 12;
+
+        goto label35;
+
+     label25:
+        $stack46 = <org.bytedeco.javacv.JavaCVCL: boolean $assertionsDisabled>;
+
+        if $stack46 != 0 goto label35;
+
+        $u2 = new java.lang.AssertionError;
+
+        specialinvoke $u2.<java.lang.AssertionError: void <init>()>();
+
+        throw $u2;
+
+     label26:
+        $stack15 = virtualinvoke image.<org.bytedeco.opencv.opencv_core.IplImage: int depth()>();
+
+        lookupswitch($stack15)
+        {
+            case -2147483640: goto label27;
+            case -2147483632: goto label29;
+            case -2147483616: goto label31;
+            case 8: goto label28;
+            case 16: goto label30;
+            case 32: goto label32;
+            default: goto label33;
+        };
+
+     label27:
+        format = 36759;
+
+        size = 4;
+
+        goto label35;
+
+     label28:
+        format = 32856;
+
+        size = 4;
+
+        goto label35;
+
+     label29:
+        format = 36763;
+
+        size = 8;
+
+        goto label35;
+
+     label30:
+        format = 32859;
+
+        size = 8;
+
+        goto label35;
+
+     label31:
+        format = 36226;
+
+        size = 16;
+
+        goto label35;
+
+     label32:
+        format = 34836;
+
+        size = 16;
+
+        goto label35;
+
+     label33:
+        $stack43 = <org.bytedeco.javacv.JavaCVCL: boolean $assertionsDisabled>;
+
+        if $stack43 != 0 goto label35;
+
+        $u3 = new java.lang.AssertionError;
+
+        specialinvoke $u3.<java.lang.AssertionError: void <init>()>();
+
+        throw $u3;
+
+     label34:
+        $stack54 = <org.bytedeco.javacv.JavaCVCL: boolean $assertionsDisabled>;
+
+        if $stack54 != 0 goto label35;
+
+        $u4 = new java.lang.AssertionError;
+
+        specialinvoke $u4.<java.lang.AssertionError: void <init>()>();
+
+        throw $u4;
+
+     label35:
+        $stack16 = pitch / size;
+
+        if width == $stack16 goto label36;
+
+        width = pitch / size;
+
+     label36:
+        renderBuffer = newarray (int)[1];
+
+        interfaceinvoke gl.<com.jogamp.opengl.GL2: void glGenRenderbuffers(int,int[],int)>(1, renderBuffer, 0);
+
+        $stack17 = renderBuffer[0];
+
+        interfaceinvoke gl.<com.jogamp.opengl.GL2: void glBindRenderbuffer(int,int)>(36161, $stack17);
+
+        interfaceinvoke gl.<com.jogamp.opengl.GL2: void glRenderbufferStorage(int,int,int,int)>(36161, format, width, height);
+
+        $r1 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack18 = virtualinvoke $r1.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.gl.CLGLContext getCLGLContext()>();
+
+        $stack19 = renderBuffer[0];
+
+        $stack20 = virtualinvoke $stack18.<com.jogamp.opencl.gl.CLGLContext: com.jogamp.opencl.gl.CLGLImage2d createFromGLRenderbuffer(int,com.jogamp.opencl.CLMemory$Mem[])>($stack19, flags);
+
+        return $stack20;
+    }
+
+    public void releaseCLGLImage(com.jogamp.opencl.gl.CLGLImage2d)
+    {
+        com.jogamp.opencl.gl.CLGLImage2d image;
+        JavaCVCL this;
+        com.jogamp.opengl.GL2 $stack2;
+        int[] $stack3;
+        int $stack6;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        image := @parameter0: com.jogamp.opencl.gl.CLGLImage2d;
+
+        virtualinvoke image.<com.jogamp.opencl.gl.CLGLImage2d: void release()>();
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack2 = virtualinvoke $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.GL2 getGL2()>();
+
+        $stack3 = newarray (int)[1];
+
+        $stack6 = virtualinvoke image.<com.jogamp.opencl.gl.CLGLImage2d: int getGLObjectID()>();
+
+        $stack3[0] = $stack6;
+
+        interfaceinvoke $stack2.<com.jogamp.opengl.GL2: void glDeleteRenderbuffers(int,int[],int)>(1, $stack3, 0);
+
+        return;
+    }
+
+    public com.jogamp.opencl.CLBuffer createPinnedBuffer(int)
+    {
+        JavaCVCL this;
+        int size;
+        com.jogamp.opencl.CLMemory$Mem[] $stack4;
+        com.jogamp.opencl.CLMemory$Mem $stack5;
+        com.jogamp.opencl.CLContext $stack6;
+        com.jogamp.opencl.CLBuffer pinnedBuffer;
+        com.jogamp.opencl.CLMemory$Map $stack8;
+        com.jogamp.opencl.CLCommandQueue $stack9;
+        java.nio.ByteBuffer byteBuffer;
+        org.bytedeco.javacv.JavaCVCL $r0, $r1;
+
+        this := @this: JavaCVCL;
+
+        size := @parameter0: int;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack6 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext context>;
+
+        $stack4 = newarray (com.jogamp.opencl.CLMemory$Mem)[1];
+
+        $stack5 = <com.jogamp.opencl.CLMemory$Mem: com.jogamp.opencl.CLMemory$Mem ALLOCATE_BUFFER>;
+
+        $stack4[0] = $stack5;
+
+        pinnedBuffer = virtualinvoke $stack6.<com.jogamp.opencl.CLContext: com.jogamp.opencl.CLBuffer createBuffer(int,com.jogamp.opencl.CLMemory$Mem[])>(size, $stack4);
+
+        $r1 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack9 = $r1.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        $stack8 = <com.jogamp.opencl.CLMemory$Map: com.jogamp.opencl.CLMemory$Map READ_WRITE>;
+
+        byteBuffer = virtualinvoke $stack9.<com.jogamp.opencl.CLCommandQueue: java.nio.ByteBuffer putMapBuffer(com.jogamp.opencl.CLBuffer,com.jogamp.opencl.CLMemory$Map,boolean)>(pinnedBuffer, $stack8, 1);
+
+        virtualinvoke pinnedBuffer.<com.jogamp.opencl.CLBuffer: com.jogamp.opencl.CLMemory use(java.nio.Buffer)>(byteBuffer);
+
+        return pinnedBuffer;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage createPinnedIplImage(int, int, int, int)
+    {
+        JavaCVCL this;
+        int width, height, depth, channels;
+        org.bytedeco.javacv.JavaCVCL$PinnedIplImage $u0;
+        org.bytedeco.javacv.JavaCVCL $r0;
+        org.bytedeco.opencv.opencv_core.IplImage $r1;
+
+        this := @this: JavaCVCL;
+
+        width := @parameter0: int;
+
+        height := @parameter1: int;
+
+        depth := @parameter2: int;
+
+        channels := @parameter3: int;
+
+        $u0 = new org.bytedeco.javacv.JavaCVCL$PinnedIplImage;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        specialinvoke $u0.<org.bytedeco.javacv.JavaCVCL$PinnedIplImage: void <init>(org.bytedeco.javacv.JavaCVCL,int,int,int,int)>($r0, width, height, depth, channels);
+
+        $r1 = (org.bytedeco.opencv.opencv_core.IplImage) $u0;
+
+        return $r1;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage createIplImageFrom(com.jogamp.opencl.CLImage2d)
+    {
+        com.jogamp.opencl.CLImage2d image;
+        int width, height, $stack13, $stack14, depth, $stack16, $stack17;
+        com.jogamp.opencl.CLImageFormat format;
+        com.jogamp.opencl.CLImageFormat$ChannelOrder order;
+        com.jogamp.opencl.CLImageFormat$ChannelType type;
+        int[] $stack12, $stack15;
+        boolean $stack23, $stack26;
+        java.lang.AssertionError $stack24, $stack27;
+        JavaCVCL this;
+        byte channels;
+        org.bytedeco.opencv.opencv_core.IplImage $stack18;
+
+        this := @this: JavaCVCL;
+
+        image := @parameter0: com.jogamp.opencl.CLImage2d;
+
+        width = image.<com.jogamp.opencl.CLImage2d: int width>;
+
+        height = image.<com.jogamp.opencl.CLImage2d: int height>;
+
+        format = virtualinvoke image.<com.jogamp.opencl.CLImage2d: com.jogamp.opencl.CLImageFormat getFormat()>();
+
+        order = virtualinvoke format.<com.jogamp.opencl.CLImageFormat: com.jogamp.opencl.CLImageFormat$ChannelOrder getImageChannelOrder()>();
+
+        type = virtualinvoke format.<com.jogamp.opencl.CLImageFormat: com.jogamp.opencl.CLImageFormat$ChannelType getImageChannelDataType()>();
+
+        depth = 0;
+
+        channels = 0;
+
+        $stack12 = <org.bytedeco.javacv.JavaCVCL$1: int[] $SwitchMap$com$jogamp$opencl$CLImageFormat$ChannelOrder>;
+
+        $stack13 = virtualinvoke order.<com.jogamp.opencl.CLImageFormat$ChannelOrder: int ordinal()>();
+
+        $stack14 = $stack12[$stack13];
+
+        tableswitch($stack14)
+        {
+            case 1: goto label01;
+            case 2: goto label01;
+            case 3: goto label01;
+            case 4: goto label01;
+            case 5: goto label02;
+            case 6: goto label02;
+            case 7: goto label02;
+            case 8: goto label03;
+            case 9: goto label03;
+            case 10: goto label04;
+            case 11: goto label04;
+            case 12: goto label04;
+            case 13: goto label04;
+            default: goto label05;
+        };
+
+     label01:
+        channels = 1;
+
+        goto label06;
+
+     label02:
+        channels = 2;
+
+        goto label06;
+
+     label03:
+        channels = 3;
+
+        goto label06;
+
+     label04:
+        channels = 4;
+
+        goto label06;
+
+     label05:
+        $stack26 = <org.bytedeco.javacv.JavaCVCL: boolean $assertionsDisabled>;
+
+        if $stack26 != 0 goto label06;
+
+        $stack27 = new java.lang.AssertionError;
+
+        specialinvoke $stack27.<java.lang.AssertionError: void <init>()>();
+
+        throw $stack27;
+
+     label06:
+        $stack15 = <org.bytedeco.javacv.JavaCVCL$1: int[] $SwitchMap$com$jogamp$opencl$CLImageFormat$ChannelType>;
+
+        $stack16 = virtualinvoke type.<com.jogamp.opencl.CLImageFormat$ChannelType: int ordinal()>();
+
+        $stack17 = $stack15[$stack16];
+
+        tableswitch($stack17)
+        {
+            case 1: goto label07;
+            case 2: goto label07;
+            case 3: goto label08;
+            case 4: goto label08;
+            case 5: goto label09;
+            case 6: goto label09;
+            case 7: goto label10;
+            case 8: goto label10;
+            case 9: goto label11;
+            case 10: goto label11;
+            case 11: goto label12;
+            case 12: goto label13;
+            case 13: goto label13;
+            case 14: goto label13;
+            case 15: goto label13;
+            default: goto label13;
+        };
+
+     label07:
+        depth = -2147483640;
+
+        goto label14;
+
+     label08:
+        depth = 8;
+
+        goto label14;
+
+     label09:
+        depth = -2147483632;
+
+        goto label14;
+
+     label10:
+        depth = 16;
+
+        goto label14;
+
+     label11:
+        depth = -2147483616;
+
+        goto label14;
+
+     label12:
+        depth = 32;
+
+        goto label14;
+
+     label13:
+        $stack23 = <org.bytedeco.javacv.JavaCVCL: boolean $assertionsDisabled>;
+
+        if $stack23 != 0 goto label14;
+
+        $stack24 = new java.lang.AssertionError;
+
+        specialinvoke $stack24.<java.lang.AssertionError: void <init>()>();
+
+        throw $stack24;
+
+     label14:
+        $stack18 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>(width, height, depth, channels);
+
+        return $stack18;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage readImage(com.jogamp.opencl.CLImage2d, org.bytedeco.opencv.opencv_core.IplImage, boolean)
+    {
+        com.jogamp.opencl.CLImage2d clImg;
+        int pitch, $stack22, $stack23, $stack24, $stack25, pixelSize, $stack26, $stack27, $stack28, x, y, width, height;
+        org.bytedeco.opencv.opencv_core.IplROI roi;
+        JavaCVCL this;
+        boolean blocking;
+        com.jogamp.opencl.CLCommandQueue $stack16;
+        org.bytedeco.opencv.opencv_core.IplImage iplImage;
+        java.nio.ByteBuffer buffer;
+        org.bytedeco.javacv.JavaCVCL $r0, $r1;
+
+        this := @this: JavaCVCL;
+
+        clImg := @parameter0: com.jogamp.opencl.CLImage2d;
+
+        iplImage := @parameter1: org.bytedeco.opencv.opencv_core.IplImage;
+
+        blocking := @parameter2: boolean;
+
+        if iplImage != null goto label1;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        iplImage = virtualinvoke $r0.<org.bytedeco.javacv.JavaCVCL: org.bytedeco.opencv.opencv_core.IplImage createIplImageFrom(com.jogamp.opencl.CLImage2d)>(clImg);
+
+     label1:
+        x = 0;
+
+        y = 0;
+
+        width = clImg.<com.jogamp.opencl.CLImage2d: int width>;
+
+        height = clImg.<com.jogamp.opencl.CLImage2d: int height>;
+
+        pitch = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: int widthStep()>();
+
+        buffer = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.ByteBuffer getByteBuffer()>();
+
+        roi = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplROI roi()>();
+
+        if roi == null goto label2;
+
+        x = virtualinvoke roi.<org.bytedeco.opencv.opencv_core.IplROI: int xOffset()>();
+
+        y = virtualinvoke roi.<org.bytedeco.opencv.opencv_core.IplROI: int yOffset()>();
+
+        width = virtualinvoke roi.<org.bytedeco.opencv.opencv_core.IplROI: int width()>();
+
+        height = virtualinvoke roi.<org.bytedeco.opencv.opencv_core.IplROI: int height()>();
+
+        $stack22 = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: int nChannels()>();
+
+        $stack23 = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: int depth()>();
+
+        $stack24 = $stack23 & 2147483647;
+
+        $stack25 = $stack24 / 8;
+
+        pixelSize = $stack22 * $stack25;
+
+        $stack27 = y * pitch;
+
+        $stack26 = x * pixelSize;
+
+        $stack28 = $stack27 + $stack26;
+
+        buffer = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.ByteBuffer getByteBuffer(int)>($stack28);
+
+     label2:
+        virtualinvoke clImg.<com.jogamp.opencl.CLImage2d: com.jogamp.opencl.CLMemory use(java.nio.Buffer)>(buffer);
+
+        $r1 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack16 = $r1.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack16.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue putReadImage(com.jogamp.opencl.CLImage2d,int,int,int,int,int,boolean)>(clImg, pitch, x, y, width, height, blocking);
+
+        return iplImage;
+    }
+
+    public com.jogamp.opencl.CLImage2d writeImage(com.jogamp.opencl.CLImage2d, org.bytedeco.opencv.opencv_core.IplImage, boolean)
+    {
+        org.bytedeco.opencv.opencv_core.IplImage iplImage;
+        int pitch, $stack24, $stack25, $stack26, $stack27, pixelSize, $stack28, $stack29, $stack30, x, y, width, height;
+        org.bytedeco.opencv.opencv_core.IplROI roi;
+        JavaCVCL this;
+        boolean blocking;
+        com.jogamp.opencl.CLCommandQueue $stack18;
+        com.jogamp.opencl.CLMemory$Mem[] $stack43;
+        com.jogamp.opencl.CLImage2d clImg;
+        java.nio.ByteBuffer buffer;
+        org.bytedeco.javacv.JavaCVCL $r0, $r1;
+
+        this := @this: JavaCVCL;
+
+        clImg := @parameter0: com.jogamp.opencl.CLImage2d;
+
+        iplImage := @parameter1: org.bytedeco.opencv.opencv_core.IplImage;
+
+        blocking := @parameter2: boolean;
+
+        if clImg != null goto label1;
+
+        $stack43 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        clImg = virtualinvoke $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLImage2d createCLImageFrom(org.bytedeco.opencv.opencv_core.IplImage,com.jogamp.opencl.CLMemory$Mem[])>(iplImage, $stack43);
+
+     label1:
+        x = 0;
+
+        y = 0;
+
+        width = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        height = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        pitch = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: int widthStep()>();
+
+        buffer = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.ByteBuffer getByteBuffer()>();
+
+        roi = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplROI roi()>();
+
+        if roi == null goto label2;
+
+        x = virtualinvoke roi.<org.bytedeco.opencv.opencv_core.IplROI: int xOffset()>();
+
+        y = virtualinvoke roi.<org.bytedeco.opencv.opencv_core.IplROI: int yOffset()>();
+
+        width = virtualinvoke roi.<org.bytedeco.opencv.opencv_core.IplROI: int width()>();
+
+        height = virtualinvoke roi.<org.bytedeco.opencv.opencv_core.IplROI: int height()>();
+
+        $stack24 = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: int nChannels()>();
+
+        $stack25 = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: int depth()>();
+
+        $stack26 = $stack25 & 2147483647;
+
+        $stack27 = $stack26 / 8;
+
+        pixelSize = $stack24 * $stack27;
+
+        $stack29 = y * pitch;
+
+        $stack28 = x * pixelSize;
+
+        $stack30 = $stack29 + $stack28;
+
+        buffer = virtualinvoke iplImage.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.ByteBuffer getByteBuffer(int)>($stack30);
+
+     label2:
+        virtualinvoke clImg.<com.jogamp.opencl.CLImage2d: com.jogamp.opencl.CLMemory use(java.nio.Buffer)>(buffer);
+
+        $r1 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack18 = $r1.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack18.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue putWriteImage(com.jogamp.opencl.CLImage2d,int,int,int,int,int,boolean)>(clImg, pitch, x, y, width, height, blocking);
+
+        return clImg;
+    }
+
+    public void acquireGLObject(com.jogamp.opencl.CLObject)
+    {
+        com.jogamp.opencl.CLObject object;
+        boolean $stack2;
+        JavaCVCL this;
+        com.jogamp.opencl.gl.CLGLObject $stack3;
+        com.jogamp.opencl.CLCommandQueue $stack4;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        object := @parameter0: com.jogamp.opencl.CLObject;
+
+        $stack2 = object instanceof com.jogamp.opencl.gl.CLGLObject;
+
+        if $stack2 == 0 goto label1;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        $stack3 = (com.jogamp.opencl.gl.CLGLObject) object;
+
+        virtualinvoke $stack4.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue putAcquireGLObject(com.jogamp.opencl.gl.CLGLObject)>($stack3);
+
+     label1:
+        return;
+    }
+
+    public void releaseGLObject(com.jogamp.opencl.CLObject)
+    {
+        com.jogamp.opencl.CLObject object;
+        boolean $stack2;
+        JavaCVCL this;
+        com.jogamp.opencl.gl.CLGLObject $stack3;
+        com.jogamp.opencl.CLCommandQueue $stack4;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        object := @parameter0: com.jogamp.opencl.CLObject;
+
+        $stack2 = object instanceof com.jogamp.opencl.gl.CLGLObject;
+
+        if $stack2 == 0 goto label1;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        $stack3 = (com.jogamp.opencl.gl.CLGLObject) object;
+
+        virtualinvoke $stack4.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue putReleaseGLObject(com.jogamp.opencl.gl.CLGLObject)>($stack3);
+
+     label1:
+        return;
+    }
+
+    public void readBuffer(com.jogamp.opencl.CLBuffer, boolean)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLBuffer buffer;
+        boolean blocking;
+        com.jogamp.opencl.CLCommandQueue $stack3;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        buffer := @parameter0: com.jogamp.opencl.CLBuffer;
+
+        blocking := @parameter1: boolean;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack3.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue putReadBuffer(com.jogamp.opencl.CLBuffer,boolean)>(buffer, blocking);
+
+        return;
+    }
+
+    public void writeBuffer(com.jogamp.opencl.CLBuffer, boolean)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLBuffer buffer;
+        boolean blocking;
+        com.jogamp.opencl.CLCommandQueue $stack3;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        buffer := @parameter0: com.jogamp.opencl.CLBuffer;
+
+        blocking := @parameter1: boolean;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack3.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue putWriteBuffer(com.jogamp.opencl.CLBuffer,boolean)>(buffer, blocking);
+
+        return;
+    }
+
+    public void executeKernel(com.jogamp.opencl.CLKernel, long, long, long)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLKernel kernel;
+        long globalWorkOffsetX, globalWorkSizeX, localWorkSizeX;
+        com.jogamp.opencl.CLCommandQueue $stack8;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        kernel := @parameter0: com.jogamp.opencl.CLKernel;
+
+        globalWorkOffsetX := @parameter1: long;
+
+        globalWorkSizeX := @parameter2: long;
+
+        localWorkSizeX := @parameter3: long;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack8 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack8.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue put1DRangeKernel(com.jogamp.opencl.CLKernel,long,long,long)>(kernel, globalWorkOffsetX, globalWorkSizeX, localWorkSizeX);
+
+        return;
+    }
+
+    public void executeKernel(com.jogamp.opencl.CLKernel, long, long, long, com.jogamp.opencl.CLEventList)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLKernel kernel;
+        long globalWorkOffsetX, globalWorkSizeX, localWorkSizeX;
+        com.jogamp.opencl.CLEventList events;
+        com.jogamp.opencl.CLCommandQueue $stack9;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        kernel := @parameter0: com.jogamp.opencl.CLKernel;
+
+        globalWorkOffsetX := @parameter1: long;
+
+        globalWorkSizeX := @parameter2: long;
+
+        localWorkSizeX := @parameter3: long;
+
+        events := @parameter4: com.jogamp.opencl.CLEventList;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack9 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack9.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue put1DRangeKernel(com.jogamp.opencl.CLKernel,long,long,long,com.jogamp.opencl.CLEventList)>(kernel, globalWorkOffsetX, globalWorkSizeX, localWorkSizeX, events);
+
+        return;
+    }
+
+    public void executeKernel(com.jogamp.opencl.CLKernel, long, long, long, com.jogamp.opencl.CLEventList, com.jogamp.opencl.CLEventList)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLKernel kernel;
+        long globalWorkOffsetX, globalWorkSizeX, localWorkSizeX;
+        com.jogamp.opencl.CLEventList condition, events;
+        com.jogamp.opencl.CLCommandQueue $stack10;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        kernel := @parameter0: com.jogamp.opencl.CLKernel;
+
+        globalWorkOffsetX := @parameter1: long;
+
+        globalWorkSizeX := @parameter2: long;
+
+        localWorkSizeX := @parameter3: long;
+
+        condition := @parameter4: com.jogamp.opencl.CLEventList;
+
+        events := @parameter5: com.jogamp.opencl.CLEventList;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack10 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack10.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue put1DRangeKernel(com.jogamp.opencl.CLKernel,long,long,long,com.jogamp.opencl.CLEventList,com.jogamp.opencl.CLEventList)>(kernel, globalWorkOffsetX, globalWorkSizeX, localWorkSizeX, condition, events);
+
+        return;
+    }
+
+    public void executeKernel(com.jogamp.opencl.CLKernel, long, long, long, long, long, long)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLKernel kernel;
+        long globalWorkOffsetX, globalWorkOffsetY, globalWorkSizeX, globalWorkSizeY, localWorkSizeX, localWorkSizeY;
+        com.jogamp.opencl.CLCommandQueue $stack14;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        kernel := @parameter0: com.jogamp.opencl.CLKernel;
+
+        globalWorkOffsetX := @parameter1: long;
+
+        globalWorkOffsetY := @parameter2: long;
+
+        globalWorkSizeX := @parameter3: long;
+
+        globalWorkSizeY := @parameter4: long;
+
+        localWorkSizeX := @parameter5: long;
+
+        localWorkSizeY := @parameter6: long;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack14 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack14.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue put2DRangeKernel(com.jogamp.opencl.CLKernel,long,long,long,long,long,long)>(kernel, globalWorkOffsetX, globalWorkOffsetY, globalWorkSizeX, globalWorkSizeY, localWorkSizeX, localWorkSizeY);
+
+        return;
+    }
+
+    public void executeKernel(com.jogamp.opencl.CLKernel, long, long, long, long, long, long, com.jogamp.opencl.CLEventList)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLKernel kernel;
+        long globalWorkOffsetX, globalWorkOffsetY, globalWorkSizeX, globalWorkSizeY, localWorkSizeX, localWorkSizeY;
+        com.jogamp.opencl.CLEventList events;
+        com.jogamp.opencl.CLCommandQueue $stack15;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        kernel := @parameter0: com.jogamp.opencl.CLKernel;
+
+        globalWorkOffsetX := @parameter1: long;
+
+        globalWorkOffsetY := @parameter2: long;
+
+        globalWorkSizeX := @parameter3: long;
+
+        globalWorkSizeY := @parameter4: long;
+
+        localWorkSizeX := @parameter5: long;
+
+        localWorkSizeY := @parameter6: long;
+
+        events := @parameter7: com.jogamp.opencl.CLEventList;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack15 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack15.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue put2DRangeKernel(com.jogamp.opencl.CLKernel,long,long,long,long,long,long,com.jogamp.opencl.CLEventList)>(kernel, globalWorkOffsetX, globalWorkOffsetY, globalWorkSizeX, globalWorkSizeY, localWorkSizeX, localWorkSizeY, events);
+
+        return;
+    }
+
+    public void executeKernel(com.jogamp.opencl.CLKernel, long, long, long, long, long, long, com.jogamp.opencl.CLEventList, com.jogamp.opencl.CLEventList)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLKernel kernel;
+        long globalWorkOffsetX, globalWorkOffsetY, globalWorkSizeX, globalWorkSizeY, localWorkSizeX, localWorkSizeY;
+        com.jogamp.opencl.CLEventList condition, events;
+        com.jogamp.opencl.CLCommandQueue $stack16;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        kernel := @parameter0: com.jogamp.opencl.CLKernel;
+
+        globalWorkOffsetX := @parameter1: long;
+
+        globalWorkOffsetY := @parameter2: long;
+
+        globalWorkSizeX := @parameter3: long;
+
+        globalWorkSizeY := @parameter4: long;
+
+        localWorkSizeX := @parameter5: long;
+
+        localWorkSizeY := @parameter6: long;
+
+        condition := @parameter7: com.jogamp.opencl.CLEventList;
+
+        events := @parameter8: com.jogamp.opencl.CLEventList;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack16 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack16.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue put2DRangeKernel(com.jogamp.opencl.CLKernel,long,long,long,long,long,long,com.jogamp.opencl.CLEventList,com.jogamp.opencl.CLEventList)>(kernel, globalWorkOffsetX, globalWorkOffsetY, globalWorkSizeX, globalWorkSizeY, localWorkSizeX, localWorkSizeY, condition, events);
+
+        return;
+    }
+
+    public void executeKernel(com.jogamp.opencl.CLKernel, long, long, long, long, long, long, long, long, long)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLKernel kernel;
+        long globalWorkOffsetX, globalWorkOffsetY, globalWorkOffsetZ, globalWorkSizeX, globalWorkSizeY, globalWorkSizeZ, localWorkSizeX, localWorkSizeY, localWorkSizeZ;
+        com.jogamp.opencl.CLCommandQueue $stack20;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        kernel := @parameter0: com.jogamp.opencl.CLKernel;
+
+        globalWorkOffsetX := @parameter1: long;
+
+        globalWorkOffsetY := @parameter2: long;
+
+        globalWorkOffsetZ := @parameter3: long;
+
+        globalWorkSizeX := @parameter4: long;
+
+        globalWorkSizeY := @parameter5: long;
+
+        globalWorkSizeZ := @parameter6: long;
+
+        localWorkSizeX := @parameter7: long;
+
+        localWorkSizeY := @parameter8: long;
+
+        localWorkSizeZ := @parameter9: long;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack20 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack20.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue put3DRangeKernel(com.jogamp.opencl.CLKernel,long,long,long,long,long,long,long,long,long)>(kernel, globalWorkOffsetX, globalWorkOffsetY, globalWorkOffsetZ, globalWorkSizeX, globalWorkSizeY, globalWorkSizeZ, localWorkSizeX, localWorkSizeY, localWorkSizeZ);
+
+        return;
+    }
+
+    public void executeKernel(com.jogamp.opencl.CLKernel, long, long, long, long, long, long, long, long, long, com.jogamp.opencl.CLEventList)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLKernel kernel;
+        long globalWorkOffsetX, globalWorkOffsetY, globalWorkOffsetZ, globalWorkSizeX, globalWorkSizeY, globalWorkSizeZ, localWorkSizeX, localWorkSizeY, localWorkSizeZ;
+        com.jogamp.opencl.CLEventList events;
+        com.jogamp.opencl.CLCommandQueue $stack21;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        kernel := @parameter0: com.jogamp.opencl.CLKernel;
+
+        globalWorkOffsetX := @parameter1: long;
+
+        globalWorkOffsetY := @parameter2: long;
+
+        globalWorkOffsetZ := @parameter3: long;
+
+        globalWorkSizeX := @parameter4: long;
+
+        globalWorkSizeY := @parameter5: long;
+
+        globalWorkSizeZ := @parameter6: long;
+
+        localWorkSizeX := @parameter7: long;
+
+        localWorkSizeY := @parameter8: long;
+
+        localWorkSizeZ := @parameter9: long;
+
+        events := @parameter10: com.jogamp.opencl.CLEventList;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack21 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack21.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue put3DRangeKernel(com.jogamp.opencl.CLKernel,long,long,long,long,long,long,long,long,long,com.jogamp.opencl.CLEventList)>(kernel, globalWorkOffsetX, globalWorkOffsetY, globalWorkOffsetZ, globalWorkSizeX, globalWorkSizeY, globalWorkSizeZ, localWorkSizeX, localWorkSizeY, localWorkSizeZ, events);
+
+        return;
+    }
+
+    public void executeKernel(com.jogamp.opencl.CLKernel, long, long, long, long, long, long, long, long, long, com.jogamp.opencl.CLEventList, com.jogamp.opencl.CLEventList)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLKernel kernel;
+        long globalWorkOffsetX, globalWorkOffsetY, globalWorkOffsetZ, globalWorkSizeX, globalWorkSizeY, globalWorkSizeZ, localWorkSizeX, localWorkSizeY, localWorkSizeZ;
+        com.jogamp.opencl.CLEventList condition, events;
+        com.jogamp.opencl.CLCommandQueue $stack22;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        kernel := @parameter0: com.jogamp.opencl.CLKernel;
+
+        globalWorkOffsetX := @parameter1: long;
+
+        globalWorkOffsetY := @parameter2: long;
+
+        globalWorkOffsetZ := @parameter3: long;
+
+        globalWorkSizeX := @parameter4: long;
+
+        globalWorkSizeY := @parameter5: long;
+
+        globalWorkSizeZ := @parameter6: long;
+
+        localWorkSizeX := @parameter7: long;
+
+        localWorkSizeY := @parameter8: long;
+
+        localWorkSizeZ := @parameter9: long;
+
+        condition := @parameter10: com.jogamp.opencl.CLEventList;
+
+        events := @parameter11: com.jogamp.opencl.CLEventList;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack22 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack22.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue put3DRangeKernel(com.jogamp.opencl.CLKernel,long,long,long,long,long,long,long,long,long,com.jogamp.opencl.CLEventList,com.jogamp.opencl.CLEventList)>(kernel, globalWorkOffsetX, globalWorkOffsetY, globalWorkOffsetZ, globalWorkSizeX, globalWorkSizeY, globalWorkSizeZ, localWorkSizeX, localWorkSizeY, localWorkSizeZ, condition, events);
+
+        return;
+    }
+
+    public void finish()
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLCommandQueue $stack1;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack1.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue finish()>();
+
+        return;
+    }
+
+    public void flush()
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLCommandQueue $stack1;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        virtualinvoke $stack1.<com.jogamp.opencl.CLCommandQueue: com.jogamp.opencl.CLCommandQueue flush()>();
+
+        return;
+    }
+
+    public static int alignCeil(int, int)
+    {
+        int x, n, $stack2, $stack3, $stack4, $stack5;
+
+        x := @parameter0: int;
+
+        n := @parameter1: int;
+
+        $stack2 = x + n;
+
+        $stack3 = $stack2 - 1;
+
+        $stack4 = $stack3 / n;
+
+        $stack5 = $stack4 * n;
+
+        return $stack5;
+    }
+
+    public static int alignFloor(int, int)
+    {
+        int x, n, $stack2, $stack3;
+
+        x := @parameter0: int;
+
+        n := @parameter1: int;
+
+        $stack2 = x / n;
+
+        $stack3 = $stack2 * n;
+
+        return $stack3;
+    }
+
+    public void pyrDown(com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLImage2d srcImg, dstImg;
+        com.jogamp.opencl.CLKernel $stack4, $stack5, $stack6, $stack9;
+        int $stack8, $stack12, $stack13, $stack15;
+        long $stack14, $stack16;
+        org.bytedeco.javacv.JavaCVCL $r0, $r3, $r4;
+        com.jogamp.opencl.CLMemory $r1, $r2;
+
+        this := @this: JavaCVCL;
+
+        srcImg := @parameter0: com.jogamp.opencl.CLImage2d;
+
+        dstImg := @parameter1: com.jogamp.opencl.CLImage2d;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel pyrDownKernel>;
+
+        $r1 = (com.jogamp.opencl.CLMemory) srcImg;
+
+        $stack5 = virtualinvoke $stack4.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r1);
+
+        $r2 = (com.jogamp.opencl.CLMemory) dstImg;
+
+        $stack6 = virtualinvoke $stack5.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r2);
+
+        virtualinvoke $stack6.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel rewind()>();
+
+        $r3 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack9 = $r3.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel pyrDownKernel>;
+
+        $stack8 = dstImg.<com.jogamp.opencl.CLImage2d: int width>;
+
+        $stack12 = staticinvoke <org.bytedeco.javacv.JavaCVCL: int alignCeil(int,int)>($stack8, 2);
+
+        $stack14 = (long) $stack12;
+
+        $stack13 = dstImg.<com.jogamp.opencl.CLImage2d: int height>;
+
+        $stack15 = staticinvoke <org.bytedeco.javacv.JavaCVCL: int alignCeil(int,int)>($stack13, 64);
+
+        $stack16 = (long) $stack15;
+
+        $r4 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        virtualinvoke $r4.<org.bytedeco.javacv.JavaCVCL: void executeKernel(com.jogamp.opencl.CLKernel,long,long,long,long,long,long,com.jogamp.opencl.CLEventList)>($stack9, 0L, 0L, $stack14, $stack16, 2L, 64L, null);
+
+        return;
+    }
+
+    public void remap(com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d)
+    {
+        JavaCVCL this;
+        com.jogamp.opencl.CLImage2d srcImg, dstImg, mapxImg, mapyImg;
+        org.bytedeco.javacv.JavaCVCL $r0;
+
+        this := @this: JavaCVCL;
+
+        srcImg := @parameter0: com.jogamp.opencl.CLImage2d;
+
+        dstImg := @parameter1: com.jogamp.opencl.CLImage2d;
+
+        mapxImg := @parameter2: com.jogamp.opencl.CLImage2d;
+
+        mapyImg := @parameter3: com.jogamp.opencl.CLImage2d;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.JavaCVCL: void remap(com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,long)>(srcImg, dstImg, mapxImg, mapyImg, -1L);
+
+        return;
+    }
+
+    public void remap(com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d, long)
+    {
+        long sensorPattern, $stack21, $stack23;
+        byte $stack9;
+        JavaCVCL this;
+        com.jogamp.opencl.CLImage2d srcImg, dstImg, mapxImg, mapyImg;
+        com.jogamp.opencl.CLKernel $stack10, $stack11, $stack12, $stack13, $stack14, $stack24, $stack25, $stack26, $stack27, $stack28, $stack29, kernel;
+        int $stack16, $stack19, $stack20, $stack22;
+        org.bytedeco.javacv.JavaCVCL $r0, $r5, $r10;
+        com.jogamp.opencl.CLMemory $r1, $r2, $r3, $r4, $r6, $r7, $r8, $r9;
+
+        this := @this: JavaCVCL;
+
+        srcImg := @parameter0: com.jogamp.opencl.CLImage2d;
+
+        dstImg := @parameter1: com.jogamp.opencl.CLImage2d;
+
+        mapxImg := @parameter2: com.jogamp.opencl.CLImage2d;
+
+        mapyImg := @parameter3: com.jogamp.opencl.CLImage2d;
+
+        sensorPattern := @parameter4: long;
+
+        $stack9 = sensorPattern cmp -1L;
+
+        if $stack9 == 0 goto label1;
+
+        $r0 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack24 = $r0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel remapBayerKernel>;
+
+        $r1 = (com.jogamp.opencl.CLMemory) srcImg;
+
+        $stack25 = virtualinvoke $stack24.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r1);
+
+        $r2 = (com.jogamp.opencl.CLMemory) dstImg;
+
+        $stack26 = virtualinvoke $stack25.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r2);
+
+        $r3 = (com.jogamp.opencl.CLMemory) mapxImg;
+
+        $stack27 = virtualinvoke $stack26.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r3);
+
+        $r4 = (com.jogamp.opencl.CLMemory) mapyImg;
+
+        $stack28 = virtualinvoke $stack27.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r4);
+
+        $stack29 = virtualinvoke $stack28.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(long)>(sensorPattern);
+
+        kernel = virtualinvoke $stack29.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel rewind()>();
+
+        goto label2;
+
+     label1:
+        $r5 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        $stack10 = $r5.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel remapKernel>;
+
+        $r6 = (com.jogamp.opencl.CLMemory) srcImg;
+
+        $stack11 = virtualinvoke $stack10.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r6);
+
+        $r7 = (com.jogamp.opencl.CLMemory) dstImg;
+
+        $stack12 = virtualinvoke $stack11.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r7);
+
+        $r8 = (com.jogamp.opencl.CLMemory) mapxImg;
+
+        $stack13 = virtualinvoke $stack12.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r8);
+
+        $r9 = (com.jogamp.opencl.CLMemory) mapyImg;
+
+        $stack14 = virtualinvoke $stack13.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r9);
+
+        kernel = virtualinvoke $stack14.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel rewind()>();
+
+     label2:
+        $stack16 = dstImg.<com.jogamp.opencl.CLImage2d: int width>;
+
+        $stack19 = staticinvoke <org.bytedeco.javacv.JavaCVCL: int alignCeil(int,int)>($stack16, 2);
+
+        $stack21 = (long) $stack19;
+
+        $stack20 = dstImg.<com.jogamp.opencl.CLImage2d: int height>;
+
+        $stack22 = staticinvoke <org.bytedeco.javacv.JavaCVCL: int alignCeil(int,int)>($stack20, 64);
+
+        $stack23 = (long) $stack22;
+
+        $r10 = (org.bytedeco.javacv.JavaCVCL) this;
+
+        virtualinvoke $r10.<org.bytedeco.javacv.JavaCVCL: void executeKernel(com.jogamp.opencl.CLKernel,long,long,long,long,long,long,com.jogamp.opencl.CLEventList)>(kernel, 0L, 0L, $stack21, $stack23, 2L, 64L, null);
+
+        return;
+    }
+
+    public static void main(java.lang.String[])
+    {
+        com.jogamp.opencl.CLContext $stack17;
+        com.jogamp.opencl.CLMemory$Mem[] $stack18, $stack65, $stack67, $stack69, $stack71;
+        com.jogamp.opencl.CLImageFormat[] formats;
+        org.bytedeco.opencv.opencv_core.CvMat $stack21, $stack31, $stack33, $stack34, $stack35, $stack36, $stack37, $stack38, $stack40, $stack42, $stack43;
+        int $stack22, $stack25, $stack26, $stack28, $stack29, $stack46, $stack47, $stack48, $stack49, f, l5;
+        double $stack23, $stack27, $stack30, $stack60, $stack61, f#6;
+        double[] $stack24, $stack39;
+        java.lang.String[] args;
+        java.lang.String $stack44, $stack63;
+        org.bytedeco.opencv.opencv_core.IplImage downDst, mapxImg, mapyImg, f#7;
+        long start, $stack58, $stack59;
+        org.bytedeco.opencv.opencv_core.CvScalar $stack54;
+        java.io.PrintStream $stack56, $stack78;
+        java.lang.StringBuilder $stack57, $stack62, $u2;
+        com.jogamp.opencl.CLImage2d src, dst, mapx, mapy;
+        com.jogamp.opencl.CLImageFormat f#4;
+        org.bytedeco.javacv.JavaCVCL $u0;
+        org.bytedeco.javacv.CameraDevice $u1;
+        org.bytedeco.opencv.opencv_core.CvArr $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9;
+
+        args := @parameter0: java.lang.String[];
+
+        $u0 = new org.bytedeco.javacv.JavaCVCL;
+
+        specialinvoke $u0.<org.bytedeco.javacv.JavaCVCL: void <init>()>();
+
+        $stack17 = virtualinvoke $u0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext getCLContext()>();
+
+        $stack18 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        formats = virtualinvoke $stack17.<com.jogamp.opencl.CLContext: com.jogamp.opencl.CLImageFormat[] getSupportedImage2dFormats(com.jogamp.opencl.CLMemory$Mem[])>($stack18);
+
+        f = lengthof formats;
+
+        l5 = 0;
+
+     label1:
+        if l5 >= f goto label2;
+
+        f#4 = formats[l5];
+
+        $stack78 = <java.lang.System: java.io.PrintStream out>;
+
+        virtualinvoke $stack78.<java.io.PrintStream: void println(java.lang.Object)>(f#4);
+
+        l5 = l5 + 1;
+
+        goto label1;
+
+     label2:
+        $u1 = new org.bytedeco.javacv.CameraDevice;
+
+        specialinvoke $u1.<org.bytedeco.javacv.CameraDevice: void <init>(java.lang.String)>("Camera");
+
+        $u1.<org.bytedeco.javacv.CameraDevice: int imageWidth> = 1280;
+
+        $u1.<org.bytedeco.javacv.CameraDevice: int imageHeight> = 960;
+
+        $stack21 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat create(int,int)>(3, 3);
+
+        $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.CvMat cameraMatrix> = $stack21;
+
+        $stack22 = $u1.<org.bytedeco.javacv.CameraDevice: int imageWidth>;
+
+        $stack23 = (double) $stack22;
+
+        f#6 = $stack23 * 2.5;
+
+        $stack31 = $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.CvMat cameraMatrix>;
+
+        $stack24 = newarray (double)[9];
+
+        $stack24[0] = f#6;
+
+        $stack24[1] = 0.0;
+
+        $stack25 = $u1.<org.bytedeco.javacv.CameraDevice: int imageWidth>;
+
+        $stack26 = $stack25 / 2;
+
+        $stack27 = (double) $stack26;
+
+        $stack24[2] = $stack27;
+
+        $stack24[3] = 0.0;
+
+        $stack24[4] = f#6;
+
+        $stack28 = $u1.<org.bytedeco.javacv.CameraDevice: int imageHeight>;
+
+        $stack29 = $stack28 / 2;
+
+        $stack30 = (double) $stack29;
+
+        $stack24[5] = $stack30;
+
+        $stack24[6] = 0.0;
+
+        $stack24[7] = 0.0;
+
+        $stack24[8] = 1.0;
+
+        virtualinvoke $stack31.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(double[])>($stack24);
+
+        $stack33 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat create(int,int)>(3, 3);
+
+        $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.CvMat R> = $stack33;
+
+        $stack34 = $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.CvMat R>;
+
+        $r0 = (org.bytedeco.opencv.opencv_core.CvArr) $stack34;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetIdentity(org.bytedeco.opencv.opencv_core.CvArr)>($r0);
+
+        $stack35 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat create(int,int)>(3, 1);
+
+        $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.CvMat T> = $stack35;
+
+        $stack36 = $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.CvMat T>;
+
+        $r1 = (org.bytedeco.opencv.opencv_core.CvArr) $stack36;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetZero(org.bytedeco.opencv.opencv_core.CvArr)>($r1);
+
+        $stack37 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat create(int,int)>(1, 4);
+
+        $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.CvMat distortionCoeffs> = $stack37;
+
+        $stack38 = $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.CvMat distortionCoeffs>;
+
+        $r2 = (org.bytedeco.opencv.opencv_core.CvArr) $stack38;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetZero(org.bytedeco.opencv.opencv_core.CvArr)>($r2);
+
+        $stack40 = $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.CvMat distortionCoeffs>;
+
+        $stack39 = newarray (double)[1];
+
+        $stack39[0] = 0.2;
+
+        virtualinvoke $stack40.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(double[])>($stack39);
+
+        $stack42 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat create(int,int)>(3, 3);
+
+        $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.CvMat colorMixingMatrix> = $stack42;
+
+        $stack43 = $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.CvMat colorMixingMatrix>;
+
+        $r3 = (org.bytedeco.opencv.opencv_core.CvArr) $stack43;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetIdentity(org.bytedeco.opencv.opencv_core.CvArr)>($r3);
+
+        $stack44 = args[0];
+
+        f#7 = staticinvoke <org.bytedeco.opencv.global.opencv_imgcodecs: org.bytedeco.opencv.opencv_core.IplImage cvLoadImageRGBA(java.lang.String)>($stack44);
+
+        $stack46 = virtualinvoke f#7.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        $stack47 = $stack46 / 2;
+
+        $stack48 = virtualinvoke f#7.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        $stack49 = $stack48 / 2;
+
+        downDst = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>($stack47, $stack49, 8, 4);
+
+        virtualinvoke $u1.<org.bytedeco.javacv.CameraDevice: void setFixedPointMaps(boolean)>(0);
+
+        virtualinvoke $u1.<org.bytedeco.javacv.CameraDevice: void setMapsPyramidLevel(int)>(1);
+
+        mapxImg = virtualinvoke $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.IplImage getUndistortMap1()>();
+
+        mapyImg = virtualinvoke $u1.<org.bytedeco.javacv.CameraDevice: org.bytedeco.opencv.opencv_core.IplImage getUndistortMap2()>();
+
+        start = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $stack54 = <org.bytedeco.opencv.opencv_core.CvScalar: org.bytedeco.opencv.opencv_core.CvScalar ZERO>;
+
+        $r4 = (org.bytedeco.opencv.opencv_core.CvArr) f#7;
+
+        $r5 = (org.bytedeco.opencv.opencv_core.CvArr) downDst;
+
+        $r6 = (org.bytedeco.opencv.opencv_core.CvArr) mapxImg;
+
+        $r7 = (org.bytedeco.opencv.opencv_core.CvArr) mapyImg;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgproc: void cvRemap(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,int,org.bytedeco.opencv.opencv_core.CvScalar)>($r4, $r5, $r6, $r7, 9, $stack54);
+
+        $stack56 = <java.lang.System: java.io.PrintStream out>;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack57 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("cvRemap: ");
+
+        $stack58 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $stack59 = $stack58 - start;
+
+        $stack60 = (double) $stack59;
+
+        $stack61 = $stack60 / 1000000.0;
+
+        $stack62 = virtualinvoke $stack57.<java.lang.StringBuilder: java.lang.StringBuilder append(double)>($stack61);
+
+        $stack63 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack56.<java.io.PrintStream: void println(java.lang.String)>($stack63);
+
+        $r8 = (org.bytedeco.opencv.opencv_core.CvArr) downDst;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgcodecs: int cvSaveImage(java.lang.String,org.bytedeco.opencv.opencv_core.CvArr)>("/tmp/opencv.png", $r8);
+
+        $stack65 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        src = virtualinvoke $u0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLImage2d createCLImageFrom(org.bytedeco.opencv.opencv_core.IplImage,com.jogamp.opencl.CLMemory$Mem[])>(f#7, $stack65);
+
+        $stack67 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        dst = virtualinvoke $u0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLImage2d createCLImageFrom(org.bytedeco.opencv.opencv_core.IplImage,com.jogamp.opencl.CLMemory$Mem[])>(downDst, $stack67);
+
+        $stack69 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        mapx = virtualinvoke $u0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLImage2d createCLImageFrom(org.bytedeco.opencv.opencv_core.IplImage,com.jogamp.opencl.CLMemory$Mem[])>(mapxImg, $stack69);
+
+        $stack71 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        mapy = virtualinvoke $u0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLImage2d createCLImageFrom(org.bytedeco.opencv.opencv_core.IplImage,com.jogamp.opencl.CLMemory$Mem[])>(mapyImg, $stack71);
+
+        virtualinvoke $u0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLImage2d writeImage(com.jogamp.opencl.CLImage2d,org.bytedeco.opencv.opencv_core.IplImage,boolean)>(src, f#7, 0);
+
+        virtualinvoke $u0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLImage2d writeImage(com.jogamp.opencl.CLImage2d,org.bytedeco.opencv.opencv_core.IplImage,boolean)>(mapx, mapxImg, 0);
+
+        virtualinvoke $u0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLImage2d writeImage(com.jogamp.opencl.CLImage2d,org.bytedeco.opencv.opencv_core.IplImage,boolean)>(mapy, mapyImg, 0);
+
+        virtualinvoke $u0.<org.bytedeco.javacv.JavaCVCL: void remap(com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d)>(src, dst, mapx, mapy);
+
+        virtualinvoke $u0.<org.bytedeco.javacv.JavaCVCL: org.bytedeco.opencv.opencv_core.IplImage readImage(com.jogamp.opencl.CLImage2d,org.bytedeco.opencv.opencv_core.IplImage,boolean)>(dst, downDst, 1);
+
+        $r9 = (org.bytedeco.opencv.opencv_core.CvArr) downDst;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgcodecs: int cvSaveImage(java.lang.String,org.bytedeco.opencv.opencv_core.CvArr)>("/tmp/javacvcl.png", $r9);
+
+        virtualinvoke $u0.<org.bytedeco.javacv.JavaCVCL: void release()>();
+
+        staticinvoke <java.lang.System: void exit(int)>(0);
+
+        return;
+    }
+
+    static com.jogamp.opencl.CLCommandQueue access$000(org.bytedeco.javacv.JavaCVCL)
+    {
+        org.bytedeco.javacv.JavaCVCL x0;
+        com.jogamp.opencl.CLCommandQueue $stack1;
+
+        x0 := @parameter0: org.bytedeco.javacv.JavaCVCL;
+
+        $stack1 = x0.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLCommandQueue commandQueue>;
+
+        return $stack1;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $stack0, $stack2;
+        boolean $stack1, $stack5;
+        java.lang.String $stack3;
+        java.util.logging.Logger $stack4;
+
+        <JavaCVCL: java.lang.String fastCompilerOptions> = "-cl-fast-relaxed-math -cl-mad-enable";
+
+        $stack0 = class "Lorg/bytedeco/javacv/JavaCVCL;";
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Class: boolean desiredAssertionStatus()>();
+
+        if $stack1 != 0 goto label1;
+
+        $stack5 = 1;
+
+        goto label2;
+
+     label1:
+        $stack5 = 0;
+
+     label2:
+        <org.bytedeco.javacv.JavaCVCL: boolean $assertionsDisabled> = $stack5;
+
+        $stack2 = class "Lorg/bytedeco/javacv/JavaCVCL;";
+
+        $stack3 = virtualinvoke $stack2.<java.lang.Class: java.lang.String getName()>();
+
+        $stack4 = staticinvoke <java.util.logging.Logger: java.util.logging.Logger getLogger(java.lang.String)>($stack3);
+
+        <org.bytedeco.javacv.JavaCVCL: java.util.logging.Logger logger> = $stack4;
+
+        return;
+    }
+}

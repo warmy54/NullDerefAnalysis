@@ -1,0 +1,169 @@
+public class ExclusionSetFilter extends java.lang.Object implements org.apache.maven.artifact.resolver.filter.ArtifactFilter
+{
+    private java.util.Set excludes;
+
+    public void <init>(java.lang.String[])
+    {
+        ExclusionSetFilter this;
+        java.lang.String[] excludes;
+        java.util.List $stack3;
+        java.util.LinkedHashSet $u0;
+        org.apache.maven.artifact.resolver.filter.ExclusionSetFilter $r0;
+
+        this := @this: ExclusionSetFilter;
+
+        excludes := @parameter0: java.lang.String[];
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.LinkedHashSet;
+
+        $stack3 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>(excludes);
+
+        specialinvoke $u0.<java.util.LinkedHashSet: void <init>(java.util.Collection)>($stack3);
+
+        $r0 = (org.apache.maven.artifact.resolver.filter.ExclusionSetFilter) this;
+
+        $r0.<org.apache.maven.artifact.resolver.filter.ExclusionSetFilter: java.util.Set excludes> = $u0;
+
+        return;
+    }
+
+    public void <init>(java.util.Set)
+    {
+        ExclusionSetFilter this;
+        java.util.Set excludes;
+        org.apache.maven.artifact.resolver.filter.ExclusionSetFilter $r0;
+
+        this := @this: ExclusionSetFilter;
+
+        excludes := @parameter0: java.util.Set;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.resolver.filter.ExclusionSetFilter) this;
+
+        $r0.<org.apache.maven.artifact.resolver.filter.ExclusionSetFilter: java.util.Set excludes> = excludes;
+
+        return;
+    }
+
+    public boolean include(org.apache.maven.artifact.Artifact)
+    {
+        org.apache.maven.artifact.Artifact artifact;
+        ExclusionSetFilter this;
+        java.util.Set $stack4, $stack12;
+        boolean $stack5, $stack13, $stack14;
+        java.lang.String $stack7, id;
+        java.lang.StringBuilder $stack8, $stack9, $stack10, $u0;
+        org.apache.maven.artifact.resolver.filter.ExclusionSetFilter $r0, $r1;
+
+        this := @this: ExclusionSetFilter;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        id = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $r0 = (org.apache.maven.artifact.resolver.filter.ExclusionSetFilter) this;
+
+        $stack4 = $r0.<org.apache.maven.artifact.resolver.filter.ExclusionSetFilter: java.util.Set excludes>;
+
+        $stack5 = interfaceinvoke $stack4.<java.util.Set: boolean contains(java.lang.Object)>(id);
+
+        if $stack5 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack8 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack7);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(id);
+
+        id = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = (org.apache.maven.artifact.resolver.filter.ExclusionSetFilter) this;
+
+        $stack12 = $r1.<org.apache.maven.artifact.resolver.filter.ExclusionSetFilter: java.util.Set excludes>;
+
+        $stack13 = interfaceinvoke $stack12.<java.util.Set: boolean contains(java.lang.Object)>(id);
+
+        if $stack13 != 0 goto label2;
+
+        $stack14 = 1;
+
+        goto label3;
+
+     label2:
+        $stack14 = 0;
+
+     label3:
+        return $stack14;
+    }
+
+    public int hashCode()
+    {
+        ExclusionSetFilter this;
+        java.util.Set $stack2;
+        int $stack3, $stack4, hash#2;
+        org.apache.maven.artifact.resolver.filter.ExclusionSetFilter $r0;
+
+        this := @this: ExclusionSetFilter;
+
+        $stack3 = 17 * 31;
+
+        $r0 = (org.apache.maven.artifact.resolver.filter.ExclusionSetFilter) this;
+
+        $stack2 = $r0.<org.apache.maven.artifact.resolver.filter.ExclusionSetFilter: java.util.Set excludes>;
+
+        $stack4 = interfaceinvoke $stack2.<java.util.Set: int hashCode()>();
+
+        hash#2 = $stack3 + $stack4;
+
+        return hash#2;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        ExclusionSetFilter this;
+        java.lang.Object obj;
+        boolean $stack3, $stack6;
+        org.apache.maven.artifact.resolver.filter.ExclusionSetFilter other, $r0;
+        java.util.Set $stack4, $stack5;
+
+        this := @this: ExclusionSetFilter;
+
+        obj := @parameter0: java.lang.Object;
+
+        if this != obj goto label1;
+
+        return 1;
+
+     label1:
+        $stack3 = obj instanceof org.apache.maven.artifact.resolver.filter.ExclusionSetFilter;
+
+        if $stack3 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        other = (org.apache.maven.artifact.resolver.filter.ExclusionSetFilter) obj;
+
+        $r0 = (org.apache.maven.artifact.resolver.filter.ExclusionSetFilter) this;
+
+        $stack5 = $r0.<org.apache.maven.artifact.resolver.filter.ExclusionSetFilter: java.util.Set excludes>;
+
+        $stack4 = other.<org.apache.maven.artifact.resolver.filter.ExclusionSetFilter: java.util.Set excludes>;
+
+        $stack6 = interfaceinvoke $stack5.<java.util.Set: boolean equals(java.lang.Object)>($stack4);
+
+        return $stack6;
+    }
+}

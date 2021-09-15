@@ -1,0 +1,381 @@
+public class DefaultBuildResumptionDataRepository extends java.lang.Object implements org.apache.maven.execution.BuildResumptionDataRepository
+{
+    private static final java.lang.String RESUME_PROPERTIES_FILENAME;
+    private static final java.lang.String REMAINING_PROJECTS;
+    private static final java.lang.String PROPERTY_DELIMITER;
+    private static final org.slf4j.Logger LOGGER;
+
+    public void <init>()
+    {
+        DefaultBuildResumptionDataRepository this;
+
+        this := @this: DefaultBuildResumptionDataRepository;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void persistResumptionData(org.apache.maven.project.MavenProject, org.apache.maven.execution.BuildResumptionData) throws org.apache.maven.execution.BuildResumptionPersistenceException
+    {
+        DefaultBuildResumptionDataRepository this;
+        org.apache.maven.execution.BuildResumptionData buildResumptionData;
+        java.util.Properties properties;
+        org.apache.maven.project.MavenProject rootProject;
+        org.apache.maven.model.Build $stack9;
+        java.lang.String $stack10;
+        java.lang.String[] $stack11;
+        java.nio.file.Path resumeProperties, $stack13;
+        java.nio.file.attribute.FileAttribute[] $stack14;
+        java.nio.file.OpenOption[] $stack16;
+        java.io.IOException $stack18;
+        java.lang.Throwable $stack20, $stack21, $r1;
+        java.io.BufferedWriter writer;
+        org.apache.maven.execution.BuildResumptionPersistenceException $u0;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepository $r0;
+
+        this := @this: DefaultBuildResumptionDataRepository;
+
+        rootProject := @parameter0: org.apache.maven.project.MavenProject;
+
+        buildResumptionData := @parameter1: org.apache.maven.execution.BuildResumptionData;
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionDataRepository) this;
+
+        properties = specialinvoke $r0.<org.apache.maven.execution.DefaultBuildResumptionDataRepository: java.util.Properties convertToProperties(org.apache.maven.execution.BuildResumptionData)>(buildResumptionData);
+
+        $stack9 = virtualinvoke rootProject.<org.apache.maven.project.MavenProject: org.apache.maven.model.Build getBuild()>();
+
+        $stack10 = virtualinvoke $stack9.<org.apache.maven.model.Build: java.lang.String getDirectory()>();
+
+        $stack11 = newarray (java.lang.String)[1];
+
+        $stack11[0] = "resume.properties";
+
+        resumeProperties = staticinvoke <java.nio.file.Paths: java.nio.file.Path get(java.lang.String,java.lang.String[])>($stack10, $stack11);
+
+     label01:
+        $stack13 = interfaceinvoke resumeProperties.<java.nio.file.Path: java.nio.file.Path getParent()>();
+
+        $stack14 = newarray (java.nio.file.attribute.FileAttribute)[0];
+
+        staticinvoke <java.nio.file.Files: java.nio.file.Path createDirectories(java.nio.file.Path,java.nio.file.attribute.FileAttribute[])>($stack13, $stack14);
+
+        $stack16 = newarray (java.nio.file.OpenOption)[0];
+
+        writer = staticinvoke <java.nio.file.Files: java.io.BufferedWriter newBufferedWriter(java.nio.file.Path,java.nio.file.OpenOption[])>(resumeProperties, $stack16);
+
+     label02:
+        virtualinvoke properties.<java.util.Properties: void store(java.io.Writer,java.lang.String)>(writer, null);
+
+     label03:
+        if writer == null goto label09;
+
+        virtualinvoke writer.<java.io.Writer: void close()>();
+
+        goto label09;
+
+     label04:
+        $stack21 := @caughtexception;
+
+        if writer == null goto label08;
+
+     label05:
+        virtualinvoke writer.<java.io.Writer: void close()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $stack20 := @caughtexception;
+
+        virtualinvoke $stack21.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack20);
+
+     label08:
+        throw $stack21;
+
+     label09:
+        goto label11;
+
+     label10:
+        $stack18 := @caughtexception;
+
+        $u0 = new org.apache.maven.execution.BuildResumptionPersistenceException;
+
+        specialinvoke $u0.<org.apache.maven.execution.BuildResumptionPersistenceException: void <init>(java.lang.String,java.lang.Throwable)>("Could not create resume.properties file.", $stack18);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch java.io.IOException from label01 to label09 with label10;
+    }
+
+    private java.util.Properties convertToProperties(org.apache.maven.execution.BuildResumptionData)
+    {
+        java.util.Properties $stack4;
+        org.apache.maven.execution.BuildResumptionData buildResumptionData;
+        java.util.List $stack6;
+        java.lang.String value;
+        DefaultBuildResumptionDataRepository this;
+
+        this := @this: DefaultBuildResumptionDataRepository;
+
+        buildResumptionData := @parameter0: org.apache.maven.execution.BuildResumptionData;
+
+        $stack4 = new java.util.Properties;
+
+        specialinvoke $stack4.<java.util.Properties: void <init>()>();
+
+        $stack6 = virtualinvoke buildResumptionData.<org.apache.maven.execution.BuildResumptionData: java.util.List getRemainingProjects()>();
+
+        value = staticinvoke <java.lang.String: java.lang.String join(java.lang.CharSequence,java.lang.Iterable)>(", ", $stack6);
+
+        virtualinvoke $stack4.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("remainingProjects", value);
+
+        return $stack4;
+    }
+
+    public void applyResumptionData(org.apache.maven.execution.MavenExecutionRequest, org.apache.maven.project.MavenProject)
+    {
+        DefaultBuildResumptionDataRepository this;
+        org.apache.maven.project.MavenProject rootProject;
+        org.apache.maven.model.Build $stack4;
+        java.lang.String $stack5;
+        java.lang.String[] $stack6;
+        java.nio.file.Path $stack7;
+        java.util.Properties properties;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        org.apache.maven.execution.DefaultBuildResumptionDataRepository $r0, $r1;
+
+        this := @this: DefaultBuildResumptionDataRepository;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        rootProject := @parameter1: org.apache.maven.project.MavenProject;
+
+        $stack4 = virtualinvoke rootProject.<org.apache.maven.project.MavenProject: org.apache.maven.model.Build getBuild()>();
+
+        $stack5 = virtualinvoke $stack4.<org.apache.maven.model.Build: java.lang.String getDirectory()>();
+
+        $stack6 = newarray (java.lang.String)[0];
+
+        $stack7 = staticinvoke <java.nio.file.Paths: java.nio.file.Path get(java.lang.String,java.lang.String[])>($stack5, $stack6);
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionDataRepository) this;
+
+        properties = specialinvoke $r0.<org.apache.maven.execution.DefaultBuildResumptionDataRepository: java.util.Properties loadResumptionFile(java.nio.file.Path)>($stack7);
+
+        $r1 = (org.apache.maven.execution.DefaultBuildResumptionDataRepository) this;
+
+        virtualinvoke $r1.<org.apache.maven.execution.DefaultBuildResumptionDataRepository: void applyResumptionProperties(org.apache.maven.execution.MavenExecutionRequest,java.util.Properties)>(request, properties);
+
+        return;
+    }
+
+    public void removeResumptionData(org.apache.maven.project.MavenProject)
+    {
+        org.apache.maven.project.MavenProject rootProject;
+        org.apache.maven.model.Build $stack4;
+        java.lang.String $stack5;
+        java.lang.String[] $stack6;
+        java.nio.file.Path resumeProperties;
+        java.io.IOException $stack9;
+        org.slf4j.Logger $stack10;
+        DefaultBuildResumptionDataRepository this;
+
+        this := @this: DefaultBuildResumptionDataRepository;
+
+        rootProject := @parameter0: org.apache.maven.project.MavenProject;
+
+        $stack4 = virtualinvoke rootProject.<org.apache.maven.project.MavenProject: org.apache.maven.model.Build getBuild()>();
+
+        $stack5 = virtualinvoke $stack4.<org.apache.maven.model.Build: java.lang.String getDirectory()>();
+
+        $stack6 = newarray (java.lang.String)[1];
+
+        $stack6[0] = "resume.properties";
+
+        resumeProperties = staticinvoke <java.nio.file.Paths: java.nio.file.Path get(java.lang.String,java.lang.String[])>($stack5, $stack6);
+
+     label1:
+        staticinvoke <java.nio.file.Files: boolean deleteIfExists(java.nio.file.Path)>(resumeProperties);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack9 := @caughtexception;
+
+        $stack10 = <org.apache.maven.execution.DefaultBuildResumptionDataRepository: org.slf4j.Logger LOGGER>;
+
+        interfaceinvoke $stack10.<org.slf4j.Logger: void warn(java.lang.String,java.lang.Object,java.lang.Object)>("Could not delete {} file. ", "resume.properties", $stack9);
+
+     label4:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    private java.util.Properties loadResumptionFile(java.nio.file.Path)
+    {
+        java.util.Properties $stack7;
+        java.nio.file.Path rootBuildDirectory, path;
+        java.nio.file.LinkOption[] $stack9;
+        boolean $stack10;
+        org.slf4j.Logger $stack12, $stack14;
+        java.io.IOException $stack13;
+        java.lang.Throwable $stack16, $stack17;
+        DefaultBuildResumptionDataRepository this;
+        java.io.BufferedReader reader;
+
+        this := @this: DefaultBuildResumptionDataRepository;
+
+        rootBuildDirectory := @parameter0: java.nio.file.Path;
+
+        $stack7 = new java.util.Properties;
+
+        specialinvoke $stack7.<java.util.Properties: void <init>()>();
+
+        path = interfaceinvoke rootBuildDirectory.<java.nio.file.Path: java.nio.file.Path resolve(java.lang.String)>("resume.properties");
+
+        $stack9 = newarray (java.nio.file.LinkOption)[0];
+
+        $stack10 = staticinvoke <java.nio.file.Files: boolean exists(java.nio.file.Path,java.nio.file.LinkOption[])>(path, $stack9);
+
+        if $stack10 != 0 goto label01;
+
+        $stack12 = <org.apache.maven.execution.DefaultBuildResumptionDataRepository: org.slf4j.Logger LOGGER>;
+
+        interfaceinvoke $stack12.<org.slf4j.Logger: void warn(java.lang.String,java.lang.Object)>("The {} file does not exist. The --resume / -r feature will not work.", path);
+
+        return $stack7;
+
+     label01:
+        reader = staticinvoke <java.nio.file.Files: java.io.BufferedReader newBufferedReader(java.nio.file.Path)>(path);
+
+     label02:
+        virtualinvoke $stack7.<java.util.Properties: void load(java.io.Reader)>(reader);
+
+     label03:
+        if reader == null goto label09;
+
+        virtualinvoke reader.<java.io.Reader: void close()>();
+
+        goto label09;
+
+     label04:
+        $stack17 := @caughtexception;
+
+        if reader == null goto label08;
+
+     label05:
+        virtualinvoke reader.<java.io.Reader: void close()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $stack16 := @caughtexception;
+
+        virtualinvoke $stack17.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack16);
+
+     label08:
+        throw $stack17;
+
+     label09:
+        goto label11;
+
+     label10:
+        $stack13 := @caughtexception;
+
+        $stack14 = <org.apache.maven.execution.DefaultBuildResumptionDataRepository: org.slf4j.Logger LOGGER>;
+
+        interfaceinvoke $stack14.<org.slf4j.Logger: void warn(java.lang.String,java.lang.Object)>("Unable to read {}. The --resume / -r feature will not work.", path);
+
+     label11:
+        return $stack7;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch java.io.IOException from label01 to label09 with label10;
+    }
+
+    void applyResumptionProperties(org.apache.maven.execution.MavenExecutionRequest, java.util.Properties)
+    {
+        java.util.Properties properties;
+        boolean $stack4, $stack6;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.lang.String $stack5, propertyValue;
+        java.lang.String[] $stack8;
+        java.util.stream.Stream $stack9, $stack11;
+        java.util.function.Predicate $stack10;
+        org.apache.maven.execution.ProjectActivation $stack12;
+        java.util.function.Consumer $stack14;
+        org.slf4j.Logger $stack15;
+        DefaultBuildResumptionDataRepository this;
+
+        this := @this: DefaultBuildResumptionDataRepository;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        properties := @parameter1: java.util.Properties;
+
+        $stack4 = virtualinvoke properties.<java.util.Properties: boolean containsKey(java.lang.Object)>("remainingProjects");
+
+        if $stack4 == 0 goto label1;
+
+        $stack5 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.lang.String getResumeFrom()>();
+
+        $stack6 = staticinvoke <org.apache.commons.lang3.StringUtils: boolean isEmpty(java.lang.CharSequence)>($stack5);
+
+        if $stack6 == 0 goto label1;
+
+        propertyValue = virtualinvoke properties.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("remainingProjects");
+
+        $stack8 = virtualinvoke propertyValue.<java.lang.String: java.lang.String[] split(java.lang.String)>(", ");
+
+        $stack9 = staticinvoke <java.util.stream.Stream: java.util.stream.Stream of(java.lang.Object[])>($stack8);
+
+        $stack10 = staticinvoke <DefaultBuildResumptionDataRepository$isNotEmpty__309: java.util.function.Predicate bootstrap$()>();
+
+        $stack11 = interfaceinvoke $stack9.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack10);
+
+        $stack12 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.ProjectActivation getProjectActivation()>();
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>($stack12);
+
+        $stack14 = staticinvoke <DefaultBuildResumptionDataRepository$activateOptionalProject__310: java.util.function.Consumer bootstrap$(org.apache.maven.execution.ProjectActivation)>($stack12);
+
+        interfaceinvoke $stack11.<java.util.stream.Stream: void forEach(java.util.function.Consumer)>($stack14);
+
+        $stack15 = <org.apache.maven.execution.DefaultBuildResumptionDataRepository: org.slf4j.Logger LOGGER>;
+
+        interfaceinvoke $stack15.<org.slf4j.Logger: void info(java.lang.String,java.lang.Object)>("Resuming from {} due to the --resume / -r feature.", propertyValue);
+
+     label1:
+        return;
+    }
+
+    static void <clinit>()
+    {
+        org.slf4j.Logger $stack0;
+
+        <DefaultBuildResumptionDataRepository: java.lang.String PROPERTY_DELIMITER> = ", ";
+
+        <DefaultBuildResumptionDataRepository: java.lang.String REMAINING_PROJECTS> = "remainingProjects";
+
+        <DefaultBuildResumptionDataRepository: java.lang.String RESUME_PROPERTIES_FILENAME> = "resume.properties";
+
+        $stack0 = staticinvoke <org.slf4j.LoggerFactory: org.slf4j.Logger getLogger(java.lang.Class)>(class "Lorg/apache/maven/execution/DefaultBuildResumptionDataRepository;");
+
+        <org.apache.maven.execution.DefaultBuildResumptionDataRepository: org.slf4j.Logger LOGGER> = $stack0;
+
+        return;
+    }
+}

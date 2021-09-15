@@ -1,0 +1,532 @@
+public class MojoDescriptorCreator extends java.lang.Object
+{
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.apache.maven.plugin.version.PluginVersionResolver pluginVersionResolver;
+    private org.apache.maven.plugin.BuildPluginManager pluginManager;
+    private org.apache.maven.plugin.prefix.PluginPrefixResolver pluginPrefixResolver;
+    private org.apache.maven.lifecycle.internal.LifecyclePluginResolver lifecyclePluginResolver;
+
+    public void <init>()
+    {
+        MojoDescriptorCreator this;
+
+        this := @this: MojoDescriptorCreator;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(org.apache.maven.plugin.version.PluginVersionResolver, org.apache.maven.plugin.BuildPluginManager, org.apache.maven.plugin.prefix.PluginPrefixResolver, org.apache.maven.lifecycle.internal.LifecyclePluginResolver)
+    {
+        MojoDescriptorCreator this;
+        org.apache.maven.plugin.version.PluginVersionResolver pluginVersionResolver;
+        org.apache.maven.plugin.BuildPluginManager pluginManager;
+        org.apache.maven.plugin.prefix.PluginPrefixResolver pluginPrefixResolver;
+        org.apache.maven.lifecycle.internal.LifecyclePluginResolver lifecyclePluginResolver;
+        org.apache.maven.lifecycle.internal.MojoDescriptorCreator $r0, $r1, $r2, $r3;
+
+        this := @this: MojoDescriptorCreator;
+
+        pluginVersionResolver := @parameter0: org.apache.maven.plugin.version.PluginVersionResolver;
+
+        pluginManager := @parameter1: org.apache.maven.plugin.BuildPluginManager;
+
+        pluginPrefixResolver := @parameter2: org.apache.maven.plugin.prefix.PluginPrefixResolver;
+
+        lifecyclePluginResolver := @parameter3: org.apache.maven.lifecycle.internal.LifecyclePluginResolver;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        $r0.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.plugin.version.PluginVersionResolver pluginVersionResolver> = pluginVersionResolver;
+
+        $r1 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        $r1.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.plugin.BuildPluginManager pluginManager> = pluginManager;
+
+        $r2 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        $r2.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.plugin.prefix.PluginPrefixResolver pluginPrefixResolver> = pluginPrefixResolver;
+
+        $r3 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        $r3.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.lifecycle.internal.LifecyclePluginResolver lifecyclePluginResolver> = lifecyclePluginResolver;
+
+        return;
+    }
+
+    private org.apache.maven.model.Plugin findPlugin(java.lang.String, java.lang.String, java.util.Collection)
+    {
+        java.util.Collection plugins;
+        java.util.Iterator l4;
+        boolean $stack7, $stack10, $stack13;
+        java.lang.Object $stack8;
+        org.apache.maven.model.Plugin plugin;
+        java.lang.String artifactId, $stack9, groupId, $stack12;
+        MojoDescriptorCreator this;
+
+        this := @this: MojoDescriptorCreator;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        plugins := @parameter2: java.util.Collection;
+
+        l4 = interfaceinvoke plugins.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label3;
+
+        $stack8 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        plugin = (org.apache.maven.model.Plugin) $stack8;
+
+        $stack9 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        $stack10 = virtualinvoke artifactId.<java.lang.String: boolean equals(java.lang.Object)>($stack9);
+
+        if $stack10 == 0 goto label2;
+
+        $stack12 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        $stack13 = virtualinvoke groupId.<java.lang.String: boolean equals(java.lang.Object)>($stack12);
+
+        if $stack13 == 0 goto label2;
+
+        return plugin;
+
+     label2:
+        goto label1;
+
+     label3:
+        return null;
+    }
+
+    public static org.codehaus.plexus.util.xml.Xpp3Dom convert(org.apache.maven.plugin.descriptor.MojoDescriptor)
+    {
+        org.codehaus.plexus.util.xml.Xpp3Dom $stack11, $stack17;
+        org.apache.maven.plugin.descriptor.MojoDescriptor mojoDescriptor;
+        org.codehaus.plexus.configuration.PlexusConfiguration c, ce;
+        org.codehaus.plexus.configuration.PlexusConfiguration[] ces;
+        int l5, l6;
+        java.lang.String value, defaultValue, $stack18;
+
+        mojoDescriptor := @parameter0: org.apache.maven.plugin.descriptor.MojoDescriptor;
+
+        $stack11 = new org.codehaus.plexus.util.xml.Xpp3Dom;
+
+        specialinvoke $stack11.<org.codehaus.plexus.util.xml.Xpp3Dom: void <init>(java.lang.String)>("configuration");
+
+        c = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.codehaus.plexus.configuration.PlexusConfiguration getMojoConfiguration()>();
+
+        ces = interfaceinvoke c.<org.codehaus.plexus.configuration.PlexusConfiguration: org.codehaus.plexus.configuration.PlexusConfiguration[] getChildren()>();
+
+        if ces == null goto label5;
+
+        l5 = lengthof ces;
+
+        l6 = 0;
+
+     label1:
+        if l6 >= l5 goto label5;
+
+        ce = ces[l6];
+
+        value = interfaceinvoke ce.<org.codehaus.plexus.configuration.PlexusConfiguration: java.lang.String getValue(java.lang.String)>(null);
+
+        defaultValue = interfaceinvoke ce.<org.codehaus.plexus.configuration.PlexusConfiguration: java.lang.String getAttribute(java.lang.String,java.lang.String)>("default-value", null);
+
+        if value != null goto label2;
+
+        if defaultValue == null goto label4;
+
+     label2:
+        $stack17 = new org.codehaus.plexus.util.xml.Xpp3Dom;
+
+        $stack18 = interfaceinvoke ce.<org.codehaus.plexus.configuration.PlexusConfiguration: java.lang.String getName()>();
+
+        specialinvoke $stack17.<org.codehaus.plexus.util.xml.Xpp3Dom: void <init>(java.lang.String)>($stack18);
+
+        virtualinvoke $stack17.<org.codehaus.plexus.util.xml.Xpp3Dom: void setValue(java.lang.String)>(value);
+
+        if defaultValue == null goto label3;
+
+        virtualinvoke $stack17.<org.codehaus.plexus.util.xml.Xpp3Dom: void setAttribute(java.lang.String,java.lang.String)>("default-value", defaultValue);
+
+     label3:
+        virtualinvoke $stack11.<org.codehaus.plexus.util.xml.Xpp3Dom: void addChild(org.codehaus.plexus.util.xml.Xpp3Dom)>($stack17);
+
+     label4:
+        l6 = l6 + 1;
+
+        goto label1;
+
+     label5:
+        return $stack11;
+    }
+
+    public org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor(java.lang.String, org.apache.maven.execution.MavenSession, org.apache.maven.project.MavenProject) throws org.apache.maven.plugin.PluginNotFoundException, org.apache.maven.plugin.PluginResolutionException, org.apache.maven.plugin.PluginDescriptorParsingException, org.apache.maven.plugin.MojoNotFoundException, org.apache.maven.plugin.prefix.NoPluginFoundForPrefixException, org.apache.maven.plugin.InvalidPluginDescriptorException, org.apache.maven.plugin.version.PluginVersionResolutionException
+    {
+        java.lang.String task, $stack14, $stack37, $stack38, $stack41, $stack42, $stack43, $stack49, goal#4, prefix;
+        int numTokens, prefix#15;
+        MojoDescriptorCreator this;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.plugin.BuildPluginManager $stack15;
+        java.util.List $stack16;
+        org.eclipse.aether.RepositorySystemSession $stack17;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack18;
+        boolean $stack45;
+        java.lang.StringBuilder $stack47, $stack48, $stack50, $u2;
+        org.apache.maven.model.Plugin plugin#3, $u1, $u3;
+        java.util.StringTokenizer $u0;
+        org.apache.maven.lifecycle.internal.MojoDescriptorCreator $r0, $r1, $r2, $r3;
+
+        this := @this: MojoDescriptorCreator;
+
+        task := @parameter0: java.lang.String;
+
+        session := @parameter1: org.apache.maven.execution.MavenSession;
+
+        project := @parameter2: org.apache.maven.project.MavenProject;
+
+        $u0 = new java.util.StringTokenizer;
+
+        specialinvoke $u0.<java.util.StringTokenizer: void <init>(java.lang.String,java.lang.String)>(task, ":");
+
+        numTokens = virtualinvoke $u0.<java.util.StringTokenizer: int countTokens()>();
+
+        if numTokens < 4 goto label2;
+
+        $u1 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $u1.<org.apache.maven.model.Plugin: void <init>()>();
+
+        plugin#3 = $u1;
+
+        $stack41 = virtualinvoke $u0.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>($stack41);
+
+        $stack42 = virtualinvoke $u0.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>($stack42);
+
+        $stack43 = virtualinvoke $u0.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>($stack43);
+
+        goal#4 = virtualinvoke $u0.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+     label1:
+        $stack45 = virtualinvoke $u0.<java.util.StringTokenizer: boolean hasMoreTokens()>();
+
+        if $stack45 == 0 goto label6;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack47 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(goal#4);
+
+        $stack48 = virtualinvoke $stack47.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack49 = virtualinvoke $u0.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        $stack50 = virtualinvoke $stack48.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack49);
+
+        goal#4 = virtualinvoke $stack50.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label1;
+
+     label2:
+        if numTokens != 3 goto label3;
+
+        $u3 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $u3.<org.apache.maven.model.Plugin: void <init>()>();
+
+        plugin#3 = $u3;
+
+        $stack37 = virtualinvoke $u0.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        virtualinvoke $u3.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>($stack37);
+
+        $stack38 = virtualinvoke $u0.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        virtualinvoke $u3.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>($stack38);
+
+        goal#4 = virtualinvoke $u0.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        goto label6;
+
+     label3:
+        prefix = virtualinvoke $u0.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        if numTokens != 2 goto label4;
+
+        goal#4 = virtualinvoke $u0.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        goto label5;
+
+     label4:
+        goal#4 = "";
+
+     label5:
+        $r0 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        plugin#3 = virtualinvoke $r0.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.model.Plugin findPluginForPrefix(java.lang.String,org.apache.maven.execution.MavenSession)>(prefix, session);
+
+     label6:
+        prefix#15 = virtualinvoke goal#4.<java.lang.String: int indexOf(int)>(64);
+
+        if prefix#15 <= 0 goto label7;
+
+        goal#4 = virtualinvoke goal#4.<java.lang.String: java.lang.String substring(int,int)>(0, prefix#15);
+
+     label7:
+        $r1 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        specialinvoke $r1.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: void injectPluginDeclarationFromProject(org.apache.maven.model.Plugin,org.apache.maven.project.MavenProject)>(plugin#3, project);
+
+        $stack14 = virtualinvoke plugin#3.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        if $stack14 != null goto label8;
+
+        $r2 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        specialinvoke $r2.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: void resolvePluginVersion(org.apache.maven.model.Plugin,org.apache.maven.execution.MavenSession,org.apache.maven.project.MavenProject)>(plugin#3, session, project);
+
+     label8:
+        $r3 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        $stack15 = $r3.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.plugin.BuildPluginManager pluginManager>;
+
+        $stack16 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getRemotePluginRepositories()>();
+
+        $stack17 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $stack18 = interfaceinvoke $stack15.<org.apache.maven.plugin.BuildPluginManager: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor(org.apache.maven.model.Plugin,java.lang.String,java.util.List,org.eclipse.aether.RepositorySystemSession)>(plugin#3, goal#4, $stack16, $stack17);
+
+        return $stack18;
+    }
+
+    public org.apache.maven.model.Plugin findPluginForPrefix(java.lang.String, org.apache.maven.execution.MavenSession) throws org.apache.maven.plugin.prefix.NoPluginFoundForPrefixException
+    {
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject $stack6, $stack14;
+        java.lang.String prefix, $stack26, $stack11, $stack12;
+        MojoDescriptorCreator this;
+        org.apache.maven.plugin.prefix.PluginPrefixResult prefixResult;
+        org.apache.maven.lifecycle.internal.LifecyclePluginResolver $stack13;
+        java.lang.Throwable $stack24;
+        org.codehaus.plexus.logging.Logger $stack25;
+        org.apache.maven.plugin.prefix.PluginPrefixResolver $stack8;
+        org.apache.maven.plugin.prefix.DefaultPluginPrefixRequest $u0;
+        org.apache.maven.model.Plugin $u1;
+        org.apache.maven.lifecycle.internal.MojoDescriptorCreator $r0, $r1, $r3;
+        org.apache.maven.plugin.version.PluginVersionResolutionException $r2;
+        org.apache.maven.plugin.prefix.PluginPrefixRequest $r4;
+
+        this := @this: MojoDescriptorCreator;
+
+        prefix := @parameter0: java.lang.String;
+
+        session := @parameter1: org.apache.maven.execution.MavenSession;
+
+        $stack6 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        if $stack6 == null goto label4;
+
+     label1:
+        $r0 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        $stack13 = $r0.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.lifecycle.internal.LifecyclePluginResolver lifecyclePluginResolver>;
+
+        $stack14 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        virtualinvoke $stack13.<org.apache.maven.lifecycle.internal.LifecyclePluginResolver: void resolveMissingPluginVersions(org.apache.maven.project.MavenProject,org.apache.maven.execution.MavenSession)>($stack14, session);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack24 := @caughtexception;
+
+        $r1 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        $stack25 = $r1.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.codehaus.plexus.logging.Logger logger>;
+
+        $r2 = (org.apache.maven.plugin.version.PluginVersionResolutionException) $stack24;
+
+        $stack26 = virtualinvoke $r2.<org.apache.maven.plugin.version.PluginVersionResolutionException: java.lang.String getMessage()>();
+
+        interfaceinvoke $stack25.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack26, $stack24);
+
+     label4:
+        $u0 = new org.apache.maven.plugin.prefix.DefaultPluginPrefixRequest;
+
+        specialinvoke $u0.<org.apache.maven.plugin.prefix.DefaultPluginPrefixRequest: void <init>(java.lang.String,org.apache.maven.execution.MavenSession)>(prefix, session);
+
+        $r3 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        $stack8 = $r3.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.plugin.prefix.PluginPrefixResolver pluginPrefixResolver>;
+
+        $r4 = (org.apache.maven.plugin.prefix.PluginPrefixRequest) $u0;
+
+        prefixResult = interfaceinvoke $stack8.<org.apache.maven.plugin.prefix.PluginPrefixResolver: org.apache.maven.plugin.prefix.PluginPrefixResult resolve(org.apache.maven.plugin.prefix.PluginPrefixRequest)>($r4);
+
+        $u1 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $u1.<org.apache.maven.model.Plugin: void <init>()>();
+
+        $stack11 = interfaceinvoke prefixResult.<org.apache.maven.plugin.prefix.PluginPrefixResult: java.lang.String getGroupId()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>($stack11);
+
+        $stack12 = interfaceinvoke prefixResult.<org.apache.maven.plugin.prefix.PluginPrefixResult: java.lang.String getArtifactId()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>($stack12);
+
+        return $u1;
+
+        catch org.apache.maven.plugin.version.PluginVersionResolutionException from label1 to label2 with label3;
+    }
+
+    private void resolvePluginVersion(org.apache.maven.model.Plugin, org.apache.maven.execution.MavenSession, org.apache.maven.project.MavenProject) throws org.apache.maven.plugin.version.PluginVersionResolutionException
+    {
+        org.apache.maven.model.Plugin plugin;
+        org.apache.maven.execution.MavenSession session;
+        org.eclipse.aether.RepositorySystemSession $stack6;
+        org.apache.maven.project.MavenProject project;
+        java.util.List $stack7;
+        MojoDescriptorCreator this;
+        org.apache.maven.plugin.version.PluginVersionResolver $stack8;
+        org.apache.maven.plugin.version.PluginVersionResult $stack9;
+        java.lang.String $stack10;
+        org.apache.maven.plugin.version.DefaultPluginVersionRequest $u0;
+        org.apache.maven.lifecycle.internal.MojoDescriptorCreator $r0;
+        org.apache.maven.plugin.version.PluginVersionRequest $r1;
+
+        this := @this: MojoDescriptorCreator;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        session := @parameter1: org.apache.maven.execution.MavenSession;
+
+        project := @parameter2: org.apache.maven.project.MavenProject;
+
+        $u0 = new org.apache.maven.plugin.version.DefaultPluginVersionRequest;
+
+        $stack6 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $stack7 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getRemotePluginRepositories()>();
+
+        specialinvoke $u0.<org.apache.maven.plugin.version.DefaultPluginVersionRequest: void <init>(org.apache.maven.model.Plugin,org.eclipse.aether.RepositorySystemSession,java.util.List)>(plugin, $stack6, $stack7);
+
+        $r0 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        $stack8 = $r0.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.plugin.version.PluginVersionResolver pluginVersionResolver>;
+
+        $r1 = (org.apache.maven.plugin.version.PluginVersionRequest) $u0;
+
+        $stack9 = interfaceinvoke $stack8.<org.apache.maven.plugin.version.PluginVersionResolver: org.apache.maven.plugin.version.PluginVersionResult resolve(org.apache.maven.plugin.version.PluginVersionRequest)>($r1);
+
+        $stack10 = interfaceinvoke $stack9.<org.apache.maven.plugin.version.PluginVersionResult: java.lang.String getVersion()>();
+
+        virtualinvoke plugin.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>($stack10);
+
+        return;
+    }
+
+    private void injectPluginDeclarationFromProject(org.apache.maven.model.Plugin, org.apache.maven.project.MavenProject)
+    {
+        MojoDescriptorCreator this;
+        org.apache.maven.model.Plugin plugin, pluginInPom;
+        org.apache.maven.project.MavenProject project;
+        java.util.List $stack4, $stack8, $stack15;
+        java.lang.String $stack6, $stack9;
+        org.apache.maven.model.PluginManagement $stack12, $stack14;
+        java.util.ArrayList $u0;
+        org.apache.maven.lifecycle.internal.MojoDescriptorCreator $r0, $r1;
+
+        this := @this: MojoDescriptorCreator;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        project := @parameter1: org.apache.maven.project.MavenProject;
+
+        $stack4 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getBuildPlugins()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        pluginInPom = specialinvoke $r0.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.model.Plugin findPlugin(org.apache.maven.model.Plugin,java.util.Collection)>(plugin, $stack4);
+
+        if pluginInPom != null goto label1;
+
+        $stack12 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.model.PluginManagement getPluginManagement()>();
+
+        if $stack12 == null goto label1;
+
+        $stack14 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.model.PluginManagement getPluginManagement()>();
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.model.PluginManagement: java.util.List getPlugins()>();
+
+        $r1 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        pluginInPom = specialinvoke $r1.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.model.Plugin findPlugin(org.apache.maven.model.Plugin,java.util.Collection)>(plugin, $stack15);
+
+     label1:
+        if pluginInPom == null goto label3;
+
+        $stack6 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        if $stack6 != null goto label2;
+
+        $stack9 = virtualinvoke pluginInPom.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        virtualinvoke plugin.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>($stack9);
+
+     label2:
+        $u0 = new java.util.ArrayList;
+
+        $stack8 = virtualinvoke pluginInPom.<org.apache.maven.model.Plugin: java.util.List getDependencies()>();
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(java.util.Collection)>($stack8);
+
+        virtualinvoke plugin.<org.apache.maven.model.Plugin: void setDependencies(java.util.List)>($u0);
+
+     label3:
+        return;
+    }
+
+    private org.apache.maven.model.Plugin findPlugin(org.apache.maven.model.Plugin, java.util.Collection)
+    {
+        MojoDescriptorCreator this;
+        org.apache.maven.model.Plugin plugin, $stack5;
+        java.lang.String $stack3, $stack4;
+        java.util.Collection plugins;
+        org.apache.maven.lifecycle.internal.MojoDescriptorCreator $r0;
+
+        this := @this: MojoDescriptorCreator;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        plugins := @parameter1: java.util.Collection;
+
+        $stack3 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        $stack4 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.MojoDescriptorCreator) this;
+
+        $stack5 = specialinvoke $r0.<org.apache.maven.lifecycle.internal.MojoDescriptorCreator: org.apache.maven.model.Plugin findPlugin(java.lang.String,java.lang.String,java.util.Collection)>($stack3, $stack4, plugins);
+
+        return $stack5;
+    }
+}

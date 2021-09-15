@@ -1,0 +1,802 @@
+public class SortPomService extends java.lang.Object
+{
+    private final sortpom.util.FileUtil fileUtil;
+    private final sortpom.XmlProcessor xmlProcessor;
+    private final sortpom.wrapper.WrapperFactoryImpl wrapperFactory;
+    private final sortpom.processinstruction.XmlProcessingInstructionParser xmlProcessingInstructionParser;
+    private final sortpom.XmlOutputGenerator xmlOutputGenerator;
+    private sortpom.logger.SortPomLogger log;
+    private java.io.File pomFile;
+    private java.lang.String encoding;
+    private java.lang.String backupFileExtension;
+    private boolean ignoreLineSeparators;
+    private java.lang.String violationFilename;
+    private boolean createBackupFile;
+    private java.lang.String originalXml;
+    private java.lang.String sortedXml;
+
+    public void <init>()
+    {
+        SortPomService this;
+        sortpom.util.FileUtil $stack3, $u0;
+        sortpom.wrapper.WrapperFactoryImpl $stack5, $u1;
+        sortpom.XmlProcessor $u2;
+        sortpom.processinstruction.XmlProcessingInstructionParser $u3;
+        sortpom.XmlOutputGenerator $u4;
+        sortpom.SortPomService $r0, $r1, $r2, $r3, $r5, $r6, $r7;
+        sortpom.wrapper.operation.WrapperFactory $r4;
+
+        this := @this: SortPomService;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new sortpom.util.FileUtil;
+
+        specialinvoke $u0.<sortpom.util.FileUtil: void <init>()>();
+
+        $r0 = (sortpom.SortPomService) this;
+
+        $r0.<sortpom.SortPomService: sortpom.util.FileUtil fileUtil> = $u0;
+
+        $u1 = new sortpom.wrapper.WrapperFactoryImpl;
+
+        $r1 = (sortpom.SortPomService) this;
+
+        $stack3 = $r1.<sortpom.SortPomService: sortpom.util.FileUtil fileUtil>;
+
+        specialinvoke $u1.<sortpom.wrapper.WrapperFactoryImpl: void <init>(sortpom.util.FileUtil)>($stack3);
+
+        $r2 = (sortpom.SortPomService) this;
+
+        $r2.<sortpom.SortPomService: sortpom.wrapper.WrapperFactoryImpl wrapperFactory> = $u1;
+
+        $u2 = new sortpom.XmlProcessor;
+
+        $r3 = (sortpom.SortPomService) this;
+
+        $stack5 = $r3.<sortpom.SortPomService: sortpom.wrapper.WrapperFactoryImpl wrapperFactory>;
+
+        $r4 = (sortpom.wrapper.operation.WrapperFactory) $stack5;
+
+        specialinvoke $u2.<sortpom.XmlProcessor: void <init>(sortpom.wrapper.operation.WrapperFactory)>($r4);
+
+        $r5 = (sortpom.SortPomService) this;
+
+        $r5.<sortpom.SortPomService: sortpom.XmlProcessor xmlProcessor> = $u2;
+
+        $u3 = new sortpom.processinstruction.XmlProcessingInstructionParser;
+
+        specialinvoke $u3.<sortpom.processinstruction.XmlProcessingInstructionParser: void <init>()>();
+
+        $r6 = (sortpom.SortPomService) this;
+
+        $r6.<sortpom.SortPomService: sortpom.processinstruction.XmlProcessingInstructionParser xmlProcessingInstructionParser> = $u3;
+
+        $u4 = new sortpom.XmlOutputGenerator;
+
+        specialinvoke $u4.<sortpom.XmlOutputGenerator: void <init>()>();
+
+        $r7 = (sortpom.SortPomService) this;
+
+        $r7.<sortpom.SortPomService: sortpom.XmlOutputGenerator xmlOutputGenerator> = $u4;
+
+        return;
+    }
+
+    public void setup(sortpom.logger.SortPomLogger, sortpom.parameter.PluginParameters)
+    {
+        SortPomService this;
+        sortpom.logger.SortPomLogger log;
+        sortpom.parameter.PluginParameters pluginParameters;
+        sortpom.util.FileUtil $stack3;
+        sortpom.wrapper.WrapperFactoryImpl $stack4;
+        sortpom.processinstruction.XmlProcessingInstructionParser $stack5;
+        sortpom.XmlOutputGenerator $stack6;
+        java.io.File $stack7;
+        java.lang.String $stack8, $stack9, $stack11;
+        boolean $stack10, $stack12;
+        sortpom.SortPomService $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10;
+
+        this := @this: SortPomService;
+
+        log := @parameter0: sortpom.logger.SortPomLogger;
+
+        pluginParameters := @parameter1: sortpom.parameter.PluginParameters;
+
+        $r0 = (sortpom.SortPomService) this;
+
+        $r0.<sortpom.SortPomService: sortpom.logger.SortPomLogger log> = log;
+
+        $r1 = (sortpom.SortPomService) this;
+
+        $stack3 = $r1.<sortpom.SortPomService: sortpom.util.FileUtil fileUtil>;
+
+        virtualinvoke $stack3.<sortpom.util.FileUtil: void setup(sortpom.parameter.PluginParameters)>(pluginParameters);
+
+        $r2 = (sortpom.SortPomService) this;
+
+        $stack4 = $r2.<sortpom.SortPomService: sortpom.wrapper.WrapperFactoryImpl wrapperFactory>;
+
+        virtualinvoke $stack4.<sortpom.wrapper.WrapperFactoryImpl: void setup(sortpom.parameter.PluginParameters)>(pluginParameters);
+
+        $r3 = (sortpom.SortPomService) this;
+
+        $stack5 = $r3.<sortpom.SortPomService: sortpom.processinstruction.XmlProcessingInstructionParser xmlProcessingInstructionParser>;
+
+        virtualinvoke $stack5.<sortpom.processinstruction.XmlProcessingInstructionParser: void setup(sortpom.logger.SortPomLogger)>(log);
+
+        $r4 = (sortpom.SortPomService) this;
+
+        $stack6 = $r4.<sortpom.SortPomService: sortpom.XmlOutputGenerator xmlOutputGenerator>;
+
+        virtualinvoke $stack6.<sortpom.XmlOutputGenerator: void setup(sortpom.parameter.PluginParameters)>(pluginParameters);
+
+        $stack7 = pluginParameters.<sortpom.parameter.PluginParameters: java.io.File pomFile>;
+
+        $r5 = (sortpom.SortPomService) this;
+
+        $r5.<sortpom.SortPomService: java.io.File pomFile> = $stack7;
+
+        $stack8 = pluginParameters.<sortpom.parameter.PluginParameters: java.lang.String encoding>;
+
+        $r6 = (sortpom.SortPomService) this;
+
+        $r6.<sortpom.SortPomService: java.lang.String encoding> = $stack8;
+
+        $stack9 = pluginParameters.<sortpom.parameter.PluginParameters: java.lang.String backupFileExtension>;
+
+        $r7 = (sortpom.SortPomService) this;
+
+        $r7.<sortpom.SortPomService: java.lang.String backupFileExtension> = $stack9;
+
+        $stack10 = pluginParameters.<sortpom.parameter.PluginParameters: boolean ignoreLineSeparators>;
+
+        $r8 = (sortpom.SortPomService) this;
+
+        $r8.<sortpom.SortPomService: boolean ignoreLineSeparators> = $stack10;
+
+        $stack11 = pluginParameters.<sortpom.parameter.PluginParameters: java.lang.String violationFilename>;
+
+        $r9 = (sortpom.SortPomService) this;
+
+        $r9.<sortpom.SortPomService: java.lang.String violationFilename> = $stack11;
+
+        $stack12 = pluginParameters.<sortpom.parameter.PluginParameters: boolean createBackupFile>;
+
+        $r10 = (sortpom.SortPomService) this;
+
+        $r10.<sortpom.SortPomService: boolean createBackupFile> = $stack12;
+
+        return;
+    }
+
+    void sortOriginalXml()
+    {
+        SortPomService this;
+        sortpom.util.FileUtil $stack5;
+        java.lang.String $stack6, $stack7, xml, $stack12, $stack21, $stack25;
+        sortpom.processinstruction.XmlProcessingInstructionParser $stack8, $stack9;
+        byte[] $stack13;
+        sortpom.XmlProcessor $stack14, $stack15;
+        java.lang.Throwable $stack16, $stack26, $stack27, $r8;
+        java.lang.StringBuilder $stack19, $stack22, $stack23, $stack24, $u1;
+        java.io.File $stack20;
+        java.io.ByteArrayInputStream $u0;
+        sortpom.exception.FailureException $u2;
+        sortpom.SortPomService $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r9;
+
+        this := @this: SortPomService;
+
+        $r0 = (sortpom.SortPomService) this;
+
+        $stack5 = $r0.<sortpom.SortPomService: sortpom.util.FileUtil fileUtil>;
+
+        $stack6 = virtualinvoke $stack5.<sortpom.util.FileUtil: java.lang.String getPomFileContent()>();
+
+        $r1 = (sortpom.SortPomService) this;
+
+        $r1.<sortpom.SortPomService: java.lang.String originalXml> = $stack6;
+
+        $r2 = (sortpom.SortPomService) this;
+
+        $stack8 = $r2.<sortpom.SortPomService: sortpom.processinstruction.XmlProcessingInstructionParser xmlProcessingInstructionParser>;
+
+        $r3 = (sortpom.SortPomService) this;
+
+        $stack7 = $r3.<sortpom.SortPomService: java.lang.String originalXml>;
+
+        virtualinvoke $stack8.<sortpom.processinstruction.XmlProcessingInstructionParser: void scanForIgnoredSections(java.lang.String)>($stack7);
+
+        $r4 = (sortpom.SortPomService) this;
+
+        $stack9 = $r4.<sortpom.SortPomService: sortpom.processinstruction.XmlProcessingInstructionParser xmlProcessingInstructionParser>;
+
+        xml = virtualinvoke $stack9.<sortpom.processinstruction.XmlProcessingInstructionParser: java.lang.String replaceIgnoredSections()>();
+
+     label01:
+        $u0 = new java.io.ByteArrayInputStream;
+
+        $r5 = (sortpom.SortPomService) this;
+
+        $stack12 = $r5.<sortpom.SortPomService: java.lang.String encoding>;
+
+        $stack13 = virtualinvoke xml.<java.lang.String: byte[] getBytes(java.lang.String)>($stack12);
+
+        specialinvoke $u0.<java.io.ByteArrayInputStream: void <init>(byte[])>($stack13);
+
+     label02:
+        $r6 = (sortpom.SortPomService) this;
+
+        $stack14 = $r6.<sortpom.SortPomService: sortpom.XmlProcessor xmlProcessor>;
+
+        virtualinvoke $stack14.<sortpom.XmlProcessor: void setOriginalXml(java.io.InputStream)>($u0);
+
+     label03:
+        virtualinvoke $u0.<java.io.ByteArrayInputStream: void close()>();
+
+        goto label09;
+
+     label04:
+        $stack27 := @caughtexception;
+
+     label05:
+        virtualinvoke $u0.<java.io.ByteArrayInputStream: void close()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $stack26 := @caughtexception;
+
+        virtualinvoke $stack27.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack26);
+
+     label08:
+        throw $stack27;
+
+     label09:
+        goto label11;
+
+     label10:
+        $stack16 := @caughtexception;
+
+        $u2 = new sortpom.exception.FailureException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack19 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not sort ");
+
+        $r7 = (sortpom.SortPomService) this;
+
+        $stack20 = $r7.<sortpom.SortPomService: java.io.File pomFile>;
+
+        $stack21 = virtualinvoke $stack20.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack22 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack21);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" content: ");
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(xml);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<sortpom.exception.FailureException: void <init>(java.lang.String,java.lang.Throwable)>($stack25, $stack16);
+
+        $r8 = (java.lang.Throwable) $u2;
+
+        throw $r8;
+
+     label11:
+        $r9 = (sortpom.SortPomService) this;
+
+        $stack15 = $r9.<sortpom.SortPomService: sortpom.XmlProcessor xmlProcessor>;
+
+        virtualinvoke $stack15.<sortpom.XmlProcessor: void sortXml()>();
+
+        return;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch org.jdom.JDOMException from label01 to label09 with label10;
+        catch java.io.IOException from label01 to label09 with label10;
+    }
+
+    void generateSortedXml()
+    {
+        SortPomService this;
+        java.lang.String $stack1, $stack5, $stack8, $stack10;
+        sortpom.XmlProcessor $stack2;
+        sortpom.XmlOutputGenerator $stack3;
+        org.jdom.Document $stack4;
+        sortpom.processinstruction.XmlProcessingInstructionParser $stack6, $stack9;
+        boolean $stack7;
+        sortpom.SortPomService $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7;
+
+        this := @this: SortPomService;
+
+        $r0 = (sortpom.SortPomService) this;
+
+        $stack1 = $r0.<sortpom.SortPomService: java.lang.String sortedXml>;
+
+        if $stack1 == null goto label1;
+
+        return;
+
+     label1:
+        $r1 = (sortpom.SortPomService) this;
+
+        $stack3 = $r1.<sortpom.SortPomService: sortpom.XmlOutputGenerator xmlOutputGenerator>;
+
+        $r2 = (sortpom.SortPomService) this;
+
+        $stack2 = $r2.<sortpom.SortPomService: sortpom.XmlProcessor xmlProcessor>;
+
+        $stack4 = virtualinvoke $stack2.<sortpom.XmlProcessor: org.jdom.Document getNewDocument()>();
+
+        $stack5 = virtualinvoke $stack3.<sortpom.XmlOutputGenerator: java.lang.String getSortedXml(org.jdom.Document)>($stack4);
+
+        $r3 = (sortpom.SortPomService) this;
+
+        $r3.<sortpom.SortPomService: java.lang.String sortedXml> = $stack5;
+
+        $r4 = (sortpom.SortPomService) this;
+
+        $stack6 = $r4.<sortpom.SortPomService: sortpom.processinstruction.XmlProcessingInstructionParser xmlProcessingInstructionParser>;
+
+        $stack7 = virtualinvoke $stack6.<sortpom.processinstruction.XmlProcessingInstructionParser: boolean existsIgnoredSections()>();
+
+        if $stack7 == 0 goto label2;
+
+        $r5 = (sortpom.SortPomService) this;
+
+        $stack9 = $r5.<sortpom.SortPomService: sortpom.processinstruction.XmlProcessingInstructionParser xmlProcessingInstructionParser>;
+
+        $r6 = (sortpom.SortPomService) this;
+
+        $stack8 = $r6.<sortpom.SortPomService: java.lang.String sortedXml>;
+
+        $stack10 = virtualinvoke $stack9.<sortpom.processinstruction.XmlProcessingInstructionParser: java.lang.String revertIgnoredSections(java.lang.String)>($stack8);
+
+        $r7 = (sortpom.SortPomService) this;
+
+        $r7.<sortpom.SortPomService: java.lang.String sortedXml> = $stack10;
+
+     label2:
+        return;
+    }
+
+    void createBackupFile()
+    {
+        SortPomService this;
+        boolean $stack1;
+        java.lang.String $stack2, $stack3, $stack11, $stack14, $stack15, $stack16;
+        int $stack4;
+        sortpom.util.FileUtil $stack5;
+        java.lang.Object[] $stack6;
+        java.io.File $stack7, $stack12;
+        sortpom.logger.SortPomLogger $stack8;
+        sortpom.exception.FailureException $u0;
+        sortpom.SortPomService $r0, $r1, $r3, $r4, $r5, $r6, $r7;
+        java.lang.Throwable $r2;
+
+        this := @this: SortPomService;
+
+        $r0 = (sortpom.SortPomService) this;
+
+        $stack1 = $r0.<sortpom.SortPomService: boolean createBackupFile>;
+
+        if $stack1 != 0 goto label1;
+
+        return;
+
+     label1:
+        $r1 = (sortpom.SortPomService) this;
+
+        $stack2 = $r1.<sortpom.SortPomService: java.lang.String backupFileExtension>;
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: java.lang.String trim()>();
+
+        $stack4 = virtualinvoke $stack3.<java.lang.String: int length()>();
+
+        if $stack4 != 0 goto label2;
+
+        $u0 = new sortpom.exception.FailureException;
+
+        specialinvoke $u0.<sortpom.exception.FailureException: void <init>(java.lang.String)>("Could not create backup file, extension name was empty");
+
+        $r2 = (java.lang.Throwable) $u0;
+
+        throw $r2;
+
+     label2:
+        $r3 = (sortpom.SortPomService) this;
+
+        $stack5 = $r3.<sortpom.SortPomService: sortpom.util.FileUtil fileUtil>;
+
+        virtualinvoke $stack5.<sortpom.util.FileUtil: void backupFile()>();
+
+        $r4 = (sortpom.SortPomService) this;
+
+        $stack8 = $r4.<sortpom.SortPomService: sortpom.logger.SortPomLogger log>;
+
+        $stack6 = newarray (java.lang.Object)[3];
+
+        $r5 = (sortpom.SortPomService) this;
+
+        $stack7 = $r5.<sortpom.SortPomService: java.io.File pomFile>;
+
+        $stack11 = virtualinvoke $stack7.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack6[0] = $stack11;
+
+        $r6 = (sortpom.SortPomService) this;
+
+        $stack12 = $r6.<sortpom.SortPomService: java.io.File pomFile>;
+
+        $stack14 = virtualinvoke $stack12.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack6[1] = $stack14;
+
+        $r7 = (sortpom.SortPomService) this;
+
+        $stack15 = $r7.<sortpom.SortPomService: java.lang.String backupFileExtension>;
+
+        $stack6[2] = $stack15;
+
+        $stack16 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Saved backup of %s to %s%s", $stack6);
+
+        interfaceinvoke $stack8.<sortpom.logger.SortPomLogger: void info(java.lang.String)>($stack16);
+
+        return;
+    }
+
+    void saveGeneratedXml()
+    {
+        SortPomService this;
+        java.lang.String $stack1;
+        sortpom.util.FileUtil $stack2;
+        sortpom.SortPomService $r0, $r1;
+
+        this := @this: SortPomService;
+
+        $r0 = (sortpom.SortPomService) this;
+
+        $stack2 = $r0.<sortpom.SortPomService: sortpom.util.FileUtil fileUtil>;
+
+        $r1 = (sortpom.SortPomService) this;
+
+        $stack1 = $r1.<sortpom.SortPomService: java.lang.String sortedXml>;
+
+        virtualinvoke $stack2.<sortpom.util.FileUtil: void savePomFile(java.lang.String)>($stack1);
+
+        return;
+    }
+
+    sortpom.util.XmlOrderedResult isOriginalXmlStringSorted()
+    {
+        SortPomService this;
+        java.lang.String $stack9, $stack12, $stack27, $stack28, $stack41, $stack45, originalXmlLine, sortedXmlLine, $stack19;
+        java.lang.StringBuilder $stack16, $stack17, $stack18, $stack38, $stack39, $stack40, $u4, $u5;
+        int $stack21, line;
+        boolean $stack25, $stack29, $stack33;
+        sortpom.util.XmlOrderedResult $stack26, $stack30, l6;
+        java.io.IOException $stack43;
+        java.lang.Throwable $stack46, $stack47, $stack49, $stack50, $r2;
+        java.io.StringReader $u0, $u2;
+        java.io.BufferedReader $u1, $u3;
+        sortpom.exception.FailureException $u6;
+        sortpom.SortPomService $r0, $r1, $r3, $r4, $r5;
+
+        this := @this: SortPomService;
+
+     label01:
+        $u1 = new java.io.BufferedReader;
+
+        $u0 = new java.io.StringReader;
+
+        $r0 = (sortpom.SortPomService) this;
+
+        $stack9 = $r0.<sortpom.SortPomService: java.lang.String originalXml>;
+
+        specialinvoke $u0.<java.io.StringReader: void <init>(java.lang.String)>($stack9);
+
+        specialinvoke $u1.<java.io.BufferedReader: void <init>(java.io.Reader)>($u0);
+
+     label02:
+        $u3 = new java.io.BufferedReader;
+
+        $u2 = new java.io.StringReader;
+
+        $r1 = (sortpom.SortPomService) this;
+
+        $stack12 = $r1.<sortpom.SortPomService: java.lang.String sortedXml>;
+
+        specialinvoke $u2.<java.io.StringReader: void <init>(java.lang.String)>($stack12);
+
+        specialinvoke $u3.<java.io.BufferedReader: void <init>(java.io.Reader)>($u2);
+
+     label03:
+        originalXmlLine = virtualinvoke $u1.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        sortedXmlLine = virtualinvoke $u3.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        line = 1;
+
+     label04:
+        if originalXmlLine == null goto label09;
+
+        if sortedXmlLine == null goto label09;
+
+        $stack33 = virtualinvoke originalXmlLine.<java.lang.String: boolean equals(java.lang.Object)>(sortedXmlLine);
+
+        if $stack33 != 0 goto label08;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack38 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sortedXmlLine);
+
+        $stack40 = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack41 = virtualinvoke $stack40.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        l6 = staticinvoke <sortpom.util.XmlOrderedResult: sortpom.util.XmlOrderedResult lineDiffers(int,java.lang.String)>(line, $stack41);
+
+     label05:
+        virtualinvoke $u3.<java.io.BufferedReader: void close()>();
+
+     label06:
+        virtualinvoke $u1.<java.io.BufferedReader: void close()>();
+
+     label07:
+        return l6;
+
+     label08:
+        line = line + 1;
+
+        originalXmlLine = virtualinvoke $u1.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        sortedXmlLine = virtualinvoke $u3.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        goto label04;
+
+     label09:
+        if originalXmlLine != null goto label10;
+
+        if sortedXmlLine == null goto label16;
+
+     label10:
+        $stack21 = line;
+
+        if sortedXmlLine != null goto label11;
+
+        $stack19 = "empty";
+
+        goto label12;
+
+     label11:
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack16 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sortedXmlLine);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label12:
+        l6 = staticinvoke <sortpom.util.XmlOrderedResult: sortpom.util.XmlOrderedResult lineDiffers(int,java.lang.String)>($stack21, $stack19);
+
+     label13:
+        virtualinvoke $u3.<java.io.BufferedReader: void close()>();
+
+     label14:
+        virtualinvoke $u1.<java.io.BufferedReader: void close()>();
+
+     label15:
+        return l6;
+
+     label16:
+        virtualinvoke $u3.<java.io.BufferedReader: void close()>();
+
+        goto label22;
+
+     label17:
+        $stack50 := @caughtexception;
+
+     label18:
+        virtualinvoke $u3.<java.io.BufferedReader: void close()>();
+
+     label19:
+        goto label21;
+
+     label20:
+        $stack49 := @caughtexception;
+
+        virtualinvoke $stack50.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack49);
+
+     label21:
+        throw $stack50;
+
+     label22:
+        virtualinvoke $u1.<java.io.BufferedReader: void close()>();
+
+        goto label28;
+
+     label23:
+        $stack47 := @caughtexception;
+
+     label24:
+        virtualinvoke $u1.<java.io.BufferedReader: void close()>();
+
+     label25:
+        goto label27;
+
+     label26:
+        $stack46 := @caughtexception;
+
+        virtualinvoke $stack47.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack46);
+
+     label27:
+        throw $stack47;
+
+     label28:
+        goto label30;
+
+     label29:
+        $stack43 := @caughtexception;
+
+        $u6 = new sortpom.exception.FailureException;
+
+        $stack45 = virtualinvoke $stack43.<java.io.IOException: java.lang.String getMessage()>();
+
+        specialinvoke $u6.<sortpom.exception.FailureException: void <init>(java.lang.String,java.lang.Throwable)>($stack45, $stack43);
+
+        $r2 = (java.lang.Throwable) $u6;
+
+        throw $r2;
+
+     label30:
+        $r3 = (sortpom.SortPomService) this;
+
+        $stack25 = $r3.<sortpom.SortPomService: boolean ignoreLineSeparators>;
+
+        if $stack25 != 0 goto label31;
+
+        $r4 = (sortpom.SortPomService) this;
+
+        $stack28 = $r4.<sortpom.SortPomService: java.lang.String originalXml>;
+
+        $r5 = (sortpom.SortPomService) this;
+
+        $stack27 = $r5.<sortpom.SortPomService: java.lang.String sortedXml>;
+
+        $stack29 = virtualinvoke $stack28.<java.lang.String: boolean equals(java.lang.Object)>($stack27);
+
+        if $stack29 == 0 goto label32;
+
+     label31:
+        $stack26 = staticinvoke <sortpom.util.XmlOrderedResult: sortpom.util.XmlOrderedResult ordered()>();
+
+        return $stack26;
+
+     label32:
+        $stack30 = staticinvoke <sortpom.util.XmlOrderedResult: sortpom.util.XmlOrderedResult lineSeparatorCharactersDiffer()>();
+
+        return $stack30;
+
+        catch java.lang.Throwable from label03 to label05 with label17;
+        catch java.lang.Throwable from label08 to label13 with label17;
+        catch java.lang.Throwable from label18 to label19 with label20;
+        catch java.lang.Throwable from label02 to label06 with label23;
+        catch java.lang.Throwable from label08 to label14 with label23;
+        catch java.lang.Throwable from label16 to label22 with label23;
+        catch java.lang.Throwable from label24 to label25 with label26;
+        catch java.io.IOException from label01 to label07 with label29;
+        catch java.io.IOException from label08 to label15 with label29;
+        catch java.io.IOException from label16 to label28 with label29;
+    }
+
+    sortpom.util.XmlOrderedResult isOriginalXmlElementsSorted()
+    {
+        SortPomService this;
+        sortpom.XmlProcessor $stack1;
+        sortpom.util.XmlOrderedResult $stack2;
+        sortpom.SortPomService $r0;
+
+        this := @this: SortPomService;
+
+        $r0 = (sortpom.SortPomService) this;
+
+        $stack1 = $r0.<sortpom.SortPomService: sortpom.XmlProcessor xmlProcessor>;
+
+        $stack2 = virtualinvoke $stack1.<sortpom.XmlProcessor: sortpom.util.XmlOrderedResult isXmlOrdered()>();
+
+        return $stack2;
+    }
+
+    void saveViolationFile(sortpom.util.XmlOrderedResult)
+    {
+        SortPomService this;
+        java.lang.String $stack5, $stack10, $stack11, $stack13, $stack16, violationXmlString;
+        sortpom.logger.SortPomLogger $stack7;
+        java.lang.StringBuilder $stack8, $stack12, $u0;
+        sortpom.util.XmlOrderedResult xmlOrderedResult;
+        java.io.File $stack15, $u1;
+        org.jdom.Document document;
+        sortpom.XmlOutputGenerator $stack18;
+        sortpom.util.FileUtil $stack20;
+        sortpom.ViolationXmlProcessor $u2;
+        sortpom.SortPomService $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: SortPomService;
+
+        xmlOrderedResult := @parameter0: sortpom.util.XmlOrderedResult;
+
+        $r0 = (sortpom.SortPomService) this;
+
+        $stack5 = $r0.<sortpom.SortPomService: java.lang.String violationFilename>;
+
+        if $stack5 == null goto label1;
+
+        $r1 = (sortpom.SortPomService) this;
+
+        $stack7 = $r1.<sortpom.SortPomService: sortpom.logger.SortPomLogger log>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Saving violation report to ");
+
+        $u1 = new java.io.File;
+
+        $r2 = (sortpom.SortPomService) this;
+
+        $stack10 = $r2.<sortpom.SortPomService: java.lang.String violationFilename>;
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String)>($stack10);
+
+        $stack11 = virtualinvoke $u1.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack12 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack7.<sortpom.logger.SortPomLogger: void info(java.lang.String)>($stack13);
+
+        $u2 = new sortpom.ViolationXmlProcessor;
+
+        specialinvoke $u2.<sortpom.ViolationXmlProcessor: void <init>()>();
+
+        $r3 = (sortpom.SortPomService) this;
+
+        $stack15 = $r3.<sortpom.SortPomService: java.io.File pomFile>;
+
+        $stack16 = virtualinvoke xmlOrderedResult.<sortpom.util.XmlOrderedResult: java.lang.String getErrorMessage()>();
+
+        document = virtualinvoke $u2.<sortpom.ViolationXmlProcessor: org.jdom.Document createViolationXmlContent(java.io.File,java.lang.String)>($stack15, $stack16);
+
+        $r4 = (sortpom.SortPomService) this;
+
+        $stack18 = $r4.<sortpom.SortPomService: sortpom.XmlOutputGenerator xmlOutputGenerator>;
+
+        violationXmlString = virtualinvoke $stack18.<sortpom.XmlOutputGenerator: java.lang.String getSortedXml(org.jdom.Document)>(document);
+
+        $r5 = (sortpom.SortPomService) this;
+
+        $stack20 = $r5.<sortpom.SortPomService: sortpom.util.FileUtil fileUtil>;
+
+        virtualinvoke $stack20.<sortpom.util.FileUtil: void saveViolationFile(java.lang.String)>(violationXmlString);
+
+     label1:
+        return;
+    }
+}

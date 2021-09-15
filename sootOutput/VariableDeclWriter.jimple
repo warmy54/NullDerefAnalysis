@@ -1,0 +1,376 @@
+public class VariableDeclWriter extends java.lang.Object
+{
+    static final boolean $assertionsDisabled;
+
+    public void <init>()
+    {
+        VariableDeclWriter this;
+
+        this := @this: VariableDeclWriter;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static boolean write(org.ooc.frontend.model.VariableDecl, org.ooc.backend.cdirty.CGenerator) throws java.io.IOException
+    {
+        org.ooc.frontend.model.VariableDecl variableDecl;
+        boolean $stack2, $stack4, $stack5, $stack14, $stack42, $stack12;
+        org.ooc.frontend.model.VersionBlock $stack3, $stack38, $stack6;
+        org.ooc.backend.cdirty.CGenerator cgen;
+        org.ooc.backend.cdirty.AwesomeWriter $stack7, $stack15, $stack17, $stack18, $stack20, $stack21, $stack22, $stack39;
+        java.lang.AssertionError $stack37;
+
+        variableDecl := @parameter0: org.ooc.frontend.model.VariableDecl;
+
+        cgen := @parameter1: org.ooc.backend.cdirty.CGenerator;
+
+        $stack2 = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: boolean isExtern()>();
+
+        if $stack2 == 0 goto label1;
+
+        $stack42 = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: boolean isProto()>();
+
+        if $stack42 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $stack3 = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.VersionBlock getVersion()>();
+
+        if $stack3 == null goto label2;
+
+        $stack38 = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.VersionBlock getVersion()>();
+
+        staticinvoke <org.ooc.backend.cdirty.VersionBlockWriter: void writeVersionBlockStart(org.ooc.frontend.model.VersionBlock,org.ooc.backend.cdirty.CGenerator)>($stack38, cgen);
+
+        $stack39 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack39.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+     label2:
+        $stack4 = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: boolean isGlobal()>();
+
+        if $stack4 == 0 goto label4;
+
+        $stack14 = <org.ooc.backend.cdirty.VariableDeclWriter: boolean $assertionsDisabled>;
+
+        if $stack14 != 0 goto label3;
+
+        $stack22 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack21 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter hw>;
+
+        if $stack22 == $stack21 goto label3;
+
+        $stack37 = new java.lang.AssertionError;
+
+        specialinvoke $stack37.<java.lang.AssertionError: void <init>()>();
+
+        throw $stack37;
+
+     label3:
+        $stack15 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack15.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("extern ");
+
+        staticinvoke <org.ooc.backend.cdirty.VariableDeclWriter: void writeGuts(org.ooc.frontend.model.VariableDecl,org.ooc.backend.cdirty.CGenerator,boolean)>(variableDecl, cgen, 0);
+
+        $stack17 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter cw>;
+
+        cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current> = $stack17;
+
+        staticinvoke <org.ooc.backend.cdirty.VariableDeclWriter: void writeGuts(org.ooc.frontend.model.VariableDecl,org.ooc.backend.cdirty.CGenerator,boolean)>(variableDecl, cgen, 1);
+
+        $stack18 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack18.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(";\n");
+
+        $stack20 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter hw>;
+
+        cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current> = $stack20;
+
+        goto label7;
+
+     label4:
+        $stack5 = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: boolean isMember()>();
+
+        if $stack5 != 0 goto label5;
+
+        $stack12 = 1;
+
+        goto label6;
+
+     label5:
+        $stack12 = 0;
+
+     label6:
+        staticinvoke <org.ooc.backend.cdirty.VariableDeclWriter: void writeGuts(org.ooc.frontend.model.VariableDecl,org.ooc.backend.cdirty.CGenerator,boolean)>(variableDecl, cgen, $stack12);
+
+     label7:
+        $stack6 = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.VersionBlock getVersion()>();
+
+        if $stack6 == null goto label8;
+
+        staticinvoke <org.ooc.backend.cdirty.VersionBlockWriter: void writeVersionBlockEnd(org.ooc.backend.cdirty.CGenerator)>(cgen);
+
+        $stack7 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack7.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+     label8:
+        return 1;
+    }
+
+    private static void writeGuts(org.ooc.frontend.model.VariableDecl, org.ooc.backend.cdirty.CGenerator, boolean) throws java.io.IOException
+    {
+        org.ooc.frontend.model.VariableDecl variableDecl;
+        java.lang.String $stack10;
+        boolean $stack11, $stack16, $stack19, $stack24, $stack26, writeInitializer, $stack28, $stack55, funcDecl#3, $stack15, ground#13;
+        org.ooc.frontend.model.TypeDecl typeDecl;
+        org.ooc.frontend.model.Expression varExpr, $stack27, $stack33, $stack54;
+        org.ooc.frontend.model.Type $stack17, $stack64, type, ground;
+        int $stack20, $stack21, $stack38, $stack39, $stack40, $stack50, $stack51;
+        org.ooc.backend.cdirty.CGenerator cgen;
+        org.ooc.backend.cdirty.AwesomeWriter $stack22, $stack25, $stack61, $stack65, $stack67, $stack68;
+        org.ooc.frontend.model.ArrayLiteral $stack34, lit;
+        org.ooc.frontend.model.Declaration $stack63;
+        org.ooc.frontend.model.FunctionDecl funcDecl;
+        java.lang.Appendable $r0, $r1;
+
+        variableDecl := @parameter0: org.ooc.frontend.model.VariableDecl;
+
+        cgen := @parameter1: org.ooc.backend.cdirty.CGenerator;
+
+        writeInitializer := @parameter2: boolean;
+
+        type = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Type getType()>();
+
+        $stack10 = virtualinvoke type.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+        $stack11 = virtualinvoke $stack10.<java.lang.String: boolean equals(java.lang.Object)>("Func");
+
+        if $stack11 == 0 goto label01;
+
+        $stack63 = virtualinvoke type.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        funcDecl = (org.ooc.frontend.model.FunctionDecl) $stack63;
+
+        $stack64 = virtualinvoke funcDecl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.Type getReturnType()>();
+
+        staticinvoke <org.ooc.backend.cdirty.TypeWriter: void writeSpaced(org.ooc.frontend.model.Type,org.ooc.backend.cdirty.CGenerator)>($stack64, cgen);
+
+        $stack65 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack65.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("(*");
+
+        $stack67 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $r0 = (java.lang.Appendable) $stack67;
+
+        virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: void writeFullName(java.lang.Appendable)>($r0);
+
+        $stack68 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack68.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(")");
+
+        staticinvoke <org.ooc.backend.cdirty.FunctionDeclWriter: void writeFuncArgs(org.ooc.frontend.model.FunctionDecl,org.ooc.backend.cdirty.CGenerator)>(funcDecl, cgen);
+
+        staticinvoke <org.ooc.backend.cdirty.VariableDeclWriter: void writeInitAndComma(org.ooc.backend.cdirty.CGenerator,org.ooc.frontend.model.Type,org.ooc.frontend.model.VariableDecl,boolean)>(cgen, type, variableDecl, writeInitializer);
+
+        goto label12;
+
+     label01:
+        funcDecl#3 = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: boolean isStatic()>();
+
+        typeDecl = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.TypeDecl getTypeDecl()>();
+
+        if funcDecl#3 == 0 goto label02;
+
+        if typeDecl != null goto label02;
+
+        $stack61 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack61.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.TabbedWriter append(java.lang.String)>("static ");
+
+     label02:
+        varExpr = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Expression getExpression()>();
+
+        $stack15 = virtualinvoke type.<org.ooc.frontend.model.Type: boolean isArray()>();
+
+        if $stack15 != 0 goto label03;
+
+        $stack54 = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Expression getExpression()>();
+
+        $stack55 = $stack54 instanceof org.ooc.frontend.model.ArrayLiteral;
+
+        if $stack55 == 0 goto label07;
+
+     label03:
+        $stack16 = varExpr instanceof org.ooc.frontend.model.ArrayLiteral;
+
+        if $stack16 == 0 goto label04;
+
+        type = virtualinvoke type.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Type clone()>();
+
+        virtualinvoke type.<org.ooc.frontend.model.Type: void setArray(boolean)>(0);
+
+        $stack50 = virtualinvoke type.<org.ooc.frontend.model.Type: int getPointerLevel()>();
+
+        $stack51 = $stack50 + 1;
+
+        virtualinvoke type.<org.ooc.frontend.model.Type: void setPointerLevel(int)>($stack51);
+
+     label04:
+        $stack17 = virtualinvoke type.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Type getGroundType()>();
+
+        ground = virtualinvoke $stack17.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Type clone()>();
+
+        $stack19 = varExpr instanceof org.ooc.frontend.model.ArrayLiteral;
+
+        if $stack19 == 0 goto label05;
+
+        lit = (org.ooc.frontend.model.ArrayLiteral) varExpr;
+
+        $stack38 = virtualinvoke ground.<org.ooc.frontend.model.Type: int getPointerLevel()>();
+
+        $stack39 = virtualinvoke lit.<org.ooc.frontend.model.ArrayLiteral: int getDepth()>();
+
+        $stack40 = $stack38 - $stack39;
+
+        virtualinvoke ground.<org.ooc.frontend.model.Type: void setPointerLevel(int)>($stack40);
+
+        goto label06;
+
+     label05:
+        $stack20 = virtualinvoke ground.<org.ooc.frontend.model.Type: int getPointerLevel()>();
+
+        $stack21 = $stack20 - 1;
+
+        virtualinvoke ground.<org.ooc.frontend.model.Type: void setPointerLevel(int)>($stack21);
+
+     label06:
+        staticinvoke <org.ooc.backend.cdirty.TypeWriter: void write(org.ooc.frontend.model.Type,org.ooc.backend.cdirty.CGenerator,boolean,boolean)>(ground, cgen, 1, 0);
+
+        staticinvoke <org.ooc.backend.cdirty.TypeWriter: void writeFinale(org.ooc.frontend.model.Type,org.ooc.backend.cdirty.CGenerator)>(ground, cgen);
+
+        $stack22 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack22.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(32);
+
+        goto label08;
+
+     label07:
+        ground#13 = virtualinvoke type.<org.ooc.frontend.model.Type: boolean isConst()>();
+
+        virtualinvoke type.<org.ooc.frontend.model.Type: void setConst(boolean)>(0);
+
+        staticinvoke <org.ooc.backend.cdirty.TypeWriter: void writeSpaced(org.ooc.frontend.model.Type,org.ooc.backend.cdirty.CGenerator)>(type, cgen);
+
+        virtualinvoke type.<org.ooc.frontend.model.Type: void setConst(boolean)>(ground#13);
+
+     label08:
+        $stack24 = virtualinvoke type.<org.ooc.frontend.model.Type: boolean isArray()>();
+
+        if $stack24 == 0 goto label09;
+
+        staticinvoke <org.ooc.backend.cdirty.TypeWriter: void writePreFinale(org.ooc.frontend.model.Type,org.ooc.backend.cdirty.CGenerator)>(type, cgen);
+
+     label09:
+        $stack25 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $r1 = (java.lang.Appendable) $stack25;
+
+        virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: void writeFullName(java.lang.Appendable)>($r1);
+
+        $stack26 = virtualinvoke type.<org.ooc.frontend.model.Type: boolean isArray()>();
+
+        if $stack26 == 0 goto label11;
+
+        $stack27 = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Expression getExpression()>();
+
+        $stack28 = $stack27 instanceof org.ooc.frontend.model.ArrayLiteral;
+
+        if $stack28 == 0 goto label10;
+
+        $stack33 = virtualinvoke variableDecl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Expression getExpression()>();
+
+        $stack34 = (org.ooc.frontend.model.ArrayLiteral) $stack33;
+
+        staticinvoke <org.ooc.backend.cdirty.TypeWriter: void writePostFinale(org.ooc.frontend.model.Type,org.ooc.backend.cdirty.CGenerator,org.ooc.frontend.model.ArrayLiteral)>(type, cgen, $stack34);
+
+        goto label11;
+
+     label10:
+        staticinvoke <org.ooc.backend.cdirty.TypeWriter: void writePostFinale(org.ooc.frontend.model.Type,org.ooc.backend.cdirty.CGenerator)>(type, cgen);
+
+     label11:
+        staticinvoke <org.ooc.backend.cdirty.VariableDeclWriter: void writeInitAndComma(org.ooc.backend.cdirty.CGenerator,org.ooc.frontend.model.Type,org.ooc.frontend.model.VariableDecl,boolean)>(cgen, type, variableDecl, writeInitializer);
+
+     label12:
+        return;
+    }
+
+    private static void writeInitAndComma(org.ooc.backend.cdirty.CGenerator, org.ooc.frontend.model.Type, org.ooc.frontend.model.VariableDecl, boolean) throws java.io.IOException
+    {
+        boolean writeInitializer;
+        org.ooc.frontend.model.VariableDecl vDecl;
+        org.ooc.frontend.model.Expression $stack4, $stack7;
+        org.ooc.backend.cdirty.CGenerator cgen;
+        org.ooc.backend.cdirty.AwesomeWriter $stack5;
+        org.ooc.frontend.model.Type type;
+        org.ooc.frontend.Visitor $r0;
+
+        cgen := @parameter0: org.ooc.backend.cdirty.CGenerator;
+
+        type := @parameter1: org.ooc.frontend.model.Type;
+
+        vDecl := @parameter2: org.ooc.frontend.model.VariableDecl;
+
+        writeInitializer := @parameter3: boolean;
+
+        if writeInitializer == 0 goto label1;
+
+        $stack4 = virtualinvoke vDecl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Expression getExpression()>();
+
+        if $stack4 == null goto label1;
+
+        $stack5 = cgen.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack5.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" = ");
+
+        $stack7 = virtualinvoke vDecl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Expression getExpression()>();
+
+        $r0 = (org.ooc.frontend.Visitor) cgen;
+
+        virtualinvoke $stack7.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>($r0);
+
+     label1:
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $stack0;
+        boolean $stack1, $stack2;
+
+        $stack0 = class "Lorg/ooc/backend/cdirty/VariableDeclWriter;";
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Class: boolean desiredAssertionStatus()>();
+
+        if $stack1 != 0 goto label1;
+
+        $stack2 = 1;
+
+        goto label2;
+
+     label1:
+        $stack2 = 0;
+
+     label2:
+        <org.ooc.backend.cdirty.VariableDeclWriter: boolean $assertionsDisabled> = $stack2;
+
+        return;
+    }
+}

@@ -1,0 +1,226 @@
+public class ArtifactDescriptorUtils extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        ArtifactDescriptorUtils this;
+
+        this := @this: ArtifactDescriptorUtils;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.eclipse.aether.artifact.Artifact toPomArtifact(org.eclipse.aether.artifact.Artifact)
+    {
+        org.eclipse.aether.artifact.Artifact artifact, $r0, $r1, $r2;
+        java.lang.String $stack2, $stack5, $stack6, $stack8, $stack9, $stack10;
+        int $stack3;
+        boolean $stack11;
+        java.lang.Object pomArtifact;
+        org.eclipse.aether.artifact.DefaultArtifact $u0;
+
+        artifact := @parameter0: org.eclipse.aether.artifact.Artifact;
+
+        pomArtifact = artifact;
+
+        $r0 = (org.eclipse.aether.artifact.Artifact) artifact;
+
+        $stack2 = interfaceinvoke $r0.<org.eclipse.aether.artifact.Artifact: java.lang.String getClassifier()>();
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: int length()>();
+
+        if $stack3 > 0 goto label1;
+
+        $stack9 = "pom";
+
+        $r1 = (org.eclipse.aether.artifact.Artifact) artifact;
+
+        $stack10 = interfaceinvoke $r1.<org.eclipse.aether.artifact.Artifact: java.lang.String getExtension()>();
+
+        $stack11 = virtualinvoke $stack9.<java.lang.String: boolean equals(java.lang.Object)>($stack10);
+
+        if $stack11 != 0 goto label2;
+
+     label1:
+        $u0 = new org.eclipse.aether.artifact.DefaultArtifact;
+
+        $stack5 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack6 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack8 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getVersion()>();
+
+        specialinvoke $u0.<org.eclipse.aether.artifact.DefaultArtifact: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>($stack5, $stack6, "pom", $stack8);
+
+        pomArtifact = $u0;
+
+     label2:
+        $r2 = (org.eclipse.aether.artifact.Artifact) pomArtifact;
+
+        return $r2;
+    }
+
+    public static org.eclipse.aether.repository.RemoteRepository toRemoteRepository(org.apache.maven.model.Repository)
+    {
+        org.eclipse.aether.repository.RemoteRepository$Builder $stack2;
+        org.apache.maven.model.Repository repository;
+        java.lang.String $stack3, $stack4, $stack5;
+        org.apache.maven.model.RepositoryPolicy $stack6, $stack9;
+        org.eclipse.aether.repository.RepositoryPolicy $stack7, $stack10;
+        org.eclipse.aether.repository.RemoteRepository $stack12;
+
+        repository := @parameter0: org.apache.maven.model.Repository;
+
+        $stack2 = new org.eclipse.aether.repository.RemoteRepository$Builder;
+
+        $stack3 = virtualinvoke repository.<org.apache.maven.model.Repository: java.lang.String getId()>();
+
+        $stack4 = virtualinvoke repository.<org.apache.maven.model.Repository: java.lang.String getLayout()>();
+
+        $stack5 = virtualinvoke repository.<org.apache.maven.model.Repository: java.lang.String getUrl()>();
+
+        specialinvoke $stack2.<org.eclipse.aether.repository.RemoteRepository$Builder: void <init>(java.lang.String,java.lang.String,java.lang.String)>($stack3, $stack4, $stack5);
+
+        $stack6 = virtualinvoke repository.<org.apache.maven.model.Repository: org.apache.maven.model.RepositoryPolicy getSnapshots()>();
+
+        $stack7 = staticinvoke <org.apache.maven.repository.internal.ArtifactDescriptorUtils: org.eclipse.aether.repository.RepositoryPolicy toRepositoryPolicy(org.apache.maven.model.RepositoryPolicy)>($stack6);
+
+        virtualinvoke $stack2.<org.eclipse.aether.repository.RemoteRepository$Builder: org.eclipse.aether.repository.RemoteRepository$Builder setSnapshotPolicy(org.eclipse.aether.repository.RepositoryPolicy)>($stack7);
+
+        $stack9 = virtualinvoke repository.<org.apache.maven.model.Repository: org.apache.maven.model.RepositoryPolicy getReleases()>();
+
+        $stack10 = staticinvoke <org.apache.maven.repository.internal.ArtifactDescriptorUtils: org.eclipse.aether.repository.RepositoryPolicy toRepositoryPolicy(org.apache.maven.model.RepositoryPolicy)>($stack9);
+
+        virtualinvoke $stack2.<org.eclipse.aether.repository.RemoteRepository$Builder: org.eclipse.aether.repository.RemoteRepository$Builder setReleasePolicy(org.eclipse.aether.repository.RepositoryPolicy)>($stack10);
+
+        $stack12 = virtualinvoke $stack2.<org.eclipse.aether.repository.RemoteRepository$Builder: org.eclipse.aether.repository.RemoteRepository build()>();
+
+        return $stack12;
+    }
+
+    public static org.eclipse.aether.repository.RepositoryPolicy toRepositoryPolicy(org.apache.maven.model.RepositoryPolicy)
+    {
+        org.apache.maven.model.RepositoryPolicy policy;
+        java.lang.String $stack7, $stack8, checksums, updates;
+        boolean enabled;
+        org.eclipse.aether.repository.RepositoryPolicy $stack5;
+
+        policy := @parameter0: org.apache.maven.model.RepositoryPolicy;
+
+        enabled = 1;
+
+        checksums = staticinvoke <org.apache.maven.repository.internal.ArtifactDescriptorUtils: java.lang.String toRepositoryChecksumPolicy(java.lang.String)>("fail");
+
+        updates = "daily";
+
+        if policy == null goto label2;
+
+        enabled = virtualinvoke policy.<org.apache.maven.model.RepositoryPolicy: boolean isEnabled()>();
+
+        $stack7 = virtualinvoke policy.<org.apache.maven.model.RepositoryPolicy: java.lang.String getUpdatePolicy()>();
+
+        if $stack7 == null goto label1;
+
+        updates = virtualinvoke policy.<org.apache.maven.model.RepositoryPolicy: java.lang.String getUpdatePolicy()>();
+
+     label1:
+        $stack8 = virtualinvoke policy.<org.apache.maven.model.RepositoryPolicy: java.lang.String getChecksumPolicy()>();
+
+        if $stack8 == null goto label2;
+
+        checksums = virtualinvoke policy.<org.apache.maven.model.RepositoryPolicy: java.lang.String getChecksumPolicy()>();
+
+     label2:
+        $stack5 = new org.eclipse.aether.repository.RepositoryPolicy;
+
+        specialinvoke $stack5.<org.eclipse.aether.repository.RepositoryPolicy: void <init>(boolean,java.lang.String,java.lang.String)>(enabled, updates, checksums);
+
+        return $stack5;
+    }
+
+    public static java.lang.String toRepositoryChecksumPolicy(java.lang.String)
+    {
+        java.lang.String artifactRepositoryPolicy, $stack9;
+        int $stack3;
+        boolean $stack4, $stack11, $stack12;
+        java.lang.IllegalArgumentException $stack5;
+        java.lang.StringBuilder $stack6, $stack7, $stack8;
+        byte l2;
+
+        artifactRepositoryPolicy := @parameter0: java.lang.String;
+
+        l2 = -1;
+
+        $stack3 = virtualinvoke artifactRepositoryPolicy.<java.lang.String: int hashCode()>();
+
+        lookupswitch($stack3)
+        {
+            case -1190396462: goto label2;
+            case 3135262: goto label1;
+            case 3641990: goto label3;
+            default: goto label4;
+        };
+
+     label1:
+        $stack11 = virtualinvoke artifactRepositoryPolicy.<java.lang.String: boolean equals(java.lang.Object)>("fail");
+
+        if $stack11 == 0 goto label4;
+
+        l2 = 0;
+
+        goto label4;
+
+     label2:
+        $stack12 = virtualinvoke artifactRepositoryPolicy.<java.lang.String: boolean equals(java.lang.Object)>("ignore");
+
+        if $stack12 == 0 goto label4;
+
+        l2 = 1;
+
+        goto label4;
+
+     label3:
+        $stack4 = virtualinvoke artifactRepositoryPolicy.<java.lang.String: boolean equals(java.lang.Object)>("warn");
+
+        if $stack4 == 0 goto label4;
+
+        l2 = 2;
+
+     label4:
+        tableswitch(l2)
+        {
+            case 0: goto label5;
+            case 1: goto label6;
+            case 2: goto label7;
+            default: goto label8;
+        };
+
+     label5:
+        return "fail";
+
+     label6:
+        return "ignore";
+
+     label7:
+        return "warn";
+
+     label8:
+        $stack5 = new java.lang.IllegalArgumentException;
+
+        $stack6 = new java.lang.StringBuilder;
+
+        specialinvoke $stack6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("unknown repository checksum policy: ");
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(artifactRepositoryPolicy);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack5.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($stack9);
+
+        throw $stack5;
+    }
+}

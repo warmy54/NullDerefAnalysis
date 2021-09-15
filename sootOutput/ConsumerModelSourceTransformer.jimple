@@ -1,0 +1,162 @@
+class ConsumerModelSourceTransformer extends org.apache.maven.model.building.AbstractModelSourceTransformer
+{
+
+    void <init>()
+    {
+        ConsumerModelSourceTransformer this;
+
+        this := @this: ConsumerModelSourceTransformer;
+
+        specialinvoke this.<org.apache.maven.model.building.AbstractModelSourceTransformer: void <init>()>();
+
+        return;
+    }
+
+    protected org.apache.maven.model.transform.sax.AbstractSAXFilter getSAXFilter(java.nio.file.Path, org.apache.maven.model.building.TransformerContext, java.util.function.Consumer) throws javax.xml.transform.TransformerConfigurationException, org.xml.sax.SAXException, javax.xml.parsers.ParserConfigurationException
+    {
+        org.apache.maven.model.building.TransformerContext context;
+        java.util.function.Consumer lexicalHandlerConsumer;
+        java.nio.file.Path pomFile;
+        org.apache.maven.model.transform.RawToConsumerPomXMLFilter $stack6;
+        ConsumerModelSourceTransformer this;
+        org.apache.maven.model.building.DefaultBuildPomXMLFilterFactory $u0;
+        org.apache.maven.xml.internal.DefaultConsumerPomXMLFilterFactory $u1;
+        org.apache.maven.model.transform.sax.AbstractSAXFilter $r0;
+
+        this := @this: ConsumerModelSourceTransformer;
+
+        pomFile := @parameter0: java.nio.file.Path;
+
+        context := @parameter1: org.apache.maven.model.building.TransformerContext;
+
+        lexicalHandlerConsumer := @parameter2: java.util.function.Consumer;
+
+        $u1 = new org.apache.maven.xml.internal.DefaultConsumerPomXMLFilterFactory;
+
+        $u0 = new org.apache.maven.model.building.DefaultBuildPomXMLFilterFactory;
+
+        specialinvoke $u0.<org.apache.maven.model.building.DefaultBuildPomXMLFilterFactory: void <init>(org.apache.maven.model.building.TransformerContext,java.util.function.Consumer,boolean)>(context, lexicalHandlerConsumer, 1);
+
+        specialinvoke $u1.<org.apache.maven.xml.internal.DefaultConsumerPomXMLFilterFactory: void <init>(org.apache.maven.model.building.DefaultBuildPomXMLFilterFactory)>($u0);
+
+        $stack6 = virtualinvoke $u1.<org.apache.maven.xml.internal.DefaultConsumerPomXMLFilterFactory: org.apache.maven.model.transform.RawToConsumerPomXMLFilter get(java.nio.file.Path)>(pomFile);
+
+        $r0 = (org.apache.maven.model.transform.sax.AbstractSAXFilter) $stack6;
+
+        return $r0;
+    }
+
+    protected javax.xml.transform.sax.TransformerHandler getTransformerHandler(java.nio.file.Path) throws java.io.IOException, org.apache.maven.model.building.TransformerException
+    {
+        ConsumerModelSourceTransformer this;
+        javax.xml.transform.sax.SAXTransformerFactory transformerFactory;
+        java.nio.file.Path pomFile;
+        java.nio.file.OpenOption[] $stack10;
+        javax.xml.stream.XMLInputFactory $stack12;
+        javax.xml.transform.sax.TransformerHandler transformerHandler;
+        java.lang.String version, encoding;
+        javax.xml.transform.Transformer transformer;
+        java.lang.Exception $stack24;
+        java.lang.Throwable $stack26, $stack27, $r1;
+        java.io.InputStream input;
+        javax.xml.stream.XMLStreamReader streamReader;
+        org.apache.maven.model.building.TransformerException $u0;
+        org.apache.maven.internal.aether.ConsumerModelSourceTransformer $r0;
+
+        this := @this: ConsumerModelSourceTransformer;
+
+        pomFile := @parameter0: java.nio.file.Path;
+
+        $r0 = (org.apache.maven.internal.aether.ConsumerModelSourceTransformer) this;
+
+        transformerFactory = virtualinvoke $r0.<org.apache.maven.internal.aether.ConsumerModelSourceTransformer: javax.xml.transform.sax.SAXTransformerFactory getTransformerFactory()>();
+
+     label01:
+        $stack10 = newarray (java.nio.file.OpenOption)[0];
+
+        input = staticinvoke <java.nio.file.Files: java.io.InputStream newInputStream(java.nio.file.Path,java.nio.file.OpenOption[])>(pomFile, $stack10);
+
+     label02:
+        $stack12 = staticinvoke <javax.xml.stream.XMLInputFactory: javax.xml.stream.XMLInputFactory newFactory()>();
+
+        streamReader = virtualinvoke $stack12.<javax.xml.stream.XMLInputFactory: javax.xml.stream.XMLStreamReader createXMLStreamReader(java.io.InputStream)>(input);
+
+        transformerHandler = virtualinvoke transformerFactory.<javax.xml.transform.sax.SAXTransformerFactory: javax.xml.transform.sax.TransformerHandler newTransformerHandler()>();
+
+        encoding = interfaceinvoke streamReader.<javax.xml.stream.XMLStreamReader: java.lang.String getCharacterEncodingScheme()>();
+
+        version = interfaceinvoke streamReader.<javax.xml.stream.XMLStreamReader: java.lang.String getVersion()>();
+
+        transformer = interfaceinvoke transformerHandler.<javax.xml.transform.sax.TransformerHandler: javax.xml.transform.Transformer getTransformer()>();
+
+        virtualinvoke transformer.<javax.xml.transform.Transformer: void setOutputProperty(java.lang.String,java.lang.String)>("method", "xml");
+
+        if encoding != null goto label03;
+
+        if version != null goto label03;
+
+        virtualinvoke transformer.<javax.xml.transform.Transformer: void setOutputProperty(java.lang.String,java.lang.String)>("omit-xml-declaration", "yes");
+
+        goto label05;
+
+     label03:
+        virtualinvoke transformer.<javax.xml.transform.Transformer: void setOutputProperty(java.lang.String,java.lang.String)>("omit-xml-declaration", "no");
+
+        if encoding == null goto label04;
+
+        virtualinvoke transformer.<javax.xml.transform.Transformer: void setOutputProperty(java.lang.String,java.lang.String)>("encoding", encoding);
+
+     label04:
+        if version == null goto label05;
+
+        virtualinvoke transformer.<javax.xml.transform.Transformer: void setOutputProperty(java.lang.String,java.lang.String)>("version", version);
+
+     label05:
+        if input == null goto label11;
+
+        virtualinvoke input.<java.io.InputStream: void close()>();
+
+        goto label11;
+
+     label06:
+        $stack27 := @caughtexception;
+
+        if input == null goto label10;
+
+     label07:
+        virtualinvoke input.<java.io.InputStream: void close()>();
+
+     label08:
+        goto label10;
+
+     label09:
+        $stack26 := @caughtexception;
+
+        virtualinvoke $stack27.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack26);
+
+     label10:
+        throw $stack27;
+
+     label11:
+        goto label13;
+
+     label12:
+        $stack24 := @caughtexception;
+
+        $u0 = new org.apache.maven.model.building.TransformerException;
+
+        specialinvoke $u0.<org.apache.maven.model.building.TransformerException: void <init>(java.lang.String,java.lang.Throwable)>("Failed to detect XML encoding and version", $stack24);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label13:
+        return transformerHandler;
+
+        catch java.lang.Throwable from label02 to label05 with label06;
+        catch java.lang.Throwable from label07 to label08 with label09;
+        catch javax.xml.stream.XMLStreamException from label01 to label11 with label12;
+        catch javax.xml.transform.TransformerConfigurationException from label01 to label11 with label12;
+    }
+}

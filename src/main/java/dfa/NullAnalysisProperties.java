@@ -10,7 +10,8 @@ import java.nio.file.Files;
 import java.util.Properties;
 
 public class NullAnalysisProperties {
-		
+		int numMethDer = 0;
+		int numMeth = 0;
 		boolean SettingDefault; //default behavior
 		boolean ShowNCPWarning =true; 
 		boolean TrustInvocationsReturn = false;

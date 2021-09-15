@@ -1,0 +1,469 @@
+public class DefaultDownloader extends java.lang.Object implements org.apache.maven.wrapper.Downloader
+{
+    private static final int PROGRESS_CHUNK;
+    private static final int BUFFER_SIZE;
+    private final java.lang.String applicationName;
+    private final java.lang.String applicationVersion;
+
+    public void <init>(java.lang.String, java.lang.String)
+    {
+        DefaultDownloader this;
+        java.lang.String applicationName, applicationVersion;
+        org.apache.maven.wrapper.DefaultDownloader $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultDownloader;
+
+        applicationName := @parameter0: java.lang.String;
+
+        applicationVersion := @parameter1: java.lang.String;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        $r0.<org.apache.maven.wrapper.DefaultDownloader: java.lang.String applicationName> = applicationName;
+
+        $r1 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        $r1.<org.apache.maven.wrapper.DefaultDownloader: java.lang.String applicationVersion> = applicationVersion;
+
+        $r2 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        specialinvoke $r2.<org.apache.maven.wrapper.DefaultDownloader: void configureProxyAuthentication()>();
+
+        $r3 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        specialinvoke $r3.<org.apache.maven.wrapper.DefaultDownloader: void configureAuthentication()>();
+
+        return;
+    }
+
+    private void configureProxyAuthentication()
+    {
+        java.lang.String $stack1;
+        DefaultDownloader this;
+        org.apache.maven.wrapper.DefaultDownloader$SystemPropertiesProxyAuthenticator $u0;
+        java.net.Authenticator $r0;
+
+        this := @this: DefaultDownloader;
+
+        $stack1 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("http.proxyUser");
+
+        if $stack1 == null goto label1;
+
+        $u0 = new org.apache.maven.wrapper.DefaultDownloader$SystemPropertiesProxyAuthenticator;
+
+        specialinvoke $u0.<org.apache.maven.wrapper.DefaultDownloader$SystemPropertiesProxyAuthenticator: void <init>(org.apache.maven.wrapper.DefaultDownloader$1)>(null);
+
+        $r0 = (java.net.Authenticator) $u0;
+
+        staticinvoke <java.net.Authenticator: void setDefault(java.net.Authenticator)>($r0);
+
+     label1:
+        return;
+    }
+
+    private void configureAuthentication()
+    {
+        java.lang.String $stack1, $stack2, $stack3;
+        DefaultDownloader this;
+        org.apache.maven.wrapper.DefaultDownloader$1 $u0;
+        org.apache.maven.wrapper.DefaultDownloader $r0;
+        java.net.Authenticator $r1;
+
+        this := @this: DefaultDownloader;
+
+        $stack1 = staticinvoke <java.lang.System: java.lang.String getenv(java.lang.String)>("MVNW_USERNAME");
+
+        if $stack1 == null goto label1;
+
+        $stack2 = staticinvoke <java.lang.System: java.lang.String getenv(java.lang.String)>("MVNW_PASSWORD");
+
+        if $stack2 == null goto label1;
+
+        $stack3 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("http.proxyUser");
+
+        if $stack3 != null goto label1;
+
+        $u0 = new org.apache.maven.wrapper.DefaultDownloader$1;
+
+        $r0 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        specialinvoke $u0.<org.apache.maven.wrapper.DefaultDownloader$1: void <init>(org.apache.maven.wrapper.DefaultDownloader)>($r0);
+
+        $r1 = (java.net.Authenticator) $u0;
+
+        staticinvoke <java.net.Authenticator: void setDefault(java.net.Authenticator)>($r1);
+
+     label1:
+        return;
+    }
+
+    public void download(java.net.URI, java.nio.file.Path) throws java.io.IOException
+    {
+        java.nio.file.Path destination, $stack5;
+        java.nio.file.LinkOption[] $stack3;
+        boolean $stack4;
+        java.nio.file.attribute.FileAttribute[] $stack6;
+        DefaultDownloader this;
+        java.net.URI address;
+        org.apache.maven.wrapper.DefaultDownloader $r0;
+
+        this := @this: DefaultDownloader;
+
+        address := @parameter0: java.net.URI;
+
+        destination := @parameter1: java.nio.file.Path;
+
+        $stack3 = newarray (java.nio.file.LinkOption)[0];
+
+        $stack4 = staticinvoke <java.nio.file.Files: boolean exists(java.nio.file.Path,java.nio.file.LinkOption[])>(destination, $stack3);
+
+        if $stack4 == 0 goto label1;
+
+        return;
+
+     label1:
+        $stack5 = interfaceinvoke destination.<java.nio.file.Path: java.nio.file.Path getParent()>();
+
+        $stack6 = newarray (java.nio.file.attribute.FileAttribute)[0];
+
+        staticinvoke <java.nio.file.Files: java.nio.file.Path createDirectories(java.nio.file.Path,java.nio.file.attribute.FileAttribute[])>($stack5, $stack6);
+
+        $r0 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        specialinvoke $r0.<org.apache.maven.wrapper.DefaultDownloader: void downloadInternal(java.net.URI,java.nio.file.Path)>(address, destination);
+
+        return;
+    }
+
+    private void downloadInternal(java.net.URI, java.nio.file.Path) throws java.io.IOException
+    {
+        java.net.URI address;
+        java.net.URL url;
+        java.net.URLConnection conn;
+        DefaultDownloader this;
+        java.lang.String userAgentValue;
+        java.nio.file.Path destination;
+        java.nio.file.OpenOption[] $stack17;
+        java.io.OutputStream $stack18;
+        int $stack20;
+        long $stack22, $stack23, progressCounter;
+        byte $stack24;
+        java.lang.Throwable $stack32, $stack33, $stack34, $stack36, $stack37;
+        java.io.InputStream in;
+        byte[] buffer;
+        java.io.BufferedOutputStream $u0;
+        org.apache.maven.wrapper.DefaultDownloader $r0, $r1;
+
+        this := @this: DefaultDownloader;
+
+        address := @parameter0: java.net.URI;
+
+        destination := @parameter1: java.nio.file.Path;
+
+        url = virtualinvoke address.<java.net.URI: java.net.URL toURL()>();
+
+        conn = virtualinvoke url.<java.net.URL: java.net.URLConnection openConnection()>();
+
+        $r0 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        specialinvoke $r0.<org.apache.maven.wrapper.DefaultDownloader: void addBasicAuthentication(java.net.URI,java.net.URLConnection)>(address, conn);
+
+        $r1 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        userAgentValue = specialinvoke $r1.<org.apache.maven.wrapper.DefaultDownloader: java.lang.String calculateUserAgent()>();
+
+        virtualinvoke conn.<java.net.URLConnection: void setRequestProperty(java.lang.String,java.lang.String)>("User-Agent", userAgentValue);
+
+     label01:
+        $u0 = new java.io.BufferedOutputStream;
+
+        $stack17 = newarray (java.nio.file.OpenOption)[0];
+
+        $stack18 = staticinvoke <java.nio.file.Files: java.io.OutputStream newOutputStream(java.nio.file.Path,java.nio.file.OpenOption[])>(destination, $stack17);
+
+        specialinvoke $u0.<java.io.BufferedOutputStream: void <init>(java.io.OutputStream)>($stack18);
+
+     label02:
+        in = virtualinvoke conn.<java.net.URLConnection: java.io.InputStream getInputStream()>();
+
+     label03:
+        buffer = newarray (byte)[10000];
+
+        progressCounter = 0L;
+
+     label04:
+        $stack20 = virtualinvoke in.<java.io.InputStream: int read(byte[])>(buffer);
+
+        if $stack20 == -1 goto label06;
+
+        $stack22 = (long) $stack20;
+
+        progressCounter = progressCounter + $stack22;
+
+        $stack23 = progressCounter / 500000L;
+
+        $stack24 = $stack23 cmp 0L;
+
+        if $stack24 <= 0 goto label05;
+
+        staticinvoke <org.apache.maven.wrapper.Logger: void info(java.lang.String)>(".");
+
+        progressCounter = progressCounter - 500000L;
+
+     label05:
+        virtualinvoke $u0.<java.io.OutputStream: void write(byte[],int,int)>(buffer, 0, $stack20);
+
+        goto label04;
+
+     label06:
+        if in == null goto label12;
+
+        virtualinvoke in.<java.io.InputStream: void close()>();
+
+        goto label12;
+
+     label07:
+        $stack37 := @caughtexception;
+
+        if in == null goto label11;
+
+     label08:
+        virtualinvoke in.<java.io.InputStream: void close()>();
+
+     label09:
+        goto label11;
+
+     label10:
+        $stack36 := @caughtexception;
+
+        virtualinvoke $stack37.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack36);
+
+     label11:
+        throw $stack37;
+
+     label12:
+        virtualinvoke $u0.<java.io.OutputStream: void close()>();
+
+        goto label18;
+
+     label13:
+        $stack34 := @caughtexception;
+
+     label14:
+        virtualinvoke $u0.<java.io.OutputStream: void close()>();
+
+     label15:
+        goto label17;
+
+     label16:
+        $stack33 := @caughtexception;
+
+        virtualinvoke $stack34.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack33);
+
+     label17:
+        throw $stack34;
+
+     label18:
+        staticinvoke <org.apache.maven.wrapper.Logger: void info(java.lang.String)>("");
+
+        goto label21;
+
+     label19:
+        $stack32 := @caughtexception;
+
+     label20:
+        staticinvoke <org.apache.maven.wrapper.Logger: void info(java.lang.String)>("");
+
+        throw $stack32;
+
+     label21:
+        return;
+
+        catch java.lang.Throwable from label03 to label06 with label07;
+        catch java.lang.Throwable from label08 to label09 with label10;
+        catch java.lang.Throwable from label02 to label12 with label13;
+        catch java.lang.Throwable from label14 to label15 with label16;
+        catch java.lang.Throwable from label01 to label18 with label19;
+        catch java.lang.Throwable from label19 to label20 with label19;
+    }
+
+    private void addBasicAuthentication(java.net.URI, java.net.URLConnection) throws java.io.IOException
+    {
+        DefaultDownloader this;
+        java.net.URI address;
+        java.lang.String userInfo, $stack5, $stack6, $stack11, $stack13;
+        boolean $stack7;
+        java.net.URLConnection connection;
+        java.lang.StringBuilder $stack10, $stack12, $u0;
+        org.apache.maven.wrapper.DefaultDownloader $r0, $r1;
+
+        this := @this: DefaultDownloader;
+
+        address := @parameter0: java.net.URI;
+
+        connection := @parameter1: java.net.URLConnection;
+
+        $r0 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        userInfo = specialinvoke $r0.<org.apache.maven.wrapper.DefaultDownloader: java.lang.String calculateUserInfo(java.net.URI)>(address);
+
+        if userInfo != null goto label1;
+
+        return;
+
+     label1:
+        $stack5 = "https";
+
+        $stack6 = virtualinvoke address.<java.net.URI: java.lang.String getScheme()>();
+
+        $stack7 = virtualinvoke $stack5.<java.lang.String: boolean equals(java.lang.Object)>($stack6);
+
+        if $stack7 != 0 goto label2;
+
+        staticinvoke <org.apache.maven.wrapper.Logger: void warn(java.lang.String)>("WARNING Using HTTP Basic Authentication over an insecure connection to download the Maven distribution. Please consider using HTTPS.");
+
+     label2:
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack10 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Basic ");
+
+        $r1 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        $stack11 = specialinvoke $r1.<org.apache.maven.wrapper.DefaultDownloader: java.lang.String base64Encode(java.lang.String)>(userInfo);
+
+        $stack12 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke connection.<java.net.URLConnection: void setRequestProperty(java.lang.String,java.lang.String)>("Authorization", $stack13);
+
+        return;
+    }
+
+    private java.lang.String base64Encode(java.lang.String)
+    {
+        java.util.Base64$Encoder $stack2;
+        java.lang.String userInfo, $stack5;
+        java.nio.charset.Charset $stack3;
+        byte[] $stack4;
+        DefaultDownloader this;
+
+        this := @this: DefaultDownloader;
+
+        userInfo := @parameter0: java.lang.String;
+
+        $stack2 = staticinvoke <java.util.Base64: java.util.Base64$Encoder getEncoder()>();
+
+        $stack3 = <java.nio.charset.StandardCharsets: java.nio.charset.Charset UTF_8>;
+
+        $stack4 = virtualinvoke userInfo.<java.lang.String: byte[] getBytes(java.nio.charset.Charset)>($stack3);
+
+        $stack5 = virtualinvoke $stack2.<java.util.Base64$Encoder: java.lang.String encodeToString(byte[])>($stack4);
+
+        return $stack5;
+    }
+
+    private java.lang.String calculateUserInfo(java.net.URI)
+    {
+        java.lang.String username, password, $stack6, $stack12;
+        java.net.URI uri;
+        java.lang.StringBuilder $stack8, $stack9, $stack10, $stack11;
+        DefaultDownloader this;
+
+        this := @this: DefaultDownloader;
+
+        uri := @parameter0: java.net.URI;
+
+        username = staticinvoke <java.lang.System: java.lang.String getenv(java.lang.String)>("MVNW_USERNAME");
+
+        password = staticinvoke <java.lang.System: java.lang.String getenv(java.lang.String)>("MVNW_PASSWORD");
+
+        if username == null goto label1;
+
+        if password == null goto label1;
+
+        $stack8 = new java.lang.StringBuilder;
+
+        specialinvoke $stack8.<java.lang.StringBuilder: void <init>()>();
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(username);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(password);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack12;
+
+     label1:
+        $stack6 = virtualinvoke uri.<java.net.URI: java.lang.String getUserInfo()>();
+
+        return $stack6;
+    }
+
+    private java.lang.String calculateUserAgent()
+    {
+        DefaultDownloader this;
+        java.lang.String appVersion, javaVendor, javaVersion, javaVendorVersion, osName, osVersion, osArch, $stack15, $stack16;
+        java.lang.Object[] $stack14;
+        org.apache.maven.wrapper.DefaultDownloader $r0, $r1;
+
+        this := @this: DefaultDownloader;
+
+        $r0 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        appVersion = $r0.<org.apache.maven.wrapper.DefaultDownloader: java.lang.String applicationVersion>;
+
+        javaVendor = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("java.vendor");
+
+        javaVersion = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("java.version");
+
+        javaVendorVersion = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("java.vm.version");
+
+        osName = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("os.name");
+
+        osVersion = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("os.version");
+
+        osArch = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("os.arch");
+
+        $stack14 = newarray (java.lang.Object)[8];
+
+        $r1 = (org.apache.maven.wrapper.DefaultDownloader) this;
+
+        $stack15 = $r1.<org.apache.maven.wrapper.DefaultDownloader: java.lang.String applicationName>;
+
+        $stack14[0] = $stack15;
+
+        $stack14[1] = appVersion;
+
+        $stack14[2] = osName;
+
+        $stack14[3] = osVersion;
+
+        $stack14[4] = osArch;
+
+        $stack14[5] = javaVendor;
+
+        $stack14[6] = javaVersion;
+
+        $stack14[7] = javaVendorVersion;
+
+        $stack16 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s/%s (%s;%s;%s) (%s;%s;%s)", $stack14);
+
+        return $stack16;
+    }
+
+    public static void <clinit>()
+    {
+        <DefaultDownloader: int BUFFER_SIZE> = 10000;
+
+        <DefaultDownloader: int PROGRESS_CHUNK> = 500000;
+
+        return;
+    }
+}

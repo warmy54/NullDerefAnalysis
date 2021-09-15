@@ -1,0 +1,780 @@
+public class JSONWriter extends java.lang.Object
+{
+    private static final int maxdepth;
+    private boolean comma;
+    protected char mode;
+    private org.json.JSONObject[] stack;
+    private int top;
+    protected java.io.Writer writer;
+
+    public void <init>(java.io.Writer)
+    {
+        JSONWriter this;
+        org.json.JSONObject[] $stack2;
+        java.io.Writer w;
+        org.json.JSONWriter $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: JSONWriter;
+
+        w := @parameter0: java.io.Writer;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.json.JSONWriter) this;
+
+        $r0.<org.json.JSONWriter: boolean comma> = 0;
+
+        $r1 = (org.json.JSONWriter) this;
+
+        $r1.<org.json.JSONWriter: char mode> = 105;
+
+        $stack2 = newarray (org.json.JSONObject)[20];
+
+        $r2 = (org.json.JSONWriter) this;
+
+        $r2.<org.json.JSONWriter: org.json.JSONObject[] stack> = $stack2;
+
+        $r3 = (org.json.JSONWriter) this;
+
+        $r3.<org.json.JSONWriter: int top> = 0;
+
+        $r4 = (org.json.JSONWriter) this;
+
+        $r4.<org.json.JSONWriter: java.io.Writer writer> = w;
+
+        return;
+    }
+
+    private org.json.JSONWriter append(java.lang.String) throws org.json.JSONException
+    {
+        java.lang.String s;
+        JSONWriter this;
+        char $stack3, $stack6, $stack10, $stack14;
+        boolean $stack4;
+        java.io.Writer $stack13, $stack5;
+        java.io.IOException $stack18;
+        org.json.JSONException $u0, $u1, $u2;
+        java.lang.Throwable $r0, $r7, $r12;
+        org.json.JSONWriter $r1, $r2, $r3, $r4, $r5, $r6, $r8, $r9, $r10, $r11;
+
+        this := @this: JSONWriter;
+
+        s := @parameter0: java.lang.String;
+
+        if s != null goto label1;
+
+        $u0 = new org.json.JSONException;
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>("Null pointer");
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label1:
+        $r1 = (org.json.JSONWriter) this;
+
+        $stack3 = $r1.<org.json.JSONWriter: char mode>;
+
+        if $stack3 == 111 goto label2;
+
+        $r2 = (org.json.JSONWriter) this;
+
+        $stack14 = $r2.<org.json.JSONWriter: char mode>;
+
+        if $stack14 != 97 goto label8;
+
+     label2:
+        $r3 = (org.json.JSONWriter) this;
+
+        $stack4 = $r3.<org.json.JSONWriter: boolean comma>;
+
+        if $stack4 == 0 goto label3;
+
+        $r4 = (org.json.JSONWriter) this;
+
+        $stack10 = $r4.<org.json.JSONWriter: char mode>;
+
+        if $stack10 != 97 goto label3;
+
+        $r5 = (org.json.JSONWriter) this;
+
+        $stack13 = $r5.<org.json.JSONWriter: java.io.Writer writer>;
+
+        virtualinvoke $stack13.<java.io.Writer: void write(int)>(44);
+
+     label3:
+        $r6 = (org.json.JSONWriter) this;
+
+        $stack5 = $r6.<org.json.JSONWriter: java.io.Writer writer>;
+
+        virtualinvoke $stack5.<java.io.Writer: void write(java.lang.String)>(s);
+
+     label4:
+        goto label6;
+
+     label5:
+        $stack18 := @caughtexception;
+
+        $u1 = new org.json.JSONException;
+
+        specialinvoke $u1.<org.json.JSONException: void <init>(java.lang.Throwable)>($stack18);
+
+        $r7 = (java.lang.Throwable) $u1;
+
+        throw $r7;
+
+     label6:
+        $r8 = (org.json.JSONWriter) this;
+
+        $stack6 = $r8.<org.json.JSONWriter: char mode>;
+
+        if $stack6 != 111 goto label7;
+
+        $r9 = (org.json.JSONWriter) this;
+
+        $r9.<org.json.JSONWriter: char mode> = 107;
+
+     label7:
+        $r10 = (org.json.JSONWriter) this;
+
+        $r10.<org.json.JSONWriter: boolean comma> = 1;
+
+        $r11 = (org.json.JSONWriter) this;
+
+        return $r11;
+
+     label8:
+        $u2 = new org.json.JSONException;
+
+        specialinvoke $u2.<org.json.JSONException: void <init>(java.lang.String)>("Value out of sequence.");
+
+        $r12 = (java.lang.Throwable) $u2;
+
+        throw $r12;
+
+        catch java.io.IOException from label2 to label4 with label5;
+    }
+
+    public org.json.JSONWriter array() throws org.json.JSONException
+    {
+        JSONWriter this;
+        char $stack1, $stack3, $stack11;
+        org.json.JSONException $u0;
+        org.json.JSONWriter $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+        java.lang.Throwable $r7;
+
+        this := @this: JSONWriter;
+
+        $r0 = (org.json.JSONWriter) this;
+
+        $stack1 = $r0.<org.json.JSONWriter: char mode>;
+
+        if $stack1 == 105 goto label1;
+
+        $r1 = (org.json.JSONWriter) this;
+
+        $stack3 = $r1.<org.json.JSONWriter: char mode>;
+
+        if $stack3 == 111 goto label1;
+
+        $r2 = (org.json.JSONWriter) this;
+
+        $stack11 = $r2.<org.json.JSONWriter: char mode>;
+
+        if $stack11 != 97 goto label2;
+
+     label1:
+        $r3 = (org.json.JSONWriter) this;
+
+        virtualinvoke $r3.<org.json.JSONWriter: void push(org.json.JSONObject)>(null);
+
+        $r4 = (org.json.JSONWriter) this;
+
+        virtualinvoke $r4.<org.json.JSONWriter: org.json.JSONWriter append(java.lang.String)>("[");
+
+        $r5 = (org.json.JSONWriter) this;
+
+        $r5.<org.json.JSONWriter: boolean comma> = 0;
+
+        $r6 = (org.json.JSONWriter) this;
+
+        return $r6;
+
+     label2:
+        $u0 = new org.json.JSONException;
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>("Misplaced array.");
+
+        $r7 = (java.lang.Throwable) $u0;
+
+        throw $r7;
+    }
+
+    private org.json.JSONWriter end(char, char) throws org.json.JSONException
+    {
+        JSONWriter this;
+        char m, $stack4, c;
+        java.io.Writer $stack5;
+        java.io.IOException $stack8;
+        java.lang.String $stack7;
+        org.json.JSONException $u0, $u1;
+        org.json.JSONWriter $r0, $r2, $r3, $r5, $r6;
+        java.lang.Throwable $r1, $r4;
+
+        this := @this: JSONWriter;
+
+        m := @parameter0: char;
+
+        c := @parameter1: char;
+
+        $r0 = (org.json.JSONWriter) this;
+
+        $stack4 = $r0.<org.json.JSONWriter: char mode>;
+
+        if $stack4 == m goto label3;
+
+        $u0 = new org.json.JSONException;
+
+        if m != 111 goto label1;
+
+        $stack7 = "Misplaced endObject.";
+
+        goto label2;
+
+     label1:
+        $stack7 = "Misplaced endArray.";
+
+     label2:
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>($stack7);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label3:
+        $r2 = (org.json.JSONWriter) this;
+
+        virtualinvoke $r2.<org.json.JSONWriter: void pop(char)>(m);
+
+     label4:
+        $r3 = (org.json.JSONWriter) this;
+
+        $stack5 = $r3.<org.json.JSONWriter: java.io.Writer writer>;
+
+        virtualinvoke $stack5.<java.io.Writer: void write(int)>(c);
+
+     label5:
+        goto label7;
+
+     label6:
+        $stack8 := @caughtexception;
+
+        $u1 = new org.json.JSONException;
+
+        specialinvoke $u1.<org.json.JSONException: void <init>(java.lang.Throwable)>($stack8);
+
+        $r4 = (java.lang.Throwable) $u1;
+
+        throw $r4;
+
+     label7:
+        $r5 = (org.json.JSONWriter) this;
+
+        $r5.<org.json.JSONWriter: boolean comma> = 1;
+
+        $r6 = (org.json.JSONWriter) this;
+
+        return $r6;
+
+        catch java.io.IOException from label4 to label5 with label6;
+    }
+
+    public org.json.JSONWriter endArray() throws org.json.JSONException
+    {
+        JSONWriter this;
+        org.json.JSONWriter $stack1, $r0;
+
+        this := @this: JSONWriter;
+
+        $r0 = (org.json.JSONWriter) this;
+
+        $stack1 = virtualinvoke $r0.<org.json.JSONWriter: org.json.JSONWriter end(char,char)>(97, 93);
+
+        return $stack1;
+    }
+
+    public org.json.JSONWriter endObject() throws org.json.JSONException
+    {
+        JSONWriter this;
+        org.json.JSONWriter $stack1, $r0;
+
+        this := @this: JSONWriter;
+
+        $r0 = (org.json.JSONWriter) this;
+
+        $stack1 = virtualinvoke $r0.<org.json.JSONWriter: org.json.JSONWriter end(char,char)>(107, 125);
+
+        return $stack1;
+    }
+
+    public org.json.JSONWriter key(java.lang.String) throws org.json.JSONException
+    {
+        java.lang.String s, $stack13;
+        JSONWriter this;
+        char $stack3;
+        int $stack5, $stack6;
+        org.json.JSONObject[] $stack7;
+        java.lang.Boolean $stack8;
+        org.json.JSONObject $stack9;
+        boolean $stack11;
+        java.io.Writer $stack12, $stack14, $stack15;
+        java.io.IOException $stack26;
+        org.json.JSONException $u0, $u1, $u2;
+        java.lang.Throwable $r0, $r11, $r12;
+        org.json.JSONWriter $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10;
+
+        this := @this: JSONWriter;
+
+        s := @parameter0: java.lang.String;
+
+        if s != null goto label1;
+
+        $u0 = new org.json.JSONException;
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>("Null key.");
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label1:
+        $r1 = (org.json.JSONWriter) this;
+
+        $stack3 = $r1.<org.json.JSONWriter: char mode>;
+
+        if $stack3 != 107 goto label6;
+
+     label2:
+        $r2 = (org.json.JSONWriter) this;
+
+        $stack7 = $r2.<org.json.JSONWriter: org.json.JSONObject[] stack>;
+
+        $r3 = (org.json.JSONWriter) this;
+
+        $stack5 = $r3.<org.json.JSONWriter: int top>;
+
+        $stack6 = $stack5 - 1;
+
+        $stack9 = $stack7[$stack6];
+
+        $stack8 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        virtualinvoke $stack9.<org.json.JSONObject: org.json.JSONObject putOnce(java.lang.String,java.lang.Object)>(s, $stack8);
+
+        $r4 = (org.json.JSONWriter) this;
+
+        $stack11 = $r4.<org.json.JSONWriter: boolean comma>;
+
+        if $stack11 == 0 goto label3;
+
+        $r5 = (org.json.JSONWriter) this;
+
+        $stack15 = $r5.<org.json.JSONWriter: java.io.Writer writer>;
+
+        virtualinvoke $stack15.<java.io.Writer: void write(int)>(44);
+
+     label3:
+        $r6 = (org.json.JSONWriter) this;
+
+        $stack12 = $r6.<org.json.JSONWriter: java.io.Writer writer>;
+
+        $stack13 = staticinvoke <org.json.JSONObject: java.lang.String quote(java.lang.String)>(s);
+
+        virtualinvoke $stack12.<java.io.Writer: void write(java.lang.String)>($stack13);
+
+        $r7 = (org.json.JSONWriter) this;
+
+        $stack14 = $r7.<org.json.JSONWriter: java.io.Writer writer>;
+
+        virtualinvoke $stack14.<java.io.Writer: void write(int)>(58);
+
+        $r8 = (org.json.JSONWriter) this;
+
+        $r8.<org.json.JSONWriter: boolean comma> = 0;
+
+        $r9 = (org.json.JSONWriter) this;
+
+        $r9.<org.json.JSONWriter: char mode> = 111;
+
+     label4:
+        $r10 = (org.json.JSONWriter) this;
+
+        return $r10;
+
+     label5:
+        $stack26 := @caughtexception;
+
+        $u1 = new org.json.JSONException;
+
+        specialinvoke $u1.<org.json.JSONException: void <init>(java.lang.Throwable)>($stack26);
+
+        $r11 = (java.lang.Throwable) $u1;
+
+        throw $r11;
+
+     label6:
+        $u2 = new org.json.JSONException;
+
+        specialinvoke $u2.<org.json.JSONException: void <init>(java.lang.String)>("Misplaced key.");
+
+        $r12 = (java.lang.Throwable) $u2;
+
+        throw $r12;
+
+        catch java.io.IOException from label2 to label4 with label5;
+    }
+
+    public org.json.JSONWriter object() throws org.json.JSONException
+    {
+        JSONWriter this;
+        char $stack1, $stack2, $stack5;
+        org.json.JSONObject $u0;
+        org.json.JSONException $u1;
+        org.json.JSONWriter $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7;
+        java.lang.Throwable $r8;
+
+        this := @this: JSONWriter;
+
+        $r0 = (org.json.JSONWriter) this;
+
+        $stack1 = $r0.<org.json.JSONWriter: char mode>;
+
+        if $stack1 != 105 goto label1;
+
+        $r1 = (org.json.JSONWriter) this;
+
+        $r1.<org.json.JSONWriter: char mode> = 111;
+
+     label1:
+        $r2 = (org.json.JSONWriter) this;
+
+        $stack2 = $r2.<org.json.JSONWriter: char mode>;
+
+        if $stack2 == 111 goto label2;
+
+        $r3 = (org.json.JSONWriter) this;
+
+        $stack5 = $r3.<org.json.JSONWriter: char mode>;
+
+        if $stack5 != 97 goto label3;
+
+     label2:
+        $r4 = (org.json.JSONWriter) this;
+
+        virtualinvoke $r4.<org.json.JSONWriter: org.json.JSONWriter append(java.lang.String)>("{");
+
+        $u0 = new org.json.JSONObject;
+
+        specialinvoke $u0.<org.json.JSONObject: void <init>()>();
+
+        $r5 = (org.json.JSONWriter) this;
+
+        virtualinvoke $r5.<org.json.JSONWriter: void push(org.json.JSONObject)>($u0);
+
+        $r6 = (org.json.JSONWriter) this;
+
+        $r6.<org.json.JSONWriter: boolean comma> = 0;
+
+        $r7 = (org.json.JSONWriter) this;
+
+        return $r7;
+
+     label3:
+        $u1 = new org.json.JSONException;
+
+        specialinvoke $u1.<org.json.JSONException: void <init>(java.lang.String)>("Misplaced object.");
+
+        $r8 = (java.lang.Throwable) $u1;
+
+        throw $r8;
+    }
+
+    private void pop(char) throws org.json.JSONException
+    {
+        JSONWriter this;
+        int $stack3, $stack4, $stack5, $stack8, $stack9, $stack10, $stack11, $stack12;
+        org.json.JSONObject[] $stack6, $stack13;
+        org.json.JSONObject $stack7, $stack14;
+        char c, $stack15;
+        byte $stack18;
+        org.json.JSONException $u0, $u1;
+        org.json.JSONWriter $r0, $r2, $r3, $r5, $r6, $r7, $r8, $r9, $r10;
+        java.lang.Throwable $r1, $r4;
+
+        this := @this: JSONWriter;
+
+        c := @parameter0: char;
+
+        $r0 = (org.json.JSONWriter) this;
+
+        $stack3 = $r0.<org.json.JSONWriter: int top>;
+
+        if $stack3 > 0 goto label1;
+
+        $u0 = new org.json.JSONException;
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>("Nesting error.");
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        $r2 = (org.json.JSONWriter) this;
+
+        $stack6 = $r2.<org.json.JSONWriter: org.json.JSONObject[] stack>;
+
+        $r3 = (org.json.JSONWriter) this;
+
+        $stack4 = $r3.<org.json.JSONWriter: int top>;
+
+        $stack5 = $stack4 - 1;
+
+        $stack7 = $stack6[$stack5];
+
+        if $stack7 != null goto label2;
+
+        $stack18 = 97;
+
+        goto label3;
+
+     label2:
+        $stack18 = 107;
+
+     label3:
+        if $stack18 == c goto label4;
+
+        $u1 = new org.json.JSONException;
+
+        specialinvoke $u1.<org.json.JSONException: void <init>(java.lang.String)>("Nesting error.");
+
+        $r4 = (java.lang.Throwable) $u1;
+
+        throw $r4;
+
+     label4:
+        $r5 = (org.json.JSONWriter) this;
+
+        $stack8 = $r5.<org.json.JSONWriter: int top>;
+
+        $stack9 = $stack8 - 1;
+
+        $r6 = (org.json.JSONWriter) this;
+
+        $r6.<org.json.JSONWriter: int top> = $stack9;
+
+        $r7 = (org.json.JSONWriter) this;
+
+        $stack10 = $r7.<org.json.JSONWriter: int top>;
+
+        if $stack10 != 0 goto label5;
+
+        $stack15 = 100;
+
+        goto label7;
+
+     label5:
+        $r8 = (org.json.JSONWriter) this;
+
+        $stack13 = $r8.<org.json.JSONWriter: org.json.JSONObject[] stack>;
+
+        $r9 = (org.json.JSONWriter) this;
+
+        $stack11 = $r9.<org.json.JSONWriter: int top>;
+
+        $stack12 = $stack11 - 1;
+
+        $stack14 = $stack13[$stack12];
+
+        if $stack14 != null goto label6;
+
+        $stack15 = 97;
+
+        goto label7;
+
+     label6:
+        $stack15 = 107;
+
+     label7:
+        $r10 = (org.json.JSONWriter) this;
+
+        $r10.<org.json.JSONWriter: char mode> = $stack15;
+
+        return;
+    }
+
+    private void push(org.json.JSONObject) throws org.json.JSONException
+    {
+        JSONWriter this;
+        int $stack2, $stack3, $stack5, $stack6;
+        org.json.JSONObject jo;
+        org.json.JSONObject[] $stack4;
+        char $stack7;
+        org.json.JSONException $u0;
+        org.json.JSONWriter $r0, $r2, $r3, $r4, $r5, $r6;
+        java.lang.Throwable $r1;
+
+        this := @this: JSONWriter;
+
+        jo := @parameter0: org.json.JSONObject;
+
+        $r0 = (org.json.JSONWriter) this;
+
+        $stack2 = $r0.<org.json.JSONWriter: int top>;
+
+        if $stack2 < 20 goto label1;
+
+        $u0 = new org.json.JSONException;
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>("Nesting too deep.");
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        $r2 = (org.json.JSONWriter) this;
+
+        $stack4 = $r2.<org.json.JSONWriter: org.json.JSONObject[] stack>;
+
+        $r3 = (org.json.JSONWriter) this;
+
+        $stack3 = $r3.<org.json.JSONWriter: int top>;
+
+        $stack4[$stack3] = jo;
+
+        if jo != null goto label2;
+
+        $stack7 = 97;
+
+        goto label3;
+
+     label2:
+        $stack7 = 107;
+
+     label3:
+        $r4 = (org.json.JSONWriter) this;
+
+        $r4.<org.json.JSONWriter: char mode> = $stack7;
+
+        $r5 = (org.json.JSONWriter) this;
+
+        $stack5 = $r5.<org.json.JSONWriter: int top>;
+
+        $stack6 = $stack5 + 1;
+
+        $r6 = (org.json.JSONWriter) this;
+
+        $r6.<org.json.JSONWriter: int top> = $stack6;
+
+        return;
+    }
+
+    public org.json.JSONWriter value(boolean) throws org.json.JSONException
+    {
+        JSONWriter this;
+        boolean b;
+        org.json.JSONWriter $stack2, $r0;
+        java.lang.String $stack3;
+
+        this := @this: JSONWriter;
+
+        b := @parameter0: boolean;
+
+        if b == 0 goto label1;
+
+        $stack3 = "true";
+
+        goto label2;
+
+     label1:
+        $stack3 = "false";
+
+     label2:
+        $r0 = (org.json.JSONWriter) this;
+
+        $stack2 = virtualinvoke $r0.<org.json.JSONWriter: org.json.JSONWriter append(java.lang.String)>($stack3);
+
+        return $stack2;
+    }
+
+    public org.json.JSONWriter value(double) throws org.json.JSONException
+    {
+        JSONWriter this;
+        double d;
+        org.json.JSONWriter $stack4, $r0;
+        java.lang.Double $u0;
+
+        this := @this: JSONWriter;
+
+        d := @parameter0: double;
+
+        $u0 = new java.lang.Double;
+
+        specialinvoke $u0.<java.lang.Double: void <init>(double)>(d);
+
+        $r0 = (org.json.JSONWriter) this;
+
+        $stack4 = virtualinvoke $r0.<org.json.JSONWriter: org.json.JSONWriter value(java.lang.Object)>($u0);
+
+        return $stack4;
+    }
+
+    public org.json.JSONWriter value(long) throws org.json.JSONException
+    {
+        JSONWriter this;
+        long l;
+        java.lang.String $stack3;
+        org.json.JSONWriter $stack4, $r0;
+
+        this := @this: JSONWriter;
+
+        l := @parameter0: long;
+
+        $stack3 = staticinvoke <java.lang.Long: java.lang.String toString(long)>(l);
+
+        $r0 = (org.json.JSONWriter) this;
+
+        $stack4 = virtualinvoke $r0.<org.json.JSONWriter: org.json.JSONWriter append(java.lang.String)>($stack3);
+
+        return $stack4;
+    }
+
+    public org.json.JSONWriter value(java.lang.Object) throws org.json.JSONException
+    {
+        JSONWriter this;
+        java.lang.Object o;
+        java.lang.String $stack2;
+        org.json.JSONWriter $stack3, $r0;
+
+        this := @this: JSONWriter;
+
+        o := @parameter0: java.lang.Object;
+
+        $stack2 = staticinvoke <org.json.JSONObject: java.lang.String valueToString(java.lang.Object)>(o);
+
+        $r0 = (org.json.JSONWriter) this;
+
+        $stack3 = virtualinvoke $r0.<org.json.JSONWriter: org.json.JSONWriter append(java.lang.String)>($stack2);
+
+        return $stack3;
+    }
+
+    public static void <clinit>()
+    {
+        <JSONWriter: int maxdepth> = 20;
+
+        return;
+    }
+}

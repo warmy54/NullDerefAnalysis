@@ -1,0 +1,1004 @@
+public class DefaultWagonManagerTest extends java.lang.Object
+{
+    private org.apache.maven.repository.legacy.WagonManager wagonManager;
+    private final org.apache.maven.wagon.events.TransferListener transferListener;
+    private org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
+    private org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory artifactRepositoryFactory;
+
+    public void <init>()
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.wagon.observers.Debug $u0;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+        org.apache.maven.wagon.events.TransferListener $r1;
+
+        this := @this: DefaultWagonManagerTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new org.apache.maven.wagon.observers.Debug;
+
+        specialinvoke $u0.<org.apache.maven.wagon.observers.Debug: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $r1 = (org.apache.maven.wagon.events.TransferListener) $u0;
+
+        $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.wagon.events.TransferListener transferListener> = $r1;
+
+        return;
+    }
+
+    public void testUnnecessaryRepositoryLookup() throws java.lang.Exception
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory $stack8, $stack14;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack11, $stack17, $stack22, $stack27, $stack34, $stack39;
+        org.apache.maven.repository.legacy.WagonManager $stack19, $stack46;
+        org.apache.maven.wagon.Wagon $stack20;
+        org.apache.maven.repository.legacy.StringWagon wagon;
+        java.lang.Object $stack21, $stack26, $stack33, $stack38;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $stack23, $stack28, $stack35, $stack40, $r3, $r6;
+        java.lang.String $stack24, $stack29, $stack32, $stack36, $stack41, $stack44;
+        java.lang.StringBuilder $stack30, $stack31, $stack42, $stack43, $u3, $u4;
+        java.util.List $stack47;
+        int $stack49;
+        java.util.ArrayList $u0;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest$ArtifactRepositoryLayoutStub $u1, $u2;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest$1TransferListener $u5;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0, $r1, $r2, $r4, $r5, $r7, $r8, $r9;
+        org.apache.maven.wagon.events.TransferListener $r10;
+
+        this := @this: DefaultWagonManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        artifact = specialinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.Artifact createTestPomArtifact(java.lang.String)>("target/test-data/get-missing-pom");
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack8 = $r1.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory artifactRepositoryFactory>;
+
+        $u1 = new org.apache.maven.repository.legacy.DefaultWagonManagerTest$ArtifactRepositoryLayoutStub;
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        specialinvoke $u1.<org.apache.maven.repository.legacy.DefaultWagonManagerTest$ArtifactRepositoryLayoutStub: void <init>(org.apache.maven.repository.legacy.DefaultWagonManagerTest,org.apache.maven.repository.legacy.DefaultWagonManagerTest$1)>($r2, null);
+
+        $r3 = (org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout) $u1;
+
+        $stack11 = interfaceinvoke $stack8.<org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>("repo1", "string://url1", $r3, null, null);
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($stack11);
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack14 = $r4.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory artifactRepositoryFactory>;
+
+        $u2 = new org.apache.maven.repository.legacy.DefaultWagonManagerTest$ArtifactRepositoryLayoutStub;
+
+        $r5 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        specialinvoke $u2.<org.apache.maven.repository.legacy.DefaultWagonManagerTest$ArtifactRepositoryLayoutStub: void <init>(org.apache.maven.repository.legacy.DefaultWagonManagerTest,org.apache.maven.repository.legacy.DefaultWagonManagerTest$1)>($r5, null);
+
+        $r6 = (org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout) $u2;
+
+        $stack17 = interfaceinvoke $stack14.<org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>("repo2", "string://url2", $r6, null, null);
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($stack17);
+
+        $r7 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack19 = $r7.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $stack20 = interfaceinvoke $stack19.<org.apache.maven.repository.legacy.WagonManager: org.apache.maven.wagon.Wagon getWagon(java.lang.String)>("string");
+
+        wagon = (org.apache.maven.repository.legacy.StringWagon) $stack20;
+
+        $stack21 = interfaceinvoke $u0.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack22 = (org.apache.maven.artifact.repository.ArtifactRepository) $stack21;
+
+        $stack23 = interfaceinvoke $stack22.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
+
+        $stack24 = interfaceinvoke $stack23.<org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>($stack24, "expected");
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack26 = interfaceinvoke $u0.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack27 = (org.apache.maven.artifact.repository.ArtifactRepository) $stack26;
+
+        $stack28 = interfaceinvoke $stack27.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
+
+        $stack29 = interfaceinvoke $stack28.<org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $stack30 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack29);
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".md5");
+
+        $stack32 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>($stack32, "cd26d9e10ce691cc69aa2b90dcebbdac");
+
+        $stack33 = interfaceinvoke $u0.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack34 = (org.apache.maven.artifact.repository.ArtifactRepository) $stack33;
+
+        $stack35 = interfaceinvoke $stack34.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
+
+        $stack36 = interfaceinvoke $stack35.<org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>($stack36, "expected");
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack38 = interfaceinvoke $u0.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack39 = (org.apache.maven.artifact.repository.ArtifactRepository) $stack38;
+
+        $stack40 = interfaceinvoke $stack39.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
+
+        $stack41 = interfaceinvoke $stack40.<org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $stack42 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack41);
+
+        $stack43 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".md5");
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>($stack44, "cd26d9e10ce691cc69aa2b90dcebbdac");
+
+        $u5 = new org.apache.maven.repository.legacy.DefaultWagonManagerTest$1TransferListener;
+
+        $r8 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        specialinvoke $u5.<org.apache.maven.repository.legacy.DefaultWagonManagerTest$1TransferListener: void <init>(org.apache.maven.repository.legacy.DefaultWagonManagerTest)>($r8);
+
+        $r9 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack46 = $r9.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $r10 = (org.apache.maven.wagon.events.TransferListener) $u5;
+
+        interfaceinvoke $stack46.<org.apache.maven.repository.legacy.WagonManager: void getArtifact(org.apache.maven.artifact.Artifact,java.util.List,org.apache.maven.wagon.events.TransferListener,boolean)>(artifact, $u0, $r10, 0);
+
+        $stack47 = $u5.<org.apache.maven.repository.legacy.DefaultWagonManagerTest$1TransferListener: java.util.List events>;
+
+        $stack49 = interfaceinvoke $stack47.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack49);
+
+        return;
+    }
+
+    public void testGetMissingJar() throws org.apache.maven.wagon.TransferFailedException, org.apache.maven.wagon.UnsupportedProtocolException, java.io.IOException
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        org.junit.jupiter.api.function.Executable $stack6;
+        java.io.File $stack8;
+        boolean $stack9;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0, $r1, $r2;
+
+        this := @this: DefaultWagonManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        artifact = specialinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.Artifact createTestArtifact(java.lang.String,java.lang.String)>("target/test-data/get-missing-jar", "jar");
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        repo = specialinvoke $r1.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.repository.ArtifactRepository createStringRepo()>();
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack6 = staticinvoke <DefaultWagonManagerTest$lambda_testGetMissingJar_0__309: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.repository.legacy.DefaultWagonManagerTest,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>($r2, artifact, repo);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lorg/apache/maven/wagon/ResourceDoesNotExistException;", $stack6);
+
+        $stack8 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        $stack9 = virtualinvoke $stack8.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack9);
+
+        return;
+    }
+
+    public void testGetMissingJarForced() throws org.apache.maven.wagon.TransferFailedException, org.apache.maven.wagon.UnsupportedProtocolException, java.io.IOException
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        org.junit.jupiter.api.function.Executable $stack6;
+        java.io.File $stack8;
+        boolean $stack9;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0, $r1, $r2;
+
+        this := @this: DefaultWagonManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        artifact = specialinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.Artifact createTestArtifact(java.lang.String,java.lang.String)>("target/test-data/get-missing-jar", "jar");
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        repo = specialinvoke $r1.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.repository.ArtifactRepository createStringRepo()>();
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack6 = staticinvoke <DefaultWagonManagerTest$lambda_testGetMissingJarForced_1__310: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.repository.legacy.DefaultWagonManagerTest,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>($r2, artifact, repo);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lorg/apache/maven/wagon/ResourceDoesNotExistException;", $stack6);
+
+        $stack8 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        $stack9 = virtualinvoke $stack8.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack9);
+
+        return;
+    }
+
+    public void testGetRemoteJar() throws org.apache.maven.wagon.TransferFailedException, org.apache.maven.wagon.ResourceDoesNotExistException, org.apache.maven.wagon.UnsupportedProtocolException, java.io.IOException
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        org.apache.maven.repository.legacy.WagonManager $stack6, $stack16;
+        org.apache.maven.wagon.Wagon $stack7;
+        org.apache.maven.repository.legacy.StringWagon wagon;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $stack8, $stack11;
+        java.lang.String $stack9, $stack12, $stack15, $stack21;
+        java.lang.StringBuilder $stack13, $stack14, $u0;
+        java.io.File $stack17, $stack20;
+        boolean $stack18;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultWagonManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        artifact = specialinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.Artifact createTestArtifact(java.lang.String,java.lang.String)>("target/test-data/get-remote-jar", "jar");
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        repo = specialinvoke $r1.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.repository.ArtifactRepository createStringRepo()>();
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack6 = $r2.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $stack7 = interfaceinvoke $stack6.<org.apache.maven.repository.legacy.WagonManager: org.apache.maven.wagon.Wagon getWagon(java.lang.String)>("string");
+
+        wagon = (org.apache.maven.repository.legacy.StringWagon) $stack7;
+
+        $stack8 = interfaceinvoke repo.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
+
+        $stack9 = interfaceinvoke $stack8.<org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>($stack9, "expected");
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack11 = interfaceinvoke repo.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
+
+        $stack12 = interfaceinvoke $stack11.<org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $stack13 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".md5");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>($stack15, "cd26d9e10ce691cc69aa2b90dcebbdac");
+
+        $r3 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack16 = $r3.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        interfaceinvoke $stack16.<org.apache.maven.repository.legacy.WagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>(artifact, repo, null, 0);
+
+        $stack17 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        $stack18 = virtualinvoke $stack17.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack18);
+
+        $stack20 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        $stack21 = staticinvoke <org.codehaus.plexus.util.FileUtils: java.lang.String fileRead(java.io.File,java.lang.String)>($stack20, "UTF-8");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("expected", $stack21);
+
+        return;
+    }
+
+    private org.apache.maven.artifact.Artifact createTestPomArtifact(java.lang.String) throws java.io.IOException
+    {
+        java.lang.String directory;
+        java.io.File testData, $stack9, $u0;
+        DefaultWagonManagerTest this;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack6;
+        org.apache.maven.artifact.Artifact artifact;
+        boolean $stack10;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+
+        this := @this: DefaultWagonManagerTest;
+
+        directory := @parameter0: java.lang.String;
+
+        testData = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>(directory);
+
+        staticinvoke <org.codehaus.plexus.util.FileUtils: void deleteDirectory(java.io.File)>(testData);
+
+        virtualinvoke testData.<java.io.File: boolean mkdirs()>();
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack6 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        artifact = interfaceinvoke $stack6.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createProjectArtifact(java.lang.String,java.lang.String,java.lang.String)>("test", "test", "1.0");
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.io.File,java.lang.String)>(testData, "test-1.0.pom");
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($u0);
+
+        $stack9 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        $stack10 = virtualinvoke $stack9.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack10);
+
+        return artifact;
+    }
+
+    private org.apache.maven.artifact.Artifact createTestArtifact(java.lang.String, java.lang.String) throws java.io.IOException
+    {
+        DefaultWagonManagerTest this;
+        java.lang.String directory, type;
+        org.apache.maven.artifact.Artifact $stack3;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+
+        this := @this: DefaultWagonManagerTest;
+
+        directory := @parameter0: java.lang.String;
+
+        type := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack3 = specialinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.Artifact createTestArtifact(java.lang.String,java.lang.String,java.lang.String)>(directory, "1.0", type);
+
+        return $stack3;
+    }
+
+    private org.apache.maven.artifact.Artifact createTestArtifact(java.lang.String, java.lang.String, java.lang.String) throws java.io.IOException
+    {
+        java.lang.String directory, version, type, $stack16, $stack18;
+        java.io.File testData, $stack19, $u1;
+        DefaultWagonManagerTest this;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack8;
+        org.apache.maven.artifact.Artifact artifact;
+        java.lang.StringBuilder $stack12, $stack13, $stack14, $stack17, $u0;
+        org.apache.maven.artifact.handler.ArtifactHandler $stack15;
+        boolean $stack20;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+
+        this := @this: DefaultWagonManagerTest;
+
+        directory := @parameter0: java.lang.String;
+
+        version := @parameter1: java.lang.String;
+
+        type := @parameter2: java.lang.String;
+
+        testData = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>(directory);
+
+        staticinvoke <org.codehaus.plexus.util.FileUtils: void deleteDirectory(java.io.File)>(testData);
+
+        virtualinvoke testData.<java.io.File: boolean mkdirs()>();
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack8 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        artifact = interfaceinvoke $stack8.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createBuildArtifact(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>("test", "test", version, type);
+
+        $u1 = new java.io.File;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("test-");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(version);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $stack15 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.handler.ArtifactHandler getArtifactHandler()>();
+
+        $stack16 = interfaceinvoke $stack15.<org.apache.maven.artifact.handler.ArtifactHandler: java.lang.String getExtension()>();
+
+        $stack17 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack16);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<java.io.File: void <init>(java.io.File,java.lang.String)>(testData, $stack18);
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($u1);
+
+        $stack19 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        $stack20 = virtualinvoke $stack19.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack20);
+
+        return artifact;
+    }
+
+    private org.apache.maven.artifact.repository.ArtifactRepository createStringRepo()
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory $stack2;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack5;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest$ArtifactRepositoryLayoutStub $u0;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0, $r1;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $r2;
+
+        this := @this: DefaultWagonManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack2 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory artifactRepositoryFactory>;
+
+        $u0 = new org.apache.maven.repository.legacy.DefaultWagonManagerTest$ArtifactRepositoryLayoutStub;
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        specialinvoke $u0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest$ArtifactRepositoryLayoutStub: void <init>(org.apache.maven.repository.legacy.DefaultWagonManagerTest,org.apache.maven.repository.legacy.DefaultWagonManagerTest$1)>($r1, null);
+
+        $r2 = (org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout) $u0;
+
+        $stack5 = interfaceinvoke $stack2.<org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>("id", "string://url", $r2, null, null);
+
+        return $stack5;
+    }
+
+    private org.apache.maven.artifact.repository.ArtifactRepository getRepo(java.lang.String, java.lang.String)
+    {
+        DefaultWagonManagerTest this;
+        java.lang.String id, url;
+        org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory $stack4;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack5;
+        org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout $u0;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $r1;
+
+        this := @this: DefaultWagonManagerTest;
+
+        id := @parameter0: java.lang.String;
+
+        url := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack4 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory artifactRepositoryFactory>;
+
+        $u0 = new org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout: void <init>()>();
+
+        $r1 = (org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout) $u0;
+
+        $stack5 = interfaceinvoke $stack4.<org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>(id, url, $r1, null, null);
+
+        return $stack5;
+    }
+
+    private org.apache.maven.artifact.repository.ArtifactRepository getRepo(java.lang.String)
+    {
+        DefaultWagonManagerTest this;
+        java.lang.String id;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack2;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+
+        this := @this: DefaultWagonManagerTest;
+
+        id := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.repository.ArtifactRepository getRepo(java.lang.String,java.lang.String)>(id, "http://something");
+
+        return $stack2;
+    }
+
+    public void testDefaultWagonManager() throws java.lang.Exception
+    {
+        DefaultWagonManagerTest this;
+        org.junit.jupiter.api.function.Executable $stack2;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DefaultWagonManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: void assertWagon(java.lang.String)>("a");
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        specialinvoke $r1.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: void assertWagon(java.lang.String)>("b");
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        specialinvoke $r2.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: void assertWagon(java.lang.String)>("c");
+
+        $r3 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        specialinvoke $r3.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: void assertWagon(java.lang.String)>("string");
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack2 = staticinvoke <DefaultWagonManagerTest$lambda_testDefaultWagonManager_2__311: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.repository.legacy.DefaultWagonManagerTest)>($r4);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lorg/apache/maven/wagon/UnsupportedProtocolException;", $stack2);
+
+        return;
+    }
+
+    public void testWagonTransferListenerRemovedAfterGetArtifactAndPutArtifact() throws java.lang.Exception
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        org.apache.maven.repository.legacy.WagonManager $stack7, $stack21, $stack31;
+        org.apache.maven.wagon.Wagon $stack8;
+        org.apache.maven.repository.legacy.StringWagon wagon;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $stack9, $stack12;
+        java.lang.String $stack10, $stack13, $stack16, $stack26;
+        java.lang.StringBuilder $stack14, $stack15, $u0;
+        org.apache.maven.wagon.events.TransferEventSupport $stack17, $stack22, $stack27, $stack32;
+        org.apache.maven.wagon.events.TransferListener $stack18, $stack20, $stack23, $stack28, $stack30, $stack33;
+        boolean $stack19, $stack24, $stack29, $stack34;
+        java.io.File sampleFile;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10;
+
+        this := @this: DefaultWagonManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        artifact = specialinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.Artifact createTestArtifact(java.lang.String,java.lang.String)>("target/test-data/transfer-listener", "jar");
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        repo = specialinvoke $r1.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.artifact.repository.ArtifactRepository createStringRepo()>();
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack7 = $r2.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $stack8 = interfaceinvoke $stack7.<org.apache.maven.repository.legacy.WagonManager: org.apache.maven.wagon.Wagon getWagon(java.lang.String)>("string");
+
+        wagon = (org.apache.maven.repository.legacy.StringWagon) $stack8;
+
+        $stack9 = interfaceinvoke repo.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
+
+        $stack10 = interfaceinvoke $stack9.<org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>($stack10, "expected");
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = interfaceinvoke repo.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
+
+        $stack13 = interfaceinvoke $stack12.<org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $stack14 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack13);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".md5");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>($stack16, "cd26d9e10ce691cc69aa2b90dcebbdac");
+
+        $stack17 = virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: org.apache.maven.wagon.events.TransferEventSupport getTransferEventSupport()>();
+
+        $r3 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack18 = $r3.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.wagon.events.TransferListener transferListener>;
+
+        $stack19 = virtualinvoke $stack17.<org.apache.maven.wagon.events.TransferEventSupport: boolean hasTransferListener(org.apache.maven.wagon.events.TransferListener)>($stack18);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean,java.lang.String)>($stack19, "Transfer listener is registered before test");
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack21 = $r4.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $r5 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack20 = $r5.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.wagon.events.TransferListener transferListener>;
+
+        interfaceinvoke $stack21.<org.apache.maven.repository.legacy.WagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>(artifact, repo, $stack20, 0);
+
+        $stack22 = virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: org.apache.maven.wagon.events.TransferEventSupport getTransferEventSupport()>();
+
+        $r6 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack23 = $r6.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.wagon.events.TransferListener transferListener>;
+
+        $stack24 = virtualinvoke $stack22.<org.apache.maven.wagon.events.TransferEventSupport: boolean hasTransferListener(org.apache.maven.wagon.events.TransferListener)>($stack23);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean,java.lang.String)>($stack24, "Transfer listener still registered after getArtifact");
+
+        sampleFile = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("target/test-file");
+
+        $stack26 = virtualinvoke sampleFile.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        staticinvoke <org.codehaus.plexus.util.FileUtils: void fileWrite(java.lang.String,java.lang.String)>($stack26, "sample file");
+
+        $stack27 = virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: org.apache.maven.wagon.events.TransferEventSupport getTransferEventSupport()>();
+
+        $r7 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack28 = $r7.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.wagon.events.TransferListener transferListener>;
+
+        $stack29 = virtualinvoke $stack27.<org.apache.maven.wagon.events.TransferEventSupport: boolean hasTransferListener(org.apache.maven.wagon.events.TransferListener)>($stack28);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean,java.lang.String)>($stack29, "Transfer listener is registered before test");
+
+        $r8 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack31 = $r8.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $r9 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack30 = $r9.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.wagon.events.TransferListener transferListener>;
+
+        interfaceinvoke $stack31.<org.apache.maven.repository.legacy.WagonManager: void putArtifact(java.io.File,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener)>(sampleFile, artifact, repo, $stack30);
+
+        $stack32 = virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: org.apache.maven.wagon.events.TransferEventSupport getTransferEventSupport()>();
+
+        $r10 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack33 = $r10.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.wagon.events.TransferListener transferListener>;
+
+        $stack34 = virtualinvoke $stack32.<org.apache.maven.wagon.events.TransferEventSupport: boolean hasTransferListener(org.apache.maven.wagon.events.TransferListener)>($stack33);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean,java.lang.String)>($stack34, "Transfer listener still registered after putArtifact");
+
+        return;
+    }
+
+    public void testChecksumVerification() throws java.lang.Exception
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory $stack7;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        org.apache.maven.artifact.versioning.VersionRange $stack14;
+        java.io.File $stack15;
+        org.apache.maven.repository.legacy.WagonManager $stack16, $stack18, $stack19, $stack23, $stack24;
+        org.apache.maven.wagon.Wagon $stack17;
+        org.apache.maven.repository.legacy.StringWagon wagon;
+        org.junit.jupiter.api.function.Executable $stack21, $stack26;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy $u0;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest$ArtifactRepositoryLayoutStub $u1;
+        org.apache.maven.artifact.DefaultArtifact $u2;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0, $r1, $r4, $r5, $r7, $r9, $r11, $r13, $r15;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $r2;
+        org.apache.maven.artifact.Artifact $r3, $r6, $r8, $r10, $r12, $r14, $r16;
+
+        this := @this: DefaultWagonManagerTest;
+
+        $u0 = new org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: void <init>(boolean,java.lang.String,java.lang.String)>(1, "always", "fail");
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack7 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory artifactRepositoryFactory>;
+
+        $u1 = new org.apache.maven.repository.legacy.DefaultWagonManagerTest$ArtifactRepositoryLayoutStub;
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        specialinvoke $u1.<org.apache.maven.repository.legacy.DefaultWagonManagerTest$ArtifactRepositoryLayoutStub: void <init>(org.apache.maven.repository.legacy.DefaultWagonManagerTest,org.apache.maven.repository.legacy.DefaultWagonManagerTest$1)>($r1, null);
+
+        $r2 = (org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout) $u1;
+
+        repo = interfaceinvoke $stack7.<org.apache.maven.repository.legacy.repository.ArtifactRepositoryFactory: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>("id", "string://url", $r2, $u0, $u0);
+
+        $u2 = new org.apache.maven.artifact.DefaultArtifact;
+
+        $stack14 = staticinvoke <org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.VersionRange createFromVersion(java.lang.String)>("1.0");
+
+        specialinvoke $u2.<org.apache.maven.artifact.DefaultArtifact: void <init>(java.lang.String,java.lang.String,org.apache.maven.artifact.versioning.VersionRange,java.lang.String,java.lang.String,java.lang.String,org.apache.maven.artifact.handler.ArtifactHandler)>("sample.group", "sample-art", $stack14, "scope", "jar", "classifier", null);
+
+        $stack15 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("target/sample-art");
+
+        $r3 = (org.apache.maven.artifact.Artifact) $u2;
+
+        interfaceinvoke $r3.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($stack15);
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack16 = $r4.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $stack17 = interfaceinvoke $stack16.<org.apache.maven.repository.legacy.WagonManager: org.apache.maven.wagon.Wagon getWagon(java.lang.String)>("string");
+
+        wagon = (org.apache.maven.repository.legacy.StringWagon) $stack17;
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void clearExpectedContent()>();
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path", "lower-case-checksum");
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path.sha1", "2a25dc564a3b34f68237fc849066cbc7bb7a36a1");
+
+        $r5 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack18 = $r5.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $r6 = (org.apache.maven.artifact.Artifact) $u2;
+
+        interfaceinvoke $stack18.<org.apache.maven.repository.legacy.WagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>($r6, repo, null, 0);
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void clearExpectedContent()>();
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path", "upper-case-checksum");
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path.sha1", "B7BB97D7D0B9244398D9B47296907F73313663E6");
+
+        $r7 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack19 = $r7.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $r8 = (org.apache.maven.artifact.Artifact) $u2;
+
+        interfaceinvoke $stack19.<org.apache.maven.repository.legacy.WagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>($r8, repo, null, 0);
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void clearExpectedContent()>();
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path", "expected-failure");
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path.sha1", "b7bb97d7d0b9244398d9b47296907f73313663e6");
+
+        $r9 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $r10 = (org.apache.maven.artifact.Artifact) $u2;
+
+        $stack21 = staticinvoke <DefaultWagonManagerTest$lambda_testChecksumVerification_3__312: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.repository.legacy.DefaultWagonManagerTest,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>($r9, $r10, repo);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/repository/legacy/ChecksumFailedException;", $stack21, "Checksum verification did not fail");
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void clearExpectedContent()>();
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path", "lower-case-checksum");
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path.md5", "50b2cf50a103a965efac62b983035cac");
+
+        $r11 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack23 = $r11.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $r12 = (org.apache.maven.artifact.Artifact) $u2;
+
+        interfaceinvoke $stack23.<org.apache.maven.repository.legacy.WagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>($r12, repo, null, 0);
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void clearExpectedContent()>();
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path", "upper-case-checksum");
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path.md5", "842F568FCCFEB7E534DC72133D42FFDC");
+
+        $r13 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack24 = $r13.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        $r14 = (org.apache.maven.artifact.Artifact) $u2;
+
+        interfaceinvoke $stack24.<org.apache.maven.repository.legacy.WagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>($r14, repo, null, 0);
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void clearExpectedContent()>();
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path", "expected-failure");
+
+        virtualinvoke wagon.<org.apache.maven.repository.legacy.StringWagon: void addExpectedContent(java.lang.String,java.lang.String)>("path.md5", "b7bb97d7d0b9244398d9b47296907f73313663e6");
+
+        $r15 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $r16 = (org.apache.maven.artifact.Artifact) $u2;
+
+        $stack26 = staticinvoke <DefaultWagonManagerTest$lambda_testChecksumVerification_4__313: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.repository.legacy.DefaultWagonManagerTest,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>($r15, $r16, repo);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/repository/legacy/ChecksumFailedException;", $stack26, "Checksum verification did not fail");
+
+        return;
+    }
+
+    public void testPerLookupInstantiation() throws java.lang.Exception
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.repository.legacy.WagonManager $stack4, $stack6;
+        org.apache.maven.wagon.Wagon one, two;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0, $r1;
+
+        this := @this: DefaultWagonManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack4 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        one = interfaceinvoke $stack4.<org.apache.maven.repository.legacy.WagonManager: org.apache.maven.wagon.Wagon getWagon(java.lang.String)>("perlookup");
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack6 = $r1.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        two = interfaceinvoke $stack6.<org.apache.maven.repository.legacy.WagonManager: org.apache.maven.wagon.Wagon getWagon(java.lang.String)>("perlookup");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotSame(java.lang.Object,java.lang.Object)>(one, two);
+
+        return;
+    }
+
+    private void assertWagon(java.lang.String) throws java.lang.Exception
+    {
+        DefaultWagonManagerTest this;
+        java.lang.String protocol, $stack8;
+        org.apache.maven.repository.legacy.WagonManager $stack3;
+        org.apache.maven.wagon.Wagon wagon;
+        java.lang.StringBuilder $stack6, $stack7, $u0;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+
+        this := @this: DefaultWagonManagerTest;
+
+        protocol := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        wagon = interfaceinvoke $stack3.<org.apache.maven.repository.legacy.WagonManager: org.apache.maven.wagon.Wagon getWagon(java.lang.String)>(protocol);
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Check wagon, protocol=");
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(protocol);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object,java.lang.String)>(wagon, $stack8);
+
+        return;
+    }
+
+    private void lambda$testChecksumVerification$4(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository) throws java.lang.Throwable
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        org.apache.maven.repository.legacy.WagonManager $stack3;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+
+        this := @this: DefaultWagonManagerTest;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        repo := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        interfaceinvoke $stack3.<org.apache.maven.repository.legacy.WagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>(artifact, repo, null, 0);
+
+        return;
+    }
+
+    private void lambda$testChecksumVerification$3(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository) throws java.lang.Throwable
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        org.apache.maven.repository.legacy.WagonManager $stack3;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+
+        this := @this: DefaultWagonManagerTest;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        repo := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        interfaceinvoke $stack3.<org.apache.maven.repository.legacy.WagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>(artifact, repo, null, 0);
+
+        return;
+    }
+
+    private void lambda$testDefaultWagonManager$2() throws java.lang.Throwable
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+
+        this := @this: DefaultWagonManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: void assertWagon(java.lang.String)>("d");
+
+        return;
+    }
+
+    private void lambda$testGetMissingJarForced$1(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository) throws java.lang.Throwable
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        org.apache.maven.repository.legacy.WagonManager $stack3;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+
+        this := @this: DefaultWagonManagerTest;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        repo := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        interfaceinvoke $stack3.<org.apache.maven.repository.legacy.WagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>(artifact, repo, null, 1);
+
+        return;
+    }
+
+    private void lambda$testGetMissingJar$0(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository) throws java.lang.Throwable
+    {
+        DefaultWagonManagerTest this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        org.apache.maven.repository.legacy.WagonManager $stack3;
+        org.apache.maven.repository.legacy.DefaultWagonManagerTest $r0;
+
+        this := @this: DefaultWagonManagerTest;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        repo := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManagerTest) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManagerTest: org.apache.maven.repository.legacy.WagonManager wagonManager>;
+
+        interfaceinvoke $stack3.<org.apache.maven.repository.legacy.WagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>(artifact, repo, null, 0);
+
+        return;
+    }
+}

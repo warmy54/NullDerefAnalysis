@@ -1,0 +1,127 @@
+public abstract class AbstractRepositoryTestCase extends java.lang.Object
+{
+    protected org.eclipse.aether.RepositorySystem system;
+    protected org.codehaus.plexus.PlexusContainer container;
+    protected org.eclipse.aether.RepositorySystemSession session;
+
+    public void <init>()
+    {
+        AbstractRepositoryTestCase this;
+
+        this := @this: AbstractRepositoryTestCase;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void setUp() throws java.lang.Exception
+    {
+        AbstractRepositoryTestCase this;
+        org.eclipse.aether.RepositorySystem $stack1;
+        org.eclipse.aether.RepositorySystemSession $stack2;
+        org.apache.maven.repository.internal.AbstractRepositoryTestCase $r0, $r1;
+
+        this := @this: AbstractRepositoryTestCase;
+
+        $r0 = (org.apache.maven.repository.internal.AbstractRepositoryTestCase) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.internal.AbstractRepositoryTestCase: org.eclipse.aether.RepositorySystem system>;
+
+        $stack2 = staticinvoke <org.apache.maven.repository.internal.AbstractRepositoryTestCase: org.eclipse.aether.RepositorySystemSession newMavenRepositorySystemSession(org.eclipse.aether.RepositorySystem)>($stack1);
+
+        $r1 = (org.apache.maven.repository.internal.AbstractRepositoryTestCase) this;
+
+        $r1.<org.apache.maven.repository.internal.AbstractRepositoryTestCase: org.eclipse.aether.RepositorySystemSession session> = $stack2;
+
+        return;
+    }
+
+    protected org.codehaus.plexus.PlexusContainer getContainer()
+    {
+        AbstractRepositoryTestCase this;
+        org.codehaus.plexus.PlexusContainer $stack1;
+        org.apache.maven.repository.internal.AbstractRepositoryTestCase $r0;
+
+        this := @this: AbstractRepositoryTestCase;
+
+        $r0 = (org.apache.maven.repository.internal.AbstractRepositoryTestCase) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.internal.AbstractRepositoryTestCase: org.codehaus.plexus.PlexusContainer container>;
+
+        return $stack1;
+    }
+
+    public static org.eclipse.aether.RepositorySystemSession newMavenRepositorySystemSession(org.eclipse.aether.RepositorySystem)
+    {
+        org.eclipse.aether.DefaultRepositorySystemSession session;
+        org.eclipse.aether.RepositorySystem system;
+        org.eclipse.aether.repository.LocalRepositoryManager $stack5;
+        org.eclipse.aether.repository.LocalRepository $u0;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $u1;
+        org.apache.maven.repository.internal.util.ConsoleRepositoryListener $u2;
+        org.eclipse.aether.RepositorySystemSession $r0, $r3;
+        org.eclipse.aether.transfer.TransferListener $r1;
+        org.eclipse.aether.RepositoryListener $r2;
+
+        system := @parameter0: org.eclipse.aether.RepositorySystem;
+
+        session = staticinvoke <org.apache.maven.repository.internal.MavenRepositorySystemUtils: org.eclipse.aether.DefaultRepositorySystemSession newSession()>();
+
+        $u0 = new org.eclipse.aether.repository.LocalRepository;
+
+        specialinvoke $u0.<org.eclipse.aether.repository.LocalRepository: void <init>(java.lang.String)>("target/local-repo");
+
+        $r0 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        $stack5 = interfaceinvoke system.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.repository.LocalRepositoryManager newLocalRepositoryManager(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.repository.LocalRepository)>($r0, $u0);
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setLocalRepositoryManager(org.eclipse.aether.repository.LocalRepositoryManager)>($stack5);
+
+        $u1 = new org.apache.maven.repository.internal.util.ConsoleTransferListener;
+
+        specialinvoke $u1.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void <init>()>();
+
+        $r1 = (org.eclipse.aether.transfer.TransferListener) $u1;
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setTransferListener(org.eclipse.aether.transfer.TransferListener)>($r1);
+
+        $u2 = new org.apache.maven.repository.internal.util.ConsoleRepositoryListener;
+
+        specialinvoke $u2.<org.apache.maven.repository.internal.util.ConsoleRepositoryListener: void <init>()>();
+
+        $r2 = (org.eclipse.aether.RepositoryListener) $u2;
+
+        virtualinvoke session.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setRepositoryListener(org.eclipse.aether.RepositoryListener)>($r2);
+
+        $r3 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        return $r3;
+    }
+
+    public static org.eclipse.aether.repository.RemoteRepository newTestRepository() throws java.net.MalformedURLException
+    {
+        org.eclipse.aether.repository.RemoteRepository$Builder $stack0;
+        java.io.File $stack3;
+        java.net.URI $stack4;
+        java.net.URL $stack5;
+        java.lang.String $stack6;
+        org.eclipse.aether.repository.RemoteRepository $stack7;
+
+        $stack0 = new org.eclipse.aether.repository.RemoteRepository$Builder;
+
+        $stack3 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("target/test-classes/repo");
+
+        $stack4 = virtualinvoke $stack3.<java.io.File: java.net.URI toURI()>();
+
+        $stack5 = virtualinvoke $stack4.<java.net.URI: java.net.URL toURL()>();
+
+        $stack6 = virtualinvoke $stack5.<java.net.URL: java.lang.String toString()>();
+
+        specialinvoke $stack0.<org.eclipse.aether.repository.RemoteRepository$Builder: void <init>(java.lang.String,java.lang.String,java.lang.String)>("repo", "default", $stack6);
+
+        $stack7 = virtualinvoke $stack0.<org.eclipse.aether.repository.RemoteRepository$Builder: org.eclipse.aether.repository.RemoteRepository build()>();
+
+        return $stack7;
+    }
+}

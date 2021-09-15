@@ -1,0 +1,1507 @@
+public class OpenKinectFrameGrabber extends org.bytedeco.javacv.FrameGrabber
+{
+    private static org.bytedeco.javacv.FrameGrabber$Exception loadingException;
+    private int deviceNumber;
+    private boolean depth;
+    private org.bytedeco.javacpp.BytePointer rawDepthImageData;
+    private org.bytedeco.javacpp.BytePointer rawVideoImageData;
+    private org.bytedeco.javacpp.BytePointer rawIRImageData;
+    private org.bytedeco.opencv.opencv_core.IplImage rawDepthImage;
+    private org.bytedeco.opencv.opencv_core.IplImage rawVideoImage;
+    private org.bytedeco.opencv.opencv_core.IplImage rawIRImage;
+    private org.bytedeco.opencv.opencv_core.IplImage returnImage;
+    private org.bytedeco.javacv.FrameConverter converter;
+    private int[] timestamp;
+    private java.nio.ByteOrder byteOrder;
+    private int depthFormat;
+    private int videoFormat;
+    static final boolean $assertionsDisabled;
+
+    public static java.lang.String[] getDeviceDescriptions() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        int count, $stack8, err, i;
+        java.lang.String[] descriptions;
+        java.lang.StringBuilder $stack12, $stack13, $stack14, $stack17, $stack18, $stack24, $stack25, $stack26, $stack30, $stack31, $stack32, $u1, $u3, $u5, $u6;
+        java.lang.String $stack15, $stack19, $stack27, $stack33;
+        org.bytedeco.libfreenect.freenect_context $u0;
+        org.bytedeco.javacv.FrameGrabber$Exception $u2, $u4, $u7;
+        java.lang.Throwable $r0, $r1, $r2;
+
+        staticinvoke <org.bytedeco.javacv.OpenKinectFrameGrabber: void tryLoad()>();
+
+        $u0 = new org.bytedeco.libfreenect.freenect_context;
+
+        specialinvoke $u0.<org.bytedeco.libfreenect.freenect_context: void <init>(org.bytedeco.javacpp.Pointer)>(null);
+
+        err = staticinvoke <org.bytedeco.libfreenect.global.freenect: int freenect_init(org.bytedeco.libfreenect.freenect_context,org.bytedeco.libfreenect.freenect_usb_context)>($u0, null);
+
+        if err >= 0 goto label1;
+
+        $u2 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack30 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("freenect_init() Error ");
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(err);
+
+        $stack32 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Failed to init context.");
+
+        $stack33 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack33);
+
+        $r0 = (java.lang.Throwable) $u2;
+
+        throw $r0;
+
+     label1:
+        count = staticinvoke <org.bytedeco.libfreenect.global.freenect: int freenect_num_devices(org.bytedeco.libfreenect.freenect_context)>($u0);
+
+        if count >= 0 goto label2;
+
+        $u4 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack24 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("freenect_num_devices() Error ");
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(err);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Failed to get number of devices.");
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u4.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack27);
+
+        $r1 = (java.lang.Throwable) $u4;
+
+        throw $r1;
+
+     label2:
+        descriptions = newarray (java.lang.String)[count];
+
+        i = 0;
+
+     label3:
+        $stack8 = lengthof descriptions;
+
+        if i >= $stack8 goto label4;
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack17 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Kinect #");
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        descriptions[i] = $stack19;
+
+        i = i + 1;
+
+        goto label3;
+
+     label4:
+        err = staticinvoke <org.bytedeco.libfreenect.global.freenect: int freenect_shutdown(org.bytedeco.libfreenect.freenect_context)>($u0);
+
+        if err >= 0 goto label5;
+
+        $u7 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("freenect_shutdown() Error ");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(err);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Failed to shutdown context.");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u7.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack15);
+
+        $r2 = (java.lang.Throwable) $u7;
+
+        throw $r2;
+
+     label5:
+        return descriptions;
+    }
+
+    public static org.bytedeco.javacv.OpenKinectFrameGrabber createDefault(java.io.File) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        java.lang.StringBuilder $stack3, $stack4, $u0;
+        java.lang.String $stack5;
+        java.io.File deviceFile;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        java.lang.Throwable $r0;
+
+        deviceFile := @parameter0: java.io.File;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/OpenKinectFrameGrabber;");
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not support device files.");
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack5);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+    }
+
+    public static org.bytedeco.javacv.OpenKinectFrameGrabber createDefault(java.lang.String) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        java.lang.StringBuilder $stack3, $stack4, $u0;
+        java.lang.String $stack5, devicePath;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        java.lang.Throwable $r0;
+
+        devicePath := @parameter0: java.lang.String;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/OpenKinectFrameGrabber;");
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not support device paths.");
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack5);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+    }
+
+    public static org.bytedeco.javacv.OpenKinectFrameGrabber createDefault(int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.OpenKinectFrameGrabber $stack1;
+        int deviceNumber;
+
+        deviceNumber := @parameter0: int;
+
+        $stack1 = new org.bytedeco.javacv.OpenKinectFrameGrabber;
+
+        specialinvoke $stack1.<org.bytedeco.javacv.OpenKinectFrameGrabber: void <init>(int)>(deviceNumber);
+
+        return $stack1;
+    }
+
+    public static void tryLoad() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.FrameGrabber$Exception $stack1, $stack3, $u1;
+        java.lang.Throwable $stack4, $r0, $r1;
+        java.lang.StringBuilder $stack7, $stack8, $u0;
+        java.lang.String $stack9;
+
+        $stack1 = <org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        if $stack1 == null goto label1;
+
+        $stack3 = <org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        $r0 = (java.lang.Throwable) $stack3;
+
+        throw $r0;
+
+     label1:
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/libfreenect/global/freenect;");
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to load ");
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/OpenKinectFrameGrabber;");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String,java.lang.Throwable)>($stack9, $stack4);
+
+        <org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = $u1;
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label4:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void <init>(int)
+    {
+        OpenKinectFrameGrabber this;
+        org.bytedeco.javacpp.Pointer $stack3, $stack5, $stack7;
+        int[] $stack9;
+        java.nio.ByteOrder $stack10;
+        int deviceNumber;
+        org.bytedeco.javacpp.BytePointer $u0, $u1, $u2;
+        org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage $u3;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r11, $r12, $r13, $r14, $r15;
+        org.bytedeco.javacv.FrameConverter $r10;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        deviceNumber := @parameter0: int;
+
+        specialinvoke this.<org.bytedeco.javacv.FrameGrabber: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: int deviceNumber> = 0;
+
+        $r1 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.OpenKinectFrameGrabber: boolean depth> = 0;
+
+        $u0 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack3 = (org.bytedeco.javacpp.Pointer) null;
+
+        specialinvoke $u0.<org.bytedeco.javacpp.BytePointer: void <init>(org.bytedeco.javacpp.Pointer)>($stack3);
+
+        $r2 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacpp.BytePointer rawDepthImageData> = $u0;
+
+        $u1 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack5 = (org.bytedeco.javacpp.Pointer) null;
+
+        specialinvoke $u1.<org.bytedeco.javacpp.BytePointer: void <init>(org.bytedeco.javacpp.Pointer)>($stack5);
+
+        $r3 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacpp.BytePointer rawVideoImageData> = $u1;
+
+        $u2 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack7 = (org.bytedeco.javacpp.Pointer) null;
+
+        specialinvoke $u2.<org.bytedeco.javacpp.BytePointer: void <init>(org.bytedeco.javacpp.Pointer)>($stack7);
+
+        $r4 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r4.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacpp.BytePointer rawIRImageData> = $u2;
+
+        $r5 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r5.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage> = null;
+
+        $r6 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r6.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage> = null;
+
+        $r7 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r7.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage> = null;
+
+        $r8 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r8.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage returnImage> = null;
+
+        $u3 = new org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage;
+
+        specialinvoke $u3.<org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage: void <init>()>();
+
+        $r9 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r10 = (org.bytedeco.javacv.FrameConverter) $u3;
+
+        $r9.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacv.FrameConverter converter> = $r10;
+
+        $stack9 = newarray (int)[1];
+
+        $stack9[0] = 0;
+
+        $r11 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r11.<org.bytedeco.javacv.OpenKinectFrameGrabber: int[] timestamp> = $stack9;
+
+        $stack10 = <java.nio.ByteOrder: java.nio.ByteOrder BIG_ENDIAN>;
+
+        $r12 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r12.<org.bytedeco.javacv.OpenKinectFrameGrabber: java.nio.ByteOrder byteOrder> = $stack10;
+
+        $r13 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r13.<org.bytedeco.javacv.OpenKinectFrameGrabber: int depthFormat> = -1;
+
+        $r14 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r14.<org.bytedeco.javacv.OpenKinectFrameGrabber: int videoFormat> = -1;
+
+        $r15 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r15.<org.bytedeco.javacv.OpenKinectFrameGrabber: int deviceNumber> = deviceNumber;
+
+        return;
+    }
+
+    public void release() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinectFrameGrabber this;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: void stop()>();
+
+        return;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        OpenKinectFrameGrabber this;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: void release()>();
+
+        return;
+    }
+
+    public java.nio.ByteOrder getByteOrder()
+    {
+        OpenKinectFrameGrabber this;
+        java.nio.ByteOrder $stack1;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: java.nio.ByteOrder byteOrder>;
+
+        return $stack1;
+    }
+
+    public void setByteOrder(java.nio.ByteOrder)
+    {
+        OpenKinectFrameGrabber this;
+        java.nio.ByteOrder byteOrder;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        byteOrder := @parameter0: java.nio.ByteOrder;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: java.nio.ByteOrder byteOrder> = byteOrder;
+
+        return;
+    }
+
+    public int getDepthFormat()
+    {
+        OpenKinectFrameGrabber this;
+        int $stack1;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: int depthFormat>;
+
+        return $stack1;
+    }
+
+    public void setDepthFormat(int)
+    {
+        OpenKinectFrameGrabber this;
+        int depthFormat;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        depthFormat := @parameter0: int;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: int depthFormat> = depthFormat;
+
+        return;
+    }
+
+    public int getVideoFormat()
+    {
+        OpenKinectFrameGrabber this;
+        int $stack1;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: int videoFormat>;
+
+        return $stack1;
+    }
+
+    public void setVideoFormat(int)
+    {
+        OpenKinectFrameGrabber this;
+        int videoFormat;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        videoFormat := @parameter0: int;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: int videoFormat> = videoFormat;
+
+        return;
+    }
+
+    public double getGamma()
+    {
+        OpenKinectFrameGrabber this;
+        double $stack1, $stack3;
+        byte $stack2;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0, $r1;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: double gamma>;
+
+        $stack2 = $stack1 cmpl 0.0;
+
+        if $stack2 != 0 goto label1;
+
+        return 2.2;
+
+     label1:
+        $r1 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.OpenKinectFrameGrabber: double gamma>;
+
+        return $stack3;
+    }
+
+    public void setImageMode(org.bytedeco.javacv.FrameGrabber$ImageMode)
+    {
+        org.bytedeco.javacv.FrameGrabber$ImageMode imageMode, $stack2;
+        OpenKinectFrameGrabber this;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0, $r1;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        imageMode := @parameter0: org.bytedeco.javacv.FrameGrabber$ImageMode;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        if imageMode == $stack2 goto label1;
+
+        $r1 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage returnImage> = null;
+
+     label1:
+        specialinvoke this.<org.bytedeco.javacv.FrameGrabber: void setImageMode(org.bytedeco.javacv.FrameGrabber$ImageMode)>(imageMode);
+
+        return;
+    }
+
+    public void start() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinectFrameGrabber this;
+        java.lang.String $stack1, $stack2;
+        boolean $stack3;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0, $r1;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        $stack2 = "depth";
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: java.lang.String format>;
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($stack1);
+
+        $r1 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.OpenKinectFrameGrabber: boolean depth> = $stack3;
+
+        return;
+    }
+
+    public void stop() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinectFrameGrabber this;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        staticinvoke <org.bytedeco.libfreenect.global.freenect: void freenect_sync_stop()>();
+
+        return;
+    }
+
+    public void trigger() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinectFrameGrabber this;
+        int $stack4, $stack5, $stack7, $stack8, $stack27, $stack28, i, $stack38, err, $stack21;
+        boolean $stack6;
+        int[] $stack9, $stack29;
+        org.bytedeco.javacpp.BytePointer $stack10, $stack30;
+        java.lang.StringBuilder $stack17, $stack18, $stack19, $stack34, $stack35, $stack36, $u0, $u2;
+        java.lang.String $stack20, $stack37;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1, $u3;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r10, $r11, $r12, $r13, $r14, $r15;
+        org.bytedeco.javacpp.Pointer $r8, $r16;
+        java.lang.Throwable $r9, $r17;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        i = 0;
+
+     label1:
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: int numBuffers>;
+
+        $stack5 = $stack4 + 1;
+
+        if i >= $stack5 goto label9;
+
+        $r1 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack6 = $r1.<org.bytedeco.javacv.OpenKinectFrameGrabber: boolean depth>;
+
+        if $stack6 == 0 goto label5;
+
+        $r2 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack27 = $r2.<org.bytedeco.javacv.OpenKinectFrameGrabber: int depthFormat>;
+
+        if $stack27 >= 0 goto label2;
+
+        $r3 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack38 = $r3.<org.bytedeco.javacv.OpenKinectFrameGrabber: int bpp>;
+
+        goto label3;
+
+     label2:
+        $r4 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack38 = $r4.<org.bytedeco.javacv.OpenKinectFrameGrabber: int depthFormat>;
+
+     label3:
+        $r5 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack30 = $r5.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacpp.BytePointer rawDepthImageData>;
+
+        $r6 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack29 = $r6.<org.bytedeco.javacv.OpenKinectFrameGrabber: int[] timestamp>;
+
+        $r7 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack28 = $r7.<org.bytedeco.javacv.OpenKinectFrameGrabber: int deviceNumber>;
+
+        $r8 = (org.bytedeco.javacpp.Pointer) $stack30;
+
+        err = staticinvoke <org.bytedeco.libfreenect.global.freenect: int freenect_sync_get_depth(org.bytedeco.javacpp.Pointer,int[],int,int)>($r8, $stack29, $stack28, $stack38);
+
+        if err == 0 goto label4;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack34 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("freenect_sync_get_depth() Error ");
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(err);
+
+        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Failed to get depth synchronously.");
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack37);
+
+        $r9 = (java.lang.Throwable) $u1;
+
+        throw $r9;
+
+     label4:
+        goto label8;
+
+     label5:
+        $r10 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack7 = $r10.<org.bytedeco.javacv.OpenKinectFrameGrabber: int videoFormat>;
+
+        if $stack7 >= 0 goto label6;
+
+        $r11 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack21 = $r11.<org.bytedeco.javacv.OpenKinectFrameGrabber: int bpp>;
+
+        goto label7;
+
+     label6:
+        $r12 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack21 = $r12.<org.bytedeco.javacv.OpenKinectFrameGrabber: int videoFormat>;
+
+     label7:
+        $r13 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack10 = $r13.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacpp.BytePointer rawVideoImageData>;
+
+        $r14 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack9 = $r14.<org.bytedeco.javacv.OpenKinectFrameGrabber: int[] timestamp>;
+
+        $r15 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack8 = $r15.<org.bytedeco.javacv.OpenKinectFrameGrabber: int deviceNumber>;
+
+        $r16 = (org.bytedeco.javacpp.Pointer) $stack10;
+
+        err = staticinvoke <org.bytedeco.libfreenect.global.freenect: int freenect_sync_get_video(org.bytedeco.javacpp.Pointer,int[],int,int)>($r16, $stack9, $stack8, $stack21);
+
+        if err == 0 goto label8;
+
+        $u3 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack17 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("freenect_sync_get_video() Error ");
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(err);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Failed to get video synchronously.");
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u3.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack20);
+
+        $r17 = (java.lang.Throwable) $u3;
+
+        throw $r17;
+
+     label8:
+        i = i + 1;
+
+        goto label1;
+
+     label9:
+        return;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage grabDepth() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinectFrameGrabber this;
+        int $stack10, fmt, $stack11, err, $stack43, $stack58, $stack72, $stack17, $stack18, $stack19, $stack23;
+        int[] $stack12, $stack22;
+        org.bytedeco.javacpp.BytePointer $stack13, $stack20;
+        org.bytedeco.opencv.opencv_core.IplImage $stack15, $stack33, $stack42, $stack57, $stack16, $stack21, $stack25;
+        java.nio.ByteOrder $stack26, $stack27, $stack35, $stack38;
+        boolean $stack28, $stack65;
+        java.nio.ByteBuffer bb, $stack36, $stack39;
+        java.nio.ShortBuffer in, out;
+        java.lang.StringBuilder $stack61, $stack62, $stack63, $u1;
+        java.lang.String $stack64;
+        long $stack24;
+        java.lang.AssertionError $u0;
+        org.bytedeco.javacv.FrameGrabber$Exception $u2;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r8, $r9, $r10, $r11, $r12, $r13, $r16, $r17, $r18, $r19;
+        org.bytedeco.javacpp.Pointer $r6, $r15;
+        java.lang.Throwable $r7;
+        org.bytedeco.opencv.opencv_core.CvArr $r14;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack10 = $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: int depthFormat>;
+
+        if $stack10 >= 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack72 = $r1.<org.bytedeco.javacv.OpenKinectFrameGrabber: int bpp>;
+
+        goto label2;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack72 = $r2.<org.bytedeco.javacv.OpenKinectFrameGrabber: int depthFormat>;
+
+     label2:
+        fmt = $stack72;
+
+        tableswitch($stack72)
+        {
+            case 0: goto label3;
+            case 1: goto label3;
+            case 2: goto label4;
+            case 3: goto label4;
+            case 4: goto label3;
+            case 5: goto label3;
+            default: goto label4;
+        };
+
+     label3:
+        goto label5;
+
+     label4:
+        $stack65 = <org.bytedeco.javacv.OpenKinectFrameGrabber: boolean $assertionsDisabled>;
+
+        if $stack65 != 0 goto label5;
+
+        $u0 = new java.lang.AssertionError;
+
+        specialinvoke $u0.<java.lang.AssertionError: void <init>()>();
+
+        throw $u0;
+
+     label5:
+        $r3 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack13 = $r3.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacpp.BytePointer rawDepthImageData>;
+
+        $r4 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack12 = $r4.<org.bytedeco.javacv.OpenKinectFrameGrabber: int[] timestamp>;
+
+        $r5 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack11 = $r5.<org.bytedeco.javacv.OpenKinectFrameGrabber: int deviceNumber>;
+
+        $r6 = (org.bytedeco.javacpp.Pointer) $stack13;
+
+        err = staticinvoke <org.bytedeco.libfreenect.global.freenect: int freenect_sync_get_depth(org.bytedeco.javacpp.Pointer,int[],int,int)>($r6, $stack12, $stack11, fmt);
+
+        if err == 0 goto label6;
+
+        $u2 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack61 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("freenect_sync_get_depth() Error ");
+
+        $stack62 = virtualinvoke $stack61.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(err);
+
+        $stack63 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Failed to get depth synchronously.");
+
+        $stack64 = virtualinvoke $stack63.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack64);
+
+        $r7 = (java.lang.Throwable) $u2;
+
+        throw $r7;
+
+     label6:
+        $r8 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack15 = $r8.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage>;
+
+        if $stack15 == null goto label7;
+
+        $r9 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack42 = $r9.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage>;
+
+        $stack43 = virtualinvoke $stack42.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        if $stack43 != 640 goto label7;
+
+        $r10 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack57 = $r10.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage>;
+
+        $stack58 = virtualinvoke $stack57.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        if $stack58 == 480 goto label8;
+
+     label7:
+        $stack16 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage createHeader(int,int,int,int)>(640, 480, 16, 1);
+
+        $r11 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r11.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage> = $stack16;
+
+     label8:
+        $r12 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack21 = $r12.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage>;
+
+        $r13 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack20 = $r13.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacpp.BytePointer rawDepthImageData>;
+
+        $stack17 = 640 * 1;
+
+        $stack18 = $stack17 * 16;
+
+        $stack19 = $stack18 / 8;
+
+        $r14 = (org.bytedeco.opencv.opencv_core.CvArr) $stack21;
+
+        $r15 = (org.bytedeco.javacpp.Pointer) $stack20;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetData(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.javacpp.Pointer,int)>($r14, $r15, $stack19);
+
+        $stack26 = staticinvoke <java.nio.ByteOrder: java.nio.ByteOrder nativeOrder()>();
+
+        $r16 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack27 = $r16.<org.bytedeco.javacv.OpenKinectFrameGrabber: java.nio.ByteOrder byteOrder>;
+
+        $stack28 = virtualinvoke $stack26.<java.lang.Object: boolean equals(java.lang.Object)>($stack27);
+
+        if $stack28 != 0 goto label9;
+
+        $r17 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack33 = $r17.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage>;
+
+        bb = virtualinvoke $stack33.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.ByteBuffer getByteBuffer()>();
+
+        $stack35 = <java.nio.ByteOrder: java.nio.ByteOrder BIG_ENDIAN>;
+
+        $stack36 = virtualinvoke bb.<java.nio.ByteBuffer: java.nio.ByteBuffer order(java.nio.ByteOrder)>($stack35);
+
+        in = virtualinvoke $stack36.<java.nio.ByteBuffer: java.nio.ShortBuffer asShortBuffer()>();
+
+        $stack38 = <java.nio.ByteOrder: java.nio.ByteOrder LITTLE_ENDIAN>;
+
+        $stack39 = virtualinvoke bb.<java.nio.ByteBuffer: java.nio.ByteBuffer order(java.nio.ByteOrder)>($stack38);
+
+        out = virtualinvoke $stack39.<java.nio.ByteBuffer: java.nio.ShortBuffer asShortBuffer()>();
+
+        virtualinvoke out.<java.nio.ShortBuffer: java.nio.ShortBuffer put(java.nio.ShortBuffer)>(in);
+
+     label9:
+        $r18 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack22 = $r18.<org.bytedeco.javacv.OpenKinectFrameGrabber: int[] timestamp>;
+
+        $stack23 = $stack22[0];
+
+        $stack24 = (long) $stack23;
+
+        this.<org.bytedeco.javacv.FrameGrabber: long timestamp> = $stack24;
+
+        $r19 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack25 = $r19.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage>;
+
+        return $stack25;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage grabVideo() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinectFrameGrabber this;
+        int $stack10, fmt, err, $stack23, $stack47, $stack62, $stack76, $stack11, $stack17, $stack18, $stack19;
+        org.bytedeco.opencv.opencv_core.IplImage $stack15, $stack25, $stack26, $stack27, $stack37, $stack46, $stack61, $stack16, $stack21;
+        int[] $stack22, $stack12;
+        long $stack24;
+        java.nio.ByteOrder $stack32, $stack33, $stack39, $stack42;
+        boolean $stack34, $stack74;
+        java.nio.ByteBuffer bb, $stack40, $stack43;
+        java.nio.ShortBuffer in, out;
+        java.lang.StringBuilder $stack65, $stack66, $stack67, $u1;
+        java.lang.String $stack68;
+        byte iplDepth, channels;
+        org.bytedeco.javacpp.BytePointer $stack13, $stack20;
+        java.lang.AssertionError $u0;
+        org.bytedeco.javacv.FrameGrabber$Exception $u2;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r8, $r9, $r10, $r11, $r12, $r13, $r16, $r17, $r18, $r19, $r22, $r23;
+        org.bytedeco.javacpp.Pointer $r6, $r15;
+        java.lang.Throwable $r7;
+        org.bytedeco.opencv.opencv_core.CvArr $r14, $r20, $r21;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack10 = $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: int videoFormat>;
+
+        if $stack10 >= 0 goto label01;
+
+        $r1 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack76 = $r1.<org.bytedeco.javacv.OpenKinectFrameGrabber: int bpp>;
+
+        goto label02;
+
+     label01:
+        $r2 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack76 = $r2.<org.bytedeco.javacv.OpenKinectFrameGrabber: int videoFormat>;
+
+     label02:
+        fmt = $stack76;
+
+        iplDepth = 8;
+
+        channels = 3;
+
+        tableswitch($stack76)
+        {
+            case 0: goto label03;
+            case 1: goto label04;
+            case 2: goto label04;
+            case 3: goto label05;
+            case 4: goto label08;
+            case 5: goto label06;
+            case 6: goto label07;
+            default: goto label08;
+        };
+
+     label03:
+        iplDepth = 8;
+
+        channels = 3;
+
+        goto label09;
+
+     label04:
+        iplDepth = 8;
+
+        channels = 1;
+
+        goto label09;
+
+     label05:
+        iplDepth = 16;
+
+        channels = 1;
+
+        goto label09;
+
+     label06:
+        iplDepth = 8;
+
+        channels = 3;
+
+        goto label09;
+
+     label07:
+        iplDepth = 8;
+
+        channels = 2;
+
+        goto label09;
+
+     label08:
+        $stack74 = <org.bytedeco.javacv.OpenKinectFrameGrabber: boolean $assertionsDisabled>;
+
+        if $stack74 != 0 goto label09;
+
+        $u0 = new java.lang.AssertionError;
+
+        specialinvoke $u0.<java.lang.AssertionError: void <init>()>();
+
+        throw $u0;
+
+     label09:
+        $r3 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack13 = $r3.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacpp.BytePointer rawVideoImageData>;
+
+        $r4 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack12 = $r4.<org.bytedeco.javacv.OpenKinectFrameGrabber: int[] timestamp>;
+
+        $r5 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack11 = $r5.<org.bytedeco.javacv.OpenKinectFrameGrabber: int deviceNumber>;
+
+        $r6 = (org.bytedeco.javacpp.Pointer) $stack13;
+
+        err = staticinvoke <org.bytedeco.libfreenect.global.freenect: int freenect_sync_get_video(org.bytedeco.javacpp.Pointer,int[],int,int)>($r6, $stack12, $stack11, fmt);
+
+        if err == 0 goto label10;
+
+        $u2 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack65 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("freenect_sync_get_video() Error ");
+
+        $stack66 = virtualinvoke $stack65.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(err);
+
+        $stack67 = virtualinvoke $stack66.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Failed to get video synchronously.");
+
+        $stack68 = virtualinvoke $stack67.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack68);
+
+        $r7 = (java.lang.Throwable) $u2;
+
+        throw $r7;
+
+     label10:
+        $r8 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack15 = $r8.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        if $stack15 == null goto label11;
+
+        $r9 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack46 = $r9.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        $stack47 = virtualinvoke $stack46.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        if $stack47 != 640 goto label11;
+
+        $r10 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack61 = $r10.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        $stack62 = virtualinvoke $stack61.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        if $stack62 == 480 goto label12;
+
+     label11:
+        $stack16 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage createHeader(int,int,int,int)>(640, 480, iplDepth, channels);
+
+        $r11 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r11.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage> = $stack16;
+
+     label12:
+        $r12 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack21 = $r12.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        $r13 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack20 = $r13.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacpp.BytePointer rawVideoImageData>;
+
+        $stack17 = 640 * channels;
+
+        $stack18 = $stack17 * iplDepth;
+
+        $stack19 = $stack18 / 8;
+
+        $r14 = (org.bytedeco.opencv.opencv_core.CvArr) $stack21;
+
+        $r15 = (org.bytedeco.javacpp.Pointer) $stack20;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetData(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.javacpp.Pointer,int)>($r14, $r15, $stack19);
+
+        if iplDepth <= 8 goto label13;
+
+        $stack32 = staticinvoke <java.nio.ByteOrder: java.nio.ByteOrder nativeOrder()>();
+
+        $r16 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack33 = $r16.<org.bytedeco.javacv.OpenKinectFrameGrabber: java.nio.ByteOrder byteOrder>;
+
+        $stack34 = virtualinvoke $stack32.<java.lang.Object: boolean equals(java.lang.Object)>($stack33);
+
+        if $stack34 != 0 goto label13;
+
+        $r17 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack37 = $r17.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        bb = virtualinvoke $stack37.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.ByteBuffer getByteBuffer()>();
+
+        $stack39 = <java.nio.ByteOrder: java.nio.ByteOrder BIG_ENDIAN>;
+
+        $stack40 = virtualinvoke bb.<java.nio.ByteBuffer: java.nio.ByteBuffer order(java.nio.ByteOrder)>($stack39);
+
+        in = virtualinvoke $stack40.<java.nio.ByteBuffer: java.nio.ShortBuffer asShortBuffer()>();
+
+        $stack42 = <java.nio.ByteOrder: java.nio.ByteOrder LITTLE_ENDIAN>;
+
+        $stack43 = virtualinvoke bb.<java.nio.ByteBuffer: java.nio.ByteBuffer order(java.nio.ByteOrder)>($stack42);
+
+        out = virtualinvoke $stack43.<java.nio.ByteBuffer: java.nio.ShortBuffer asShortBuffer()>();
+
+        virtualinvoke out.<java.nio.ShortBuffer: java.nio.ShortBuffer put(java.nio.ShortBuffer)>(in);
+
+     label13:
+        if channels != 3 goto label14;
+
+        $r18 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack27 = $r18.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        $r19 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack26 = $r19.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        $r20 = (org.bytedeco.opencv.opencv_core.CvArr) $stack27;
+
+        $r21 = (org.bytedeco.opencv.opencv_core.CvArr) $stack26;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgproc: void cvCvtColor(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,int)>($r20, $r21, 4);
+
+     label14:
+        $r22 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack22 = $r22.<org.bytedeco.javacv.OpenKinectFrameGrabber: int[] timestamp>;
+
+        $stack23 = $stack22[0];
+
+        $stack24 = (long) $stack23;
+
+        this.<org.bytedeco.javacv.FrameGrabber: long timestamp> = $stack24;
+
+        $r23 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack25 = $r23.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        return $stack25;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage grabIR() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinectFrameGrabber this;
+        int $stack6, err, $stack22, $stack39, $stack12, $stack13, $stack14, $stack18;
+        int[] $stack7, $stack17;
+        org.bytedeco.javacpp.BytePointer $stack8, $stack15;
+        org.bytedeco.opencv.opencv_core.IplImage $stack10, $stack21, $stack38, $stack11, $stack16, $stack20;
+        java.lang.StringBuilder $stack42, $stack43, $stack44, $u0;
+        java.lang.String $stack45;
+        long $stack19;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0, $r1, $r2, $r5, $r6, $r7, $r8, $r9, $r10, $r13, $r14;
+        org.bytedeco.javacpp.Pointer $r3, $r12;
+        java.lang.Throwable $r4;
+        org.bytedeco.opencv.opencv_core.CvArr $r11;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack8 = $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacpp.BytePointer rawIRImageData>;
+
+        $r1 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack7 = $r1.<org.bytedeco.javacv.OpenKinectFrameGrabber: int[] timestamp>;
+
+        $r2 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack6 = $r2.<org.bytedeco.javacv.OpenKinectFrameGrabber: int deviceNumber>;
+
+        $r3 = (org.bytedeco.javacpp.Pointer) $stack8;
+
+        err = staticinvoke <org.bytedeco.libfreenect.global.freenect: int freenect_sync_get_video(org.bytedeco.javacpp.Pointer,int[],int,int)>($r3, $stack7, $stack6, 2);
+
+        if err == 0 goto label1;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack42 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("freenect_sync_get_video() Error ");
+
+        $stack43 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(err);
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Failed to get video synchronously.");
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack45);
+
+        $r4 = (java.lang.Throwable) $u1;
+
+        throw $r4;
+
+     label1:
+        $r5 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack10 = $r5.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage>;
+
+        if $stack10 == null goto label2;
+
+        $r6 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack21 = $r6.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage>;
+
+        $stack22 = virtualinvoke $stack21.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        if $stack22 != 640 goto label2;
+
+        $r7 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack38 = $r7.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage>;
+
+        $stack39 = virtualinvoke $stack38.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        if $stack39 == 480 goto label3;
+
+     label2:
+        $stack11 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage createHeader(int,int,int,int)>(640, 480, 8, 1);
+
+        $r8 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r8.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage> = $stack11;
+
+     label3:
+        $r9 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack16 = $r9.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage>;
+
+        $r10 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack15 = $r10.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacpp.BytePointer rawIRImageData>;
+
+        $stack12 = 640 * 1;
+
+        $stack13 = $stack12 * 8;
+
+        $stack14 = $stack13 / 8;
+
+        $r11 = (org.bytedeco.opencv.opencv_core.CvArr) $stack16;
+
+        $r12 = (org.bytedeco.javacpp.Pointer) $stack15;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetData(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.javacpp.Pointer,int)>($r11, $r12, $stack14);
+
+        $r13 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack17 = $r13.<org.bytedeco.javacv.OpenKinectFrameGrabber: int[] timestamp>;
+
+        $stack18 = $stack17[0];
+
+        $stack19 = (long) $stack18;
+
+        this.<org.bytedeco.javacv.FrameGrabber: long timestamp> = $stack19;
+
+        $r14 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack20 = $r14.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage>;
+
+        return $stack20;
+    }
+
+    public org.bytedeco.javacv.Frame grab() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinectFrameGrabber this;
+        boolean $stack6;
+        org.bytedeco.opencv.opencv_core.IplImage image, $stack20, $stack21, $stack22, $stack25, $stack32, $stack33, $stack34, $stack37, $stack7;
+        int w, h, iplDepth, channels;
+        org.bytedeco.javacv.FrameGrabber$ImageMode $stack12, $stack13, $stack14, $stack15;
+        org.bytedeco.javacv.FrameConverter $stack16, $stack23, $stack35;
+        org.bytedeco.javacv.Frame $stack17, $stack24, $stack36;
+        org.bytedeco.javacv.OpenKinectFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r9, $r10, $r11, $r12, $r13, $r14, $r17, $r18, $r19;
+        org.bytedeco.opencv.opencv_core.CvArr $r7, $r8, $r15, $r16;
+
+        this := @this: OpenKinectFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack6 = $r0.<org.bytedeco.javacv.OpenKinectFrameGrabber: boolean depth>;
+
+        if $stack6 == 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack7 = virtualinvoke $r1.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage grabDepth()>();
+
+        goto label2;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack7 = virtualinvoke $r2.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage grabVideo()>();
+
+     label2:
+        image = $stack7;
+
+        w = virtualinvoke $stack7.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        h = virtualinvoke $stack7.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        iplDepth = virtualinvoke $stack7.<org.bytedeco.opencv.opencv_core.IplImage: int depth()>();
+
+        channels = virtualinvoke $stack7.<org.bytedeco.opencv.opencv_core.IplImage: int nChannels()>();
+
+        $r3 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack13 = $r3.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack12 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode COLOR>;
+
+        if $stack13 != $stack12 goto label4;
+
+        if channels != 1 goto label4;
+
+        $r4 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack32 = $r4.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage returnImage>;
+
+        if $stack32 != null goto label3;
+
+        $stack37 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>(w, h, iplDepth, 3);
+
+        $r5 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r5.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage returnImage> = $stack37;
+
+     label3:
+        $r6 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack33 = $r6.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage returnImage>;
+
+        $r7 = (org.bytedeco.opencv.opencv_core.CvArr) image;
+
+        $r8 = (org.bytedeco.opencv.opencv_core.CvArr) $stack33;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgproc: void cvCvtColor(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,int)>($r7, $r8, 8);
+
+        $r9 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack35 = $r9.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacv.FrameConverter converter>;
+
+        $r10 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack34 = $r10.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage returnImage>;
+
+        $stack36 = virtualinvoke $stack35.<org.bytedeco.javacv.FrameConverter: org.bytedeco.javacv.Frame convert(java.lang.Object)>($stack34);
+
+        return $stack36;
+
+     label4:
+        $r11 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack15 = $r11.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack14 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode GRAY>;
+
+        if $stack15 != $stack14 goto label6;
+
+        if channels != 3 goto label6;
+
+        $r12 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack20 = $r12.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage returnImage>;
+
+        if $stack20 != null goto label5;
+
+        $stack25 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>(w, h, iplDepth, 1);
+
+        $r13 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $r13.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage returnImage> = $stack25;
+
+     label5:
+        $r14 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack21 = $r14.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage returnImage>;
+
+        $r15 = (org.bytedeco.opencv.opencv_core.CvArr) image;
+
+        $r16 = (org.bytedeco.opencv.opencv_core.CvArr) $stack21;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgproc: void cvCvtColor(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,int)>($r15, $r16, 6);
+
+        $r17 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack23 = $r17.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacv.FrameConverter converter>;
+
+        $r18 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack22 = $r18.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage returnImage>;
+
+        $stack24 = virtualinvoke $stack23.<org.bytedeco.javacv.FrameConverter: org.bytedeco.javacv.Frame convert(java.lang.Object)>($stack22);
+
+        return $stack24;
+
+     label6:
+        $r19 = (org.bytedeco.javacv.OpenKinectFrameGrabber) this;
+
+        $stack16 = $r19.<org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacv.FrameConverter converter>;
+
+        $stack17 = virtualinvoke $stack16.<org.bytedeco.javacv.FrameConverter: org.bytedeco.javacv.Frame convert(java.lang.Object)>(image);
+
+        return $stack17;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $stack0;
+        boolean $stack1, $stack2;
+
+        $stack0 = class "Lorg/bytedeco/javacv/OpenKinectFrameGrabber;";
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Class: boolean desiredAssertionStatus()>();
+
+        if $stack1 != 0 goto label1;
+
+        $stack2 = 1;
+
+        goto label2;
+
+     label1:
+        $stack2 = 0;
+
+     label2:
+        <org.bytedeco.javacv.OpenKinectFrameGrabber: boolean $assertionsDisabled> = $stack2;
+
+        <org.bytedeco.javacv.OpenKinectFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = null;
+
+        return;
+    }
+}

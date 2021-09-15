@@ -1,0 +1,1193 @@
+public class ClassDecl extends org.ooc.frontend.model.TypeDecl
+{
+    public static final java.lang.String DESTROY_FUNC_NAME;
+    public static final java.lang.String DEFAULTS_FUNC_NAME;
+    public static final java.lang.String LOAD_FUNC_NAME;
+    protected boolean hasRegisteredFinalizer;
+    protected boolean isAbstract;
+    protected org.ooc.frontend.model.OocDocComment comment;
+    protected org.ooc.frontend.model.FunctionDecl defaultInit;
+
+    public void <init>(java.lang.String, org.ooc.frontend.model.Type, boolean, org.ooc.frontend.model.Module, org.ooc.frontend.model.tokens.Token)
+    {
+        ClassDecl this;
+        java.lang.String name;
+        org.ooc.frontend.model.Type superType, $stack11, $u0;
+        org.ooc.frontend.model.Module module;
+        org.ooc.frontend.model.tokens.Token startToken, $stack49;
+        boolean isAbstract, $stack9;
+        org.ooc.frontend.model.FunctionDecl $u1, $u2, $u3;
+        org.ooc.frontend.model.ClassDecl $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: ClassDecl;
+
+        name := @parameter0: java.lang.String;
+
+        superType := @parameter1: org.ooc.frontend.model.Type;
+
+        isAbstract := @parameter2: boolean;
+
+        module := @parameter3: org.ooc.frontend.model.Module;
+
+        startToken := @parameter4: org.ooc.frontend.model.tokens.Token;
+
+        if superType != null goto label1;
+
+        $stack9 = virtualinvoke name.<java.lang.String: boolean equals(java.lang.Object)>("Object");
+
+        if $stack9 != 0 goto label1;
+
+        $u0 = new org.ooc.frontend.model.Type;
+
+        $stack11 = $u0;
+
+        $stack49 = <org.ooc.frontend.model.tokens.Token: org.ooc.frontend.model.tokens.Token defaultToken>;
+
+        specialinvoke $u0.<org.ooc.frontend.model.Type: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>("Object", $stack49);
+
+        goto label2;
+
+     label1:
+        $stack11 = superType;
+
+     label2:
+        specialinvoke this.<org.ooc.frontend.model.TypeDecl: void <init>(java.lang.String,org.ooc.frontend.model.Type,org.ooc.frontend.model.Module,org.ooc.frontend.model.tokens.Token)>(name, $stack11, module, startToken);
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $r0.<org.ooc.frontend.model.ClassDecl: boolean hasRegisteredFinalizer> = 0;
+
+        $r1 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $r1.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl defaultInit> = null;
+
+        $r2 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $r2.<org.ooc.frontend.model.ClassDecl: boolean isAbstract> = isAbstract;
+
+        $u1 = new org.ooc.frontend.model.FunctionDecl;
+
+        specialinvoke $u1.<org.ooc.frontend.model.FunctionDecl: void <init>(java.lang.String,java.lang.String,boolean,boolean,boolean,boolean,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>("__load__", "", 0, 1, 0, 0, startToken, module);
+
+        $r3 = (org.ooc.frontend.model.ClassDecl) this;
+
+        virtualinvoke $r3.<org.ooc.frontend.model.ClassDecl: void addFunction(org.ooc.frontend.model.FunctionDecl)>($u1);
+
+        $u2 = new org.ooc.frontend.model.FunctionDecl;
+
+        specialinvoke $u2.<org.ooc.frontend.model.FunctionDecl: void <init>(java.lang.String,java.lang.String,boolean,boolean,boolean,boolean,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>("__defaults__", "", 0, 0, 0, 0, startToken, module);
+
+        $r4 = (org.ooc.frontend.model.ClassDecl) this;
+
+        virtualinvoke $r4.<org.ooc.frontend.model.ClassDecl: void addFunction(org.ooc.frontend.model.FunctionDecl)>($u2);
+
+        $u3 = new org.ooc.frontend.model.FunctionDecl;
+
+        specialinvoke $u3.<org.ooc.frontend.model.FunctionDecl: void <init>(java.lang.String,java.lang.String,boolean,boolean,boolean,boolean,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>("__destroy__", "", 0, 0, 0, 0, startToken, module);
+
+        $r5 = (org.ooc.frontend.model.ClassDecl) this;
+
+        virtualinvoke $r5.<org.ooc.frontend.model.ClassDecl: void addFunction(org.ooc.frontend.model.FunctionDecl)>($u3);
+
+        return;
+    }
+
+    public org.ooc.frontend.model.ClassDecl getSuperRef()
+    {
+        ClassDecl this;
+        org.ooc.frontend.model.TypeDecl ref;
+        org.ooc.frontend.model.ClassDecl $stack3, $r0, $r1, $r2;
+        boolean $stack4;
+        java.lang.String $stack8, $stack11, $stack13, $stack14, $stack10;
+        org.ooc.frontend.model.Module $stack9, $stack15;
+        java.lang.Class $stack12;
+        org.ubi.CompilationFailedError $u0;
+        java.lang.Throwable $r3;
+
+        this := @this: ClassDecl;
+
+        ref = specialinvoke this.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        if ref == null goto label3;
+
+        $stack4 = ref instanceof org.ooc.frontend.model.ClassDecl;
+
+        if $stack4 != 0 goto label3;
+
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack8 = virtualinvoke $r0.<org.ooc.frontend.model.ClassDecl: java.lang.String getName()>();
+
+        $r1 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack9 = $r1.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.Module module>;
+
+        if $stack9 == null goto label1;
+
+        $r2 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack15 = $r2.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.Module module>;
+
+        $stack10 = virtualinvoke $stack15.<org.ooc.frontend.model.Module: java.lang.String getFullName()>();
+
+        goto label2;
+
+     label1:
+        $stack10 = "<unknown module>";
+
+     label2:
+        $stack11 = virtualinvoke ref.<org.ooc.frontend.model.TypeDecl: java.lang.String getName()>();
+
+        $stack12 = virtualinvoke ref.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack13 = virtualinvoke $stack12.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        $stack14 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String,java.lang.String,java.lang.String)>($stack8, $stack10, $stack11, $stack13) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Huh your class \'\u0001\' in \'\u0001\' extends \u0001 which isn\'t a ClassDecl but a \u0001");
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>(null, $stack14);
+
+        $r3 = (java.lang.Throwable) $u0;
+
+        throw $r3;
+
+     label3:
+        $stack3 = (org.ooc.frontend.model.ClassDecl) ref;
+
+        return $stack3;
+    }
+
+    public boolean isObjectClass()
+    {
+        ClassDecl this;
+        java.lang.String $stack1;
+        boolean $stack2;
+        org.ooc.frontend.model.ClassDecl $r0;
+
+        this := @this: ClassDecl;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.ClassDecl: java.lang.String name>;
+
+        $stack2 = virtualinvoke $stack1.<java.lang.String: boolean equals(java.lang.Object)>("Object");
+
+        return $stack2;
+    }
+
+    public boolean isClassClass()
+    {
+        ClassDecl this;
+        java.lang.String $stack1;
+        boolean $stack2;
+        org.ooc.frontend.model.ClassDecl $r0;
+
+        this := @this: ClassDecl;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.ClassDecl: java.lang.String name>;
+
+        $stack2 = virtualinvoke $stack1.<java.lang.String: boolean equals(java.lang.Object)>("Class");
+
+        return $stack2;
+    }
+
+    public boolean isRootClass()
+    {
+        ClassDecl this;
+        boolean $stack1, $stack2, $stack3;
+        org.ooc.frontend.model.ClassDecl $r0, $r1;
+
+        this := @this: ClassDecl;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack1 = virtualinvoke $r0.<org.ooc.frontend.model.ClassDecl: boolean isObjectClass()>();
+
+        if $stack1 != 0 goto label1;
+
+        $r1 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack2 = virtualinvoke $r1.<org.ooc.frontend.model.ClassDecl: boolean isClassClass()>();
+
+        if $stack2 == 0 goto label2;
+
+     label1:
+        $stack3 = 1;
+
+        goto label3;
+
+     label2:
+        $stack3 = 0;
+
+     label3:
+        return $stack3;
+    }
+
+    public org.ooc.frontend.model.OocDocComment getComment()
+    {
+        ClassDecl this;
+        org.ooc.frontend.model.OocDocComment $stack1;
+        org.ooc.frontend.model.ClassDecl $r0;
+
+        this := @this: ClassDecl;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.OocDocComment comment>;
+
+        return $stack1;
+    }
+
+    public void setComment(org.ooc.frontend.model.OocDocComment)
+    {
+        ClassDecl this;
+        org.ooc.frontend.model.OocDocComment comment;
+        org.ooc.frontend.model.ClassDecl $r0;
+
+        this := @this: ClassDecl;
+
+        comment := @parameter0: org.ooc.frontend.model.OocDocComment;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $r0.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.OocDocComment comment> = comment;
+
+        return;
+    }
+
+    public boolean isAbstract()
+    {
+        ClassDecl this;
+        boolean $stack1;
+        org.ooc.frontend.model.ClassDecl $r0;
+
+        this := @this: ClassDecl;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.ClassDecl: boolean isAbstract>;
+
+        return $stack1;
+    }
+
+    public void setAbstract(boolean)
+    {
+        ClassDecl this;
+        boolean isAbstract;
+        org.ooc.frontend.model.ClassDecl $r0;
+
+        this := @this: ClassDecl;
+
+        isAbstract := @parameter0: boolean;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $r0.<org.ooc.frontend.model.ClassDecl: boolean isAbstract> = isAbstract;
+
+        return;
+    }
+
+    public void addFunction(org.ooc.frontend.model.FunctionDecl)
+    {
+        org.ooc.frontend.model.FunctionDecl decl, already;
+        java.lang.String $stack3, $stack5, $stack7, $stack8;
+        boolean $stack4, $stack6;
+        ClassDecl this;
+        org.ooc.frontend.model.NodeList $stack12;
+        org.ooc.frontend.model.ClassDecl $r0, $r1, $r2;
+        org.ooc.frontend.model.Node $r3;
+
+        this := @this: ClassDecl;
+
+        decl := @parameter0: org.ooc.frontend.model.FunctionDecl;
+
+        $stack3 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack4 = virtualinvoke $stack3.<java.lang.String: boolean equals(java.lang.Object)>("init");
+
+        if $stack4 == 0 goto label1;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        virtualinvoke $r0.<org.ooc.frontend.model.ClassDecl: void addInit(org.ooc.frontend.model.FunctionDecl)>(decl);
+
+        goto label2;
+
+     label1:
+        $stack5 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack6 = virtualinvoke $stack5.<java.lang.String: boolean equals(java.lang.Object)>("new");
+
+        if $stack6 == 0 goto label2;
+
+        $stack7 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack8 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getSuffix()>();
+
+        $r1 = (org.ooc.frontend.model.ClassDecl) this;
+
+        already = virtualinvoke $r1.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall)>($stack7, $stack8, null);
+
+        if already == null goto label2;
+
+        $r2 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack12 = $r2.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.NodeList functions>;
+
+        $r3 = (org.ooc.frontend.model.Node) already;
+
+        virtualinvoke $stack12.<org.ooc.frontend.model.NodeList: boolean remove(org.ooc.frontend.model.Node)>($r3);
+
+     label2:
+        specialinvoke this.<org.ooc.frontend.model.TypeDecl: void addFunction(org.ooc.frontend.model.FunctionDecl)>(decl);
+
+        return;
+    }
+
+    public void addDefaultInit()
+    {
+        ClassDecl this;
+        boolean $stack2;
+        org.ooc.frontend.model.FunctionDecl $stack3, $u0;
+        org.ooc.frontend.model.Module $stack5;
+        org.ooc.frontend.model.tokens.Token $stack6;
+        org.ooc.frontend.model.ClassDecl $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: ClassDecl;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.ClassDecl: boolean isAbstract>;
+
+        if $stack2 != 0 goto label1;
+
+        $r1 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack3 = $r1.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl defaultInit>;
+
+        if $stack3 != null goto label1;
+
+        $u0 = new org.ooc.frontend.model.FunctionDecl;
+
+        $r2 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack6 = $r2.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r3 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack5 = $r3.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.Module module>;
+
+        specialinvoke $u0.<org.ooc.frontend.model.FunctionDecl: void <init>(java.lang.String,java.lang.String,boolean,boolean,boolean,boolean,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>("init", "", 0, 0, 0, 0, $stack6, $stack5);
+
+        $r4 = (org.ooc.frontend.model.ClassDecl) this;
+
+        virtualinvoke $r4.<org.ooc.frontend.model.ClassDecl: void addFunction(org.ooc.frontend.model.FunctionDecl)>($u0);
+
+        $r5 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $r5.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl defaultInit> = $u0;
+
+     label1:
+        return;
+    }
+
+    private void addInit(org.ooc.frontend.model.FunctionDecl)
+    {
+        ClassDecl this;
+        org.ooc.frontend.model.FunctionDecl $stack14, decl, $stack91, newFunc, $u0;
+        java.lang.String $stack17, $stack29, $stack77, $stack82;
+        org.ooc.frontend.model.Module $stack18, $stack38;
+        org.ooc.frontend.model.tokens.Token $stack19, $stack28, $stack31, $stack33, $stack36, $stack39, $stack48, $stack50, $stack55, $stack62, $stack67, $stack72, $stack78, $stack83, $stack87;
+        org.ooc.frontend.model.Type $stack20, retType, $stack35;
+        org.ooc.frontend.model.NodeList $stack22, $stack23, $stack24, $stack40, $stack51, $stack56, $stack59, $stack64, $stack70, $stack79, $stack84, $stack92, $stack94;
+        java.util.LinkedHashMap $stack25, $stack26, $stack43;
+        java.util.Collection $stack44;
+        boolean $stack58, $stack46;
+        java.lang.Object $stack69, $stack75;
+        org.ooc.frontend.model.Argument arg;
+        java.util.Iterator thisAccess, membAcc#14;
+        org.ooc.frontend.model.TypeParam genType;
+        org.ooc.frontend.model.VariableAccess $u1, $u7, $u11, $u15;
+        org.ooc.frontend.model.MemberAccess $u2, $u8;
+        org.ooc.frontend.model.MemberCall $u3, $u12, $u16;
+        org.ooc.frontend.model.Cast $u4;
+        org.ooc.frontend.model.VariableDecl $u5, $r32;
+        org.ooc.frontend.model.Line $u6, $u10, $u13, $u17, $u19;
+        org.ooc.frontend.model.Assignment $u9;
+        org.ooc.frontend.model.FunctionCall $u14;
+        org.ooc.frontend.model.ValuedReturn $u18;
+        org.ooc.frontend.model.ClassDecl $r0, $r1, $r2, $r3, $r5, $r7, $r8, $r9, $r10, $r11, $r15, $r17, $r21, $r23, $r40;
+        org.ooc.frontend.model.Node $r4, $r6, $r20, $r22, $r27, $r31, $r33, $r36, $r39;
+        org.ooc.frontend.model.Declaration $r12, $r28;
+        org.ooc.frontend.model.Expression $r13, $r14, $r16, $r18, $r24, $r25, $r29, $r34, $r37;
+        org.ooc.frontend.model.Statement $r19, $r26, $r30, $r35, $r38;
+
+        this := @this: ClassDecl;
+
+        decl := @parameter0: org.ooc.frontend.model.FunctionDecl;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack14 = $r0.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl defaultInit>;
+
+        if $stack14 == null goto label1;
+
+        $r1 = (org.ooc.frontend.model.ClassDecl) this;
+
+        newFunc = virtualinvoke $r1.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall)>("new", "", null);
+
+        $r2 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack92 = $r2.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.NodeList functions>;
+
+        $r3 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack91 = $r3.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl defaultInit>;
+
+        $r4 = (org.ooc.frontend.model.Node) $stack91;
+
+        virtualinvoke $stack92.<org.ooc.frontend.model.NodeList: boolean remove(org.ooc.frontend.model.Node)>($r4);
+
+        $r5 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack94 = $r5.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.NodeList functions>;
+
+        $r6 = (org.ooc.frontend.model.Node) newFunc;
+
+        virtualinvoke $stack94.<org.ooc.frontend.model.NodeList: boolean remove(org.ooc.frontend.model.Node)>($r6);
+
+        $r7 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $r7.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl defaultInit> = null;
+
+     label1:
+        $u0 = new org.ooc.frontend.model.FunctionDecl;
+
+        $stack17 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getSuffix()>();
+
+        $stack19 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r8 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack18 = $r8.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.Module module>;
+
+        specialinvoke $u0.<org.ooc.frontend.model.FunctionDecl: void <init>(java.lang.String,java.lang.String,boolean,boolean,boolean,boolean,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>("new", $stack17, 0, 1, 0, 0, $stack19, $stack18);
+
+        $r9 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack20 = virtualinvoke $r9.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.Type getType()>();
+
+        retType = virtualinvoke $stack20.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Type clone()>();
+
+        $stack22 = virtualinvoke retType.<org.ooc.frontend.model.Type: org.ooc.frontend.model.NodeList getTypeParams()>();
+
+        virtualinvoke $stack22.<org.ooc.frontend.model.NodeList: void clear()>();
+
+        $stack23 = virtualinvoke $u0.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getArguments()>();
+
+        $stack24 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getArguments()>();
+
+        virtualinvoke $stack23.<org.ooc.frontend.model.NodeList: void addAll(org.ooc.frontend.model.NodeList)>($stack24);
+
+        $stack25 = virtualinvoke $u0.<org.ooc.frontend.model.FunctionDecl: java.util.LinkedHashMap getTypeParams()>();
+
+        $r10 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack26 = virtualinvoke $r10.<org.ooc.frontend.model.ClassDecl: java.util.LinkedHashMap getTypeParams()>();
+
+        virtualinvoke $stack25.<java.util.LinkedHashMap: void putAll(java.util.Map)>($stack26);
+
+        $u1 = new org.ooc.frontend.model.VariableAccess;
+
+        $r11 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack29 = $r11.<org.ooc.frontend.model.ClassDecl: java.lang.String name>;
+
+        $stack28 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u1.<org.ooc.frontend.model.VariableAccess: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack29, $stack28);
+
+        $r12 = (org.ooc.frontend.model.Declaration) this;
+
+        virtualinvoke $u1.<org.ooc.frontend.model.VariableAccess: void setRef(org.ooc.frontend.model.Declaration)>($r12);
+
+        $u2 = new org.ooc.frontend.model.MemberAccess;
+
+        $stack31 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r13 = (org.ooc.frontend.model.Expression) $u1;
+
+        specialinvoke $u2.<org.ooc.frontend.model.MemberAccess: void <init>(org.ooc.frontend.model.Expression,java.lang.String,org.ooc.frontend.model.tokens.Token)>($r13, "class", $stack31);
+
+        $u3 = new org.ooc.frontend.model.MemberCall;
+
+        $stack33 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r14 = (org.ooc.frontend.model.Expression) $u2;
+
+        specialinvoke $u3.<org.ooc.frontend.model.MemberCall: void <init>(org.ooc.frontend.model.Expression,java.lang.String,java.lang.String,org.ooc.frontend.model.tokens.Token)>($r14, "alloc", "", $stack33);
+
+        $u4 = new org.ooc.frontend.model.Cast;
+
+        $r15 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack35 = virtualinvoke $r15.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.Type getType()>();
+
+        $stack36 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r16 = (org.ooc.frontend.model.Expression) $u3;
+
+        specialinvoke $u4.<org.ooc.frontend.model.Cast: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Type,org.ooc.frontend.model.tokens.Token)>($r16, $stack35, $stack36);
+
+        $u5 = new org.ooc.frontend.model.VariableDecl;
+
+        $stack39 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r17 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack38 = $r17.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.Module module>;
+
+        $r18 = (org.ooc.frontend.model.Expression) $u4;
+
+        specialinvoke $u5.<org.ooc.frontend.model.VariableDecl: void <init>(org.ooc.frontend.model.Type,java.lang.String,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>(null, "this", $r18, $stack39, $stack38);
+
+        $stack40 = virtualinvoke $u0.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getBody()>();
+
+        $u6 = new org.ooc.frontend.model.Line;
+
+        $r19 = (org.ooc.frontend.model.Statement) $u5;
+
+        specialinvoke $u6.<org.ooc.frontend.model.Line: void <init>(org.ooc.frontend.model.Statement)>($r19);
+
+        $r20 = (org.ooc.frontend.model.Node) $u6;
+
+        virtualinvoke $stack40.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r20);
+
+        $r21 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack43 = $r21.<org.ooc.frontend.model.ClassDecl: java.util.LinkedHashMap typeParams>;
+
+        $stack44 = virtualinvoke $stack43.<java.util.LinkedHashMap: java.util.Collection values()>();
+
+        thisAccess = interfaceinvoke $stack44.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label2:
+        $stack46 = interfaceinvoke thisAccess.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack46 == 0 goto label3;
+
+        $stack75 = interfaceinvoke thisAccess.<java.util.Iterator: java.lang.Object next()>();
+
+        genType = (org.ooc.frontend.model.TypeParam) $stack75;
+
+        $u7 = new org.ooc.frontend.model.VariableAccess;
+
+        $stack77 = virtualinvoke genType.<org.ooc.frontend.model.TypeParam: java.lang.String getName()>();
+
+        $stack78 = $u0.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u7.<org.ooc.frontend.model.VariableAccess: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack77, $stack78);
+
+        $stack79 = virtualinvoke retType.<org.ooc.frontend.model.Type: org.ooc.frontend.model.NodeList getTypeParams()>();
+
+        $r22 = (org.ooc.frontend.model.Node) $u7;
+
+        virtualinvoke $stack79.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r22);
+
+        $u8 = new org.ooc.frontend.model.MemberAccess;
+
+        $stack82 = virtualinvoke genType.<org.ooc.frontend.model.TypeParam: java.lang.String getName()>();
+
+        $r23 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack83 = $r23.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u8.<org.ooc.frontend.model.MemberAccess: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack82, $stack83);
+
+        $stack84 = virtualinvoke $u0.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getBody()>();
+
+        $u10 = new org.ooc.frontend.model.Line;
+
+        $u9 = new org.ooc.frontend.model.Assignment;
+
+        $stack87 = $u0.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r24 = (org.ooc.frontend.model.Expression) $u8;
+
+        $r25 = (org.ooc.frontend.model.Expression) $u7;
+
+        specialinvoke $u9.<org.ooc.frontend.model.Assignment: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r24, $r25, $stack87);
+
+        $r26 = (org.ooc.frontend.model.Statement) $u9;
+
+        specialinvoke $u10.<org.ooc.frontend.model.Line: void <init>(org.ooc.frontend.model.Statement)>($r26);
+
+        $r27 = (org.ooc.frontend.model.Node) $u10;
+
+        virtualinvoke $stack84.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r27);
+
+        goto label2;
+
+     label3:
+        virtualinvoke $u0.<org.ooc.frontend.model.FunctionDecl: void setReturnType(org.ooc.frontend.model.Type)>(retType);
+
+        $u11 = new org.ooc.frontend.model.VariableAccess;
+
+        $stack48 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u11.<org.ooc.frontend.model.VariableAccess: void <init>(org.ooc.frontend.model.VariableDecl,org.ooc.frontend.model.tokens.Token)>($u5, $stack48);
+
+        $r28 = (org.ooc.frontend.model.Declaration) $u5;
+
+        virtualinvoke $u11.<org.ooc.frontend.model.VariableAccess: void setRef(org.ooc.frontend.model.Declaration)>($r28);
+
+        $u12 = new org.ooc.frontend.model.MemberCall;
+
+        $stack50 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r29 = (org.ooc.frontend.model.Expression) $u11;
+
+        specialinvoke $u12.<org.ooc.frontend.model.MemberCall: void <init>(org.ooc.frontend.model.Expression,java.lang.String,java.lang.String,org.ooc.frontend.model.tokens.Token)>($r29, "__defaults__", "", $stack50);
+
+        $stack51 = virtualinvoke $u0.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getBody()>();
+
+        $u13 = new org.ooc.frontend.model.Line;
+
+        $r30 = (org.ooc.frontend.model.Statement) $u12;
+
+        specialinvoke $u13.<org.ooc.frontend.model.Line: void <init>(org.ooc.frontend.model.Statement)>($r30);
+
+        $r31 = (org.ooc.frontend.model.Node) $u13;
+
+        virtualinvoke $stack51.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r31);
+
+        $u14 = new org.ooc.frontend.model.FunctionCall;
+
+        $stack55 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u14.<org.ooc.frontend.model.FunctionCall: void <init>(org.ooc.frontend.model.FunctionDecl,org.ooc.frontend.model.tokens.Token)>(decl, $stack55);
+
+        $stack56 = virtualinvoke $u0.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getArguments()>();
+
+        membAcc#14 = virtualinvoke $stack56.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label4:
+        $stack58 = interfaceinvoke membAcc#14.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack58 == 0 goto label5;
+
+        $stack69 = interfaceinvoke membAcc#14.<java.util.Iterator: java.lang.Object next()>();
+
+        arg = (org.ooc.frontend.model.Argument) $stack69;
+
+        $stack70 = virtualinvoke $u14.<org.ooc.frontend.model.FunctionCall: org.ooc.frontend.model.NodeList getArguments()>();
+
+        $u15 = new org.ooc.frontend.model.VariableAccess;
+
+        $stack72 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r32 = (org.ooc.frontend.model.VariableDecl) arg;
+
+        specialinvoke $u15.<org.ooc.frontend.model.VariableAccess: void <init>(org.ooc.frontend.model.VariableDecl,org.ooc.frontend.model.tokens.Token)>($r32, $stack72);
+
+        $r33 = (org.ooc.frontend.model.Node) $u15;
+
+        virtualinvoke $stack70.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r33);
+
+        goto label4;
+
+     label5:
+        $stack59 = virtualinvoke $u0.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getBody()>();
+
+        $u17 = new org.ooc.frontend.model.Line;
+
+        $u16 = new org.ooc.frontend.model.MemberCall;
+
+        $stack62 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r34 = (org.ooc.frontend.model.Expression) $u11;
+
+        specialinvoke $u16.<org.ooc.frontend.model.MemberCall: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.FunctionCall,org.ooc.frontend.model.tokens.Token)>($r34, $u14, $stack62);
+
+        $r35 = (org.ooc.frontend.model.Statement) $u16;
+
+        specialinvoke $u17.<org.ooc.frontend.model.Line: void <init>(org.ooc.frontend.model.Statement)>($r35);
+
+        $r36 = (org.ooc.frontend.model.Node) $u17;
+
+        virtualinvoke $stack59.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r36);
+
+        $stack64 = virtualinvoke $u0.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getBody()>();
+
+        $u19 = new org.ooc.frontend.model.Line;
+
+        $u18 = new org.ooc.frontend.model.ValuedReturn;
+
+        $stack67 = decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r37 = (org.ooc.frontend.model.Expression) $u11;
+
+        specialinvoke $u18.<org.ooc.frontend.model.ValuedReturn: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>($r37, $stack67);
+
+        $r38 = (org.ooc.frontend.model.Statement) $u18;
+
+        specialinvoke $u19.<org.ooc.frontend.model.Line: void <init>(org.ooc.frontend.model.Statement)>($r38);
+
+        $r39 = (org.ooc.frontend.model.Node) $u19;
+
+        virtualinvoke $stack64.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r39);
+
+        $r40 = (org.ooc.frontend.model.ClassDecl) this;
+
+        virtualinvoke $r40.<org.ooc.frontend.model.ClassDecl: void addFunction(org.ooc.frontend.model.FunctionDecl)>($u0);
+
+        return;
+    }
+
+    public void accept(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        org.ooc.frontend.Visitor visitor;
+        ClassDecl this;
+        org.ooc.frontend.model.ClassDecl $r0;
+
+        this := @this: ClassDecl;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        interfaceinvoke visitor.<org.ooc.frontend.Visitor: void visit(org.ooc.frontend.model.ClassDecl)>($r0);
+
+        return;
+    }
+
+    public void getVariables(org.ooc.frontend.model.NodeList)
+    {
+        ClassDecl this;
+        org.ooc.frontend.model.NodeList variables;
+        org.ooc.frontend.model.ClassDecl $stack2, $stack3, $r0, $r1;
+
+        this := @this: ClassDecl;
+
+        variables := @parameter0: org.ooc.frontend.model.NodeList;
+
+        specialinvoke this.<org.ooc.frontend.model.TypeDecl: void getVariables(org.ooc.frontend.model.NodeList)>(variables);
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack2 = virtualinvoke $r0.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        if $stack2 == null goto label1;
+
+        $r1 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack3 = virtualinvoke $r1.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        virtualinvoke $stack3.<org.ooc.frontend.model.ClassDecl: void getVariables(org.ooc.frontend.model.NodeList)>(variables);
+
+     label1:
+        return;
+    }
+
+    public boolean isResolved()
+    {
+        ClassDecl this;
+
+        this := @this: ClassDecl;
+
+        return 0;
+    }
+
+    public org.ooc.frontend.model.interfaces.MustBeResolved$Response resolve(org.ooc.frontend.model.NodeList, org.ooc.middle.hobgoblins.Resolver, boolean)
+    {
+        ClassDecl this;
+        org.ooc.frontend.model.NodeList stack, $stack21, args, $stack41, $stack44;
+        org.ooc.middle.hobgoblins.Resolver res;
+        boolean fatal, $stack15, $stack22, $stack61, $stack18;
+        org.ooc.frontend.model.interfaces.MustBeResolved$Response response, $stack14, $stack47, $stack55, $stack68, $stack19;
+        org.ooc.frontend.model.Type $stack16, $stack17, $stack57, $stack58;
+        org.ooc.frontend.model.FunctionDecl defaults, $stack49, $stack54, superInit;
+        org.ooc.frontend.model.tokens.Token $stack25, $stack28, $stack31, $stack34, $stack40;
+        org.ooc.frontend.model.ClassDecl $stack48, $stack51, $stack53, $stack64, $r0, $r1, $r2, $r5, $r6, $r7, $r8, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r29;
+        java.lang.String $stack59, $stack66, $stack67;
+        org.ooc.frontend.model.TypeDecl $stack60;
+        java.lang.Class $stack65;
+        org.ooc.middle.OocCompilationError $u0, $u1;
+        org.ooc.frontend.model.FunctionCall $u2;
+        org.ooc.frontend.model.VariableAccess $u3;
+        org.ooc.frontend.model.MemberAccess $u4;
+        org.ooc.frontend.model.NullLiteral $u5;
+        org.ooc.frontend.model.VersionNodes$VersionName $u6;
+        org.ooc.frontend.model.VersionBlock $u7;
+        org.ooc.frontend.model.Line $u8, $u9;
+        org.ooc.frontend.model.Node $r3, $r9, $r18, $r20, $r21, $r22, $r23, $r26, $r28;
+        java.lang.Throwable $r4, $r10;
+        org.ooc.frontend.model.Expression $r19;
+        org.ooc.frontend.model.VersionNodes$VersionNode $r24;
+        org.ooc.frontend.model.Statement $r25, $r27;
+
+        this := @this: ClassDecl;
+
+        stack := @parameter0: org.ooc.frontend.model.NodeList;
+
+        res := @parameter1: org.ooc.middle.hobgoblins.Resolver;
+
+        fatal := @parameter2: boolean;
+
+        response = specialinvoke this.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.interfaces.MustBeResolved$Response resolve(org.ooc.frontend.model.NodeList,org.ooc.middle.hobgoblins.Resolver,boolean)>(stack, res, fatal);
+
+        $stack14 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response OK>;
+
+        if response == $stack14 goto label1;
+
+        return response;
+
+     label1:
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack15 = virtualinvoke $r0.<org.ooc.frontend.model.ClassDecl: boolean isResolved()>();
+
+        if $stack15 == 0 goto label2;
+
+        $stack68 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response OK>;
+
+        return $stack68;
+
+     label2:
+        $r1 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack16 = virtualinvoke $r1.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.Type getSuperType()>();
+
+        if $stack16 == null goto label3;
+
+        $stack60 = specialinvoke this.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        $stack61 = $stack60 instanceof org.ooc.frontend.model.ClassDecl;
+
+        if $stack61 != 0 goto label3;
+
+        $u0 = new org.ooc.middle.OocCompilationError;
+
+        $r2 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack64 = virtualinvoke $r2.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        $stack65 = virtualinvoke $stack64.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack66 = virtualinvoke $stack65.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        $stack67 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack66) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Trying to extends a \u0001. You can only extend classes.");
+
+        $r3 = (org.ooc.frontend.model.Node) this;
+
+        specialinvoke $u0.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList,java.lang.String)>($r3, stack, $stack67);
+
+        $r4 = (java.lang.Throwable) $u0;
+
+        throw $r4;
+
+     label3:
+        $r5 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack17 = virtualinvoke $r5.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.Type getSuperType()>();
+
+        if $stack17 == null goto label6;
+
+        $r6 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack48 = virtualinvoke $r6.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        if $stack48 != null goto label5;
+
+        if fatal == 0 goto label4;
+
+        $u1 = new org.ooc.middle.OocCompilationError;
+
+        $r7 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack57 = virtualinvoke $r7.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.Type getSuperType()>();
+
+        $r8 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack58 = virtualinvoke $r8.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.Type getType()>();
+
+        $stack59 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (org.ooc.frontend.model.Type,org.ooc.frontend.model.Type)>($stack57, $stack58) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Super-type \u0001 of class \u0001 couldn\'t be resolved");
+
+        $r9 = (org.ooc.frontend.model.Node) this;
+
+        specialinvoke $u1.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList,java.lang.String)>($r9, stack, $stack59);
+
+        $r10 = (java.lang.Throwable) $u1;
+
+        throw $r10;
+
+     label4:
+        $stack55 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response LOOP>;
+
+        return $stack55;
+
+     label5:
+        $r11 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack49 = $r11.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl defaultInit>;
+
+        if $stack49 != null goto label6;
+
+        $r12 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack51 = virtualinvoke $r12.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        superInit = virtualinvoke $stack51.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall)>("init", "", null);
+
+        if superInit == null goto label6;
+
+        $r13 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack53 = virtualinvoke $r13.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        $stack54 = $stack53.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl defaultInit>;
+
+        if superInit != $stack54 goto label6;
+
+        $r14 = (org.ooc.frontend.model.ClassDecl) this;
+
+        virtualinvoke $r14.<org.ooc.frontend.model.ClassDecl: void addDefaultInit()>();
+
+     label6:
+        $r15 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack18 = $r15.<org.ooc.frontend.model.ClassDecl: boolean hasRegisteredFinalizer>;
+
+        if $stack18 != 0 goto label7;
+
+        $r16 = (org.ooc.frontend.model.ClassDecl) this;
+
+        superInit = virtualinvoke $r16.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall)>("__destroy__", null, null);
+
+        if superInit == null goto label7;
+
+        $stack21 = virtualinvoke superInit.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getBody()>();
+
+        $stack22 = virtualinvoke $stack21.<org.ooc.frontend.model.NodeList: boolean isEmpty()>();
+
+        if $stack22 != 0 goto label7;
+
+        $r17 = (org.ooc.frontend.model.ClassDecl) this;
+
+        defaults = virtualinvoke $r17.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall)>("__defaults__", null, null);
+
+        $u2 = new org.ooc.frontend.model.FunctionCall;
+
+        $stack25 = superInit.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u2.<org.ooc.frontend.model.FunctionCall: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>("gc_register_finalizer", $stack25);
+
+        args = virtualinvoke $u2.<org.ooc.frontend.model.FunctionCall: org.ooc.frontend.model.NodeList getArguments()>();
+
+        $u3 = new org.ooc.frontend.model.VariableAccess;
+
+        $stack28 = superInit.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u3.<org.ooc.frontend.model.VariableAccess: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>("this", $stack28);
+
+        $r18 = (org.ooc.frontend.model.Node) $u3;
+
+        virtualinvoke args.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r18);
+
+        $u4 = new org.ooc.frontend.model.MemberAccess;
+
+        $stack31 = superInit.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r19 = (org.ooc.frontend.model.Expression) $u3;
+
+        specialinvoke $u4.<org.ooc.frontend.model.MemberAccess: void <init>(org.ooc.frontend.model.Expression,java.lang.String,org.ooc.frontend.model.tokens.Token)>($r19, "__destroy__", $stack31);
+
+        $r20 = (org.ooc.frontend.model.Node) $u4;
+
+        virtualinvoke args.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r20);
+
+        $u5 = new org.ooc.frontend.model.NullLiteral;
+
+        $stack34 = superInit.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u5.<org.ooc.frontend.model.NullLiteral: void <init>(org.ooc.frontend.model.tokens.Token)>($stack34);
+
+        $r21 = (org.ooc.frontend.model.Node) $u5;
+
+        virtualinvoke args.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r21);
+
+        $r22 = (org.ooc.frontend.model.Node) $u5;
+
+        virtualinvoke args.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r22);
+
+        $r23 = (org.ooc.frontend.model.Node) $u5;
+
+        virtualinvoke args.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r23);
+
+        $u7 = new org.ooc.frontend.model.VersionBlock;
+
+        $u6 = new org.ooc.frontend.model.VersionNodes$VersionName;
+
+        specialinvoke $u6.<org.ooc.frontend.model.VersionNodes$VersionName: void <init>(java.lang.String)>("gc");
+
+        $stack40 = superInit.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r24 = (org.ooc.frontend.model.VersionNodes$VersionNode) $u6;
+
+        specialinvoke $u7.<org.ooc.frontend.model.VersionBlock: void <init>(org.ooc.frontend.model.VersionNodes$VersionNode,org.ooc.frontend.model.tokens.Token)>($r24, $stack40);
+
+        $stack41 = virtualinvoke $u7.<org.ooc.frontend.model.VersionBlock: org.ooc.frontend.model.NodeList getBody()>();
+
+        $u8 = new org.ooc.frontend.model.Line;
+
+        $r25 = (org.ooc.frontend.model.Statement) $u2;
+
+        specialinvoke $u8.<org.ooc.frontend.model.Line: void <init>(org.ooc.frontend.model.Statement)>($r25);
+
+        $r26 = (org.ooc.frontend.model.Node) $u8;
+
+        virtualinvoke $stack41.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r26);
+
+        $stack44 = virtualinvoke defaults.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getBody()>();
+
+        $u9 = new org.ooc.frontend.model.Line;
+
+        $r27 = (org.ooc.frontend.model.Statement) $u7;
+
+        specialinvoke $u9.<org.ooc.frontend.model.Line: void <init>(org.ooc.frontend.model.Statement)>($r27);
+
+        $r28 = (org.ooc.frontend.model.Node) $u9;
+
+        virtualinvoke $stack44.<org.ooc.frontend.model.NodeList: void add(int,org.ooc.frontend.model.Node)>(0, $r28);
+
+        $r29 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $r29.<org.ooc.frontend.model.ClassDecl: boolean hasRegisteredFinalizer> = 1;
+
+        $stack47 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response LOOP>;
+
+        return $stack47;
+
+     label7:
+        $stack19 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response OK>;
+
+        return $stack19;
+    }
+
+    public org.ooc.frontend.model.ClassDecl getBaseClass(org.ooc.frontend.model.FunctionDecl)
+    {
+        ClassDecl this;
+        org.ooc.frontend.model.ClassDecl $stack3, $stack7, base, $r0, $r1, $r2, $r3;
+        org.ooc.frontend.model.FunctionDecl decl, $stack6;
+        java.lang.String $stack4, $stack5;
+
+        this := @this: ClassDecl;
+
+        decl := @parameter0: org.ooc.frontend.model.FunctionDecl;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack3 = virtualinvoke $r0.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        if $stack3 == null goto label1;
+
+        $r1 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack7 = virtualinvoke $r1.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        base = virtualinvoke $stack7.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getBaseClass(org.ooc.frontend.model.FunctionDecl)>(decl);
+
+        if base == null goto label1;
+
+        return base;
+
+     label1:
+        $stack4 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack5 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getSuffix()>();
+
+        $r2 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack6 = virtualinvoke $r2.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall,boolean)>($stack4, $stack5, null, 0);
+
+        if $stack6 == null goto label2;
+
+        $r3 = (org.ooc.frontend.model.ClassDecl) this;
+
+        return $r3;
+
+     label2:
+        return null;
+    }
+
+    public boolean isChildOf(java.lang.String)
+    {
+        ClassDecl this;
+        java.lang.String $stack2, candidate;
+        boolean $stack3, $stack6;
+        org.ooc.frontend.model.ClassDecl $stack4, $stack5, $r0, $r1, $r2;
+
+        this := @this: ClassDecl;
+
+        candidate := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack2 = virtualinvoke $r0.<org.ooc.frontend.model.ClassDecl: java.lang.String getName()>();
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: boolean equals(java.lang.Object)>(candidate);
+
+        if $stack3 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        $r1 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack4 = virtualinvoke $r1.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        if $stack4 == null goto label2;
+
+        $r2 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack5 = virtualinvoke $r2.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        $stack6 = virtualinvoke $stack5.<org.ooc.frontend.model.ClassDecl: boolean isChildOf(java.lang.String)>(candidate);
+
+        return $stack6;
+
+     label2:
+        return 0;
+    }
+
+    public volatile org.ooc.frontend.model.TypeDecl getSuperRef()
+    {
+        ClassDecl this;
+        org.ooc.frontend.model.ClassDecl $stack1, $r0;
+        org.ooc.frontend.model.TypeDecl $r1;
+
+        this := @this: ClassDecl;
+
+        $r0 = (org.ooc.frontend.model.ClassDecl) this;
+
+        $stack1 = virtualinvoke $r0.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) $stack1;
+
+        return $r1;
+    }
+
+    public static void <clinit>()
+    {
+        <ClassDecl: java.lang.String LOAD_FUNC_NAME> = "__load__";
+
+        <ClassDecl: java.lang.String DEFAULTS_FUNC_NAME> = "__defaults__";
+
+        <ClassDecl: java.lang.String DESTROY_FUNC_NAME> = "__destroy__";
+
+        return;
+    }
+}

@@ -1,0 +1,141 @@
+public class UnsupportedSlf4jBindingConfiguration extends org.apache.maven.cli.logging.BaseSlf4jConfiguration
+{
+    private static final org.slf4j.Logger LOGGER;
+    private java.lang.String slf4jBinding;
+    private java.util.Map supported;
+
+    public void <init>(java.lang.String, java.util.Map)
+    {
+        UnsupportedSlf4jBindingConfiguration this;
+        java.lang.String slf4jBinding;
+        java.util.Map supported;
+        org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration $r0, $r1;
+
+        this := @this: UnsupportedSlf4jBindingConfiguration;
+
+        slf4jBinding := @parameter0: java.lang.String;
+
+        supported := @parameter1: java.util.Map;
+
+        specialinvoke this.<org.apache.maven.cli.logging.BaseSlf4jConfiguration: void <init>()>();
+
+        $r0 = (org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration) this;
+
+        $r0.<org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration: java.lang.String slf4jBinding> = slf4jBinding;
+
+        $r1 = (org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration) this;
+
+        $r1.<org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration: java.util.Map supported> = supported;
+
+        return;
+    }
+
+    public void activate()
+    {
+        UnsupportedSlf4jBindingConfiguration this;
+        java.lang.String $stack7, ls, $stack20, $stack28;
+        org.slf4j.Logger $stack8, $stack9, $stack27;
+        java.util.Map $stack11;
+        java.util.Set $stack12, $stack24;
+        java.util.Iterator l2, l5;
+        boolean $stack14, $stack26;
+        java.lang.Object $stack15, $stack18, $stack23, binding;
+        java.util.Map$Entry entry;
+        java.lang.StringBuilder $stack17, $stack21, $stack31, $stack32, $u0;
+        java.net.URL $stack19;
+        org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration $r0, $r1;
+
+        this := @this: UnsupportedSlf4jBindingConfiguration;
+
+        $stack8 = <org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration: org.slf4j.Logger LOGGER>;
+
+        $r0 = (org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration) this;
+
+        $stack7 = $r0.<org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration: java.lang.String slf4jBinding>;
+
+        interfaceinvoke $stack8.<org.slf4j.Logger: void warn(java.lang.String,java.lang.Object)>("The SLF4J binding actually used is not supported by Maven: {}", $stack7);
+
+        $stack9 = <org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration: org.slf4j.Logger LOGGER>;
+
+        interfaceinvoke $stack9.<org.slf4j.Logger: void warn(java.lang.String)>("Maven supported bindings are:");
+
+        ls = staticinvoke <java.lang.System: java.lang.String lineSeparator()>();
+
+        $r1 = (org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration) this;
+
+        $stack11 = $r1.<org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration: java.util.Map supported>;
+
+        $stack12 = interfaceinvoke $stack11.<java.util.Map: java.util.Set entrySet()>();
+
+        l2 = interfaceinvoke $stack12.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $stack14 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label4;
+
+        $stack15 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        entry = (java.util.Map$Entry) $stack15;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack17 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(from ");
+
+        $stack18 = interfaceinvoke entry.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $stack19 = (java.net.URL) $stack18;
+
+        $stack20 = virtualinvoke $stack19.<java.net.URL: java.lang.String toExternalForm()>();
+
+        $stack21 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack20);
+
+        virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+        $stack23 = interfaceinvoke entry.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $stack24 = (java.util.Set) $stack23;
+
+        l5 = interfaceinvoke $stack24.<java.util.Set: java.util.Iterator iterator()>();
+
+     label2:
+        $stack26 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack26 == 0 goto label3;
+
+        binding = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack31 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(ls);
+
+        $stack32 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("- ");
+
+        virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(binding);
+
+        goto label2;
+
+     label3:
+        $stack27 = <org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration: org.slf4j.Logger LOGGER>;
+
+        $stack28 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack27.<org.slf4j.Logger: void warn(java.lang.String)>($stack28);
+
+        goto label1;
+
+     label4:
+        return;
+    }
+
+    static void <clinit>()
+    {
+        org.slf4j.Logger $stack0;
+
+        $stack0 = staticinvoke <org.slf4j.LoggerFactory: org.slf4j.Logger getLogger(java.lang.Class)>(class "Lorg/apache/maven/cli/logging/impl/UnsupportedSlf4jBindingConfiguration;");
+
+        <org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration: org.slf4j.Logger LOGGER> = $stack0;
+
+        return;
+    }
+}

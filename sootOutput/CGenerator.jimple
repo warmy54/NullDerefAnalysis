@@ -1,0 +1,2201 @@
+public class CGenerator extends org.ooc.backend.Generator implements org.ooc.frontend.Visitor
+{
+    public final org.ooc.backend.cdirty.AwesomeWriter hw;
+    public final org.ooc.backend.cdirty.AwesomeWriter cw;
+    public final org.ooc.backend.cdirty.AwesomeWriter fw;
+    public org.ooc.backend.cdirty.AwesomeWriter current;
+    public org.ooc.frontend.BuildParams params;
+
+    public void <init>(java.io.File, org.ooc.frontend.model.Module)
+    {
+        CGenerator this;
+        java.io.File outPath, $stack10, $stack16, $u0, $u3, $u6;
+        org.ooc.frontend.model.Module module;
+        java.lang.String basePath, $stack9, $stack15, $stack21;
+        org.ooc.backend.cdirty.AwesomeWriter $stack24, $u2, $u5, $u8;
+        org.ooc.backend.CachedFileWriter $u1, $u4, $u7;
+        java.lang.Appendable $r0, $r2, $r4;
+        org.ooc.backend.cdirty.CGenerator $r1, $r3, $r5, $r6, $r7;
+
+        this := @this: CGenerator;
+
+        outPath := @parameter0: java.io.File;
+
+        module := @parameter1: org.ooc.frontend.model.Module;
+
+        specialinvoke this.<org.ooc.backend.Generator: void <init>(java.io.File,org.ooc.frontend.model.Module)>(outPath, module);
+
+        basePath = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getOutPath()>();
+
+        $u0 = new java.io.File;
+
+        $stack9 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(basePath) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001.h");
+
+        specialinvoke $u0.<java.io.File: void <init>(java.io.File,java.lang.String)>(outPath, $stack9);
+
+        $stack10 = virtualinvoke $u0.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $stack10.<java.io.File: boolean mkdirs()>();
+
+        $u2 = new org.ooc.backend.cdirty.AwesomeWriter;
+
+        $u1 = new org.ooc.backend.CachedFileWriter;
+
+        specialinvoke $u1.<org.ooc.backend.CachedFileWriter: void <init>(java.io.File)>($u0);
+
+        $r0 = (java.lang.Appendable) $u1;
+
+        specialinvoke $u2.<org.ooc.backend.cdirty.AwesomeWriter: void <init>(java.lang.Appendable)>($r0);
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter hw> = $u2;
+
+        $u3 = new java.io.File;
+
+        $stack15 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(basePath) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001-fwd.h");
+
+        specialinvoke $u3.<java.io.File: void <init>(java.io.File,java.lang.String)>(outPath, $stack15);
+
+        $stack16 = virtualinvoke $u3.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $stack16.<java.io.File: boolean mkdirs()>();
+
+        $u5 = new org.ooc.backend.cdirty.AwesomeWriter;
+
+        $u4 = new org.ooc.backend.CachedFileWriter;
+
+        specialinvoke $u4.<org.ooc.backend.CachedFileWriter: void <init>(java.io.File)>($u3);
+
+        $r2 = (java.lang.Appendable) $u4;
+
+        specialinvoke $u5.<org.ooc.backend.cdirty.AwesomeWriter: void <init>(java.lang.Appendable)>($r2);
+
+        $r3 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $r3.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter fw> = $u5;
+
+        $u6 = new java.io.File;
+
+        $stack21 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(basePath) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001.c");
+
+        specialinvoke $u6.<java.io.File: void <init>(java.io.File,java.lang.String)>(outPath, $stack21);
+
+        $u8 = new org.ooc.backend.cdirty.AwesomeWriter;
+
+        $u7 = new org.ooc.backend.CachedFileWriter;
+
+        specialinvoke $u7.<org.ooc.backend.CachedFileWriter: void <init>(java.io.File)>($u6);
+
+        $r4 = (java.lang.Appendable) $u7;
+
+        specialinvoke $u8.<org.ooc.backend.cdirty.AwesomeWriter: void <init>(java.lang.Appendable)>($r4);
+
+        $r5 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $r5.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter cw> = $u8;
+
+        $r6 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack24 = $r6.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter hw>;
+
+        $r7 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $r7.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current> = $stack24;
+
+        return;
+    }
+
+    public void generate(org.ooc.frontend.BuildParams) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.BuildParams params;
+        org.ooc.frontend.model.Module $stack2;
+        org.ooc.backend.cdirty.AwesomeWriter $stack3, $stack4, $stack5;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: CGenerator;
+
+        params := @parameter0: org.ooc.frontend.BuildParams;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.BuildParams params> = params;
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.model.Module module>;
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.Module: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r2 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack3 = $r2.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter fw>;
+
+        virtualinvoke $stack3.<org.ooc.backend.cdirty.AwesomeWriter: void close()>();
+
+        $r3 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack4 = $r3.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter hw>;
+
+        virtualinvoke $stack4.<org.ooc.backend.cdirty.AwesomeWriter: void close()>();
+
+        $r4 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack5 = $r4.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter cw>;
+
+        virtualinvoke $stack5.<org.ooc.backend.cdirty.AwesomeWriter: void close()>();
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Module) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Module module;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.ModuleWriter: void write(org.ooc.frontend.model.Module,org.ooc.backend.cdirty.CGenerator)>(module, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Add) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Add add;
+        org.ooc.frontend.model.Expression $stack2, $stack5;
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack3;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        add := @parameter0: org.ooc.frontend.model.Add;
+
+        $stack2 = virtualinvoke add.<org.ooc.frontend.model.Add: org.ooc.frontend.model.Expression getLeft()>();
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack3 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack3.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" + ");
+
+        $stack5 = virtualinvoke add.<org.ooc.frontend.model.Add: org.ooc.frontend.model.Expression getRight()>();
+
+        virtualinvoke $stack5.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Mul) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Mul mul;
+        org.ooc.frontend.model.Expression $stack2, $stack5;
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack3;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        mul := @parameter0: org.ooc.frontend.model.Mul;
+
+        $stack2 = virtualinvoke mul.<org.ooc.frontend.model.Mul: org.ooc.frontend.model.Expression getLeft()>();
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack3 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack3.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" * ");
+
+        $stack5 = virtualinvoke mul.<org.ooc.frontend.model.Mul: org.ooc.frontend.model.Expression getRight()>();
+
+        virtualinvoke $stack5.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Sub) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Sub sub;
+        org.ooc.frontend.model.Expression $stack2, $stack4, $stack8, $stack7;
+        boolean $stack3;
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack5, $stack18;
+        org.ooc.frontend.model.IntLiteral $stack9;
+        java.math.BigInteger $stack10;
+        int $stack11;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1;
+
+        this := @this: CGenerator;
+
+        sub := @parameter0: org.ooc.frontend.model.Sub;
+
+        $stack2 = virtualinvoke sub.<org.ooc.frontend.model.Sub: org.ooc.frontend.model.Expression getLeft()>();
+
+        $stack3 = $stack2 instanceof org.ooc.frontend.model.IntLiteral;
+
+        if $stack3 == 0 goto label1;
+
+        $stack8 = virtualinvoke sub.<org.ooc.frontend.model.Sub: org.ooc.frontend.model.Expression getLeft()>();
+
+        $stack9 = (org.ooc.frontend.model.IntLiteral) $stack8;
+
+        $stack10 = virtualinvoke $stack9.<org.ooc.frontend.model.IntLiteral: java.math.BigInteger getValue()>();
+
+        $stack11 = virtualinvoke $stack10.<java.math.BigInteger: int intValue()>();
+
+        if $stack11 != 0 goto label1;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack18 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack18.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("-");
+
+        goto label2;
+
+     label1:
+        $stack4 = virtualinvoke sub.<org.ooc.frontend.model.Sub: org.ooc.frontend.model.Expression getLeft()>();
+
+        virtualinvoke $stack4.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack5 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack5.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" - ");
+
+     label2:
+        $stack7 = virtualinvoke sub.<org.ooc.frontend.model.Sub: org.ooc.frontend.model.Expression getRight()>();
+
+        virtualinvoke $stack7.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Div) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Div div;
+        org.ooc.frontend.model.Expression $stack2, $stack5;
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack3;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        div := @parameter0: org.ooc.frontend.model.Div;
+
+        $stack2 = virtualinvoke div.<org.ooc.frontend.model.Div: org.ooc.frontend.model.Expression getLeft()>();
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack3 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack3.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" / ");
+
+        $stack5 = virtualinvoke div.<org.ooc.frontend.model.Div: org.ooc.frontend.model.Expression getRight()>();
+
+        virtualinvoke $stack5.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Not) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2;
+        org.ooc.frontend.model.Not not;
+        org.ooc.frontend.model.Expression $stack4;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        not := @parameter0: org.ooc.frontend.model.Not;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(33);
+
+        $stack4 = virtualinvoke not.<org.ooc.frontend.model.Not: org.ooc.frontend.model.Expression getInner()>();
+
+        virtualinvoke $stack4.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.BinaryNegation) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2;
+        org.ooc.frontend.model.BinaryNegation binaryNeg;
+        org.ooc.frontend.model.Expression $stack4;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        binaryNeg := @parameter0: org.ooc.frontend.model.BinaryNegation;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(126);
+
+        $stack4 = virtualinvoke binaryNeg.<org.ooc.frontend.model.BinaryNegation: org.ooc.frontend.model.Expression getInner()>();
+
+        virtualinvoke $stack4.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Mod) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Mod mod;
+        org.ooc.frontend.model.Expression $stack2, $stack5;
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack3;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        mod := @parameter0: org.ooc.frontend.model.Mod;
+
+        $stack2 = virtualinvoke mod.<org.ooc.frontend.model.Mod: org.ooc.frontend.model.Expression getLeft()>();
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack3 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack3.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" % ");
+
+        $stack5 = virtualinvoke mod.<org.ooc.frontend.model.Mod: org.ooc.frontend.model.Expression getRight()>();
+
+        virtualinvoke $stack5.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Compare) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Compare compare;
+        org.ooc.frontend.model.Expression $stack2, $stack9;
+        CGenerator this;
+        int[] $stack3;
+        org.ooc.frontend.model.Compare$CompareType $stack4;
+        int $stack5, $stack6;
+        org.ooc.backend.cdirty.AwesomeWriter $stack7, $stack10, $stack14, $stack16, $stack18, $stack20;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: CGenerator;
+
+        compare := @parameter0: org.ooc.frontend.model.Compare;
+
+        $stack2 = virtualinvoke compare.<org.ooc.frontend.model.Compare: org.ooc.frontend.model.Expression getLeft()>();
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $stack3 = <org.ooc.backend.cdirty.CGenerator$1: int[] $SwitchMap$org$ooc$frontend$model$Compare$CompareType>;
+
+        $stack4 = virtualinvoke compare.<org.ooc.frontend.model.Compare: org.ooc.frontend.model.Compare$CompareType getCompareType()>();
+
+        $stack5 = virtualinvoke $stack4.<org.ooc.frontend.model.Compare$CompareType: int ordinal()>();
+
+        $stack6 = $stack3[$stack5];
+
+        tableswitch($stack6)
+        {
+            case 1: goto label1;
+            case 2: goto label2;
+            case 3: goto label3;
+            case 4: goto label4;
+            case 5: goto label5;
+            case 6: goto label6;
+            default: goto label7;
+        };
+
+     label1:
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack20 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack20.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" > ");
+
+        goto label7;
+
+     label2:
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack18 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack18.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" >= ");
+
+        goto label7;
+
+     label3:
+        $r2 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack16 = $r2.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack16.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" < ");
+
+        goto label7;
+
+     label4:
+        $r3 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack14 = $r3.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack14.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" <= ");
+
+        goto label7;
+
+     label5:
+        $r4 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack10 = $r4.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack10.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" == ");
+
+        goto label7;
+
+     label6:
+        $r5 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack7 = $r5.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack7.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" != ");
+
+     label7:
+        $stack9 = virtualinvoke compare.<org.ooc.frontend.model.Compare: org.ooc.frontend.model.Expression getRight()>();
+
+        virtualinvoke $stack9.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.FunctionCall) throws java.io.IOException
+    {
+        org.ooc.frontend.model.FunctionCall functionCall;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        functionCall := @parameter0: org.ooc.frontend.model.FunctionCall;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.CallWriter: void write(org.ooc.frontend.model.FunctionCall,org.ooc.backend.cdirty.CGenerator)>(functionCall, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.MemberCall) throws java.io.IOException
+    {
+        org.ooc.frontend.model.MemberCall memberCall;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        memberCall := @parameter0: org.ooc.frontend.model.MemberCall;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.CallWriter: void writeMember(org.ooc.frontend.model.MemberCall,org.ooc.backend.cdirty.CGenerator)>(memberCall, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Parenthesis) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2, $stack5;
+        org.ooc.frontend.model.Parenthesis parenthesis;
+        org.ooc.frontend.model.Expression $stack4;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1;
+
+        this := @this: CGenerator;
+
+        parenthesis := @parameter0: org.ooc.frontend.model.Parenthesis;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(40);
+
+        $stack4 = virtualinvoke parenthesis.<org.ooc.frontend.model.Parenthesis: org.ooc.frontend.model.Expression getExpression()>();
+
+        virtualinvoke $stack4.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack5 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack5.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(41);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Assignment) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Assignment assignment;
+        org.ooc.frontend.model.Expression left, $stack10;
+        boolean $stack4;
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack5, $stack6, $stack8;
+        java.lang.String $stack7;
+        org.ooc.frontend.model.VariableAccess $stack11;
+        org.ooc.frontend.model.Access $r0;
+        org.ooc.backend.cdirty.CGenerator $r1, $r2;
+
+        this := @this: CGenerator;
+
+        assignment := @parameter0: org.ooc.frontend.model.Assignment;
+
+        left = virtualinvoke assignment.<org.ooc.frontend.model.Assignment: org.ooc.frontend.model.Expression getLeft()>();
+
+        $stack4 = left instanceof org.ooc.frontend.model.VariableAccess;
+
+        if $stack4 == 0 goto label1;
+
+        $stack11 = (org.ooc.frontend.model.VariableAccess) left;
+
+        $r0 = (org.ooc.frontend.model.Access) $stack11;
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.AccessWriter: void write(org.ooc.frontend.model.Access,boolean,org.ooc.backend.cdirty.CGenerator)>($r0, 0, $r1);
+
+        goto label2;
+
+     label1:
+        virtualinvoke left.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+     label2:
+        $r2 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack5 = $r2.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack6 = virtualinvoke $stack5.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(32);
+
+        $stack7 = virtualinvoke assignment.<org.ooc.frontend.model.Assignment: java.lang.String getSymbol()>();
+
+        $stack8 = virtualinvoke $stack6.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack7);
+
+        virtualinvoke $stack8.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(32);
+
+        $stack10 = virtualinvoke assignment.<org.ooc.frontend.model.Assignment: org.ooc.frontend.model.Expression getRight()>();
+
+        virtualinvoke $stack10.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.ValuedReturn) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2;
+        org.ooc.frontend.model.ValuedReturn return1;
+        org.ooc.frontend.model.Expression $stack4;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        return1 := @parameter0: org.ooc.frontend.model.ValuedReturn;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("return ");
+
+        $stack4 = virtualinvoke return1.<org.ooc.frontend.model.ValuedReturn: org.ooc.frontend.model.Expression getExpression()>();
+
+        virtualinvoke $stack4.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Return) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2;
+        org.ooc.frontend.model.Return return1;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        return1 := @parameter0: org.ooc.frontend.model.Return;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("return");
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.NullLiteral) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.model.NullLiteral nullLiteral;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        nullLiteral := @parameter0: org.ooc.frontend.model.NullLiteral;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.LiteralWriter: void writeNull(org.ooc.backend.cdirty.CGenerator)>($r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.IntLiteral) throws java.io.IOException
+    {
+        org.ooc.frontend.model.IntLiteral numberLiteral;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        numberLiteral := @parameter0: org.ooc.frontend.model.IntLiteral;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.LiteralWriter: void writeInt(org.ooc.frontend.model.IntLiteral,org.ooc.backend.cdirty.CGenerator)>(numberLiteral, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.FloatLiteral) throws java.io.IOException
+    {
+        org.ooc.frontend.model.FloatLiteral floatLiteral;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        floatLiteral := @parameter0: org.ooc.frontend.model.FloatLiteral;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.LiteralWriter: void writeFloat(org.ooc.frontend.model.FloatLiteral,org.ooc.backend.cdirty.CGenerator)>(floatLiteral, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.StringLiteral) throws java.io.IOException
+    {
+        org.ooc.frontend.model.StringLiteral stringLiteral;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        stringLiteral := @parameter0: org.ooc.frontend.model.StringLiteral;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.LiteralWriter: void writeString(org.ooc.frontend.model.StringLiteral,org.ooc.backend.cdirty.CGenerator)>(stringLiteral, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.RangeLiteral) throws java.io.IOException
+    {
+        org.ooc.frontend.model.RangeLiteral rangeLiteral;
+        CGenerator this;
+        org.ooc.frontend.model.Module $stack3;
+        org.ooc.middle.OocCompilationError $u0;
+        org.ooc.backend.cdirty.CGenerator $r0;
+        org.ooc.frontend.model.Node $r1;
+        java.lang.Throwable $r2;
+
+        this := @this: CGenerator;
+
+        rangeLiteral := @parameter0: org.ooc.frontend.model.RangeLiteral;
+
+        $u0 = new org.ooc.middle.OocCompilationError;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack3 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.model.Module module>;
+
+        $r1 = (org.ooc.frontend.model.Node) rangeLiteral;
+
+        specialinvoke $u0.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.Module,java.lang.String)>($r1, $stack3, "Using a range literal outside a foreach is not supported yet.");
+
+        $r2 = (java.lang.Throwable) $u0;
+
+        throw $r2;
+    }
+
+    public void visit(org.ooc.frontend.model.BoolLiteral) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.model.BoolLiteral boolLiteral;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2;
+        boolean $stack3;
+        java.lang.String $stack5;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        boolLiteral := @parameter0: org.ooc.frontend.model.BoolLiteral;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack3 = virtualinvoke boolLiteral.<org.ooc.frontend.model.BoolLiteral: boolean getValue()>();
+
+        if $stack3 == 0 goto label1;
+
+        $stack5 = "true";
+
+        goto label2;
+
+     label1:
+        $stack5 = "false";
+
+     label2:
+        virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack5);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.CharLiteral) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2, $stack4, $stack8;
+        org.ooc.frontend.model.CharLiteral charLiteral;
+        char $stack5;
+        java.lang.String $stack6;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1, $r2;
+
+        this := @this: CGenerator;
+
+        charLiteral := @parameter0: org.ooc.frontend.model.CharLiteral;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(39);
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack4 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack5 = virtualinvoke charLiteral.<org.ooc.frontend.model.CharLiteral: char getValue()>();
+
+        $stack6 = staticinvoke <org.ubi.SourceReader: java.lang.String spelled(char)>($stack5);
+
+        virtualinvoke $stack4.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack6);
+
+        $r2 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack8 = $r2.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack8.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(39);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Line) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2, $stack15, $stack25, $stack28, $stack35, $stack40, $stack41, $stack43;
+        org.ooc.frontend.BuildParams $stack4, $stack22;
+        boolean $stack5, $stack10, $stack12, $stack14, $stack23, $stack7;
+        org.ooc.frontend.model.Line line;
+        org.ooc.frontend.model.Statement $stack8, $stack9, $stack11, $stack13, $stack17, $stack6;
+        org.ooc.frontend.model.FunctionCall $stack18;
+        org.ooc.frontend.model.Module $stack27, $stack37;
+        org.ubi.SourceReader $stack29, $stack38;
+        org.ooc.frontend.model.tokens.Token $stack30;
+        org.ubi.FileLocation $stack31;
+        int $stack32;
+        java.lang.String $stack33, $stack39;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1, $r2, $r3, $r4, $r5, $r7, $r8, $r9, $r11, $r12, $r13;
+        org.ubi.Locatable $r6;
+        java.lang.Appendable $r10;
+
+        this := @this: CGenerator;
+
+        line := @parameter0: org.ooc.frontend.model.Line;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack4 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.BuildParams params>;
+
+        $stack5 = $stack4.<org.ooc.frontend.BuildParams: boolean debug>;
+
+        if $stack5 == 0 goto label1;
+
+        $r2 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack22 = $r2.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.BuildParams params>;
+
+        $stack23 = $stack22.<org.ooc.frontend.BuildParams: boolean lineDirectives>;
+
+        if $stack23 == 0 goto label1;
+
+        $r3 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack25 = $r3.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack25.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("#line ");
+
+        $r4 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack28 = $r4.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $r5 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack27 = $r5.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.model.Module module>;
+
+        $stack29 = virtualinvoke $stack27.<org.ooc.frontend.model.Module: org.ubi.SourceReader getReader()>();
+
+        $stack30 = line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.tokens.Token startToken>;
+
+        $r6 = (org.ubi.Locatable) $stack30;
+
+        $stack31 = virtualinvoke $stack29.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($r6);
+
+        $stack32 = virtualinvoke $stack31.<org.ubi.FileLocation: int getLineNumber()>();
+
+        $stack33 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($stack32);
+
+        virtualinvoke $stack28.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack33);
+
+        $r7 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack35 = $r7.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack35.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" \"");
+
+        $r8 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack37 = $r8.<org.ooc.backend.cdirty.CGenerator: org.ooc.frontend.model.Module module>;
+
+        $stack38 = virtualinvoke $stack37.<org.ooc.frontend.model.Module: org.ubi.SourceReader getReader()>();
+
+        $stack39 = virtualinvoke $stack38.<org.ubi.SourceReader: java.lang.String getFileName()>();
+
+        $r9 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack40 = $r9.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $r10 = (java.lang.Appendable) $stack40;
+
+        staticinvoke <org.ubi.SourceReader: void spelled(java.lang.String,java.lang.Appendable,boolean)>($stack39, $r10, 1);
+
+        $r11 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack41 = $r11.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack41.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("\"");
+
+        $r12 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack43 = $r12.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack43.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+     label1:
+        $stack6 = virtualinvoke line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack7 = $stack6 instanceof org.ooc.frontend.model.FunctionCall;
+
+        if $stack7 == 0 goto label2;
+
+        $stack17 = virtualinvoke line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack18 = (org.ooc.frontend.model.FunctionCall) $stack17;
+
+        <org.ooc.backend.cdirty.CallWriter: org.ooc.frontend.model.FunctionCall bypassPrelude> = $stack18;
+
+     label2:
+        $stack8 = virtualinvoke line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        virtualinvoke $stack8.<org.ooc.frontend.model.Statement: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $stack9 = virtualinvoke line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack10 = $stack9 instanceof org.ooc.frontend.model.ControlStatement;
+
+        if $stack10 != 0 goto label3;
+
+        $stack11 = virtualinvoke line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack12 = $stack11 instanceof org.ooc.frontend.model.VersionBlock;
+
+        if $stack12 != 0 goto label3;
+
+        $stack13 = virtualinvoke line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack14 = $stack13 instanceof org.ooc.frontend.model.Match;
+
+        if $stack14 != 0 goto label3;
+
+        $r13 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack15 = $r13.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack15.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(59);
+
+     label3:
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Include) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.model.Include include;
+
+        this := @this: CGenerator;
+
+        include := @parameter0: org.ooc.frontend.model.Include;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.If) throws java.io.IOException
+    {
+        org.ooc.frontend.model.If if1;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        if1 := @parameter0: org.ooc.frontend.model.If;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.ControlStatementWriter: void writeIf(org.ooc.frontend.model.If,org.ooc.backend.cdirty.CGenerator)>(if1, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Else) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Else else1;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        else1 := @parameter0: org.ooc.frontend.model.Else;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.ControlStatementWriter: void writeElse(org.ooc.frontend.model.Else,org.ooc.backend.cdirty.CGenerator)>(else1, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.While) throws java.io.IOException
+    {
+        org.ooc.frontend.model.While while1;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        while1 := @parameter0: org.ooc.frontend.model.While;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.ControlStatementWriter: void writeWhile(org.ooc.frontend.model.While,org.ooc.backend.cdirty.CGenerator)>(while1, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Foreach) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Foreach foreach;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        foreach := @parameter0: org.ooc.frontend.model.Foreach;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.ControlStatementWriter: void writeForeach(org.ooc.frontend.model.Foreach,org.ooc.backend.cdirty.CGenerator)>(foreach, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.MemberAccess) throws java.io.IOException
+    {
+        org.ooc.frontend.model.MemberAccess memberAccess;
+        CGenerator this;
+        org.ooc.frontend.model.Access $r0;
+        org.ooc.backend.cdirty.CGenerator $r1;
+
+        this := @this: CGenerator;
+
+        memberAccess := @parameter0: org.ooc.frontend.model.MemberAccess;
+
+        $r0 = (org.ooc.frontend.model.Access) memberAccess;
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.AccessWriter: void write(org.ooc.frontend.model.Access,org.ooc.backend.cdirty.CGenerator)>($r0, $r1);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.VariableAccess) throws java.io.IOException
+    {
+        org.ooc.frontend.model.VariableAccess variableAccess;
+        CGenerator this;
+        org.ooc.frontend.model.Access $r0;
+        org.ooc.backend.cdirty.CGenerator $r1;
+
+        this := @this: CGenerator;
+
+        variableAccess := @parameter0: org.ooc.frontend.model.VariableAccess;
+
+        $r0 = (org.ooc.frontend.model.Access) variableAccess;
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.AccessWriter: void write(org.ooc.frontend.model.Access,org.ooc.backend.cdirty.CGenerator)>($r0, $r1);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.ArrayAccess) throws java.io.IOException
+    {
+        org.ooc.frontend.model.ArrayAccess arrayAccess;
+        CGenerator this;
+        org.ooc.frontend.model.Access $r0;
+        org.ooc.backend.cdirty.CGenerator $r1;
+
+        this := @this: CGenerator;
+
+        arrayAccess := @parameter0: org.ooc.frontend.model.ArrayAccess;
+
+        $r0 = (org.ooc.frontend.model.Access) arrayAccess;
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.AccessWriter: void write(org.ooc.frontend.model.Access,org.ooc.backend.cdirty.CGenerator)>($r0, $r1);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.VariableDecl) throws java.io.IOException
+    {
+        org.ooc.frontend.model.VariableDecl variableDecl;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        variableDecl := @parameter0: org.ooc.frontend.model.VariableDecl;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.VariableDeclWriter: boolean write(org.ooc.frontend.model.VariableDecl,org.ooc.backend.cdirty.CGenerator)>(variableDecl, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.FunctionDecl) throws java.io.IOException
+    {
+        org.ooc.frontend.model.FunctionDecl functionDecl;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        functionDecl := @parameter0: org.ooc.frontend.model.FunctionDecl;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.FunctionDeclWriter: void write(org.ooc.frontend.model.FunctionDecl,org.ooc.backend.cdirty.CGenerator)>(functionDecl, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.ClassDecl) throws java.io.IOException
+    {
+        org.ooc.frontend.model.ClassDecl classDecl;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        classDecl := @parameter0: org.ooc.frontend.model.ClassDecl;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.ClassDeclWriter: void write(org.ooc.frontend.model.ClassDecl,org.ooc.backend.cdirty.CGenerator)>(classDecl, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.CoverDecl) throws java.io.IOException
+    {
+        org.ooc.frontend.model.CoverDecl cover;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        cover := @parameter0: org.ooc.frontend.model.CoverDecl;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.CoverDeclWriter: void write(org.ooc.frontend.model.CoverDecl,org.ooc.backend.cdirty.CGenerator)>(cover, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.parser.TypeArgument) throws java.io.IOException
+    {
+        org.ooc.frontend.parser.TypeArgument typeArgument;
+        org.ooc.frontend.model.Type $stack2;
+        CGenerator this;
+
+        this := @this: CGenerator;
+
+        typeArgument := @parameter0: org.ooc.frontend.parser.TypeArgument;
+
+        $stack2 = virtualinvoke typeArgument.<org.ooc.frontend.parser.TypeArgument: org.ooc.frontend.model.Type getType()>();
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.Type: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.RegularArgument) throws java.io.IOException
+    {
+        org.ooc.frontend.model.RegularArgument regularArgument;
+        org.ooc.frontend.model.Type type;
+        boolean $stack5, $stack6;
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack7, $stack13, $stack17, $stack18, $stack22;
+        java.lang.String $stack8, $stack12, $stack16, $stack19;
+        org.ooc.frontend.model.Declaration $stack10, $stack14;
+        org.ooc.frontend.model.FunctionDecl $stack11;
+        org.ooc.frontend.model.TypeDecl $stack15;
+        int $stack21, i;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: CGenerator;
+
+        regularArgument := @parameter0: org.ooc.frontend.model.RegularArgument;
+
+        type = virtualinvoke regularArgument.<org.ooc.frontend.model.RegularArgument: org.ooc.frontend.model.Type getType()>();
+
+        $stack5 = virtualinvoke type.<org.ooc.frontend.model.Type: boolean isArray()>();
+
+        if $stack5 == 0 goto label3;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack13 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack14 = virtualinvoke type.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        $stack15 = (org.ooc.frontend.model.TypeDecl) $stack14;
+
+        $stack16 = virtualinvoke $stack15.<org.ooc.frontend.model.TypeDecl: java.lang.String getUnderName()>();
+
+        $stack17 = virtualinvoke $stack13.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack16);
+
+        $stack18 = virtualinvoke $stack17.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(32);
+
+        $stack19 = virtualinvoke regularArgument.<org.ooc.frontend.model.RegularArgument: java.lang.String getName()>();
+
+        virtualinvoke $stack18.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack19);
+
+        i = 0;
+
+     label1:
+        $stack21 = virtualinvoke type.<org.ooc.frontend.model.Type: int getPointerLevel()>();
+
+        if i >= $stack21 goto label2;
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack22 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack22.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("[]");
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        goto label5;
+
+     label3:
+        $stack6 = type instanceof org.ooc.frontend.model.FuncType;
+
+        if $stack6 == 0 goto label4;
+
+        $stack10 = virtualinvoke type.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        $stack11 = (org.ooc.frontend.model.FunctionDecl) $stack10;
+
+        $stack12 = virtualinvoke regularArgument.<org.ooc.frontend.model.RegularArgument: java.lang.String getName()>();
+
+        $r2 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.TypeWriter: void writeFuncPointer(org.ooc.frontend.model.FunctionDecl,java.lang.String,org.ooc.backend.cdirty.CGenerator)>($stack11, $stack12, $r2);
+
+        goto label5;
+
+     label4:
+        $r3 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.TypeWriter: void writeSpaced(org.ooc.frontend.model.Type,org.ooc.backend.cdirty.CGenerator)>(type, $r3);
+
+        $r4 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack7 = $r4.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack8 = virtualinvoke regularArgument.<org.ooc.frontend.model.RegularArgument: java.lang.String getName()>();
+
+        virtualinvoke $stack7.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack8);
+
+     label5:
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.MemberArgument) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.model.MemberArgument memberArgument;
+
+        this := @this: CGenerator;
+
+        memberArgument := @parameter0: org.ooc.frontend.model.MemberArgument;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.MemberAssignArgument) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.model.MemberAssignArgument memberArgument;
+
+        this := @this: CGenerator;
+
+        memberArgument := @parameter0: org.ooc.frontend.model.MemberAssignArgument;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Type) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Type type;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        type := @parameter0: org.ooc.frontend.model.Type;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.TypeWriter: void write(org.ooc.frontend.model.Type,org.ooc.backend.cdirty.CGenerator)>(type, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.VarArg) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2;
+        org.ooc.frontend.model.VarArg varArg;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        varArg := @parameter0: org.ooc.frontend.model.VarArg;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("...");
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.NodeList) throws java.io.IOException
+    {
+        org.ooc.frontend.model.NodeList list;
+        CGenerator this;
+
+        this := @this: CGenerator;
+
+        list := @parameter0: org.ooc.frontend.model.NodeList;
+
+        virtualinvoke list.<org.ooc.frontend.model.NodeList: void acceptChildren(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Block) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2, $stack3, $stack5;
+        org.ooc.frontend.model.Block block;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1;
+
+        this := @this: CGenerator;
+
+        block := @parameter0: org.ooc.frontend.model.Block;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack3 = virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        virtualinvoke $stack3.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter openBlock()>();
+
+        virtualinvoke block.<org.ooc.frontend.model.Block: void acceptChildren(org.ooc.frontend.Visitor)>(this);
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack5 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack5.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter closeBlock()>();
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.BuiltinType) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.model.BuiltinType builtinType;
+
+        this := @this: CGenerator;
+
+        builtinType := @parameter0: org.ooc.frontend.model.BuiltinType;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Cast) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Cast cast;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        cast := @parameter0: org.ooc.frontend.model.Cast;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.CastWriter: void write(org.ooc.frontend.model.Cast,org.ooc.backend.cdirty.CGenerator)>(cast, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.AddressOf) throws java.io.IOException
+    {
+        org.ooc.frontend.model.AddressOf addressOf;
+        org.ooc.frontend.model.Expression $stack5, expression, $stack11, $stack26, varAccType#5;
+        org.ooc.frontend.model.Node $stack6;
+        boolean $stack7, $stack8, $stack12, $stack30, $stack23, varAcc#4, $stack14;
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack9, $stack15, $stack20;
+        org.ooc.frontend.model.Cast $stack17;
+        org.ooc.frontend.model.Dereference $stack25;
+        org.ooc.frontend.model.Declaration $stack27, $stack28;
+        int $stack31;
+        java.io.PrintStream $stack33;
+        java.lang.String $stack34;
+        org.ooc.frontend.model.VariableAccess varAcc;
+        org.ooc.frontend.model.Type varAccType;
+        org.ooc.frontend.model.Access $r0, $r2;
+        org.ooc.backend.cdirty.CGenerator $r1, $r3, $r4, $r5, $r6;
+
+        this := @this: CGenerator;
+
+        addressOf := @parameter0: org.ooc.frontend.model.AddressOf;
+
+        $stack5 = virtualinvoke addressOf.<org.ooc.frontend.model.AddressOf: org.ooc.frontend.model.Expression getExpression()>();
+
+        $stack6 = virtualinvoke $stack5.<org.ooc.frontend.model.Expression: org.ooc.frontend.model.Node bitchJumpCasts()>();
+
+        expression = (org.ooc.frontend.model.Expression) $stack6;
+
+        $stack7 = expression instanceof org.ooc.frontend.model.VariableAccess;
+
+        if $stack7 == 0 goto label03;
+
+        varAcc = (org.ooc.frontend.model.VariableAccess) expression;
+
+        $stack27 = virtualinvoke varAcc.<org.ooc.frontend.model.VariableAccess: org.ooc.frontend.model.Declaration getRef()>();
+
+        if $stack27 != null goto label01;
+
+        $stack33 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack34 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (org.ooc.frontend.model.VariableAccess,org.ooc.frontend.model.AddressOf)>(varAcc, addressOf) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Null ref for varAcc to \u0001 (addressOf is \u0001");
+
+        virtualinvoke $stack33.<java.io.PrintStream: void println(java.lang.String)>($stack34);
+
+     label01:
+        $stack28 = virtualinvoke varAcc.<org.ooc.frontend.model.VariableAccess: org.ooc.frontend.model.Declaration getRef()>();
+
+        varAccType = virtualinvoke $stack28.<org.ooc.frontend.model.Declaration: org.ooc.frontend.model.Type getType()>();
+
+        $stack30 = virtualinvoke varAccType.<org.ooc.frontend.model.Type: boolean isGeneric()>();
+
+        if $stack30 == 0 goto label02;
+
+        $r0 = (org.ooc.frontend.model.Access) varAcc;
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.AccessWriter: void write(org.ooc.frontend.model.Access,boolean,org.ooc.backend.cdirty.CGenerator)>($r0, 0, $r1);
+
+        return;
+
+     label02:
+        $stack31 = virtualinvoke varAccType.<org.ooc.frontend.model.Type: int getReferenceLevel()>();
+
+        if $stack31 != 1 goto label03;
+
+        $r2 = (org.ooc.frontend.model.Access) varAcc;
+
+        $r3 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.AccessWriter: void write(org.ooc.frontend.model.Access,boolean,org.ooc.backend.cdirty.CGenerator,int)>($r2, 0, $r3, -1);
+
+        return;
+
+     label03:
+        $stack8 = expression instanceof org.ooc.frontend.model.Dereference;
+
+        if $stack8 == 0 goto label04;
+
+        $stack25 = (org.ooc.frontend.model.Dereference) expression;
+
+        $stack26 = virtualinvoke $stack25.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Expression getExpression()>();
+
+        virtualinvoke $stack26.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+
+     label04:
+        $r4 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack9 = $r4.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack9.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(38);
+
+        $stack11 = virtualinvoke addressOf.<org.ooc.frontend.model.AddressOf: org.ooc.frontend.model.Expression getExpression()>();
+
+        $stack12 = $stack11 instanceof org.ooc.frontend.model.VariableAccess;
+
+        if $stack12 != 0 goto label05;
+
+        $stack23 = 1;
+
+        goto label06;
+
+     label05:
+        $stack23 = 0;
+
+     label06:
+        varAcc#4 = $stack23;
+
+        if $stack23 == 0 goto label07;
+
+        $r5 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack20 = $r5.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack20.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(40);
+
+     label07:
+        varAccType#5 = virtualinvoke addressOf.<org.ooc.frontend.model.AddressOf: org.ooc.frontend.model.Expression getExpression()>();
+
+     label08:
+        $stack14 = varAccType#5 instanceof org.ooc.frontend.model.Cast;
+
+        if $stack14 == 0 goto label09;
+
+        $stack17 = (org.ooc.frontend.model.Cast) varAccType#5;
+
+        varAccType#5 = virtualinvoke $stack17.<org.ooc.frontend.model.Cast: org.ooc.frontend.model.Expression getInner()>();
+
+        goto label08;
+
+     label09:
+        virtualinvoke varAccType#5.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        if varAcc#4 == 0 goto label10;
+
+        $r6 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack15 = $r6.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack15.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(41);
+
+     label10:
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Dereference) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2, $stack5;
+        org.ooc.frontend.model.Dereference dereference;
+        org.ooc.frontend.model.Expression $stack4;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1;
+
+        this := @this: CGenerator;
+
+        dereference := @parameter0: org.ooc.frontend.model.Dereference;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("(*");
+
+        $stack4 = virtualinvoke dereference.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Expression getExpression()>();
+
+        virtualinvoke $stack4.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack5 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack5.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(41);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.OpDecl) throws java.io.IOException
+    {
+        org.ooc.frontend.model.OpDecl opDecl;
+        org.ooc.frontend.model.FunctionDecl $stack2;
+        CGenerator this;
+
+        this := @this: CGenerator;
+
+        opDecl := @parameter0: org.ooc.frontend.model.OpDecl;
+
+        $stack2 = virtualinvoke opDecl.<org.ooc.frontend.model.OpDecl: org.ooc.frontend.model.FunctionDecl getFunc()>();
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.FunctionDecl: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Import) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.model.Import import1;
+
+        this := @this: CGenerator;
+
+        import1 := @parameter0: org.ooc.frontend.model.Import;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.ArrayLiteral) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack6, $stack12, $stack17, $stack27, $stack29, $stack32, $stack35, $stack40, $stack42;
+        org.ooc.frontend.model.ArrayLiteral arrayLiteral;
+        org.ooc.frontend.model.Type $stack8, groundType, $stack11, $stack20, $stack22, $stack34;
+        int $stack10;
+        org.ooc.frontend.model.NodeList $stack14;
+        java.util.Iterator iter;
+        java.lang.Object $stack19;
+        org.ooc.frontend.model.Expression element;
+        java.lang.String $stack21, $stack23, $stack41;
+        boolean $stack24, $stack25, $stack16, doCasting;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7;
+
+        this := @this: CGenerator;
+
+        arrayLiteral := @parameter0: org.ooc.frontend.model.ArrayLiteral;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack6 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack6.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("(");
+
+        $stack8 = virtualinvoke arrayLiteral.<org.ooc.frontend.model.ArrayLiteral: org.ooc.frontend.model.Type getType()>();
+
+        groundType = virtualinvoke $stack8.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Type getGroundType()>();
+
+        $stack10 = virtualinvoke groundType.<org.ooc.frontend.model.Type: int getPointerLevel()>();
+
+        if $stack10 != 2 goto label1;
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack40 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack41 = virtualinvoke groundType.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+        $stack42 = virtualinvoke $stack40.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack41);
+
+        virtualinvoke $stack42.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("*[]");
+
+        goto label2;
+
+     label1:
+        $stack11 = virtualinvoke arrayLiteral.<org.ooc.frontend.model.ArrayLiteral: org.ooc.frontend.model.Type getType()>();
+
+        virtualinvoke $stack11.<org.ooc.frontend.model.Type: void accept(org.ooc.frontend.Visitor)>(this);
+
+     label2:
+        $r2 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack12 = $r2.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack12.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(") {");
+
+        $stack14 = virtualinvoke arrayLiteral.<org.ooc.frontend.model.ArrayLiteral: org.ooc.frontend.model.NodeList getElements()>();
+
+        iter = virtualinvoke $stack14.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label3:
+        $stack16 = interfaceinvoke iter.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack16 == 0 goto label7;
+
+        $stack19 = interfaceinvoke iter.<java.util.Iterator: java.lang.Object next()>();
+
+        element = (org.ooc.frontend.model.Expression) $stack19;
+
+        doCasting = 0;
+
+        $stack20 = virtualinvoke element.<org.ooc.frontend.model.Expression: org.ooc.frontend.model.Type getType()>();
+
+        $stack21 = virtualinvoke $stack20.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+        $stack22 = virtualinvoke arrayLiteral.<org.ooc.frontend.model.ArrayLiteral: org.ooc.frontend.model.Type getType()>();
+
+        $stack23 = virtualinvoke $stack22.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+        $stack24 = virtualinvoke $stack21.<java.lang.String: boolean equals(java.lang.Object)>($stack23);
+
+        if $stack24 != 0 goto label4;
+
+        doCasting = 1;
+
+        $r3 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack32 = $r3.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack32.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("((");
+
+        $stack34 = virtualinvoke arrayLiteral.<org.ooc.frontend.model.ArrayLiteral: org.ooc.frontend.model.Type getInnerType()>();
+
+        virtualinvoke $stack34.<org.ooc.frontend.model.Type: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r4 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack35 = $r4.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack35.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(") ");
+
+     label4:
+        virtualinvoke element.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        if doCasting == 0 goto label5;
+
+        $r5 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack29 = $r5.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack29.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(")");
+
+     label5:
+        $stack25 = interfaceinvoke iter.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack25 == 0 goto label6;
+
+        $r6 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack27 = $r6.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack27.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(", ");
+
+     label6:
+        goto label3;
+
+     label7:
+        $r7 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack17 = $r7.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack17.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(125);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Use) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.model.Use use;
+
+        this := @this: CGenerator;
+
+        use := @parameter0: org.ooc.frontend.model.Use;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.BinaryCombination) throws java.io.IOException
+    {
+        org.ooc.frontend.model.BinaryCombination binaryCombination;
+        org.ooc.frontend.model.Expression $stack2, $stack8;
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack3, $stack4, $stack6;
+        java.lang.String $stack5;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        binaryCombination := @parameter0: org.ooc.frontend.model.BinaryCombination;
+
+        $stack2 = virtualinvoke binaryCombination.<org.ooc.frontend.model.BinaryCombination: org.ooc.frontend.model.Expression getLeft()>();
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack3 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack4 = virtualinvoke $stack3.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(32);
+
+        $stack5 = virtualinvoke binaryCombination.<org.ooc.frontend.model.BinaryCombination: java.lang.String getOpString()>();
+
+        $stack6 = virtualinvoke $stack4.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack5);
+
+        virtualinvoke $stack6.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(32);
+
+        $stack8 = virtualinvoke binaryCombination.<org.ooc.frontend.model.BinaryCombination: org.ooc.frontend.model.Expression getRight()>();
+
+        virtualinvoke $stack8.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.middle.structs.MultiMap) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.middle.structs.MultiMap list;
+
+        this := @this: CGenerator;
+
+        list := @parameter0: org.ooc.middle.structs.MultiMap;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.FlowControl) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.model.FlowControl flow;
+        org.ooc.backend.cdirty.AwesomeWriter $stack2, $stack4;
+        java.lang.String $stack3;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        flow := @parameter0: org.ooc.frontend.model.FlowControl;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack2 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack3 = virtualinvoke flow.<org.ooc.frontend.model.FlowControl: java.lang.String getKeyword()>();
+
+        $stack4 = virtualinvoke $stack2.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>($stack3);
+
+        virtualinvoke $stack4.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(";");
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.InterfaceDecl) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.model.InterfaceDecl interfaceDecl;
+
+        this := @this: CGenerator;
+
+        interfaceDecl := @parameter0: org.ooc.frontend.model.InterfaceDecl;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Ternary) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Ternary ternary;
+        org.ooc.frontend.model.Expression $stack2, $stack5, $stack8;
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack3, $stack6;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1;
+
+        this := @this: CGenerator;
+
+        ternary := @parameter0: org.ooc.frontend.model.Ternary;
+
+        $stack2 = virtualinvoke ternary.<org.ooc.frontend.model.Ternary: org.ooc.frontend.model.Expression getCondition()>();
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack3 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack3.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" ? ");
+
+        $stack5 = virtualinvoke ternary.<org.ooc.frontend.model.Ternary: org.ooc.frontend.model.Expression getValueIfTrue()>();
+
+        virtualinvoke $stack5.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack6 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack6.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" : ");
+
+        $stack8 = virtualinvoke ternary.<org.ooc.frontend.model.Ternary: org.ooc.frontend.model.Expression getValueIfFalse()>();
+
+        virtualinvoke $stack8.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Match) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Match match;
+        org.ooc.frontend.model.NodeList $stack7, $stack21;
+        java.util.Iterator l3, l5;
+        boolean $stack9, $stack12, $stack33, isFirst, $stack23;
+        java.lang.Object $stack10, $stack29;
+        org.ooc.frontend.model.Case case1;
+        org.ooc.frontend.model.Expression $stack11, $stack15;
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack13, $stack16, $stack24, $stack25, $stack26, $stack30, $stack39, $stack50, $stack52, $stack18, $stack19;
+        org.ooc.frontend.model.Line line;
+        org.ooc.frontend.model.Statement $stack32, $stack35;
+        org.ooc.frontend.model.FunctionCall $stack36;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7;
+
+        this := @this: CGenerator;
+
+        match := @parameter0: org.ooc.frontend.model.Match;
+
+        isFirst = 1;
+
+        $stack7 = virtualinvoke match.<org.ooc.frontend.model.Match: org.ooc.frontend.model.NodeList getCases()>();
+
+        l3 = virtualinvoke $stack7.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label01:
+        $stack9 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label10;
+
+        $stack10 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        case1 = (org.ooc.frontend.model.Case) $stack10;
+
+        if isFirst != 0 goto label02;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack52 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack52.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" else ");
+
+     label02:
+        $stack11 = virtualinvoke case1.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Expression getExpr()>();
+
+        if $stack11 != null goto label03;
+
+        if isFirst == 0 goto label05;
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack50 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack50.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(" else ");
+
+        goto label05;
+
+     label03:
+        $stack12 = virtualinvoke case1.<org.ooc.frontend.model.Case: boolean isFallthrough()>();
+
+        if $stack12 == 0 goto label04;
+
+        $r2 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack39 = $r2.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack39.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(char)>(32);
+
+     label04:
+        $r3 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack13 = $r3.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack13.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("if (");
+
+        $stack15 = virtualinvoke case1.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Expression getExpr()>();
+
+        virtualinvoke $stack15.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $r4 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack16 = $r4.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack16.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(")");
+
+     label05:
+        $r5 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack18 = $r5.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack19 = virtualinvoke $stack18.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("{");
+
+        virtualinvoke $stack19.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter tab()>();
+
+        $stack21 = virtualinvoke case1.<org.ooc.frontend.model.Case: org.ooc.frontend.model.NodeList getBody()>();
+
+        l5 = virtualinvoke $stack21.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label06:
+        $stack23 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack23 == 0 goto label08;
+
+        $stack29 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        line = (org.ooc.frontend.model.Line) $stack29;
+
+        $r6 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack30 = $r6.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack30.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.TabbedWriter newLine()>();
+
+        $stack32 = virtualinvoke line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack33 = $stack32 instanceof org.ooc.frontend.model.FunctionCall;
+
+        if $stack33 == 0 goto label07;
+
+        $stack35 = virtualinvoke line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack36 = (org.ooc.frontend.model.FunctionCall) $stack35;
+
+        <org.ooc.backend.cdirty.CallWriter: org.ooc.frontend.model.FunctionCall bypassPrelude> = $stack36;
+
+     label07:
+        virtualinvoke line.<org.ooc.frontend.model.Line: void accept(org.ooc.frontend.Visitor)>(this);
+
+        goto label06;
+
+     label08:
+        $r7 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack24 = $r7.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        $stack25 = virtualinvoke $stack24.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter untab()>();
+
+        $stack26 = virtualinvoke $stack25.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter nl()>();
+
+        virtualinvoke $stack26.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("}");
+
+        if isFirst == 0 goto label09;
+
+        isFirst = 0;
+
+     label09:
+        goto label01;
+
+     label10:
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Case) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.frontend.model.Case case1;
+
+        this := @this: CGenerator;
+
+        case1 := @parameter0: org.ooc.frontend.model.Case;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.VersionBlock) throws java.io.IOException
+    {
+        org.ooc.frontend.model.VersionBlock versionBlock;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1, $r3;
+        org.ooc.frontend.model.Block $r2;
+
+        this := @this: CGenerator;
+
+        versionBlock := @parameter0: org.ooc.frontend.model.VersionBlock;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.VersionBlockWriter: void writeVersionBlockStart(org.ooc.frontend.model.VersionBlock,org.ooc.backend.cdirty.CGenerator)>(versionBlock, $r0);
+
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $r2 = (org.ooc.frontend.model.Block) versionBlock;
+
+        virtualinvoke $r1.<org.ooc.backend.cdirty.CGenerator: void visit(org.ooc.frontend.model.Block)>($r2);
+
+        $r3 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.VersionBlockWriter: void writeVersionBlockEnd(org.ooc.backend.cdirty.CGenerator)>($r3);
+
+        return;
+    }
+
+    public void visit(org.ooc.middle.structs.NodeMap) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.middle.structs.NodeMap list;
+
+        this := @this: CGenerator;
+
+        list := @parameter0: org.ooc.middle.structs.NodeMap;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.For) throws java.io.IOException
+    {
+        org.ooc.frontend.model.For for1;
+        CGenerator this;
+        org.ooc.backend.cdirty.CGenerator $r0;
+
+        this := @this: CGenerator;
+
+        for1 := @parameter0: org.ooc.frontend.model.For;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        staticinvoke <org.ooc.backend.cdirty.ControlStatementWriter: void writeFor(org.ooc.frontend.model.For,org.ooc.backend.cdirty.CGenerator)>(for1, $r0);
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.CommaSequence) throws java.io.IOException
+    {
+        CGenerator this;
+        org.ooc.backend.cdirty.AwesomeWriter $stack5, $stack10, $stack13;
+        org.ooc.frontend.model.CommaSequence seq;
+        org.ooc.frontend.model.NodeList $stack7;
+        java.util.Iterator l3;
+        boolean $stack9, isFirst;
+        java.lang.Object $stack12;
+        org.ooc.frontend.model.Statement statement;
+        org.ooc.backend.cdirty.CGenerator $r0, $r1, $r2;
+
+        this := @this: CGenerator;
+
+        seq := @parameter0: org.ooc.frontend.model.CommaSequence;
+
+        $r0 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack5 = $r0.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack5.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>("(");
+
+        isFirst = 1;
+
+        $stack7 = virtualinvoke seq.<org.ooc.frontend.model.CommaSequence: org.ooc.frontend.model.NodeList getBody()>();
+
+        l3 = virtualinvoke $stack7.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack9 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label4;
+
+        $stack12 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        statement = (org.ooc.frontend.model.Statement) $stack12;
+
+        if isFirst == 0 goto label2;
+
+        isFirst = 0;
+
+        goto label3;
+
+     label2:
+        $r1 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack13 = $r1.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack13.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(", ");
+
+     label3:
+        virtualinvoke statement.<org.ooc.frontend.model.Statement: void accept(org.ooc.frontend.Visitor)>(this);
+
+        goto label1;
+
+     label4:
+        $r2 = (org.ooc.backend.cdirty.CGenerator) this;
+
+        $stack10 = $r2.<org.ooc.backend.cdirty.CGenerator: org.ooc.backend.cdirty.AwesomeWriter current>;
+
+        virtualinvoke $stack10.<org.ooc.backend.cdirty.AwesomeWriter: org.ooc.backend.cdirty.AwesomeWriter app(java.lang.String)>(")");
+
+        return;
+    }
+}

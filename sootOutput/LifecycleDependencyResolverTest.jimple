@@ -1,0 +1,154 @@
+public class LifecycleDependencyResolverTest extends org.apache.maven.AbstractCoreMavenComponentTestCase
+{
+    private org.apache.maven.lifecycle.internal.LifecycleDependencyResolver resolver;
+
+    public void <init>()
+    {
+        LifecycleDependencyResolverTest this;
+
+        this := @this: LifecycleDependencyResolverTest;
+
+        specialinvoke this.<org.apache.maven.AbstractCoreMavenComponentTestCase: void <init>()>();
+
+        return;
+    }
+
+    protected java.lang.String getProjectsDirectory()
+    {
+        LifecycleDependencyResolverTest this;
+
+        this := @this: LifecycleDependencyResolverTest;
+
+        return null;
+    }
+
+    public void testCachedReactorProjectDependencies() throws java.lang.Exception
+    {
+        LifecycleDependencyResolverTest this;
+        org.apache.maven.execution.MavenSession session;
+        java.util.List scopesToResolve, $stack13, $stack16, $stack18;
+        boolean $stack15;
+        java.lang.Object $stack17, $stack19, $stack22, $stack30, $stack33;
+        java.util.Map $stack21, $stack29;
+        org.apache.maven.artifact.Artifact $stack23, $stack25, $stack31, $stack36;
+        java.io.File $stack24, $stack32, $u0, $u3, $u4;
+        org.apache.maven.lifecycle.internal.LifecycleDependencyResolver $stack27, $stack35;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter $stack34;
+        java.util.Iterator lib;
+        org.apache.maven.project.MavenProject reactorProject, lib#3;
+        java.util.Properties $u1;
+        java.util.HashSet $u2;
+        org.apache.maven.lifecycle.internal.LifecycleDependencyResolverTest $r0, $r1, $r2;
+
+        this := @this: LifecycleDependencyResolverTest;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>("src/test/projects/lifecycle-dependency-resolver/pom.xml");
+
+        $u1 = new java.util.Properties;
+
+        specialinvoke $u1.<java.util.Properties: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolverTest) this;
+
+        session = virtualinvoke $r0.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolverTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File,java.util.Properties,boolean)>($u0, $u1, 1);
+
+        scopesToResolve = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>("compile");
+
+        $u2 = new java.util.HashSet;
+
+        specialinvoke $u2.<java.util.HashSet: void <init>(int)>(3);
+
+        $stack13 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        lib = interfaceinvoke $stack13.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack15 = interfaceinvoke lib.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label2;
+
+        $stack33 = interfaceinvoke lib.<java.util.Iterator: java.lang.Object next()>();
+
+        reactorProject = (org.apache.maven.project.MavenProject) $stack33;
+
+        $stack34 = staticinvoke <LifecycleDependencyResolverTest$lambda_testCachedReactorProjectDependencies_0__309: org.apache.maven.artifact.resolver.filter.ArtifactFilter bootstrap$()>();
+
+        virtualinvoke reactorProject.<org.apache.maven.project.MavenProject: void setArtifactFilter(org.apache.maven.artifact.resolver.filter.ArtifactFilter)>($stack34);
+
+        $r1 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolverTest) this;
+
+        $stack35 = $r1.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolverTest: org.apache.maven.lifecycle.internal.LifecycleDependencyResolver resolver>;
+
+        virtualinvoke $stack35.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: void resolveProjectDependencies(org.apache.maven.project.MavenProject,java.util.Collection,java.util.Collection,org.apache.maven.execution.MavenSession,boolean,java.util.Set)>(reactorProject, null, scopesToResolve, session, 0, $u2);
+
+        $stack36 = virtualinvoke reactorProject.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        interfaceinvoke $u2.<java.util.Set: boolean add(java.lang.Object)>($stack36);
+
+        goto label1;
+
+     label2:
+        $stack16 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $stack17 = interfaceinvoke $stack16.<java.util.List: java.lang.Object get(int)>(1);
+
+        lib#3 = (org.apache.maven.project.MavenProject) $stack17;
+
+        $stack18 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $stack19 = interfaceinvoke $stack18.<java.util.List: java.lang.Object get(int)>(2);
+
+        reactorProject = (org.apache.maven.project.MavenProject) $stack19;
+
+        $stack21 = virtualinvoke reactorProject.<org.apache.maven.project.MavenProject: java.util.Map getArtifactMap()>();
+
+        $stack22 = interfaceinvoke $stack21.<java.util.Map: java.lang.Object get(java.lang.Object)>("org.apache.maven.its.mng6300:mng6300-lib");
+
+        $stack23 = (org.apache.maven.artifact.Artifact) $stack22;
+
+        $stack24 = interfaceinvoke $stack23.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>(null, $stack24);
+
+        $stack25 = virtualinvoke lib#3.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $u3 = new java.io.File;
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String)>("lib.jar");
+
+        interfaceinvoke $stack25.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($u3);
+
+        $r2 = (org.apache.maven.lifecycle.internal.LifecycleDependencyResolverTest) this;
+
+        $stack27 = $r2.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolverTest: org.apache.maven.lifecycle.internal.LifecycleDependencyResolver resolver>;
+
+        virtualinvoke $stack27.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: void resolveProjectDependencies(org.apache.maven.project.MavenProject,java.util.Collection,java.util.Collection,org.apache.maven.execution.MavenSession,boolean,java.util.Set)>(reactorProject, null, scopesToResolve, session, 0, $u2);
+
+        $u4 = new java.io.File;
+
+        specialinvoke $u4.<java.io.File: void <init>(java.lang.String)>("lib.jar");
+
+        $stack29 = virtualinvoke reactorProject.<org.apache.maven.project.MavenProject: java.util.Map getArtifactMap()>();
+
+        $stack30 = interfaceinvoke $stack29.<java.util.Map: java.lang.Object get(java.lang.Object)>("org.apache.maven.its.mng6300:mng6300-lib");
+
+        $stack31 = (org.apache.maven.artifact.Artifact) $stack30;
+
+        $stack32 = interfaceinvoke $stack31.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($u4, $stack32);
+
+        return;
+    }
+
+    private static boolean lambda$testCachedReactorProjectDependencies$0(org.apache.maven.artifact.Artifact)
+    {
+        org.apache.maven.artifact.Artifact artifact;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        return 1;
+    }
+}

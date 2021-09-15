@@ -1,0 +1,533 @@
+public class CombineDriver extends org.ooc.frontend.drivers.Driver
+{
+
+    public void <init>(org.ooc.frontend.BuildParams)
+    {
+        CombineDriver this;
+        org.ooc.frontend.BuildParams params;
+
+        this := @this: CombineDriver;
+
+        params := @parameter0: org.ooc.frontend.BuildParams;
+
+        specialinvoke this.<org.ooc.frontend.drivers.Driver: void <init>(org.ooc.frontend.BuildParams)>(params);
+
+        return;
+    }
+
+    public int compile(org.ooc.frontend.model.Module, java.lang.String) throws java.lang.Error, java.io.IOException, java.lang.InterruptedException
+    {
+        CombineDriver this;
+        org.ooc.frontend.BuildParams $stack6, $stack9, $stack10, $stack12, $stack14, $stack18, $stack19, $stack25, $stack29, $stack33, $stack37, $stack41, $stack46, $stack51, $stack53, $stack55, $stack60, $stack62, $stack66, $stack71, $stack77, $stack79, $stack82, $stack84, $stack86, $stack88, $stack92, $stack95, $stack101, $stack104, $stack107, $stack108, $stack115, $stack116, $stack121, $stack126, $stack131, $stack135, $stack139, $stack143, $stack146, $stack64;
+        org.ooc.frontend.compilers.AbstractCompiler $stack7, $stack16, $stack21, $stack63, $stack67, $stack72, $stack78, $stack83, $stack89, $stack102, $stack105, $stack110, $stack118, $stack122, $stack127, $stack132, $stack136, $stack140, $stack144, $stack147;
+        org.ooc.frontend.model.Module module;
+        boolean $stack11, $stack32, $stack36, $stack40, $stack45, $stack50, $stack56, $stack61, $stack80, $stack85, $stack94, $stack28, $stack59, $stack65;
+        java.io.File $stack15, $stack20, $stack90, define#14, $u1, $u4;
+        java.lang.String $stack17, $stack22, $stack54, $stack74, outName, $stack93, $stack97, $stack98, $stack99, lib, $stack109, $stack123, $stack128, define, $stack96;
+        java.util.List $stack26, $stack30, $stack34, $stack38;
+        org.ooc.frontend.PathList $stack42, $stack47;
+        java.util.Collection $stack43, $stack48, libs#17;
+        java.lang.String[] $stack52, $stack117;
+        java.io.PrintStream $stack69, $stack73;
+        org.ooc.frontend.Target $stack91;
+        java.lang.Object $stack103, $stack120, $stack125, $stack130, $stack134, $stack138, $stack142;
+        java.util.Iterator libs, define#18;
+        int define#33;
+        java.util.HashSet $u0, $u2, $u3;
+        org.ooc.frontend.drivers.CombineDriver $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r33, $r34, $r35, $r36, $r37, $r38, $r39, $r40, $r41, $r42, $r43, $r44;
+
+        this := @this: CombineDriver;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        outName := @parameter1: java.lang.String;
+
+        $r0 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack6 = $r0.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack7 = $stack6.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        interfaceinvoke $stack7.<org.ooc.frontend.compilers.AbstractCompiler: void reset()>();
+
+        $r1 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack9 = $r1.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        $r2 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        virtualinvoke $r2.<org.ooc.frontend.drivers.CombineDriver: void copyLocalHeaders(org.ooc.frontend.model.Module,org.ooc.frontend.BuildParams,java.util.HashSet)>(module, $stack9, $u0);
+
+        $r3 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack10 = $r3.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack11 = $stack10.<org.ooc.frontend.BuildParams: boolean debug>;
+
+        if $stack11 == 0 goto label01;
+
+        $r4 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack146 = $r4.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack147 = $stack146.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        interfaceinvoke $stack147.<org.ooc.frontend.compilers.AbstractCompiler: void setDebugEnabled()>();
+
+     label01:
+        $r5 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack12 = $r5.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack16 = $stack12.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        $u1 = new java.io.File;
+
+        $r6 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack14 = $r6.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack15 = $stack14.<org.ooc.frontend.BuildParams: java.io.File distLocation>;
+
+        specialinvoke $u1.<java.io.File: void <init>(java.io.File,java.lang.String)>($stack15, "libs/headers/");
+
+        $stack17 = virtualinvoke $u1.<java.io.File: java.lang.String getPath()>();
+
+        interfaceinvoke $stack16.<org.ooc.frontend.compilers.AbstractCompiler: void addIncludePath(java.lang.String)>($stack17);
+
+        $r7 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack18 = $r7.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack21 = $stack18.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        $r8 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack19 = $r8.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack20 = $stack19.<org.ooc.frontend.BuildParams: java.io.File outPath>;
+
+        $stack22 = virtualinvoke $stack20.<java.io.File: java.lang.String getPath()>();
+
+        interfaceinvoke $stack21.<org.ooc.frontend.compilers.AbstractCompiler: void addIncludePath(java.lang.String)>($stack22);
+
+        $u2 = new java.util.HashSet;
+
+        specialinvoke $u2.<java.util.HashSet: void <init>()>();
+
+        $u3 = new java.util.HashSet;
+
+        specialinvoke $u3.<java.util.HashSet: void <init>()>();
+
+        $r9 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        virtualinvoke $r9.<org.ooc.frontend.drivers.CombineDriver: void addDeps(org.ooc.frontend.model.Module,java.util.Set,java.util.Set)>(module, $u2, $u3);
+
+        $r10 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack25 = $r10.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack26 = $stack25.<org.ooc.frontend.BuildParams: java.util.List defines>;
+
+        libs = interfaceinvoke $stack26.<java.util.List: java.util.Iterator iterator()>();
+
+     label02:
+        $stack28 = interfaceinvoke libs.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack28 == 0 goto label03;
+
+        $stack142 = interfaceinvoke libs.<java.util.Iterator: java.lang.Object next()>();
+
+        define = (java.lang.String) $stack142;
+
+        $r11 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack143 = $r11.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack144 = $stack143.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        interfaceinvoke $stack144.<org.ooc.frontend.compilers.AbstractCompiler: void defineSymbol(java.lang.String)>(define);
+
+        goto label02;
+
+     label03:
+        $r12 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack29 = $r12.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack30 = $stack29.<org.ooc.frontend.BuildParams: java.util.List dynamicLibs>;
+
+        libs = interfaceinvoke $stack30.<java.util.List: java.util.Iterator iterator()>();
+
+     label04:
+        $stack32 = interfaceinvoke libs.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack32 == 0 goto label05;
+
+        $stack138 = interfaceinvoke libs.<java.util.Iterator: java.lang.Object next()>();
+
+        define = (java.lang.String) $stack138;
+
+        $r13 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack139 = $r13.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack140 = $stack139.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        interfaceinvoke $stack140.<org.ooc.frontend.compilers.AbstractCompiler: void addDynamicLibrary(java.lang.String)>(define);
+
+        goto label04;
+
+     label05:
+        $r14 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack33 = $r14.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack34 = $stack33.<org.ooc.frontend.BuildParams: java.util.List additionals>;
+
+        libs = interfaceinvoke $stack34.<java.util.List: java.util.Iterator iterator()>();
+
+     label06:
+        $stack36 = interfaceinvoke libs.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack36 == 0 goto label07;
+
+        $stack134 = interfaceinvoke libs.<java.util.Iterator: java.lang.Object next()>();
+
+        define = (java.lang.String) $stack134;
+
+        $r15 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack135 = $r15.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack136 = $stack135.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        interfaceinvoke $stack136.<org.ooc.frontend.compilers.AbstractCompiler: void addObjectFile(java.lang.String)>(define);
+
+        goto label06;
+
+     label07:
+        $r16 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack37 = $r16.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack38 = $stack37.<org.ooc.frontend.BuildParams: java.util.List compilerArgs>;
+
+        libs = interfaceinvoke $stack38.<java.util.List: java.util.Iterator iterator()>();
+
+     label08:
+        $stack40 = interfaceinvoke libs.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack40 == 0 goto label09;
+
+        $stack130 = interfaceinvoke libs.<java.util.Iterator: java.lang.Object next()>();
+
+        define = (java.lang.String) $stack130;
+
+        $r17 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack131 = $r17.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack132 = $stack131.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        interfaceinvoke $stack132.<org.ooc.frontend.compilers.AbstractCompiler: void addObjectFile(java.lang.String)>(define);
+
+        goto label08;
+
+     label09:
+        $r18 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack41 = $r18.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack42 = $stack41.<org.ooc.frontend.BuildParams: org.ooc.frontend.PathList incPath>;
+
+        $stack43 = virtualinvoke $stack42.<org.ooc.frontend.PathList: java.util.Collection getPaths()>();
+
+        libs = interfaceinvoke $stack43.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label10:
+        $stack45 = interfaceinvoke libs.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack45 == 0 goto label11;
+
+        $stack125 = interfaceinvoke libs.<java.util.Iterator: java.lang.Object next()>();
+
+        define#14 = (java.io.File) $stack125;
+
+        $r19 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack126 = $r19.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack127 = $stack126.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        $stack128 = virtualinvoke define#14.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        interfaceinvoke $stack127.<org.ooc.frontend.compilers.AbstractCompiler: void addIncludePath(java.lang.String)>($stack128);
+
+        goto label10;
+
+     label11:
+        $r20 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack46 = $r20.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack47 = $stack46.<org.ooc.frontend.BuildParams: org.ooc.frontend.PathList libPath>;
+
+        $stack48 = virtualinvoke $stack47.<org.ooc.frontend.PathList: java.util.Collection getPaths()>();
+
+        libs = interfaceinvoke $stack48.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label12:
+        $stack50 = interfaceinvoke libs.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack50 == 0 goto label13;
+
+        $stack120 = interfaceinvoke libs.<java.util.Iterator: java.lang.Object next()>();
+
+        define#14 = (java.io.File) $stack120;
+
+        $r21 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack121 = $r21.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack122 = $stack121.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        $stack123 = virtualinvoke define#14.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        interfaceinvoke $stack122.<org.ooc.frontend.compilers.AbstractCompiler: void addLibraryPath(java.lang.String)>($stack123);
+
+        goto label12;
+
+     label13:
+        $r22 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack51 = $r22.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack52 = $stack51.<org.ooc.frontend.BuildParams: java.lang.String[] fatArchitectures>;
+
+        if $stack52 == null goto label14;
+
+        $r23 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack115 = $r23.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack118 = $stack115.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        $r24 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack116 = $r24.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack117 = $stack116.<org.ooc.frontend.BuildParams: java.lang.String[] fatArchitectures>;
+
+        interfaceinvoke $stack118.<org.ooc.frontend.compilers.AbstractCompiler: void setFatArchitectures(java.lang.String[])>($stack117);
+
+     label14:
+        $r25 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack53 = $r25.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack54 = $stack53.<org.ooc.frontend.BuildParams: java.lang.String osxSDKAndDeploymentTarget>;
+
+        if $stack54 == null goto label15;
+
+        $r26 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack107 = $r26.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack110 = $stack107.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        $r27 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack108 = $r27.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack109 = $stack108.<org.ooc.frontend.BuildParams: java.lang.String osxSDKAndDeploymentTarget>;
+
+        interfaceinvoke $stack110.<org.ooc.frontend.compilers.AbstractCompiler: void setOSXSDKAndDeploymentTarget(java.lang.String)>($stack109);
+
+     label15:
+        $r28 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack55 = $r28.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack56 = $stack55.<org.ooc.frontend.BuildParams: boolean link>;
+
+        $r29 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        libs#17 = virtualinvoke $r29.<org.ooc.frontend.drivers.CombineDriver: java.util.Collection getFlagsFromUse(org.ooc.frontend.model.Module,boolean)>(module, $stack56);
+
+        define#18 = interfaceinvoke libs#17.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label16:
+        $stack59 = interfaceinvoke define#18.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack59 == 0 goto label17;
+
+        $stack103 = interfaceinvoke define#18.<java.util.Iterator: java.lang.Object next()>();
+
+        lib = (java.lang.String) $stack103;
+
+        $r30 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack104 = $r30.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack105 = $stack104.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        interfaceinvoke $stack105.<org.ooc.frontend.compilers.AbstractCompiler: void addObjectFile(java.lang.String)>(lib);
+
+        goto label16;
+
+     label17:
+        $r31 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack60 = $r31.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack61 = $stack60.<org.ooc.frontend.BuildParams: boolean link>;
+
+        if $stack61 == 0 goto label21;
+
+        $r32 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack77 = $r32.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack78 = $stack77.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        interfaceinvoke $stack78.<org.ooc.frontend.compilers.AbstractCompiler: void setOutputPath(java.lang.String)>(outName);
+
+        $r33 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack79 = $r33.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack80 = $stack79.<org.ooc.frontend.BuildParams: boolean enableGC>;
+
+        if $stack80 == 0 goto label22;
+
+        $r34 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack82 = $r34.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack83 = $stack82.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        interfaceinvoke $stack83.<org.ooc.frontend.compilers.AbstractCompiler: void addDynamicLibrary(java.lang.String)>("pthread");
+
+        $r35 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack84 = $r35.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack85 = $stack84.<org.ooc.frontend.BuildParams: boolean dynGC>;
+
+        if $stack85 == 0 goto label18;
+
+        $r36 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack101 = $r36.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack102 = $stack101.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        interfaceinvoke $stack102.<org.ooc.frontend.compilers.AbstractCompiler: void addDynamicLibrary(java.lang.String)>("gc");
+
+        goto label22;
+
+     label18:
+        $r37 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack86 = $r37.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack89 = $stack86.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        $u4 = new java.io.File;
+
+        $r38 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack88 = $r38.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack90 = $stack88.<org.ooc.frontend.BuildParams: java.io.File distLocation>;
+
+        $stack91 = staticinvoke <org.ooc.frontend.Target: org.ooc.frontend.Target guessHost()>();
+
+        $r39 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack92 = $r39.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack93 = $stack92.<org.ooc.frontend.BuildParams: java.lang.String arch>;
+
+        $stack94 = virtualinvoke $stack93.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+        if $stack94 == 0 goto label19;
+
+        $stack96 = staticinvoke <org.ooc.frontend.Target: java.lang.String getArch()>();
+
+        goto label20;
+
+     label19:
+        $r40 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack95 = $r40.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack96 = $stack95.<org.ooc.frontend.BuildParams: java.lang.String arch>;
+
+     label20:
+        $stack97 = virtualinvoke $stack91.<org.ooc.frontend.Target: java.lang.String toString(java.lang.String)>($stack96);
+
+        $stack98 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack97) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("libs/\u0001/libgc.a");
+
+        specialinvoke $u4.<java.io.File: void <init>(java.io.File,java.lang.String)>($stack90, $stack98);
+
+        $stack99 = virtualinvoke $u4.<java.io.File: java.lang.String getPath()>();
+
+        interfaceinvoke $stack89.<org.ooc.frontend.compilers.AbstractCompiler: void addObjectFile(java.lang.String)>($stack99);
+
+        goto label22;
+
+     label21:
+        $r41 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack62 = $r41.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack63 = $stack62.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        interfaceinvoke $stack63.<org.ooc.frontend.compilers.AbstractCompiler: void setCompileOnly()>();
+
+     label22:
+        $r42 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack64 = $r42.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack65 = $stack64.<org.ooc.frontend.BuildParams: boolean verbose>;
+
+        if $stack65 == 0 goto label23;
+
+        $stack73 = <java.lang.System: java.io.PrintStream out>;
+
+        $r43 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack71 = $r43.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack72 = $stack71.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        $stack74 = interfaceinvoke $stack72.<org.ooc.frontend.compilers.AbstractCompiler: java.lang.String getCommandLine()>();
+
+        virtualinvoke $stack73.<java.io.PrintStream: void println(java.lang.String)>($stack74);
+
+     label23:
+        $r44 = (org.ooc.frontend.drivers.CombineDriver) this;
+
+        $stack66 = $r44.<org.ooc.frontend.drivers.CombineDriver: org.ooc.frontend.BuildParams params>;
+
+        $stack67 = $stack66.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        define#33 = interfaceinvoke $stack67.<org.ooc.frontend.compilers.AbstractCompiler: int launch()>();
+
+        if define#33 == 0 goto label24;
+
+        $stack69 = <java.lang.System: java.io.PrintStream err>;
+
+        virtualinvoke $stack69.<java.io.PrintStream: void println(java.lang.String)>("C compiler failed, aborting compilation process");
+
+     label24:
+        return define#33;
+    }
+}

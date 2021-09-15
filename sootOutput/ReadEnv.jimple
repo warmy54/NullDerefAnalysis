@@ -1,0 +1,125 @@
+public class ReadEnv extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        ReadEnv this;
+
+        this := @this: ReadEnv;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.util.Map getEnv()
+    {
+        java.util.Map getenv;
+        boolean $stack11;
+        java.util.HashMap $stack12;
+        java.lang.Runtime r;
+        java.lang.String $stack14, OS, key, value, $stack22;
+        int $stack16, $stack17, idx, $stack26, $stack29, $stack32;
+        java.io.IOException $stack36;
+        java.lang.Process p#2;
+        java.io.BufferedReader $stack19;
+        java.io.InputStreamReader $stack20;
+        java.io.InputStream $stack21;
+
+        getenv = staticinvoke <java.lang.System: java.util.Map getenv()>();
+
+        $stack11 = interfaceinvoke getenv.<java.util.Map: boolean isEmpty()>();
+
+        if $stack11 != 0 goto label01;
+
+        return getenv;
+
+     label01:
+        $stack12 = new java.util.HashMap;
+
+        specialinvoke $stack12.<java.util.HashMap: void <init>()>();
+
+        r = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+
+        $stack14 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("os.name");
+
+        OS = virtualinvoke $stack14.<java.lang.String: java.lang.String toLowerCase()>();
+
+     label02:
+        $stack16 = virtualinvoke OS.<java.lang.String: int indexOf(java.lang.String)>("windows 9");
+
+        if $stack16 <= -1 goto label03;
+
+        p#2 = virtualinvoke r.<java.lang.Runtime: java.lang.Process exec(java.lang.String)>("command.com /c set");
+
+        goto label06;
+
+     label03:
+        $stack17 = virtualinvoke OS.<java.lang.String: int indexOf(java.lang.String)>("nt");
+
+        if $stack17 > -1 goto label04;
+
+        $stack29 = virtualinvoke OS.<java.lang.String: int indexOf(java.lang.String)>("windows 20");
+
+        if $stack29 > -1 goto label04;
+
+        $stack32 = virtualinvoke OS.<java.lang.String: int indexOf(java.lang.String)>("windows xp");
+
+        if $stack32 <= -1 goto label05;
+
+     label04:
+        p#2 = virtualinvoke r.<java.lang.Runtime: java.lang.Process exec(java.lang.String)>("cmd.exe /c set");
+
+        goto label06;
+
+     label05:
+        p#2 = virtualinvoke r.<java.lang.Runtime: java.lang.Process exec(java.lang.String)>("env");
+
+     label06:
+        $stack19 = new java.io.BufferedReader;
+
+        $stack20 = new java.io.InputStreamReader;
+
+        $stack21 = virtualinvoke p#2.<java.lang.Process: java.io.InputStream getInputStream()>();
+
+        specialinvoke $stack20.<java.io.InputStreamReader: void <init>(java.io.InputStream)>($stack21);
+
+        specialinvoke $stack19.<java.io.BufferedReader: void <init>(java.io.Reader)>($stack20);
+
+     label07:
+        $stack22 = virtualinvoke $stack19.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        if $stack22 == null goto label09;
+
+        idx = virtualinvoke $stack22.<java.lang.String: int indexOf(int)>(61);
+
+        if idx == -1 goto label08;
+
+        key = virtualinvoke $stack22.<java.lang.String: java.lang.String substring(int,int)>(0, idx);
+
+        $stack26 = idx + 1;
+
+        value = virtualinvoke $stack22.<java.lang.String: java.lang.String substring(int)>($stack26);
+
+        interfaceinvoke $stack12.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+
+     label08:
+        goto label07;
+
+     label09:
+        virtualinvoke $stack19.<java.io.BufferedReader: void close()>();
+
+     label10:
+        goto label12;
+
+     label11:
+        $stack36 := @caughtexception;
+
+        virtualinvoke $stack36.<java.io.IOException: void printStackTrace()>();
+
+     label12:
+        return $stack12;
+
+        catch java.io.IOException from label02 to label10 with label11;
+    }
+}

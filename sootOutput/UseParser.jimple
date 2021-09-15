@@ -1,0 +1,110 @@
+public class UseParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        UseParser this;
+
+        this := @this: UseParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static boolean fill(org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader, org.ooc.frontend.model.NodeList, org.ooc.frontend.BuildParams) throws org.ubi.CompilationFailedError, java.io.IOException
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        java.lang.Object $stack8, $stack11;
+        org.ooc.frontend.model.tokens.Token startToken, token;
+        byte $stack9, $stack12, $stack13;
+        org.ubi.SourceReader sReader;
+        java.lang.String $stack14, $stack20, $stack24;
+        org.ooc.frontend.BuildParams params;
+        org.ooc.frontend.model.NodeList uses;
+        org.ooc.middle.UseDef useDef;
+        java.lang.StringBuilder $u0;
+        org.ooc.frontend.model.Use $u1, $u2;
+        org.ooc.frontend.model.Node $r0, $r1;
+
+        sReader := @parameter0: org.ubi.SourceReader;
+
+        reader := @parameter1: org.ooc.frontend.model.tokens.TokenReader;
+
+        uses := @parameter2: org.ooc.frontend.model.NodeList;
+
+        params := @parameter3: org.ooc.frontend.BuildParams;
+
+        $stack8 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        startToken = (org.ooc.frontend.model.tokens.Token) $stack8;
+
+        $stack9 = startToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack9 == 15 goto label1;
+
+        return 0;
+
+     label1:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+     label2:
+        $stack11 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        token = (org.ooc.frontend.model.tokens.Token) $stack11;
+
+        $stack12 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack12 != 51 goto label3;
+
+        $stack24 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        useDef = staticinvoke <org.ooc.frontend.parser.UseDefParser: org.ooc.middle.UseDef parse(java.lang.String,org.ubi.SourceReader,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.BuildParams)>($stack24, sReader, token, params);
+
+        $u1 = new org.ooc.frontend.model.Use;
+
+        specialinvoke $u1.<org.ooc.frontend.model.Use: void <init>(org.ooc.middle.UseDef,org.ooc.frontend.model.tokens.Token)>(useDef, startToken);
+
+        $r0 = (org.ooc.frontend.model.Node) $u1;
+
+        virtualinvoke uses.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r0);
+
+        goto label6;
+
+     label3:
+        $stack13 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack13 != 45 goto label4;
+
+        $stack20 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        useDef = staticinvoke <org.ooc.frontend.parser.UseDefParser: org.ooc.middle.UseDef parse(java.lang.String,org.ubi.SourceReader,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.BuildParams)>($stack20, sReader, token, params);
+
+        $u2 = new org.ooc.frontend.model.Use;
+
+        specialinvoke $u2.<org.ooc.frontend.model.Use: void <init>(org.ooc.middle.UseDef,org.ooc.frontend.model.tokens.Token)>(useDef, startToken);
+
+        $r1 = (org.ooc.frontend.model.Node) $u2;
+
+        virtualinvoke uses.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r1);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        goto label5;
+
+     label4:
+        $stack14 = virtualinvoke token.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+     label5:
+        goto label2;
+
+     label6:
+        return 1;
+    }
+}

@@ -1,0 +1,113 @@
+public class ProjectArtifact extends org.apache.maven.artifact.DefaultArtifact implements org.apache.maven.project.artifact.ArtifactWithDependencies
+{
+    private org.apache.maven.project.MavenProject project;
+
+    public void <init>(org.apache.maven.project.MavenProject)
+    {
+        ProjectArtifact this;
+        org.apache.maven.project.MavenProject project;
+        java.lang.String $stack2, $stack3, $stack4;
+        java.io.File $stack9;
+        org.apache.maven.project.artifact.ProjectArtifact$PomArtifactHandler $u0;
+        org.apache.maven.artifact.handler.ArtifactHandler $r0;
+        org.apache.maven.project.artifact.ProjectArtifact $r1, $r2, $r3;
+
+        this := @this: ProjectArtifact;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        $stack2 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        $stack3 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        $stack4 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        $u0 = new org.apache.maven.project.artifact.ProjectArtifact$PomArtifactHandler;
+
+        specialinvoke $u0.<org.apache.maven.project.artifact.ProjectArtifact$PomArtifactHandler: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.handler.ArtifactHandler) $u0;
+
+        specialinvoke this.<org.apache.maven.artifact.DefaultArtifact: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.apache.maven.artifact.handler.ArtifactHandler)>($stack2, $stack3, $stack4, null, "pom", null, $r0);
+
+        $r1 = (org.apache.maven.project.artifact.ProjectArtifact) this;
+
+        $r1.<org.apache.maven.project.artifact.ProjectArtifact: org.apache.maven.project.MavenProject project> = project;
+
+        $stack9 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.io.File getFile()>();
+
+        $r2 = (org.apache.maven.project.artifact.ProjectArtifact) this;
+
+        virtualinvoke $r2.<org.apache.maven.project.artifact.ProjectArtifact: void setFile(java.io.File)>($stack9);
+
+        $r3 = (org.apache.maven.project.artifact.ProjectArtifact) this;
+
+        virtualinvoke $r3.<org.apache.maven.project.artifact.ProjectArtifact: void setResolved(boolean)>(1);
+
+        return;
+    }
+
+    public org.apache.maven.project.MavenProject getProject()
+    {
+        ProjectArtifact this;
+        org.apache.maven.project.MavenProject $stack1;
+        org.apache.maven.project.artifact.ProjectArtifact $r0;
+
+        this := @this: ProjectArtifact;
+
+        $r0 = (org.apache.maven.project.artifact.ProjectArtifact) this;
+
+        $stack1 = $r0.<org.apache.maven.project.artifact.ProjectArtifact: org.apache.maven.project.MavenProject project>;
+
+        return $stack1;
+    }
+
+    public java.util.List getDependencies()
+    {
+        ProjectArtifact this;
+        org.apache.maven.project.MavenProject $stack1;
+        java.util.List $stack2;
+        org.apache.maven.project.artifact.ProjectArtifact $r0;
+
+        this := @this: ProjectArtifact;
+
+        $r0 = (org.apache.maven.project.artifact.ProjectArtifact) this;
+
+        $stack1 = $r0.<org.apache.maven.project.artifact.ProjectArtifact: org.apache.maven.project.MavenProject project>;
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.project.MavenProject: java.util.List getDependencies()>();
+
+        return $stack2;
+    }
+
+    public java.util.List getManagedDependencies()
+    {
+        ProjectArtifact this;
+        org.apache.maven.project.MavenProject $stack2;
+        org.apache.maven.model.DependencyManagement depMngt;
+        java.util.List $stack5, $stack4;
+        org.apache.maven.project.artifact.ProjectArtifact $r0;
+
+        this := @this: ProjectArtifact;
+
+        $r0 = (org.apache.maven.project.artifact.ProjectArtifact) this;
+
+        $stack2 = $r0.<org.apache.maven.project.artifact.ProjectArtifact: org.apache.maven.project.MavenProject project>;
+
+        depMngt = virtualinvoke $stack2.<org.apache.maven.project.MavenProject: org.apache.maven.model.DependencyManagement getDependencyManagement()>();
+
+        if depMngt == null goto label1;
+
+        $stack5 = virtualinvoke depMngt.<org.apache.maven.model.DependencyManagement: java.util.List getDependencies()>();
+
+        $stack4 = staticinvoke <java.util.Collections: java.util.List unmodifiableList(java.util.List)>($stack5);
+
+        goto label2;
+
+     label1:
+        $stack4 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+     label2:
+        return $stack4;
+    }
+}

@@ -1,0 +1,945 @@
+public class ProjectiveColorTransformer extends org.bytedeco.javacv.ProjectiveTransformer
+{
+    protected static java.lang.ThreadLocal X24x4;
+    protected static java.lang.ThreadLocal temp3x1;
+    protected org.bytedeco.opencv.opencv_core.CvMat X;
+    protected int numGains;
+    protected int numBiases;
+    protected org.bytedeco.opencv.opencv_core.CvMat[] X2;
+    static final boolean $assertionsDisabled;
+
+    public void <init>(org.bytedeco.opencv.opencv_core.CvMat, org.bytedeco.opencv.opencv_core.CvMat, org.bytedeco.opencv.opencv_core.CvMat, org.bytedeco.opencv.opencv_core.CvMat, org.bytedeco.opencv.opencv_core.CvMat, double[], double[], org.bytedeco.opencv.opencv_core.CvMat, int, int)
+    {
+        ProjectiveColorTransformer this;
+        org.bytedeco.opencv.opencv_core.CvMat K1, K2, R, t, n, X, $stack11;
+        double[] referencePoints1, referencePoints2;
+        int numGains, numBiases;
+        org.bytedeco.javacv.ProjectiveColorTransformer $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: ProjectiveColorTransformer;
+
+        K1 := @parameter0: org.bytedeco.opencv.opencv_core.CvMat;
+
+        K2 := @parameter1: org.bytedeco.opencv.opencv_core.CvMat;
+
+        R := @parameter2: org.bytedeco.opencv.opencv_core.CvMat;
+
+        t := @parameter3: org.bytedeco.opencv.opencv_core.CvMat;
+
+        n := @parameter4: org.bytedeco.opencv.opencv_core.CvMat;
+
+        referencePoints1 := @parameter5: double[];
+
+        referencePoints2 := @parameter6: double[];
+
+        X := @parameter7: org.bytedeco.opencv.opencv_core.CvMat;
+
+        numGains := @parameter8: int;
+
+        numBiases := @parameter9: int;
+
+        specialinvoke this.<org.bytedeco.javacv.ProjectiveTransformer: void <init>(org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,double[],double[])>(K1, K2, R, t, n, referencePoints1, referencePoints2);
+
+        $r0 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $r0.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat X> = null;
+
+        $r1 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $r1.<org.bytedeco.javacv.ProjectiveColorTransformer: int numGains> = 0;
+
+        $r2 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $r2.<org.bytedeco.javacv.ProjectiveColorTransformer: int numBiases> = 0;
+
+        $r3 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $r3.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] X2> = null;
+
+        if X != null goto label1;
+
+        $stack11 = null;
+
+        goto label2;
+
+     label1:
+        $stack11 = virtualinvoke X.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat clone()>();
+
+     label2:
+        $r4 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $r4.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat X> = $stack11;
+
+        $r5 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $r5.<org.bytedeco.javacv.ProjectiveColorTransformer: int numGains> = numGains;
+
+        $r6 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $r6.<org.bytedeco.javacv.ProjectiveColorTransformer: int numBiases> = numBiases;
+
+        return;
+    }
+
+    public org.bytedeco.opencv.opencv_core.CvMat getX()
+    {
+        ProjectiveColorTransformer this;
+        org.bytedeco.opencv.opencv_core.CvMat $stack1;
+        org.bytedeco.javacv.ProjectiveColorTransformer $r0;
+
+        this := @this: ProjectiveColorTransformer;
+
+        $r0 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat X>;
+
+        return $stack1;
+    }
+
+    public int getNumGains()
+    {
+        ProjectiveColorTransformer this;
+        int $stack1;
+        org.bytedeco.javacv.ProjectiveColorTransformer $r0;
+
+        this := @this: ProjectiveColorTransformer;
+
+        $r0 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.ProjectiveColorTransformer: int numGains>;
+
+        return $stack1;
+    }
+
+    public int getNumBiases()
+    {
+        ProjectiveColorTransformer this;
+        int $stack1;
+        org.bytedeco.javacv.ProjectiveColorTransformer $r0;
+
+        this := @this: ProjectiveColorTransformer;
+
+        $r0 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.ProjectiveColorTransformer: int numBiases>;
+
+        return $stack1;
+    }
+
+    public void transformColor(org.bytedeco.opencv.opencv_core.IplImage, org.bytedeco.opencv.opencv_core.IplImage, org.bytedeco.opencv.opencv_core.CvRect, int, org.bytedeco.javacv.ImageTransformer$Parameters, boolean)
+    {
+        org.bytedeco.javacv.ImageTransformer$Parameters parameters;
+        org.bytedeco.javacv.ProjectiveColorTransformer$Parameters p;
+        double[] $stack9, $stack10;
+        boolean $stack11, inverse, $stack70;
+        ProjectiveColorTransformer this;
+        org.bytedeco.opencv.opencv_core.CvMat $stack12, X2, $stack67;
+        int pyramidLevel, $stack56, $stack66;
+        org.bytedeco.opencv.opencv_core.CvRect roi;
+        org.bytedeco.opencv.opencv_core.IplImage dstImage, srcImage;
+        double $stack18, $stack19, $stack20, $stack24, $stack25, $stack26, $stack30, $stack31, $stack32;
+        java.lang.ThreadLocal $stack13;
+        java.lang.Object $stack14;
+        org.bytedeco.javacv.ProjectiveColorTransformer $r0, $r1, $r2, $r3, $r6;
+        org.bytedeco.opencv.opencv_core.CvArr $r4, $r5, $r7, $r8;
+
+        this := @this: ProjectiveColorTransformer;
+
+        srcImage := @parameter0: org.bytedeco.opencv.opencv_core.IplImage;
+
+        dstImage := @parameter1: org.bytedeco.opencv.opencv_core.IplImage;
+
+        roi := @parameter2: org.bytedeco.opencv.opencv_core.CvRect;
+
+        pyramidLevel := @parameter3: int;
+
+        parameters := @parameter4: org.bytedeco.javacv.ImageTransformer$Parameters;
+
+        inverse := @parameter5: boolean;
+
+        p = (org.bytedeco.javacv.ProjectiveColorTransformer$Parameters) parameters;
+
+        $stack9 = virtualinvoke p.<org.bytedeco.javacv.ProjectiveColorTransformer$Parameters: double[] getColorParameters()>();
+
+        $stack10 = virtualinvoke p.<org.bytedeco.javacv.ProjectiveColorTransformer$Parameters: double[] getIdentityColorParameters()>();
+
+        $stack11 = staticinvoke <java.util.Arrays: boolean equals(double[],double[])>($stack9, $stack10);
+
+        if $stack11 == 0 goto label1;
+
+        $r0 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack67 = $r0.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat X>;
+
+        if $stack67 == null goto label2;
+
+        $stack70 = p.<org.bytedeco.javacv.ProjectiveColorTransformer$Parameters: boolean fakeIdentity>;
+
+        if $stack70 != 0 goto label2;
+
+     label1:
+        $r1 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack12 = $r1.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat X>;
+
+        if $stack12 != null goto label4;
+
+        $r2 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack56 = $r2.<org.bytedeco.javacv.ProjectiveColorTransformer: int numGains>;
+
+        if $stack56 != 0 goto label4;
+
+        $r3 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack66 = $r3.<org.bytedeco.javacv.ProjectiveColorTransformer: int numBiases>;
+
+        if $stack66 != 0 goto label4;
+
+     label2:
+        if srcImage == dstImage goto label3;
+
+        $r4 = (org.bytedeco.opencv.opencv_core.CvArr) srcImage;
+
+        $r5 = (org.bytedeco.opencv.opencv_core.CvArr) dstImage;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvCopy(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr)>($r4, $r5);
+
+     label3:
+        return;
+
+     label4:
+        $stack13 = <org.bytedeco.javacv.ProjectiveColorTransformer: java.lang.ThreadLocal X24x4>;
+
+        $stack14 = virtualinvoke $stack13.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        X2 = (org.bytedeco.opencv.opencv_core.CvMat) $stack14;
+
+        $r6 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        virtualinvoke $r6.<org.bytedeco.javacv.ProjectiveColorTransformer: void prepareColorTransform(org.bytedeco.opencv.opencv_core.CvMat,int,org.bytedeco.javacv.ProjectiveColorTransformer$Parameters,boolean)>(X2, pyramidLevel, p, inverse);
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat rows(int)>(3);
+
+        if roi != null goto label5;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvResetImageROI(org.bytedeco.opencv.opencv_core.IplImage)>(dstImage);
+
+        goto label6;
+
+     label5:
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetImageROI(org.bytedeco.opencv.opencv_core.IplImage,org.bytedeco.opencv.opencv_core.CvRect)>(dstImage, roi);
+
+     label6:
+        $stack18 = virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: double get(int,int)>(0, 3);
+
+        $stack19 = virtualinvoke dstImage.<org.bytedeco.opencv.opencv_core.IplImage: double highValue()>();
+
+        $stack20 = $stack18 * $stack19;
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(int,int,double)>(0, 3, $stack20);
+
+        $stack24 = virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: double get(int,int)>(1, 3);
+
+        $stack25 = virtualinvoke dstImage.<org.bytedeco.opencv.opencv_core.IplImage: double highValue()>();
+
+        $stack26 = $stack24 * $stack25;
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(int,int,double)>(1, 3, $stack26);
+
+        $stack30 = virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: double get(int,int)>(2, 3);
+
+        $stack31 = virtualinvoke dstImage.<org.bytedeco.opencv.opencv_core.IplImage: double highValue()>();
+
+        $stack32 = $stack30 * $stack31;
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(int,int,double)>(2, 3, $stack32);
+
+        $r7 = (org.bytedeco.opencv.opencv_core.CvArr) srcImage;
+
+        $r8 = (org.bytedeco.opencv.opencv_core.CvArr) dstImage;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvTransform(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat)>($r7, $r8, X2, null);
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat rows(int)>(4);
+
+        return;
+    }
+
+    protected void prepareColorTransform(org.bytedeco.opencv.opencv_core.CvMat, int, org.bytedeco.javacv.ProjectiveColorTransformer$Parameters, boolean)
+    {
+        org.bytedeco.javacv.ProjectiveColorTransformer$Parameters p;
+        org.bytedeco.opencv.opencv_core.CvMat A, b, X2, $stack12, $stack29, $stack37, $stack39;
+        boolean $stack11, inverse;
+        ProjectiveColorTransformer this;
+        double $stack18, $stack22, $stack26;
+        int pyramidLevel;
+        org.bytedeco.opencv.opencv_core.CvArr $r0, $r3, $r4, $r5, $r8, $r9;
+        org.bytedeco.javacv.ProjectiveColorTransformer $r1, $r2, $r6, $r7;
+
+        this := @this: ProjectiveColorTransformer;
+
+        X2 := @parameter0: org.bytedeco.opencv.opencv_core.CvMat;
+
+        pyramidLevel := @parameter1: int;
+
+        p := @parameter2: org.bytedeco.javacv.ProjectiveColorTransformer$Parameters;
+
+        inverse := @parameter3: boolean;
+
+        A = virtualinvoke p.<org.bytedeco.javacv.ProjectiveColorTransformer$Parameters: org.bytedeco.opencv.opencv_core.CvMat getA()>();
+
+        b = virtualinvoke p.<org.bytedeco.javacv.ProjectiveColorTransformer$Parameters: org.bytedeco.opencv.opencv_core.CvMat getB()>();
+
+        $r0 = (org.bytedeco.opencv.opencv_core.CvArr) X2;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetIdentity(org.bytedeco.opencv.opencv_core.CvArr)>($r0);
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat rows(int)>(3);
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat cols(int)>(3);
+
+        $stack11 = p.<org.bytedeco.javacv.ProjectiveColorTransformer$Parameters: boolean fakeIdentity>;
+
+        if $stack11 == 0 goto label1;
+
+        if inverse != 0 goto label1;
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(org.bytedeco.opencv.opencv_core.CvMat)>(A);
+
+        goto label4;
+
+     label1:
+        if A == null goto label2;
+
+        $r1 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack37 = $r1.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat X>;
+
+        if $stack37 == null goto label2;
+
+        $r2 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack39 = $r2.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat X>;
+
+        $r3 = (org.bytedeco.opencv.opencv_core.CvArr) $stack39;
+
+        $r4 = (org.bytedeco.opencv.opencv_core.CvArr) A;
+
+        $r5 = (org.bytedeco.opencv.opencv_core.CvArr) X2;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvMatMul(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr)>($r3, $r4, $r5);
+
+        goto label4;
+
+     label2:
+        $r6 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack12 = $r6.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat X>;
+
+        if $stack12 != null goto label3;
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(org.bytedeco.opencv.opencv_core.CvMat)>(A);
+
+        goto label4;
+
+     label3:
+        if A != null goto label4;
+
+        $r7 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack29 = $r7.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat X>;
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(org.bytedeco.opencv.opencv_core.CvMat)>($stack29);
+
+     label4:
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat rows(int)>(4);
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat cols(int)>(4);
+
+        if b == null goto label5;
+
+        $stack18 = virtualinvoke b.<org.bytedeco.opencv.opencv_core.CvMat: double get(int)>(0);
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(int,int,double)>(0, 3, $stack18);
+
+        $stack22 = virtualinvoke b.<org.bytedeco.opencv.opencv_core.CvMat: double get(int)>(1);
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(int,int,double)>(1, 3, $stack22);
+
+        $stack26 = virtualinvoke b.<org.bytedeco.opencv.opencv_core.CvMat: double get(int)>(2);
+
+        virtualinvoke X2.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(int,int,double)>(2, 3, $stack26);
+
+     label5:
+        if inverse == 0 goto label6;
+
+        $r8 = (org.bytedeco.opencv.opencv_core.CvArr) X2;
+
+        $r9 = (org.bytedeco.opencv.opencv_core.CvArr) X2;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: double cvInvert(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,int)>($r8, $r9, 1);
+
+     label6:
+        return;
+    }
+
+    public void transform(org.bytedeco.javacv.ImageTransformer$Data[], org.bytedeco.opencv.opencv_core.CvRect, org.bytedeco.javacv.ImageTransformer$Parameters[], boolean[])
+    {
+        boolean $stack8, $stack117;
+        ProjectiveColorTransformer this;
+        org.bytedeco.opencv.cvkernels$KernelData $stack9, $stack24, $stack28, $stack30, $stack32, $stack36, $stack38, $stack41, $stack44, $stack47, $stack53, $stack57, $stack59, $stack63, $stack67, $stack71, $stack75, $stack79, $stack95, $stack97, $stack101, $stack105, $stack109, $stack113, $stack173, $u1;
+        org.bytedeco.javacv.ImageTransformer$Data[] data;
+        int $stack11, $stack14, $stack19, $stack26, $stack34, $stack40, $stack43, $stack46, $stack85, $stack91, $stack156, $stack157, $stack167, $stack168, $stack175, $stack181, $stack182, i, $stack17, $stack22, $stack23;
+        long $stack12, $stack27, $stack35, $stack52, $stack174, $stack176, i#31;
+        org.bytedeco.opencv.opencv_core.CvMat[] $stack15, $stack18, $stack20, $stack81, $stack87, $stack93, $stack99, $stack151, $stack155, $stack162, $stack166, $stack13, $stack16, $stack21;
+        org.bytedeco.opencv.opencv_core.CvRect roi;
+        org.bytedeco.opencv.opencv_core.CvScalar $stack31;
+        org.bytedeco.javacv.ImageTransformer$Data $stack39, $stack42, $stack45, $stack48, $stack55, $stack61, $stack65, $stack69, $stack73, $stack77, $stack82, $stack88, $stack103, $stack107, $stack111;
+        double $stack49, $stack74, $stack78;
+        org.bytedeco.opencv.opencv_core.IplImage $stack56, $stack62, $stack66, $stack70, $stack104, $stack108;
+        boolean[] inverses;
+        org.bytedeco.javacv.ImageTransformer$Parameters[] parameters;
+        org.bytedeco.javacv.ImageTransformer$Parameters $stack83, $stack89;
+        org.bytedeco.javacv.ProjectiveColorTransformer$Parameters $stack84, $stack90;
+        org.bytedeco.opencv.opencv_core.CvMat $stack86, $stack92, $stack94, $stack100, $stack152, $stack163;
+        java.nio.DoubleBuffer $stack112;
+        byte $stack177;
+        java.lang.AssertionError $u0;
+        org.bytedeco.javacv.ProjectiveColorTransformer $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r33, $r34, $r35, $r36, $r37, $r38, $r39, $r40, $r41, $r42, $r43;
+        org.bytedeco.javacv.ProjectiveTransformer$Parameters $r23;
+
+        this := @this: ProjectiveColorTransformer;
+
+        data := @parameter0: org.bytedeco.javacv.ImageTransformer$Data[];
+
+        roi := @parameter1: org.bytedeco.opencv.opencv_core.CvRect;
+
+        parameters := @parameter2: org.bytedeco.javacv.ImageTransformer$Parameters[];
+
+        inverses := @parameter3: boolean[];
+
+        $stack8 = <org.bytedeco.javacv.ProjectiveColorTransformer: boolean $assertionsDisabled>;
+
+        if $stack8 != 0 goto label01;
+
+        $stack182 = lengthof data;
+
+        $stack181 = lengthof parameters;
+
+        if $stack182 == $stack181 goto label01;
+
+        $u0 = new java.lang.AssertionError;
+
+        specialinvoke $u0.<java.lang.AssertionError: void <init>()>();
+
+        throw $u0;
+
+     label01:
+        $r0 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack9 = $r0.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        if $stack9 == null goto label02;
+
+        $r1 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack173 = $r1.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack174 = virtualinvoke $stack173.<org.bytedeco.opencv.cvkernels$KernelData: long capacity()>();
+
+        $stack175 = lengthof data;
+
+        $stack176 = (long) $stack175;
+
+        $stack177 = $stack174 cmp $stack176;
+
+        if $stack177 >= 0 goto label03;
+
+     label02:
+        $u1 = new org.bytedeco.opencv.cvkernels$KernelData;
+
+        $stack11 = lengthof data;
+
+        $stack12 = (long) $stack11;
+
+        specialinvoke $u1.<org.bytedeco.opencv.cvkernels$KernelData: void <init>(long)>($stack12);
+
+        $r2 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $r2.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData> = $u1;
+
+     label03:
+        $r3 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack13 = $r3.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] H>;
+
+        if $stack13 == null goto label04;
+
+        $r4 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack166 = $r4.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] H>;
+
+        $stack168 = lengthof $stack166;
+
+        $stack167 = lengthof data;
+
+        if $stack168 >= $stack167 goto label06;
+
+     label04:
+        $stack14 = lengthof data;
+
+        $stack15 = newarray (org.bytedeco.opencv.opencv_core.CvMat)[$stack14];
+
+        $r5 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $r5.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] H> = $stack15;
+
+        i = 0;
+
+     label05:
+        $r6 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack16 = $r6.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] H>;
+
+        $stack17 = lengthof $stack16;
+
+        if i >= $stack17 goto label06;
+
+        $r7 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack162 = $r7.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] H>;
+
+        $stack163 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat create(int,int)>(3, 3);
+
+        $stack162[i] = $stack163;
+
+        i = i + 1;
+
+        goto label05;
+
+     label06:
+        $r8 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack18 = $r8.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] X2>;
+
+        if $stack18 == null goto label07;
+
+        $r9 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack155 = $r9.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] X2>;
+
+        $stack157 = lengthof $stack155;
+
+        $stack156 = lengthof data;
+
+        if $stack157 >= $stack156 goto label09;
+
+     label07:
+        $stack19 = lengthof data;
+
+        $stack20 = newarray (org.bytedeco.opencv.opencv_core.CvMat)[$stack19];
+
+        $r10 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $r10.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] X2> = $stack20;
+
+        i = 0;
+
+     label08:
+        $r11 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack21 = $r11.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] X2>;
+
+        $stack22 = lengthof $stack21;
+
+        if i >= $stack22 goto label09;
+
+        $r12 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack151 = $r12.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] X2>;
+
+        $stack152 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat create(int,int)>(4, 4);
+
+        $stack151[i] = $stack152;
+
+        i = i + 1;
+
+        goto label08;
+
+     label09:
+        i = 0;
+
+     label10:
+        $stack23 = lengthof data;
+
+        if i >= $stack23 goto label13;
+
+        $r13 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack53 = $r13.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack52 = (long) i;
+
+        virtualinvoke $stack53.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData position(long)>($stack52);
+
+        $r14 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack57 = $r14.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack55 = data[i];
+
+        $stack56 = $stack55.<org.bytedeco.javacv.ImageTransformer$Data: org.bytedeco.opencv.opencv_core.IplImage srcImg>;
+
+        virtualinvoke $stack57.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData srcImg(org.bytedeco.opencv.opencv_core.IplImage)>($stack56);
+
+        $r15 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack59 = $r15.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        virtualinvoke $stack59.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData srcImg2(org.bytedeco.opencv.opencv_core.IplImage)>(null);
+
+        $r16 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack63 = $r16.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack61 = data[i];
+
+        $stack62 = $stack61.<org.bytedeco.javacv.ImageTransformer$Data: org.bytedeco.opencv.opencv_core.IplImage subImg>;
+
+        virtualinvoke $stack63.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData subImg(org.bytedeco.opencv.opencv_core.IplImage)>($stack62);
+
+        $r17 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack67 = $r17.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack65 = data[i];
+
+        $stack66 = $stack65.<org.bytedeco.javacv.ImageTransformer$Data: org.bytedeco.opencv.opencv_core.IplImage srcDotImg>;
+
+        virtualinvoke $stack67.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData srcDotImg(org.bytedeco.opencv.opencv_core.IplImage)>($stack66);
+
+        $r18 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack71 = $r18.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack69 = data[i];
+
+        $stack70 = $stack69.<org.bytedeco.javacv.ImageTransformer$Data: org.bytedeco.opencv.opencv_core.IplImage mask>;
+
+        virtualinvoke $stack71.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData mask(org.bytedeco.opencv.opencv_core.IplImage)>($stack70);
+
+        $r19 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack75 = $r19.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack73 = data[i];
+
+        $stack74 = $stack73.<org.bytedeco.javacv.ImageTransformer$Data: double zeroThreshold>;
+
+        virtualinvoke $stack75.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData zeroThreshold(double)>($stack74);
+
+        $r20 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack79 = $r20.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack77 = data[i];
+
+        $stack78 = $stack77.<org.bytedeco.javacv.ImageTransformer$Data: double outlierThreshold>;
+
+        virtualinvoke $stack79.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData outlierThreshold(double)>($stack78);
+
+        if inverses != null goto label11;
+
+        $stack117 = 0;
+
+        goto label12;
+
+     label11:
+        $stack117 = inverses[i];
+
+     label12:
+        $r21 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack81 = $r21.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] H>;
+
+        $stack86 = $stack81[i];
+
+        $stack82 = data[i];
+
+        $stack85 = $stack82.<org.bytedeco.javacv.ImageTransformer$Data: int pyramidLevel>;
+
+        $stack83 = parameters[i];
+
+        $stack84 = (org.bytedeco.javacv.ProjectiveColorTransformer$Parameters) $stack83;
+
+        $r22 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $r23 = (org.bytedeco.javacv.ProjectiveTransformer$Parameters) $stack84;
+
+        virtualinvoke $r22.<org.bytedeco.javacv.ProjectiveColorTransformer: void prepareHomography(org.bytedeco.opencv.opencv_core.CvMat,int,org.bytedeco.javacv.ProjectiveTransformer$Parameters,boolean)>($stack86, $stack85, $r23, $stack117);
+
+        $r24 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack87 = $r24.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] X2>;
+
+        $stack92 = $stack87[i];
+
+        $stack88 = data[i];
+
+        $stack91 = $stack88.<org.bytedeco.javacv.ImageTransformer$Data: int pyramidLevel>;
+
+        $stack89 = parameters[i];
+
+        $stack90 = (org.bytedeco.javacv.ProjectiveColorTransformer$Parameters) $stack89;
+
+        $r25 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        virtualinvoke $r25.<org.bytedeco.javacv.ProjectiveColorTransformer: void prepareColorTransform(org.bytedeco.opencv.opencv_core.CvMat,int,org.bytedeco.javacv.ProjectiveColorTransformer$Parameters,boolean)>($stack92, $stack91, $stack90, $stack117);
+
+        $r26 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack95 = $r26.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $r27 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack93 = $r27.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] H>;
+
+        $stack94 = $stack93[i];
+
+        virtualinvoke $stack95.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData H1(org.bytedeco.opencv.opencv_core.CvMat)>($stack94);
+
+        $r28 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack97 = $r28.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        virtualinvoke $stack97.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData H2(org.bytedeco.opencv.opencv_core.CvMat)>(null);
+
+        $r29 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack101 = $r29.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $r30 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack99 = $r30.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvMat[] X2>;
+
+        $stack100 = $stack99[i];
+
+        virtualinvoke $stack101.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData X(org.bytedeco.opencv.opencv_core.CvMat)>($stack100);
+
+        $r31 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack105 = $r31.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack103 = data[i];
+
+        $stack104 = $stack103.<org.bytedeco.javacv.ImageTransformer$Data: org.bytedeco.opencv.opencv_core.IplImage transImg>;
+
+        virtualinvoke $stack105.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData transImg(org.bytedeco.opencv.opencv_core.IplImage)>($stack104);
+
+        $r32 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack109 = $r32.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack107 = data[i];
+
+        $stack108 = $stack107.<org.bytedeco.javacv.ImageTransformer$Data: org.bytedeco.opencv.opencv_core.IplImage dstImg>;
+
+        virtualinvoke $stack109.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData dstImg(org.bytedeco.opencv.opencv_core.IplImage)>($stack108);
+
+        $r33 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack113 = $r33.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack111 = data[i];
+
+        $stack112 = $stack111.<org.bytedeco.javacv.ImageTransformer$Data: java.nio.DoubleBuffer dstDstDot>;
+
+        virtualinvoke $stack113.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData dstDstDot(java.nio.DoubleBuffer)>($stack112);
+
+        i = i + 1;
+
+        goto label10;
+
+     label13:
+        $r34 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack24 = $r34.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        i#31 = virtualinvoke $stack24.<org.bytedeco.opencv.cvkernels$KernelData: long capacity()>();
+
+        $r35 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack28 = $r35.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack26 = lengthof data;
+
+        $stack27 = (long) $stack26;
+
+        virtualinvoke $stack28.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.javacpp.Pointer capacity(long)>($stack27);
+
+        $r36 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack30 = $r36.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $r37 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack31 = virtualinvoke $r37.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.opencv_core.CvScalar getFillColor()>();
+
+        staticinvoke <org.bytedeco.javacv.cvkernels: void multiWarpColorTransform(org.bytedeco.opencv.cvkernels$KernelData,org.bytedeco.opencv.opencv_core.CvRect,org.bytedeco.opencv.opencv_core.CvScalar)>($stack30, roi, $stack31);
+
+        $r38 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack32 = $r38.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        virtualinvoke $stack32.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.javacpp.Pointer capacity(long)>(i#31);
+
+        i = 0;
+
+     label14:
+        $stack34 = lengthof data;
+
+        if i >= $stack34 goto label15;
+
+        $r39 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack36 = $r39.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack35 = (long) i;
+
+        virtualinvoke $stack36.<org.bytedeco.opencv.cvkernels$KernelData: org.bytedeco.opencv.cvkernels$KernelData position(long)>($stack35);
+
+        $stack39 = data[i];
+
+        $r40 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack38 = $r40.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack40 = virtualinvoke $stack38.<org.bytedeco.opencv.cvkernels$KernelData: int dstCount()>();
+
+        $stack39.<org.bytedeco.javacv.ImageTransformer$Data: int dstCount> = $stack40;
+
+        $stack42 = data[i];
+
+        $r41 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack41 = $r41.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack43 = virtualinvoke $stack41.<org.bytedeco.opencv.cvkernels$KernelData: int dstCountZero()>();
+
+        $stack42.<org.bytedeco.javacv.ImageTransformer$Data: int dstCountZero> = $stack43;
+
+        $stack45 = data[i];
+
+        $r42 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack44 = $r42.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack46 = virtualinvoke $stack44.<org.bytedeco.opencv.cvkernels$KernelData: int dstCountOutlier()>();
+
+        $stack45.<org.bytedeco.javacv.ImageTransformer$Data: int dstCountOutlier> = $stack46;
+
+        $stack48 = data[i];
+
+        $r43 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack47 = $r43.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.opencv.cvkernels$KernelData kernelData>;
+
+        $stack49 = virtualinvoke $stack47.<org.bytedeco.opencv.cvkernels$KernelData: double srcDstDot()>();
+
+        $stack48.<org.bytedeco.javacv.ImageTransformer$Data: double srcDstDot> = $stack49;
+
+        i = i + 1;
+
+        goto label14;
+
+     label15:
+        return;
+    }
+
+    public org.bytedeco.javacv.ProjectiveColorTransformer$Parameters createParameters()
+    {
+        ProjectiveColorTransformer this;
+        org.bytedeco.javacv.ProjectiveColorTransformer$Parameters $u0;
+        org.bytedeco.javacv.ProjectiveColorTransformer $r0;
+
+        this := @this: ProjectiveColorTransformer;
+
+        $u0 = new org.bytedeco.javacv.ProjectiveColorTransformer$Parameters;
+
+        $r0 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        specialinvoke $u0.<org.bytedeco.javacv.ProjectiveColorTransformer$Parameters: void <init>(org.bytedeco.javacv.ProjectiveColorTransformer)>($r0);
+
+        return $u0;
+    }
+
+    public volatile org.bytedeco.javacv.ProjectiveTransformer$Parameters createParameters()
+    {
+        ProjectiveColorTransformer this;
+        org.bytedeco.javacv.ProjectiveColorTransformer$Parameters $stack1;
+        org.bytedeco.javacv.ProjectiveColorTransformer $r0;
+        org.bytedeco.javacv.ProjectiveTransformer$Parameters $r1;
+
+        this := @this: ProjectiveColorTransformer;
+
+        $r0 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.javacv.ProjectiveColorTransformer$Parameters createParameters()>();
+
+        $r1 = (org.bytedeco.javacv.ProjectiveTransformer$Parameters) $stack1;
+
+        return $r1;
+    }
+
+    public volatile org.bytedeco.javacv.ImageTransformer$Parameters createParameters()
+    {
+        ProjectiveColorTransformer this;
+        org.bytedeco.javacv.ProjectiveColorTransformer$Parameters $stack1;
+        org.bytedeco.javacv.ProjectiveColorTransformer $r0;
+        org.bytedeco.javacv.ImageTransformer$Parameters $r1;
+
+        this := @this: ProjectiveColorTransformer;
+
+        $r0 = (org.bytedeco.javacv.ProjectiveColorTransformer) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.ProjectiveColorTransformer: org.bytedeco.javacv.ProjectiveColorTransformer$Parameters createParameters()>();
+
+        $r1 = (org.bytedeco.javacv.ImageTransformer$Parameters) $stack1;
+
+        return $r1;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $stack0;
+        boolean $stack1, $stack4;
+        java.lang.ThreadLocal $stack2, $stack3;
+
+        $stack0 = class "Lorg/bytedeco/javacv/ProjectiveColorTransformer;";
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Class: boolean desiredAssertionStatus()>();
+
+        if $stack1 != 0 goto label1;
+
+        $stack4 = 1;
+
+        goto label2;
+
+     label1:
+        $stack4 = 0;
+
+     label2:
+        <org.bytedeco.javacv.ProjectiveColorTransformer: boolean $assertionsDisabled> = $stack4;
+
+        $stack2 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: java.lang.ThreadLocal createThreadLocal(int,int)>(4, 4);
+
+        <org.bytedeco.javacv.ProjectiveColorTransformer: java.lang.ThreadLocal X24x4> = $stack2;
+
+        $stack3 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: java.lang.ThreadLocal createThreadLocal(int,int)>(3, 1);
+
+        <org.bytedeco.javacv.ProjectiveColorTransformer: java.lang.ThreadLocal temp3x1> = $stack3;
+
+        return;
+    }
+}

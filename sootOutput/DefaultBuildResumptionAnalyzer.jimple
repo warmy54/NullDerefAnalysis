@@ -1,0 +1,185 @@
+public class DefaultBuildResumptionAnalyzer extends java.lang.Object implements org.apache.maven.execution.BuildResumptionAnalyzer
+{
+    private static final org.slf4j.Logger LOGGER;
+
+    public void <init>()
+    {
+        DefaultBuildResumptionAnalyzer this;
+
+        this := @this: DefaultBuildResumptionAnalyzer;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public java.util.Optional determineBuildResumptionData(org.apache.maven.execution.MavenExecutionResult)
+    {
+        org.apache.maven.execution.MavenExecutionResult result;
+        boolean $stack5, hasNoSuccess, $stack17;
+        java.util.List sortedProjects, remainingProjects;
+        java.util.stream.Stream $stack7, $stack10, $stack12, $stack14;
+        java.util.function.Predicate $stack8, $stack11;
+        java.util.function.Function $stack13;
+        java.util.stream.Collector $stack15;
+        java.lang.Object $stack16;
+        org.apache.maven.execution.BuildResumptionData $stack18;
+        java.util.Optional $stack19, $stack21, $stack22, $stack23;
+        org.slf4j.Logger $stack20;
+        DefaultBuildResumptionAnalyzer this;
+
+        this := @this: DefaultBuildResumptionAnalyzer;
+
+        result := @parameter0: org.apache.maven.execution.MavenExecutionResult;
+
+        $stack5 = interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: boolean hasExceptions()>();
+
+        if $stack5 != 0 goto label1;
+
+        $stack23 = staticinvoke <java.util.Optional: java.util.Optional empty()>();
+
+        return $stack23;
+
+     label1:
+        sortedProjects = interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: java.util.List getTopologicallySortedProjects()>();
+
+        $stack7 = interfaceinvoke sortedProjects.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack8 = staticinvoke <DefaultBuildResumptionAnalyzer$lambda_determineBuildResumptionData_0__309: java.util.function.Predicate bootstrap$(org.apache.maven.execution.MavenExecutionResult)>(result);
+
+        hasNoSuccess = interfaceinvoke $stack7.<java.util.stream.Stream: boolean noneMatch(java.util.function.Predicate)>($stack8);
+
+        if hasNoSuccess == 0 goto label2;
+
+        $stack22 = staticinvoke <java.util.Optional: java.util.Optional empty()>();
+
+        return $stack22;
+
+     label2:
+        $stack10 = interfaceinvoke sortedProjects.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack11 = staticinvoke <DefaultBuildResumptionAnalyzer$lambda_determineBuildResumptionData_1__310: java.util.function.Predicate bootstrap$(org.apache.maven.execution.MavenExecutionResult)>(result);
+
+        $stack12 = interfaceinvoke $stack10.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack11);
+
+        $stack13 = staticinvoke <DefaultBuildResumptionAnalyzer$lambda_determineBuildResumptionData_2__311: java.util.function.Function bootstrap$()>();
+
+        $stack14 = interfaceinvoke $stack12.<java.util.stream.Stream: java.util.stream.Stream map(java.util.function.Function)>($stack13);
+
+        $stack15 = staticinvoke <java.util.stream.Collectors: java.util.stream.Collector toList()>();
+
+        $stack16 = interfaceinvoke $stack14.<java.util.stream.Stream: java.lang.Object collect(java.util.stream.Collector)>($stack15);
+
+        remainingProjects = (java.util.List) $stack16;
+
+        $stack17 = interfaceinvoke remainingProjects.<java.util.List: boolean isEmpty()>();
+
+        if $stack17 == 0 goto label3;
+
+        $stack20 = <org.apache.maven.execution.DefaultBuildResumptionAnalyzer: org.slf4j.Logger LOGGER>;
+
+        interfaceinvoke $stack20.<org.slf4j.Logger: void info(java.lang.String)>("No remaining projects found, resuming the build would not make sense.");
+
+        $stack21 = staticinvoke <java.util.Optional: java.util.Optional empty()>();
+
+        return $stack21;
+
+     label3:
+        $stack18 = new org.apache.maven.execution.BuildResumptionData;
+
+        specialinvoke $stack18.<org.apache.maven.execution.BuildResumptionData: void <init>(java.util.List)>(remainingProjects);
+
+        $stack19 = staticinvoke <java.util.Optional: java.util.Optional of(java.lang.Object)>($stack18);
+
+        return $stack19;
+    }
+
+    private static java.lang.String lambda$determineBuildResumptionData$2(org.apache.maven.project.MavenProject)
+    {
+        java.lang.StringBuilder $stack1, $stack3, $stack4, $stack6;
+        org.apache.maven.project.MavenProject project;
+        java.lang.String $stack2, $stack5, $stack7;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        $stack1 = new java.lang.StringBuilder;
+
+        specialinvoke $stack1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack2 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        $stack3 = virtualinvoke $stack1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack2);
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack5 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        $stack6 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack7;
+    }
+
+    private static boolean lambda$determineBuildResumptionData$1(org.apache.maven.execution.MavenExecutionResult, org.apache.maven.project.MavenProject)
+    {
+        org.apache.maven.execution.MavenExecutionResult result;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.execution.BuildSummary $stack2, $stack3;
+        boolean $stack4, $stack5;
+
+        result := @parameter0: org.apache.maven.execution.MavenExecutionResult;
+
+        project := @parameter1: org.apache.maven.project.MavenProject;
+
+        $stack2 = interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.BuildSummary getBuildSummary(org.apache.maven.project.MavenProject)>(project);
+
+        if $stack2 == null goto label1;
+
+        $stack3 = interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.BuildSummary getBuildSummary(org.apache.maven.project.MavenProject)>(project);
+
+        $stack4 = $stack3 instanceof org.apache.maven.execution.BuildFailure;
+
+        if $stack4 == 0 goto label2;
+
+     label1:
+        $stack5 = 1;
+
+        goto label3;
+
+     label2:
+        $stack5 = 0;
+
+     label3:
+        return $stack5;
+    }
+
+    private static boolean lambda$determineBuildResumptionData$0(org.apache.maven.execution.MavenExecutionResult, org.apache.maven.project.MavenProject)
+    {
+        org.apache.maven.execution.MavenExecutionResult result;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.execution.BuildSummary $stack2;
+        boolean $stack3;
+
+        result := @parameter0: org.apache.maven.execution.MavenExecutionResult;
+
+        project := @parameter1: org.apache.maven.project.MavenProject;
+
+        $stack2 = interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.BuildSummary getBuildSummary(org.apache.maven.project.MavenProject)>(project);
+
+        $stack3 = $stack2 instanceof org.apache.maven.execution.BuildSuccess;
+
+        return $stack3;
+    }
+
+    static void <clinit>()
+    {
+        org.slf4j.Logger $stack0;
+
+        $stack0 = staticinvoke <org.slf4j.LoggerFactory: org.slf4j.Logger getLogger(java.lang.Class)>(class "Lorg/apache/maven/execution/DefaultBuildResumptionAnalyzer;");
+
+        <org.apache.maven.execution.DefaultBuildResumptionAnalyzer: org.slf4j.Logger LOGGER> = $stack0;
+
+        return;
+    }
+}

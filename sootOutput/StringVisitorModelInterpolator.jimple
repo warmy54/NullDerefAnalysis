@@ -1,0 +1,211 @@
+public class StringVisitorModelInterpolator extends org.apache.maven.model.interpolation.AbstractStringBasedModelInterpolator
+{
+
+    public void <init>()
+    {
+        StringVisitorModelInterpolator this;
+
+        this := @this: StringVisitorModelInterpolator;
+
+        specialinvoke this.<org.apache.maven.model.interpolation.AbstractStringBasedModelInterpolator: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model, java.io.File, org.apache.maven.model.building.ModelBuildingRequest, org.apache.maven.model.building.ModelProblemCollector)
+    {
+        StringVisitorModelInterpolator this;
+        org.apache.maven.model.Model model;
+        java.io.File projectDir;
+        org.apache.maven.model.building.ModelBuildingRequest config;
+        org.apache.maven.model.building.ModelProblemCollector problems;
+        java.util.List valueSources, postProcessors;
+        org.apache.maven.model.interpolation.StringVisitorModelInterpolator$InnerInterpolator innerInterpolator;
+        org.apache.maven.model.interpolation.StringVisitorModelInterpolator$ModelVisitor $u0;
+        org.apache.maven.model.interpolation.StringVisitorModelInterpolator $r0, $r1, $r2;
+
+        this := @this: StringVisitorModelInterpolator;
+
+        model := @parameter0: org.apache.maven.model.Model;
+
+        projectDir := @parameter1: java.io.File;
+
+        config := @parameter2: org.apache.maven.model.building.ModelBuildingRequest;
+
+        problems := @parameter3: org.apache.maven.model.building.ModelProblemCollector;
+
+        $r0 = (org.apache.maven.model.interpolation.StringVisitorModelInterpolator) this;
+
+        valueSources = virtualinvoke $r0.<org.apache.maven.model.interpolation.StringVisitorModelInterpolator: java.util.List createValueSources(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>(model, projectDir, config, problems);
+
+        $r1 = (org.apache.maven.model.interpolation.StringVisitorModelInterpolator) this;
+
+        postProcessors = virtualinvoke $r1.<org.apache.maven.model.interpolation.StringVisitorModelInterpolator: java.util.List createPostProcessors(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest)>(model, projectDir, config);
+
+        $r2 = (org.apache.maven.model.interpolation.StringVisitorModelInterpolator) this;
+
+        innerInterpolator = specialinvoke $r2.<org.apache.maven.model.interpolation.StringVisitorModelInterpolator: org.apache.maven.model.interpolation.StringVisitorModelInterpolator$InnerInterpolator createInterpolator(java.util.List,java.util.List,org.apache.maven.model.building.ModelProblemCollector)>(valueSources, postProcessors, problems);
+
+        $u0 = new org.apache.maven.model.interpolation.StringVisitorModelInterpolator$ModelVisitor;
+
+        specialinvoke $u0.<org.apache.maven.model.interpolation.StringVisitorModelInterpolator$ModelVisitor: void <init>(org.apache.maven.model.interpolation.StringVisitorModelInterpolator$InnerInterpolator)>(innerInterpolator);
+
+        virtualinvoke $u0.<org.apache.maven.model.interpolation.StringVisitorModelInterpolator$ModelVisitor: void visit(org.apache.maven.model.Model)>(model);
+
+        return model;
+    }
+
+    private org.apache.maven.model.interpolation.StringVisitorModelInterpolator$InnerInterpolator createInterpolator(java.util.List, java.util.List, org.apache.maven.model.building.ModelProblemCollector)
+    {
+        java.util.List valueSources, postProcessors;
+        boolean $stack11, $stack13;
+        StringVisitorModelInterpolator this;
+        org.apache.maven.model.building.ModelProblemCollector problems;
+        org.apache.maven.model.interpolation.StringVisitorModelInterpolator$InnerInterpolator $stack15;
+        java.lang.Object $stack16, $stack18;
+        java.util.Iterator recursionInterceptor;
+        org.codehaus.plexus.interpolation.ValueSource vs;
+        org.codehaus.plexus.interpolation.InterpolationPostProcessor vs#4;
+        org.codehaus.plexus.interpolation.RecursionInterceptor recursionInterceptor#5;
+        java.util.HashMap $u0;
+        org.codehaus.plexus.interpolation.StringSearchInterpolator $u1;
+        org.apache.maven.model.interpolation.StringVisitorModelInterpolator $r0;
+
+        this := @this: StringVisitorModelInterpolator;
+
+        valueSources := @parameter0: java.util.List;
+
+        postProcessors := @parameter1: java.util.List;
+
+        problems := @parameter2: org.apache.maven.model.building.ModelProblemCollector;
+
+        $u0 = new java.util.HashMap;
+
+        specialinvoke $u0.<java.util.HashMap: void <init>()>();
+
+        $u1 = new org.codehaus.plexus.interpolation.StringSearchInterpolator;
+
+        specialinvoke $u1.<org.codehaus.plexus.interpolation.StringSearchInterpolator: void <init>()>();
+
+        virtualinvoke $u1.<org.codehaus.plexus.interpolation.StringSearchInterpolator: void setCacheAnswers(boolean)>(1);
+
+        recursionInterceptor = interfaceinvoke valueSources.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack11 = interfaceinvoke recursionInterceptor.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label2;
+
+        $stack18 = interfaceinvoke recursionInterceptor.<java.util.Iterator: java.lang.Object next()>();
+
+        vs = (org.codehaus.plexus.interpolation.ValueSource) $stack18;
+
+        virtualinvoke $u1.<org.codehaus.plexus.interpolation.StringSearchInterpolator: void addValueSource(org.codehaus.plexus.interpolation.ValueSource)>(vs);
+
+        goto label1;
+
+     label2:
+        recursionInterceptor = interfaceinvoke postProcessors.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack13 = interfaceinvoke recursionInterceptor.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label4;
+
+        $stack16 = interfaceinvoke recursionInterceptor.<java.util.Iterator: java.lang.Object next()>();
+
+        vs#4 = (org.codehaus.plexus.interpolation.InterpolationPostProcessor) $stack16;
+
+        virtualinvoke $u1.<org.codehaus.plexus.interpolation.StringSearchInterpolator: void addPostProcessor(org.codehaus.plexus.interpolation.InterpolationPostProcessor)>(vs#4);
+
+        goto label3;
+
+     label4:
+        $r0 = (org.apache.maven.model.interpolation.StringVisitorModelInterpolator) this;
+
+        recursionInterceptor#5 = virtualinvoke $r0.<org.apache.maven.model.interpolation.StringVisitorModelInterpolator: org.codehaus.plexus.interpolation.RecursionInterceptor createRecursionInterceptor()>();
+
+        $stack15 = staticinvoke <StringVisitorModelInterpolator$lambda_createInterpolator_0__309: org.apache.maven.model.interpolation.StringVisitorModelInterpolator$InnerInterpolator bootstrap$(java.util.Map,org.codehaus.plexus.interpolation.StringSearchInterpolator,org.codehaus.plexus.interpolation.RecursionInterceptor,org.apache.maven.model.building.ModelProblemCollector)>($u0, $u1, recursionInterceptor#5, problems);
+
+        return $stack15;
+    }
+
+    private static java.lang.String lambda$createInterpolator$0(java.util.Map, org.codehaus.plexus.interpolation.StringSearchInterpolator, org.codehaus.plexus.interpolation.RecursionInterceptor, org.apache.maven.model.building.ModelProblemCollector, java.lang.String)
+    {
+        java.lang.String value, $stack17, c;
+        boolean $stack7;
+        java.util.Map cache;
+        java.lang.Object $stack9;
+        org.codehaus.plexus.interpolation.StringSearchInterpolator interpolator;
+        org.codehaus.plexus.interpolation.RecursionInterceptor recursionInterceptor;
+        java.lang.Throwable $stack13;
+        org.apache.maven.model.building.ModelProblemCollector problems;
+        org.apache.maven.model.building.ModelProblem$Version $stack15;
+        org.apache.maven.model.building.ModelProblem$Severity $stack16;
+        org.apache.maven.model.building.ModelProblemCollectorRequest $stack18, $stack19, $u0;
+        org.codehaus.plexus.interpolation.InterpolationException $r0;
+        java.lang.Exception $r1;
+
+        cache := @parameter0: java.util.Map;
+
+        interpolator := @parameter1: org.codehaus.plexus.interpolation.StringSearchInterpolator;
+
+        recursionInterceptor := @parameter2: org.codehaus.plexus.interpolation.RecursionInterceptor;
+
+        problems := @parameter3: org.apache.maven.model.building.ModelProblemCollector;
+
+        value := @parameter4: java.lang.String;
+
+        if value == null goto label6;
+
+        $stack7 = virtualinvoke value.<java.lang.String: boolean contains(java.lang.CharSequence)>("${");
+
+        if $stack7 == 0 goto label6;
+
+        $stack9 = interfaceinvoke cache.<java.util.Map: java.lang.Object get(java.lang.Object)>(value);
+
+        c = (java.lang.String) $stack9;
+
+        if c != null goto label5;
+
+     label1:
+        c = virtualinvoke interpolator.<org.codehaus.plexus.interpolation.StringSearchInterpolator: java.lang.String interpolate(java.lang.String,org.codehaus.plexus.interpolation.RecursionInterceptor)>(value, recursionInterceptor);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack13 := @caughtexception;
+
+        $u0 = new org.apache.maven.model.building.ModelProblemCollectorRequest;
+
+        $stack16 = <org.apache.maven.model.building.ModelProblem$Severity: org.apache.maven.model.building.ModelProblem$Severity ERROR>;
+
+        $stack15 = <org.apache.maven.model.building.ModelProblem$Version: org.apache.maven.model.building.ModelProblem$Version BASE>;
+
+        specialinvoke $u0.<org.apache.maven.model.building.ModelProblemCollectorRequest: void <init>(org.apache.maven.model.building.ModelProblem$Severity,org.apache.maven.model.building.ModelProblem$Version)>($stack16, $stack15);
+
+        $r0 = (org.codehaus.plexus.interpolation.InterpolationException) $stack13;
+
+        $stack17 = virtualinvoke $r0.<org.codehaus.plexus.interpolation.InterpolationException: java.lang.String getMessage()>();
+
+        $stack18 = virtualinvoke $u0.<org.apache.maven.model.building.ModelProblemCollectorRequest: org.apache.maven.model.building.ModelProblemCollectorRequest setMessage(java.lang.String)>($stack17);
+
+        $r1 = (java.lang.Exception) $stack13;
+
+        $stack19 = virtualinvoke $stack18.<org.apache.maven.model.building.ModelProblemCollectorRequest: org.apache.maven.model.building.ModelProblemCollectorRequest setException(java.lang.Exception)>($r1);
+
+        interfaceinvoke problems.<org.apache.maven.model.building.ModelProblemCollector: void add(org.apache.maven.model.building.ModelProblemCollectorRequest)>($stack19);
+
+     label4:
+        interfaceinvoke cache.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(value, c);
+
+     label5:
+        return c;
+
+     label6:
+        return value;
+
+        catch org.codehaus.plexus.interpolation.InterpolationException from label1 to label2 with label3;
+    }
+}

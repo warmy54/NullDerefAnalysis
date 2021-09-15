@@ -1,0 +1,61 @@
+class FileAttributeUtil extends java.lang.Object
+{
+
+    void <init>()
+    {
+        FileAttributeUtil this;
+
+        this := @this: FileAttributeUtil;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public long getLastModifiedTimestamp(java.io.File)
+    {
+        java.io.File file;
+        long $stack2;
+        FileAttributeUtil this;
+
+        this := @this: FileAttributeUtil;
+
+        file := @parameter0: java.io.File;
+
+        $stack2 = virtualinvoke file.<java.io.File: long lastModified()>();
+
+        return $stack2;
+    }
+
+    public void setTimestamps(java.io.File, long) throws java.io.IOException
+    {
+        java.io.File file;
+        java.nio.file.Path $stack6;
+        java.nio.file.LinkOption[] $stack7;
+        java.nio.file.attribute.FileAttributeView $stack8;
+        java.nio.file.attribute.BasicFileAttributeView attributes;
+        long millis;
+        java.nio.file.attribute.FileTime time;
+        FileAttributeUtil this;
+
+        this := @this: FileAttributeUtil;
+
+        file := @parameter0: java.io.File;
+
+        millis := @parameter1: long;
+
+        $stack6 = virtualinvoke file.<java.io.File: java.nio.file.Path toPath()>();
+
+        $stack7 = newarray (java.nio.file.LinkOption)[0];
+
+        $stack8 = staticinvoke <java.nio.file.Files: java.nio.file.attribute.FileAttributeView getFileAttributeView(java.nio.file.Path,java.lang.Class,java.nio.file.LinkOption[])>($stack6, class "Ljava/nio/file/attribute/BasicFileAttributeView;", $stack7);
+
+        attributes = (java.nio.file.attribute.BasicFileAttributeView) $stack8;
+
+        time = staticinvoke <java.nio.file.attribute.FileTime: java.nio.file.attribute.FileTime fromMillis(long)>(millis);
+
+        interfaceinvoke attributes.<java.nio.file.attribute.BasicFileAttributeView: void setTimes(java.nio.file.attribute.FileTime,java.nio.file.attribute.FileTime,java.nio.file.attribute.FileTime)>(time, time, time);
+
+        return;
+    }
+}

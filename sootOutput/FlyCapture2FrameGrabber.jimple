@@ -1,0 +1,2724 @@
+public class FlyCapture2FrameGrabber extends org.bytedeco.javacv.FrameGrabber
+{
+    private static org.bytedeco.javacv.FrameGrabber$Exception loadingException;
+    public static final int INITIALIZE;
+    public static final int TRIGGER_INQ;
+    public static final int IS_CAMERA_POWER;
+    public static final int CAMERA_POWER;
+    public static final int SOFTWARE_TRIGGER;
+    public static final int SOFT_ASYNC_TRIGGER;
+    public static final int IMAGE_DATA_FORMAT;
+    private org.bytedeco.flycapture.FlyCapture2.BusManager busMgr;
+    private org.bytedeco.flycapture.FlyCapture2.Camera camera;
+    private org.bytedeco.flycapture.FlyCapture2.CameraInfo cameraInfo;
+    private org.bytedeco.flycapture.FlyCapture2.Image raw_image;
+    private org.bytedeco.flycapture.FlyCapture2.Image conv_image;
+    private org.bytedeco.opencv.opencv_core.IplImage temp_image;
+    private org.bytedeco.opencv.opencv_core.IplImage return_image;
+    private org.bytedeco.javacv.FrameConverter converter;
+    private final int[] regOut;
+    private final float[] outFloat;
+    private final float[] gammaOut;
+    static final int VIDEOMODE_ANY;
+
+    public static java.lang.String[] getDeviceDescriptions() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.flycapture.FlyCapture2.BusManager $stack8;
+        int[] numCameras;
+        int $stack10, $stack11, i;
+        java.lang.String[] descriptions;
+        org.bytedeco.flycapture.FlyCapture2.PGRGuid $stack12;
+        boolean $stack14, $stack17, $stack20;
+        org.bytedeco.flycapture.FlyCapture2.Camera $stack15;
+        org.bytedeco.flycapture.FlyCapture2.CameraInfo $stack18;
+        java.lang.String $stack21;
+        org.bytedeco.flycapture.FlyCapture2.Error error;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void tryLoad()>();
+
+        $stack8 = new org.bytedeco.flycapture.FlyCapture2.BusManager;
+
+        specialinvoke $stack8.<org.bytedeco.flycapture.FlyCapture2.BusManager: void <init>()>();
+
+        numCameras = newarray (int)[1];
+
+        virtualinvoke $stack8.<org.bytedeco.flycapture.FlyCapture2.BusManager: org.bytedeco.flycapture.FlyCapture2.Error GetNumOfCameras(int[])>(numCameras);
+
+        $stack10 = numCameras[0];
+
+        descriptions = newarray (java.lang.String)[$stack10];
+
+        i = 0;
+
+     label1:
+        $stack11 = numCameras[0];
+
+        if i >= $stack11 goto label5;
+
+        $stack12 = new org.bytedeco.flycapture.FlyCapture2.PGRGuid;
+
+        specialinvoke $stack12.<org.bytedeco.flycapture.FlyCapture2.PGRGuid: void <init>()>();
+
+        error = virtualinvoke $stack8.<org.bytedeco.flycapture.FlyCapture2.BusManager: org.bytedeco.flycapture.FlyCapture2.Error GetCameraFromIndex(int,org.bytedeco.flycapture.FlyCapture2.PGRGuid)>(i, $stack12);
+
+        $stack14 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack14 == 0 goto label2;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        staticinvoke <java.lang.System: void exit(int)>(-1);
+
+     label2:
+        $stack15 = new org.bytedeco.flycapture.FlyCapture2.Camera;
+
+        specialinvoke $stack15.<org.bytedeco.flycapture.FlyCapture2.Camera: void <init>()>();
+
+        error = virtualinvoke $stack15.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error Connect(org.bytedeco.flycapture.FlyCapture2.PGRGuid)>($stack12);
+
+        $stack17 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack17 == 0 goto label3;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+     label3:
+        $stack18 = new org.bytedeco.flycapture.FlyCapture2.CameraInfo;
+
+        specialinvoke $stack18.<org.bytedeco.flycapture.FlyCapture2.CameraInfo: void <init>()>();
+
+        error = virtualinvoke $stack15.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error GetCameraInfo(org.bytedeco.flycapture.FlyCapture2.CameraInfo)>($stack18);
+
+        $stack20 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack20 == 0 goto label4;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+     label4:
+        $stack21 = staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: java.lang.String CameraInfo(org.bytedeco.flycapture.FlyCapture2.CameraInfo)>($stack18);
+
+        descriptions[i] = $stack21;
+
+        i = i + 1;
+
+        goto label1;
+
+     label5:
+        return descriptions;
+    }
+
+    static void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)
+    {
+        org.bytedeco.flycapture.FlyCapture2.Error error;
+
+        error := @parameter0: org.bytedeco.flycapture.FlyCapture2.Error;
+
+        virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: void PrintErrorTrace()>();
+
+        return;
+    }
+
+    static java.lang.String CameraInfo(org.bytedeco.flycapture.FlyCapture2.CameraInfo)
+    {
+        java.lang.StringBuilder $stack1, $stack2, $stack4, $stack5, $stack8, $stack9, $stack12, $stack13, $stack16, $stack17, $stack20, $stack21, $stack24, $stack25, $stack28, $stack29;
+        org.bytedeco.flycapture.FlyCapture2.CameraInfo pCamInfo;
+        int $stack3;
+        org.bytedeco.javacpp.BytePointer $stack6, $stack10, $stack14, $stack18, $stack22, $stack26;
+        java.lang.String $stack7, $stack11, $stack15, $stack19, $stack23, $stack27, $stack30;
+
+        pCamInfo := @parameter0: org.bytedeco.flycapture.FlyCapture2.CameraInfo;
+
+        $stack1 = new java.lang.StringBuilder;
+
+        specialinvoke $stack1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack2 = virtualinvoke $stack1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n*** CAMERA INFORMATION ***\nSerial number - ");
+
+        $stack3 = virtualinvoke pCamInfo.<org.bytedeco.flycapture.FlyCapture2.CameraInfo: int serialNumber()>();
+
+        $stack4 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack3);
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\nCamera model - ");
+
+        $stack6 = virtualinvoke pCamInfo.<org.bytedeco.flycapture.FlyCapture2.CameraInfo: org.bytedeco.javacpp.BytePointer modelName()>();
+
+        $stack7 = virtualinvoke $stack6.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack8 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack7);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\nCamera vendor - ");
+
+        $stack10 = virtualinvoke pCamInfo.<org.bytedeco.flycapture.FlyCapture2.CameraInfo: org.bytedeco.javacpp.BytePointer vendorName()>();
+
+        $stack11 = virtualinvoke $stack10.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack12 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\nSensor - ");
+
+        $stack14 = virtualinvoke pCamInfo.<org.bytedeco.flycapture.FlyCapture2.CameraInfo: org.bytedeco.javacpp.BytePointer sensorInfo()>();
+
+        $stack15 = virtualinvoke $stack14.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack16 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack15);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\nResolution - ");
+
+        $stack18 = virtualinvoke pCamInfo.<org.bytedeco.flycapture.FlyCapture2.CameraInfo: org.bytedeco.javacpp.BytePointer sensorResolution()>();
+
+        $stack19 = virtualinvoke $stack18.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack20 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\nFirmware version - ");
+
+        $stack22 = virtualinvoke pCamInfo.<org.bytedeco.flycapture.FlyCapture2.CameraInfo: org.bytedeco.javacpp.BytePointer firmwareVersion()>();
+
+        $stack23 = virtualinvoke $stack22.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack24 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\nFirmware build time - ");
+
+        $stack26 = virtualinvoke pCamInfo.<org.bytedeco.flycapture.FlyCapture2.CameraInfo: org.bytedeco.javacpp.BytePointer firmwareBuildTime()>();
+
+        $stack27 = virtualinvoke $stack26.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack28 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack27);
+
+        $stack29 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        $stack30 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack30;
+    }
+
+    public static org.bytedeco.javacv.FlyCapture2FrameGrabber createDefault(java.io.File) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        java.io.File deviceFile;
+
+        deviceFile := @parameter0: java.io.File;
+
+        return null;
+    }
+
+    public static org.bytedeco.javacv.FlyCapture2FrameGrabber createDefault(java.lang.String) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        java.lang.String devicePath;
+
+        devicePath := @parameter0: java.lang.String;
+
+        return null;
+    }
+
+    public static org.bytedeco.javacv.FlyCapture2FrameGrabber createDefault(int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $stack1;
+        int deviceNumber;
+
+        deviceNumber := @parameter0: int;
+
+        $stack1 = new org.bytedeco.javacv.FlyCapture2FrameGrabber;
+
+        specialinvoke $stack1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: void <init>(int)>(deviceNumber);
+
+        return $stack1;
+    }
+
+    public static void tryLoad() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.FrameGrabber$Exception $stack1, $stack3, $stack4, $u1;
+        java.lang.Throwable $stack5, $r0, $r1;
+        java.lang.StringBuilder $stack8, $stack9, $u0;
+        java.lang.String $stack10;
+
+        $stack1 = <org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        if $stack1 == null goto label1;
+
+        $stack3 = <org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        virtualinvoke $stack3.<org.bytedeco.javacv.FrameGrabber$Exception: void printStackTrace()>();
+
+        $stack4 = <org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        $r0 = (java.lang.Throwable) $stack4;
+
+        throw $r0;
+
+     label1:
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/flycapture/global/FlyCapture2;");
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack5 := @caughtexception;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to load ");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/FlyCapture2FrameGrabber;");
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String,java.lang.Throwable)>($stack10, $stack5);
+
+        <org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = $u1;
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label4:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void <init>(int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        FlyCapture2FrameGrabber this;
+        int[] $stack9, numCameras;
+        float[] $stack10, $stack11;
+        org.bytedeco.flycapture.FlyCapture2.BusManager $stack12, $stack15, $u0;
+        int deviceNumber;
+        boolean $stack17, $stack21, $stack26;
+        org.bytedeco.flycapture.FlyCapture2.Camera $stack19, $stack24, $u5;
+        org.bytedeco.flycapture.FlyCapture2.CameraInfo $stack23, $u6;
+        org.bytedeco.flycapture.FlyCapture2.Error error;
+        org.bytedeco.flycapture.FlyCapture2.Image $u1, $u2;
+        org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage $u3;
+        org.bytedeco.flycapture.FlyCapture2.PGRGuid $u4;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r1, $r2, $r3, $r4, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15;
+        org.bytedeco.javacv.FrameConverter $r5;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        deviceNumber := @parameter0: int;
+
+        specialinvoke this.<org.bytedeco.javacv.FrameGrabber: void <init>()>();
+
+        $u0 = new org.bytedeco.flycapture.FlyCapture2.BusManager;
+
+        specialinvoke $u0.<org.bytedeco.flycapture.FlyCapture2.BusManager: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.BusManager busMgr> = $u0;
+
+        $u1 = new org.bytedeco.flycapture.FlyCapture2.Image;
+
+        specialinvoke $u1.<org.bytedeco.flycapture.FlyCapture2.Image: void <init>()>();
+
+        $r1 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image raw_image> = $u1;
+
+        $u2 = new org.bytedeco.flycapture.FlyCapture2.Image;
+
+        specialinvoke $u2.<org.bytedeco.flycapture.FlyCapture2.Image: void <init>()>();
+
+        $r2 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image conv_image> = $u2;
+
+        $r3 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image> = null;
+
+        $u3 = new org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage;
+
+        specialinvoke $u3.<org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage: void <init>()>();
+
+        $r4 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r5 = (org.bytedeco.javacv.FrameConverter) $u3;
+
+        $r4.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameConverter converter> = $r5;
+
+        $stack9 = newarray (int)[1];
+
+        $r6 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r6.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int[] regOut> = $stack9;
+
+        $stack10 = newarray (float)[1];
+
+        $r7 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r7.<org.bytedeco.javacv.FlyCapture2FrameGrabber: float[] outFloat> = $stack10;
+
+        $stack11 = newarray (float)[1];
+
+        $r8 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r8.<org.bytedeco.javacv.FlyCapture2FrameGrabber: float[] gammaOut> = $stack11;
+
+        numCameras = newarray (int)[1];
+
+        $r9 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack12 = $r9.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.BusManager busMgr>;
+
+        virtualinvoke $stack12.<org.bytedeco.flycapture.FlyCapture2.BusManager: org.bytedeco.flycapture.FlyCapture2.Error GetNumOfCameras(int[])>(numCameras);
+
+        $u4 = new org.bytedeco.flycapture.FlyCapture2.PGRGuid;
+
+        specialinvoke $u4.<org.bytedeco.flycapture.FlyCapture2.PGRGuid: void <init>()>();
+
+        $r10 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack15 = $r10.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.BusManager busMgr>;
+
+        error = virtualinvoke $stack15.<org.bytedeco.flycapture.FlyCapture2.BusManager: org.bytedeco.flycapture.FlyCapture2.Error GetCameraFromIndex(int,org.bytedeco.flycapture.FlyCapture2.PGRGuid)>(deviceNumber, $u4);
+
+        $stack17 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack17 == 0 goto label1;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        staticinvoke <java.lang.System: void exit(int)>(-1);
+
+     label1:
+        $u5 = new org.bytedeco.flycapture.FlyCapture2.Camera;
+
+        specialinvoke $u5.<org.bytedeco.flycapture.FlyCapture2.Camera: void <init>()>();
+
+        $r11 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r11.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera> = $u5;
+
+        $r12 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack19 = $r12.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack19.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error Connect(org.bytedeco.flycapture.FlyCapture2.PGRGuid)>($u4);
+
+        $stack21 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack21 == 0 goto label2;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+     label2:
+        $u6 = new org.bytedeco.flycapture.FlyCapture2.CameraInfo;
+
+        specialinvoke $u6.<org.bytedeco.flycapture.FlyCapture2.CameraInfo: void <init>()>();
+
+        $r13 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r13.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.CameraInfo cameraInfo> = $u6;
+
+        $r14 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack24 = $r14.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        $r15 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack23 = $r15.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.CameraInfo cameraInfo>;
+
+        error = virtualinvoke $stack24.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error GetCameraInfo(org.bytedeco.flycapture.FlyCapture2.CameraInfo)>($stack23);
+
+        $stack26 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack26 == 0 goto label3;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+     label3:
+        return;
+    }
+
+    public void release() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        FlyCapture2FrameGrabber this;
+        org.bytedeco.flycapture.FlyCapture2.Camera $stack1, $stack2;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r1, $r2, $r3;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        virtualinvoke $r1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: void stop()>();
+
+        $r2 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack2 = $r2.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        virtualinvoke $stack2.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error Disconnect()>();
+
+        $r3 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera> = null;
+
+     label1:
+        return;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        FlyCapture2FrameGrabber this;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: void release()>();
+
+        return;
+    }
+
+    public double getGamma()
+    {
+        FlyCapture2FrameGrabber this;
+        float[] $stack1, $stack4, $stack7, $stack10;
+        float $stack2, $stack5, $stack8, $stack11;
+        boolean $stack3, $stack6;
+        byte $stack9;
+        double $stack12;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r1, $r2, $r3;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: float[] gammaOut>;
+
+        $stack2 = $stack1[0];
+
+        $stack3 = staticinvoke <java.lang.Float: boolean isNaN(float)>($stack2);
+
+        if $stack3 != 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack4 = $r1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: float[] gammaOut>;
+
+        $stack5 = $stack4[0];
+
+        $stack6 = staticinvoke <java.lang.Float: boolean isInfinite(float)>($stack5);
+
+        if $stack6 != 0 goto label1;
+
+        $r2 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack7 = $r2.<org.bytedeco.javacv.FlyCapture2FrameGrabber: float[] gammaOut>;
+
+        $stack8 = $stack7[0];
+
+        $stack9 = $stack8 cmpl 0.0F;
+
+        if $stack9 != 0 goto label2;
+
+     label1:
+        $stack12 = 2.2;
+
+        goto label3;
+
+     label2:
+        $r3 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack10 = $r3.<org.bytedeco.javacv.FlyCapture2FrameGrabber: float[] gammaOut>;
+
+        $stack11 = $stack10[0];
+
+        $stack12 = (double) $stack11;
+
+     label3:
+        return $stack12;
+    }
+
+    public int getImageWidth()
+    {
+        FlyCapture2FrameGrabber this;
+        org.bytedeco.opencv.opencv_core.IplImage $stack1, $stack2;
+        int $stack3;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r1;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        if $stack1 != null goto label1;
+
+        $stack3 = specialinvoke this.<org.bytedeco.javacv.FrameGrabber: int getImageWidth()>();
+
+        goto label2;
+
+     label1:
+        $r1 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        $stack3 = virtualinvoke $stack2.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+     label2:
+        return $stack3;
+    }
+
+    public int getImageHeight()
+    {
+        FlyCapture2FrameGrabber this;
+        org.bytedeco.opencv.opencv_core.IplImage $stack1, $stack2;
+        int $stack3;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r1;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        if $stack1 != null goto label1;
+
+        $stack3 = specialinvoke this.<org.bytedeco.javacv.FrameGrabber: int getImageHeight()>();
+
+        goto label2;
+
+     label1:
+        $r1 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        $stack3 = virtualinvoke $stack2.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+     label2:
+        return $stack3;
+    }
+
+    public double getFrameRate()
+    {
+        FlyCapture2FrameGrabber this;
+        org.bytedeco.flycapture.FlyCapture2.Camera $stack3, $stack5, $stack9;
+        double $stack4, $stack12;
+        boolean $stack6;
+        int $stack11;
+        org.bytedeco.javacpp.IntPointer $u0, $u1;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r1, $r2;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        if $stack3 == null goto label1;
+
+        $r1 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack5 = $r1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        $stack6 = virtualinvoke $stack5.<org.bytedeco.flycapture.FlyCapture2.Camera: boolean isNull()>();
+
+        if $stack6 == 0 goto label2;
+
+     label1:
+        $stack4 = specialinvoke this.<org.bytedeco.javacv.FrameGrabber: double getFrameRate()>();
+
+        return $stack4;
+
+     label2:
+        $u0 = new org.bytedeco.javacpp.IntPointer;
+
+        specialinvoke $u0.<org.bytedeco.javacpp.IntPointer: void <init>(long)>(1L);
+
+        $u1 = new org.bytedeco.javacpp.IntPointer;
+
+        specialinvoke $u1.<org.bytedeco.javacpp.IntPointer: void <init>(long)>(1L);
+
+        $r2 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack9 = $r2.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        virtualinvoke $stack9.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error GetVideoModeAndFrameRate(org.bytedeco.javacpp.IntPointer,org.bytedeco.javacpp.IntPointer)>($u0, $u1);
+
+        $stack11 = virtualinvoke $u1.<org.bytedeco.javacpp.IntPointer: int get(long)>(0L);
+
+        $stack12 = (double) $stack11;
+
+        return $stack12;
+    }
+
+    public void setImageMode(org.bytedeco.javacv.FrameGrabber$ImageMode)
+    {
+        org.bytedeco.javacv.FrameGrabber$ImageMode imageMode, $stack2;
+        FlyCapture2FrameGrabber this;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r1, $r2;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        imageMode := @parameter0: org.bytedeco.javacv.FrameGrabber$ImageMode;
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        if imageMode == $stack2 goto label1;
+
+        $r1 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image> = null;
+
+        $r2 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image> = null;
+
+     label1:
+        specialinvoke this.<org.bytedeco.javacv.FrameGrabber: void setImageMode(org.bytedeco.javacv.FrameGrabber$ImageMode)>(imageMode);
+
+        return;
+    }
+
+    public void start() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        FlyCapture2FrameGrabber this;
+        double $stack8, $stack10, $stack12, $stack14, $stack16, $stack18, $stack20, $stack22, $stack24, $stack55, $stack102;
+        byte $stack9, $stack11, $stack13, $stack15, $stack17, $stack19, $stack21, $stack23, $stack25, $stack56;
+        int $stack28, $stack50, $stack70, $stack133, $stack170, $stack171, $stack172, $stack173, $stack174, $stack175, $stack180, $stack181, $stack184, $stack187, $stack190, $stack198, $stack199, $stack200, $stack201, $stack202, $stack203, $stack204, $stack205, $stack206, $stack208, $stack211, $stack213, $stack216, $stack218, $stack221, $stack223, $stack226, reg;
+        boolean $stack33, $stack40, $stack41, $stack45, $stack48, $stack53, $stack59, $stack65, $stack69, $stack74, $stack99, $stack109, $stack156, $stack32;
+        org.bytedeco.flycapture.FlyCapture2.Camera $stack38, $stack43, $stack51, $stack57, $stack63, $stack67, $stack72, $stack97, $stack105, $stack107, $stack154, $stack30;
+        int[] $stack42, $stack49, $stack132;
+        java.nio.ByteOrder $stack46, $stack47;
+        float[] $stack60, $stack93;
+        float $stack62, $stack103;
+        java.lang.StringBuilder $stack77, $stack79, $stack83, $stack85, $stack89, $stack91, $stack116, $stack118, $stack122, $stack124, $stack128, $stack130, $stack141, $stack143, $stack160, $stack162, $stack166, $stack168, $u1, $u3, $u5, $u7, $u10, $u12, $u14, $u17, $u19;
+        org.bytedeco.javacpp.BytePointer $stack78, $stack84, $stack90, $stack117, $stack123, $stack129, $stack142, $stack161, $stack167;
+        java.lang.String $stack80, $stack86, $stack92, $stack119, $stack125, $stack131, $stack144, $stack163, $stack169;
+        org.bytedeco.javacv.FrameGrabber$ImageMode $stack194, $stack195, $stack196, $stack197, $stack27, $stack26;
+        org.bytedeco.flycapture.FlyCapture2.Error error;
+        org.bytedeco.flycapture.FlyCapture2.TriggerMode $u0;
+        org.bytedeco.javacv.FrameGrabber$Exception $u2, $u4, $u6, $u8, $u11, $u13, $u15, $u18, $u20;
+        org.bytedeco.flycapture.FlyCapture2.Property $u9;
+        org.bytedeco.flycapture.FlyCapture2.FC2Config $u16;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r33, $r34, $r35, $r36, $r37, $r38, $r39, $r40, $r41, $r43, $r44, $r45, $r47, $r48, $r49, $r50, $r52, $r53, $r54, $r56, $r57, $r59, $r60, $r61, $r63, $r64, $r65, $r66, $r68, $r70, $r71;
+        java.lang.Throwable $r42, $r46, $r51, $r55, $r58, $r62, $r67, $r69, $r72;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack8 = $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: double frameRate>;
+
+        $stack9 = $stack8 cmpg 0.0;
+
+        if $stack9 > 0 goto label01;
+
+        goto label09;
+
+     label01:
+        $r1 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack10 = $r1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: double frameRate>;
+
+        $stack11 = $stack10 cmpg 1.876;
+
+        if $stack11 > 0 goto label02;
+
+        goto label09;
+
+     label02:
+        $r2 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack12 = $r2.<org.bytedeco.javacv.FlyCapture2FrameGrabber: double frameRate>;
+
+        $stack13 = $stack12 cmpg 3.76;
+
+        if $stack13 > 0 goto label03;
+
+        goto label09;
+
+     label03:
+        $r3 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack14 = $r3.<org.bytedeco.javacv.FlyCapture2FrameGrabber: double frameRate>;
+
+        $stack15 = $stack14 cmpg 7.51;
+
+        if $stack15 > 0 goto label04;
+
+        goto label09;
+
+     label04:
+        $r4 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack16 = $r4.<org.bytedeco.javacv.FlyCapture2FrameGrabber: double frameRate>;
+
+        $stack17 = $stack16 cmpg 15.01;
+
+        if $stack17 > 0 goto label05;
+
+        goto label09;
+
+     label05:
+        $r5 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack18 = $r5.<org.bytedeco.javacv.FlyCapture2FrameGrabber: double frameRate>;
+
+        $stack19 = $stack18 cmpg 30.01;
+
+        if $stack19 > 0 goto label06;
+
+        goto label09;
+
+     label06:
+        $r6 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack20 = $r6.<org.bytedeco.javacv.FlyCapture2FrameGrabber: double frameRate>;
+
+        $stack21 = $stack20 cmpg 60.01;
+
+        if $stack21 > 0 goto label07;
+
+        goto label09;
+
+     label07:
+        $r7 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack22 = $r7.<org.bytedeco.javacv.FlyCapture2FrameGrabber: double frameRate>;
+
+        $stack23 = $stack22 cmpg 120.01;
+
+        if $stack23 > 0 goto label08;
+
+        goto label09;
+
+     label08:
+        $r8 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack24 = $r8.<org.bytedeco.javacv.FlyCapture2FrameGrabber: double frameRate>;
+
+        $stack25 = $stack24 cmpg 240.01;
+
+        if $stack25 > 0 goto label09;
+
+     label09:
+        $r9 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack27 = $r9.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack26 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode COLOR>;
+
+        if $stack27 == $stack26 goto label10;
+
+        $r10 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack195 = $r10.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack194 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode RAW>;
+
+        if $stack195 != $stack194 goto label17;
+
+     label10:
+        $r11 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack28 = $r11.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack28 <= 0 goto label11;
+
+        $r12 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack170 = $r12.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack170 > 0 goto label12;
+
+     label11:
+        goto label28;
+
+     label12:
+        $r13 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack171 = $r13.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack171 > 640 goto label13;
+
+        $r14 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack190 = $r14.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack190 > 480 goto label13;
+
+        goto label28;
+
+     label13:
+        $r15 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack172 = $r15.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack172 > 800 goto label14;
+
+        $r16 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack187 = $r16.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack187 > 600 goto label14;
+
+        goto label28;
+
+     label14:
+        $r17 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack173 = $r17.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack173 > 1024 goto label15;
+
+        $r18 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack184 = $r18.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack184 > 768 goto label15;
+
+        goto label28;
+
+     label15:
+        $r19 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack174 = $r19.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack174 > 1280 goto label16;
+
+        $r20 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack181 = $r20.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack181 > 960 goto label16;
+
+        goto label28;
+
+     label16:
+        $r21 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack175 = $r21.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack175 > 1600 goto label28;
+
+        $r22 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack180 = $r22.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack180 > 1200 goto label28;
+
+        goto label28;
+
+     label17:
+        $r23 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack197 = $r23.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack196 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode GRAY>;
+
+        if $stack197 != $stack196 goto label28;
+
+        $r24 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack198 = $r24.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack198 <= 0 goto label18;
+
+        $r25 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack199 = $r25.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack199 > 0 goto label19;
+
+     label18:
+        goto label28;
+
+     label19:
+        $r26 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack200 = $r26.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack200 > 640 goto label21;
+
+        $r27 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack223 = $r27.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack223 > 480 goto label21;
+
+        $r28 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack226 = $r28.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int bpp>;
+
+        if $stack226 <= 8 goto label20;
+
+        goto label20;
+
+     label20:
+        goto label28;
+
+     label21:
+        $r29 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack201 = $r29.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack201 > 800 goto label23;
+
+        $r30 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack218 = $r30.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack218 > 600 goto label23;
+
+        $r31 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack221 = $r31.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int bpp>;
+
+        if $stack221 <= 8 goto label22;
+
+        goto label22;
+
+     label22:
+        goto label28;
+
+     label23:
+        $r32 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack202 = $r32.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack202 > 1024 goto label25;
+
+        $r33 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack213 = $r33.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack213 > 768 goto label25;
+
+        $r34 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack216 = $r34.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int bpp>;
+
+        if $stack216 <= 8 goto label24;
+
+        goto label24;
+
+     label24:
+        goto label28;
+
+     label25:
+        $r35 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack203 = $r35.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack203 > 1280 goto label27;
+
+        $r36 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack208 = $r36.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack208 > 960 goto label27;
+
+        $r37 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack211 = $r37.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int bpp>;
+
+        if $stack211 <= 8 goto label26;
+
+        goto label26;
+
+     label26:
+        goto label28;
+
+     label27:
+        $r38 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack204 = $r38.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageWidth>;
+
+        if $stack204 > 1600 goto label28;
+
+        $r39 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack205 = $r39.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int imageHeight>;
+
+        if $stack205 > 1200 goto label28;
+
+        $r40 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack206 = $r40.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int bpp>;
+
+        if $stack206 <= 8 goto label28;
+
+        goto label28;
+
+     label28:
+        $u0 = new org.bytedeco.flycapture.FlyCapture2.TriggerMode;
+
+        specialinvoke $u0.<org.bytedeco.flycapture.FlyCapture2.TriggerMode: void <init>()>();
+
+        $r41 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack30 = $r41.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack30.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error GetTriggerMode(org.bytedeco.flycapture.FlyCapture2.TriggerMode)>($u0);
+
+        $stack32 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack32 == 0 goto label29;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        $u2 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack166 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("GetTriggerMode() Error ");
+
+        $stack167 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: org.bytedeco.javacpp.BytePointer GetDescription()>();
+
+        $stack168 = virtualinvoke $stack166.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack167);
+
+        $stack169 = virtualinvoke $stack168.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack169);
+
+        $r42 = (java.lang.Throwable) $u2;
+
+        throw $r42;
+
+     label29:
+        $r43 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack33 = $r43.<org.bytedeco.javacv.FlyCapture2FrameGrabber: boolean triggerMode>;
+
+        virtualinvoke $u0.<org.bytedeco.flycapture.FlyCapture2.TriggerMode: org.bytedeco.flycapture.FlyCapture2.TriggerMode onOff(boolean)>($stack33);
+
+        virtualinvoke $u0.<org.bytedeco.flycapture.FlyCapture2.TriggerMode: org.bytedeco.flycapture.FlyCapture2.TriggerMode source(int)>(7);
+
+        virtualinvoke $u0.<org.bytedeco.flycapture.FlyCapture2.TriggerMode: org.bytedeco.flycapture.FlyCapture2.TriggerMode mode(int)>(14);
+
+        virtualinvoke $u0.<org.bytedeco.flycapture.FlyCapture2.TriggerMode: org.bytedeco.flycapture.FlyCapture2.TriggerMode parameter(int)>(0);
+
+        $r44 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack38 = $r44.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack38.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error SetTriggerMode(org.bytedeco.flycapture.FlyCapture2.TriggerMode)>($u0);
+
+        $stack40 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack40 == 0 goto label30;
+
+        virtualinvoke $u0.<org.bytedeco.flycapture.FlyCapture2.TriggerMode: org.bytedeco.flycapture.FlyCapture2.TriggerMode onOff(boolean)>(1);
+
+        virtualinvoke $u0.<org.bytedeco.flycapture.FlyCapture2.TriggerMode: org.bytedeco.flycapture.FlyCapture2.TriggerMode source(int)>(7);
+
+        virtualinvoke $u0.<org.bytedeco.flycapture.FlyCapture2.TriggerMode: org.bytedeco.flycapture.FlyCapture2.TriggerMode mode(int)>(0);
+
+        virtualinvoke $u0.<org.bytedeco.flycapture.FlyCapture2.TriggerMode: org.bytedeco.flycapture.FlyCapture2.TriggerMode parameter(int)>(0);
+
+        $r45 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack154 = $r45.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack154.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error SetTriggerMode(org.bytedeco.flycapture.FlyCapture2.TriggerMode)>($u0);
+
+        $stack156 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack156 == 0 goto label30;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        $u4 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack160 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SetTriggerMode() Error ");
+
+        $stack161 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: org.bytedeco.javacpp.BytePointer GetDescription()>();
+
+        $stack162 = virtualinvoke $stack160.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack161);
+
+        $stack163 = virtualinvoke $stack162.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u4.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack163);
+
+        $r46 = (java.lang.Throwable) $u4;
+
+        throw $r46;
+
+     label30:
+        $r47 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack41 = $r47.<org.bytedeco.javacv.FlyCapture2FrameGrabber: boolean triggerMode>;
+
+        if $stack41 == 0 goto label31;
+
+        $r48 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        specialinvoke $r48.<org.bytedeco.javacv.FlyCapture2FrameGrabber: void waitForTriggerReady()>();
+
+     label31:
+        $r49 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack43 = $r49.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        $r50 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack42 = $r50.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int[] regOut>;
+
+        error = virtualinvoke $stack43.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error ReadRegister(int,int[])>(4168, $stack42);
+
+        $stack45 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack45 == 0 goto label32;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        $u6 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack141 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ReadRegister(IMAGE_DATA_FORMAT, regOut) Error ");
+
+        $stack142 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: org.bytedeco.javacpp.BytePointer GetDescription()>();
+
+        $stack143 = virtualinvoke $stack141.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack142);
+
+        $stack144 = virtualinvoke $stack143.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u6.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack144);
+
+        $r51 = (java.lang.Throwable) $u6;
+
+        throw $r51;
+
+     label32:
+        $stack46 = staticinvoke <java.nio.ByteOrder: java.nio.ByteOrder nativeOrder()>();
+
+        $stack47 = <java.nio.ByteOrder: java.nio.ByteOrder BIG_ENDIAN>;
+
+        $stack48 = virtualinvoke $stack46.<java.lang.Object: boolean equals(java.lang.Object)>($stack47);
+
+        if $stack48 == 0 goto label33;
+
+        $r52 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack132 = $r52.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int[] regOut>;
+
+        $stack133 = $stack132[0];
+
+        reg = $stack133 | 1;
+
+        goto label34;
+
+     label33:
+        $r53 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack49 = $r53.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int[] regOut>;
+
+        $stack50 = $stack49[0];
+
+        reg = $stack50 & -2;
+
+     label34:
+        $r54 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack51 = $r54.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack51.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error WriteRegister(int,int)>(4168, reg);
+
+        $stack53 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack53 == 0 goto label35;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        $u8 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u7 = new java.lang.StringBuilder;
+
+        specialinvoke $u7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack128 = virtualinvoke $u7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("WriteRegister(IMAGE_DATA_FORMAT, reg) Error ");
+
+        $stack129 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: org.bytedeco.javacpp.BytePointer GetDescription()>();
+
+        $stack130 = virtualinvoke $stack128.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack129);
+
+        $stack131 = virtualinvoke $stack130.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u8.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack131);
+
+        $r55 = (java.lang.Throwable) $u8;
+
+        throw $r55;
+
+     label35:
+        $u9 = new org.bytedeco.flycapture.FlyCapture2.Property;
+
+        specialinvoke $u9.<org.bytedeco.flycapture.FlyCapture2.Property: void <init>(int)>(6);
+
+        $r56 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack55 = $r56.<org.bytedeco.javacv.FlyCapture2FrameGrabber: double gamma>;
+
+        $stack56 = $stack55 cmpl 0.0;
+
+        if $stack56 == 0 goto label37;
+
+        $r57 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack97 = $r57.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack97.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error GetProperty(org.bytedeco.flycapture.FlyCapture2.Property)>($u9);
+
+        $stack99 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack99 == 0 goto label36;
+
+        $u11 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u10 = new java.lang.StringBuilder;
+
+        specialinvoke $u10.<java.lang.StringBuilder: void <init>()>();
+
+        $stack122 = virtualinvoke $u10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("GetProperty(gammaProp) Error ");
+
+        $stack123 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: org.bytedeco.javacpp.BytePointer GetDescription()>();
+
+        $stack124 = virtualinvoke $stack122.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack123);
+
+        $stack125 = virtualinvoke $stack124.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u11.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack125);
+
+        $r58 = (java.lang.Throwable) $u11;
+
+        throw $r58;
+
+     label36:
+        virtualinvoke $u9.<org.bytedeco.flycapture.FlyCapture2.Property: org.bytedeco.flycapture.FlyCapture2.Property onOff(boolean)>(1);
+
+        virtualinvoke $u9.<org.bytedeco.flycapture.FlyCapture2.Property: org.bytedeco.flycapture.FlyCapture2.Property absControl(boolean)>(1);
+
+        $r59 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack102 = $r59.<org.bytedeco.javacv.FlyCapture2FrameGrabber: double gamma>;
+
+        $stack103 = (float) $stack102;
+
+        virtualinvoke $u9.<org.bytedeco.flycapture.FlyCapture2.Property: org.bytedeco.flycapture.FlyCapture2.Property absValue(float)>($stack103);
+
+        $r60 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack105 = $r60.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        virtualinvoke $stack105.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error SetProperty(org.bytedeco.flycapture.FlyCapture2.Property)>($u9);
+
+        $r61 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack107 = $r61.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack107.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error SetProperty(org.bytedeco.flycapture.FlyCapture2.Property)>($u9);
+
+        $stack109 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack109 == 0 goto label37;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        $u13 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u12 = new java.lang.StringBuilder;
+
+        specialinvoke $u12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack116 = virtualinvoke $u12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SetProperty(gammaProp) Error ");
+
+        $stack117 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: org.bytedeco.javacpp.BytePointer GetDescription()>();
+
+        $stack118 = virtualinvoke $stack116.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack117);
+
+        $stack119 = virtualinvoke $stack118.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u13.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack119);
+
+        $r62 = (java.lang.Throwable) $u13;
+
+        throw $r62;
+
+     label37:
+        $r63 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack57 = $r63.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack57.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error GetProperty(org.bytedeco.flycapture.FlyCapture2.Property)>($u9);
+
+        $stack59 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack59 == 0 goto label38;
+
+        $r64 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack93 = $r64.<org.bytedeco.javacv.FlyCapture2FrameGrabber: float[] gammaOut>;
+
+        $stack93[0] = 2.2F;
+
+        goto label39;
+
+     label38:
+        $r65 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack60 = $r65.<org.bytedeco.javacv.FlyCapture2FrameGrabber: float[] gammaOut>;
+
+        $stack62 = virtualinvoke $u9.<org.bytedeco.flycapture.FlyCapture2.Property: float absValue()>();
+
+        $stack60[0] = $stack62;
+
+     label39:
+        $r66 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack63 = $r66.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack63.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error StartCapture()>();
+
+        $stack65 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack65 == 0 goto label40;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        $u15 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u14 = new java.lang.StringBuilder;
+
+        specialinvoke $u14.<java.lang.StringBuilder: void <init>()>();
+
+        $stack89 = virtualinvoke $u14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("StartCapture() Error ");
+
+        $stack90 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: org.bytedeco.javacpp.BytePointer GetDescription()>();
+
+        $stack91 = virtualinvoke $stack89.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack90);
+
+        $stack92 = virtualinvoke $stack91.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u15.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack92);
+
+        $r67 = (java.lang.Throwable) $u15;
+
+        throw $r67;
+
+     label40:
+        $u16 = new org.bytedeco.flycapture.FlyCapture2.FC2Config;
+
+        specialinvoke $u16.<org.bytedeco.flycapture.FlyCapture2.FC2Config: void <init>()>();
+
+        $r68 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack67 = $r68.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack67.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error GetConfiguration(org.bytedeco.flycapture.FlyCapture2.FC2Config)>($u16);
+
+        $stack69 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack69 == 0 goto label41;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        $u18 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u17 = new java.lang.StringBuilder;
+
+        specialinvoke $u17.<java.lang.StringBuilder: void <init>()>();
+
+        $stack83 = virtualinvoke $u17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("GetConfiguration() Error ");
+
+        $stack84 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: org.bytedeco.javacpp.BytePointer GetDescription()>();
+
+        $stack85 = virtualinvoke $stack83.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack84);
+
+        $stack86 = virtualinvoke $stack85.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u18.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack86);
+
+        $r69 = (java.lang.Throwable) $u18;
+
+        throw $r69;
+
+     label41:
+        $r70 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack70 = $r70.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int timeout>;
+
+        virtualinvoke $u16.<org.bytedeco.flycapture.FlyCapture2.FC2Config: org.bytedeco.flycapture.FlyCapture2.FC2Config grabTimeout(int)>($stack70);
+
+        $r71 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack72 = $r71.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack72.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error SetConfiguration(org.bytedeco.flycapture.FlyCapture2.FC2Config)>($u16);
+
+        $stack74 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack74 == 0 goto label42;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        $u20 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u19 = new java.lang.StringBuilder;
+
+        specialinvoke $u19.<java.lang.StringBuilder: void <init>()>();
+
+        $stack77 = virtualinvoke $u19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SetConfiguration() Error ");
+
+        $stack78 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: org.bytedeco.javacpp.BytePointer GetDescription()>();
+
+        $stack79 = virtualinvoke $stack77.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack78);
+
+        $stack80 = virtualinvoke $stack79.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u20.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack80);
+
+        $r72 = (java.lang.Throwable) $u20;
+
+        throw $r72;
+
+     label42:
+        return;
+    }
+
+    private void waitForTriggerReady() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        long time, $stack9, $stack11, $stack12;
+        FlyCapture2FrameGrabber this;
+        int[] $stack5, $stack14;
+        org.bytedeco.flycapture.FlyCapture2.Camera $stack6;
+        org.bytedeco.flycapture.FlyCapture2.Error error;
+        boolean $stack8;
+        int $stack10, $stack15, $stack16;
+        byte $stack13;
+        java.lang.StringBuilder $stack24, $stack26, $u0;
+        org.bytedeco.javacpp.BytePointer $stack25;
+        java.lang.String $stack27;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r1, $r3, $r4;
+        java.lang.Throwable $r2;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        time = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+     label1:
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack6 = $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        $r1 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack5 = $r1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int[] regOut>;
+
+        error = virtualinvoke $stack6.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error ReadRegister(int,int[])>(1580, $stack5);
+
+        $stack8 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack8 == 0 goto label2;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack24 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("GetTriggerMode() Error ");
+
+        $stack25 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: org.bytedeco.javacpp.BytePointer GetDescription()>();
+
+        $stack26 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack25);
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack27);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label2:
+        $stack9 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $stack12 = $stack9 - time;
+
+        $r3 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack10 = $r3.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int timeout>;
+
+        $stack11 = (long) $stack10;
+
+        $stack13 = $stack12 cmp $stack11;
+
+        if $stack13 <= 0 goto label3;
+
+        goto label4;
+
+     label3:
+        $r4 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack14 = $r4.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int[] regOut>;
+
+        $stack15 = $stack14[0];
+
+        $stack16 = $stack15 >>> 31;
+
+        if $stack16 != 0 goto label1;
+
+     label4:
+        return;
+    }
+
+    public void stop() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        FlyCapture2FrameGrabber this;
+        org.bytedeco.flycapture.FlyCapture2.Camera $stack2;
+        org.bytedeco.flycapture.FlyCapture2.Error error;
+        boolean $stack4;
+        java.lang.StringBuilder $stack7, $stack8, $u0;
+        java.lang.String $stack9;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r2, $r3, $r4, $r5;
+        java.lang.Throwable $r1;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack2.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error StopCapture()>();
+
+        $stack4 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack4 == 0 goto label1;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("flycapture camera StopCapture() Error ");
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(error);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack9);
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image> = null;
+
+        $r3 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image> = null;
+
+        $r4 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r4.<org.bytedeco.javacv.FlyCapture2FrameGrabber: long timestamp> = 0L;
+
+        $r5 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r5.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int frameNumber> = 0;
+
+        return;
+    }
+
+    public void trigger() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        FlyCapture2FrameGrabber this;
+        org.bytedeco.flycapture.FlyCapture2.Camera $stack2;
+        org.bytedeco.flycapture.FlyCapture2.Error error;
+        boolean $stack4;
+        java.lang.StringBuilder $stack7, $stack8, $u0;
+        java.lang.String $stack9;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r1;
+        java.lang.Throwable $r2;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: void waitForTriggerReady()>();
+
+        $r1 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        error = virtualinvoke $stack2.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error FireSoftwareTrigger()>();
+
+        $stack4 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack4 == 0 goto label1;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("flycaptureSetCameraRegister() Error ");
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(error);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack9);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label1:
+        return;
+    }
+
+    private int getNumChannels(int)
+    {
+        int pixelFormat;
+        FlyCapture2FrameGrabber this;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        pixelFormat := @parameter0: int;
+
+        lookupswitch(pixelFormat)
+        {
+            case -2147483648: goto label2;
+            case -2147483640: goto label1;
+            case 2097152: goto label2;
+            case 4194304: goto label2;
+            case 8388608: goto label1;
+            case 16777216: goto label2;
+            case 33554432: goto label1;
+            case 67108864: goto label2;
+            case 134217728: goto label1;
+            case 268435456: goto label4;
+            case 536870912: goto label4;
+            case 1073741824: goto label4;
+            case 1073741832: goto label3;
+            default: goto label4;
+        };
+
+     label1:
+        return 3;
+
+     label2:
+        return 1;
+
+     label3:
+        return 4;
+
+     label4:
+        return -1;
+    }
+
+    private int getDepth(int)
+    {
+        int pixelFormat;
+        FlyCapture2FrameGrabber this;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        pixelFormat := @parameter0: int;
+
+        lookupswitch(pixelFormat)
+        {
+            case -2147483648: goto label1;
+            case -2147483640: goto label1;
+            case 2097152: goto label2;
+            case 4194304: goto label1;
+            case 8388608: goto label3;
+            case 16777216: goto label3;
+            case 33554432: goto label2;
+            case 67108864: goto label2;
+            case 134217728: goto label1;
+            case 268435456: goto label4;
+            case 536870912: goto label4;
+            case 1073741824: goto label4;
+            case 1073741832: goto label1;
+            default: goto label4;
+        };
+
+     label1:
+        return 8;
+
+     label2:
+        return 16;
+
+     label3:
+        return -2147483632;
+
+     label4:
+        return 8;
+    }
+
+    private void setPixelFormat(org.bytedeco.flycapture.FlyCapture2.Image, int)
+    {
+        org.bytedeco.flycapture.FlyCapture2.Image image;
+        int $stack3, $stack4, $stack5, pixelFormat, $stack6;
+        FlyCapture2FrameGrabber this;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        image := @parameter0: org.bytedeco.flycapture.FlyCapture2.Image;
+
+        pixelFormat := @parameter1: int;
+
+        $stack3 = virtualinvoke image.<org.bytedeco.flycapture.FlyCapture2.Image: int GetRows()>();
+
+        $stack4 = virtualinvoke image.<org.bytedeco.flycapture.FlyCapture2.Image: int GetCols()>();
+
+        $stack5 = virtualinvoke image.<org.bytedeco.flycapture.FlyCapture2.Image: int GetStride()>();
+
+        $stack6 = virtualinvoke image.<org.bytedeco.flycapture.FlyCapture2.Image: int GetBayerTileFormat()>();
+
+        virtualinvoke image.<org.bytedeco.flycapture.FlyCapture2.Image: org.bytedeco.flycapture.FlyCapture2.Error SetDimensions(int,int,int,int,int)>($stack3, $stack4, $stack5, pixelFormat, $stack6);
+
+        return;
+    }
+
+    private void setStride(org.bytedeco.flycapture.FlyCapture2.Image, int)
+    {
+        org.bytedeco.flycapture.FlyCapture2.Image image;
+        int $stack3, $stack4, stride, $stack5, $stack6;
+        FlyCapture2FrameGrabber this;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        image := @parameter0: org.bytedeco.flycapture.FlyCapture2.Image;
+
+        stride := @parameter1: int;
+
+        $stack3 = virtualinvoke image.<org.bytedeco.flycapture.FlyCapture2.Image: int GetRows()>();
+
+        $stack4 = virtualinvoke image.<org.bytedeco.flycapture.FlyCapture2.Image: int GetCols()>();
+
+        $stack5 = virtualinvoke image.<org.bytedeco.flycapture.FlyCapture2.Image: int GetPixelFormat()>();
+
+        $stack6 = virtualinvoke image.<org.bytedeco.flycapture.FlyCapture2.Image: int GetBayerTileFormat()>();
+
+        virtualinvoke image.<org.bytedeco.flycapture.FlyCapture2.Image: org.bytedeco.flycapture.FlyCapture2.Error SetDimensions(int,int,int,int,int)>($stack3, $stack4, stride, $stack5, $stack6);
+
+        return;
+    }
+
+    public org.bytedeco.javacv.Frame grab() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        FlyCapture2FrameGrabber this;
+        org.bytedeco.flycapture.FlyCapture2.Image $stack18, $stack22, $stack24, $stack26, $stack29, $stack39, $stack41, $stack43, $stack165, $stack168, $stack89, $stack92, $stack186, $stack106, $stack138, $stack137, $stack58;
+        org.bytedeco.flycapture.FlyCapture2.Camera $stack19, $stack33;
+        boolean $stack21, $stack35, colorbayer, colorrgb, coloryuv, $stack128, $stack232, alreadySwapped, $stack242, $stack239, $stack234, $stack140;
+        int w, h, format, depth, stride, size, numChannels, $stack37, $stack38, $stack40, $stack44, $stack107, $stack166, $stack169, $stack187, $stack90, $stack95, $stack97, $stack99, $stack100, $stack101, $stack188, $stack179, in#316, $stack62;
+        int[] $stack32, $stack36;
+        java.nio.ByteOrder frameEndian, $stack127, $stack133, $stack175, $stack231, $stack245;
+        org.bytedeco.javacpp.BytePointer $stack42, imageData, $stack93;
+        long $stack45, $stack60, $stack61, $stack63, $stack64;
+        org.bytedeco.javacv.FrameGrabber$ImageMode $stack47, $stack48, $stack82, $stack83, $stack84, $stack85, $stack103, $stack104, $stack110, $stack111, $stack183, $stack184, $stack190, $stack191, $stack194, $stack195, $stack196, $stack197, $stack219, $stack220, $stack193, $stack192, $stack109, $stack108, $stack113, $stack112, $stack115, $stack114;
+        org.bytedeco.opencv.opencv_core.IplImage $stack50, $stack52, $stack54, $stack75, $stack105, $stack118, $stack119, $stack124, $stack125, $stack129, $stack152, $stack154, $stack156, $stack173, $stack185, $stack211, $stack213, $stack215, $stack217, $stack221, $stack49, $stack86, $stack87, $stack198, $stack88, $stack91, $stack94, $stack96, $stack98, $stack65;
+        java.nio.ByteBuffer $stack131, $stack134, $stack170, $stack171, $stack174, $stack176, in#281;
+        java.nio.ShortBuffer out, in, out;
+        java.lang.StringBuilder $stack144, $stack145, $stack250, $stack251, $stack255, $stack256, $stack257, $u0, $u2, $u4;
+        java.lang.String $stack146, $stack252, $stack258;
+        org.bytedeco.flycapture.FlyCapture2.Error error;
+        byte $stack226;
+        org.bytedeco.flycapture.FlyCapture2.CameraInfo $stack56;
+        org.bytedeco.flycapture.FlyCapture2.TimeStamp out#334;
+        org.bytedeco.javacv.FrameConverter $stack66;
+        org.bytedeco.javacv.Frame $stack67;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1, $u3, $u5;
+        org.bytedeco.javacv.FlyCapture2FrameGrabber $r0, $r1, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r33, $r34, $r35, $r36, $r37, $r38, $r39, $r40, $r41, $r42, $r43, $r44, $r45, $r46, $r47, $r48, $r49, $r50, $r51, $r52, $r53, $r54, $r55, $r56, $r57, $r58, $r59, $r60, $r61, $r62, $r63, $r65, $r66, $r67, $r68, $r71, $r72, $r73, $r76, $r77, $r78, $r79, $r80, $r81, $r82, $r83, $r84, $r85;
+        java.lang.Throwable $r2, $r11, $r64;
+        org.bytedeco.opencv.opencv_core.CvArr $r69, $r70, $r74, $r75;
+
+        this := @this: FlyCapture2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack19 = $r0.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        $r1 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack18 = $r1.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image raw_image>;
+
+        error = virtualinvoke $stack19.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error RetrieveBuffer(org.bytedeco.flycapture.FlyCapture2.Image)>($stack18);
+
+        $stack21 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack21 == 0 goto label01;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack255 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("flycaptureGrabImage2() Error ");
+
+        $stack256 = virtualinvoke $stack255.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(error);
+
+        $stack257 = virtualinvoke $stack256.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (Has start() been called?)");
+
+        $stack258 = virtualinvoke $stack257.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack258);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label01:
+        $r3 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack22 = $r3.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image raw_image>;
+
+        w = virtualinvoke $stack22.<org.bytedeco.flycapture.FlyCapture2.Image: int GetCols()>();
+
+        $r4 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack24 = $r4.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image raw_image>;
+
+        h = virtualinvoke $stack24.<org.bytedeco.flycapture.FlyCapture2.Image: int GetRows()>();
+
+        $r5 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack26 = $r5.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image raw_image>;
+
+        format = virtualinvoke $stack26.<org.bytedeco.flycapture.FlyCapture2.Image: int GetPixelFormat()>();
+
+        $r6 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        depth = specialinvoke $r6.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int getDepth(int)>(format);
+
+        $r7 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack29 = $r7.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image raw_image>;
+
+        stride = virtualinvoke $stack29.<org.bytedeco.flycapture.FlyCapture2.Image: int GetStride()>();
+
+        size = h * stride;
+
+        $r8 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        numChannels = specialinvoke $r8.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int getNumChannels(int)>(format);
+
+        $r9 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack33 = $r9.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Camera camera>;
+
+        $r10 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack32 = $r10.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int[] regOut>;
+
+        error = virtualinvoke $stack33.<org.bytedeco.flycapture.FlyCapture2.Camera: org.bytedeco.flycapture.FlyCapture2.Error ReadRegister(int,int[])>(4168, $stack32);
+
+        $stack35 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack35 == 0 goto label02;
+
+        $u3 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack250 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("flycaptureGetCameraRegister() Error ");
+
+        $stack251 = virtualinvoke $stack250.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(error);
+
+        $stack252 = virtualinvoke $stack251.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u3.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack252);
+
+        $r11 = (java.lang.Throwable) $u3;
+
+        throw $r11;
+
+     label02:
+        $r12 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack36 = $r12.<org.bytedeco.javacv.FlyCapture2FrameGrabber: int[] regOut>;
+
+        $stack37 = $stack36[0];
+
+        $stack38 = $stack37 & 1;
+
+        if $stack38 == 0 goto label03;
+
+        $stack245 = <java.nio.ByteOrder: java.nio.ByteOrder BIG_ENDIAN>;
+
+        goto label04;
+
+     label03:
+        $stack245 = <java.nio.ByteOrder: java.nio.ByteOrder LITTLE_ENDIAN>;
+
+     label04:
+        frameEndian = $stack245;
+
+        alreadySwapped = 0;
+
+        $r13 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack39 = $r13.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image raw_image>;
+
+        $stack40 = virtualinvoke $stack39.<org.bytedeco.flycapture.FlyCapture2.Image: int GetBayerTileFormat()>();
+
+        if $stack40 == 0 goto label05;
+
+        $stack242 = 1;
+
+        goto label06;
+
+     label05:
+        $stack242 = 0;
+
+     label06:
+        colorbayer = $stack242;
+
+        if format == 134217728 goto label07;
+
+        if format == 33554432 goto label07;
+
+        if format == -2147483640 goto label07;
+
+        if format != 1073741832 goto label08;
+
+     label07:
+        $stack239 = 1;
+
+        goto label09;
+
+     label08:
+        $stack239 = 0;
+
+     label09:
+        colorrgb = $stack239;
+
+        if format == 1073741824 goto label10;
+
+        if format == 536870912 goto label10;
+
+        if format != 268435456 goto label11;
+
+     label10:
+        $stack234 = 1;
+
+        goto label12;
+
+     label11:
+        $stack234 = 0;
+
+     label12:
+        coloryuv = $stack234;
+
+        $r14 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack41 = $r14.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image raw_image>;
+
+        $stack42 = virtualinvoke $stack41.<org.bytedeco.flycapture.FlyCapture2.Image: org.bytedeco.javacpp.BytePointer GetData()>();
+
+        $r15 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack43 = $r15.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image raw_image>;
+
+        $stack44 = virtualinvoke $stack43.<org.bytedeco.flycapture.FlyCapture2.Image: int GetDataSize()>();
+
+        $stack45 = (long) $stack44;
+
+        imageData = virtualinvoke $stack42.<org.bytedeco.javacpp.BytePointer: org.bytedeco.javacpp.BytePointer capacity(long)>($stack45);
+
+        if depth == 8 goto label13;
+
+        $stack231 = staticinvoke <java.nio.ByteOrder: java.nio.ByteOrder nativeOrder()>();
+
+        $stack232 = virtualinvoke frameEndian.<java.lang.Object: boolean equals(java.lang.Object)>($stack231);
+
+        if $stack232 == 0 goto label17;
+
+     label13:
+        $r16 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack48 = $r16.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack47 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode RAW>;
+
+        if $stack48 == $stack47 goto label15;
+
+        $r17 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack83 = $r17.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack82 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode COLOR>;
+
+        if $stack83 != $stack82 goto label14;
+
+        if numChannels == 3 goto label15;
+
+     label14:
+        $r18 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack85 = $r18.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack84 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode GRAY>;
+
+        if $stack85 != $stack84 goto label17;
+
+        if numChannels != 1 goto label17;
+
+        if colorbayer != 0 goto label17;
+
+     label15:
+        $r19 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack49 = $r19.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        if $stack49 != null goto label16;
+
+        $stack75 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage createHeader(int,int,int,int)>(w, h, depth, numChannels);
+
+        $r20 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r20.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image> = $stack75;
+
+     label16:
+        $r21 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack50 = $r21.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        virtualinvoke $stack50.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage widthStep(int)>(stride);
+
+        $r22 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack52 = $r22.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        virtualinvoke $stack52.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage imageSize(int)>(size);
+
+        $r23 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack54 = $r23.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        virtualinvoke $stack54.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage imageData(org.bytedeco.javacpp.BytePointer)>(imageData);
+
+        goto label44;
+
+     label17:
+        $r24 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack86 = $r24.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        if $stack86 != null goto label20;
+
+        $r25 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack220 = $r25.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack219 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode COLOR>;
+
+        if $stack220 != $stack219 goto label18;
+
+        $stack226 = 3;
+
+        goto label19;
+
+     label18:
+        $stack226 = 1;
+
+     label19:
+        $stack221 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>(w, h, depth, $stack226);
+
+        $r26 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r26.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image> = $stack221;
+
+     label20:
+        $r27 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack87 = $r27.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        if $stack87 != null goto label26;
+
+        $r28 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack191 = $r28.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack190 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode COLOR>;
+
+        if $stack191 != $stack190 goto label22;
+
+        if numChannels > 1 goto label21;
+
+        if depth <= 8 goto label22;
+
+     label21:
+        if coloryuv != 0 goto label22;
+
+        if colorbayer != 0 goto label22;
+
+        $stack217 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>(w, h, depth, numChannels);
+
+        $r29 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r29.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image> = $stack217;
+
+        goto label26;
+
+     label22:
+        $r30 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack193 = $r30.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack192 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode GRAY>;
+
+        if $stack193 != $stack192 goto label23;
+
+        if colorbayer == 0 goto label23;
+
+        $stack215 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>(w, h, depth, 3);
+
+        $r31 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r31.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image> = $stack215;
+
+        goto label26;
+
+     label23:
+        $r32 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack195 = $r32.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack194 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode GRAY>;
+
+        if $stack195 != $stack194 goto label24;
+
+        if colorrgb == 0 goto label24;
+
+        $stack213 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage createHeader(int,int,int,int)>(w, h, depth, 3);
+
+        $r33 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r33.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image> = $stack213;
+
+        goto label26;
+
+     label24:
+        $r34 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack197 = $r34.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack196 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode COLOR>;
+
+        if $stack197 != $stack196 goto label25;
+
+        if numChannels != 1 goto label25;
+
+        if coloryuv != 0 goto label25;
+
+        if colorbayer != 0 goto label25;
+
+        $stack211 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage createHeader(int,int,int,int)>(w, h, depth, 1);
+
+        $r35 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r35.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image> = $stack211;
+
+        goto label26;
+
+     label25:
+        $r36 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack198 = $r36.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        $r37 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r37.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image> = $stack198;
+
+     label26:
+        $r38 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack89 = $r38.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image conv_image>;
+
+        $r39 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack88 = $r39.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        $stack90 = virtualinvoke $stack88.<org.bytedeco.opencv.opencv_core.IplImage: int widthStep()>();
+
+        $r40 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        specialinvoke $r40.<org.bytedeco.javacv.FlyCapture2FrameGrabber: void setStride(org.bytedeco.flycapture.FlyCapture2.Image,int)>($stack89, $stack90);
+
+        $r41 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack92 = $r41.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image conv_image>;
+
+        $r42 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack91 = $r42.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        $stack93 = virtualinvoke $stack91.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.javacpp.BytePointer imageData()>();
+
+        $r43 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack94 = $r43.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        $stack95 = virtualinvoke $stack94.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        $r44 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack96 = $r44.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        $stack97 = virtualinvoke $stack96.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        $stack99 = $stack95 * $stack97;
+
+        $r45 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack98 = $r45.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        $stack100 = virtualinvoke $stack98.<org.bytedeco.opencv.opencv_core.IplImage: int depth()>();
+
+        $stack101 = $stack99 * $stack100;
+
+        virtualinvoke $stack92.<org.bytedeco.flycapture.FlyCapture2.Image: org.bytedeco.flycapture.FlyCapture2.Error SetData(org.bytedeco.javacpp.BytePointer,int)>($stack93, $stack101);
+
+        if depth != 8 goto label30;
+
+        $r46 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack186 = $r46.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image conv_image>;
+
+        $r47 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack184 = $r47.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack183 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode RAW>;
+
+        if $stack184 != $stack183 goto label27;
+
+        $stack188 = 4194304;
+
+        goto label29;
+
+     label27:
+        $r48 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack185 = $r48.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        $stack187 = virtualinvoke $stack185.<org.bytedeco.opencv.opencv_core.IplImage: int nChannels()>();
+
+        if $stack187 != 1 goto label28;
+
+        $stack188 = -2147483648;
+
+        goto label29;
+
+     label28:
+        $stack188 = -2147483640;
+
+     label29:
+        $r49 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        specialinvoke $r49.<org.bytedeco.javacv.FlyCapture2FrameGrabber: void setPixelFormat(org.bytedeco.flycapture.FlyCapture2.Image,int)>($stack186, $stack188);
+
+        goto label34;
+
+     label30:
+        $r50 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack106 = $r50.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image conv_image>;
+
+        $r51 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack104 = $r51.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack103 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode RAW>;
+
+        if $stack104 != $stack103 goto label31;
+
+        $stack179 = 2097152;
+
+        goto label33;
+
+     label31:
+        $r52 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack105 = $r52.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        $stack107 = virtualinvoke $stack105.<org.bytedeco.opencv.opencv_core.IplImage: int nChannels()>();
+
+        if $stack107 != 1 goto label32;
+
+        $stack179 = 67108864;
+
+        goto label33;
+
+     label32:
+        $stack179 = 33554432;
+
+     label33:
+        $r53 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        specialinvoke $r53.<org.bytedeco.javacv.FlyCapture2FrameGrabber: void setPixelFormat(org.bytedeco.flycapture.FlyCapture2.Image,int)>($stack106, $stack179);
+
+     label34:
+        if depth == 8 goto label35;
+
+        $r54 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack165 = $r54.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image conv_image>;
+
+        $stack166 = virtualinvoke $stack165.<org.bytedeco.flycapture.FlyCapture2.Image: int GetPixelFormat()>();
+
+        if $stack166 != format goto label35;
+
+        $r55 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack168 = $r55.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image conv_image>;
+
+        $stack169 = virtualinvoke $stack168.<org.bytedeco.flycapture.FlyCapture2.Image: int GetStride()>();
+
+        if $stack169 != stride goto label35;
+
+        $stack170 = virtualinvoke imageData.<org.bytedeco.javacpp.BytePointer: java.nio.ByteBuffer asByteBuffer()>();
+
+        $stack171 = virtualinvoke $stack170.<java.nio.ByteBuffer: java.nio.ByteBuffer order(java.nio.ByteOrder)>(frameEndian);
+
+        in = virtualinvoke $stack171.<java.nio.ByteBuffer: java.nio.ShortBuffer asShortBuffer()>();
+
+        $r56 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack173 = $r56.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        $stack174 = virtualinvoke $stack173.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.ByteBuffer getByteBuffer()>();
+
+        $stack175 = staticinvoke <java.nio.ByteOrder: java.nio.ByteOrder nativeOrder()>();
+
+        $stack176 = virtualinvoke $stack174.<java.nio.ByteBuffer: java.nio.ByteBuffer order(java.nio.ByteOrder)>($stack175);
+
+        out = virtualinvoke $stack176.<java.nio.ByteBuffer: java.nio.ShortBuffer asShortBuffer()>();
+
+        virtualinvoke out.<java.nio.ShortBuffer: java.nio.ShortBuffer put(java.nio.ShortBuffer)>(in);
+
+        alreadySwapped = 1;
+
+        goto label40;
+
+     label35:
+        $r57 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack109 = $r57.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack108 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode GRAY>;
+
+        if $stack109 != $stack108 goto label36;
+
+        if colorrgb != 0 goto label37;
+
+     label36:
+        $r58 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack111 = $r58.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack110 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode COLOR>;
+
+        if $stack111 != $stack110 goto label38;
+
+        if numChannels != 1 goto label38;
+
+        if coloryuv != 0 goto label38;
+
+        if colorbayer != 0 goto label38;
+
+     label37:
+        $r59 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack152 = $r59.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        virtualinvoke $stack152.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage widthStep(int)>(stride);
+
+        $r60 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack154 = $r60.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        virtualinvoke $stack154.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage imageSize(int)>(size);
+
+        $r61 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack156 = $r61.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        virtualinvoke $stack156.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage imageData(org.bytedeco.javacpp.BytePointer)>(imageData);
+
+        goto label40;
+
+     label38:
+        if colorrgb != 0 goto label40;
+
+        if colorbayer != 0 goto label39;
+
+        if coloryuv != 0 goto label39;
+
+        if numChannels <= 1 goto label40;
+
+     label39:
+        $r62 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack138 = $r62.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image raw_image>;
+
+        $r63 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack137 = $r63.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image conv_image>;
+
+        error = virtualinvoke $stack138.<org.bytedeco.flycapture.FlyCapture2.Image: org.bytedeco.flycapture.FlyCapture2.Error Convert(org.bytedeco.flycapture.FlyCapture2.Image)>($stack137);
+
+        $stack140 = virtualinvoke error.<org.bytedeco.flycapture.FlyCapture2.Error: boolean notEquals(int)>(0);
+
+        if $stack140 == 0 goto label40;
+
+        staticinvoke <org.bytedeco.javacv.FlyCapture2FrameGrabber: void PrintError(org.bytedeco.flycapture.FlyCapture2.Error)>(error);
+
+        $u5 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack144 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("raw_image.Convert Error ");
+
+        $stack145 = virtualinvoke $stack144.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(error);
+
+        $stack146 = virtualinvoke $stack145.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u5.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack146);
+
+        $r64 = (java.lang.Throwable) $u5;
+
+        throw $r64;
+
+     label40:
+        if alreadySwapped != 0 goto label41;
+
+        if depth == 8 goto label41;
+
+        $stack127 = staticinvoke <java.nio.ByteOrder: java.nio.ByteOrder nativeOrder()>();
+
+        $stack128 = virtualinvoke frameEndian.<java.lang.Object: boolean equals(java.lang.Object)>($stack127);
+
+        if $stack128 != 0 goto label41;
+
+        $r65 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack129 = $r65.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        in#281 = virtualinvoke $stack129.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.ByteBuffer getByteBuffer()>();
+
+        $stack131 = virtualinvoke in#281.<java.nio.ByteBuffer: java.nio.ByteBuffer order(java.nio.ByteOrder)>(frameEndian);
+
+        out = virtualinvoke $stack131.<java.nio.ByteBuffer: java.nio.ShortBuffer asShortBuffer()>();
+
+        $stack133 = staticinvoke <java.nio.ByteOrder: java.nio.ByteOrder nativeOrder()>();
+
+        $stack134 = virtualinvoke in#281.<java.nio.ByteBuffer: java.nio.ByteBuffer order(java.nio.ByteOrder)>($stack133);
+
+        out = virtualinvoke $stack134.<java.nio.ByteBuffer: java.nio.ShortBuffer asShortBuffer()>();
+
+        virtualinvoke out.<java.nio.ShortBuffer: java.nio.ShortBuffer put(java.nio.ShortBuffer)>(out);
+
+     label41:
+        $r66 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack113 = $r66.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack112 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode COLOR>;
+
+        if $stack113 != $stack112 goto label42;
+
+        if numChannels != 1 goto label42;
+
+        if coloryuv != 0 goto label42;
+
+        if colorbayer != 0 goto label42;
+
+        $r67 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack125 = $r67.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        $r68 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack124 = $r68.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        $r69 = (org.bytedeco.opencv.opencv_core.CvArr) $stack125;
+
+        $r70 = (org.bytedeco.opencv.opencv_core.CvArr) $stack124;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgproc: void cvCvtColor(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,int)>($r69, $r70, 8);
+
+        goto label44;
+
+     label42:
+        $r71 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack115 = $r71.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack114 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode GRAY>;
+
+        if $stack115 != $stack114 goto label44;
+
+        if colorbayer != 0 goto label43;
+
+        if colorrgb == 0 goto label44;
+
+     label43:
+        $r72 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack119 = $r72.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage temp_image>;
+
+        $r73 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack118 = $r73.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        $r74 = (org.bytedeco.opencv.opencv_core.CvArr) $stack119;
+
+        $r75 = (org.bytedeco.opencv.opencv_core.CvArr) $stack118;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgproc: void cvCvtColor(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,int)>($r74, $r75, 6);
+
+     label44:
+        $r76 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack56 = $r76.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.CameraInfo cameraInfo>;
+
+        in#316 = virtualinvoke $stack56.<org.bytedeco.flycapture.FlyCapture2.CameraInfo: int bayerTileFormat()>();
+
+        tableswitch(in#316)
+        {
+            case 1: goto label48;
+            case 2: goto label47;
+            case 3: goto label46;
+            case 4: goto label45;
+            default: goto label49;
+        };
+
+     label45:
+        $r77 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r77.<org.bytedeco.javacv.FlyCapture2FrameGrabber: long sensorPattern> = 4294967297L;
+
+        goto label50;
+
+     label46:
+        $r78 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r78.<org.bytedeco.javacv.FlyCapture2FrameGrabber: long sensorPattern> = 4294967296L;
+
+        goto label50;
+
+     label47:
+        $r79 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r79.<org.bytedeco.javacv.FlyCapture2FrameGrabber: long sensorPattern> = 1L;
+
+        goto label50;
+
+     label48:
+        $r80 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r80.<org.bytedeco.javacv.FlyCapture2FrameGrabber: long sensorPattern> = 0L;
+
+        goto label50;
+
+     label49:
+        $r81 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r81.<org.bytedeco.javacv.FlyCapture2FrameGrabber: long sensorPattern> = -1L;
+
+     label50:
+        $r82 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack58 = $r82.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.flycapture.FlyCapture2.Image raw_image>;
+
+        out#334 = virtualinvoke $stack58.<org.bytedeco.flycapture.FlyCapture2.Image: org.bytedeco.flycapture.FlyCapture2.TimeStamp GetTimeStamp()>();
+
+        $stack60 = virtualinvoke out#334.<org.bytedeco.flycapture.FlyCapture2.TimeStamp: long seconds()>();
+
+        $stack61 = $stack60 * 1000000L;
+
+        $stack62 = virtualinvoke out#334.<org.bytedeco.flycapture.FlyCapture2.TimeStamp: int microSeconds()>();
+
+        $stack63 = (long) $stack62;
+
+        $stack64 = $stack61 + $stack63;
+
+        $r83 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $r83.<org.bytedeco.javacv.FlyCapture2FrameGrabber: long timestamp> = $stack64;
+
+        $r84 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack66 = $r84.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameConverter converter>;
+
+        $r85 = (org.bytedeco.javacv.FlyCapture2FrameGrabber) this;
+
+        $stack65 = $r85.<org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage return_image>;
+
+        $stack67 = virtualinvoke $stack66.<org.bytedeco.javacv.FrameConverter: org.bytedeco.javacv.Frame convert(java.lang.Object)>($stack65);
+
+        return $stack67;
+    }
+
+    static void <clinit>()
+    {
+        <FlyCapture2FrameGrabber: int VIDEOMODE_ANY> = -1;
+
+        <FlyCapture2FrameGrabber: int IMAGE_DATA_FORMAT> = 4168;
+
+        <FlyCapture2FrameGrabber: int SOFT_ASYNC_TRIGGER> = 4140;
+
+        <FlyCapture2FrameGrabber: int SOFTWARE_TRIGGER> = 1580;
+
+        <FlyCapture2FrameGrabber: int CAMERA_POWER> = 1552;
+
+        <FlyCapture2FrameGrabber: int IS_CAMERA_POWER> = 1024;
+
+        <FlyCapture2FrameGrabber: int TRIGGER_INQ> = 1328;
+
+        <FlyCapture2FrameGrabber: int INITIALIZE> = 0;
+
+        <org.bytedeco.javacv.FlyCapture2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = null;
+
+        return;
+    }
+}

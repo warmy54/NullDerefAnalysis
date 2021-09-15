@@ -1,0 +1,117 @@
+public class Slf4jConfigurationFactory extends java.lang.Object
+{
+    public static final java.lang.String RESOURCE;
+
+    public void <init>()
+    {
+        Slf4jConfigurationFactory this;
+
+        this := @this: Slf4jConfigurationFactory;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.apache.maven.cli.logging.Slf4jConfiguration getConfiguration(org.slf4j.ILoggerFactory)
+    {
+        org.slf4j.ILoggerFactory loggerFactory;
+        java.lang.Class $stack8, $stack10, $stack22;
+        java.lang.String slf4jBinding, impl;
+        java.lang.ClassLoader $stack11;
+        boolean $stack13;
+        java.lang.Object $stack15, $stack23;
+        java.net.URL resource;
+        java.io.InputStream $stack16;
+        java.util.Properties conf;
+        java.util.Set $stack19;
+        org.apache.maven.cli.logging.Slf4jConfiguration $stack24, $r0;
+        java.lang.Exception $stack25;
+        java.util.Enumeration resources;
+        java.util.LinkedHashMap $u0;
+        org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration $u1;
+
+        loggerFactory := @parameter0: org.slf4j.ILoggerFactory;
+
+        $u0 = new java.util.LinkedHashMap;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>()>();
+
+        $stack8 = virtualinvoke loggerFactory.<java.lang.Object: java.lang.Class getClass()>();
+
+        slf4jBinding = virtualinvoke $stack8.<java.lang.Class: java.lang.String getCanonicalName()>();
+
+     label1:
+        $stack10 = class "Lorg/apache/maven/cli/logging/Slf4jConfigurationFactory;";
+
+        $stack11 = virtualinvoke $stack10.<java.lang.Class: java.lang.ClassLoader getClassLoader()>();
+
+        resources = virtualinvoke $stack11.<java.lang.ClassLoader: java.util.Enumeration getResources(java.lang.String)>("META-INF/maven/slf4j-configuration.properties");
+
+     label2:
+        $stack13 = interfaceinvoke resources.<java.util.Enumeration: boolean hasMoreElements()>();
+
+        if $stack13 == 0 goto label5;
+
+        $stack15 = interfaceinvoke resources.<java.util.Enumeration: java.lang.Object nextElement()>();
+
+        resource = (java.net.URL) $stack15;
+
+        $stack16 = virtualinvoke resource.<java.net.URL: java.io.InputStream openStream()>();
+
+        conf = staticinvoke <org.codehaus.plexus.util.PropertyUtils: java.util.Properties loadProperties(java.io.InputStream)>($stack16);
+
+        impl = virtualinvoke conf.<java.util.Properties: java.lang.String getProperty(java.lang.String)>(slf4jBinding);
+
+        if impl == null goto label4;
+
+        $stack22 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(impl);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.Class: java.lang.Object newInstance()>();
+
+        $stack24 = (org.apache.maven.cli.logging.Slf4jConfiguration) $stack23;
+
+     label3:
+        return $stack24;
+
+     label4:
+        $stack19 = virtualinvoke conf.<java.util.Properties: java.util.Set keySet()>();
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(resource, $stack19);
+
+        goto label2;
+
+     label5:
+        goto label7;
+
+     label6:
+        $stack25 := @caughtexception;
+
+        virtualinvoke $stack25.<java.lang.Exception: void printStackTrace()>();
+
+     label7:
+        $u1 = new org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration;
+
+        specialinvoke $u1.<org.apache.maven.cli.logging.impl.UnsupportedSlf4jBindingConfiguration: void <init>(java.lang.String,java.util.Map)>(slf4jBinding, $u0);
+
+        $r0 = (org.apache.maven.cli.logging.Slf4jConfiguration) $u1;
+
+        return $r0;
+
+        catch java.io.IOException from label1 to label3 with label6;
+        catch java.lang.ClassNotFoundException from label1 to label3 with label6;
+        catch java.lang.IllegalAccessException from label1 to label3 with label6;
+        catch java.lang.InstantiationException from label1 to label3 with label6;
+        catch java.io.IOException from label4 to label5 with label6;
+        catch java.lang.ClassNotFoundException from label4 to label5 with label6;
+        catch java.lang.IllegalAccessException from label4 to label5 with label6;
+        catch java.lang.InstantiationException from label4 to label5 with label6;
+    }
+
+    public static void <clinit>()
+    {
+        <Slf4jConfigurationFactory: java.lang.String RESOURCE> = "META-INF/maven/slf4j-configuration.properties";
+
+        return;
+    }
+}

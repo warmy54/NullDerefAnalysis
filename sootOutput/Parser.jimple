@@ -1,0 +1,162 @@
+public class Parser extends java.lang.Object
+{
+    protected org.ooc.frontend.BuildParams params;
+    protected org.ooc.frontend.model.Module mainModule;
+
+    public void <init>(org.ooc.frontend.BuildParams)
+    {
+        Parser this;
+        org.ooc.frontend.BuildParams params;
+        org.ooc.frontend.parser.Parser $r0;
+
+        this := @this: Parser;
+
+        params := @parameter0: org.ooc.frontend.BuildParams;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.ooc.frontend.parser.Parser) this;
+
+        $r0.<org.ooc.frontend.parser.Parser: org.ooc.frontend.BuildParams params> = params;
+
+        return;
+    }
+
+    public org.ooc.frontend.model.Module parse(java.lang.String) throws java.io.IOException
+    {
+        Parser this;
+        org.ooc.frontend.BuildParams $stack3, $stack8;
+        java.lang.String path, $stack11;
+        org.ooc.frontend.PathList $stack4, $stack9;
+        java.io.File file;
+        org.ooc.frontend.model.Module $stack6;
+        org.ubi.CompilationFailedError $u0;
+        org.ooc.frontend.parser.Parser $r0, $r1, $r3;
+        java.lang.Throwable $r2;
+
+        this := @this: Parser;
+
+        path := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.parser.Parser) this;
+
+        $stack3 = $r0.<org.ooc.frontend.parser.Parser: org.ooc.frontend.BuildParams params>;
+
+        $stack4 = $stack3.<org.ooc.frontend.BuildParams: org.ooc.frontend.PathList sourcePath>;
+
+        file = virtualinvoke $stack4.<org.ooc.frontend.PathList: java.io.File getElement(java.lang.String)>(path);
+
+        if file != null goto label1;
+
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $r1 = (org.ooc.frontend.parser.Parser) this;
+
+        $stack8 = $r1.<org.ooc.frontend.parser.Parser: org.ooc.frontend.BuildParams params>;
+
+        $stack9 = $stack8.<org.ooc.frontend.BuildParams: org.ooc.frontend.PathList sourcePath>;
+
+        $stack11 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,org.ooc.frontend.PathList)>(path, $stack9) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("File \u0001 not found in sourcePath. sourcePath = \u0001");
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>(null, $stack11);
+
+        $r2 = (java.lang.Throwable) $u0;
+
+        throw $r2;
+
+     label1:
+        $r3 = (org.ooc.frontend.parser.Parser) this;
+
+        $stack6 = virtualinvoke $r3.<org.ooc.frontend.parser.Parser: org.ooc.frontend.model.Module parse(java.lang.String,java.io.File,org.ooc.frontend.model.Import)>(path, file, null);
+
+        return $stack6;
+    }
+
+    public org.ooc.frontend.model.Module parse(java.lang.String, java.io.File, org.ooc.frontend.model.Import) throws java.io.IOException
+    {
+        Parser this;
+        org.ooc.frontend.BuildParams $stack9;
+        boolean $stack10;
+        java.io.File element, $u0;
+        java.lang.String path, $stack17, $stack19, fullName, $stack33;
+        org.ubi.SourceReader sReader;
+        java.util.List tokens;
+        int $stack16;
+        char $stack18;
+        java.util.Map $stack22;
+        org.ooc.frontend.model.Import imp;
+        java.io.PrintStream $stack32;
+        org.ooc.frontend.model.Tokenizer $u1;
+        org.ooc.frontend.model.Module $u2;
+        org.ooc.frontend.model.tokens.TokenReader $u3;
+        org.ooc.frontend.parser.Parser $r0, $r1;
+
+        this := @this: Parser;
+
+        path := @parameter0: java.lang.String;
+
+        element := @parameter1: java.io.File;
+
+        imp := @parameter2: org.ooc.frontend.model.Import;
+
+        $r0 = (org.ooc.frontend.parser.Parser) this;
+
+        $stack9 = $r0.<org.ooc.frontend.parser.Parser: org.ooc.frontend.BuildParams params>;
+
+        $stack10 = $stack9.<org.ooc.frontend.BuildParams: boolean verbose>;
+
+        if $stack10 == 0 goto label1;
+
+        $stack32 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack33 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(path) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Parsing \u0001");
+
+        virtualinvoke $stack32.<java.io.PrintStream: void println(java.lang.String)>($stack33);
+
+     label1:
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.io.File,java.lang.String)>(element, path);
+
+        sReader = staticinvoke <org.ubi.SourceReader: org.ubi.SourceReader getReaderFromFile(java.io.File)>($u0);
+
+        $u1 = new org.ooc.frontend.model.Tokenizer;
+
+        specialinvoke $u1.<org.ooc.frontend.model.Tokenizer: void <init>()>();
+
+        tokens = virtualinvoke $u1.<org.ooc.frontend.model.Tokenizer: java.util.List parse(org.ubi.SourceReader)>(sReader);
+
+        $stack16 = virtualinvoke path.<java.lang.String: int lastIndexOf(int)>(46);
+
+        $stack17 = virtualinvoke path.<java.lang.String: java.lang.String substring(int,int)>(0, $stack16);
+
+        $stack18 = <java.io.File: char separatorChar>;
+
+        $stack19 = virtualinvoke $stack17.<java.lang.String: java.lang.String replace(char,char)>($stack18, 46);
+
+        fullName = virtualinvoke $stack19.<java.lang.String: java.lang.String replace(char,char)>(47, 46);
+
+        $u2 = new org.ooc.frontend.model.Module;
+
+        specialinvoke $u2.<org.ooc.frontend.model.Module: void <init>(java.lang.String,java.io.File,org.ubi.SourceReader)>(fullName, element, sReader);
+
+        $stack22 = <org.ooc.frontend.parser.ModuleParser: java.util.Map cache>;
+
+        interfaceinvoke $stack22.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(path, $u2);
+
+        if imp == null goto label2;
+
+        virtualinvoke imp.<org.ooc.frontend.model.Import: void setModule(org.ooc.frontend.model.Module)>($u2);
+
+     label2:
+        $u3 = new org.ooc.frontend.model.tokens.TokenReader;
+
+        specialinvoke $u3.<org.ooc.frontend.model.tokens.TokenReader: void <init>(java.util.List)>(tokens);
+
+        $r1 = (org.ooc.frontend.parser.Parser) this;
+
+        staticinvoke <org.ooc.frontend.parser.ModuleParser: void parse(org.ooc.frontend.model.Module,java.lang.String,java.io.File,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,org.ooc.frontend.parser.Parser)>($u2, fullName, $u0, sReader, $u3, $r1);
+
+        return $u2;
+    }
+}

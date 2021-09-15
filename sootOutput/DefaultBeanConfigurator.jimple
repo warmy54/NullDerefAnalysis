@@ -1,0 +1,183 @@
+public class DefaultBeanConfigurator extends java.lang.Object implements org.apache.maven.configuration.BeanConfigurator
+{
+    private final org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup converterLookup;
+
+    public void <init>()
+    {
+        DefaultBeanConfigurator this;
+        org.codehaus.plexus.component.configurator.converters.lookup.DefaultConverterLookup $u0;
+        org.apache.maven.configuration.internal.DefaultBeanConfigurator $r0;
+        org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup $r1;
+
+        this := @this: DefaultBeanConfigurator;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new org.codehaus.plexus.component.configurator.converters.lookup.DefaultConverterLookup;
+
+        specialinvoke $u0.<org.codehaus.plexus.component.configurator.converters.lookup.DefaultConverterLookup: void <init>()>();
+
+        $r0 = (org.apache.maven.configuration.internal.DefaultBeanConfigurator) this;
+
+        $r1 = (org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup) $u0;
+
+        $r0.<org.apache.maven.configuration.internal.DefaultBeanConfigurator: org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup converterLookup> = $r1;
+
+        return;
+    }
+
+    public void configureBean(org.apache.maven.configuration.BeanConfigurationRequest) throws org.apache.maven.configuration.BeanConfigurationException
+    {
+        org.apache.maven.configuration.BeanConfigurationRequest request;
+        java.lang.Object $stack9, configuration, $stack29, $stack30, plexusConfig;
+        boolean $stack12, $stack13;
+        java.lang.StringBuilder $stack16, $stack19, $stack20, $u1;
+        java.lang.Class $stack17, $stack31;
+        java.lang.String $stack18, $stack21, $stack24, $stack40, $stack47;
+        org.codehaus.plexus.util.xml.Xpp3Dom $stack23;
+        DefaultBeanConfigurator this;
+        org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup $stack28;
+        java.lang.Throwable $stack45, $r0, $r6;
+        java.lang.ClassLoader classLoader;
+        org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration $u0;
+        org.apache.maven.configuration.BeanConfigurationException $u2, $u5;
+        org.apache.maven.configuration.internal.DefaultBeanConfigurator$BeanExpressionEvaluator $u3;
+        org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter $u4;
+        org.codehaus.plexus.configuration.PlexusConfiguration $r1, $r3;
+        org.apache.maven.configuration.internal.DefaultBeanConfigurator $r2;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator $r4;
+        org.codehaus.plexus.component.configurator.ComponentConfigurationException $r5;
+
+        this := @this: DefaultBeanConfigurator;
+
+        request := @parameter0: org.apache.maven.configuration.BeanConfigurationRequest;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(request, "request cannot be null");
+
+        $stack9 = interfaceinvoke request.<org.apache.maven.configuration.BeanConfigurationRequest: java.lang.Object getBean()>();
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>($stack9, "request.bean cannot be null");
+
+        configuration = interfaceinvoke request.<org.apache.maven.configuration.BeanConfigurationRequest: java.lang.Object getConfiguration()>();
+
+        if configuration != null goto label01;
+
+        return;
+
+     label01:
+        $stack12 = configuration instanceof org.codehaus.plexus.configuration.PlexusConfiguration;
+
+        if $stack12 == 0 goto label02;
+
+        plexusConfig = (org.codehaus.plexus.configuration.PlexusConfiguration) configuration;
+
+        goto label04;
+
+     label02:
+        $stack13 = configuration instanceof org.codehaus.plexus.util.xml.Xpp3Dom;
+
+        if $stack13 == 0 goto label03;
+
+        $u0 = new org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+
+        $stack23 = (org.codehaus.plexus.util.xml.Xpp3Dom) configuration;
+
+        specialinvoke $u0.<org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration: void <init>(org.codehaus.plexus.util.xml.Xpp3Dom)>($stack23);
+
+        plexusConfig = $u0;
+
+        goto label04;
+
+     label03:
+        $u2 = new org.apache.maven.configuration.BeanConfigurationException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack16 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("unsupported bean configuration source (");
+
+        $stack17 = virtualinvoke configuration.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack18 = virtualinvoke $stack17.<java.lang.Class: java.lang.String getName()>();
+
+        $stack19 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack18);
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.apache.maven.configuration.BeanConfigurationException: void <init>(java.lang.String)>($stack21);
+
+        $r0 = (java.lang.Throwable) $u2;
+
+        throw $r0;
+
+     label04:
+        $stack24 = interfaceinvoke request.<org.apache.maven.configuration.BeanConfigurationRequest: java.lang.String getConfigurationElement()>();
+
+        if $stack24 == null goto label05;
+
+        $stack40 = interfaceinvoke request.<org.apache.maven.configuration.BeanConfigurationRequest: java.lang.String getConfigurationElement()>();
+
+        $r1 = (org.codehaus.plexus.configuration.PlexusConfiguration) plexusConfig;
+
+        plexusConfig = interfaceinvoke $r1.<org.codehaus.plexus.configuration.PlexusConfiguration: org.codehaus.plexus.configuration.PlexusConfiguration getChild(java.lang.String)>($stack40);
+
+     label05:
+        classLoader = interfaceinvoke request.<org.apache.maven.configuration.BeanConfigurationRequest: java.lang.ClassLoader getClassLoader()>();
+
+        if classLoader != null goto label06;
+
+        $stack30 = interfaceinvoke request.<org.apache.maven.configuration.BeanConfigurationRequest: java.lang.Object getBean()>();
+
+        $stack31 = virtualinvoke $stack30.<java.lang.Object: java.lang.Class getClass()>();
+
+        classLoader = virtualinvoke $stack31.<java.lang.Class: java.lang.ClassLoader getClassLoader()>();
+
+     label06:
+        $u3 = new org.apache.maven.configuration.internal.DefaultBeanConfigurator$BeanExpressionEvaluator;
+
+        specialinvoke $u3.<org.apache.maven.configuration.internal.DefaultBeanConfigurator$BeanExpressionEvaluator: void <init>(org.apache.maven.configuration.BeanConfigurationRequest)>(request);
+
+        $u4 = new org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter;
+
+        specialinvoke $u4.<org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter: void <init>()>();
+
+     label07:
+        $r2 = (org.apache.maven.configuration.internal.DefaultBeanConfigurator) this;
+
+        $stack28 = $r2.<org.apache.maven.configuration.internal.DefaultBeanConfigurator: org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup converterLookup>;
+
+        $stack29 = interfaceinvoke request.<org.apache.maven.configuration.BeanConfigurationRequest: java.lang.Object getBean()>();
+
+        $r3 = (org.codehaus.plexus.configuration.PlexusConfiguration) plexusConfig;
+
+        $r4 = (org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator) $u3;
+
+        virtualinvoke $u4.<org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter: void processConfiguration(org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup,java.lang.Object,java.lang.ClassLoader,org.codehaus.plexus.configuration.PlexusConfiguration,org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator)>($stack28, $stack29, classLoader, $r3, $r4);
+
+     label08:
+        goto label10;
+
+     label09:
+        $stack45 := @caughtexception;
+
+        $u5 = new org.apache.maven.configuration.BeanConfigurationException;
+
+        $r5 = (org.codehaus.plexus.component.configurator.ComponentConfigurationException) $stack45;
+
+        $stack47 = virtualinvoke $r5.<org.codehaus.plexus.component.configurator.ComponentConfigurationException: java.lang.String getMessage()>();
+
+        specialinvoke $u5.<org.apache.maven.configuration.BeanConfigurationException: void <init>(java.lang.String,java.lang.Throwable)>($stack47, $stack45);
+
+        $r6 = (java.lang.Throwable) $u5;
+
+        throw $r6;
+
+     label10:
+        return;
+
+        catch org.codehaus.plexus.component.configurator.ComponentConfigurationException from label07 to label08 with label09;
+    }
+}

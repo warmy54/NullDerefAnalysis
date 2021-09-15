@@ -1,7 +1,7 @@
-public class DefaultRuntimeInformation extends java.lang.Object implements org.apache.maven.execution.RuntimeInformation, org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable
+public class DefaultRuntimeInformation extends java.lang.Object implements org.apache.maven.rtinfo.RuntimeInformation
 {
-    private org.apache.maven.rtinfo.RuntimeInformation rtInfo;
-    private org.apache.maven.artifact.versioning.ArtifactVersion applicationVersion;
+    private org.codehaus.plexus.logging.Logger logger;
+    private java.lang.String mavenVersion;
 
     public void <init>()
     {
@@ -14,64 +14,292 @@ public class DefaultRuntimeInformation extends java.lang.Object implements org.a
         return;
     }
 
-    public org.apache.maven.artifact.versioning.ArtifactVersion getApplicationVersion()
+    public java.lang.String getMavenVersion()
     {
         DefaultRuntimeInformation this;
-        org.apache.maven.artifact.versioning.ArtifactVersion $stack1;
-        org.apache.maven.execution.DefaultRuntimeInformation $r0;
+        java.lang.String $stack6, $stack13, $stack20, msg#6, $stack21, is#17, $stack7;
+        java.lang.Class $stack10;
+        java.lang.StringBuilder $stack11, $stack12, $stack17, $stack18, $stack19, $stack28, $stack29, $stack30, $u1, $u2, $u3;
+        org.codehaus.plexus.logging.Logger $stack16, $stack32, $stack34, $stack40;
+        java.io.IOException $stack26;
+        boolean $stack33, $stack23;
+        java.lang.Throwable $stack41, $stack42;
+        java.io.InputStream is;
+        java.util.Properties $u0;
+        org.apache.maven.rtinfo.internal.DefaultRuntimeInformation $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7;
 
         this := @this: DefaultRuntimeInformation;
 
-        $r0 = (org.apache.maven.execution.DefaultRuntimeInformation) this;
+        $r0 = (org.apache.maven.rtinfo.internal.DefaultRuntimeInformation) this;
 
-        $stack1 = $r0.<org.apache.maven.execution.DefaultRuntimeInformation: org.apache.maven.artifact.versioning.ArtifactVersion applicationVersion>;
+        $stack6 = $r0.<org.apache.maven.rtinfo.internal.DefaultRuntimeInformation: java.lang.String mavenVersion>;
 
-        return $stack1;
+        if $stack6 != null goto label15;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+     label01:
+        $stack10 = class "Lorg/apache/maven/rtinfo/internal/DefaultRuntimeInformation;";
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack11 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("META-INF/maven/org.apache.maven/maven-core/pom.properties");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        is = virtualinvoke $stack10.<java.lang.Class: java.io.InputStream getResourceAsStream(java.lang.String)>($stack13);
+
+     label02:
+        if is == null goto label03;
+
+        virtualinvoke $u0.<java.util.Properties: void load(java.io.InputStream)>(is);
+
+        goto label04;
+
+     label03:
+        $r1 = (org.apache.maven.rtinfo.internal.DefaultRuntimeInformation) this;
+
+        $stack16 = $r1.<org.apache.maven.rtinfo.internal.DefaultRuntimeInformation: org.codehaus.plexus.logging.Logger logger>;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack17 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not locate ");
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("META-INF/maven/org.apache.maven/maven-core/pom.properties");
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" on classpath, Maven runtime information not available");
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack16.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack20);
+
+     label04:
+        if is == null goto label10;
+
+        virtualinvoke is.<java.io.InputStream: void close()>();
+
+        goto label10;
+
+     label05:
+        $stack42 := @caughtexception;
+
+        if is == null goto label09;
+
+     label06:
+        virtualinvoke is.<java.io.InputStream: void close()>();
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack41 := @caughtexception;
+
+        virtualinvoke $stack42.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack41);
+
+     label09:
+        throw $stack42;
+
+     label10:
+        goto label13;
+
+     label11:
+        $stack26 := @caughtexception;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack28 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not parse ");
+
+        $stack29 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("META-INF/maven/org.apache.maven/maven-core/pom.properties");
+
+        $stack30 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", Maven runtime information not available");
+
+        msg#6 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r2 = (org.apache.maven.rtinfo.internal.DefaultRuntimeInformation) this;
+
+        $stack32 = $r2.<org.apache.maven.rtinfo.internal.DefaultRuntimeInformation: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack33 = interfaceinvoke $stack32.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack33 == 0 goto label12;
+
+        $r3 = (org.apache.maven.rtinfo.internal.DefaultRuntimeInformation) this;
+
+        $stack40 = $r3.<org.apache.maven.rtinfo.internal.DefaultRuntimeInformation: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack40.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String,java.lang.Throwable)>(msg#6, $stack26);
+
+        goto label13;
+
+     label12:
+        $r4 = (org.apache.maven.rtinfo.internal.DefaultRuntimeInformation) this;
+
+        $stack34 = $r4.<org.apache.maven.rtinfo.internal.DefaultRuntimeInformation: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack34.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>(msg#6);
+
+     label13:
+        $stack21 = virtualinvoke $u0.<java.util.Properties: java.lang.String getProperty(java.lang.String,java.lang.String)>("version", "");
+
+        is#17 = virtualinvoke $stack21.<java.lang.String: java.lang.String trim()>();
+
+        $stack23 = virtualinvoke is#17.<java.lang.String: boolean startsWith(java.lang.String)>("${");
+
+        if $stack23 != 0 goto label14;
+
+        $r5 = (org.apache.maven.rtinfo.internal.DefaultRuntimeInformation) this;
+
+        $r5.<org.apache.maven.rtinfo.internal.DefaultRuntimeInformation: java.lang.String mavenVersion> = is#17;
+
+        goto label15;
+
+     label14:
+        $r6 = (org.apache.maven.rtinfo.internal.DefaultRuntimeInformation) this;
+
+        $r6.<org.apache.maven.rtinfo.internal.DefaultRuntimeInformation: java.lang.String mavenVersion> = "";
+
+     label15:
+        $r7 = (org.apache.maven.rtinfo.internal.DefaultRuntimeInformation) this;
+
+        $stack7 = $r7.<org.apache.maven.rtinfo.internal.DefaultRuntimeInformation: java.lang.String mavenVersion>;
+
+        return $stack7;
+
+        catch java.lang.Throwable from label02 to label04 with label05;
+        catch java.lang.Throwable from label06 to label07 with label08;
+        catch java.io.IOException from label01 to label10 with label11;
     }
 
-    public void initialize() throws org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException
+    public boolean isMavenVersion(java.lang.String)
     {
+        java.lang.String versionRange, $stack23, $stack25, $stack28, mavenVersion;
+        java.lang.Object[] $stack7, $stack12;
+        org.eclipse.aether.version.VersionConstraint constraint;
         DefaultRuntimeInformation this;
-        org.apache.maven.rtinfo.RuntimeInformation $stack2;
-        java.lang.String mavenVersion;
-        boolean $stack4;
-        org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException $u0;
-        org.apache.maven.artifact.versioning.DefaultArtifactVersion $u1;
-        org.apache.maven.execution.DefaultRuntimeInformation $r0, $r2;
-        java.lang.Throwable $r1;
-        org.apache.maven.artifact.versioning.ArtifactVersion $r3;
+        boolean $stack11, $stack15, $stack18;
+        org.eclipse.aether.version.VersionRange $stack14;
+        org.eclipse.aether.version.Version $stack16, e#3;
+        int $stack17;
+        java.lang.Throwable $stack19, $stack26;
+        java.lang.StringBuilder $stack22, $stack24, $u2;
+        org.eclipse.aether.util.version.GenericVersionScheme $u0;
+        java.lang.IllegalArgumentException $u1;
+        java.lang.IllegalStateException $u3;
+        org.eclipse.aether.version.VersionScheme $r0, $r3;
+        org.eclipse.aether.version.InvalidVersionSpecificationException $r1, $r4;
+        org.apache.maven.rtinfo.internal.DefaultRuntimeInformation $r2;
 
         this := @this: DefaultRuntimeInformation;
 
-        $r0 = (org.apache.maven.execution.DefaultRuntimeInformation) this;
+        versionRange := @parameter0: java.lang.String;
 
-        $stack2 = $r0.<org.apache.maven.execution.DefaultRuntimeInformation: org.apache.maven.rtinfo.RuntimeInformation rtInfo>;
+        $u0 = new org.eclipse.aether.util.version.GenericVersionScheme;
 
-        mavenVersion = interfaceinvoke $stack2.<org.apache.maven.rtinfo.RuntimeInformation: java.lang.String getMavenVersion()>();
+        specialinvoke $u0.<org.eclipse.aether.util.version.GenericVersionScheme: void <init>()>();
 
-        $stack4 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>(mavenVersion);
+        $stack7 = newarray (java.lang.Object)[0];
 
-        if $stack4 == 0 goto label1;
+        staticinvoke <org.apache.commons.lang3.Validate: java.lang.CharSequence notBlank(java.lang.CharSequence,java.lang.String,java.lang.Object[])>(versionRange, "versionRange can neither be null, empty nor blank", $stack7);
 
-        $u0 = new org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+     label01:
+        $r0 = (org.eclipse.aether.version.VersionScheme) $u0;
 
-        specialinvoke $u0.<org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException: void <init>(java.lang.String)>("Unable to read Maven version from maven-core");
+        constraint = interfaceinvoke $r0.<org.eclipse.aether.version.VersionScheme: org.eclipse.aether.version.VersionConstraint parseVersionConstraint(java.lang.String)>(versionRange);
 
-        $r1 = (java.lang.Throwable) $u0;
+     label02:
+        goto label04;
 
-        throw $r1;
+     label03:
+        $stack26 := @caughtexception;
 
-     label1:
-        $u1 = new org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+        $u1 = new java.lang.IllegalArgumentException;
 
-        specialinvoke $u1.<org.apache.maven.artifact.versioning.DefaultArtifactVersion: void <init>(java.lang.String)>(mavenVersion);
+        $r1 = (org.eclipse.aether.version.InvalidVersionSpecificationException) $stack26;
 
-        $r2 = (org.apache.maven.execution.DefaultRuntimeInformation) this;
+        $stack28 = virtualinvoke $r1.<org.eclipse.aether.version.InvalidVersionSpecificationException: java.lang.String getMessage()>();
 
-        $r3 = (org.apache.maven.artifact.versioning.ArtifactVersion) $u1;
+        specialinvoke $u1.<java.lang.IllegalArgumentException: void <init>(java.lang.String,java.lang.Throwable)>($stack28, $stack26);
 
-        $r2.<org.apache.maven.execution.DefaultRuntimeInformation: org.apache.maven.artifact.versioning.ArtifactVersion applicationVersion> = $r3;
+        throw $u1;
 
-        return;
+     label04:
+        $r2 = (org.apache.maven.rtinfo.internal.DefaultRuntimeInformation) this;
+
+        mavenVersion = virtualinvoke $r2.<org.apache.maven.rtinfo.internal.DefaultRuntimeInformation: java.lang.String getMavenVersion()>();
+
+        $stack11 = staticinvoke <org.apache.commons.lang3.StringUtils: boolean isNotEmpty(java.lang.CharSequence)>(mavenVersion);
+
+        $stack12 = newarray (java.lang.Object)[0];
+
+        staticinvoke <org.apache.commons.lang3.Validate: void validState(boolean,java.lang.String,java.lang.Object[])>($stack11, "Could not determine current Maven version", $stack12);
+
+        $r3 = (org.eclipse.aether.version.VersionScheme) $u0;
+
+        e#3 = interfaceinvoke $r3.<org.eclipse.aether.version.VersionScheme: org.eclipse.aether.version.Version parseVersion(java.lang.String)>(mavenVersion);
+
+     label05:
+        goto label07;
+
+     label06:
+        $stack19 := @caughtexception;
+
+        $u3 = new java.lang.IllegalStateException;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack22 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not parse current Maven version: ");
+
+        $r4 = (org.eclipse.aether.version.InvalidVersionSpecificationException) $stack19;
+
+        $stack23 = virtualinvoke $r4.<org.eclipse.aether.version.InvalidVersionSpecificationException: java.lang.String getMessage()>();
+
+        $stack24 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u3.<java.lang.IllegalStateException: void <init>(java.lang.String,java.lang.Throwable)>($stack25, $stack19);
+
+        throw $u3;
+
+     label07:
+        $stack14 = interfaceinvoke constraint.<org.eclipse.aether.version.VersionConstraint: org.eclipse.aether.version.VersionRange getRange()>();
+
+        if $stack14 != null goto label10;
+
+        $stack16 = interfaceinvoke constraint.<org.eclipse.aether.version.VersionConstraint: org.eclipse.aether.version.Version getVersion()>();
+
+        $stack17 = interfaceinvoke $stack16.<org.eclipse.aether.version.Version: int compareTo(java.lang.Object)>(e#3);
+
+        if $stack17 > 0 goto label08;
+
+        $stack18 = 1;
+
+        goto label09;
+
+     label08:
+        $stack18 = 0;
+
+     label09:
+        return $stack18;
+
+     label10:
+        $stack15 = interfaceinvoke constraint.<org.eclipse.aether.version.VersionConstraint: boolean containsVersion(org.eclipse.aether.version.Version)>(e#3);
+
+        return $stack15;
+
+        catch org.eclipse.aether.version.InvalidVersionSpecificationException from label01 to label02 with label03;
+        catch org.eclipse.aether.version.InvalidVersionSpecificationException from label04 to label05 with label06;
     }
 }

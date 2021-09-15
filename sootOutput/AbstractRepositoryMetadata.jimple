@@ -1,0 +1,611 @@
+public abstract class AbstractRepositoryMetadata extends java.lang.Object implements org.apache.maven.artifact.repository.metadata.RepositoryMetadata
+{
+    private static final java.lang.String LS;
+    private org.apache.maven.artifact.repository.metadata.Metadata metadata;
+
+    protected void <init>(org.apache.maven.artifact.repository.metadata.Metadata)
+    {
+        AbstractRepositoryMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata metadata;
+        org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata $r0;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.Metadata;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        $r0.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata> = metadata;
+
+        return;
+    }
+
+    public java.lang.String getRemoteFilename()
+    {
+        AbstractRepositoryMetadata this;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        return "maven-metadata.xml";
+    }
+
+    public java.lang.String getLocalFilename(org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        java.lang.StringBuilder $stack2, $stack3, $stack5, $stack6;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        java.lang.String $stack4, $stack7;
+        AbstractRepositoryMetadata this;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $stack2 = new java.lang.StringBuilder;
+
+        specialinvoke $stack2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("maven-metadata-");
+
+        $stack4 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getKey()>();
+
+        $stack5 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack4);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".xml");
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack7;
+    }
+
+    public void storeInLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException
+    {
+        AbstractRepositoryMetadata this;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository, remoteRepository;
+        java.lang.Throwable $stack4, $r2;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException $u0;
+        org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata $r0;
+        java.lang.Exception $r1;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        localRepository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        remoteRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+     label1:
+        $r0 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        virtualinvoke $r0.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: void updateRepositoryMetadata(org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository, remoteRepository);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        $u0 = new org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException;
+
+        $r1 = (java.lang.Exception) $stack4;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException: void <init>(java.lang.String,java.lang.Exception)>("Error updating group repository metadata", $r1);
+
+        $r2 = (java.lang.Throwable) $u0;
+
+        throw $r2;
+
+     label4:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+        catch org.codehaus.plexus.util.xml.pull.XmlPullParserException from label1 to label2 with label3;
+    }
+
+    protected void updateRepositoryMetadata(org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.artifact.repository.ArtifactRepository) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository, remoteRepository;
+        java.lang.String $stack13, $stack14, $stack21, $stack36, version#13;
+        AbstractRepositoryMetadata this;
+        long $stack15, $stack28;
+        byte $stack16;
+        boolean $stack17, $stack22, $stack27, $stack37, $stack46, reader#12;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack18, metadata;
+        java.io.File $stack23, $u1;
+        java.lang.Throwable $stack48, $stack49, $stack51, $stack52;
+        java.lang.InterruptedException $stack54;
+        org.codehaus.plexus.util.xml.XmlStreamReader reader#3;
+        org.codehaus.plexus.util.xml.XmlStreamWriter writer#16;
+        org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader $u0;
+        org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer $u2;
+        org.apache.maven.artifact.metadata.ArtifactMetadata $r0;
+        java.io.Reader $r1, $r2, $r3;
+        org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata $r4, $r5;
+        java.io.Writer $r6, $r7, $r8;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        localRepository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        remoteRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $u0 = new org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: void <init>()>();
+
+        metadata = null;
+
+        $u1 = new java.io.File;
+
+        $stack13 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $r0 = (org.apache.maven.artifact.metadata.ArtifactMetadata) this;
+
+        $stack14 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfLocalRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository)>($r0, remoteRepository);
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack13, $stack14);
+
+        $stack15 = virtualinvoke $u1.<java.io.File: long length()>();
+
+        $stack16 = $stack15 cmp 0L;
+
+        if $stack16 != 0 goto label05;
+
+        $stack46 = virtualinvoke $u1.<java.io.File: boolean delete()>();
+
+        if $stack46 != 0 goto label13;
+
+     label01:
+        staticinvoke <java.lang.Thread: void sleep(long)>(10L);
+
+     label02:
+        goto label04;
+
+     label03:
+        $stack54 := @caughtexception;
+
+     label04:
+        virtualinvoke $u1.<java.io.File: boolean delete()>();
+
+        goto label13;
+
+     label05:
+        $stack17 = virtualinvoke $u1.<java.io.File: boolean exists()>();
+
+        if $stack17 == 0 goto label13;
+
+        reader#3 = staticinvoke <org.codehaus.plexus.util.ReaderFactory: org.codehaus.plexus.util.xml.XmlStreamReader newXmlReader(java.io.File)>($u1);
+
+     label06:
+        $r1 = (java.io.Reader) reader#3;
+
+        metadata = virtualinvoke $u0.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: org.apache.maven.artifact.repository.metadata.Metadata read(java.io.Reader,boolean)>($r1, 0);
+
+     label07:
+        if reader#3 == null goto label13;
+
+        $r2 = (java.io.Reader) reader#3;
+
+        virtualinvoke $r2.<java.io.Reader: void close()>();
+
+        goto label13;
+
+     label08:
+        $stack52 := @caughtexception;
+
+        if reader#3 == null goto label12;
+
+     label09:
+        $r3 = (java.io.Reader) reader#3;
+
+        virtualinvoke $r3.<java.io.Reader: void close()>();
+
+     label10:
+        goto label12;
+
+     label11:
+        $stack51 := @caughtexception;
+
+        virtualinvoke $stack52.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack51);
+
+     label12:
+        throw $stack52;
+
+     label13:
+        if metadata != null goto label14;
+
+        $r4 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        metadata = $r4.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        reader#12 = 1;
+
+        goto label15;
+
+     label14:
+        $r5 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        $stack18 = $r5.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        reader#12 = virtualinvoke metadata.<org.apache.maven.artifact.repository.metadata.Metadata: boolean merge(org.apache.maven.artifact.repository.metadata.Metadata)>($stack18);
+
+     label15:
+        version#13 = virtualinvoke metadata.<org.apache.maven.artifact.repository.metadata.Metadata: java.lang.String getVersion()>();
+
+        $stack21 = "LATEST";
+
+        $stack22 = virtualinvoke $stack21.<java.lang.String: boolean equals(java.lang.Object)>(version#13);
+
+        if $stack22 != 0 goto label16;
+
+        $stack36 = "RELEASE";
+
+        $stack37 = virtualinvoke $stack36.<java.lang.String: boolean equals(java.lang.Object)>(version#13);
+
+        if $stack37 == 0 goto label17;
+
+     label16:
+        virtualinvoke metadata.<org.apache.maven.artifact.repository.metadata.Metadata: void setVersion(java.lang.String)>(null);
+
+     label17:
+        if reader#12 != 0 goto label18;
+
+        $stack27 = virtualinvoke $u1.<java.io.File: boolean exists()>();
+
+        if $stack27 != 0 goto label27;
+
+     label18:
+        $stack23 = virtualinvoke $u1.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $stack23.<java.io.File: boolean mkdirs()>();
+
+        writer#16 = staticinvoke <org.codehaus.plexus.util.WriterFactory: org.codehaus.plexus.util.xml.XmlStreamWriter newXmlWriter(java.io.File)>($u1);
+
+     label19:
+        $u2 = new org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer;
+
+        specialinvoke $u2.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer: void <init>()>();
+
+        $r6 = (java.io.Writer) writer#16;
+
+        virtualinvoke $u2.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Writer: void write(java.io.Writer,org.apache.maven.artifact.repository.metadata.Metadata)>($r6, metadata);
+
+     label20:
+        if writer#16 == null goto label26;
+
+        $r7 = (java.io.Writer) writer#16;
+
+        virtualinvoke $r7.<java.io.Writer: void close()>();
+
+        goto label26;
+
+     label21:
+        $stack49 := @caughtexception;
+
+        if writer#16 == null goto label25;
+
+     label22:
+        $r8 = (java.io.Writer) writer#16;
+
+        virtualinvoke $r8.<java.io.Writer: void close()>();
+
+     label23:
+        goto label25;
+
+     label24:
+        $stack48 := @caughtexception;
+
+        virtualinvoke $stack49.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack48);
+
+     label25:
+        throw $stack49;
+
+     label26:
+        goto label28;
+
+     label27:
+        $stack28 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        virtualinvoke $u1.<java.io.File: boolean setLastModified(long)>($stack28);
+
+     label28:
+        return;
+
+        catch java.lang.InterruptedException from label01 to label02 with label03;
+        catch java.lang.Throwable from label06 to label07 with label08;
+        catch java.lang.Throwable from label09 to label10 with label11;
+        catch java.lang.Throwable from label19 to label20 with label21;
+        catch java.lang.Throwable from label22 to label23 with label24;
+    }
+
+    public java.lang.String toString()
+    {
+        java.lang.StringBuilder $stack2, $stack4, $stack5, $u0;
+        AbstractRepositoryMetadata this;
+        java.lang.Object $stack3;
+        java.lang.String $stack6;
+        org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata $r0;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack2 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("repository metadata for: \'");
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        $stack3 = virtualinvoke $r0.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: java.lang.Object getKey()>();
+
+        $stack4 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack3);
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack6;
+    }
+
+    protected static org.apache.maven.artifact.repository.metadata.Metadata createMetadata(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.metadata.Versioning)
+    {
+        org.apache.maven.artifact.repository.metadata.Metadata $stack3;
+        org.apache.maven.artifact.Artifact artifact;
+        java.lang.String $stack4, $stack5, $stack6;
+        org.apache.maven.artifact.repository.metadata.Versioning versioning;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        versioning := @parameter1: org.apache.maven.artifact.repository.metadata.Versioning;
+
+        $stack3 = new org.apache.maven.artifact.repository.metadata.Metadata;
+
+        specialinvoke $stack3.<org.apache.maven.artifact.repository.metadata.Metadata: void <init>()>();
+
+        $stack4 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getGroupId()>();
+
+        virtualinvoke $stack3.<org.apache.maven.artifact.repository.metadata.Metadata: void setGroupId(java.lang.String)>($stack4);
+
+        $stack5 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        virtualinvoke $stack3.<org.apache.maven.artifact.repository.metadata.Metadata: void setArtifactId(java.lang.String)>($stack5);
+
+        $stack6 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        virtualinvoke $stack3.<org.apache.maven.artifact.repository.metadata.Metadata: void setVersion(java.lang.String)>($stack6);
+
+        virtualinvoke $stack3.<org.apache.maven.artifact.repository.metadata.Metadata: void setVersioning(org.apache.maven.artifact.repository.metadata.Versioning)>(versioning);
+
+        return $stack3;
+    }
+
+    protected static org.apache.maven.artifact.repository.metadata.Versioning createVersioning(org.apache.maven.artifact.repository.metadata.Snapshot)
+    {
+        org.apache.maven.artifact.repository.metadata.Versioning $stack2;
+        org.apache.maven.artifact.repository.metadata.Snapshot snapshot;
+
+        snapshot := @parameter0: org.apache.maven.artifact.repository.metadata.Snapshot;
+
+        $stack2 = new org.apache.maven.artifact.repository.metadata.Versioning;
+
+        specialinvoke $stack2.<org.apache.maven.artifact.repository.metadata.Versioning: void <init>()>();
+
+        virtualinvoke $stack2.<org.apache.maven.artifact.repository.metadata.Versioning: void setSnapshot(org.apache.maven.artifact.repository.metadata.Snapshot)>(snapshot);
+
+        return $stack2;
+    }
+
+    public void setMetadata(org.apache.maven.artifact.repository.metadata.Metadata)
+    {
+        AbstractRepositoryMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata metadata;
+        org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata $r0;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        metadata := @parameter0: org.apache.maven.artifact.repository.metadata.Metadata;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        $r0.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata> = metadata;
+
+        return;
+    }
+
+    public org.apache.maven.artifact.repository.metadata.Metadata getMetadata()
+    {
+        AbstractRepositoryMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack1;
+        org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata $r0;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        $stack1 = $r0.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        return $stack1;
+    }
+
+    public void merge(org.apache.maven.repository.legacy.metadata.ArtifactMetadata)
+    {
+        org.apache.maven.repository.legacy.metadata.ArtifactMetadata metadata;
+        org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata repoMetadata, $r0;
+        AbstractRepositoryMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack3, $stack4;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        metadata := @parameter0: org.apache.maven.repository.legacy.metadata.ArtifactMetadata;
+
+        repoMetadata = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) metadata;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        $stack4 = virtualinvoke repoMetadata.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata getMetadata()>();
+
+        virtualinvoke $stack3.<org.apache.maven.artifact.repository.metadata.Metadata: boolean merge(org.apache.maven.artifact.repository.metadata.Metadata)>($stack4);
+
+        return;
+    }
+
+    public void merge(org.apache.maven.artifact.metadata.ArtifactMetadata)
+    {
+        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
+        org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata repoMetadata, $r0;
+        AbstractRepositoryMetadata this;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack3, $stack4;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        metadata := @parameter0: org.apache.maven.artifact.metadata.ArtifactMetadata;
+
+        repoMetadata = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) metadata;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata metadata>;
+
+        $stack4 = virtualinvoke repoMetadata.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata getMetadata()>();
+
+        virtualinvoke $stack3.<org.apache.maven.artifact.repository.metadata.Metadata: boolean merge(org.apache.maven.artifact.repository.metadata.Metadata)>($stack4);
+
+        return;
+    }
+
+    public java.lang.String extendedToString()
+    {
+        java.lang.String $stack3, $stack6, $stack9, $stack12, $stack14, $stack17, $stack19, $stack23, $stack25;
+        java.lang.StringBuilder $stack4, $stack5, $stack7, $stack10, $stack11, $stack15, $stack16, $stack20, $stack21, $u0;
+        AbstractRepositoryMetadata this;
+        java.lang.Class $stack22;
+        org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata $r0, $r1;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(int)>(256);
+
+        $stack3 = <org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: java.lang.String LS>;
+
+        $stack4 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack3);
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Repository Metadata");
+
+        $stack6 = <org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: java.lang.String LS>;
+
+        $stack7 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack6);
+
+        virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--------------------------");
+
+        $stack9 = <org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: java.lang.String LS>;
+
+        $stack10 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("GroupId: ");
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        $stack12 = virtualinvoke $r0.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: java.lang.String getGroupId()>();
+
+        virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        $stack14 = <org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: java.lang.String LS>;
+
+        $stack15 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ArtifactId: ");
+
+        $r1 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        $stack17 = virtualinvoke $r1.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: java.lang.String getArtifactId()>();
+
+        virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack17);
+
+        $stack19 = <org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: java.lang.String LS>;
+
+        $stack20 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Metadata Type: ");
+
+        $stack22 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack23 = virtualinvoke $stack22.<java.lang.Class: java.lang.String getName()>();
+
+        virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+        $stack25 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack25;
+    }
+
+    public int getNature()
+    {
+        AbstractRepositoryMetadata this;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        return 1;
+    }
+
+    public org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getPolicy(org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        AbstractRepositoryMetadata this;
+        int nature, $stack5, $stack6;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy $stack7, $stack8, $stack10, $stack11, $u0;
+        org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata $r0;
+
+        this := @this: AbstractRepositoryMetadata;
+
+        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata) this;
+
+        nature = virtualinvoke $r0.<org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: int getNature()>();
+
+        $stack5 = nature & 3;
+
+        if $stack5 != 3 goto label1;
+
+        $u0 = new org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
+
+        $stack10 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getReleases()>();
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: void <init>(org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>($stack10);
+
+        $stack11 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getSnapshots()>();
+
+        virtualinvoke $u0.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: void merge(org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>($stack11);
+
+        return $u0;
+
+     label1:
+        $stack6 = nature & 2;
+
+        if $stack6 == 0 goto label2;
+
+        $stack8 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getSnapshots()>();
+
+        return $stack8;
+
+     label2:
+        $stack7 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getReleases()>();
+
+        return $stack7;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String $stack0;
+
+        $stack0 = staticinvoke <java.lang.System: java.lang.String lineSeparator()>();
+
+        <org.apache.maven.artifact.repository.metadata.AbstractRepositoryMetadata: java.lang.String LS> = $stack0;
+
+        return;
+    }
+}

@@ -1,0 +1,525 @@
+public class CoverDeclParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        CoverDeclParser this;
+
+        this := @this: CoverDeclParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.ooc.frontend.model.CoverDecl parse(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        int mark, mark2#37;
+        java.lang.Object $stack20, $stack22, $stack25, $stack41, $stack48, $stack53, $stack57, $stack60, $stack68, $stack79, $stack86, $stack92, $stack97, $stack107, $stack112, $stack118, $stack120, $stack124, $stack151, $stack155, $stack163, $stack166, $stack28, $stack64;
+        org.ooc.frontend.model.tokens.Token commentToken, startToken, $stack26, $stack42, $stack49, $stack54, $stack156, $stack164, $stack167, token, imp#44, depMod#68;
+        byte $stack21, $stack27, $stack30, $stack43, $stack50, $stack55, $stack66, $stack98, $stack157, $stack168, $stack29, $stack65;
+        org.ooc.frontend.model.Module module, depMod, imp#29;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.Type tName, fromType, superType;
+        java.lang.String externName, $stack61, $stack82, $stack83, $stack95, $stack96, $stack113, $stack114, $stack129, $stack165, name;
+        org.ooc.frontend.model.NodeList $stack32, $stack33, $stack40, $stack99, $stack108, depMod#58;
+        org.ubi.Locatable $stack58, $stack69, $stack80, $stack93, $stack152, $r1;
+        org.ubi.FileLocation $stack59, $stack70, $stack81, $stack94, $stack142, $stack153;
+        boolean $stack63, $stack71, $stack85, $stack88, $stack103, $stack110, $stack115, $stack130, absorbed, $stack35, $stack38, $stack39;
+        java.util.Map $stack100;
+        java.util.Collection $stack101;
+        org.ooc.middle.structs.MultiMap $stack117, $stack123;
+        org.ooc.frontend.model.CoverDecl $stack119, $stack125, $u3;
+        org.ooc.frontend.model.OocDocComment comment, $u0;
+        java.util.Iterator mark2, depMod#30, base#59;
+        org.ooc.frontend.model.Import imp, base#31;
+        org.ooc.frontend.model.TypeDecl base, addon;
+        org.ooc.frontend.model.Node imp#57, $r3, $r4, $r9;
+        org.ooc.frontend.model.VariableDecl addon#60, depMod#61;
+        org.ooc.frontend.model.FunctionDecl depMod#75;
+        org.ubi.CompilationFailedError $u1, $u2, $u4, $u5, $u6, $u7;
+        java.lang.Throwable $r0, $r2, $r5, $r6, $r7, $r8;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        mark = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: int mark()>();
+
+        comment = null;
+
+        $stack20 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        commentToken = (org.ooc.frontend.model.tokens.Token) $stack20;
+
+        $stack21 = commentToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack21 != 38 goto label02;
+
+        $u0 = new org.ooc.frontend.model.OocDocComment;
+
+        $stack163 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        $stack164 = (org.ooc.frontend.model.tokens.Token) $stack163;
+
+        $stack165 = virtualinvoke $stack164.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        specialinvoke $u0.<org.ooc.frontend.model.OocDocComment: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack165, commentToken);
+
+        comment = $u0;
+
+     label01:
+        $stack166 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack167 = (org.ooc.frontend.model.tokens.Token) $stack166;
+
+        $stack168 = $stack167.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack168 != 51 goto label02;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        goto label01;
+
+     label02:
+        $stack22 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        startToken = (org.ooc.frontend.model.tokens.Token) $stack22;
+
+        name = "";
+
+        tName = staticinvoke <org.ooc.frontend.parser.TypeParser: org.ooc.frontend.model.Type parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if tName == null goto label03;
+
+        name = virtualinvoke tName.<org.ooc.frontend.model.Type: java.lang.String toString()>();
+
+        $stack155 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        $stack156 = (org.ooc.frontend.model.tokens.Token) $stack155;
+
+        $stack157 = $stack156.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack157 == 50 goto label03;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void reset(int)>(mark);
+
+        return null;
+
+     label03:
+        externName = staticinvoke <org.ooc.frontend.parser.ExternParser: java.lang.String parse(org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(sReader, reader);
+
+        $stack25 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        $stack26 = (org.ooc.frontend.model.tokens.Token) $stack25;
+
+        $stack27 = $stack26.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack27 != 2 goto label29;
+
+        fromType = null;
+
+        superType = null;
+
+     label04:
+        $stack28 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        token = (org.ooc.frontend.model.tokens.Token) $stack28;
+
+        $stack29 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack29 != 6 goto label05;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        fromType = staticinvoke <org.ooc.frontend.parser.TypeParser: org.ooc.frontend.model.Type parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, 0);
+
+        if fromType != null goto label04;
+
+        $u1 = new org.ubi.CompilationFailedError;
+
+        $stack151 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack152 = (org.ubi.Locatable) $stack151;
+
+        $stack153 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack152);
+
+        specialinvoke $u1.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack153, "Expected cover\'s base type name after the from keyword.");
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label05:
+        $stack30 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack30 != 5 goto label06;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        superType = staticinvoke <org.ooc.frontend.parser.TypeParser: org.ooc.frontend.model.Type parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, 0);
+
+        goto label04;
+
+     label06:
+        if superType == null goto label07;
+
+        $stack129 = virtualinvoke superType.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+        $stack130 = virtualinvoke name.<java.lang.String: boolean equals(java.lang.Object)>($stack129);
+
+        if $stack130 == 0 goto label07;
+
+        $u2 = new org.ubi.CompilationFailedError;
+
+        $r1 = (org.ubi.Locatable) startToken;
+
+        $stack142 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($r1);
+
+        specialinvoke $u2.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack142, "A cover cannot extends itself!");
+
+        $r2 = (java.lang.Throwable) $u2;
+
+        throw $r2;
+
+     label07:
+        $u3 = new org.ooc.frontend.model.CoverDecl;
+
+        specialinvoke $u3.<org.ooc.frontend.model.CoverDecl: void <init>(java.lang.String,org.ooc.frontend.model.Type,org.ooc.frontend.model.Type,org.ooc.frontend.model.Module,org.ooc.frontend.model.tokens.Token)>(name, superType, fromType, module, startToken);
+
+        $stack32 = module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList parseStack>;
+
+        $r3 = (org.ooc.frontend.model.Node) $u3;
+
+        virtualinvoke $stack32.<org.ooc.frontend.model.NodeList: void push(org.ooc.frontend.model.Node)>($r3);
+
+        virtualinvoke $u3.<org.ooc.frontend.model.CoverDecl: void setExternName(java.lang.String)>(externName);
+
+        if comment == null goto label08;
+
+        virtualinvoke $u3.<org.ooc.frontend.model.CoverDecl: void setComment(org.ooc.frontend.model.OocDocComment)>(comment);
+
+     label08:
+        absorbed = 0;
+
+        $stack33 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getGlobalImports()>();
+
+        mark2 = virtualinvoke $stack33.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label09:
+        $stack35 = interfaceinvoke mark2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack35 == 0 goto label11;
+
+        $stack120 = interfaceinvoke mark2.<java.util.Iterator: java.lang.Object next()>();
+
+        imp = (org.ooc.frontend.model.Import) $stack120;
+
+        depMod = virtualinvoke imp.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        if depMod == null goto label10;
+
+        $stack123 = virtualinvoke depMod.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap getTypes()>();
+
+        $stack124 = virtualinvoke $stack123.<org.ooc.middle.structs.MultiMap: java.lang.Object get(java.lang.Object)>(name);
+
+        base = (org.ooc.frontend.model.TypeDecl) $stack124;
+
+        if base == null goto label10;
+
+        $stack125 = (org.ooc.frontend.model.CoverDecl) base;
+
+        virtualinvoke $u3.<org.ooc.frontend.model.CoverDecl: void absorb(org.ooc.frontend.model.CoverDecl)>($stack125);
+
+        absorbed = 1;
+
+        goto label11;
+
+     label10:
+        goto label09;
+
+     label11:
+        if absorbed != 0 goto label16;
+
+        $stack100 = <org.ooc.frontend.parser.ModuleParser: java.util.Map cache>;
+
+        $stack101 = interfaceinvoke $stack100.<java.util.Map: java.util.Collection values()>();
+
+        mark2 = interfaceinvoke $stack101.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label12:
+        $stack103 = interfaceinvoke mark2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack103 == 0 goto label16;
+
+        $stack107 = interfaceinvoke mark2.<java.util.Iterator: java.lang.Object next()>();
+
+        imp#29 = (org.ooc.frontend.model.Module) $stack107;
+
+        $stack108 = virtualinvoke imp#29.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getGlobalImports()>();
+
+        depMod#30 = virtualinvoke $stack108.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label13:
+        $stack110 = interfaceinvoke depMod#30.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack110 == 0 goto label15;
+
+        $stack112 = interfaceinvoke depMod#30.<java.util.Iterator: java.lang.Object next()>();
+
+        base#31 = (org.ooc.frontend.model.Import) $stack112;
+
+        $stack113 = virtualinvoke base#31.<org.ooc.frontend.model.Import: java.lang.String getFullName()>();
+
+        $stack114 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getFullName()>();
+
+        $stack115 = virtualinvoke $stack113.<java.lang.String: boolean equals(java.lang.Object)>($stack114);
+
+        if $stack115 == 0 goto label14;
+
+        $stack117 = virtualinvoke imp#29.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap getTypes()>();
+
+        $stack118 = virtualinvoke $stack117.<org.ooc.middle.structs.MultiMap: java.lang.Object get(java.lang.Object)>(name);
+
+        addon = (org.ooc.frontend.model.TypeDecl) $stack118;
+
+        if addon == null goto label14;
+
+        $stack119 = (org.ooc.frontend.model.CoverDecl) addon;
+
+        virtualinvoke $stack119.<org.ooc.frontend.model.CoverDecl: void absorb(org.ooc.frontend.model.CoverDecl)>($u3);
+
+        goto label16;
+
+     label14:
+        goto label13;
+
+     label15:
+        goto label12;
+
+     label16:
+        mark2#37 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: int mark()>();
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        $stack38 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean hasNext()>();
+
+        if $stack38 == 0 goto label17;
+
+        $stack97 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        imp#44 = (org.ooc.frontend.model.tokens.Token) $stack97;
+
+        $stack98 = imp#44.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack98 == 84 goto label17;
+
+        $stack99 = module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList parseStack>;
+
+        $r4 = (org.ooc.frontend.model.Node) $u3;
+
+        virtualinvoke $stack99.<org.ooc.frontend.model.NodeList: void pop(org.ooc.frontend.model.Node)>($r4);
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void reset(int)>(mark2#37);
+
+        return $u3;
+
+     label17:
+        $stack39 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean hasNext()>();
+
+        if $stack39 == 0 goto label28;
+
+        $stack41 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack42 = (org.ooc.frontend.model.tokens.Token) $stack41;
+
+        $stack43 = $stack42.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack43 == 85 goto label28;
+
+        $stack48 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack49 = (org.ooc.frontend.model.tokens.Token) $stack48;
+
+        $stack50 = $stack49.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack50 != 51 goto label18;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        goto label17;
+
+     label18:
+        imp#57 = staticinvoke <org.ooc.frontend.parser.VariableDeclParser: org.ooc.frontend.model.Node parseMulti(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if imp#57 == null goto label25;
+
+        $stack63 = imp#57 instanceof org.ooc.frontend.model.NodeList;
+
+        if $stack63 == 0 goto label22;
+
+        depMod#58 = (org.ooc.frontend.model.NodeList) imp#57;
+
+        base#59 = virtualinvoke depMod#58.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label19:
+        $stack85 = interfaceinvoke base#59.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack85 == 0 goto label21;
+
+        $stack86 = interfaceinvoke base#59.<java.util.Iterator: java.lang.Object next()>();
+
+        addon#60 = (org.ooc.frontend.model.VariableDecl) $stack86;
+
+        if fromType == null goto label20;
+
+        $stack88 = virtualinvoke addon#60.<org.ooc.frontend.model.VariableDecl: boolean isExtern()>();
+
+        if $stack88 != 0 goto label20;
+
+        $u4 = new org.ubi.CompilationFailedError;
+
+        $stack92 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack93 = (org.ubi.Locatable) $stack92;
+
+        $stack94 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack93);
+
+        $stack95 = virtualinvoke fromType.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+        $stack96 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack95) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("You can\'t add non-extern member variables to a Cover which already has a base type (in this case, \u0001)");
+
+        specialinvoke $u4.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack94, $stack96);
+
+        $r5 = (java.lang.Throwable) $u4;
+
+        throw $r5;
+
+     label20:
+        virtualinvoke $u3.<org.ooc.frontend.model.CoverDecl: void addVariable(org.ooc.frontend.model.VariableDecl)>(addon#60);
+
+        goto label19;
+
+     label21:
+        goto label24;
+
+     label22:
+        depMod#61 = (org.ooc.frontend.model.VariableDecl) imp#57;
+
+        if fromType == null goto label23;
+
+        $stack71 = virtualinvoke depMod#61.<org.ooc.frontend.model.VariableDecl: boolean isExtern()>();
+
+        if $stack71 != 0 goto label23;
+
+        $u5 = new org.ubi.CompilationFailedError;
+
+        $stack79 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack80 = (org.ubi.Locatable) $stack79;
+
+        $stack81 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack80);
+
+        $stack82 = virtualinvoke fromType.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+        $stack83 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack82) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("You can\'t add non-extern member variables to a Cover which already has a base type (in this case, \u0001)");
+
+        specialinvoke $u5.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack81, $stack83);
+
+        $r6 = (java.lang.Throwable) $u5;
+
+        throw $r6;
+
+     label23:
+        virtualinvoke $u3.<org.ooc.frontend.model.CoverDecl: void addVariable(org.ooc.frontend.model.VariableDecl)>(depMod#61);
+
+     label24:
+        $stack64 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        depMod#68 = (org.ooc.frontend.model.tokens.Token) $stack64;
+
+        $stack65 = depMod#68.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack65 == 51 goto label17;
+
+        $stack66 = depMod#68.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack66 == 38 goto label17;
+
+        $u6 = new org.ubi.CompilationFailedError;
+
+        $stack68 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack69 = (org.ubi.Locatable) $stack68;
+
+        $stack70 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack69);
+
+        specialinvoke $u6.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack70, "Expected semi-colon after variable declaration in class declaration");
+
+        $r7 = (java.lang.Throwable) $u6;
+
+        throw $r7;
+
+     label25:
+        depMod#75 = staticinvoke <org.ooc.frontend.parser.FunctionDeclParser: org.ooc.frontend.model.FunctionDecl parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, 0);
+
+        if depMod#75 == null goto label26;
+
+        virtualinvoke $u3.<org.ooc.frontend.model.CoverDecl: void addFunction(org.ooc.frontend.model.FunctionDecl)>(depMod#75);
+
+        goto label17;
+
+     label26:
+        $stack53 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack54 = (org.ooc.frontend.model.tokens.Token) $stack53;
+
+        $stack55 = $stack54.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack55 != 38 goto label27;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        goto label17;
+
+     label27:
+        $u7 = new org.ubi.CompilationFailedError;
+
+        $stack57 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack58 = (org.ubi.Locatable) $stack57;
+
+        $stack59 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack58);
+
+        $stack60 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack61 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.Object)>($stack60) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Expected variable declaration or function declaration in a cover declaration, but got \u0001");
+
+        specialinvoke $u7.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack59, $stack61);
+
+        $r8 = (java.lang.Throwable) $u7;
+
+        throw $r8;
+
+     label28:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $stack40 = module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList parseStack>;
+
+        $r9 = (org.ooc.frontend.model.Node) $u3;
+
+        virtualinvoke $stack40.<org.ooc.frontend.model.NodeList: void pop(org.ooc.frontend.model.Node)>($r9);
+
+        return $u3;
+
+     label29:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void reset(int)>(mark);
+
+        return null;
+    }
+}

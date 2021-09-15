@@ -1,0 +1,189 @@
+public class MavenToolchainMerger extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        MavenToolchainMerger this;
+
+        this := @this: MavenToolchainMerger;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void merge(org.apache.maven.toolchain.model.PersistedToolchains, org.apache.maven.toolchain.model.PersistedToolchains, java.lang.String)
+    {
+        org.apache.maven.toolchain.model.PersistedToolchains dominant, recessive;
+        java.lang.String recessiveSourceLevel;
+        MavenToolchainMerger this;
+        java.util.List $stack4, $stack5;
+        org.apache.maven.toolchain.merge.MavenToolchainMerger $r0;
+
+        this := @this: MavenToolchainMerger;
+
+        dominant := @parameter0: org.apache.maven.toolchain.model.PersistedToolchains;
+
+        recessive := @parameter1: org.apache.maven.toolchain.model.PersistedToolchains;
+
+        recessiveSourceLevel := @parameter2: java.lang.String;
+
+        if dominant == null goto label1;
+
+        if recessive != null goto label2;
+
+     label1:
+        return;
+
+     label2:
+        virtualinvoke recessive.<org.apache.maven.toolchain.model.PersistedToolchains: void setSourceLevel(java.lang.String)>(recessiveSourceLevel);
+
+        $stack4 = virtualinvoke dominant.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack5 = virtualinvoke recessive.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $r0 = (org.apache.maven.toolchain.merge.MavenToolchainMerger) this;
+
+        specialinvoke $r0.<org.apache.maven.toolchain.merge.MavenToolchainMerger: void shallowMerge(java.util.List,java.util.List,java.lang.String)>($stack4, $stack5, recessiveSourceLevel);
+
+        return;
+    }
+
+    private void shallowMerge(java.util.List, java.util.List, java.lang.String)
+    {
+        java.util.List dominant, recessive;
+        boolean $stack11, $stack13;
+        java.lang.Object $stack14, $stack16, $stack19, key;
+        MavenToolchainMerger this;
+        org.apache.maven.toolchain.model.ToolchainModel dominantModel, dominantModel;
+        java.lang.String recessiveSourceLevel;
+        java.util.Iterator l5;
+        java.util.LinkedHashMap $u0;
+        org.apache.maven.toolchain.merge.MavenToolchainMerger $r0, $r1, $r2;
+
+        this := @this: MavenToolchainMerger;
+
+        dominant := @parameter0: java.util.List;
+
+        recessive := @parameter1: java.util.List;
+
+        recessiveSourceLevel := @parameter2: java.lang.String;
+
+        $u0 = new java.util.LinkedHashMap;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>()>();
+
+        l5 = interfaceinvoke dominant.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack11 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label2;
+
+        $stack19 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        dominantModel = (org.apache.maven.toolchain.model.ToolchainModel) $stack19;
+
+        $r0 = (org.apache.maven.toolchain.merge.MavenToolchainMerger) this;
+
+        key = virtualinvoke $r0.<org.apache.maven.toolchain.merge.MavenToolchainMerger: java.lang.Object getToolchainModelKey(org.apache.maven.toolchain.model.ToolchainModel)>(dominantModel);
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, dominantModel);
+
+        goto label1;
+
+     label2:
+        l5 = interfaceinvoke recessive.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack13 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label6;
+
+        $stack14 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        dominantModel = (org.apache.maven.toolchain.model.ToolchainModel) $stack14;
+
+        $r1 = (org.apache.maven.toolchain.merge.MavenToolchainMerger) this;
+
+        key = virtualinvoke $r1.<org.apache.maven.toolchain.merge.MavenToolchainMerger: java.lang.Object getToolchainModelKey(org.apache.maven.toolchain.model.ToolchainModel)>(dominantModel);
+
+        $stack16 = interfaceinvoke $u0.<java.util.Map: java.lang.Object get(java.lang.Object)>(key);
+
+        dominantModel = (org.apache.maven.toolchain.model.ToolchainModel) $stack16;
+
+        if dominantModel != null goto label4;
+
+        virtualinvoke dominantModel.<org.apache.maven.toolchain.model.ToolchainModel: void setSourceLevel(java.lang.String)>(recessiveSourceLevel);
+
+        interfaceinvoke dominant.<java.util.List: boolean add(java.lang.Object)>(dominantModel);
+
+        goto label5;
+
+     label4:
+        $r2 = (org.apache.maven.toolchain.merge.MavenToolchainMerger) this;
+
+        virtualinvoke $r2.<org.apache.maven.toolchain.merge.MavenToolchainMerger: void mergeToolchainModelConfiguration(org.apache.maven.toolchain.model.ToolchainModel,org.apache.maven.toolchain.model.ToolchainModel)>(dominantModel, dominantModel);
+
+     label5:
+        goto label3;
+
+     label6:
+        return;
+    }
+
+    protected void mergeToolchainModelConfiguration(org.apache.maven.toolchain.model.ToolchainModel, org.apache.maven.toolchain.model.ToolchainModel)
+    {
+        org.apache.maven.toolchain.model.ToolchainModel source, target;
+        java.lang.Object $stack5, $stack6;
+        org.codehaus.plexus.util.xml.Xpp3Dom src, $stack8, tgt;
+        MavenToolchainMerger this;
+
+        this := @this: MavenToolchainMerger;
+
+        target := @parameter0: org.apache.maven.toolchain.model.ToolchainModel;
+
+        source := @parameter1: org.apache.maven.toolchain.model.ToolchainModel;
+
+        $stack5 = virtualinvoke source.<org.apache.maven.toolchain.model.ToolchainModel: java.lang.Object getConfiguration()>();
+
+        src = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack5;
+
+        if src == null goto label3;
+
+        $stack6 = virtualinvoke target.<org.apache.maven.toolchain.model.ToolchainModel: java.lang.Object getConfiguration()>();
+
+        tgt = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack6;
+
+        if tgt != null goto label1;
+
+        $stack8 = new org.codehaus.plexus.util.xml.Xpp3Dom;
+
+        specialinvoke $stack8.<org.codehaus.plexus.util.xml.Xpp3Dom: void <init>(org.codehaus.plexus.util.xml.Xpp3Dom)>(src);
+
+        tgt = staticinvoke <org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom mergeXpp3Dom(org.codehaus.plexus.util.xml.Xpp3Dom,org.codehaus.plexus.util.xml.Xpp3Dom)>($stack8, tgt);
+
+        goto label2;
+
+     label1:
+        tgt = staticinvoke <org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom mergeXpp3Dom(org.codehaus.plexus.util.xml.Xpp3Dom,org.codehaus.plexus.util.xml.Xpp3Dom)>(tgt, src);
+
+     label2:
+        virtualinvoke target.<org.apache.maven.toolchain.model.ToolchainModel: void setConfiguration(java.lang.Object)>(tgt);
+
+     label3:
+        return;
+    }
+
+    protected java.lang.Object getToolchainModelKey(org.apache.maven.toolchain.model.ToolchainModel)
+    {
+        org.apache.maven.toolchain.model.ToolchainModel model;
+        MavenToolchainMerger this;
+
+        this := @this: MavenToolchainMerger;
+
+        model := @parameter0: org.apache.maven.toolchain.model.ToolchainModel;
+
+        return model;
+    }
+}

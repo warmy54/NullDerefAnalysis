@@ -1,0 +1,244 @@
+class SortDependenciesTest extends java.lang.Object
+{
+
+    void <init>()
+    {
+        SortDependenciesTest this;
+
+        this := @this: SortDependenciesTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    final void scopeInSortDependenciesShouldSortByScope() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2, $stack3, $stack4;
+        SortDependenciesTest this;
+
+        this := @this: SortDependenciesTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil customSortOrderFile(java.lang.String)>("custom_1.xml");
+
+        $stack3 = virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil sortDependencies(java.lang.String)>("scope,GROUPID,artifactId");
+
+        $stack4 = virtualinvoke $stack3.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil lineSeparator(java.lang.String)>("\r\n");
+
+        virtualinvoke $stack4.<sortpom.util.SortPomImplUtil: void testFiles(java.lang.String,java.lang.String)>("/SortDep_input_simpleWithScope.xml", "/SortDep_expected_simpleWithScope2.xml");
+
+        return;
+    }
+
+    final void extraTagInDependenciesPluginAndExclusionsShouldBeSortedFirst() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2, $stack3, $stack4, $stack5, $stack6;
+        SortDependenciesTest this;
+
+        this := @this: SortDependenciesTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil customSortOrderFile(java.lang.String)>("sortOrderFiles/extra_dummy_tags.xml");
+
+        $stack3 = virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil sortDependencies(java.lang.String)>("scope,groupId,artifactId");
+
+        $stack4 = virtualinvoke $stack3.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil sortDependencyExclusions(java.lang.String)>("groupId,artifactId");
+
+        $stack5 = virtualinvoke $stack4.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil sortPlugins(java.lang.String)>("groupId,artifactId");
+
+        $stack6 = virtualinvoke $stack5.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil lineSeparator(java.lang.String)>("\r\n");
+
+        virtualinvoke $stack6.<sortpom.util.SortPomImplUtil: void testFiles(java.lang.String,java.lang.String)>("/Extra_tags_dep_and_plugin.xml", "/Extra_tags_dep_and_plugin_expected.xml");
+
+        return;
+    }
+
+    final void defaultGroupIdForPluginsShouldWork() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2, $stack3, $stack4, $stack5;
+        SortDependenciesTest this;
+
+        this := @this: SortDependenciesTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil customSortOrderFile(java.lang.String)>("custom_1.xml");
+
+        $stack3 = virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil sortPlugins(java.lang.String)>("groupId,artifactId");
+
+        $stack4 = virtualinvoke $stack3.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil lineSeparator(java.lang.String)>("\n");
+
+        $stack5 = virtualinvoke $stack4.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil nrOfIndentSpace(int)>(4);
+
+        virtualinvoke $stack5.<sortpom.util.SortPomImplUtil: void testFiles(java.lang.String,java.lang.String)>("/PluginDefaultName_input.xml", "/PluginDefaultName_expect.xml");
+
+        return;
+    }
+
+    final void deprecatedSortPluginsTrueMessageShouldWork()
+    {
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack4;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack5;
+        org.hamcrest.Matcher $stack6;
+        SortDependenciesTest this;
+
+        this := @this: SortDependenciesTest;
+
+        testMethod = staticinvoke <SortDependenciesTest$lambda_deprecatedSortPluginsTrueMessageShouldWork_0__309: org.junit.jupiter.api.function.Executable bootstrap$()>();
+
+        $stack4 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack4;
+
+        $stack5 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $stack6 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>("The \'true\' value in sortPlugins is not supported anymore, please use value \'groupId,artifactId\' instead.");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack5, $stack6);
+
+        return;
+    }
+
+    final void deprecatedSortPluginsFalseMessageShouldWork()
+    {
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack4;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack5;
+        org.hamcrest.Matcher $stack6;
+        SortDependenciesTest this;
+
+        this := @this: SortDependenciesTest;
+
+        testMethod = staticinvoke <SortDependenciesTest$lambda_deprecatedSortPluginsFalseMessageShouldWork_1__312: org.junit.jupiter.api.function.Executable bootstrap$()>();
+
+        $stack4 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack4;
+
+        $stack5 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $stack6 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>("The \'false\' value in sortPlugins is not supported anymore, please use empty value \'\' or omit sortPlugins instead.");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack5, $stack6);
+
+        return;
+    }
+
+    final void deprecatedSortDependenciesTrueMessageShouldWork()
+    {
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack4;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack5;
+        org.hamcrest.Matcher $stack6;
+        SortDependenciesTest this;
+
+        this := @this: SortDependenciesTest;
+
+        testMethod = staticinvoke <SortDependenciesTest$lambda_deprecatedSortDependenciesTrueMessageShouldWork_2__310: org.junit.jupiter.api.function.Executable bootstrap$()>();
+
+        $stack4 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack4;
+
+        $stack5 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $stack6 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>("The \'true\' value in sortDependencies is not supported anymore, please use value \'groupId,artifactId\' instead.");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack5, $stack6);
+
+        return;
+    }
+
+    final void deprecatedSortDependenciesFalseMessageShouldWork()
+    {
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack4;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack5;
+        org.hamcrest.Matcher $stack6;
+        SortDependenciesTest this;
+
+        this := @this: SortDependenciesTest;
+
+        testMethod = staticinvoke <SortDependenciesTest$lambda_deprecatedSortDependenciesFalseMessageShouldWork_3__311: org.junit.jupiter.api.function.Executable bootstrap$()>();
+
+        $stack4 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack4;
+
+        $stack5 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $stack6 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>("The \'false\' value in sortDependencies is not supported anymore, please use empty value \'\' or omit sortDependencies instead.");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack5, $stack6);
+
+        return;
+    }
+
+    private static void lambda$deprecatedSortDependenciesFalseMessageShouldWork$3() throws java.lang.Throwable
+    {
+        sortpom.util.SortPomImplUtil $stack0, $stack1;
+
+        $stack0 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack1 = virtualinvoke $stack0.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil sortDependencies(java.lang.String)>("false");
+
+        virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: void testFiles(java.lang.String,java.lang.String)>("/full_unsorted_input.xml", "/full_expected.xml");
+
+        return;
+    }
+
+    private static void lambda$deprecatedSortDependenciesTrueMessageShouldWork$2() throws java.lang.Throwable
+    {
+        sortpom.util.SortPomImplUtil $stack0, $stack1, $stack2;
+
+        $stack0 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack1 = virtualinvoke $stack0.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil sortDependencies(java.lang.String)>("true");
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil sortPlugins(java.lang.String)>("true");
+
+        virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: void testFiles(java.lang.String,java.lang.String)>("/Simple_input.xml", "/Simple_expected_sortDep.xml");
+
+        return;
+    }
+
+    private static void lambda$deprecatedSortPluginsFalseMessageShouldWork$1() throws java.lang.Throwable
+    {
+        sortpom.util.SortPomImplUtil $stack0, $stack1;
+
+        $stack0 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack1 = virtualinvoke $stack0.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil sortPlugins(java.lang.String)>("false");
+
+        virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: void testFiles(java.lang.String,java.lang.String)>("/full_unsorted_input.xml", "/full_expected.xml");
+
+        return;
+    }
+
+    private static void lambda$deprecatedSortPluginsTrueMessageShouldWork$0() throws java.lang.Throwable
+    {
+        sortpom.util.SortPomImplUtil $stack0, $stack1, $stack2, $stack3, $stack4;
+
+        $stack0 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack1 = virtualinvoke $stack0.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil customSortOrderFile(java.lang.String)>("custom_1.xml");
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil sortPlugins(java.lang.String)>("true");
+
+        $stack3 = virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil lineSeparator(java.lang.String)>("\n");
+
+        $stack4 = virtualinvoke $stack3.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil nrOfIndentSpace(int)>(4);
+
+        virtualinvoke $stack4.<sortpom.util.SortPomImplUtil: void testFiles(java.lang.String,java.lang.String)>("/PluginDefaultName_input.xml", "/PluginDefaultName_expect.xml");
+
+        return;
+    }
+}

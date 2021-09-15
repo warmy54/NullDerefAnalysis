@@ -1,37 +1,68 @@
 package dfa;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-
+import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.FileHandler;
 
 import soot.*;
-import soot.Body;
-import soot.NormalUnitPrinter;
-import soot.Scene;
-import soot.SootClass;
-import soot.SootMethod;
-import soot.Unit;
-import soot.UnitPrinter;
-import soot.toolkits.graph.ExceptionalUnitGraph;
-import soot.toolkits.graph.UnitGraph;
-import soot.jimple.internal.*;
 
 public class RunDataFlowAnalysis
-{
-	public static void main(String[] args) {
+{	
+	public static void main(String[] args) throws SecurityException, IOException {
 		
+		File file = new File("ResultSoot");
+		PrintStream out = new PrintStream(file);
+		System.setOut(out);
+
+		NullAnalysisProperties prop = new NullAnalysisProperties();
+		AnaliseDir("/home/frederic/maven3.3.0",prop);
+		//String[] i = {"Marker","/home/frederic/javacv/target/classes/org/bytedeco/javacv"};
+		//Run(i,prop);
+		System.out.println("Finihed");
+		out.close();
+	}
+	public static void AnaliseDir(String path,NullAnalysisProperties prop) {
+		try {
+			Files.walk(Paths.get(path))
+			.filter(w -> Files.isRegularFile(w) && w.toString().contains(".class"))
+			.forEach(f -> WrapAndRun(f,prop));
+			
+		} catch (IOException e) {
+			System.out.println("Erreur io in AnaliDir");
+			e.printStackTrace();
+		}
+		
+	}
+	public static void WrapAndRun(Path f,NullAnalysisProperties prop) {
+		//throw new RuntimeException(f.getFileName().toString() + "  " + f.getParent().toString());
+		String[] i = {f.getFileName().toString().replace(".class", ""),f.getParent().toString()};
+		Run(i,prop);
+	}
+	public static void Run(String[] args,NullAnalysisProperties prop) {
+		soot.G.v();
+		//we first need to reset everthing
+		G.reset();
+		
+		//default argument if no argument given in path
 		String mainClass = "ExpressionDocumenter";
-		
-		
-		/*** *** YOU SHOULD EDIT THIS BEFORE RUNNING *** ***/
 		String classPath = "/home/frederic/maven3.3.0/maven/maven-compat/target/classes/org/apache/maven/usability/plugin";
+		
+		
 		//if arguments are given use given in path
 		if (args.length == 2) {
-			mainClass = args[1];
-			classPath = args[0];
-		}	
-
+			mainClass = args[0];
+			
+			classPath = args[1];
+			
+		}
+		System.out.println();
+		System.out.println(mainClass);
+		System.out.println(classPath);
 		//Set up arguments for Soot
 		String[] sootArgs = {
 			"-cp", classPath, "-pp", 	// sets the class path for Soot
@@ -48,8 +79,8 @@ public class RunDataFlowAnalysis
 			"-keep-line-number",		//used to retrieve error location
 			mainClass
 		};
-		 // transformer for analysis
-		NullAnalysisProperties prop = new NullAnalysisProperties();
+		         			
+		// transformer for analysis
 		prop.MainClass = mainClass;
 		try {//configurations des propriétés
 			prop.decode("config.properties");
@@ -63,6 +94,7 @@ public class RunDataFlowAnalysis
 
 		// Call main function with arguments
 		soot.Main.main(sootArgs);
+		
 
 	}
 }

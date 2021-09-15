@@ -1,0 +1,108 @@
+public abstract class Literal extends org.ooc.frontend.model.Expression implements org.ooc.frontend.model.interfaces.MustBeResolved
+{
+
+    public void <init>(org.ooc.frontend.model.tokens.Token)
+    {
+        Literal this;
+        org.ooc.frontend.model.tokens.Token startToken;
+
+        this := @this: Literal;
+
+        startToken := @parameter0: org.ooc.frontend.model.tokens.Token;
+
+        specialinvoke this.<org.ooc.frontend.model.Expression: void <init>(org.ooc.frontend.model.tokens.Token)>(startToken);
+
+        return;
+    }
+
+    public boolean isResolved()
+    {
+        Literal this;
+        org.ooc.frontend.model.Type $stack1, $stack2;
+        boolean $stack3, $stack4;
+        org.ooc.frontend.model.Literal $r0, $r1;
+
+        this := @this: Literal;
+
+        $r0 = (org.ooc.frontend.model.Literal) this;
+
+        $stack1 = virtualinvoke $r0.<org.ooc.frontend.model.Literal: org.ooc.frontend.model.Type getType()>();
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.ooc.frontend.model.Literal) this;
+
+        $stack2 = virtualinvoke $r1.<org.ooc.frontend.model.Literal: org.ooc.frontend.model.Type getType()>();
+
+        $stack3 = virtualinvoke $stack2.<org.ooc.frontend.model.Type: boolean isResolved()>();
+
+        if $stack3 == 0 goto label1;
+
+        $stack4 = 1;
+
+        goto label2;
+
+     label1:
+        $stack4 = 0;
+
+     label2:
+        return $stack4;
+    }
+
+    public org.ooc.frontend.model.interfaces.MustBeResolved$Response resolve(org.ooc.frontend.model.NodeList, org.ooc.middle.hobgoblins.Resolver, boolean)
+    {
+        Literal this;
+        org.ooc.frontend.model.Type $stack4, $stack7;
+        boolean $stack5, fatal;
+        org.ooc.frontend.model.NodeList stack;
+        org.ooc.middle.hobgoblins.Resolver res;
+        org.ooc.frontend.model.interfaces.MustBeResolved$Response $stack6;
+        org.ooc.frontend.model.Literal $r0, $r1, $r2;
+
+        this := @this: Literal;
+
+        stack := @parameter0: org.ooc.frontend.model.NodeList;
+
+        res := @parameter1: org.ooc.middle.hobgoblins.Resolver;
+
+        fatal := @parameter2: boolean;
+
+        $r0 = (org.ooc.frontend.model.Literal) this;
+
+        $stack4 = virtualinvoke $r0.<org.ooc.frontend.model.Literal: org.ooc.frontend.model.Type getType()>();
+
+        if $stack4 == null goto label1;
+
+        $r1 = (org.ooc.frontend.model.Literal) this;
+
+        $stack7 = virtualinvoke $r1.<org.ooc.frontend.model.Literal: org.ooc.frontend.model.Type getType()>();
+
+        virtualinvoke $stack7.<org.ooc.frontend.model.Type: org.ooc.frontend.model.interfaces.MustBeResolved$Response resolve(org.ooc.frontend.model.NodeList,org.ooc.middle.hobgoblins.Resolver,boolean)>(stack, res, fatal);
+
+     label1:
+        $r2 = (org.ooc.frontend.model.Literal) this;
+
+        $stack5 = virtualinvoke $r2.<org.ooc.frontend.model.Literal: boolean isResolved()>();
+
+        if $stack5 == 0 goto label2;
+
+        $stack6 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response OK>;
+
+        goto label3;
+
+     label2:
+        $stack6 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response LOOP>;
+
+     label3:
+        return $stack6;
+    }
+
+    public boolean isConstant()
+    {
+        Literal this;
+
+        this := @this: Literal;
+
+        return 1;
+    }
+}

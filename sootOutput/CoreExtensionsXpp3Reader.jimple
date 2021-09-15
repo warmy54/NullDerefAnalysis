@@ -1,0 +1,1480 @@
+public class CoreExtensionsXpp3Reader extends java.lang.Object
+{
+    private boolean addDefaultEntities;
+    public final org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$ContentTransformer contentTransformer;
+
+    public void <init>()
+    {
+        CoreExtensionsXpp3Reader this;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$1 $u0;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$ContentTransformer $r1;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        $u0 = new org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$1;
+
+        specialinvoke $u0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$1: void <init>()>();
+
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $r1 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$ContentTransformer) $u0;
+
+        specialinvoke $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: void <init>(org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$ContentTransformer)>($r1);
+
+        return;
+    }
+
+    public void <init>(org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$ContentTransformer)
+    {
+        CoreExtensionsXpp3Reader this;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$ContentTransformer contentTransformer;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0, $r1;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        contentTransformer := @parameter0: org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$ContentTransformer;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: boolean addDefaultEntities> = 1;
+
+        $r1 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $r1.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$ContentTransformer contentTransformer> = contentTransformer;
+
+        return;
+    }
+
+    private boolean checkFieldWithDuplicate(org.codehaus.plexus.util.xml.pull.XmlPullParser, java.lang.String, java.lang.String, java.util.Set) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        java.lang.String $stack5, tagName, $stack13, $stack14, alias;
+        boolean $stack6, $stack7, $stack15;
+        java.util.Set parsed;
+        java.lang.StringBuilder $stack10, $stack11, $stack12, $u0;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1;
+        java.lang.Throwable $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        parser := @parameter0: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        tagName := @parameter1: java.lang.String;
+
+        alias := @parameter2: java.lang.String;
+
+        parsed := @parameter3: java.util.Set;
+
+        $stack5 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getName()>();
+
+        $stack6 = virtualinvoke $stack5.<java.lang.String: boolean equals(java.lang.Object)>(tagName);
+
+        if $stack6 != 0 goto label1;
+
+        $stack14 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getName()>();
+
+        $stack15 = virtualinvoke $stack14.<java.lang.String: boolean equals(java.lang.Object)>(alias);
+
+        if $stack15 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $stack7 = interfaceinvoke parsed.<java.util.Set: boolean add(java.lang.Object)>(tagName);
+
+        if $stack7 != 0 goto label2;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack10 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Duplicated tag: \'");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(tagName);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack13, parser, null);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label2:
+        return 1;
+    }
+
+    private void checkUnknownAttribute(org.codehaus.plexus.util.xml.pull.XmlPullParser, java.lang.String, java.lang.String, boolean) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException, java.io.IOException
+    {
+        boolean strict;
+        java.lang.StringBuilder $stack7, $stack8, $stack9, $stack10, $stack11, $u0;
+        java.lang.String attribute, tagName, $stack12;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1;
+        java.lang.Throwable $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        parser := @parameter0: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        attribute := @parameter1: java.lang.String;
+
+        tagName := @parameter2: java.lang.String;
+
+        strict := @parameter3: boolean;
+
+        if strict == 0 goto label1;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown attribute \'");
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(attribute);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' for tag \'");
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(tagName);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack12, parser, null);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label1:
+        return;
+    }
+
+    private void checkUnknownElement(org.codehaus.plexus.util.xml.pull.XmlPullParser, boolean) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException, java.io.IOException
+    {
+        boolean strict;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        int eventType, unrecognizedTagCount;
+        java.lang.StringBuilder $stack9, $stack11, $stack12, $u0;
+        java.lang.String $stack10, $stack13;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1;
+        java.lang.Throwable $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        parser := @parameter0: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        strict := @parameter1: boolean;
+
+        if strict == 0 goto label1;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack9 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unrecognised tag: \'");
+
+        $stack10 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getName()>();
+
+        $stack11 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack13, parser, null);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label1:
+        unrecognizedTagCount = 1;
+
+     label2:
+        if unrecognizedTagCount <= 0 goto label5;
+
+        eventType = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: int next()>();
+
+        if eventType != 2 goto label3;
+
+        unrecognizedTagCount = unrecognizedTagCount + 1;
+
+        goto label4;
+
+     label3:
+        if eventType != 3 goto label4;
+
+        unrecognizedTagCount = unrecognizedTagCount + -1;
+
+     label4:
+        goto label2;
+
+     label5:
+        return;
+    }
+
+    public boolean getAddDefaultEntities()
+    {
+        CoreExtensionsXpp3Reader this;
+        boolean $stack1;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack1 = $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: boolean addDefaultEntities>;
+
+        return $stack1;
+    }
+
+    private boolean getBooleanValue(java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        CoreExtensionsXpp3Reader this;
+        java.lang.String s, attribute;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        boolean $stack4;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        parser := @parameter2: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: boolean getBooleanValue(java.lang.String,java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.String)>(s, attribute, parser, null);
+
+        return $stack4;
+    }
+
+    private boolean getBooleanValue(java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser, java.lang.String) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.lang.String s, defaultValue, attribute;
+        java.lang.Boolean $stack5, $stack9;
+        boolean $stack6, $stack10;
+        int $stack7;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        parser := @parameter2: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        defaultValue := @parameter3: java.lang.String;
+
+        if s == null goto label1;
+
+        $stack7 = virtualinvoke s.<java.lang.String: int length()>();
+
+        if $stack7 == 0 goto label1;
+
+        $stack9 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(java.lang.String)>(s);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $stack10;
+
+     label1:
+        if defaultValue == null goto label2;
+
+        $stack5 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(java.lang.String)>(defaultValue);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $stack6;
+
+     label2:
+        return 0;
+    }
+
+    private byte getByteValue(java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser, boolean) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.lang.String s, attribute, $stack15;
+        java.lang.Byte $stack6;
+        byte $stack7;
+        java.lang.NumberFormatException $stack8;
+        boolean strict;
+        java.lang.StringBuilder $stack12, $stack13, $stack14, $u0;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1;
+        java.lang.Throwable $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        parser := @parameter2: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        strict := @parameter3: boolean;
+
+        if s == null goto label4;
+
+     label1:
+        $stack6 = staticinvoke <java.lang.Byte: java.lang.Byte valueOf(java.lang.String)>(s);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Byte: byte byteValue()>();
+
+     label2:
+        return $stack7;
+
+     label3:
+        $stack8 := @caughtexception;
+
+        if strict == 0 goto label4;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to parse element \'");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(attribute);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\', must be a byte");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack15, parser, $stack8);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label4:
+        return 0;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label3;
+    }
+
+    private char getCharacterValue(java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.lang.String s, attribute;
+        char $stack4;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        parser := @parameter2: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        if s == null goto label1;
+
+        $stack4 = virtualinvoke s.<java.lang.String: char charAt(int)>(0);
+
+        return $stack4;
+
+     label1:
+        return 0;
+    }
+
+    private java.util.Date getDateValue(java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        CoreExtensionsXpp3Reader this;
+        java.lang.String s, attribute;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        java.util.Date $stack4;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        parser := @parameter2: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: java.util.Date getDateValue(java.lang.String,java.lang.String,java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser)>(s, attribute, null, parser);
+
+        return $stack4;
+    }
+
+    private java.util.Date getDateValue(java.lang.String, java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.lang.String s, dateFormat, $stack7, $stack17, $stack20, attribute, effectiveDateFormat;
+        boolean $stack8;
+        java.util.Locale $stack10;
+        java.util.Date $stack11, $u0;
+        long $stack13;
+        java.text.ParseException $stack15;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        java.lang.NumberFormatException $stack18;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1, $u3;
+        java.text.SimpleDateFormat $u2;
+        java.lang.Throwable $r0, $r1;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        dateFormat := @parameter2: java.lang.String;
+
+        parser := @parameter3: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        if s == null goto label8;
+
+        effectiveDateFormat = dateFormat;
+
+        if dateFormat != null goto label1;
+
+        effectiveDateFormat = "yyyy-MM-dd\'T\'HH:mm:ss.SSS";
+
+     label1:
+        $stack7 = "long";
+
+        $stack8 = virtualinvoke $stack7.<java.lang.String: boolean equals(java.lang.Object)>(effectiveDateFormat);
+
+        if $stack8 == 0 goto label5;
+
+     label2:
+        $u0 = new java.util.Date;
+
+        $stack13 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>(s);
+
+        specialinvoke $u0.<java.util.Date: void <init>(long)>($stack13);
+
+     label3:
+        return $u0;
+
+     label4:
+        $stack18 := @caughtexception;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $stack20 = virtualinvoke $stack18.<java.lang.NumberFormatException: java.lang.String getMessage()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack20, parser, $stack18);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label5:
+        $u2 = new java.text.SimpleDateFormat;
+
+        $stack10 = <java.util.Locale: java.util.Locale US>;
+
+        specialinvoke $u2.<java.text.SimpleDateFormat: void <init>(java.lang.String,java.util.Locale)>(effectiveDateFormat, $stack10);
+
+        $stack11 = virtualinvoke $u2.<java.text.DateFormat: java.util.Date parse(java.lang.String)>(s);
+
+     label6:
+        return $stack11;
+
+     label7:
+        $stack15 := @caughtexception;
+
+        $u3 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $stack17 = virtualinvoke $stack15.<java.text.ParseException: java.lang.String getMessage()>();
+
+        specialinvoke $u3.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack17, parser, $stack15);
+
+        $r1 = (java.lang.Throwable) $u3;
+
+        throw $r1;
+
+     label8:
+        return null;
+
+        catch java.lang.NumberFormatException from label2 to label3 with label4;
+        catch java.text.ParseException from label5 to label6 with label7;
+    }
+
+    private double getDoubleValue(java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser, boolean) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.lang.String s, attribute, $stack15;
+        java.lang.Double $stack6;
+        double $stack7;
+        java.lang.NumberFormatException $stack8;
+        boolean strict;
+        java.lang.StringBuilder $stack12, $stack13, $stack14, $u0;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1;
+        java.lang.Throwable $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        parser := @parameter2: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        strict := @parameter3: boolean;
+
+        if s == null goto label4;
+
+     label1:
+        $stack6 = staticinvoke <java.lang.Double: java.lang.Double valueOf(java.lang.String)>(s);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Double: double doubleValue()>();
+
+     label2:
+        return $stack7;
+
+     label3:
+        $stack8 := @caughtexception;
+
+        if strict == 0 goto label4;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to parse element \'");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(attribute);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\', must be a floating point number");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack15, parser, $stack8);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label4:
+        return 0.0;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label3;
+    }
+
+    private float getFloatValue(java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser, boolean) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.lang.String s, attribute, $stack15;
+        java.lang.Float $stack6;
+        float $stack7;
+        java.lang.NumberFormatException $stack8;
+        boolean strict;
+        java.lang.StringBuilder $stack12, $stack13, $stack14, $u0;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1;
+        java.lang.Throwable $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        parser := @parameter2: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        strict := @parameter3: boolean;
+
+        if s == null goto label4;
+
+     label1:
+        $stack6 = staticinvoke <java.lang.Float: java.lang.Float valueOf(java.lang.String)>(s);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Float: float floatValue()>();
+
+     label2:
+        return $stack7;
+
+     label3:
+        $stack8 := @caughtexception;
+
+        if strict == 0 goto label4;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to parse element \'");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(attribute);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\', must be a floating point number");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack15, parser, $stack8);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label4:
+        return 0.0F;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label3;
+    }
+
+    private int getIntegerValue(java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser, boolean) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.lang.String s, attribute, $stack15;
+        java.lang.Integer $stack6;
+        int $stack7;
+        java.lang.NumberFormatException $stack8;
+        boolean strict;
+        java.lang.StringBuilder $stack12, $stack13, $stack14, $u0;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1;
+        java.lang.Throwable $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        parser := @parameter2: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        strict := @parameter3: boolean;
+
+        if s == null goto label4;
+
+     label1:
+        $stack6 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(java.lang.String)>(s);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Integer: int intValue()>();
+
+     label2:
+        return $stack7;
+
+     label3:
+        $stack8 := @caughtexception;
+
+        if strict == 0 goto label4;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to parse element \'");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(attribute);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\', must be an integer");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack15, parser, $stack8);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label4:
+        return 0;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label3;
+    }
+
+    private long getLongValue(java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser, boolean) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.lang.String s, attribute, $stack15;
+        java.lang.Long $stack6;
+        long $stack7;
+        java.lang.NumberFormatException $stack8;
+        boolean strict;
+        java.lang.StringBuilder $stack12, $stack13, $stack14, $u0;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1;
+        java.lang.Throwable $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        parser := @parameter2: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        strict := @parameter3: boolean;
+
+        if s == null goto label4;
+
+     label1:
+        $stack6 = staticinvoke <java.lang.Long: java.lang.Long valueOf(java.lang.String)>(s);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Long: long longValue()>();
+
+     label2:
+        return $stack7;
+
+     label3:
+        $stack8 := @caughtexception;
+
+        if strict == 0 goto label4;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to parse element \'");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(attribute);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\', must be a long integer");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack15, parser, $stack8);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label4:
+        return 0L;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label3;
+    }
+
+    private java.lang.String getRequiredAttributeValue(java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser, boolean) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.lang.String s, attribute, $stack11;
+        boolean strict;
+        java.lang.StringBuilder $stack8, $stack9, $stack10, $u0;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1;
+        java.lang.Throwable $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        parser := @parameter2: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        strict := @parameter3: boolean;
+
+        if s != null goto label1;
+
+        if strict == 0 goto label1;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Missing required value for attribute \'");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(attribute);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack11, parser, null);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label1:
+        return s;
+    }
+
+    private short getShortValue(java.lang.String, java.lang.String, org.codehaus.plexus.util.xml.pull.XmlPullParser, boolean) throws org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        java.lang.String s, attribute, $stack15;
+        java.lang.Short $stack6;
+        short $stack7;
+        java.lang.NumberFormatException $stack8;
+        boolean strict;
+        java.lang.StringBuilder $stack12, $stack13, $stack14, $u0;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        CoreExtensionsXpp3Reader this;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1;
+        java.lang.Throwable $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        attribute := @parameter1: java.lang.String;
+
+        parser := @parameter2: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        strict := @parameter3: boolean;
+
+        if s == null goto label4;
+
+     label1:
+        $stack6 = staticinvoke <java.lang.Short: java.lang.Short valueOf(java.lang.String)>(s);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Short: short shortValue()>();
+
+     label2:
+        return $stack7;
+
+     label3:
+        $stack8 := @caughtexception;
+
+        if strict == 0 goto label4;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to parse element \'");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(attribute);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\', must be a short integer");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack15, parser, $stack8);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label4:
+        return 0;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label3;
+    }
+
+    private java.lang.String getTrimmedValue(java.lang.String)
+    {
+        CoreExtensionsXpp3Reader this;
+        java.lang.String s;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        s := @parameter0: java.lang.String;
+
+        if s == null goto label1;
+
+        s = virtualinvoke s.<java.lang.String: java.lang.String trim()>();
+
+     label1:
+        return s;
+    }
+
+    private java.lang.String interpolatedTrimmed(java.lang.String, java.lang.String)
+    {
+        CoreExtensionsXpp3Reader this;
+        java.lang.String value, context, $stack4, $stack5;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$ContentTransformer $stack3;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0, $r1;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        value := @parameter0: java.lang.String;
+
+        context := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack3 = $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$ContentTransformer contentTransformer>;
+
+        $stack4 = interfaceinvoke $stack3.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader$ContentTransformer: java.lang.String transform(java.lang.String,java.lang.String)>(value, context);
+
+        $r1 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack5 = specialinvoke $r1.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: java.lang.String getTrimmedValue(java.lang.String)>($stack4);
+
+        return $stack5;
+    }
+
+    private int nextTag(org.codehaus.plexus.util.xml.pull.XmlPullParser) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        java.lang.StringBuilder $stack7, $stack10, $u0;
+        java.lang.String[] $stack8;
+        java.lang.String $stack9, $stack11;
+        CoreExtensionsXpp3Reader this;
+        int eventType;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1;
+        java.lang.Throwable $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        parser := @parameter0: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        eventType = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: int next()>();
+
+        if eventType != 4 goto label1;
+
+        eventType = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: int next()>();
+
+     label1:
+        if eventType == 2 goto label2;
+
+        if eventType == 3 goto label2;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("expected START_TAG or END_TAG not ");
+
+        $stack8 = <org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String[] TYPES>;
+
+        $stack9 = $stack8[eventType];
+
+        $stack10 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack11, parser, null);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label2:
+        return eventType;
+    }
+
+    public org.apache.maven.cli.internal.extension.model.CoreExtensions read(java.io.Reader, boolean) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        CoreExtensionsXpp3Reader this;
+        boolean $stack4, strict;
+        java.io.Reader reader;
+        org.apache.maven.cli.internal.extension.model.CoreExtensions $stack6;
+        org.codehaus.plexus.util.xml.pull.EntityReplacementMap $stack8;
+        org.codehaus.plexus.util.xml.pull.MXParser $stack5, $u0, $u1;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0, $r2;
+        org.codehaus.plexus.util.xml.pull.XmlPullParser $r1, $r3;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        reader := @parameter0: java.io.Reader;
+
+        strict := @parameter1: boolean;
+
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack4 = $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: boolean addDefaultEntities>;
+
+        if $stack4 == 0 goto label1;
+
+        $u0 = new org.codehaus.plexus.util.xml.pull.MXParser;
+
+        $stack5 = $u0;
+
+        $stack8 = <org.codehaus.plexus.util.xml.pull.EntityReplacementMap: org.codehaus.plexus.util.xml.pull.EntityReplacementMap defaultEntityReplacementMap>;
+
+        specialinvoke $u0.<org.codehaus.plexus.util.xml.pull.MXParser: void <init>(org.codehaus.plexus.util.xml.pull.EntityReplacementMap)>($stack8);
+
+        goto label2;
+
+     label1:
+        $u1 = new org.codehaus.plexus.util.xml.pull.MXParser;
+
+        $stack5 = $u1;
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.MXParser: void <init>()>();
+
+     label2:
+        $r1 = (org.codehaus.plexus.util.xml.pull.XmlPullParser) $stack5;
+
+        interfaceinvoke $r1.<org.codehaus.plexus.util.xml.pull.XmlPullParser: void setInput(java.io.Reader)>(reader);
+
+        $r2 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $r3 = (org.codehaus.plexus.util.xml.pull.XmlPullParser) $stack5;
+
+        $stack6 = specialinvoke $r2.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: org.apache.maven.cli.internal.extension.model.CoreExtensions read(org.codehaus.plexus.util.xml.pull.XmlPullParser,boolean)>($r3, strict);
+
+        return $stack6;
+    }
+
+    public org.apache.maven.cli.internal.extension.model.CoreExtensions read(java.io.Reader) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        CoreExtensionsXpp3Reader this;
+        java.io.Reader reader;
+        org.apache.maven.cli.internal.extension.model.CoreExtensions $stack2;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        reader := @parameter0: java.io.Reader;
+
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: org.apache.maven.cli.internal.extension.model.CoreExtensions read(java.io.Reader,boolean)>(reader, 1);
+
+        return $stack2;
+    }
+
+    public org.apache.maven.cli.internal.extension.model.CoreExtensions read(java.io.InputStream, boolean) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        CoreExtensionsXpp3Reader this;
+        java.io.InputStream in;
+        org.codehaus.plexus.util.xml.XmlStreamReader $stack3;
+        boolean strict;
+        org.apache.maven.cli.internal.extension.model.CoreExtensions $stack4;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0;
+        java.io.Reader $r1;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        in := @parameter0: java.io.InputStream;
+
+        strict := @parameter1: boolean;
+
+        $stack3 = staticinvoke <org.codehaus.plexus.util.ReaderFactory: org.codehaus.plexus.util.xml.XmlStreamReader newXmlReader(java.io.InputStream)>(in);
+
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $r1 = (java.io.Reader) $stack3;
+
+        $stack4 = virtualinvoke $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: org.apache.maven.cli.internal.extension.model.CoreExtensions read(java.io.Reader,boolean)>($r1, strict);
+
+        return $stack4;
+    }
+
+    public org.apache.maven.cli.internal.extension.model.CoreExtensions read(java.io.InputStream) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        CoreExtensionsXpp3Reader this;
+        java.io.InputStream in;
+        org.codehaus.plexus.util.xml.XmlStreamReader $stack2;
+        org.apache.maven.cli.internal.extension.model.CoreExtensions $stack3;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0;
+        java.io.Reader $r1;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        in := @parameter0: java.io.InputStream;
+
+        $stack2 = staticinvoke <org.codehaus.plexus.util.ReaderFactory: org.codehaus.plexus.util.xml.XmlStreamReader newXmlReader(java.io.InputStream)>(in);
+
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $r1 = (java.io.Reader) $stack2;
+
+        $stack3 = virtualinvoke $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: org.apache.maven.cli.internal.extension.model.CoreExtensions read(java.io.Reader)>($r1);
+
+        return $stack3;
+    }
+
+    private org.apache.maven.cli.internal.extension.model.CoreExtension parseCoreExtension(org.codehaus.plexus.util.xml.pull.XmlPullParser, boolean) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        java.lang.String tagName, $stack17, $stack18, $stack19, $stack20, $stack21, $stack22, name;
+        int $stack10, $stack27, i, $stack12;
+        boolean strict, $stack13, $stack14, $stack15;
+        CoreExtensionsXpp3Reader this;
+        org.apache.maven.cli.internal.extension.model.CoreExtension $u0;
+        java.util.HashSet $u1;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        parser := @parameter0: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        strict := @parameter1: boolean;
+
+        tagName = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getName()>();
+
+        $u0 = new org.apache.maven.cli.internal.extension.model.CoreExtension;
+
+        specialinvoke $u0.<org.apache.maven.cli.internal.extension.model.CoreExtension: void <init>()>();
+
+        $stack10 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: int getAttributeCount()>();
+
+        i = $stack10 - 1;
+
+     label01:
+        if i < 0 goto label04;
+
+        name = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getAttributeName(int)>(i);
+
+        interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getAttributeValue(int)>(i);
+
+        $stack27 = virtualinvoke name.<java.lang.String: int indexOf(int)>(58);
+
+        if $stack27 < 0 goto label02;
+
+        goto label03;
+
+     label02:
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        specialinvoke $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: void checkUnknownAttribute(org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.String,java.lang.String,boolean)>(parser, name, tagName, strict);
+
+     label03:
+        i = i + -1;
+
+        goto label01;
+
+     label04:
+        $u1 = new java.util.HashSet;
+
+        specialinvoke $u1.<java.util.HashSet: void <init>()>();
+
+     label05:
+        if strict == 0 goto label06;
+
+        $stack12 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: int nextTag()>();
+
+        goto label07;
+
+     label06:
+        $r1 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack12 = specialinvoke $r1.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: int nextTag(org.codehaus.plexus.util.xml.pull.XmlPullParser)>(parser);
+
+     label07:
+        if $stack12 != 2 goto label11;
+
+        $r2 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack13 = specialinvoke $r2.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: boolean checkFieldWithDuplicate(org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.String,java.lang.String,java.util.Set)>(parser, "groupId", null, $u1);
+
+        if $stack13 == 0 goto label08;
+
+        $stack21 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String nextText()>();
+
+        $r3 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack22 = specialinvoke $r3.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: java.lang.String interpolatedTrimmed(java.lang.String,java.lang.String)>($stack21, "groupId");
+
+        virtualinvoke $u0.<org.apache.maven.cli.internal.extension.model.CoreExtension: void setGroupId(java.lang.String)>($stack22);
+
+        goto label05;
+
+     label08:
+        $r4 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack14 = specialinvoke $r4.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: boolean checkFieldWithDuplicate(org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.String,java.lang.String,java.util.Set)>(parser, "artifactId", null, $u1);
+
+        if $stack14 == 0 goto label09;
+
+        $stack19 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String nextText()>();
+
+        $r5 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack20 = specialinvoke $r5.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: java.lang.String interpolatedTrimmed(java.lang.String,java.lang.String)>($stack19, "artifactId");
+
+        virtualinvoke $u0.<org.apache.maven.cli.internal.extension.model.CoreExtension: void setArtifactId(java.lang.String)>($stack20);
+
+        goto label05;
+
+     label09:
+        $r6 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack15 = specialinvoke $r6.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: boolean checkFieldWithDuplicate(org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.String,java.lang.String,java.util.Set)>(parser, "version", null, $u1);
+
+        if $stack15 == 0 goto label10;
+
+        $stack17 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String nextText()>();
+
+        $r7 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack18 = specialinvoke $r7.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: java.lang.String interpolatedTrimmed(java.lang.String,java.lang.String)>($stack17, "version");
+
+        virtualinvoke $u0.<org.apache.maven.cli.internal.extension.model.CoreExtension: void setVersion(java.lang.String)>($stack18);
+
+        goto label05;
+
+     label10:
+        $r8 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        specialinvoke $r8.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: void checkUnknownElement(org.codehaus.plexus.util.xml.pull.XmlPullParser,boolean)>(parser, strict);
+
+        goto label05;
+
+     label11:
+        return $u0;
+    }
+
+    private org.apache.maven.cli.internal.extension.model.CoreExtensions parseCoreExtensions(org.codehaus.plexus.util.xml.pull.XmlPullParser, boolean) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        java.lang.String tagName, $stack13, $stack14, $stack30, name;
+        int $stack10, $stack29, i, $stack12;
+        boolean strict, $stack15, $stack31;
+        CoreExtensionsXpp3Reader this;
+        org.apache.maven.cli.internal.extension.model.CoreExtension $stack18;
+        java.util.List name#7;
+        org.apache.maven.cli.internal.extension.model.CoreExtensions $u0;
+        java.util.HashSet $u1;
+        java.util.ArrayList $u2;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0, $r1, $r2, $r3;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        parser := @parameter0: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        strict := @parameter1: boolean;
+
+        tagName = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getName()>();
+
+        $u0 = new org.apache.maven.cli.internal.extension.model.CoreExtensions;
+
+        specialinvoke $u0.<org.apache.maven.cli.internal.extension.model.CoreExtensions: void <init>()>();
+
+        $stack10 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: int getAttributeCount()>();
+
+        i = $stack10 - 1;
+
+     label01:
+        if i < 0 goto label05;
+
+        name = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getAttributeName(int)>(i);
+
+        interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getAttributeValue(int)>(i);
+
+        $stack29 = virtualinvoke name.<java.lang.String: int indexOf(int)>(58);
+
+        if $stack29 < 0 goto label02;
+
+        goto label04;
+
+     label02:
+        $stack30 = "xmlns";
+
+        $stack31 = virtualinvoke $stack30.<java.lang.String: boolean equals(java.lang.Object)>(name);
+
+        if $stack31 == 0 goto label03;
+
+        goto label04;
+
+     label03:
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        specialinvoke $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: void checkUnknownAttribute(org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.String,java.lang.String,boolean)>(parser, name, tagName, strict);
+
+     label04:
+        i = i + -1;
+
+        goto label01;
+
+     label05:
+        $u1 = new java.util.HashSet;
+
+        specialinvoke $u1.<java.util.HashSet: void <init>()>();
+
+     label06:
+        if strict == 0 goto label07;
+
+        $stack12 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: int nextTag()>();
+
+        goto label08;
+
+     label07:
+        $r1 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack12 = specialinvoke $r1.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: int nextTag(org.codehaus.plexus.util.xml.pull.XmlPullParser)>(parser);
+
+     label08:
+        if $stack12 != 2 goto label11;
+
+        $stack13 = "extension";
+
+        $stack14 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getName()>();
+
+        $stack15 = virtualinvoke $stack13.<java.lang.String: boolean equals(java.lang.Object)>($stack14);
+
+        if $stack15 == 0 goto label10;
+
+        name#7 = virtualinvoke $u0.<org.apache.maven.cli.internal.extension.model.CoreExtensions: java.util.List getExtensions()>();
+
+        if name#7 != null goto label09;
+
+        $u2 = new java.util.ArrayList;
+
+        specialinvoke $u2.<java.util.ArrayList: void <init>()>();
+
+        name#7 = $u2;
+
+        virtualinvoke $u0.<org.apache.maven.cli.internal.extension.model.CoreExtensions: void setExtensions(java.util.List)>($u2);
+
+     label09:
+        $r2 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $stack18 = specialinvoke $r2.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: org.apache.maven.cli.internal.extension.model.CoreExtension parseCoreExtension(org.codehaus.plexus.util.xml.pull.XmlPullParser,boolean)>(parser, strict);
+
+        interfaceinvoke name#7.<java.util.List: boolean add(java.lang.Object)>($stack18);
+
+        goto label06;
+
+     label10:
+        $r3 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        specialinvoke $r3.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: void checkUnknownElement(org.codehaus.plexus.util.xml.pull.XmlPullParser,boolean)>(parser, strict);
+
+        goto label06;
+
+     label11:
+        return $u0;
+    }
+
+    private org.apache.maven.cli.internal.extension.model.CoreExtensions read(org.codehaus.plexus.util.xml.pull.XmlPullParser, boolean) throws java.io.IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException
+    {
+        org.codehaus.plexus.util.xml.pull.XmlPullParser parser;
+        boolean strict, $stack17, parsed;
+        CoreExtensionsXpp3Reader this;
+        java.lang.String $stack12, $stack15, $stack16, $stack22, $stack25;
+        java.lang.StringBuilder $stack21, $stack23, $stack24, $u0;
+        org.apache.maven.cli.internal.extension.model.CoreExtensions coreExtensions;
+        int eventType;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $u1, $u2, $u3;
+        java.lang.Throwable $r0, $r1, $r3;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r2;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        parser := @parameter0: org.codehaus.plexus.util.xml.pull.XmlPullParser;
+
+        strict := @parameter1: boolean;
+
+        coreExtensions = null;
+
+        eventType = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: int getEventType()>();
+
+        parsed = 0;
+
+     label1:
+        if eventType == 1 goto label5;
+
+        if eventType != 2 goto label4;
+
+        if strict == 0 goto label2;
+
+        $stack15 = "extensions";
+
+        $stack16 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getName()>();
+
+        $stack17 = virtualinvoke $stack15.<java.lang.String: boolean equals(java.lang.Object)>($stack16);
+
+        if $stack17 != 0 goto label2;
+
+        $u1 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack21 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected root element \'extensions\' but found \'");
+
+        $stack22 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getName()>();
+
+        $stack23 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack22);
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>($stack25, parser, null);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label2:
+        if parsed == 0 goto label3;
+
+        $u2 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        specialinvoke $u2.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>("Duplicated tag: \'extensions\'", parser, null);
+
+        $r1 = (java.lang.Throwable) $u2;
+
+        throw $r1;
+
+     label3:
+        $r2 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        coreExtensions = specialinvoke $r2.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: org.apache.maven.cli.internal.extension.model.CoreExtensions parseCoreExtensions(org.codehaus.plexus.util.xml.pull.XmlPullParser,boolean)>(parser, strict);
+
+        $stack12 = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: java.lang.String getInputEncoding()>();
+
+        virtualinvoke coreExtensions.<org.apache.maven.cli.internal.extension.model.CoreExtensions: void setModelEncoding(java.lang.String)>($stack12);
+
+        parsed = 1;
+
+     label4:
+        eventType = interfaceinvoke parser.<org.codehaus.plexus.util.xml.pull.XmlPullParser: int next()>();
+
+        goto label1;
+
+     label5:
+        if parsed == 0 goto label6;
+
+        return coreExtensions;
+
+     label6:
+        $u3 = new org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+        specialinvoke $u3.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: void <init>(java.lang.String,org.codehaus.plexus.util.xml.pull.XmlPullParser,java.lang.Throwable)>("Expected root element \'extensions\' but found no element at all: invalid XML document", parser, null);
+
+        $r3 = (java.lang.Throwable) $u3;
+
+        throw $r3;
+    }
+
+    public void setAddDefaultEntities(boolean)
+    {
+        CoreExtensionsXpp3Reader this;
+        boolean addDefaultEntities;
+        org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader $r0;
+
+        this := @this: CoreExtensionsXpp3Reader;
+
+        addDefaultEntities := @parameter0: boolean;
+
+        $r0 = (org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader) this;
+
+        $r0.<org.apache.maven.cli.internal.extension.model.io.xpp3.CoreExtensionsXpp3Reader: boolean addDefaultEntities> = addDefaultEntities;
+
+        return;
+    }
+}

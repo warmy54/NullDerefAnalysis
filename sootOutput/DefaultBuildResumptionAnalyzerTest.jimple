@@ -1,0 +1,620 @@
+public class DefaultBuildResumptionAnalyzerTest extends java.lang.Object
+{
+    private final org.apache.maven.execution.DefaultBuildResumptionAnalyzer analyzer;
+    private org.apache.maven.execution.MavenExecutionResult executionResult;
+
+    public void <init>()
+    {
+        DefaultBuildResumptionAnalyzerTest this;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzer $u0;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest $r0;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new org.apache.maven.execution.DefaultBuildResumptionAnalyzer;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultBuildResumptionAnalyzer: void <init>()>();
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $r0.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.DefaultBuildResumptionAnalyzer analyzer> = $u0;
+
+        return;
+    }
+
+    public void before()
+    {
+        DefaultBuildResumptionAnalyzerTest this;
+        org.apache.maven.execution.DefaultMavenExecutionResult $u0;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest $r0;
+        org.apache.maven.execution.MavenExecutionResult $r1;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionResult;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionResult: void <init>()>();
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $r1 = (org.apache.maven.execution.MavenExecutionResult) $u0;
+
+        $r0.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult> = $r1;
+
+        return;
+    }
+
+    public void resumeFromGetsDetermined()
+    {
+        DefaultBuildResumptionAnalyzerTest this;
+        org.apache.maven.project.MavenProject projectA, projectB;
+        org.apache.maven.project.MavenProject[] $stack6;
+        org.apache.maven.execution.MavenExecutionResult $stack7, $stack10;
+        java.util.List $stack8, $stack19, $stack21;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzer $stack11;
+        java.util.Optional result;
+        boolean $stack13;
+        java.lang.Boolean $stack14, $stack15;
+        org.hamcrest.Matcher $stack16, $stack22;
+        java.lang.Object $stack17;
+        org.apache.maven.execution.BuildResumptionData $stack18;
+        java.lang.String[] $stack20;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectA = specialinvoke $r0.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createSucceededMavenProject(java.lang.String)>("A");
+
+        $r1 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectB = specialinvoke $r1.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createFailedMavenProject(java.lang.String)>("B");
+
+        $r2 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack7 = $r2.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        $stack6 = newarray (org.apache.maven.project.MavenProject)[2];
+
+        $stack6[0] = projectA;
+
+        $stack6[1] = projectB;
+
+        $stack8 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack6);
+
+        interfaceinvoke $stack7.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult setTopologicallySortedProjects(java.util.List)>($stack8);
+
+        $r3 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack11 = $r3.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.DefaultBuildResumptionAnalyzer analyzer>;
+
+        $r4 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack10 = $r4.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        result = virtualinvoke $stack11.<org.apache.maven.execution.DefaultBuildResumptionAnalyzer: java.util.Optional determineBuildResumptionData(org.apache.maven.execution.MavenExecutionResult)>($stack10);
+
+        $stack13 = virtualinvoke result.<java.util.Optional: boolean isPresent()>();
+
+        $stack14 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($stack13);
+
+        $stack15 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        $stack16 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack15);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack14, $stack16);
+
+        $stack17 = virtualinvoke result.<java.util.Optional: java.lang.Object get()>();
+
+        $stack18 = (org.apache.maven.execution.BuildResumptionData) $stack17;
+
+        $stack19 = virtualinvoke $stack18.<org.apache.maven.execution.BuildResumptionData: java.util.List getRemainingProjects()>();
+
+        $stack20 = newarray (java.lang.String)[1];
+
+        $stack20[0] = "test:B";
+
+        $stack21 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack20);
+
+        $stack22 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack21);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack19, $stack22);
+
+        return;
+    }
+
+    public void resumeFromIsIgnoredWhenFirstProjectFails()
+    {
+        DefaultBuildResumptionAnalyzerTest this;
+        org.apache.maven.project.MavenProject projectA, projectB;
+        org.apache.maven.project.MavenProject[] $stack6;
+        org.apache.maven.execution.MavenExecutionResult $stack7, $stack10;
+        java.util.List $stack8;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzer $stack11;
+        java.util.Optional result;
+        boolean $stack13;
+        java.lang.Boolean $stack14, $stack15;
+        org.hamcrest.Matcher $stack16;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectA = specialinvoke $r0.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createFailedMavenProject(java.lang.String)>("A");
+
+        $r1 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectB = specialinvoke $r1.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createMavenProject(java.lang.String)>("B");
+
+        $r2 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack7 = $r2.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        $stack6 = newarray (org.apache.maven.project.MavenProject)[2];
+
+        $stack6[0] = projectA;
+
+        $stack6[1] = projectB;
+
+        $stack8 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack6);
+
+        interfaceinvoke $stack7.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult setTopologicallySortedProjects(java.util.List)>($stack8);
+
+        $r3 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack11 = $r3.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.DefaultBuildResumptionAnalyzer analyzer>;
+
+        $r4 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack10 = $r4.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        result = virtualinvoke $stack11.<org.apache.maven.execution.DefaultBuildResumptionAnalyzer: java.util.Optional determineBuildResumptionData(org.apache.maven.execution.MavenExecutionResult)>($stack10);
+
+        $stack13 = virtualinvoke result.<java.util.Optional: boolean isPresent()>();
+
+        $stack14 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($stack13);
+
+        $stack15 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(0);
+
+        $stack16 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack15);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack14, $stack16);
+
+        return;
+    }
+
+    public void projectsSucceedingAfterFailedProjectsAreExcluded()
+    {
+        DefaultBuildResumptionAnalyzerTest this;
+        org.apache.maven.project.MavenProject projectA, projectB, projectC;
+        org.apache.maven.project.MavenProject[] $stack8;
+        org.apache.maven.execution.MavenExecutionResult $stack9, $stack12;
+        java.util.List $stack10, $stack21, $stack23;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzer $stack13;
+        java.util.Optional result;
+        boolean $stack15;
+        java.lang.Boolean $stack16, $stack17;
+        org.hamcrest.Matcher $stack18, $stack24;
+        java.lang.Object $stack19;
+        org.apache.maven.execution.BuildResumptionData $stack20;
+        java.lang.String[] $stack22;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectA = specialinvoke $r0.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createSucceededMavenProject(java.lang.String)>("A");
+
+        $r1 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectB = specialinvoke $r1.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createFailedMavenProject(java.lang.String)>("B");
+
+        $r2 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectC = specialinvoke $r2.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createSucceededMavenProject(java.lang.String)>("C");
+
+        $r3 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack9 = $r3.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        $stack8 = newarray (org.apache.maven.project.MavenProject)[3];
+
+        $stack8[0] = projectA;
+
+        $stack8[1] = projectB;
+
+        $stack8[2] = projectC;
+
+        $stack10 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack8);
+
+        interfaceinvoke $stack9.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult setTopologicallySortedProjects(java.util.List)>($stack10);
+
+        $r4 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack13 = $r4.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.DefaultBuildResumptionAnalyzer analyzer>;
+
+        $r5 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack12 = $r5.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        result = virtualinvoke $stack13.<org.apache.maven.execution.DefaultBuildResumptionAnalyzer: java.util.Optional determineBuildResumptionData(org.apache.maven.execution.MavenExecutionResult)>($stack12);
+
+        $stack15 = virtualinvoke result.<java.util.Optional: boolean isPresent()>();
+
+        $stack16 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($stack15);
+
+        $stack17 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        $stack18 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack17);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack16, $stack18);
+
+        $stack19 = virtualinvoke result.<java.util.Optional: java.lang.Object get()>();
+
+        $stack20 = (org.apache.maven.execution.BuildResumptionData) $stack19;
+
+        $stack21 = virtualinvoke $stack20.<org.apache.maven.execution.BuildResumptionData: java.util.List getRemainingProjects()>();
+
+        $stack22 = newarray (java.lang.String)[1];
+
+        $stack22[0] = "test:B";
+
+        $stack23 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack22);
+
+        $stack24 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack23);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack21, $stack24);
+
+        return;
+    }
+
+    public void projectsDependingOnFailedProjectsAreNotExcluded()
+    {
+        DefaultBuildResumptionAnalyzerTest this;
+        org.apache.maven.project.MavenProject projectA, projectB, projectC;
+        org.apache.maven.model.Dependency $stack8;
+        java.util.List $stack9, $stack12, $stack23, $stack25;
+        org.apache.maven.project.MavenProject[] $stack10;
+        org.apache.maven.execution.MavenExecutionResult $stack11, $stack14;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzer $stack15;
+        java.util.Optional result;
+        boolean $stack17;
+        java.lang.Boolean $stack18, $stack19;
+        org.hamcrest.Matcher $stack20, $stack26;
+        java.lang.Object $stack21;
+        org.apache.maven.execution.BuildResumptionData $stack22;
+        java.lang.String[] $stack24;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectA = specialinvoke $r0.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createSucceededMavenProject(java.lang.String)>("A");
+
+        $r1 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectB = specialinvoke $r1.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createFailedMavenProject(java.lang.String)>("B");
+
+        $r2 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectC = specialinvoke $r2.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createSkippedMavenProject(java.lang.String)>("C");
+
+        $r3 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack8 = specialinvoke $r3.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.model.Dependency toDependency(org.apache.maven.project.MavenProject)>(projectB);
+
+        $stack9 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($stack8);
+
+        virtualinvoke projectC.<org.apache.maven.project.MavenProject: void setDependencies(java.util.List)>($stack9);
+
+        $r4 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack11 = $r4.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        $stack10 = newarray (org.apache.maven.project.MavenProject)[3];
+
+        $stack10[0] = projectA;
+
+        $stack10[1] = projectB;
+
+        $stack10[2] = projectC;
+
+        $stack12 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack10);
+
+        interfaceinvoke $stack11.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult setTopologicallySortedProjects(java.util.List)>($stack12);
+
+        $r5 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack15 = $r5.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.DefaultBuildResumptionAnalyzer analyzer>;
+
+        $r6 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack14 = $r6.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        result = virtualinvoke $stack15.<org.apache.maven.execution.DefaultBuildResumptionAnalyzer: java.util.Optional determineBuildResumptionData(org.apache.maven.execution.MavenExecutionResult)>($stack14);
+
+        $stack17 = virtualinvoke result.<java.util.Optional: boolean isPresent()>();
+
+        $stack18 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($stack17);
+
+        $stack19 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        $stack20 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack19);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack18, $stack20);
+
+        $stack21 = virtualinvoke result.<java.util.Optional: java.lang.Object get()>();
+
+        $stack22 = (org.apache.maven.execution.BuildResumptionData) $stack21;
+
+        $stack23 = virtualinvoke $stack22.<org.apache.maven.execution.BuildResumptionData: java.util.List getRemainingProjects()>();
+
+        $stack24 = newarray (java.lang.String)[2];
+
+        $stack24[0] = "test:B";
+
+        $stack24[1] = "test:C";
+
+        $stack25 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack24);
+
+        $stack26 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack25);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack23, $stack26);
+
+        return;
+    }
+
+    public void projectsFailingAfterAnotherFailedProjectAreNotExcluded()
+    {
+        DefaultBuildResumptionAnalyzerTest this;
+        org.apache.maven.project.MavenProject projectA, projectB, projectC, projectD;
+        org.apache.maven.project.MavenProject[] $stack10;
+        org.apache.maven.execution.MavenExecutionResult $stack11, $stack14;
+        java.util.List $stack12, $stack23, $stack25;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzer $stack15;
+        java.util.Optional result;
+        boolean $stack17;
+        java.lang.Boolean $stack18, $stack19;
+        org.hamcrest.Matcher $stack20, $stack26;
+        java.lang.Object $stack21;
+        org.apache.maven.execution.BuildResumptionData $stack22;
+        java.lang.String[] $stack24;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectA = specialinvoke $r0.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createSucceededMavenProject(java.lang.String)>("A");
+
+        $r1 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectB = specialinvoke $r1.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createFailedMavenProject(java.lang.String)>("B");
+
+        $r2 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectC = specialinvoke $r2.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createSucceededMavenProject(java.lang.String)>("C");
+
+        $r3 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        projectD = specialinvoke $r3.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createFailedMavenProject(java.lang.String)>("D");
+
+        $r4 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack11 = $r4.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        $stack10 = newarray (org.apache.maven.project.MavenProject)[4];
+
+        $stack10[0] = projectA;
+
+        $stack10[1] = projectB;
+
+        $stack10[2] = projectC;
+
+        $stack10[3] = projectD;
+
+        $stack12 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack10);
+
+        interfaceinvoke $stack11.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult setTopologicallySortedProjects(java.util.List)>($stack12);
+
+        $r5 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack15 = $r5.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.DefaultBuildResumptionAnalyzer analyzer>;
+
+        $r6 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack14 = $r6.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        result = virtualinvoke $stack15.<org.apache.maven.execution.DefaultBuildResumptionAnalyzer: java.util.Optional determineBuildResumptionData(org.apache.maven.execution.MavenExecutionResult)>($stack14);
+
+        $stack17 = virtualinvoke result.<java.util.Optional: boolean isPresent()>();
+
+        $stack18 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($stack17);
+
+        $stack19 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        $stack20 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack19);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack18, $stack20);
+
+        $stack21 = virtualinvoke result.<java.util.Optional: java.lang.Object get()>();
+
+        $stack22 = (org.apache.maven.execution.BuildResumptionData) $stack21;
+
+        $stack23 = virtualinvoke $stack22.<org.apache.maven.execution.BuildResumptionData: java.util.List getRemainingProjects()>();
+
+        $stack24 = newarray (java.lang.String)[2];
+
+        $stack24[0] = "test:B";
+
+        $stack24[1] = "test:D";
+
+        $stack25 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack24);
+
+        $stack26 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack25);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack23, $stack26);
+
+        return;
+    }
+
+    private org.apache.maven.project.MavenProject createMavenProject(java.lang.String)
+    {
+        org.apache.maven.project.MavenProject $stack3;
+        java.lang.String artifactId;
+        DefaultBuildResumptionAnalyzerTest this;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        artifactId := @parameter0: java.lang.String;
+
+        $stack3 = new org.apache.maven.project.MavenProject;
+
+        specialinvoke $stack3.<org.apache.maven.project.MavenProject: void <init>()>();
+
+        virtualinvoke $stack3.<org.apache.maven.project.MavenProject: void setGroupId(java.lang.String)>("test");
+
+        virtualinvoke $stack3.<org.apache.maven.project.MavenProject: void setArtifactId(java.lang.String)>(artifactId);
+
+        return $stack3;
+    }
+
+    private org.apache.maven.model.Dependency toDependency(org.apache.maven.project.MavenProject)
+    {
+        org.apache.maven.model.Dependency $stack3;
+        org.apache.maven.project.MavenProject mavenProject;
+        java.lang.String $stack4, $stack5, $stack6;
+        DefaultBuildResumptionAnalyzerTest this;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        mavenProject := @parameter0: org.apache.maven.project.MavenProject;
+
+        $stack3 = new org.apache.maven.model.Dependency;
+
+        specialinvoke $stack3.<org.apache.maven.model.Dependency: void <init>()>();
+
+        $stack4 = virtualinvoke mavenProject.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        virtualinvoke $stack3.<org.apache.maven.model.Dependency: void setGroupId(java.lang.String)>($stack4);
+
+        $stack5 = virtualinvoke mavenProject.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        virtualinvoke $stack3.<org.apache.maven.model.Dependency: void setArtifactId(java.lang.String)>($stack5);
+
+        $stack6 = virtualinvoke mavenProject.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        virtualinvoke $stack3.<org.apache.maven.model.Dependency: void setVersion(java.lang.String)>($stack6);
+
+        return $stack3;
+    }
+
+    private org.apache.maven.project.MavenProject createSkippedMavenProject(java.lang.String)
+    {
+        DefaultBuildResumptionAnalyzerTest this;
+        java.lang.String artifactId;
+        org.apache.maven.project.MavenProject $stack2;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest $r0;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        artifactId := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createMavenProject(java.lang.String)>(artifactId);
+
+        return $stack2;
+    }
+
+    private org.apache.maven.project.MavenProject createSucceededMavenProject(java.lang.String)
+    {
+        DefaultBuildResumptionAnalyzerTest this;
+        java.lang.String artifactId;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.execution.MavenExecutionResult $stack5;
+        org.apache.maven.execution.BuildSuccess $u0;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest $r0, $r1;
+        org.apache.maven.execution.BuildSummary $r2;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        artifactId := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        project = specialinvoke $r0.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createMavenProject(java.lang.String)>(artifactId);
+
+        $r1 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack5 = $r1.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        $u0 = new org.apache.maven.execution.BuildSuccess;
+
+        specialinvoke $u0.<org.apache.maven.execution.BuildSuccess: void <init>(org.apache.maven.project.MavenProject,long)>(project, 0L);
+
+        $r2 = (org.apache.maven.execution.BuildSummary) $u0;
+
+        interfaceinvoke $stack5.<org.apache.maven.execution.MavenExecutionResult: void addBuildSummary(org.apache.maven.execution.BuildSummary)>($r2);
+
+        return project;
+    }
+
+    private org.apache.maven.project.MavenProject createFailedMavenProject(java.lang.String)
+    {
+        DefaultBuildResumptionAnalyzerTest this;
+        java.lang.String artifactId;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.execution.MavenExecutionResult $stack6, $stack9;
+        java.lang.Exception $u0;
+        org.apache.maven.execution.BuildFailure $u1;
+        org.apache.maven.lifecycle.LifecycleExecutionException $u2;
+        org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest $r0, $r1, $r3;
+        org.apache.maven.execution.BuildSummary $r2;
+        java.lang.Throwable $r4;
+
+        this := @this: DefaultBuildResumptionAnalyzerTest;
+
+        artifactId := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        project = specialinvoke $r0.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.project.MavenProject createMavenProject(java.lang.String)>(artifactId);
+
+        $r1 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack6 = $r1.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        $u1 = new org.apache.maven.execution.BuildFailure;
+
+        $u0 = new java.lang.Exception;
+
+        specialinvoke $u0.<java.lang.Exception: void <init>()>();
+
+        specialinvoke $u1.<org.apache.maven.execution.BuildFailure: void <init>(org.apache.maven.project.MavenProject,long,java.lang.Throwable)>(project, 0L, $u0);
+
+        $r2 = (org.apache.maven.execution.BuildSummary) $u1;
+
+        interfaceinvoke $stack6.<org.apache.maven.execution.MavenExecutionResult: void addBuildSummary(org.apache.maven.execution.BuildSummary)>($r2);
+
+        $r3 = (org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest) this;
+
+        $stack9 = $r3.<org.apache.maven.execution.DefaultBuildResumptionAnalyzerTest: org.apache.maven.execution.MavenExecutionResult executionResult>;
+
+        $u2 = new org.apache.maven.lifecycle.LifecycleExecutionException;
+
+        specialinvoke $u2.<org.apache.maven.lifecycle.LifecycleExecutionException: void <init>(java.lang.String,org.apache.maven.project.MavenProject)>("", project);
+
+        $r4 = (java.lang.Throwable) $u2;
+
+        interfaceinvoke $stack9.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult addException(java.lang.Throwable)>($r4);
+
+        return project;
+    }
+}

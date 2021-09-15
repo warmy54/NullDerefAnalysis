@@ -1,0 +1,251 @@
+class ViolationFileParameterTest extends java.lang.Object
+{
+    private static final java.lang.String FILENAME_WITH_DIRECTORIES;
+    private static final java.lang.String FILENAME_WITHOUT_DIRECTORIES;
+
+    void <init>()
+    {
+        ViolationFileParameterTest this;
+
+        this := @this: ViolationFileParameterTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    final void violationFileCanBeOverwritten() throws java.lang.Exception
+    {
+        java.io.File $stack2, tempFile;
+        sortpom.util.SortPomImplUtil $stack6, $stack7, $stack9;
+        java.lang.String $stack8;
+        ViolationFileParameterTest this;
+
+        this := @this: ViolationFileParameterTest;
+
+        $stack2 = new java.io.File;
+
+        specialinvoke $stack2.<java.io.File: void <init>(java.lang.String)>("target");
+
+        tempFile = staticinvoke <java.io.File: java.io.File createTempFile(java.lang.String,java.lang.String,java.io.File)>("violation", ".xml", $stack2);
+
+        $stack6 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack7 = virtualinvoke $stack6.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil predefinedSortOrder(java.lang.String)>("default_0_4_0");
+
+        $stack8 = virtualinvoke tempFile.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack9 = virtualinvoke $stack7.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil violationFile(java.lang.String)>($stack8);
+
+        virtualinvoke $stack9.<sortpom.util.SortPomImplUtil: void testVerifySort(java.lang.String,java.lang.String,java.lang.String,boolean)>("/full_unsorted_input.xml", "/full_expected.xml", "[INFO] The xml element <modelVersion> should be placed before <parent>", 1);
+
+        return;
+    }
+
+    final void readOnlyViolationFileShouldReportError() throws java.lang.Exception
+    {
+        java.io.File $stack4, tempFile;
+        boolean $stack8;
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack10;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack11, $stack14, $stack16;
+        java.lang.StringBuilder $stack12, $stack13, $stack15;
+        org.hamcrest.Matcher $stack17, $stack18;
+        ViolationFileParameterTest this;
+
+        this := @this: ViolationFileParameterTest;
+
+        $stack4 = new java.io.File;
+
+        specialinvoke $stack4.<java.io.File: void <init>(java.lang.String)>("target");
+
+        tempFile = staticinvoke <java.io.File: java.io.File createTempFile(java.lang.String,java.lang.String,java.io.File)>("violation", ".xml", $stack4);
+
+        $stack8 = virtualinvoke tempFile.<java.io.File: boolean setReadOnly()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack8);
+
+        testMethod = staticinvoke <ViolationFileParameterTest$lambda_readOnlyViolationFileShouldReportError_0__309: org.junit.jupiter.api.function.Executable bootstrap$(java.io.File)>(tempFile);
+
+        $stack10 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack10;
+
+        $stack11 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $stack12 = new java.lang.StringBuilder;
+
+        specialinvoke $stack12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not save violation file: ");
+
+        $stack14 = virtualinvoke tempFile.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack15 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack17 = staticinvoke <org.hamcrest.core.IsEqual: org.hamcrest.Matcher equalTo(java.lang.Object)>($stack16);
+
+        $stack18 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack17);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack11, $stack18);
+
+        return;
+    }
+
+    final void violationFileShouldBeCreatedOnVerificationStop()
+    {
+        java.io.File $stack2, $stack7;
+        sortpom.util.SortPomImplUtil $stack4, $stack5, $stack6;
+        boolean $stack8;
+        java.lang.Boolean $stack9, $stack10;
+        org.hamcrest.Matcher $stack11;
+        ViolationFileParameterTest this;
+
+        this := @this: ViolationFileParameterTest;
+
+        $stack2 = new java.io.File;
+
+        specialinvoke $stack2.<java.io.File: void <init>(java.lang.String)>("target/violation.xml");
+
+        virtualinvoke $stack2.<java.io.File: boolean delete()>();
+
+        $stack4 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack5 = virtualinvoke $stack4.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil verifyFail(java.lang.String)>("Stop");
+
+        $stack6 = virtualinvoke $stack5.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil violationFile(java.lang.String)>("target/violation.xml");
+
+        virtualinvoke $stack6.<sortpom.util.SortPomImplUtil: void testVerifyFail(java.lang.String,java.lang.Class,java.lang.String,boolean)>("/full_unsorted_input.xml", class "Lsortpom/exception/FailureException;", "[ERROR] The xml element <modelVersion> should be placed before <parent>", 1);
+
+        $stack7 = new java.io.File;
+
+        specialinvoke $stack7.<java.io.File: void <init>(java.lang.String)>("target/violation.xml");
+
+        $stack8 = virtualinvoke $stack7.<java.io.File: boolean exists()>();
+
+        $stack9 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($stack8);
+
+        $stack10 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        $stack11 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(java.lang.Object)>($stack10);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack9, $stack11);
+
+        return;
+    }
+
+    final void violationFileWithParentDirectoryShouldBeCreatedOnVerificationWarn() throws java.lang.Exception
+    {
+        java.io.File $stack2, $stack7;
+        sortpom.util.SortPomImplUtil $stack4, $stack5, $stack6;
+        boolean $stack8;
+        java.lang.Boolean $stack9, $stack10;
+        org.hamcrest.Matcher $stack11;
+        ViolationFileParameterTest this;
+
+        this := @this: ViolationFileParameterTest;
+
+        $stack2 = new java.io.File;
+
+        specialinvoke $stack2.<java.io.File: void <init>(java.lang.String)>("target/sortpom_reports/1/violation.xml");
+
+        virtualinvoke $stack2.<java.io.File: boolean delete()>();
+
+        $stack4 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack5 = virtualinvoke $stack4.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil verifyFail(java.lang.String)>("Warn");
+
+        $stack6 = virtualinvoke $stack5.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil violationFile(java.lang.String)>("target/sortpom_reports/1/violation.xml");
+
+        virtualinvoke $stack6.<sortpom.util.SortPomImplUtil: void testVerifyWarn(java.lang.String,java.lang.String,boolean)>("/full_unsorted_input.xml", "[WARNING] The xml element <modelVersion> should be placed before <parent>", 1);
+
+        $stack7 = new java.io.File;
+
+        specialinvoke $stack7.<java.io.File: void <init>(java.lang.String)>("target/sortpom_reports/1/violation.xml");
+
+        $stack8 = virtualinvoke $stack7.<java.io.File: boolean exists()>();
+
+        $stack9 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($stack8);
+
+        $stack10 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        $stack11 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(java.lang.Object)>($stack10);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack9, $stack11);
+
+        return;
+    }
+
+    final void violationFileContentShouldBeEncodedOnVerificationSort() throws java.lang.Exception
+    {
+        java.io.File $stack2, $stack8;
+        sortpom.util.SortPomImplUtil $stack4, $stack5, $stack6, $stack7;
+        java.nio.charset.Charset $stack9;
+        java.lang.String xml;
+        org.hamcrest.Matcher $stack11;
+        ViolationFileParameterTest this;
+
+        this := @this: ViolationFileParameterTest;
+
+        $stack2 = new java.io.File;
+
+        specialinvoke $stack2.<java.io.File: void <init>(java.lang.String)>("target/sortpom_reports/1/violation.xml");
+
+        virtualinvoke $stack2.<java.io.File: boolean delete()>();
+
+        $stack4 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack5 = virtualinvoke $stack4.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil predefinedSortOrder(java.lang.String)>("default_0_4_0");
+
+        $stack6 = virtualinvoke $stack5.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil verifyFail(java.lang.String)>("Sort");
+
+        $stack7 = virtualinvoke $stack6.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil violationFile(java.lang.String)>("target/sortpom_reports/1/violation.xml");
+
+        virtualinvoke $stack7.<sortpom.util.SortPomImplUtil: void testVerifySort(java.lang.String,java.lang.String,java.lang.String,boolean)>("/full_unsorted_input.xml", "/full_expected.xml", "[INFO] The xml element <modelVersion> should be placed before <parent>", 1);
+
+        $stack8 = new java.io.File;
+
+        specialinvoke $stack8.<java.io.File: void <init>(java.lang.String)>("target/sortpom_reports/1/violation.xml");
+
+        $stack9 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset defaultCharset()>();
+
+        xml = staticinvoke <org.apache.commons.io.FileUtils: java.lang.String readFileToString(java.io.File,java.nio.charset.Charset)>($stack8, $stack9);
+
+        $stack11 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher containsString(java.lang.String)>("The xml element &lt;modelVersion&gt; should be placed before &lt;parent&gt;");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>(xml, $stack11);
+
+        return;
+    }
+
+    private static void lambda$readOnlyViolationFileShouldReportError$0(java.io.File) throws java.lang.Throwable
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack3;
+        java.io.File tempFile;
+        java.lang.String $stack2;
+
+        tempFile := @parameter0: java.io.File;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke tempFile.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack3 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil violationFile(java.lang.String)>($stack2);
+
+        virtualinvoke $stack3.<sortpom.util.SortPomImplUtil: void testVerifySort(java.lang.String,java.lang.String,java.lang.String,boolean)>("/full_unsorted_input.xml", "/full_expected.xml", "[INFO] The xml element <modelVersion> should be placed before <parent>", 1);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <ViolationFileParameterTest: java.lang.String FILENAME_WITHOUT_DIRECTORIES> = "target/violation.xml";
+
+        <ViolationFileParameterTest: java.lang.String FILENAME_WITH_DIRECTORIES> = "target/sortpom_reports/1/violation.xml";
+
+        return;
+    }
+}

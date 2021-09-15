@@ -1,0 +1,1962 @@
+public class JSONArray extends java.lang.Object
+{
+    private java.util.ArrayList myArrayList;
+
+    public void <init>()
+    {
+        JSONArray this;
+        java.util.ArrayList $u0;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (org.json.JSONArray) this;
+
+        $r0.<org.json.JSONArray: java.util.ArrayList myArrayList> = $u0;
+
+        return;
+    }
+
+    public void <init>(org.json.JSONTokener) throws org.json.JSONException
+    {
+        JSONArray this;
+        org.json.JSONTokener x;
+        org.json.JSONException $stack5, $stack17, $stack18;
+        char $stack6, $stack7, $stack12, c, q;
+        java.util.ArrayList $stack8, $stack19;
+        java.lang.Object $stack9;
+        java.lang.String $stack16;
+        java.lang.Character $u0;
+        org.json.JSONArray $r0, $r2, $r3;
+        java.lang.Throwable $r1, $r4, $r5;
+
+        this := @this: JSONArray;
+
+        x := @parameter0: org.json.JSONTokener;
+
+        $r0 = (org.json.JSONArray) this;
+
+        specialinvoke $r0.<org.json.JSONArray: void <init>()>();
+
+        c = virtualinvoke x.<org.json.JSONTokener: char nextClean()>();
+
+        if c != 91 goto label01;
+
+        q = 93;
+
+        goto label03;
+
+     label01:
+        if c != 40 goto label02;
+
+        q = 41;
+
+        goto label03;
+
+     label02:
+        $stack5 = virtualinvoke x.<org.json.JSONTokener: org.json.JSONException syntaxError(java.lang.String)>("A JSONArray text must start with \'[\'");
+
+        $r1 = (java.lang.Throwable) $stack5;
+
+        throw $r1;
+
+     label03:
+        $stack6 = virtualinvoke x.<org.json.JSONTokener: char nextClean()>();
+
+        if $stack6 != 93 goto label04;
+
+        return;
+
+     label04:
+        virtualinvoke x.<org.json.JSONTokener: void back()>();
+
+     label05:
+        $stack7 = virtualinvoke x.<org.json.JSONTokener: char nextClean()>();
+
+        if $stack7 != 44 goto label06;
+
+        virtualinvoke x.<org.json.JSONTokener: void back()>();
+
+        $r2 = (org.json.JSONArray) this;
+
+        $stack19 = $r2.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        virtualinvoke $stack19.<java.util.ArrayList: boolean add(java.lang.Object)>(null);
+
+        goto label07;
+
+     label06:
+        virtualinvoke x.<org.json.JSONTokener: void back()>();
+
+        $r3 = (org.json.JSONArray) this;
+
+        $stack8 = $r3.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        $stack9 = virtualinvoke x.<org.json.JSONTokener: java.lang.Object nextValue()>();
+
+        virtualinvoke $stack8.<java.util.ArrayList: boolean add(java.lang.Object)>($stack9);
+
+     label07:
+        c = virtualinvoke x.<org.json.JSONTokener: char nextClean()>();
+
+        lookupswitch(c)
+        {
+            case 41: goto label10;
+            case 44: goto label08;
+            case 59: goto label08;
+            case 93: goto label10;
+            default: goto label12;
+        };
+
+     label08:
+        $stack12 = virtualinvoke x.<org.json.JSONTokener: char nextClean()>();
+
+        if $stack12 != 93 goto label09;
+
+        return;
+
+     label09:
+        virtualinvoke x.<org.json.JSONTokener: void back()>();
+
+        goto label05;
+
+     label10:
+        if q == c goto label11;
+
+        $u0 = new java.lang.Character;
+
+        specialinvoke $u0.<java.lang.Character: void <init>(char)>(q);
+
+        $stack16 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.Character)>($u0) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Expected a \'\u0001\'");
+
+        $stack17 = virtualinvoke x.<org.json.JSONTokener: org.json.JSONException syntaxError(java.lang.String)>($stack16);
+
+        $r4 = (java.lang.Throwable) $stack17;
+
+        throw $r4;
+
+     label11:
+        return;
+
+     label12:
+        $stack18 = virtualinvoke x.<org.json.JSONTokener: org.json.JSONException syntaxError(java.lang.String)>("Expected a \',\' or \']\'");
+
+        $r5 = (java.lang.Throwable) $stack18;
+
+        throw $r5;
+    }
+
+    public void <init>(java.lang.String) throws org.json.JSONException
+    {
+        JSONArray this;
+        java.lang.String source;
+        org.json.JSONTokener $u0;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        source := @parameter0: java.lang.String;
+
+        $u0 = new org.json.JSONTokener;
+
+        specialinvoke $u0.<org.json.JSONTokener: void <init>(java.lang.String)>(source);
+
+        $r0 = (org.json.JSONArray) this;
+
+        specialinvoke $r0.<org.json.JSONArray: void <init>(org.json.JSONTokener)>($u0);
+
+        return;
+    }
+
+    public void <init>(java.util.Collection)
+    {
+        JSONArray this;
+        java.util.Collection collection;
+        java.util.ArrayList $stack2, $u0, $u1;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        collection := @parameter0: java.util.Collection;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        if collection != null goto label1;
+
+        $u0 = new java.util.ArrayList;
+
+        $stack2 = $u0;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        goto label2;
+
+     label1:
+        $u1 = new java.util.ArrayList;
+
+        $stack2 = $u1;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>(java.util.Collection)>(collection);
+
+     label2:
+        $r0 = (org.json.JSONArray) this;
+
+        $r0.<org.json.JSONArray: java.util.ArrayList myArrayList> = $stack2;
+
+        return;
+    }
+
+    public void <init>(java.util.Collection, boolean)
+    {
+        JSONArray this;
+        java.util.Collection collection;
+        java.util.Iterator iter;
+        boolean $stack7, $stack9, $stack11, includeSuperClass;
+        java.lang.Object o;
+        java.lang.Class $stack10;
+        java.util.ArrayList $stack12, $stack16, $stack20, $u0;
+        java.util.Map $stack19;
+        org.json.JSONObject $u1, $u2;
+        org.json.JSONArray $r0, $r1, $r2, $r3;
+
+        this := @this: JSONArray;
+
+        collection := @parameter0: java.util.Collection;
+
+        includeSuperClass := @parameter1: boolean;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (org.json.JSONArray) this;
+
+        $r0.<org.json.JSONArray: java.util.ArrayList myArrayList> = $u0;
+
+        if collection == null goto label5;
+
+        iter = interfaceinvoke collection.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke iter.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label5;
+
+        o = interfaceinvoke iter.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack9 = o instanceof java.util.Map;
+
+        if $stack9 == 0 goto label2;
+
+        $r1 = (org.json.JSONArray) this;
+
+        $stack20 = $r1.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        $u1 = new org.json.JSONObject;
+
+        $stack19 = (java.util.Map) o;
+
+        specialinvoke $u1.<org.json.JSONObject: void <init>(java.util.Map,boolean)>($stack19, includeSuperClass);
+
+        virtualinvoke $stack20.<java.util.ArrayList: boolean add(java.lang.Object)>($u1);
+
+        goto label4;
+
+     label2:
+        $stack10 = virtualinvoke o.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack11 = staticinvoke <org.json.JSONObject: boolean isStandardProperty(java.lang.Class)>($stack10);
+
+        if $stack11 != 0 goto label3;
+
+        $r2 = (org.json.JSONArray) this;
+
+        $stack16 = $r2.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        $u2 = new org.json.JSONObject;
+
+        specialinvoke $u2.<org.json.JSONObject: void <init>(java.lang.Object,boolean)>(o, includeSuperClass);
+
+        virtualinvoke $stack16.<java.util.ArrayList: boolean add(java.lang.Object)>($u2);
+
+        goto label4;
+
+     label3:
+        $r3 = (org.json.JSONArray) this;
+
+        $stack12 = $r3.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        virtualinvoke $stack12.<java.util.ArrayList: boolean add(java.lang.Object)>(o);
+
+     label4:
+        goto label1;
+
+     label5:
+        return;
+    }
+
+    public void <init>(java.lang.Object) throws org.json.JSONException
+    {
+        JSONArray this;
+        java.lang.Object array, $stack8;
+        java.lang.Class $stack4;
+        boolean $stack5;
+        int length, i;
+        org.json.JSONException $u0;
+        org.json.JSONArray $r0, $r1;
+        java.lang.Throwable $r2;
+
+        this := @this: JSONArray;
+
+        array := @parameter0: java.lang.Object;
+
+        $r0 = (org.json.JSONArray) this;
+
+        specialinvoke $r0.<org.json.JSONArray: void <init>()>();
+
+        $stack4 = virtualinvoke array.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack5 = virtualinvoke $stack4.<java.lang.Class: boolean isArray()>();
+
+        if $stack5 == 0 goto label3;
+
+        length = staticinvoke <java.lang.reflect.Array: int getLength(java.lang.Object)>(array);
+
+        i = 0;
+
+     label1:
+        if i >= length goto label2;
+
+        $stack8 = staticinvoke <java.lang.reflect.Array: java.lang.Object get(java.lang.Object,int)>(array, i);
+
+        $r1 = (org.json.JSONArray) this;
+
+        virtualinvoke $r1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack8);
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        goto label4;
+
+     label3:
+        $u0 = new org.json.JSONException;
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>("JSONArray initial value should be a string or collection or array.");
+
+        $r2 = (java.lang.Throwable) $u0;
+
+        throw $r2;
+
+     label4:
+        return;
+    }
+
+    public void <init>(java.lang.Object, boolean) throws org.json.JSONException
+    {
+        JSONArray this;
+        java.lang.Object array, o;
+        java.lang.Class $stack6, $stack11;
+        boolean $stack7, $stack12, includeSuperClass;
+        int length, i;
+        java.util.ArrayList $stack14, $stack18;
+        org.json.JSONObject $u0;
+        org.json.JSONException $u1;
+        org.json.JSONArray $r0, $r1, $r2;
+        java.lang.Throwable $r3;
+
+        this := @this: JSONArray;
+
+        array := @parameter0: java.lang.Object;
+
+        includeSuperClass := @parameter1: boolean;
+
+        $r0 = (org.json.JSONArray) this;
+
+        specialinvoke $r0.<org.json.JSONArray: void <init>()>();
+
+        $stack6 = virtualinvoke array.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Class: boolean isArray()>();
+
+        if $stack7 == 0 goto label5;
+
+        length = staticinvoke <java.lang.reflect.Array: int getLength(java.lang.Object)>(array);
+
+        i = 0;
+
+     label1:
+        if i >= length goto label4;
+
+        o = staticinvoke <java.lang.reflect.Array: java.lang.Object get(java.lang.Object,int)>(array, i);
+
+        $stack11 = virtualinvoke o.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack12 = staticinvoke <org.json.JSONObject: boolean isStandardProperty(java.lang.Class)>($stack11);
+
+        if $stack12 == 0 goto label2;
+
+        $r1 = (org.json.JSONArray) this;
+
+        $stack18 = $r1.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        virtualinvoke $stack18.<java.util.ArrayList: boolean add(java.lang.Object)>(o);
+
+        goto label3;
+
+     label2:
+        $r2 = (org.json.JSONArray) this;
+
+        $stack14 = $r2.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        $u0 = new org.json.JSONObject;
+
+        specialinvoke $u0.<org.json.JSONObject: void <init>(java.lang.Object,boolean)>(o, includeSuperClass);
+
+        virtualinvoke $stack14.<java.util.ArrayList: boolean add(java.lang.Object)>($u0);
+
+     label3:
+        i = i + 1;
+
+        goto label1;
+
+     label4:
+        goto label6;
+
+     label5:
+        $u1 = new org.json.JSONException;
+
+        specialinvoke $u1.<org.json.JSONException: void <init>(java.lang.String)>("JSONArray initial value should be a string or collection or array.");
+
+        $r3 = (java.lang.Throwable) $u1;
+
+        throw $r3;
+
+     label6:
+        return;
+    }
+
+    public java.lang.Object get(int) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object o;
+        java.lang.String $stack5;
+        org.json.JSONException $u0;
+        org.json.JSONArray $r0;
+        java.lang.Throwable $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        o = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object opt(int)>(index);
+
+        if o != null goto label1;
+
+        $u0 = new org.json.JSONException;
+
+        $stack5 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (int)>(index) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("JSONArray[\u0001] not found.");
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>($stack5);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        return o;
+    }
+
+    public boolean getBoolean(int) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object o;
+        java.lang.Boolean $stack4, $stack7;
+        boolean $stack5, $stack6, $stack8, $stack9, $stack13, $stack17;
+        java.lang.String $stack11, $stack12, $stack16;
+        org.json.JSONException $u0;
+        org.json.JSONArray $r0;
+        java.lang.Throwable $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        o = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object get(int)>(index);
+
+        $stack4 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+        $stack5 = virtualinvoke o.<java.lang.Object: boolean equals(java.lang.Object)>($stack4);
+
+        if $stack5 != 0 goto label1;
+
+        $stack6 = o instanceof java.lang.String;
+
+        if $stack6 == 0 goto label2;
+
+        $stack16 = (java.lang.String) o;
+
+        $stack17 = virtualinvoke $stack16.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>("false");
+
+        if $stack17 == 0 goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        $stack7 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        $stack8 = virtualinvoke o.<java.lang.Object: boolean equals(java.lang.Object)>($stack7);
+
+        if $stack8 != 0 goto label3;
+
+        $stack9 = o instanceof java.lang.String;
+
+        if $stack9 == 0 goto label4;
+
+        $stack12 = (java.lang.String) o;
+
+        $stack13 = virtualinvoke $stack12.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>("true");
+
+        if $stack13 == 0 goto label4;
+
+     label3:
+        return 1;
+
+     label4:
+        $u0 = new org.json.JSONException;
+
+        $stack11 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (int)>(index) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("JSONArray[\u0001] is not a Boolean.");
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>($stack11);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+    }
+
+    public double getDouble(int) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object o;
+        boolean $stack5;
+        java.lang.String $stack6, $stack13;
+        java.lang.Double $stack7;
+        java.lang.Number $stack9;
+        java.lang.Exception $stack11;
+        double $stack8;
+        org.json.JSONException $u0;
+        org.json.JSONArray $r0;
+        java.lang.Throwable $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        o = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object get(int)>(index);
+
+     label1:
+        $stack5 = o instanceof java.lang.Number;
+
+        if $stack5 == 0 goto label2;
+
+        $stack9 = (java.lang.Number) o;
+
+        $stack8 = virtualinvoke $stack9.<java.lang.Number: double doubleValue()>();
+
+        goto label3;
+
+     label2:
+        $stack6 = (java.lang.String) o;
+
+        $stack7 = staticinvoke <java.lang.Double: java.lang.Double valueOf(java.lang.String)>($stack6);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.Double: double doubleValue()>();
+
+     label3:
+        return $stack8;
+
+     label4:
+        $stack11 := @caughtexception;
+
+        $u0 = new org.json.JSONException;
+
+        $stack13 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (int)>(index) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("JSONArray[\u0001] is not a number.");
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>($stack13);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+        catch java.lang.Exception from label1 to label3 with label4;
+    }
+
+    public int getInt(int) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index, $stack6;
+        java.lang.Object o;
+        boolean $stack4;
+        double $stack5;
+        java.lang.Number $stack7;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        o = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object get(int)>(index);
+
+        $stack4 = o instanceof java.lang.Number;
+
+        if $stack4 == 0 goto label1;
+
+        $stack7 = (java.lang.Number) o;
+
+        $stack6 = virtualinvoke $stack7.<java.lang.Number: int intValue()>();
+
+        goto label2;
+
+     label1:
+        $r1 = (org.json.JSONArray) this;
+
+        $stack5 = virtualinvoke $r1.<org.json.JSONArray: double getDouble(int)>(index);
+
+        $stack6 = (int) $stack5;
+
+     label2:
+        return $stack6;
+    }
+
+    public org.json.JSONArray getJSONArray(int) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object o;
+        boolean $stack4;
+        java.lang.String $stack6;
+        org.json.JSONArray $stack7, $r0;
+        org.json.JSONException $u0;
+        java.lang.Throwable $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        o = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object get(int)>(index);
+
+        $stack4 = o instanceof org.json.JSONArray;
+
+        if $stack4 == 0 goto label1;
+
+        $stack7 = (org.json.JSONArray) o;
+
+        return $stack7;
+
+     label1:
+        $u0 = new org.json.JSONException;
+
+        $stack6 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (int)>(index) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("JSONArray[\u0001] is not a JSONArray.");
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>($stack6);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+    }
+
+    public org.json.JSONObject getJSONObject(int) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object o;
+        boolean $stack4;
+        java.lang.String $stack6;
+        org.json.JSONObject $stack7;
+        org.json.JSONException $u0;
+        org.json.JSONArray $r0;
+        java.lang.Throwable $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        o = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object get(int)>(index);
+
+        $stack4 = o instanceof org.json.JSONObject;
+
+        if $stack4 == 0 goto label1;
+
+        $stack7 = (org.json.JSONObject) o;
+
+        return $stack7;
+
+     label1:
+        $u0 = new org.json.JSONException;
+
+        $stack6 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (int)>(index) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("JSONArray[\u0001] is not a JSONObject.");
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>($stack6);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+    }
+
+    public long getLong(int) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object o;
+        boolean $stack4;
+        double $stack5;
+        java.lang.Number $stack7;
+        long $stack6;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        o = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object get(int)>(index);
+
+        $stack4 = o instanceof java.lang.Number;
+
+        if $stack4 == 0 goto label1;
+
+        $stack7 = (java.lang.Number) o;
+
+        $stack6 = virtualinvoke $stack7.<java.lang.Number: long longValue()>();
+
+        goto label2;
+
+     label1:
+        $r1 = (org.json.JSONArray) this;
+
+        $stack5 = virtualinvoke $r1.<org.json.JSONArray: double getDouble(int)>(index);
+
+        $stack6 = (long) $stack5;
+
+     label2:
+        return $stack6;
+    }
+
+    public java.lang.String getString(int) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object $stack2;
+        java.lang.String $stack3;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack2 = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object get(int)>(index);
+
+        $stack3 = virtualinvoke $stack2.<java.lang.Object: java.lang.String toString()>();
+
+        return $stack3;
+    }
+
+    public boolean isNull(int)
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object $stack2, $stack3;
+        boolean $stack4;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $stack2 = <org.json.JSONObject: java.lang.Object NULL>;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack3 = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object opt(int)>(index);
+
+        $stack4 = virtualinvoke $stack2.<java.lang.Object: boolean equals(java.lang.Object)>($stack3);
+
+        return $stack4;
+    }
+
+    public java.lang.String join(java.lang.String) throws org.json.JSONException
+    {
+        JSONArray this;
+        int len, i;
+        java.lang.String $stack7, $stack10, separator;
+        java.util.ArrayList $stack8;
+        java.lang.Object $stack9;
+        java.lang.StringBuffer $u0;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        separator := @parameter0: java.lang.String;
+
+        $r0 = (org.json.JSONArray) this;
+
+        len = virtualinvoke $r0.<org.json.JSONArray: int length()>();
+
+        $u0 = new java.lang.StringBuffer;
+
+        specialinvoke $u0.<java.lang.StringBuffer: void <init>()>();
+
+        i = 0;
+
+     label1:
+        if i >= len goto label3;
+
+        if i <= 0 goto label2;
+
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(separator);
+
+     label2:
+        $r1 = (org.json.JSONArray) this;
+
+        $stack8 = $r1.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        $stack9 = virtualinvoke $stack8.<java.util.ArrayList: java.lang.Object get(int)>(i);
+
+        $stack10 = staticinvoke <org.json.JSONObject: java.lang.String valueToString(java.lang.Object)>($stack9);
+
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($stack10);
+
+        i = i + 1;
+
+        goto label1;
+
+     label3:
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        return $stack7;
+    }
+
+    public int length()
+    {
+        JSONArray this;
+        java.util.ArrayList $stack1;
+        int $stack2;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack1 = $r0.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        $stack2 = virtualinvoke $stack1.<java.util.ArrayList: int size()>();
+
+        return $stack2;
+    }
+
+    public java.lang.Object opt(int)
+    {
+        int index, $stack2;
+        JSONArray this;
+        java.util.ArrayList $stack3;
+        java.lang.Object $stack4;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        if index < 0 goto label1;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack2 = virtualinvoke $r0.<org.json.JSONArray: int length()>();
+
+        if index < $stack2 goto label2;
+
+     label1:
+        $stack4 = null;
+
+        goto label3;
+
+     label2:
+        $r1 = (org.json.JSONArray) this;
+
+        $stack3 = $r1.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        $stack4 = virtualinvoke $stack3.<java.util.ArrayList: java.lang.Object get(int)>(index);
+
+     label3:
+        return $stack4;
+    }
+
+    public boolean optBoolean(int)
+    {
+        JSONArray this;
+        int index;
+        boolean $stack2;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack2 = virtualinvoke $r0.<org.json.JSONArray: boolean optBoolean(int,boolean)>(index, 0);
+
+        return $stack2;
+    }
+
+    public boolean optBoolean(int, boolean)
+    {
+        JSONArray this;
+        int index;
+        boolean $stack4, defaultValue;
+        java.lang.Exception $stack5;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        defaultValue := @parameter1: boolean;
+
+     label1:
+        $r0 = (org.json.JSONArray) this;
+
+        $stack4 = virtualinvoke $r0.<org.json.JSONArray: boolean getBoolean(int)>(index);
+
+     label2:
+        return $stack4;
+
+     label3:
+        $stack5 := @caughtexception;
+
+        return defaultValue;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public double optDouble(int)
+    {
+        JSONArray this;
+        int index;
+        double $stack2;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack2 = virtualinvoke $r0.<org.json.JSONArray: double optDouble(int,double)>(index, #NaN);
+
+        return $stack2;
+    }
+
+    public double optDouble(int, double)
+    {
+        JSONArray this;
+        int index;
+        double $stack5, defaultValue;
+        java.lang.Exception $stack6;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        defaultValue := @parameter1: double;
+
+     label1:
+        $r0 = (org.json.JSONArray) this;
+
+        $stack5 = virtualinvoke $r0.<org.json.JSONArray: double getDouble(int)>(index);
+
+     label2:
+        return $stack5;
+
+     label3:
+        $stack6 := @caughtexception;
+
+        return defaultValue;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public int optInt(int)
+    {
+        JSONArray this;
+        int index, $stack2;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack2 = virtualinvoke $r0.<org.json.JSONArray: int optInt(int,int)>(index, 0);
+
+        return $stack2;
+    }
+
+    public int optInt(int, int)
+    {
+        JSONArray this;
+        int index, $stack4, defaultValue;
+        java.lang.Exception $stack5;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        defaultValue := @parameter1: int;
+
+     label1:
+        $r0 = (org.json.JSONArray) this;
+
+        $stack4 = virtualinvoke $r0.<org.json.JSONArray: int getInt(int)>(index);
+
+     label2:
+        return $stack4;
+
+     label3:
+        $stack5 := @caughtexception;
+
+        return defaultValue;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public org.json.JSONArray optJSONArray(int)
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object o;
+        boolean $stack4;
+        org.json.JSONArray $stack5, $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        o = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object opt(int)>(index);
+
+        $stack4 = o instanceof org.json.JSONArray;
+
+        if $stack4 == 0 goto label1;
+
+        $stack5 = (org.json.JSONArray) o;
+
+        goto label2;
+
+     label1:
+        $stack5 = null;
+
+     label2:
+        return $stack5;
+    }
+
+    public org.json.JSONObject optJSONObject(int)
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object o;
+        boolean $stack4;
+        org.json.JSONObject $stack5;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        o = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object opt(int)>(index);
+
+        $stack4 = o instanceof org.json.JSONObject;
+
+        if $stack4 == 0 goto label1;
+
+        $stack5 = (org.json.JSONObject) o;
+
+        goto label2;
+
+     label1:
+        $stack5 = null;
+
+     label2:
+        return $stack5;
+    }
+
+    public long optLong(int)
+    {
+        JSONArray this;
+        int index;
+        long $stack2;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack2 = virtualinvoke $r0.<org.json.JSONArray: long optLong(int,long)>(index, 0L);
+
+        return $stack2;
+    }
+
+    public long optLong(int, long)
+    {
+        JSONArray this;
+        int index;
+        long $stack5, defaultValue;
+        java.lang.Exception $stack6;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        defaultValue := @parameter1: long;
+
+     label1:
+        $r0 = (org.json.JSONArray) this;
+
+        $stack5 = virtualinvoke $r0.<org.json.JSONArray: long getLong(int)>(index);
+
+     label2:
+        return $stack5;
+
+     label3:
+        $stack6 := @caughtexception;
+
+        return defaultValue;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public java.lang.String optString(int)
+    {
+        JSONArray this;
+        int index;
+        java.lang.String $stack2;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack2 = virtualinvoke $r0.<org.json.JSONArray: java.lang.String optString(int,java.lang.String)>(index, "");
+
+        return $stack2;
+    }
+
+    public java.lang.String optString(int, java.lang.String)
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object o;
+        java.lang.String defaultValue, $stack5;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        defaultValue := @parameter1: java.lang.String;
+
+        $r0 = (org.json.JSONArray) this;
+
+        o = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object opt(int)>(index);
+
+        if o == null goto label1;
+
+        $stack5 = virtualinvoke o.<java.lang.Object: java.lang.String toString()>();
+
+        goto label2;
+
+     label1:
+        $stack5 = defaultValue;
+
+     label2:
+        return $stack5;
+    }
+
+    public org.json.JSONArray put(boolean)
+    {
+        JSONArray this;
+        boolean value;
+        java.lang.Boolean $stack2;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        value := @parameter0: boolean;
+
+        if value == 0 goto label1;
+
+        $stack2 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        goto label2;
+
+     label1:
+        $stack2 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+     label2:
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack2);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(java.util.Collection)
+    {
+        JSONArray this;
+        java.util.Collection value;
+        org.json.JSONArray $u0, $r0, $r1;
+
+        this := @this: JSONArray;
+
+        value := @parameter0: java.util.Collection;
+
+        $u0 = new org.json.JSONArray;
+
+        specialinvoke $u0.<org.json.JSONArray: void <init>(java.util.Collection)>(value);
+
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($u0);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(double) throws org.json.JSONException
+    {
+        double value;
+        JSONArray this;
+        java.lang.Double $u0;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        value := @parameter0: double;
+
+        $u0 = new java.lang.Double;
+
+        specialinvoke $u0.<java.lang.Double: void <init>(double)>(value);
+
+        staticinvoke <org.json.JSONObject: void testValidity(java.lang.Object)>($u0);
+
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($u0);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(int)
+    {
+        JSONArray this;
+        int value;
+        java.lang.Integer $u0;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        value := @parameter0: int;
+
+        $u0 = new java.lang.Integer;
+
+        specialinvoke $u0.<java.lang.Integer: void <init>(int)>(value);
+
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($u0);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(long)
+    {
+        JSONArray this;
+        long value;
+        java.lang.Long $u0;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        value := @parameter0: long;
+
+        $u0 = new java.lang.Long;
+
+        specialinvoke $u0.<java.lang.Long: void <init>(long)>(value);
+
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($u0);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(java.util.Map)
+    {
+        JSONArray this;
+        java.util.Map value;
+        org.json.JSONObject $u0;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        value := @parameter0: java.util.Map;
+
+        $u0 = new org.json.JSONObject;
+
+        specialinvoke $u0.<org.json.JSONObject: void <init>(java.lang.Object)>(value);
+
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($u0);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(java.lang.Object)
+    {
+        JSONArray this;
+        java.lang.Object value;
+        java.util.ArrayList $stack2;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        value := @parameter0: java.lang.Object;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack2 = $r0.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        virtualinvoke $stack2.<java.util.ArrayList: boolean add(java.lang.Object)>(value);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(int, boolean) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        boolean value;
+        java.lang.Boolean $stack3;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        value := @parameter1: boolean;
+
+        if value == 0 goto label1;
+
+        $stack3 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        goto label2;
+
+     label1:
+        $stack3 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+     label2:
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(int,java.lang.Object)>(index, $stack3);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(int, java.util.Collection) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        java.util.Collection value;
+        org.json.JSONArray $u0, $r0, $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        value := @parameter1: java.util.Collection;
+
+        $u0 = new org.json.JSONArray;
+
+        specialinvoke $u0.<org.json.JSONArray: void <init>(java.util.Collection)>(value);
+
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(int,java.lang.Object)>(index, $u0);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(int, double) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        double value;
+        java.lang.Double $u0;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        value := @parameter1: double;
+
+        $u0 = new java.lang.Double;
+
+        specialinvoke $u0.<java.lang.Double: void <init>(double)>(value);
+
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(int,java.lang.Object)>(index, $u0);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(int, int) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index, value;
+        java.lang.Integer $u0;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        value := @parameter1: int;
+
+        $u0 = new java.lang.Integer;
+
+        specialinvoke $u0.<java.lang.Integer: void <init>(int)>(value);
+
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(int,java.lang.Object)>(index, $u0);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(int, long) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        long value;
+        java.lang.Long $u0;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        value := @parameter1: long;
+
+        $u0 = new java.lang.Long;
+
+        specialinvoke $u0.<java.lang.Long: void <init>(long)>(value);
+
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(int,java.lang.Object)>(index, $u0);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(int, java.util.Map) throws org.json.JSONException
+    {
+        JSONArray this;
+        int index;
+        java.util.Map value;
+        org.json.JSONObject $u0;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        value := @parameter1: java.util.Map;
+
+        $u0 = new org.json.JSONObject;
+
+        specialinvoke $u0.<org.json.JSONObject: void <init>(java.lang.Object)>(value);
+
+        $r0 = (org.json.JSONArray) this;
+
+        virtualinvoke $r0.<org.json.JSONArray: org.json.JSONArray put(int,java.lang.Object)>(index, $u0);
+
+        $r1 = (org.json.JSONArray) this;
+
+        return $r1;
+    }
+
+    public org.json.JSONArray put(int, java.lang.Object) throws org.json.JSONException
+    {
+        java.lang.Object value, $stack6;
+        int index, $stack3, $stack4;
+        JSONArray this;
+        java.util.ArrayList $stack10;
+        java.lang.String $stack14;
+        org.json.JSONException $u0;
+        java.lang.Throwable $r0;
+        org.json.JSONArray $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        value := @parameter1: java.lang.Object;
+
+        staticinvoke <org.json.JSONObject: void testValidity(java.lang.Object)>(value);
+
+        if index >= 0 goto label1;
+
+        $u0 = new org.json.JSONException;
+
+        $stack14 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (int)>(index) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("JSONArray[\u0001] not found.");
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.String)>($stack14);
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label1:
+        $r1 = (org.json.JSONArray) this;
+
+        $stack3 = virtualinvoke $r1.<org.json.JSONArray: int length()>();
+
+        if index >= $stack3 goto label2;
+
+        $r2 = (org.json.JSONArray) this;
+
+        $stack10 = $r2.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        virtualinvoke $stack10.<java.util.ArrayList: java.lang.Object set(int,java.lang.Object)>(index, value);
+
+        goto label4;
+
+     label2:
+        $r3 = (org.json.JSONArray) this;
+
+        $stack4 = virtualinvoke $r3.<org.json.JSONArray: int length()>();
+
+        if index == $stack4 goto label3;
+
+        $stack6 = <org.json.JSONObject: java.lang.Object NULL>;
+
+        $r4 = (org.json.JSONArray) this;
+
+        virtualinvoke $r4.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack6);
+
+        goto label2;
+
+     label3:
+        $r5 = (org.json.JSONArray) this;
+
+        virtualinvoke $r5.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>(value);
+
+     label4:
+        $r6 = (org.json.JSONArray) this;
+
+        return $r6;
+    }
+
+    public java.lang.Object remove(int)
+    {
+        JSONArray this;
+        int index;
+        java.lang.Object o;
+        java.util.ArrayList $stack4;
+        org.json.JSONArray $r0, $r1;
+
+        this := @this: JSONArray;
+
+        index := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        o = virtualinvoke $r0.<org.json.JSONArray: java.lang.Object opt(int)>(index);
+
+        $r1 = (org.json.JSONArray) this;
+
+        $stack4 = $r1.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        virtualinvoke $stack4.<java.util.ArrayList: java.lang.Object remove(int)>(index);
+
+        return o;
+    }
+
+    public org.json.JSONObject toJSONObject(org.json.JSONArray) throws org.json.JSONException
+    {
+        org.json.JSONArray names, $r0, $r1;
+        int $stack4, $stack6, $stack8, i;
+        JSONArray this;
+        java.lang.String $stack9;
+        java.lang.Object $stack10;
+        org.json.JSONObject $u0;
+
+        this := @this: JSONArray;
+
+        names := @parameter0: org.json.JSONArray;
+
+        if names == null goto label1;
+
+        $stack4 = virtualinvoke names.<org.json.JSONArray: int length()>();
+
+        if $stack4 == 0 goto label1;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack6 = virtualinvoke $r0.<org.json.JSONArray: int length()>();
+
+        if $stack6 != 0 goto label2;
+
+     label1:
+        return null;
+
+     label2:
+        $u0 = new org.json.JSONObject;
+
+        specialinvoke $u0.<org.json.JSONObject: void <init>()>();
+
+        i = 0;
+
+     label3:
+        $stack8 = virtualinvoke names.<org.json.JSONArray: int length()>();
+
+        if i >= $stack8 goto label4;
+
+        $stack9 = virtualinvoke names.<org.json.JSONArray: java.lang.String getString(int)>(i);
+
+        $r1 = (org.json.JSONArray) this;
+
+        $stack10 = virtualinvoke $r1.<org.json.JSONArray: java.lang.Object opt(int)>(i);
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>($stack9, $stack10);
+
+        i = i + 1;
+
+        goto label3;
+
+     label4:
+        return $u0;
+    }
+
+    public java.lang.String toString()
+    {
+        JSONArray this;
+        java.lang.String $stack2, $stack3;
+        java.lang.Exception $stack4;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+     label1:
+        $r0 = (org.json.JSONArray) this;
+
+        $stack2 = virtualinvoke $r0.<org.json.JSONArray: java.lang.String join(java.lang.String)>(",");
+
+        $stack3 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack2) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("[\u0001]");
+
+     label2:
+        return $stack3;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        return null;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public java.lang.String toString(int) throws org.json.JSONException
+    {
+        JSONArray this;
+        int indentFactor;
+        java.lang.String $stack2;
+        org.json.JSONArray $r0;
+
+        this := @this: JSONArray;
+
+        indentFactor := @parameter0: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        $stack2 = virtualinvoke $r0.<org.json.JSONArray: java.lang.String toString(int,int)>(indentFactor, 0);
+
+        return $stack2;
+    }
+
+    java.lang.String toString(int, int) throws org.json.JSONException
+    {
+        JSONArray this;
+        int len, indent, indentFactor, newindent, i, j;
+        java.lang.String $stack13, $stack19, $stack30;
+        java.util.ArrayList $stack17, $stack28;
+        java.lang.Object $stack18, $stack29;
+        java.lang.StringBuffer $u0;
+        org.json.JSONArray $r0, $r1, $r2;
+
+        this := @this: JSONArray;
+
+        indentFactor := @parameter0: int;
+
+        indent := @parameter1: int;
+
+        $r0 = (org.json.JSONArray) this;
+
+        len = virtualinvoke $r0.<org.json.JSONArray: int length()>();
+
+        if len != 0 goto label1;
+
+        return "[]";
+
+     label1:
+        $u0 = new java.lang.StringBuffer;
+
+        specialinvoke $u0.<java.lang.StringBuffer: void <init>(java.lang.String)>("[");
+
+        if len != 1 goto label2;
+
+        $r1 = (org.json.JSONArray) this;
+
+        $stack28 = $r1.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        $stack29 = virtualinvoke $stack28.<java.util.ArrayList: java.lang.Object get(int)>(0);
+
+        $stack30 = staticinvoke <org.json.JSONObject: java.lang.String valueToString(java.lang.Object,int,int)>($stack29, indentFactor, indent);
+
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($stack30);
+
+        goto label9;
+
+     label2:
+        newindent = indent + indentFactor;
+
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(10);
+
+        i = 0;
+
+     label3:
+        if i >= len goto label7;
+
+        if i <= 0 goto label4;
+
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(",\n");
+
+     label4:
+        j = 0;
+
+     label5:
+        if j >= newindent goto label6;
+
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(32);
+
+        j = j + 1;
+
+        goto label5;
+
+     label6:
+        $r2 = (org.json.JSONArray) this;
+
+        $stack17 = $r2.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        $stack18 = virtualinvoke $stack17.<java.util.ArrayList: java.lang.Object get(int)>(i);
+
+        $stack19 = staticinvoke <org.json.JSONObject: java.lang.String valueToString(java.lang.Object,int,int)>($stack18, indentFactor, newindent);
+
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($stack19);
+
+        i = i + 1;
+
+        goto label3;
+
+     label7:
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(10);
+
+        i = 0;
+
+     label8:
+        if i >= indent goto label9;
+
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(32);
+
+        i = i + 1;
+
+        goto label8;
+
+     label9:
+        virtualinvoke $u0.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(93);
+
+        $stack13 = virtualinvoke $u0.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        return $stack13;
+    }
+
+    public java.io.Writer write(java.io.Writer) throws org.json.JSONException
+    {
+        JSONArray this;
+        int len, i;
+        java.io.Writer writer;
+        java.util.ArrayList $stack7;
+        java.lang.Object v;
+        boolean $stack9, $stack10, b;
+        java.lang.String $stack11;
+        org.json.JSONArray $stack14, $r0, $r1;
+        org.json.JSONObject $stack17;
+        java.io.IOException $stack22;
+        org.json.JSONException $u0;
+        java.lang.Throwable $r2;
+
+        this := @this: JSONArray;
+
+        writer := @parameter0: java.io.Writer;
+
+     label1:
+        b = 0;
+
+        $r0 = (org.json.JSONArray) this;
+
+        len = virtualinvoke $r0.<org.json.JSONArray: int length()>();
+
+        virtualinvoke writer.<java.io.Writer: void write(int)>(91);
+
+        i = 0;
+
+     label2:
+        if i >= len goto label7;
+
+        if b == 0 goto label3;
+
+        virtualinvoke writer.<java.io.Writer: void write(int)>(44);
+
+     label3:
+        $r1 = (org.json.JSONArray) this;
+
+        $stack7 = $r1.<org.json.JSONArray: java.util.ArrayList myArrayList>;
+
+        v = virtualinvoke $stack7.<java.util.ArrayList: java.lang.Object get(int)>(i);
+
+        $stack9 = v instanceof org.json.JSONObject;
+
+        if $stack9 == 0 goto label4;
+
+        $stack17 = (org.json.JSONObject) v;
+
+        virtualinvoke $stack17.<org.json.JSONObject: java.io.Writer write(java.io.Writer)>(writer);
+
+        goto label6;
+
+     label4:
+        $stack10 = v instanceof org.json.JSONArray;
+
+        if $stack10 == 0 goto label5;
+
+        $stack14 = (org.json.JSONArray) v;
+
+        virtualinvoke $stack14.<org.json.JSONArray: java.io.Writer write(java.io.Writer)>(writer);
+
+        goto label6;
+
+     label5:
+        $stack11 = staticinvoke <org.json.JSONObject: java.lang.String valueToString(java.lang.Object)>(v);
+
+        virtualinvoke writer.<java.io.Writer: void write(java.lang.String)>($stack11);
+
+     label6:
+        b = 1;
+
+        i = i + 1;
+
+        goto label2;
+
+     label7:
+        virtualinvoke writer.<java.io.Writer: void write(int)>(93);
+
+     label8:
+        return writer;
+
+     label9:
+        $stack22 := @caughtexception;
+
+        $u0 = new org.json.JSONException;
+
+        specialinvoke $u0.<org.json.JSONException: void <init>(java.lang.Throwable)>($stack22);
+
+        $r2 = (java.lang.Throwable) $u0;
+
+        throw $r2;
+
+        catch java.io.IOException from label1 to label8 with label9;
+    }
+}

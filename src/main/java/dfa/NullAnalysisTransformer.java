@@ -31,15 +31,14 @@ public class NullAnalysisTransformer extends SceneTransformer {
 		Iterator<SootMethod> iterMeth = studiedMethods.iterator();
 		
 		//we iterate over every methode of the class
-		int numMeth = 0;
-		int numMethDer = 0;
+
 		while(iterMeth.hasNext()){
 			
 			SootMethod sMethod = iterMeth.next();
 			if(sMethod.isConcrete()) {
-				numMeth++;
+				prop.numMeth = prop.numMeth + 1;
 			}
-			System.out.println("Method number = " + numMeth  + " Num of deref = " + numMethDer);
+			System.out.println("Method number = " + prop.numMeth  + " Num of deref = " + prop.numMethDer);
 			
 			System.out.println(sMethod.getDeclaration());
 			
@@ -57,26 +56,28 @@ public class NullAnalysisTransformer extends SceneTransformer {
 			//then we analyse the results
 			while (unitIt.hasNext()) {
 				
-				//System.out.println("next unit :");
+				
 				Unit s = unitIt.next();
-	
-				//System.out.println(s);
-	
 				NullableValueSet i = analysis.getFlowBefore(s);
-				//i.print(); //Si besoin est on peut print le flow before
+				
+				//System.out.println("next unit :");
+				//System.out.println(s);
+				//i.print();
+				//System.out.println();
 				//System.out.println("\n line number found = " + s.getJavaSourceStartLineNumber());
+				
 				Stmt stm = (Stmt) s;
 				if (stm.containsInvokeExpr()) {
 					InvokeExpr inv = stm.getInvokeExpr();
 					if(inv instanceof InstanceInvokeExpr) {
-						numMethDer++;
+						prop.numMethDer++;
 						String stat = i.get(((InstanceInvokeExpr) inv).getBase());
 						if(stat.equals("Null")) {
 							System.out.println("WARNING NULL DEREF on " + ((InstanceInvokeExpr) inv).getBase() + " at " + s.getJavaSourceStartLineNumber());
 						}
 						if(stat.equals("NCP")) {
 							if (this.prop.ShowNCPWarning) {
-								System.out.println("hWARNING NCP DEREF on " + ((InstanceInvokeExpr) inv).getBase() + " at " + s.getJavaSourceStartLineNumber());
+								System.out.println("WARNING NCP DEREF on " + ((InstanceInvokeExpr) inv).getBase() + " at " + s.getJavaSourceStartLineNumber());
 							}
 						}
 						if(stat.equals("NSP")) {
@@ -89,7 +90,7 @@ public class NullAnalysisTransformer extends SceneTransformer {
 				if (stm.containsFieldRef()) {
 					FieldRef inv = stm.getFieldRef();
 					if(inv instanceof InstanceFieldRef) {
-						numMethDer++;
+						prop.numMethDer++;
 						String stat = i.get(((InstanceFieldRef) inv).getBase());
 						if(stat.equals("Null")) { 
 							System.out.println("WARNING NULL DEREF on " + ((InstanceFieldRef) inv).getBase() + " at " + s.getJavaSourceStartLineNumber());
@@ -106,7 +107,7 @@ public class NullAnalysisTransformer extends SceneTransformer {
 				if (stm.containsArrayRef()) {
 					ArrayRef inv = stm.getArrayRef();
 					String stat = i.get(inv.getBase());
-					numMethDer++;
+					prop.numMethDer++;
 					if(stat.equals("Null")) {
 						System.out.println("WARNING NULL DEREF on " + inv.getBase() + " at " + s.getJavaSourceStartLineNumber());
 					}

@@ -1,0 +1,738 @@
+public class ConsoleTransferListener extends org.eclipse.aether.transfer.AbstractTransferListener
+{
+    private java.io.PrintStream out;
+    private java.util.Map downloads;
+    private int lastLength;
+
+    public void <init>()
+    {
+        ConsoleTransferListener this;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $r0;
+
+        this := @this: ConsoleTransferListener;
+
+        $r0 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void <init>(java.io.PrintStream)>(null);
+
+        return;
+    }
+
+    public void <init>(java.io.PrintStream)
+    {
+        ConsoleTransferListener this;
+        java.io.PrintStream out, $stack3;
+        java.util.concurrent.ConcurrentHashMap $u0;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $r0, $r1;
+
+        this := @this: ConsoleTransferListener;
+
+        out := @parameter0: java.io.PrintStream;
+
+        specialinvoke this.<org.eclipse.aether.transfer.AbstractTransferListener: void <init>()>();
+
+        $u0 = new java.util.concurrent.ConcurrentHashMap;
+
+        specialinvoke $u0.<java.util.concurrent.ConcurrentHashMap: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $r0.<org.apache.maven.repository.internal.util.ConsoleTransferListener: java.util.Map downloads> = $u0;
+
+        if out == null goto label1;
+
+        $stack3 = out;
+
+        goto label2;
+
+     label1:
+        $stack3 = <java.lang.System: java.io.PrintStream out>;
+
+     label2:
+        $r1 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $r1.<org.apache.maven.repository.internal.util.ConsoleTransferListener: java.io.PrintStream out> = $stack3;
+
+        return;
+    }
+
+    public void transferInitiated(org.eclipse.aether.transfer.TransferEvent)
+    {
+        org.eclipse.aether.transfer.TransferEvent event;
+        org.eclipse.aether.transfer.TransferEvent$RequestType $stack3, $stack4;
+        ConsoleTransferListener this;
+        java.lang.StringBuilder $stack7, $stack8, $stack11, $stack14, $u0;
+        org.eclipse.aether.transfer.TransferResource $stack9, $stack12;
+        java.lang.String $stack10, $stack13, $stack15, $stack16;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $r0;
+
+        this := @this: ConsoleTransferListener;
+
+        event := @parameter0: org.eclipse.aether.transfer.TransferEvent;
+
+        $stack3 = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: org.eclipse.aether.transfer.TransferEvent$RequestType getRequestType()>();
+
+        $stack4 = <org.eclipse.aether.transfer.TransferEvent$RequestType: org.eclipse.aether.transfer.TransferEvent$RequestType PUT>;
+
+        if $stack3 != $stack4 goto label1;
+
+        $stack16 = "Uploading";
+
+        goto label2;
+
+     label1:
+        $stack16 = "Downloading";
+
+     label2:
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack16);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack9 = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: org.eclipse.aether.transfer.TransferResource getResource()>();
+
+        $stack10 = virtualinvoke $stack9.<org.eclipse.aether.transfer.TransferResource: java.lang.String getRepositoryUrl()>();
+
+        $stack11 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        $stack12 = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: org.eclipse.aether.transfer.TransferResource getResource()>();
+
+        $stack13 = virtualinvoke $stack12.<org.eclipse.aether.transfer.TransferResource: java.lang.String getResourceName()>();
+
+        $stack14 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack13);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r0 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void println(java.lang.String,java.lang.String)>("transferInitiated", $stack15);
+
+        return;
+    }
+
+    public void transferProgressed(org.eclipse.aether.transfer.TransferEvent)
+    {
+        org.eclipse.aether.transfer.TransferEvent event;
+        org.eclipse.aether.transfer.TransferResource resource, $stack28;
+        ConsoleTransferListener this;
+        java.util.Map $stack11, $stack16;
+        long $stack12, total, complete;
+        java.lang.Long $stack13, $stack31;
+        java.util.Set $stack17;
+        boolean $stack19;
+        int $stack20, $stack21, $stack22, pad#2;
+        java.lang.String $stack25, $stack33;
+        java.lang.Object $stack26, $stack27, $stack30;
+        java.util.Map$Entry entry;
+        java.lang.StringBuilder $stack34, $u0;
+        java.util.Iterator pad;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: ConsoleTransferListener;
+
+        event := @parameter0: org.eclipse.aether.transfer.TransferEvent;
+
+        resource = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: org.eclipse.aether.transfer.TransferResource getResource()>();
+
+        $r0 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack11 = $r0.<org.apache.maven.repository.internal.util.ConsoleTransferListener: java.util.Map downloads>;
+
+        $stack12 = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: long getTransferredBytes()>();
+
+        $stack13 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($stack12);
+
+        interfaceinvoke $stack11.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(resource, $stack13);
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(int)>(64);
+
+        $r1 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack16 = $r1.<org.apache.maven.repository.internal.util.ConsoleTransferListener: java.util.Map downloads>;
+
+        $stack17 = interfaceinvoke $stack16.<java.util.Map: java.util.Set entrySet()>();
+
+        pad = interfaceinvoke $stack17.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $stack19 = interfaceinvoke pad.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack19 == 0 goto label2;
+
+        $stack26 = interfaceinvoke pad.<java.util.Iterator: java.lang.Object next()>();
+
+        entry = (java.util.Map$Entry) $stack26;
+
+        $stack27 = interfaceinvoke entry.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $stack28 = (org.eclipse.aether.transfer.TransferResource) $stack27;
+
+        total = virtualinvoke $stack28.<org.eclipse.aether.transfer.TransferResource: long getContentLength()>();
+
+        $stack30 = interfaceinvoke entry.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $stack31 = (java.lang.Long) $stack30;
+
+        complete = virtualinvoke $stack31.<java.lang.Long: long longValue()>();
+
+        $r2 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack33 = specialinvoke $r2.<org.apache.maven.repository.internal.util.ConsoleTransferListener: java.lang.String getStatus(long,long)>(complete, total);
+
+        $stack34 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack33);
+
+        virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("  ");
+
+        goto label1;
+
+     label2:
+        $r3 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack20 = $r3.<org.apache.maven.repository.internal.util.ConsoleTransferListener: int lastLength>;
+
+        $stack21 = virtualinvoke $u0.<java.lang.StringBuilder: int length()>();
+
+        pad#2 = $stack20 - $stack21;
+
+        $stack22 = virtualinvoke $u0.<java.lang.StringBuilder: int length()>();
+
+        $r4 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $r4.<org.apache.maven.repository.internal.util.ConsoleTransferListener: int lastLength> = $stack22;
+
+        $r5 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        specialinvoke $r5.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void pad(java.lang.StringBuilder,int)>($u0, pad#2);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(13);
+
+        $stack25 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r6 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        specialinvoke $r6.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void print(java.lang.String,java.lang.String)>("transferProgressed", $stack25);
+
+        return;
+    }
+
+    private java.lang.String getStatus(long, long)
+    {
+        long total, complete, $stack13, $stack24, $stack27;
+        byte $stack5, $stack6, $stack7;
+        java.lang.StringBuilder $stack9, $stack10, $stack14, $stack15, $stack18, $stack19, $stack20, $stack21, $stack25, $stack26, $stack28, $stack29, $u0, $u1, $u2, $u3;
+        java.lang.String $stack11, $stack16, $stack22, $stack30;
+        ConsoleTransferListener this;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $r0, $r1, $r2;
+
+        this := @this: ConsoleTransferListener;
+
+        complete := @parameter0: long;
+
+        total := @parameter1: long;
+
+        $stack5 = total cmp 1024L;
+
+        if $stack5 < 0 goto label1;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack24 = virtualinvoke $r0.<org.apache.maven.repository.internal.util.ConsoleTransferListener: long toKB(long)>(complete);
+
+        $stack25 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($stack24);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        $r1 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack27 = virtualinvoke $r1.<org.apache.maven.repository.internal.util.ConsoleTransferListener: long toKB(long)>(total);
+
+        $stack28 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($stack27);
+
+        $stack29 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" KB ");
+
+        $stack30 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack30;
+
+     label1:
+        $stack6 = total cmp 0L;
+
+        if $stack6 < 0 goto label2;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack18 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>(complete);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>(total);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" B ");
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack22;
+
+     label2:
+        $stack7 = complete cmp 1024L;
+
+        if $stack7 < 0 goto label3;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack13 = virtualinvoke $r2.<org.apache.maven.repository.internal.util.ConsoleTransferListener: long toKB(long)>(complete);
+
+        $stack14 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($stack13);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" KB ");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack16;
+
+     label3:
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack9 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>(complete);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" B ");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack11;
+    }
+
+    private void pad(java.lang.StringBuilder, int)
+    {
+        java.lang.String block;
+        int $stack5, n, spaces;
+        java.lang.StringBuilder buffer;
+        ConsoleTransferListener this;
+
+        this := @this: ConsoleTransferListener;
+
+        buffer := @parameter0: java.lang.StringBuilder;
+
+        spaces := @parameter1: int;
+
+        block = "                                        ";
+
+     label1:
+        if spaces <= 0 goto label2;
+
+        $stack5 = virtualinvoke block.<java.lang.String: int length()>();
+
+        n = staticinvoke <java.lang.Math: int min(int,int)>(spaces, $stack5);
+
+        virtualinvoke buffer.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.CharSequence,int,int)>("                                        ", 0, n);
+
+        spaces = spaces - n;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void transferSucceeded(org.eclipse.aether.transfer.TransferEvent)
+    {
+        ConsoleTransferListener this;
+        org.eclipse.aether.transfer.TransferEvent event;
+        org.eclipse.aether.transfer.TransferResource resource;
+        long contentLength, $stack23, $stack24, duration, $stack63;
+        byte $stack15, $stack18, $stack25;
+        org.eclipse.aether.transfer.TransferEvent$RequestType $stack16, $stack17;
+        java.lang.String type, len, $stack30, $stack32, $stack38, $stack49, $stack72, $stack22, throughput;
+        java.lang.StringBuilder $stack20, $stack21, $stack28, $stack29, $stack31, $stack33, $stack34, $stack35, $stack36, $stack37, $stack48, $stack50, $stack51, $stack64, $stack65, $u0, $u1, $u4, $u5;
+        java.util.Locale $stack41;
+        double $stack43, $stack44, $stack45, $stack46, kbPerSec;
+        java.text.DecimalFormatSymbols $u2;
+        java.text.DecimalFormat $u3;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $r0, $r1, $r2;
+
+        this := @this: ConsoleTransferListener;
+
+        event := @parameter0: org.eclipse.aether.transfer.TransferEvent;
+
+        $r0 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void transferCompleted(org.eclipse.aether.transfer.TransferEvent)>(event);
+
+        resource = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: org.eclipse.aether.transfer.TransferResource getResource()>();
+
+        contentLength = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: long getTransferredBytes()>();
+
+        $stack15 = contentLength cmp 0L;
+
+        if $stack15 < 0 goto label6;
+
+        $stack16 = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: org.eclipse.aether.transfer.TransferEvent$RequestType getRequestType()>();
+
+        $stack17 = <org.eclipse.aether.transfer.TransferEvent$RequestType: org.eclipse.aether.transfer.TransferEvent$RequestType PUT>;
+
+        if $stack16 != $stack17 goto label1;
+
+        $stack72 = "Uploaded";
+
+        goto label2;
+
+     label1:
+        $stack72 = "Downloaded";
+
+     label2:
+        type = $stack72;
+
+        $stack18 = contentLength cmp 1024L;
+
+        if $stack18 < 0 goto label3;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack63 = virtualinvoke $r1.<org.apache.maven.repository.internal.util.ConsoleTransferListener: long toKB(long)>(contentLength);
+
+        $stack64 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($stack63);
+
+        $stack65 = virtualinvoke $stack64.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" KB");
+
+        $stack22 = virtualinvoke $stack65.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label4;
+
+     label3:
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack20 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>(contentLength);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" B");
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label4:
+        len = $stack22;
+
+        throughput = "";
+
+        $stack23 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $stack24 = virtualinvoke resource.<org.eclipse.aether.transfer.TransferResource: long getTransferStartTime()>();
+
+        duration = $stack23 - $stack24;
+
+        $stack25 = duration cmp 0L;
+
+        if $stack25 <= 0 goto label5;
+
+        $u3 = new java.text.DecimalFormat;
+
+        $u2 = new java.text.DecimalFormatSymbols;
+
+        $stack41 = <java.util.Locale: java.util.Locale ENGLISH>;
+
+        specialinvoke $u2.<java.text.DecimalFormatSymbols: void <init>(java.util.Locale)>($stack41);
+
+        specialinvoke $u3.<java.text.DecimalFormat: void <init>(java.lang.String,java.text.DecimalFormatSymbols)>("0.0", $u2);
+
+        $stack43 = (double) contentLength;
+
+        $stack46 = $stack43 / 1024.0;
+
+        $stack44 = (double) duration;
+
+        $stack45 = $stack44 / 1000.0;
+
+        kbPerSec = $stack46 / $stack45;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack48 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" at ");
+
+        $stack49 = virtualinvoke $u3.<java.text.DecimalFormat: java.lang.String format(double)>(kbPerSec);
+
+        $stack50 = virtualinvoke $stack48.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack49);
+
+        $stack51 = virtualinvoke $stack50.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" KB/sec");
+
+        throughput = virtualinvoke $stack51.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label5:
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack28 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(type);
+
+        $stack29 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack30 = virtualinvoke resource.<org.eclipse.aether.transfer.TransferResource: java.lang.String getRepositoryUrl()>();
+
+        $stack31 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack30);
+
+        $stack32 = virtualinvoke resource.<org.eclipse.aether.transfer.TransferResource: java.lang.String getResourceName()>();
+
+        $stack33 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack32);
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(len);
+
+        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(throughput);
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r2 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        specialinvoke $r2.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void println(java.lang.String,java.lang.String)>("transferSucceeded", $stack38);
+
+     label6:
+        return;
+    }
+
+    public void transferFailed(org.eclipse.aether.transfer.TransferEvent)
+    {
+        ConsoleTransferListener this;
+        org.eclipse.aether.transfer.TransferEvent event;
+        java.lang.Exception $stack4, $stack8;
+        java.lang.Class $stack5;
+        java.lang.StringBuilder $stack6, $stack7, $stack10, $u0;
+        java.lang.String $stack9, $stack11;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $r0, $r1;
+
+        this := @this: ConsoleTransferListener;
+
+        event := @parameter0: org.eclipse.aether.transfer.TransferEvent;
+
+        $r0 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void transferCompleted(org.eclipse.aether.transfer.TransferEvent)>(event);
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack4 = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: java.lang.Exception getException()>();
+
+        $stack5 = virtualinvoke $stack4.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack8 = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: java.lang.Exception getException()>();
+
+        $stack9 = virtualinvoke $stack8.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $stack10 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        specialinvoke $r1.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void println(java.lang.String,java.lang.String)>("transferFailed", $stack11);
+
+        return;
+    }
+
+    private void transferCompleted(org.eclipse.aether.transfer.TransferEvent)
+    {
+        ConsoleTransferListener this;
+        org.eclipse.aether.transfer.TransferEvent event;
+        java.util.Map $stack3;
+        org.eclipse.aether.transfer.TransferResource $stack4;
+        int $stack7;
+        java.io.PrintStream $stack9;
+        java.lang.StringBuilder $u0;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $r0, $r1, $r2, $r3;
+
+        this := @this: ConsoleTransferListener;
+
+        event := @parameter0: org.eclipse.aether.transfer.TransferEvent;
+
+        $r0 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.internal.util.ConsoleTransferListener: java.util.Map downloads>;
+
+        $stack4 = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: org.eclipse.aether.transfer.TransferResource getResource()>();
+
+        interfaceinvoke $stack3.<java.util.Map: java.lang.Object remove(java.lang.Object)>($stack4);
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(int)>(64);
+
+        $r1 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack7 = $r1.<org.apache.maven.repository.internal.util.ConsoleTransferListener: int lastLength>;
+
+        $r2 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        specialinvoke $r2.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void pad(java.lang.StringBuilder,int)>($u0, $stack7);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(13);
+
+        $r3 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack9 = $r3.<org.apache.maven.repository.internal.util.ConsoleTransferListener: java.io.PrintStream out>;
+
+        virtualinvoke $stack9.<java.io.PrintStream: void println(java.lang.Object)>($u0);
+
+        return;
+    }
+
+    public void transferCorrupted(org.eclipse.aether.transfer.TransferEvent)
+    {
+        ConsoleTransferListener this;
+        org.eclipse.aether.transfer.TransferEvent event;
+        java.lang.Exception $stack4, $stack8;
+        java.lang.Class $stack5;
+        java.lang.StringBuilder $stack6, $stack7, $stack10, $u0;
+        java.lang.String $stack9, $stack11;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $r0;
+
+        this := @this: ConsoleTransferListener;
+
+        event := @parameter0: org.eclipse.aether.transfer.TransferEvent;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack4 = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: java.lang.Exception getException()>();
+
+        $stack5 = virtualinvoke $stack4.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack8 = virtualinvoke event.<org.eclipse.aether.transfer.TransferEvent: java.lang.Exception getException()>();
+
+        $stack9 = virtualinvoke $stack8.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $stack10 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r0 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void println(java.lang.String,java.lang.String)>("transferCorrupted", $stack11);
+
+        return;
+    }
+
+    protected long toKB(long)
+    {
+        long bytes, $stack3, $stack4;
+        ConsoleTransferListener this;
+
+        this := @this: ConsoleTransferListener;
+
+        bytes := @parameter0: long;
+
+        $stack3 = bytes + 1023L;
+
+        $stack4 = $stack3 / 1024L;
+
+        return $stack4;
+    }
+
+    private void println(java.lang.String, java.lang.String)
+    {
+        ConsoleTransferListener this;
+        java.lang.String event, message;
+        java.io.PrintStream $stack3;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $r0, $r1;
+
+        this := @this: ConsoleTransferListener;
+
+        event := @parameter0: java.lang.String;
+
+        message := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.internal.util.ConsoleTransferListener: void print(java.lang.String,java.lang.String)>(event, message);
+
+        $r1 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack3 = $r1.<org.apache.maven.repository.internal.util.ConsoleTransferListener: java.io.PrintStream out>;
+
+        virtualinvoke $stack3.<java.io.PrintStream: void println()>();
+
+        return;
+    }
+
+    private void print(java.lang.String, java.lang.String)
+    {
+        ConsoleTransferListener this;
+        java.io.PrintStream $stack4, $stack8, $stack9;
+        java.lang.StringBuilder $stack5, $stack6, $u0;
+        java.lang.String event, $stack7, message;
+        org.apache.maven.repository.internal.util.ConsoleTransferListener $r0, $r1, $r2;
+
+        this := @this: ConsoleTransferListener;
+
+        event := @parameter0: java.lang.String;
+
+        message := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack4 = $r0.<org.apache.maven.repository.internal.util.ConsoleTransferListener: java.io.PrintStream out>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack5 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Aether Transfer - ");
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(event);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack4.<java.io.PrintStream: void print(java.lang.String)>($stack7);
+
+        if message == null goto label1;
+
+        $r1 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack8 = $r1.<org.apache.maven.repository.internal.util.ConsoleTransferListener: java.io.PrintStream out>;
+
+        virtualinvoke $stack8.<java.io.PrintStream: void print(java.lang.String)>(": ");
+
+        $r2 = (org.apache.maven.repository.internal.util.ConsoleTransferListener) this;
+
+        $stack9 = $r2.<org.apache.maven.repository.internal.util.ConsoleTransferListener: java.io.PrintStream out>;
+
+        virtualinvoke $stack9.<java.io.PrintStream: void print(java.lang.String)>(message);
+
+     label1:
+        return;
+    }
+}

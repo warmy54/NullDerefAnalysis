@@ -1,0 +1,1335 @@
+public class ModelUtilsTest extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        ModelUtilsTest this;
+
+        this := @this: ModelUtilsTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void testShouldUseMainPluginDependencyVersionOverManagedDepVersion()
+    {
+        ModelUtilsTest this;
+        java.util.Map $stack5, $stack8;
+        org.apache.maven.model.Plugin mgtPlugin, plugin;
+        org.apache.maven.model.Dependency mgtDep, dep, $stack14;
+        java.lang.String $stack11, $stack15;
+        java.util.List $stack12;
+        java.lang.Object $stack13;
+        org.apache.maven.project.ModelUtilsTest $r0, $r1, $r2, $r3;
+
+        this := @this: ModelUtilsTest;
+
+        $stack5 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r0 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        mgtPlugin = specialinvoke $r0.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", $stack5);
+
+        $r1 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        mgtDep = specialinvoke $r1.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Dependency createDependency(java.lang.String,java.lang.String,java.lang.String)>("g", "a", "2");
+
+        virtualinvoke mgtPlugin.<org.apache.maven.model.Plugin: void addDependency(org.apache.maven.model.Dependency)>(mgtDep);
+
+        $stack8 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r2 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        plugin = specialinvoke $r2.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", $stack8);
+
+        $r3 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        dep = specialinvoke $r3.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Dependency createDependency(java.lang.String,java.lang.String,java.lang.String)>("g", "a", "1");
+
+        virtualinvoke plugin.<org.apache.maven.model.Plugin: void addDependency(org.apache.maven.model.Dependency)>(dep);
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginDefinitions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean)>(plugin, mgtPlugin, 0);
+
+        $stack11 = virtualinvoke dep.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        $stack12 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.util.List getDependencies()>();
+
+        $stack13 = interfaceinvoke $stack12.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack14 = (org.apache.maven.model.Dependency) $stack13;
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack11, $stack15);
+
+        return;
+    }
+
+    private org.apache.maven.model.Dependency createDependency(java.lang.String, java.lang.String, java.lang.String)
+    {
+        org.apache.maven.model.Dependency $stack5;
+        java.lang.String gid, aid, ver;
+        ModelUtilsTest this;
+
+        this := @this: ModelUtilsTest;
+
+        gid := @parameter0: java.lang.String;
+
+        aid := @parameter1: java.lang.String;
+
+        ver := @parameter2: java.lang.String;
+
+        $stack5 = new org.apache.maven.model.Dependency;
+
+        specialinvoke $stack5.<org.apache.maven.model.Dependency: void <init>()>();
+
+        virtualinvoke $stack5.<org.apache.maven.model.Dependency: void setGroupId(java.lang.String)>(gid);
+
+        virtualinvoke $stack5.<org.apache.maven.model.Dependency: void setArtifactId(java.lang.String)>(aid);
+
+        virtualinvoke $stack5.<org.apache.maven.model.Dependency: void setVersion(java.lang.String)>(ver);
+
+        return $stack5;
+    }
+
+    public void testShouldNotInheritPluginWithInheritanceSetToFalse()
+    {
+        ModelUtilsTest this;
+        java.util.Map $stack7, $stack10;
+        org.apache.maven.model.Plugin parentPlugin, $stack11, result1;
+        java.util.List results;
+        int $stack14;
+        java.lang.Object $stack15;
+        java.lang.String $stack17, $stack19;
+        org.apache.maven.model.PluginContainer $u0, $u1;
+        org.apache.maven.project.ModelUtilsTest $r0, $r1;
+
+        this := @this: ModelUtilsTest;
+
+        $u0 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $u0.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        $stack7 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r0 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        parentPlugin = specialinvoke $r0.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1.0", $stack7);
+
+        virtualinvoke parentPlugin.<org.apache.maven.model.Plugin: void setInherited(java.lang.String)>("false");
+
+        virtualinvoke $u0.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>(parentPlugin);
+
+        $u1 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $u1.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        $stack10 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r1 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        $stack11 = specialinvoke $r1.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group3", "artifact3", "1.0", $stack10);
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>($stack11);
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginLists(org.apache.maven.model.PluginContainer,org.apache.maven.model.PluginContainer,boolean)>($u1, $u0, 1);
+
+        results = virtualinvoke $u1.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        $stack14 = interfaceinvoke results.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack14);
+
+        $stack15 = interfaceinvoke results.<java.util.List: java.lang.Object get(int)>(0);
+
+        result1 = (org.apache.maven.model.Plugin) $stack15;
+
+        $stack17 = virtualinvoke result1.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("group3", $stack17);
+
+        $stack19 = virtualinvoke result1.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("artifact3", $stack19);
+
+        return;
+    }
+
+    public void testShouldPreserveChildOrderingOfPluginsAfterParentMerge()
+    {
+        ModelUtilsTest this;
+        java.util.Map $stack9, $stack14, $stack17, $stack22;
+        org.apache.maven.model.Plugin $stack10, $stack15, $stack18, $stack23, result1, result2, result3;
+        java.util.List results;
+        int $stack26;
+        java.lang.Object $stack27, $stack32, $stack37, $stack42;
+        java.lang.String $stack29, $stack31, $stack34, $stack36, $stack39, $stack41, $stack45, $stack48;
+        org.codehaus.plexus.util.xml.Xpp3Dom result3Config, $stack44, $stack47;
+        org.apache.maven.model.PluginContainer $u0, $u1;
+        org.apache.maven.project.ModelUtilsTest $r0, $r1, $r2, $r3;
+
+        this := @this: ModelUtilsTest;
+
+        $u0 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $u0.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        $stack9 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r0 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        $stack10 = specialinvoke $r0.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1.0", $stack9);
+
+        virtualinvoke $u0.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>($stack10);
+
+        $stack14 = staticinvoke <java.util.Collections: java.util.Map singletonMap(java.lang.Object,java.lang.Object)>("key", "value");
+
+        $r1 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        $stack15 = specialinvoke $r1.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group2", "artifact2", "1.0", $stack14);
+
+        virtualinvoke $u0.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>($stack15);
+
+        $u1 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $u1.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        $stack17 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r2 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        $stack18 = specialinvoke $r2.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group3", "artifact3", "1.0", $stack17);
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>($stack18);
+
+        $stack22 = staticinvoke <java.util.Collections: java.util.Map singletonMap(java.lang.Object,java.lang.Object)>("key2", "value2");
+
+        $r3 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        $stack23 = specialinvoke $r3.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group2", "artifact2", "1.0", $stack22);
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>($stack23);
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginLists(org.apache.maven.model.PluginContainer,org.apache.maven.model.PluginContainer,boolean)>($u1, $u0, 1);
+
+        results = virtualinvoke $u1.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        $stack26 = interfaceinvoke results.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(3, $stack26);
+
+        $stack27 = interfaceinvoke results.<java.util.List: java.lang.Object get(int)>(0);
+
+        result1 = (org.apache.maven.model.Plugin) $stack27;
+
+        $stack29 = virtualinvoke result1.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("group", $stack29);
+
+        $stack31 = virtualinvoke result1.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("artifact", $stack31);
+
+        $stack32 = interfaceinvoke results.<java.util.List: java.lang.Object get(int)>(1);
+
+        result2 = (org.apache.maven.model.Plugin) $stack32;
+
+        $stack34 = virtualinvoke result2.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("group3", $stack34);
+
+        $stack36 = virtualinvoke result2.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("artifact3", $stack36);
+
+        $stack37 = interfaceinvoke results.<java.util.List: java.lang.Object get(int)>(2);
+
+        result3 = (org.apache.maven.model.Plugin) $stack37;
+
+        $stack39 = virtualinvoke result3.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("group2", $stack39);
+
+        $stack41 = virtualinvoke result3.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("artifact2", $stack41);
+
+        $stack42 = virtualinvoke result3.<org.apache.maven.model.Plugin: java.lang.Object getConfiguration()>();
+
+        result3Config = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack42;
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(result3Config);
+
+        $stack44 = virtualinvoke result3Config.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom getChild(java.lang.String)>("key");
+
+        $stack45 = virtualinvoke $stack44.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getValue()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("value", $stack45);
+
+        $stack47 = virtualinvoke result3Config.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom getChild(java.lang.String)>("key2");
+
+        $stack48 = virtualinvoke $stack47.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getValue()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("value2", $stack48);
+
+        return;
+    }
+
+    private org.apache.maven.model.Plugin createPlugin(java.lang.String, java.lang.String, java.lang.String, java.util.Map)
+    {
+        org.apache.maven.model.Plugin $stack11;
+        java.lang.String groupId, artifactId, version, $stack22, $stack24;
+        org.codehaus.plexus.util.xml.Xpp3Dom $stack12, $stack20;
+        java.util.Map configuration;
+        java.util.Set $stack13;
+        java.util.Iterator l7;
+        boolean $stack15;
+        java.lang.Object o, $stack21, $stack23;
+        java.util.Map$Entry entry;
+        ModelUtilsTest this;
+
+        this := @this: ModelUtilsTest;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        version := @parameter2: java.lang.String;
+
+        configuration := @parameter3: java.util.Map;
+
+        $stack11 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack11.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack11.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>(groupId);
+
+        virtualinvoke $stack11.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>(artifactId);
+
+        virtualinvoke $stack11.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>(version);
+
+        $stack12 = new org.codehaus.plexus.util.xml.Xpp3Dom;
+
+        specialinvoke $stack12.<org.codehaus.plexus.util.xml.Xpp3Dom: void <init>(java.lang.String)>("configuration");
+
+        if configuration == null goto label2;
+
+        $stack13 = interfaceinvoke configuration.<java.util.Map: java.util.Set entrySet()>();
+
+        l7 = interfaceinvoke $stack13.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $stack15 = interfaceinvoke l7.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label2;
+
+        o = interfaceinvoke l7.<java.util.Iterator: java.lang.Object next()>();
+
+        entry = (java.util.Map$Entry) o;
+
+        $stack20 = new org.codehaus.plexus.util.xml.Xpp3Dom;
+
+        $stack21 = interfaceinvoke entry.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $stack22 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($stack21);
+
+        specialinvoke $stack20.<org.codehaus.plexus.util.xml.Xpp3Dom: void <init>(java.lang.String)>($stack22);
+
+        $stack23 = interfaceinvoke entry.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $stack24 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($stack23);
+
+        virtualinvoke $stack20.<org.codehaus.plexus.util.xml.Xpp3Dom: void setValue(java.lang.String)>($stack24);
+
+        virtualinvoke $stack12.<org.codehaus.plexus.util.xml.Xpp3Dom: void addChild(org.codehaus.plexus.util.xml.Xpp3Dom)>($stack20);
+
+        goto label1;
+
+     label2:
+        virtualinvoke $stack11.<org.apache.maven.model.Plugin: void setConfiguration(java.lang.Object)>($stack12);
+
+        return $stack11;
+    }
+
+    public void testShouldInheritOnePluginWithExecution()
+    {
+        org.apache.maven.model.Plugin $stack4, $stack6;
+        org.apache.maven.model.PluginExecution $stack5;
+        java.util.List $stack8;
+        int $stack9;
+        ModelUtilsTest this;
+
+        this := @this: ModelUtilsTest;
+
+        $stack4 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack4.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack4.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack4.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $stack4.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $stack5 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack5.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack5.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("testExecution");
+
+        virtualinvoke $stack4.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack5);
+
+        $stack6 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack6.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack6.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack6.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $stack6.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginDefinitions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean)>($stack6, $stack4, 0);
+
+        $stack8 = virtualinvoke $stack6.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack9 = interfaceinvoke $stack8.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack9);
+
+        return;
+    }
+
+    public void testShouldMergeInheritedPluginHavingExecutionWithLocalPlugin()
+    {
+        org.apache.maven.model.Plugin $stack5, $stack7;
+        org.apache.maven.model.PluginExecution $stack6, $stack8;
+        java.util.List $stack10;
+        int $stack11;
+        ModelUtilsTest this;
+
+        this := @this: ModelUtilsTest;
+
+        $stack5 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack5.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack5.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack5.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $stack5.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $stack6 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack6.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack6.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("testExecution");
+
+        virtualinvoke $stack5.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack6);
+
+        $stack7 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack7.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack7.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack7.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $stack7.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $stack8 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack8.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack8.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("testExecution2");
+
+        virtualinvoke $stack7.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack8);
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginDefinitions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean)>($stack7, $stack5, 0);
+
+        $stack10 = virtualinvoke $stack7.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack11 = interfaceinvoke $stack10.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(2, $stack11);
+
+        return;
+    }
+
+    public void testShouldMergeOnePluginWithInheritExecutionWithoutDuplicatingPluginInList()
+    {
+        java.util.List plugins, $stack18;
+        int $stack15, $stack19;
+        java.lang.Object $stack16;
+        org.apache.maven.model.Plugin plugin, $u0, $u3;
+        ModelUtilsTest this;
+        org.apache.maven.model.PluginExecution $u1;
+        org.apache.maven.model.Build $u2, $u4;
+        org.apache.maven.model.PluginContainer $r0, $r1;
+
+        this := @this: ModelUtilsTest;
+
+        $u0 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $u0.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $u0.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $u0.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $u1 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $u1.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("testExecution");
+
+        virtualinvoke $u0.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($u1);
+
+        $u2 = new org.apache.maven.model.Build;
+
+        specialinvoke $u2.<org.apache.maven.model.Build: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.Build: void addPlugin(org.apache.maven.model.Plugin)>($u0);
+
+        $u3 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $u3.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $u3.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $u3.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $u4 = new org.apache.maven.model.Build;
+
+        specialinvoke $u4.<org.apache.maven.model.Build: void <init>()>();
+
+        virtualinvoke $u4.<org.apache.maven.model.Build: void addPlugin(org.apache.maven.model.Plugin)>($u3);
+
+        $r0 = (org.apache.maven.model.PluginContainer) $u4;
+
+        $r1 = (org.apache.maven.model.PluginContainer) $u2;
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginLists(org.apache.maven.model.PluginContainer,org.apache.maven.model.PluginContainer,boolean)>($r0, $r1, 1);
+
+        plugins = virtualinvoke $u4.<org.apache.maven.model.Build: java.util.List getPlugins()>();
+
+        $stack15 = interfaceinvoke plugins.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack15);
+
+        $stack16 = interfaceinvoke plugins.<java.util.List: java.lang.Object get(int)>(0);
+
+        plugin = (org.apache.maven.model.Plugin) $stack16;
+
+        $stack18 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack19 = interfaceinvoke $stack18.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack19);
+
+        return;
+    }
+
+    public void testShouldMergePluginWithDifferentExecutionFromParentWithoutDuplicatingPluginInList()
+    {
+        java.util.List plugins, $stack20;
+        int $stack17, $stack21;
+        java.lang.Object $stack18;
+        org.apache.maven.model.Plugin plugin, $u0, $u3;
+        ModelUtilsTest this;
+        org.apache.maven.model.PluginExecution $u1, $u4;
+        org.apache.maven.model.Build $u2, $u5;
+        org.apache.maven.model.PluginContainer $r0, $r1;
+
+        this := @this: ModelUtilsTest;
+
+        $u0 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $u0.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $u0.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $u0.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $u1 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $u1.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("testExecution");
+
+        virtualinvoke $u0.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($u1);
+
+        $u2 = new org.apache.maven.model.Build;
+
+        specialinvoke $u2.<org.apache.maven.model.Build: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.Build: void addPlugin(org.apache.maven.model.Plugin)>($u0);
+
+        $u3 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $u3.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $u3.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $u3.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $u4 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $u4.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $u4.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("testExecution2");
+
+        virtualinvoke $u3.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($u4);
+
+        $u5 = new org.apache.maven.model.Build;
+
+        specialinvoke $u5.<org.apache.maven.model.Build: void <init>()>();
+
+        virtualinvoke $u5.<org.apache.maven.model.Build: void addPlugin(org.apache.maven.model.Plugin)>($u3);
+
+        $r0 = (org.apache.maven.model.PluginContainer) $u5;
+
+        $r1 = (org.apache.maven.model.PluginContainer) $u2;
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginLists(org.apache.maven.model.PluginContainer,org.apache.maven.model.PluginContainer,boolean)>($r0, $r1, 1);
+
+        plugins = virtualinvoke $u5.<org.apache.maven.model.Build: java.util.List getPlugins()>();
+
+        $stack17 = interfaceinvoke plugins.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack17);
+
+        $stack18 = interfaceinvoke plugins.<java.util.List: java.lang.Object get(int)>(0);
+
+        plugin = (org.apache.maven.model.Plugin) $stack18;
+
+        $stack20 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack21 = interfaceinvoke $stack20.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(2, $stack21);
+
+        return;
+    }
+
+    public void testShouldNOTMergeInheritedPluginHavingInheritEqualFalse()
+    {
+        org.apache.maven.model.Plugin $stack4, $stack6;
+        org.apache.maven.model.PluginExecution $stack5;
+        java.util.List $stack8;
+        int $stack9;
+        ModelUtilsTest this;
+
+        this := @this: ModelUtilsTest;
+
+        $stack4 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack4.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack4.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack4.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $stack4.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        virtualinvoke $stack4.<org.apache.maven.model.Plugin: void setInherited(java.lang.String)>("false");
+
+        $stack5 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack5.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack5.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("testExecution");
+
+        virtualinvoke $stack4.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack5);
+
+        $stack6 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack6.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack6.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack6.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $stack6.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginDefinitions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean)>($stack6, $stack4, 1);
+
+        $stack8 = virtualinvoke $stack6.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack9 = interfaceinvoke $stack8.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack9);
+
+        return;
+    }
+
+    public void testShouldKeepOriginalPluginOrdering()
+    {
+        org.apache.maven.model.Plugin $stack11, $stack13, $stack16, $stack18;
+        org.apache.maven.model.PluginExecution $stack12, $stack14, $stack17, $stack19;
+        org.apache.maven.model.PluginContainer $stack15, $stack20;
+        java.util.List $stack22, $stack24, $stack26, $stack28, $stack30;
+        int $stack23;
+        java.lang.Object $stack25, $stack27, $stack29, $stack31;
+        ModelUtilsTest this;
+
+        this := @this: ModelUtilsTest;
+
+        $stack11 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack11.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack11.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack11.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("zzz");
+
+        virtualinvoke $stack11.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $stack12 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack12.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack12.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("testExecution");
+
+        virtualinvoke $stack11.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack12);
+
+        $stack13 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack13.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack13.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack13.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("yyy");
+
+        virtualinvoke $stack13.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $stack14 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack14.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack14.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("testExecution");
+
+        virtualinvoke $stack13.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack14);
+
+        $stack15 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $stack15.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        virtualinvoke $stack15.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>($stack11);
+
+        virtualinvoke $stack15.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>($stack13);
+
+        $stack16 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack16.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack16.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack16.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("bbb");
+
+        virtualinvoke $stack16.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $stack17 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack17.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack17.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("testExecution");
+
+        virtualinvoke $stack16.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack17);
+
+        $stack18 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack18.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack18.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack18.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("aaa");
+
+        virtualinvoke $stack18.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $stack19 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack19.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack19.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("testExecution");
+
+        virtualinvoke $stack18.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack19);
+
+        $stack20 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $stack20.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        virtualinvoke $stack20.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>($stack16);
+
+        virtualinvoke $stack20.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>($stack18);
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginLists(org.apache.maven.model.PluginContainer,org.apache.maven.model.PluginContainer,boolean)>($stack20, $stack15, 1);
+
+        $stack22 = virtualinvoke $stack20.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        $stack23 = interfaceinvoke $stack22.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(4, $stack23);
+
+        $stack24 = virtualinvoke $stack20.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        $stack25 = interfaceinvoke $stack24.<java.util.List: java.lang.Object get(int)>(0);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object)>($stack11, $stack25);
+
+        $stack26 = virtualinvoke $stack20.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        $stack27 = interfaceinvoke $stack26.<java.util.List: java.lang.Object get(int)>(1);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object)>($stack13, $stack27);
+
+        $stack28 = virtualinvoke $stack20.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        $stack29 = interfaceinvoke $stack28.<java.util.List: java.lang.Object get(int)>(2);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object)>($stack16, $stack29);
+
+        $stack30 = virtualinvoke $stack20.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        $stack31 = interfaceinvoke $stack30.<java.util.List: java.lang.Object get(int)>(3);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object)>($stack18, $stack31);
+
+        return;
+    }
+
+    public void testShouldKeepOriginalPluginExecutionOrdering()
+    {
+        org.apache.maven.model.Plugin $stack9, $stack14;
+        org.apache.maven.model.PluginExecution $stack10, $stack11, $stack15, $stack16;
+        org.apache.maven.model.Dependency $stack12, dep2;
+        java.util.List $stack13, $stack18, $stack20, $stack22, $stack24, $stack26, $stack29, $stack31;
+        int $stack19, $stack30;
+        java.lang.Object $stack21, $stack23, $stack25, $stack27, $stack32;
+        java.lang.String $stack33, $stack34;
+        ModelUtilsTest this;
+
+        this := @this: ModelUtilsTest;
+
+        $stack9 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack9.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack9.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack9.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $stack9.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $stack10 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack10.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack10.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("zzz");
+
+        $stack11 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack11.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack11.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("yyy");
+
+        virtualinvoke $stack9.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack10);
+
+        virtualinvoke $stack9.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack11);
+
+        $stack12 = new org.apache.maven.model.Dependency;
+
+        specialinvoke $stack12.<org.apache.maven.model.Dependency: void <init>()>();
+
+        virtualinvoke $stack12.<org.apache.maven.model.Dependency: void setGroupId(java.lang.String)>("depGroupId");
+
+        virtualinvoke $stack12.<org.apache.maven.model.Dependency: void setArtifactId(java.lang.String)>("depArtifactId");
+
+        virtualinvoke $stack12.<org.apache.maven.model.Dependency: void setVersion(java.lang.String)>("depVersion");
+
+        $stack13 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($stack12);
+
+        virtualinvoke $stack9.<org.apache.maven.model.Plugin: void setDependencies(java.util.List)>($stack13);
+
+        $stack14 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $stack14.<org.apache.maven.model.Plugin: void <init>()>();
+
+        virtualinvoke $stack14.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>("testArtifact");
+
+        virtualinvoke $stack14.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>("testGroup");
+
+        virtualinvoke $stack14.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>("1.0");
+
+        $stack15 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack15.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack15.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("bbb");
+
+        $stack16 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $stack16.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $stack16.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("aaa");
+
+        virtualinvoke $stack14.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack15);
+
+        virtualinvoke $stack14.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($stack16);
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginDefinitions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean)>($stack14, $stack9, 0);
+
+        $stack18 = virtualinvoke $stack14.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack19 = interfaceinvoke $stack18.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(4, $stack19);
+
+        $stack20 = virtualinvoke $stack14.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack21 = interfaceinvoke $stack20.<java.util.List: java.lang.Object get(int)>(0);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object)>($stack10, $stack21);
+
+        $stack22 = virtualinvoke $stack14.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack23 = interfaceinvoke $stack22.<java.util.List: java.lang.Object get(int)>(1);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object)>($stack11, $stack23);
+
+        $stack24 = virtualinvoke $stack14.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack25 = interfaceinvoke $stack24.<java.util.List: java.lang.Object get(int)>(2);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object)>($stack15, $stack25);
+
+        $stack26 = virtualinvoke $stack14.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack27 = interfaceinvoke $stack26.<java.util.List: java.lang.Object get(int)>(3);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object)>($stack16, $stack27);
+
+        $stack29 = virtualinvoke $stack14.<org.apache.maven.model.Plugin: java.util.List getDependencies()>();
+
+        $stack30 = interfaceinvoke $stack29.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack30);
+
+        $stack31 = virtualinvoke $stack14.<org.apache.maven.model.Plugin: java.util.List getDependencies()>();
+
+        $stack32 = interfaceinvoke $stack31.<java.util.List: java.lang.Object get(int)>(0);
+
+        dep2 = (org.apache.maven.model.Dependency) $stack32;
+
+        $stack33 = virtualinvoke $stack12.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        $stack34 = virtualinvoke dep2.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack33, $stack34);
+
+        return;
+    }
+
+    public void testShouldOverwritePluginConfigurationSubItemsByDefault() throws org.codehaus.plexus.util.xml.pull.XmlPullParserException, java.io.IOException
+    {
+        org.codehaus.plexus.util.xml.Xpp3Dom parentConfig, childConfig, result, items, item;
+        ModelUtilsTest this;
+        org.apache.maven.model.Plugin parentPlugin, childPlugin;
+        java.lang.Object $stack16;
+        int $stack19;
+        java.lang.String $stack22;
+        java.io.StringReader $u0, $u1;
+        org.apache.maven.project.ModelUtilsTest $r0, $r1;
+
+        this := @this: ModelUtilsTest;
+
+        $u0 = new java.io.StringReader;
+
+        specialinvoke $u0.<java.io.StringReader: void <init>(java.lang.String)>("<configuration><items><item>one</item><item>two</item></items></configuration>");
+
+        parentConfig = staticinvoke <org.codehaus.plexus.util.xml.Xpp3DomBuilder: org.codehaus.plexus.util.xml.Xpp3Dom build(java.io.Reader)>($u0);
+
+        $r0 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        parentPlugin = specialinvoke $r0.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", null);
+
+        virtualinvoke parentPlugin.<org.apache.maven.model.Plugin: void setConfiguration(java.lang.Object)>(parentConfig);
+
+        $u1 = new java.io.StringReader;
+
+        specialinvoke $u1.<java.io.StringReader: void <init>(java.lang.String)>("<configuration><items><item>three</item></items></configuration>");
+
+        childConfig = staticinvoke <org.codehaus.plexus.util.xml.Xpp3DomBuilder: org.codehaus.plexus.util.xml.Xpp3Dom build(java.io.Reader)>($u1);
+
+        $r1 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        childPlugin = specialinvoke $r1.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", null);
+
+        virtualinvoke childPlugin.<org.apache.maven.model.Plugin: void setConfiguration(java.lang.Object)>(childConfig);
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginDefinitions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean)>(childPlugin, parentPlugin, 1);
+
+        $stack16 = virtualinvoke childPlugin.<org.apache.maven.model.Plugin: java.lang.Object getConfiguration()>();
+
+        result = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack16;
+
+        items = virtualinvoke result.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom getChild(java.lang.String)>("items");
+
+        $stack19 = virtualinvoke items.<org.codehaus.plexus.util.xml.Xpp3Dom: int getChildCount()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack19);
+
+        item = virtualinvoke items.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom getChild(int)>(0);
+
+        $stack22 = virtualinvoke item.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getValue()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("three", $stack22);
+
+        return;
+    }
+
+    public void testShouldMergePluginConfigurationSubItemsWithMergeAttributeSet() throws org.codehaus.plexus.util.xml.pull.XmlPullParserException, java.io.IOException
+    {
+        org.codehaus.plexus.util.xml.Xpp3Dom parentConfig, childConfig, result, items, $stack24, $stack27, $stack30;
+        ModelUtilsTest this;
+        org.apache.maven.model.Plugin parentPlugin, childPlugin;
+        java.lang.Object $stack18;
+        int $stack21;
+        org.codehaus.plexus.util.xml.Xpp3Dom[] item;
+        java.lang.String[] $stack23, $stack34;
+        java.lang.String $stack26, $stack29, $stack32;
+        java.util.List actual, expected;
+        java.io.StringReader $u0, $u1;
+        org.apache.maven.project.ModelUtilsTest $r0, $r1;
+
+        this := @this: ModelUtilsTest;
+
+        $u0 = new java.io.StringReader;
+
+        specialinvoke $u0.<java.io.StringReader: void <init>(java.lang.String)>("<configuration><items><item>one</item><item>two</item></items></configuration>");
+
+        parentConfig = staticinvoke <org.codehaus.plexus.util.xml.Xpp3DomBuilder: org.codehaus.plexus.util.xml.Xpp3Dom build(java.io.Reader)>($u0);
+
+        $r0 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        parentPlugin = specialinvoke $r0.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", null);
+
+        virtualinvoke parentPlugin.<org.apache.maven.model.Plugin: void setConfiguration(java.lang.Object)>(parentConfig);
+
+        $u1 = new java.io.StringReader;
+
+        specialinvoke $u1.<java.io.StringReader: void <init>(java.lang.String)>("<configuration><items combine.children=\"append\"><item>three</item></items></configuration>");
+
+        childConfig = staticinvoke <org.codehaus.plexus.util.xml.Xpp3DomBuilder: org.codehaus.plexus.util.xml.Xpp3Dom build(java.io.Reader)>($u1);
+
+        $r1 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        childPlugin = specialinvoke $r1.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", null);
+
+        virtualinvoke childPlugin.<org.apache.maven.model.Plugin: void setConfiguration(java.lang.Object)>(childConfig);
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginDefinitions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean)>(childPlugin, parentPlugin, 1);
+
+        $stack18 = virtualinvoke childPlugin.<org.apache.maven.model.Plugin: java.lang.Object getConfiguration()>();
+
+        result = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack18;
+
+        items = virtualinvoke result.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom getChild(java.lang.String)>("items");
+
+        $stack21 = virtualinvoke items.<org.codehaus.plexus.util.xml.Xpp3Dom: int getChildCount()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(3, $stack21);
+
+        item = virtualinvoke items.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom[] getChildren()>();
+
+        $stack23 = newarray (java.lang.String)[3];
+
+        $stack24 = item[0];
+
+        $stack26 = virtualinvoke $stack24.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getValue()>();
+
+        $stack23[0] = $stack26;
+
+        $stack27 = item[1];
+
+        $stack29 = virtualinvoke $stack27.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getValue()>();
+
+        $stack23[1] = $stack29;
+
+        $stack30 = item[2];
+
+        $stack32 = virtualinvoke $stack30.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getValue()>();
+
+        $stack23[2] = $stack32;
+
+        actual = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack23);
+
+        $stack34 = newarray (java.lang.String)[3];
+
+        $stack34[0] = "one";
+
+        $stack34[1] = "two";
+
+        $stack34[2] = "three";
+
+        expected = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack34);
+
+        staticinvoke <java.util.Collections: void sort(java.util.List)>(actual);
+
+        staticinvoke <java.util.Collections: void sort(java.util.List)>(expected);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>(expected, actual);
+
+        return;
+    }
+
+    public void testShouldNotMergePluginExecutionWhenExecInheritedIsFalseAndTreatAsInheritanceIsTrue()
+    {
+        ModelUtilsTest this;
+        java.util.Map $stack13, $stack19, executionMap;
+        org.apache.maven.model.Plugin pParent, pChild;
+        java.lang.String $stack15, $stack17;
+        java.lang.Object $stack23;
+        org.apache.maven.model.PluginContainer $u0, $u2;
+        org.apache.maven.model.PluginExecution $u1, $u3;
+        org.apache.maven.project.ModelUtilsTest $r0, $r1;
+
+        this := @this: ModelUtilsTest;
+
+        $u0 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $u0.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        $stack13 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r0 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        pParent = specialinvoke $r0.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", $stack13);
+
+        $stack15 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(1);
+
+        virtualinvoke pParent.<org.apache.maven.model.Plugin: void setInherited(java.lang.String)>($stack15);
+
+        $u1 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $u1.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("test");
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void addGoal(java.lang.String)>("run");
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void setPhase(java.lang.String)>("initialize");
+
+        $stack17 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(0);
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void setInherited(java.lang.String)>($stack17);
+
+        virtualinvoke pParent.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($u1);
+
+        virtualinvoke $u0.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>(pParent);
+
+        $u2 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $u2.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        $stack19 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r1 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        pChild = specialinvoke $r1.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", $stack19);
+
+        $u3 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $u3.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("child-specified");
+
+        virtualinvoke $u3.<org.apache.maven.model.PluginExecution: void addGoal(java.lang.String)>("child");
+
+        virtualinvoke $u3.<org.apache.maven.model.PluginExecution: void setPhase(java.lang.String)>("compile");
+
+        virtualinvoke pChild.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($u3);
+
+        virtualinvoke $u2.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>(pChild);
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginDefinitions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean)>(pChild, pParent, 1);
+
+        executionMap = virtualinvoke pChild.<org.apache.maven.model.Plugin: java.util.Map getExecutionsAsMap()>();
+
+        $stack23 = interfaceinvoke executionMap.<java.util.Map: java.lang.Object get(java.lang.Object)>("test");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNull(java.lang.Object,java.lang.String)>($stack23, "test execution should not be inherited from parent.");
+
+        return;
+    }
+
+    public void testShouldNotMergePluginExecutionWhenPluginInheritedIsFalseAndTreatAsInheritanceIsTrue()
+    {
+        ModelUtilsTest this;
+        java.util.Map $stack13, $stack19, executionMap;
+        org.apache.maven.model.Plugin pParent, pChild;
+        java.lang.String $stack15, $stack17;
+        java.lang.Object $stack23;
+        org.apache.maven.model.PluginContainer $u0, $u2;
+        org.apache.maven.model.PluginExecution $u1, $u3;
+        org.apache.maven.project.ModelUtilsTest $r0, $r1;
+
+        this := @this: ModelUtilsTest;
+
+        $u0 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $u0.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        $stack13 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r0 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        pParent = specialinvoke $r0.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", $stack13);
+
+        $stack15 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(0);
+
+        virtualinvoke pParent.<org.apache.maven.model.Plugin: void setInherited(java.lang.String)>($stack15);
+
+        $u1 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $u1.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("test");
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void addGoal(java.lang.String)>("run");
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void setPhase(java.lang.String)>("initialize");
+
+        $stack17 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(1);
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void setInherited(java.lang.String)>($stack17);
+
+        virtualinvoke pParent.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($u1);
+
+        virtualinvoke $u0.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>(pParent);
+
+        $u2 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $u2.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        $stack19 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r1 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        pChild = specialinvoke $r1.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", $stack19);
+
+        $u3 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $u3.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("child-specified");
+
+        virtualinvoke $u3.<org.apache.maven.model.PluginExecution: void addGoal(java.lang.String)>("child");
+
+        virtualinvoke $u3.<org.apache.maven.model.PluginExecution: void setPhase(java.lang.String)>("compile");
+
+        virtualinvoke pChild.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($u3);
+
+        virtualinvoke $u2.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>(pChild);
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginDefinitions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean)>(pChild, pParent, 1);
+
+        executionMap = virtualinvoke pChild.<org.apache.maven.model.Plugin: java.util.Map getExecutionsAsMap()>();
+
+        $stack23 = interfaceinvoke executionMap.<java.util.Map: java.lang.Object get(java.lang.Object)>("test");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNull(java.lang.Object,java.lang.String)>($stack23, "test execution should not be inherited from parent.");
+
+        return;
+    }
+
+    public void testShouldMergePluginExecutionWhenExecInheritedIsTrueAndTreatAsInheritanceIsTrue()
+    {
+        ModelUtilsTest this;
+        java.util.Map $stack13, $stack19, executionMap;
+        org.apache.maven.model.Plugin pParent, pChild;
+        java.lang.String $stack15, $stack17;
+        java.lang.Object $stack23;
+        org.apache.maven.model.PluginContainer $u0, $u2;
+        org.apache.maven.model.PluginExecution $u1, $u3;
+        org.apache.maven.project.ModelUtilsTest $r0, $r1;
+
+        this := @this: ModelUtilsTest;
+
+        $u0 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $u0.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        $stack13 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r0 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        pParent = specialinvoke $r0.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", $stack13);
+
+        $stack15 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(1);
+
+        virtualinvoke pParent.<org.apache.maven.model.Plugin: void setInherited(java.lang.String)>($stack15);
+
+        $u1 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $u1.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("test");
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void addGoal(java.lang.String)>("run");
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void setPhase(java.lang.String)>("initialize");
+
+        $stack17 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(1);
+
+        virtualinvoke $u1.<org.apache.maven.model.PluginExecution: void setInherited(java.lang.String)>($stack17);
+
+        virtualinvoke pParent.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($u1);
+
+        virtualinvoke $u0.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>(pParent);
+
+        $u2 = new org.apache.maven.model.PluginContainer;
+
+        specialinvoke $u2.<org.apache.maven.model.PluginContainer: void <init>()>();
+
+        $stack19 = <java.util.Collections: java.util.Map EMPTY_MAP>;
+
+        $r1 = (org.apache.maven.project.ModelUtilsTest) this;
+
+        pChild = specialinvoke $r1.<org.apache.maven.project.ModelUtilsTest: org.apache.maven.model.Plugin createPlugin(java.lang.String,java.lang.String,java.lang.String,java.util.Map)>("group", "artifact", "1", $stack19);
+
+        $u3 = new org.apache.maven.model.PluginExecution;
+
+        specialinvoke $u3.<org.apache.maven.model.PluginExecution: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.model.PluginExecution: void setId(java.lang.String)>("child-specified");
+
+        virtualinvoke $u3.<org.apache.maven.model.PluginExecution: void addGoal(java.lang.String)>("child");
+
+        virtualinvoke $u3.<org.apache.maven.model.PluginExecution: void setPhase(java.lang.String)>("compile");
+
+        virtualinvoke pChild.<org.apache.maven.model.Plugin: void addExecution(org.apache.maven.model.PluginExecution)>($u3);
+
+        virtualinvoke $u2.<org.apache.maven.model.PluginContainer: void addPlugin(org.apache.maven.model.Plugin)>(pChild);
+
+        staticinvoke <org.apache.maven.project.ModelUtils: void mergePluginDefinitions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean)>(pChild, pParent, 1);
+
+        executionMap = virtualinvoke pChild.<org.apache.maven.model.Plugin: java.util.Map getExecutionsAsMap()>();
+
+        $stack23 = interfaceinvoke executionMap.<java.util.Map: java.lang.Object get(java.lang.Object)>("test");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object,java.lang.String)>($stack23, "test execution should be inherited from parent.");
+
+        return;
+    }
+}

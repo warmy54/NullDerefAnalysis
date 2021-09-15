@@ -1,0 +1,611 @@
+public class DefaultProjectBuildingHelper extends java.lang.Object implements org.apache.maven.project.ProjectBuildingHelper
+{
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.codehaus.plexus.PlexusContainer container;
+    private org.apache.maven.classrealm.ClassRealmManager classRealmManager;
+    private org.apache.maven.project.ProjectRealmCache projectRealmCache;
+    private org.apache.maven.repository.RepositorySystem repositorySystem;
+    private org.apache.maven.plugin.MavenPluginManager pluginManager;
+
+    public void <init>()
+    {
+        DefaultProjectBuildingHelper this;
+
+        this := @this: DefaultProjectBuildingHelper;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public java.util.List createArtifactRepositories(java.util.List, java.util.List, org.apache.maven.project.ProjectBuildingRequest) throws org.apache.maven.artifact.InvalidRepositoryException
+    {
+        java.util.List pomRepositories, externalRepositories, dominantRepositories#3, repository#4, artifactRepositories#10;
+        boolean $stack13, $stack22, $stack28, $stack34, $stack38;
+        DefaultProjectBuildingHelper this;
+        org.apache.maven.project.ProjectBuildingRequest request;
+        org.apache.maven.repository.RepositorySystem $stack14, $stack16, $stack18, $stack25, $stack47;
+        org.eclipse.aether.RepositorySystemSession $stack15, $stack17, $stack19;
+        org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging $stack20, $stack21;
+        java.lang.Object $stack32, $stack40, $stack46;
+        java.lang.String $stack33, $stack41;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack48, repository#7;
+        java.util.Iterator dominantRepositories, l9;
+        org.apache.maven.model.Repository repository;
+        java.util.ArrayList $u0, $u1;
+        java.util.HashSet $u2;
+        org.apache.maven.project.DefaultProjectBuildingHelper $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DefaultProjectBuildingHelper;
+
+        pomRepositories := @parameter0: java.util.List;
+
+        externalRepositories := @parameter1: java.util.List;
+
+        request := @parameter2: org.apache.maven.project.ProjectBuildingRequest;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        dominantRepositories = interfaceinvoke pomRepositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack13 = interfaceinvoke dominantRepositories.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label2;
+
+        $stack46 = interfaceinvoke dominantRepositories.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.apache.maven.model.Repository) $stack46;
+
+        $r0 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack47 = $r0.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        $stack48 = interfaceinvoke $stack47.<org.apache.maven.repository.RepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository buildArtifactRepository(org.apache.maven.model.Repository)>(repository);
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($stack48);
+
+        goto label1;
+
+     label2:
+        $r1 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack14 = $r1.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        $stack15 = interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        interfaceinvoke $stack14.<org.apache.maven.repository.RepositorySystem: void injectMirror(org.eclipse.aether.RepositorySystemSession,java.util.List)>($stack15, $u0);
+
+        $r2 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack16 = $r2.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        $stack17 = interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        interfaceinvoke $stack16.<org.apache.maven.repository.RepositorySystem: void injectProxy(org.eclipse.aether.RepositorySystemSession,java.util.List)>($stack17, $u0);
+
+        $r3 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack18 = $r3.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        $stack19 = interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        interfaceinvoke $stack18.<org.apache.maven.repository.RepositorySystem: void injectAuthentication(org.eclipse.aether.RepositorySystemSession,java.util.List)>($stack19, $u0);
+
+        $stack20 = <org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging: org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging REQUEST_DOMINANT>;
+
+        $stack21 = interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging getRepositoryMerging()>();
+
+        $stack22 = virtualinvoke $stack20.<org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging: boolean equals(java.lang.Object)>($stack21);
+
+        if $stack22 == 0 goto label3;
+
+        dominantRepositories#3 = externalRepositories;
+
+        repository#4 = $u0;
+
+        goto label4;
+
+     label3:
+        dominantRepositories#3 = $u0;
+
+        repository#4 = externalRepositories;
+
+     label4:
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        $u2 = new java.util.HashSet;
+
+        specialinvoke $u2.<java.util.HashSet: void <init>()>();
+
+        if dominantRepositories#3 == null goto label6;
+
+        l9 = interfaceinvoke dominantRepositories#3.<java.util.List: java.util.Iterator iterator()>();
+
+     label5:
+        $stack38 = interfaceinvoke l9.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack38 == 0 goto label6;
+
+        $stack40 = interfaceinvoke l9.<java.util.Iterator: java.lang.Object next()>();
+
+        repository#7 = (org.apache.maven.artifact.repository.ArtifactRepository) $stack40;
+
+        $stack41 = interfaceinvoke repository#7.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        interfaceinvoke $u2.<java.util.Collection: boolean add(java.lang.Object)>($stack41);
+
+        interfaceinvoke $u1.<java.util.List: boolean add(java.lang.Object)>(repository#7);
+
+        goto label5;
+
+     label6:
+        if repository#4 == null goto label9;
+
+        l9 = interfaceinvoke repository#4.<java.util.List: java.util.Iterator iterator()>();
+
+     label7:
+        $stack28 = interfaceinvoke l9.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack28 == 0 goto label9;
+
+        $stack32 = interfaceinvoke l9.<java.util.Iterator: java.lang.Object next()>();
+
+        repository#7 = (org.apache.maven.artifact.repository.ArtifactRepository) $stack32;
+
+        $stack33 = interfaceinvoke repository#7.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack34 = interfaceinvoke $u2.<java.util.Collection: boolean add(java.lang.Object)>($stack33);
+
+        if $stack34 == 0 goto label8;
+
+        interfaceinvoke $u1.<java.util.List: boolean add(java.lang.Object)>(repository#7);
+
+     label8:
+        goto label7;
+
+     label9:
+        $r4 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack25 = $r4.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        artifactRepositories#10 = interfaceinvoke $stack25.<org.apache.maven.repository.RepositorySystem: java.util.List getEffectiveRepositories(java.util.List)>($u1);
+
+        return artifactRepositories#10;
+    }
+
+    public synchronized org.apache.maven.project.ProjectRealmCache$CacheRecord createProjectRealm(org.apache.maven.project.MavenProject, org.apache.maven.model.Model, org.apache.maven.project.ProjectBuildingRequest) throws org.apache.maven.plugin.PluginResolutionException, org.apache.maven.plugin.version.PluginVersionResolutionException, org.apache.maven.plugin.PluginManagerException
+    {
+        org.apache.maven.model.Model model;
+        org.apache.maven.model.Build build;
+        boolean $stack22, $stack28, $stack30, $stack41, $stack42, $stack67, $stack97, $stack110, $stack123, $stack126, $stack129, $stack63;
+        DefaultProjectBuildingHelper this;
+        org.codehaus.plexus.logging.Logger $stack29, $stack77, $stack109, $stack113;
+        org.apache.maven.project.ProjectRealmCache $stack31, $stack33, $stack43, $stack35;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.classrealm.ClassRealmManager $stack36;
+        java.util.List $stack37, $stack104, $stack106, $stack121, $stack124, artifacts, exports;
+        org.codehaus.plexus.classworlds.realm.ClassRealm projectRealm, extensionRealm, extensionDescriptor#19;
+        java.lang.Object $stack55, $stack56, $stack57, $stack65, $stack89, $stack100, $stack128, $stack132;
+        java.lang.String[] $stack58;
+        java.lang.String $stack60, export, $stack79, $stack83, $stack115, $stack118, $stack134, $stack135, $stack136;
+        java.util.Iterator l18, extensionRealms, projectRealmKey, extensionRealm#18;
+        java.lang.StringBuilder $stack78, $stack80, $stack81, $stack82, $stack114, $stack116, $stack117, $u2, $u8;
+        org.apache.maven.project.ProjectBuildingRequest request;
+        org.apache.maven.plugin.MavenPluginManager $stack90;
+        org.eclipse.aether.RepositorySystemSession $stack91;
+        int $stack99;
+        org.apache.maven.artifact.Artifact $stack101;
+        java.io.File $stack102;
+        org.apache.maven.model.Extension extension;
+        org.apache.maven.model.Plugin plugin, extension#5, $u1;
+        org.apache.maven.plugin.ExtensionRealmCache$CacheRecord recordRealm;
+        org.apache.maven.project.ExtensionDescriptor extensionDescriptor;
+        org.apache.maven.project.ProjectRealmCache$Key projectRealmKey#15;
+        org.apache.maven.project.ProjectRealmCache$CacheRecord plugin#16, $u3;
+        org.eclipse.aether.util.filter.ExclusionsDependencyFilter extensionRealm#32, $u10;
+        java.util.ArrayList $u0, $u4, $u7;
+        java.util.HashMap $u5, $u6;
+        java.util.LinkedHashSet $u9;
+        org.apache.maven.project.DefaultProjectBuildingHelper $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r10, $r12;
+        java.lang.ClassLoader $r9;
+        org.eclipse.aether.graph.DependencyFilter $r11;
+
+        this := @this: DefaultProjectBuildingHelper;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        model := @parameter1: org.apache.maven.model.Model;
+
+        request := @parameter2: org.apache.maven.project.ProjectBuildingRequest;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        build = virtualinvoke model.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        if build == null goto label05;
+
+        $stack121 = virtualinvoke build.<org.apache.maven.model.Build: java.util.List getExtensions()>();
+
+        extensionRealms = interfaceinvoke $stack121.<java.util.List: java.util.Iterator iterator()>();
+
+     label01:
+        $stack123 = interfaceinvoke extensionRealms.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack123 == 0 goto label02;
+
+        $stack132 = interfaceinvoke extensionRealms.<java.util.Iterator: java.lang.Object next()>();
+
+        extension = (org.apache.maven.model.Extension) $stack132;
+
+        $u1 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $u1.<org.apache.maven.model.Plugin: void <init>()>();
+
+        $stack134 = virtualinvoke extension.<org.apache.maven.model.Extension: java.lang.String getGroupId()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>($stack134);
+
+        $stack135 = virtualinvoke extension.<org.apache.maven.model.Extension: java.lang.String getArtifactId()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>($stack135);
+
+        $stack136 = virtualinvoke extension.<org.apache.maven.model.Extension: java.lang.String getVersion()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>($stack136);
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>($u1);
+
+        goto label01;
+
+     label02:
+        $stack124 = virtualinvoke build.<org.apache.maven.model.Build: java.util.List getPlugins()>();
+
+        extensionRealms = interfaceinvoke $stack124.<java.util.List: java.util.Iterator iterator()>();
+
+     label03:
+        $stack126 = interfaceinvoke extensionRealms.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack126 == 0 goto label05;
+
+        $stack128 = interfaceinvoke extensionRealms.<java.util.Iterator: java.lang.Object next()>();
+
+        extension#5 = (org.apache.maven.model.Plugin) $stack128;
+
+        $stack129 = virtualinvoke extension#5.<org.apache.maven.model.Plugin: boolean isExtensions()>();
+
+        if $stack129 == 0 goto label04;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(extension#5);
+
+     label04:
+        goto label03;
+
+     label05:
+        $stack22 = interfaceinvoke $u0.<java.util.List: boolean isEmpty()>();
+
+        if $stack22 == 0 goto label07;
+
+        $r0 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack109 = $r0.<org.apache.maven.project.DefaultProjectBuildingHelper: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack110 = interfaceinvoke $stack109.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack110 == 0 goto label06;
+
+        $r1 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack113 = $r1.<org.apache.maven.project.DefaultProjectBuildingHelper: org.codehaus.plexus.logging.Logger logger>;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack114 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Extension realms for project ");
+
+        $stack115 = virtualinvoke model.<org.apache.maven.model.Model: java.lang.String getId()>();
+
+        $stack116 = virtualinvoke $stack114.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack115);
+
+        $stack117 = virtualinvoke $stack116.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": (none)");
+
+        $stack118 = virtualinvoke $stack117.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack113.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack118);
+
+     label06:
+        $u3 = new org.apache.maven.project.ProjectRealmCache$CacheRecord;
+
+        specialinvoke $u3.<org.apache.maven.project.ProjectRealmCache$CacheRecord: void <init>(org.codehaus.plexus.classworlds.realm.ClassRealm,org.eclipse.aether.graph.DependencyFilter)>(null, null);
+
+        return $u3;
+
+     label07:
+        $u4 = new java.util.ArrayList;
+
+        specialinvoke $u4.<java.util.ArrayList: void <init>()>();
+
+        $u5 = new java.util.HashMap;
+
+        specialinvoke $u5.<java.util.HashMap: void <init>()>();
+
+        $u6 = new java.util.HashMap;
+
+        specialinvoke $u6.<java.util.HashMap: void <init>()>();
+
+        $u7 = new java.util.ArrayList;
+
+        specialinvoke $u7.<java.util.ArrayList: void <init>()>();
+
+        projectRealmKey = interfaceinvoke $u0.<java.util.List: java.util.Iterator iterator()>();
+
+     label08:
+        $stack28 = interfaceinvoke projectRealmKey.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack28 == 0 goto label11;
+
+        $stack89 = interfaceinvoke projectRealmKey.<java.util.Iterator: java.lang.Object next()>();
+
+        plugin = (org.apache.maven.model.Plugin) $stack89;
+
+        $r2 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack90 = $r2.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.plugin.MavenPluginManager pluginManager>;
+
+        $stack91 = interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        recordRealm = interfaceinvoke $stack90.<org.apache.maven.plugin.MavenPluginManager: org.apache.maven.plugin.ExtensionRealmCache$CacheRecord setupExtensionsRealm(org.apache.maven.project.MavenProject,org.apache.maven.model.Plugin,org.eclipse.aether.RepositorySystemSession)>(project, plugin, $stack91);
+
+        extensionRealm = virtualinvoke recordRealm.<org.apache.maven.plugin.ExtensionRealmCache$CacheRecord: org.codehaus.plexus.classworlds.realm.ClassRealm getRealm()>();
+
+        extensionDescriptor = virtualinvoke recordRealm.<org.apache.maven.plugin.ExtensionRealmCache$CacheRecord: org.apache.maven.project.ExtensionDescriptor getDescriptor()>();
+
+        artifacts = virtualinvoke recordRealm.<org.apache.maven.plugin.ExtensionRealmCache$CacheRecord: java.util.List getArtifacts()>();
+
+        interfaceinvoke $u4.<java.util.List: boolean add(java.lang.Object)>(extensionRealm);
+
+        if extensionDescriptor == null goto label09;
+
+        $stack104 = virtualinvoke extensionDescriptor.<org.apache.maven.project.ExtensionDescriptor: java.util.List getExportedPackages()>();
+
+        interfaceinvoke $u5.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(extensionRealm, $stack104);
+
+        $stack106 = virtualinvoke extensionDescriptor.<org.apache.maven.project.ExtensionDescriptor: java.util.List getExportedArtifacts()>();
+
+        interfaceinvoke $u6.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(extensionRealm, $stack106);
+
+     label09:
+        $stack97 = virtualinvoke plugin.<org.apache.maven.model.Plugin: boolean isExtensions()>();
+
+        if $stack97 != 0 goto label10;
+
+        $stack99 = interfaceinvoke artifacts.<java.util.List: int size()>();
+
+        if $stack99 != 1 goto label10;
+
+        $stack100 = interfaceinvoke artifacts.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack101 = (org.apache.maven.artifact.Artifact) $stack100;
+
+        $stack102 = interfaceinvoke $stack101.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        if $stack102 == null goto label10;
+
+        interfaceinvoke $u7.<java.util.List: boolean addAll(java.util.Collection)>(artifacts);
+
+     label10:
+        goto label08;
+
+     label11:
+        $r3 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack29 = $r3.<org.apache.maven.project.DefaultProjectBuildingHelper: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack30 = interfaceinvoke $stack29.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack30 == 0 goto label12;
+
+        $r4 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack77 = $r4.<org.apache.maven.project.DefaultProjectBuildingHelper: org.codehaus.plexus.logging.Logger logger>;
+
+        $u8 = new java.lang.StringBuilder;
+
+        specialinvoke $u8.<java.lang.StringBuilder: void <init>()>();
+
+        $stack78 = virtualinvoke $u8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Extension realms for project ");
+
+        $stack79 = virtualinvoke model.<org.apache.maven.model.Model: java.lang.String getId()>();
+
+        $stack80 = virtualinvoke $stack78.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack79);
+
+        $stack81 = virtualinvoke $stack80.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack82 = virtualinvoke $stack81.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($u4);
+
+        $stack83 = virtualinvoke $stack82.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack77.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack83);
+
+     label12:
+        $r5 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack31 = $r5.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.project.ProjectRealmCache projectRealmCache>;
+
+        projectRealmKey#15 = interfaceinvoke $stack31.<org.apache.maven.project.ProjectRealmCache: org.apache.maven.project.ProjectRealmCache$Key createKey(java.util.List)>($u4);
+
+        $r6 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack33 = $r6.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.project.ProjectRealmCache projectRealmCache>;
+
+        plugin#16 = interfaceinvoke $stack33.<org.apache.maven.project.ProjectRealmCache: org.apache.maven.project.ProjectRealmCache$CacheRecord get(org.apache.maven.project.ProjectRealmCache$Key)>(projectRealmKey#15);
+
+        if plugin#16 != null goto label21;
+
+        $r7 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack36 = $r7.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.classrealm.ClassRealmManager classRealmManager>;
+
+        $r8 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack37 = specialinvoke $r8.<org.apache.maven.project.DefaultProjectBuildingHelper: java.util.List toAetherArtifacts(java.util.List)>($u7);
+
+        projectRealm = interfaceinvoke $stack36.<org.apache.maven.classrealm.ClassRealmManager: org.codehaus.plexus.classworlds.realm.ClassRealm createProjectRealm(org.apache.maven.model.Model,java.util.List)>(model, $stack37);
+
+        $u9 = new java.util.LinkedHashSet;
+
+        specialinvoke $u9.<java.util.LinkedHashSet: void <init>()>();
+
+        extensionRealm#18 = interfaceinvoke $u4.<java.util.List: java.util.Iterator iterator()>();
+
+     label13:
+        $stack41 = interfaceinvoke extensionRealm#18.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack41 == 0 goto label19;
+
+        $stack55 = interfaceinvoke extensionRealm#18.<java.util.Iterator: java.lang.Object next()>();
+
+        extensionDescriptor#19 = (org.codehaus.plexus.classworlds.realm.ClassRealm) $stack55;
+
+        $stack56 = interfaceinvoke $u6.<java.util.Map: java.lang.Object get(java.lang.Object)>(extensionDescriptor#19);
+
+        artifacts = (java.util.List) $stack56;
+
+        if artifacts == null goto label14;
+
+        interfaceinvoke $u9.<java.util.Set: boolean addAll(java.util.Collection)>(artifacts);
+
+     label14:
+        $stack57 = interfaceinvoke $u5.<java.util.Map: java.lang.Object get(java.lang.Object)>(extensionDescriptor#19);
+
+        exports = (java.util.List) $stack57;
+
+        if exports == null goto label15;
+
+        $stack67 = interfaceinvoke exports.<java.util.List: boolean isEmpty()>();
+
+        if $stack67 == 0 goto label16;
+
+     label15:
+        $stack58 = newarray (java.lang.String)[1];
+
+        $stack60 = virtualinvoke extensionDescriptor#19.<org.codehaus.plexus.classworlds.realm.ClassRealm: java.lang.String getId()>();
+
+        $stack58[0] = $stack60;
+
+        exports = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack58);
+
+     label16:
+        l18 = interfaceinvoke exports.<java.util.List: java.util.Iterator iterator()>();
+
+     label17:
+        $stack63 = interfaceinvoke l18.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack63 == 0 goto label18;
+
+        $stack65 = interfaceinvoke l18.<java.util.Iterator: java.lang.Object next()>();
+
+        export = (java.lang.String) $stack65;
+
+        $r9 = (java.lang.ClassLoader) extensionDescriptor#19;
+
+        virtualinvoke projectRealm.<org.codehaus.plexus.classworlds.realm.ClassRealm: void importFrom(java.lang.ClassLoader,java.lang.String)>($r9, export);
+
+        goto label17;
+
+     label18:
+        goto label13;
+
+     label19:
+        extensionRealm#32 = null;
+
+        $stack42 = interfaceinvoke $u9.<java.util.Set: boolean isEmpty()>();
+
+        if $stack42 != 0 goto label20;
+
+        $u10 = new org.eclipse.aether.util.filter.ExclusionsDependencyFilter;
+
+        specialinvoke $u10.<org.eclipse.aether.util.filter.ExclusionsDependencyFilter: void <init>(java.util.Collection)>($u9);
+
+        extensionRealm#32 = $u10;
+
+     label20:
+        $r10 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack43 = $r10.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.project.ProjectRealmCache projectRealmCache>;
+
+        $r11 = (org.eclipse.aether.graph.DependencyFilter) extensionRealm#32;
+
+        plugin#16 = interfaceinvoke $stack43.<org.apache.maven.project.ProjectRealmCache: org.apache.maven.project.ProjectRealmCache$CacheRecord put(org.apache.maven.project.ProjectRealmCache$Key,org.codehaus.plexus.classworlds.realm.ClassRealm,org.eclipse.aether.graph.DependencyFilter)>(projectRealmKey#15, projectRealm, $r11);
+
+     label21:
+        $r12 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack35 = $r12.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.project.ProjectRealmCache projectRealmCache>;
+
+        interfaceinvoke $stack35.<org.apache.maven.project.ProjectRealmCache: void register(org.apache.maven.project.MavenProject,org.apache.maven.project.ProjectRealmCache$Key,org.apache.maven.project.ProjectRealmCache$CacheRecord)>(project, projectRealmKey#15, plugin#16);
+
+        return plugin#16;
+    }
+
+    public void selectProjectRealm(org.apache.maven.project.MavenProject)
+    {
+        org.apache.maven.project.MavenProject project;
+        java.lang.Thread $stack4;
+        DefaultProjectBuildingHelper this;
+        org.apache.maven.classrealm.ClassRealmManager $stack5;
+        org.codehaus.plexus.classworlds.realm.ClassRealm projectRealm;
+        org.apache.maven.project.DefaultProjectBuildingHelper $r0;
+        java.lang.ClassLoader $r1;
+
+        this := @this: DefaultProjectBuildingHelper;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        projectRealm = virtualinvoke project.<org.apache.maven.project.MavenProject: org.codehaus.plexus.classworlds.realm.ClassRealm getClassRealm()>();
+
+        if projectRealm != null goto label1;
+
+        $r0 = (org.apache.maven.project.DefaultProjectBuildingHelper) this;
+
+        $stack5 = $r0.<org.apache.maven.project.DefaultProjectBuildingHelper: org.apache.maven.classrealm.ClassRealmManager classRealmManager>;
+
+        projectRealm = interfaceinvoke $stack5.<org.apache.maven.classrealm.ClassRealmManager: org.codehaus.plexus.classworlds.realm.ClassRealm getCoreRealm()>();
+
+     label1:
+        $stack4 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        $r1 = (java.lang.ClassLoader) projectRealm;
+
+        virtualinvoke $stack4.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>($r1);
+
+        return;
+    }
+
+    private java.util.List toAetherArtifacts(java.util.List)
+    {
+        java.util.ArrayList $stack2;
+        java.util.List pluginArtifacts;
+        java.util.Collection $stack3;
+        DefaultProjectBuildingHelper this;
+
+        this := @this: DefaultProjectBuildingHelper;
+
+        pluginArtifacts := @parameter0: java.util.List;
+
+        $stack2 = new java.util.ArrayList;
+
+        $stack3 = staticinvoke <org.apache.maven.RepositoryUtils: java.util.Collection toArtifacts(java.util.Collection)>(pluginArtifacts);
+
+        specialinvoke $stack2.<java.util.ArrayList: void <init>(java.util.Collection)>($stack3);
+
+        return $stack2;
+    }
+}

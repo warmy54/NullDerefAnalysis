@@ -1,0 +1,359 @@
+public class LifecycleStarter extends java.lang.Object
+{
+    private org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult;
+    private org.apache.maven.lifecycle.DefaultLifecycles defaultLifeCycles;
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.apache.maven.lifecycle.internal.BuildListCalculator buildListCalculator;
+    private org.apache.maven.lifecycle.internal.LifecycleDebugLogger lifecycleDebugLogger;
+    private org.apache.maven.lifecycle.internal.LifecycleTaskSegmentCalculator lifecycleTaskSegmentCalculator;
+    private java.util.Map builders;
+    private org.apache.maven.session.scope.internal.SessionScope sessionScope;
+
+    public void <init>()
+    {
+        LifecycleStarter this;
+
+        this := @this: LifecycleStarter;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void execute(org.apache.maven.execution.MavenSession)
+    {
+        LifecycleStarter this;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.ExecutionEvent$Type $stack13, $stack39, $stack98, $stack102;
+        org.apache.maven.lifecycle.internal.ExecutionEventCatapult $stack14, $stack40, $stack99, $stack103;
+        org.apache.maven.execution.MavenExecutionResult result;
+        boolean $stack16, $stack21, $stack25, $stack83;
+        org.apache.maven.lifecycle.internal.LifecycleTaskSegmentCalculator $stack17;
+        org.apache.maven.lifecycle.internal.BuildListCalculator $stack19;
+        java.util.List $stack23, taskSegments;
+        org.codehaus.plexus.logging.Logger $stack24, $stack41, $stack43;
+        java.lang.Thread $stack26;
+        java.lang.ClassLoader oldContextClassLoader;
+        org.apache.maven.execution.ProjectDependencyGraph $stack29;
+        org.apache.maven.session.scope.internal.SessionScope $stack31;
+        org.apache.maven.session.scope.internal.SessionScope$Memento $stack32;
+        org.apache.maven.execution.MavenExecutionRequest $stack33, $stack37;
+        java.lang.String builderId, $stack47, $stack50, $stack62, $stack79, $stack82, $stack93, $stack96;
+        java.util.Map $stack35;
+        java.lang.Object $stack36;
+        org.apache.maven.lifecycle.internal.builder.Builder builder;
+        int degreeOfConcurrency;
+        java.lang.Object[] $stack42, $stack61;
+        java.lang.Class $stack46;
+        java.lang.Integer $stack49;
+        org.apache.maven.lifecycle.internal.LifecycleDebugLogger $stack63;
+        java.lang.StringBuilder $stack77, $stack80, $stack81, $stack92, $stack94, $stack95, $u0, $u2;
+        org.apache.maven.lifecycle.DefaultLifecycles $stack78;
+        java.lang.Throwable $stack97, $r3, $r7, $r12;
+        java.lang.Exception $stack100;
+        org.apache.maven.lifecycle.internal.ProjectBuildList projectBuilds#4;
+        org.apache.maven.lifecycle.MissingProjectException $u1;
+        org.apache.maven.lifecycle.NoGoalSpecifiedException $u3;
+        org.apache.maven.lifecycle.internal.ProjectIndex $u4;
+        org.apache.maven.lifecycle.internal.ReactorBuildStatus $u5;
+        org.apache.maven.lifecycle.internal.ReactorContext $u6;
+        org.apache.maven.lifecycle.internal.builder.BuilderNotFoundException $u7;
+        org.apache.maven.lifecycle.internal.LifecycleStarter $r0, $r1, $r2, $r4, $r5, $r6, $r8, $r9, $r10, $r11, $r13, $r14, $r15, $r16, $r17;
+
+        this := @this: LifecycleStarter;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $r0 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack14 = $r0.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack13 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type SessionStarted>;
+
+        interfaceinvoke $stack14.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack13, session, null);
+
+        result = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionResult getResult()>();
+
+     label01:
+        $r1 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack16 = specialinvoke $r1.<org.apache.maven.lifecycle.internal.LifecycleStarter: boolean buildExecutionRequiresProject(org.apache.maven.execution.MavenSession)>(session);
+
+        if $stack16 == 0 goto label02;
+
+        $r2 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack83 = specialinvoke $r2.<org.apache.maven.lifecycle.internal.LifecycleStarter: boolean projectIsNotPresent(org.apache.maven.execution.MavenSession)>(session);
+
+        if $stack83 == 0 goto label02;
+
+        $u1 = new org.apache.maven.lifecycle.MissingProjectException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack92 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The goal you specified requires a project to execute but there is no POM in this directory (");
+
+        $stack93 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.lang.String getExecutionRootDirectory()>();
+
+        $stack94 = virtualinvoke $stack92.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack93);
+
+        $stack95 = virtualinvoke $stack94.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("). Please verify you invoked Maven from the correct directory.");
+
+        $stack96 = virtualinvoke $stack95.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.apache.maven.lifecycle.MissingProjectException: void <init>(java.lang.String)>($stack96);
+
+        $r3 = (java.lang.Throwable) $u1;
+
+        throw $r3;
+
+     label02:
+        $r4 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack17 = $r4.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.apache.maven.lifecycle.internal.LifecycleTaskSegmentCalculator lifecycleTaskSegmentCalculator>;
+
+        taskSegments = interfaceinvoke $stack17.<org.apache.maven.lifecycle.internal.LifecycleTaskSegmentCalculator: java.util.List calculateTaskSegments(org.apache.maven.execution.MavenSession)>(session);
+
+        $r5 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack19 = $r5.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.apache.maven.lifecycle.internal.BuildListCalculator buildListCalculator>;
+
+        projectBuilds#4 = virtualinvoke $stack19.<org.apache.maven.lifecycle.internal.BuildListCalculator: org.apache.maven.lifecycle.internal.ProjectBuildList calculateProjectBuilds(org.apache.maven.execution.MavenSession,java.util.List)>(session, taskSegments);
+
+        $stack21 = virtualinvoke projectBuilds#4.<org.apache.maven.lifecycle.internal.ProjectBuildList: boolean isEmpty()>();
+
+        if $stack21 == 0 goto label03;
+
+        $u3 = new org.apache.maven.lifecycle.NoGoalSpecifiedException;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack77 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("No goals have been specified for this build. You must specify a valid lifecycle phase or a goal in the format <plugin-prefix>:<goal> or <plugin-group-id>:<plugin-artifact-id>[:<plugin-version>]:<goal>. Available lifecycle phases are: ");
+
+        $r6 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack78 = $r6.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.apache.maven.lifecycle.DefaultLifecycles defaultLifeCycles>;
+
+        $stack79 = virtualinvoke $stack78.<org.apache.maven.lifecycle.DefaultLifecycles: java.lang.String getLifecyclePhaseList()>();
+
+        $stack80 = virtualinvoke $stack77.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack79);
+
+        $stack81 = virtualinvoke $stack80.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $stack82 = virtualinvoke $stack81.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u3.<org.apache.maven.lifecycle.NoGoalSpecifiedException: void <init>(java.lang.String)>($stack82);
+
+        $r7 = (java.lang.Throwable) $u3;
+
+        throw $r7;
+
+     label03:
+        $u4 = new org.apache.maven.lifecycle.internal.ProjectIndex;
+
+        $stack23 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        specialinvoke $u4.<org.apache.maven.lifecycle.internal.ProjectIndex: void <init>(java.util.List)>($stack23);
+
+        $r8 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack24 = $r8.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack25 = interfaceinvoke $stack24.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack25 == 0 goto label04;
+
+        $r9 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack63 = $r9.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.apache.maven.lifecycle.internal.LifecycleDebugLogger lifecycleDebugLogger>;
+
+        virtualinvoke $stack63.<org.apache.maven.lifecycle.internal.LifecycleDebugLogger: void debugReactorPlan(org.apache.maven.lifecycle.internal.ProjectBuildList)>(projectBuilds#4);
+
+     label04:
+        $stack26 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        oldContextClassLoader = virtualinvoke $stack26.<java.lang.Thread: java.lang.ClassLoader getContextClassLoader()>();
+
+        $u5 = new org.apache.maven.lifecycle.internal.ReactorBuildStatus;
+
+        $stack29 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.ProjectDependencyGraph getProjectDependencyGraph()>();
+
+        specialinvoke $u5.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: void <init>(org.apache.maven.execution.ProjectDependencyGraph)>($stack29);
+
+        $u6 = new org.apache.maven.lifecycle.internal.ReactorContext;
+
+        $r10 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack31 = $r10.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.apache.maven.session.scope.internal.SessionScope sessionScope>;
+
+        $stack32 = virtualinvoke $stack31.<org.apache.maven.session.scope.internal.SessionScope: org.apache.maven.session.scope.internal.SessionScope$Memento memento()>();
+
+        specialinvoke $u6.<org.apache.maven.lifecycle.internal.ReactorContext: void <init>(org.apache.maven.execution.MavenExecutionResult,org.apache.maven.lifecycle.internal.ProjectIndex,java.lang.ClassLoader,org.apache.maven.lifecycle.internal.ReactorBuildStatus,org.apache.maven.session.scope.internal.SessionScope$Memento)>(result, $u4, oldContextClassLoader, $u5, $stack32);
+
+        $stack33 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        builderId = interfaceinvoke $stack33.<org.apache.maven.execution.MavenExecutionRequest: java.lang.String getBuilderId()>();
+
+        $r11 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack35 = $r11.<org.apache.maven.lifecycle.internal.LifecycleStarter: java.util.Map builders>;
+
+        $stack36 = interfaceinvoke $stack35.<java.util.Map: java.lang.Object get(java.lang.Object)>(builderId);
+
+        builder = (org.apache.maven.lifecycle.internal.builder.Builder) $stack36;
+
+        if builder != null goto label05;
+
+        $u7 = new org.apache.maven.lifecycle.internal.builder.BuilderNotFoundException;
+
+        $stack61 = newarray (java.lang.Object)[1];
+
+        $stack61[0] = builderId;
+
+        $stack62 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("The builder requested using id = %s cannot be found", $stack61);
+
+        specialinvoke $u7.<org.apache.maven.lifecycle.internal.builder.BuilderNotFoundException: void <init>(java.lang.String)>($stack62);
+
+        $r12 = (java.lang.Throwable) $u7;
+
+        throw $r12;
+
+     label05:
+        $stack37 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        degreeOfConcurrency = interfaceinvoke $stack37.<org.apache.maven.execution.MavenExecutionRequest: int getDegreeOfConcurrency()>();
+
+        if degreeOfConcurrency < 2 goto label06;
+
+        $r13 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack41 = $r13.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack41.<org.codehaus.plexus.logging.Logger: void info(java.lang.String)>("");
+
+        $r14 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack43 = $r14.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack42 = newarray (java.lang.Object)[2];
+
+        $stack46 = virtualinvoke builder.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack47 = virtualinvoke $stack46.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        $stack42[0] = $stack47;
+
+        $stack49 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(degreeOfConcurrency);
+
+        $stack42[1] = $stack49;
+
+        $stack50 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Using the %s implementation with a thread count of %d", $stack42);
+
+        interfaceinvoke $stack43.<org.codehaus.plexus.logging.Logger: void info(java.lang.String)>($stack50);
+
+     label06:
+        interfaceinvoke builder.<org.apache.maven.lifecycle.internal.builder.Builder: void build(org.apache.maven.execution.MavenSession,org.apache.maven.lifecycle.internal.ReactorContext,org.apache.maven.lifecycle.internal.ProjectBuildList,java.util.List,org.apache.maven.lifecycle.internal.ReactorBuildStatus)>(session, $u6, projectBuilds#4, taskSegments, $u5);
+
+     label07:
+        $r15 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack40 = $r15.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack39 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type SessionEnded>;
+
+        interfaceinvoke $stack40.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack39, session, null);
+
+        goto label12;
+
+     label08:
+        $stack100 := @caughtexception;
+
+        interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult addException(java.lang.Throwable)>($stack100);
+
+     label09:
+        $r16 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack103 = $r16.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack102 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type SessionEnded>;
+
+        interfaceinvoke $stack103.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack102, session, null);
+
+        goto label12;
+
+     label10:
+        $stack97 := @caughtexception;
+
+     label11:
+        $r17 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack99 = $r17.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack98 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type SessionEnded>;
+
+        interfaceinvoke $stack99.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack98, session, null);
+
+        throw $stack97;
+
+     label12:
+        return;
+
+        catch java.lang.Exception from label01 to label07 with label08;
+        catch java.lang.Throwable from label01 to label07 with label10;
+        catch java.lang.Throwable from label08 to label09 with label10;
+        catch java.lang.Throwable from label10 to label11 with label10;
+    }
+
+    private boolean buildExecutionRequiresProject(org.apache.maven.execution.MavenSession)
+    {
+        LifecycleStarter this;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.lifecycle.internal.LifecycleTaskSegmentCalculator $stack2;
+        boolean $stack3;
+        org.apache.maven.lifecycle.internal.LifecycleStarter $r0;
+
+        this := @this: LifecycleStarter;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $r0 = (org.apache.maven.lifecycle.internal.LifecycleStarter) this;
+
+        $stack2 = $r0.<org.apache.maven.lifecycle.internal.LifecycleStarter: org.apache.maven.lifecycle.internal.LifecycleTaskSegmentCalculator lifecycleTaskSegmentCalculator>;
+
+        $stack3 = interfaceinvoke $stack2.<org.apache.maven.lifecycle.internal.LifecycleTaskSegmentCalculator: boolean requiresProject(org.apache.maven.execution.MavenSession)>(session);
+
+        return $stack3;
+    }
+
+    private boolean projectIsNotPresent(org.apache.maven.execution.MavenSession)
+    {
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.MavenExecutionRequest $stack2;
+        boolean $stack3, $stack4;
+        LifecycleStarter this;
+
+        this := @this: LifecycleStarter;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $stack2 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack3 = interfaceinvoke $stack2.<org.apache.maven.execution.MavenExecutionRequest: boolean isProjectPresent()>();
+
+        if $stack3 != 0 goto label1;
+
+        $stack4 = 1;
+
+        goto label2;
+
+     label1:
+        $stack4 = 0;
+
+     label2:
+        return $stack4;
+    }
+}

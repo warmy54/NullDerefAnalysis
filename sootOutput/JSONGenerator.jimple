@@ -1,0 +1,1979 @@
+public class JSONGenerator extends org.ooc.backend.Generator implements org.ooc.frontend.Visitor
+{
+    public java.io.File out;
+    public org.json.JSONArray root;
+
+    public void <init>(java.io.File, org.ooc.frontend.model.Module)
+    {
+        JSONGenerator this;
+        java.io.File outPath, $stack8, $stack9, $u1;
+        org.ooc.frontend.model.Module module;
+        java.lang.String basePath, $stack7;
+        org.json.JSONArray $u0;
+        org.ooc.backend.json.JSONGenerator $r0, $r1, $r2;
+
+        this := @this: JSONGenerator;
+
+        outPath := @parameter0: java.io.File;
+
+        module := @parameter1: org.ooc.frontend.model.Module;
+
+        specialinvoke this.<org.ooc.backend.Generator: void <init>(java.io.File,org.ooc.frontend.model.Module)>(outPath, module);
+
+        basePath = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getOutPath()>();
+
+        $u0 = new org.json.JSONArray;
+
+        specialinvoke $u0.<org.json.JSONArray: void <init>()>();
+
+        $r0 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $r0.<org.ooc.backend.json.JSONGenerator: org.json.JSONArray root> = $u0;
+
+        $u1 = new java.io.File;
+
+        $stack7 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(basePath) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001.json");
+
+        specialinvoke $u1.<java.io.File: void <init>(java.io.File,java.lang.String)>(outPath, $stack7);
+
+        $r1 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $r1.<org.ooc.backend.json.JSONGenerator: java.io.File out> = $u1;
+
+        $r2 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack8 = $r2.<org.ooc.backend.json.JSONGenerator: java.io.File out>;
+
+        $stack9 = virtualinvoke $stack8.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $stack9.<java.io.File: boolean mkdirs()>();
+
+        return;
+    }
+
+    public void generate(org.ooc.frontend.BuildParams) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Module $stack4;
+        java.io.File $stack6;
+        org.json.JSONArray $stack7;
+        java.lang.Throwable $stack9;
+        org.ooc.frontend.BuildParams params;
+        java.io.FileWriter $u0;
+        java.io.IOException $u1;
+        org.ooc.backend.json.JSONGenerator $r0, $r1, $r2;
+
+        this := @this: JSONGenerator;
+
+        params := @parameter0: org.ooc.frontend.BuildParams;
+
+        $r0 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack4 = $r0.<org.ooc.backend.json.JSONGenerator: org.ooc.frontend.model.Module module>;
+
+        virtualinvoke $stack4.<org.ooc.frontend.model.Module: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $u0 = new java.io.FileWriter;
+
+        $r1 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack6 = $r1.<org.ooc.backend.json.JSONGenerator: java.io.File out>;
+
+        specialinvoke $u0.<java.io.FileWriter: void <init>(java.io.File)>($stack6);
+
+     label1:
+        $r2 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack7 = $r2.<org.ooc.backend.json.JSONGenerator: org.json.JSONArray root>;
+
+        virtualinvoke $stack7.<org.json.JSONArray: java.io.Writer write(java.io.Writer)>($u0);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack9 := @caughtexception;
+
+        $u1 = new java.io.IOException;
+
+        specialinvoke $u1.<java.io.IOException: void <init>(java.lang.String)>("Failed.");
+
+        throw $u1;
+
+     label4:
+        virtualinvoke $u0.<java.io.FileWriter: void close()>();
+
+        return;
+
+        catch org.json.JSONException from label1 to label2 with label3;
+    }
+
+    public void visit(org.ooc.frontend.model.Module) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Module module;
+        java.lang.String $stack10, $stack11, $stack31;
+        org.ooc.frontend.model.NodeList $stack14, $u3, $u4;
+        boolean $stack16, $stack22, $stack25, $stack27;
+        JSONGenerator this;
+        org.ooc.middle.structs.MultiMap $stack19;
+        java.util.List $stack20;
+        java.lang.Object $stack24, $stack30;
+        org.ooc.frontend.model.Import import_;
+        java.lang.Throwable $stack34;
+        java.util.Iterator type, imports#6;
+        org.ooc.frontend.model.TypeDecl type#7;
+        org.json.JSONObject $u0;
+        org.json.JSONArray $u1;
+        java.io.IOException $u2;
+        org.ooc.backend.json.JSONGenerator $r0;
+
+        this := @this: JSONGenerator;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+     label01:
+        $u0 = new org.json.JSONObject;
+
+        specialinvoke $u0.<org.json.JSONObject: void <init>()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("type", "module");
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("tag", "!module");
+
+        $stack10 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getFullName()>();
+
+        $stack11 = virtualinvoke $stack10.<java.lang.String: java.lang.String replace(char,char)>(46, 47);
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("path", $stack11);
+
+        $u1 = new org.json.JSONArray;
+
+        specialinvoke $u1.<org.json.JSONArray: void <init>()>();
+
+        $stack14 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getAllImports()>();
+
+        type = virtualinvoke $stack14.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label02:
+        $stack16 = interfaceinvoke type.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack16 == 0 goto label03;
+
+        $stack30 = interfaceinvoke type.<java.util.Iterator: java.lang.Object next()>();
+
+        import_ = (org.ooc.frontend.model.Import) $stack30;
+
+        $stack31 = virtualinvoke import_.<org.ooc.frontend.model.Import: java.lang.String getPath()>();
+
+        virtualinvoke $u1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack31);
+
+        goto label02;
+
+     label03:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("imports", $u1);
+
+        $r0 = (org.ooc.backend.json.JSONGenerator) this;
+
+        virtualinvoke $r0.<org.ooc.backend.json.JSONGenerator: void addObject(org.json.JSONObject)>($u0);
+
+     label04:
+        goto label06;
+
+     label05:
+        $stack34 := @caughtexception;
+
+        $u2 = new java.io.IOException;
+
+        specialinvoke $u2.<java.io.IOException: void <init>(java.lang.String)>("Failed.");
+
+        throw $u2;
+
+     label06:
+        $u3 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u3.<org.ooc.frontend.model.NodeList: void <init>()>();
+
+        virtualinvoke module.<org.ooc.frontend.model.Module: void getFunctions(org.ooc.frontend.model.NodeList)>($u3);
+
+        virtualinvoke $u3.<org.ooc.frontend.model.NodeList: void accept(org.ooc.frontend.Visitor)>(this);
+
+        $stack19 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap getTypes()>();
+
+        $stack20 = virtualinvoke $stack19.<org.ooc.middle.structs.MultiMap: java.util.List values()>();
+
+        imports#6 = interfaceinvoke $stack20.<java.util.List: java.util.Iterator iterator()>();
+
+     label07:
+        $stack22 = interfaceinvoke imports#6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack22 == 0 goto label10;
+
+        $stack24 = interfaceinvoke imports#6.<java.util.Iterator: java.lang.Object next()>();
+
+        type#7 = (org.ooc.frontend.model.TypeDecl) $stack24;
+
+        $stack25 = type#7 instanceof org.ooc.frontend.model.ClassDecl;
+
+        if $stack25 != 0 goto label08;
+
+        $stack27 = type#7 instanceof org.ooc.frontend.model.CoverDecl;
+
+        if $stack27 == 0 goto label09;
+
+     label08:
+        virtualinvoke type#7.<org.ooc.frontend.model.TypeDecl: void accept(org.ooc.frontend.Visitor)>(this);
+
+     label09:
+        goto label07;
+
+     label10:
+        $u4 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u4.<org.ooc.frontend.model.NodeList: void <init>()>();
+
+        virtualinvoke module.<org.ooc.frontend.model.Module: void getVariables(org.ooc.frontend.model.NodeList)>($u4);
+
+        virtualinvoke $u4.<org.ooc.frontend.model.NodeList: void accept(org.ooc.frontend.Visitor)>(this);
+
+        return;
+
+        catch org.json.JSONException from label01 to label04 with label05;
+    }
+
+    public void visit(org.ooc.frontend.model.Add) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Add add;
+
+        this := @this: JSONGenerator;
+
+        add := @parameter0: org.ooc.frontend.model.Add;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Mul) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Mul mul;
+
+        this := @this: JSONGenerator;
+
+        mul := @parameter0: org.ooc.frontend.model.Mul;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Sub) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Sub sub;
+
+        this := @this: JSONGenerator;
+
+        sub := @parameter0: org.ooc.frontend.model.Sub;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Div) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Div div;
+
+        this := @this: JSONGenerator;
+
+        div := @parameter0: org.ooc.frontend.model.Div;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Not) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Not not;
+
+        this := @this: JSONGenerator;
+
+        not := @parameter0: org.ooc.frontend.model.Not;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.BinaryNegation) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.BinaryNegation binaryNegation;
+
+        this := @this: JSONGenerator;
+
+        binaryNegation := @parameter0: org.ooc.frontend.model.BinaryNegation;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Mod) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Mod mod;
+
+        this := @this: JSONGenerator;
+
+        mod := @parameter0: org.ooc.frontend.model.Mod;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Compare) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Compare compare;
+
+        this := @this: JSONGenerator;
+
+        compare := @parameter0: org.ooc.frontend.model.Compare;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.FunctionCall) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.FunctionCall functionCall;
+
+        this := @this: JSONGenerator;
+
+        functionCall := @parameter0: org.ooc.frontend.model.FunctionCall;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.MemberCall) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.MemberCall memberCall;
+
+        this := @this: JSONGenerator;
+
+        memberCall := @parameter0: org.ooc.frontend.model.MemberCall;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Parenthesis) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Parenthesis parenthesis;
+
+        this := @this: JSONGenerator;
+
+        parenthesis := @parameter0: org.ooc.frontend.model.Parenthesis;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Assignment) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Assignment assignment;
+
+        this := @this: JSONGenerator;
+
+        assignment := @parameter0: org.ooc.frontend.model.Assignment;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.ValuedReturn) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.ValuedReturn return1;
+
+        this := @this: JSONGenerator;
+
+        return1 := @parameter0: org.ooc.frontend.model.ValuedReturn;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Return) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Return return1;
+
+        this := @this: JSONGenerator;
+
+        return1 := @parameter0: org.ooc.frontend.model.Return;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.NullLiteral) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.NullLiteral nullLiteral;
+
+        this := @this: JSONGenerator;
+
+        nullLiteral := @parameter0: org.ooc.frontend.model.NullLiteral;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.IntLiteral) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.IntLiteral numberLiteral;
+
+        this := @this: JSONGenerator;
+
+        numberLiteral := @parameter0: org.ooc.frontend.model.IntLiteral;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.FloatLiteral) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.FloatLiteral floatLiteral;
+
+        this := @this: JSONGenerator;
+
+        floatLiteral := @parameter0: org.ooc.frontend.model.FloatLiteral;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.StringLiteral) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.StringLiteral stringLiteral;
+
+        this := @this: JSONGenerator;
+
+        stringLiteral := @parameter0: org.ooc.frontend.model.StringLiteral;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.RangeLiteral) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.RangeLiteral rangeLiteral;
+
+        this := @this: JSONGenerator;
+
+        rangeLiteral := @parameter0: org.ooc.frontend.model.RangeLiteral;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.BoolLiteral) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.BoolLiteral boolLiteral;
+
+        this := @this: JSONGenerator;
+
+        boolLiteral := @parameter0: org.ooc.frontend.model.BoolLiteral;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.CharLiteral) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.CharLiteral charLiteral;
+
+        this := @this: JSONGenerator;
+
+        charLiteral := @parameter0: org.ooc.frontend.model.CharLiteral;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.ArrayLiteral) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.ArrayLiteral arrayLiteral;
+
+        this := @this: JSONGenerator;
+
+        arrayLiteral := @parameter0: org.ooc.frontend.model.ArrayLiteral;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Line) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Line line;
+
+        this := @this: JSONGenerator;
+
+        line := @parameter0: org.ooc.frontend.model.Line;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Include) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Include include;
+
+        this := @this: JSONGenerator;
+
+        include := @parameter0: org.ooc.frontend.model.Include;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Import) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Import import1;
+
+        this := @this: JSONGenerator;
+
+        import1 := @parameter0: org.ooc.frontend.model.Import;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Use) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Use use;
+
+        this := @this: JSONGenerator;
+
+        use := @parameter0: org.ooc.frontend.model.Use;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.If) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.If if1;
+
+        this := @this: JSONGenerator;
+
+        if1 := @parameter0: org.ooc.frontend.model.If;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Else) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Else else1;
+
+        this := @this: JSONGenerator;
+
+        else1 := @parameter0: org.ooc.frontend.model.Else;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.While) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.While while1;
+
+        this := @this: JSONGenerator;
+
+        while1 := @parameter0: org.ooc.frontend.model.While;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.For) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.For for1;
+
+        this := @this: JSONGenerator;
+
+        for1 := @parameter0: org.ooc.frontend.model.For;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Foreach) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Foreach foreach;
+
+        this := @this: JSONGenerator;
+
+        foreach := @parameter0: org.ooc.frontend.model.Foreach;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.FlowControl) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.FlowControl break1;
+
+        this := @this: JSONGenerator;
+
+        break1 := @parameter0: org.ooc.frontend.model.FlowControl;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.VariableAccess) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.VariableAccess variableAccess;
+
+        this := @this: JSONGenerator;
+
+        variableAccess := @parameter0: org.ooc.frontend.model.VariableAccess;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.MemberAccess) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.MemberAccess memberAccess;
+
+        this := @this: JSONGenerator;
+
+        memberAccess := @parameter0: org.ooc.frontend.model.MemberAccess;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.ArrayAccess) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.ArrayAccess arrayAccess;
+
+        this := @this: JSONGenerator;
+
+        arrayAccess := @parameter0: org.ooc.frontend.model.ArrayAccess;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.VariableDecl) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.VariableDecl variableDecl;
+        org.json.JSONObject $stack3;
+        java.lang.Throwable $stack4;
+        java.io.IOException $u0;
+        org.ooc.backend.json.JSONGenerator $r0, $r1;
+
+        this := @this: JSONGenerator;
+
+        variableDecl := @parameter0: org.ooc.frontend.model.VariableDecl;
+
+     label1:
+        $r0 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack3 = virtualinvoke $r0.<org.ooc.backend.json.JSONGenerator: org.json.JSONObject buildVariableDecl(org.ooc.frontend.model.VariableDecl,org.ooc.frontend.model.ClassDecl)>(variableDecl, null);
+
+        $r1 = (org.ooc.backend.json.JSONGenerator) this;
+
+        virtualinvoke $r1.<org.ooc.backend.json.JSONGenerator: void addObject(org.json.JSONObject)>($stack3);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        $u0 = new java.io.IOException;
+
+        specialinvoke $u0.<java.io.IOException: void <init>(java.lang.String)>("fail!");
+
+        throw $u0;
+
+     label4:
+        return;
+
+        catch org.json.JSONException from label1 to label2 with label3;
+    }
+
+    java.lang.String resolveType(org.ooc.frontend.model.Type)
+    {
+        org.ooc.frontend.model.Type type;
+        boolean $stack5;
+        int $stack8, $stack10, pointerLevel, referenceLevel;
+        JSONGenerator this;
+        java.lang.String tag;
+
+        this := @this: JSONGenerator;
+
+        type := @parameter0: org.ooc.frontend.model.Type;
+
+        $stack5 = type instanceof org.ooc.frontend.model.FuncType;
+
+        if $stack5 == 0 goto label1;
+
+        return "Func";
+
+     label1:
+        tag = virtualinvoke type.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+        pointerLevel = virtualinvoke type.<org.ooc.frontend.model.Type: int getPointerLevel()>();
+
+     label2:
+        $stack8 = pointerLevel;
+
+        pointerLevel = pointerLevel + -1;
+
+        if $stack8 <= 0 goto label3;
+
+        tag = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(tag) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("pointer(\u0001)");
+
+        goto label2;
+
+     label3:
+        referenceLevel = virtualinvoke type.<org.ooc.frontend.model.Type: int getReferenceLevel()>();
+
+     label4:
+        $stack10 = referenceLevel;
+
+        referenceLevel = referenceLevel + -1;
+
+        if $stack10 <= 0 goto label5;
+
+        tag = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(tag) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("reference(\u0001)");
+
+        goto label4;
+
+     label5:
+        return tag;
+    }
+
+    public void visit(org.ooc.frontend.model.FunctionDecl) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.FunctionDecl functionDecl;
+        org.json.JSONObject $stack3;
+        java.lang.Throwable $stack4;
+        java.io.IOException $u0;
+        org.ooc.backend.json.JSONGenerator $r0, $r1;
+
+        this := @this: JSONGenerator;
+
+        functionDecl := @parameter0: org.ooc.frontend.model.FunctionDecl;
+
+     label1:
+        $r0 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack3 = virtualinvoke $r0.<org.ooc.backend.json.JSONGenerator: org.json.JSONObject buildFunctionDecl(org.ooc.frontend.model.FunctionDecl)>(functionDecl);
+
+        $r1 = (org.ooc.backend.json.JSONGenerator) this;
+
+        virtualinvoke $r1.<org.ooc.backend.json.JSONGenerator: void addObject(org.json.JSONObject)>($stack3);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        $u0 = new java.io.IOException;
+
+        specialinvoke $u0.<java.io.IOException: void <init>(java.lang.String)>("Fail.");
+
+        throw $u0;
+
+     label4:
+        return;
+
+        catch org.json.JSONException from label1 to label2 with label3;
+    }
+
+    void addObject(org.json.JSONObject) throws org.json.JSONException
+    {
+        org.json.JSONObject obj;
+        java.lang.String $stack4;
+        JSONGenerator this;
+        org.json.JSONArray $stack7, $u0;
+        org.ooc.backend.json.JSONGenerator $r0;
+
+        this := @this: JSONGenerator;
+
+        obj := @parameter0: org.json.JSONObject;
+
+        $u0 = new org.json.JSONArray;
+
+        specialinvoke $u0.<org.json.JSONArray: void <init>()>();
+
+        $stack4 = virtualinvoke obj.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("tag");
+
+        virtualinvoke $u0.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack4);
+
+        virtualinvoke $u0.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>(obj);
+
+        $r0 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack7 = $r0.<org.ooc.backend.json.JSONGenerator: org.json.JSONArray root>;
+
+        virtualinvoke $stack7.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($u0);
+
+        return;
+    }
+
+    org.json.JSONObject buildFunctionDecl(org.ooc.frontend.model.FunctionDecl) throws org.json.JSONException
+    {
+        org.ooc.frontend.model.FunctionDecl node;
+        java.lang.String $stack14, $stack52, $stack59, $stack62, $stack84, $stack98, $stack106, $stack112, $stack117, $stack118, $stack122, name, $stack28;
+        int $stack15;
+        boolean $stack17, $stack23, $stack32, $stack33, $stack56, $stack57, $stack65, $stack81, $stack96, $stack104, $stack25, $stack31, $stack39, $stack44;
+        org.ooc.frontend.model.OocDocComment $stack20, $stack111;
+        java.lang.Object $stack21, $stack48, $stack55, $stack66, $stack83;
+        java.util.LinkedHashMap $stack36;
+        java.util.Collection $stack37;
+        org.ooc.frontend.model.NodeList $stack42;
+        java.util.Iterator l8, arguments;
+        org.ooc.frontend.model.Type $stack46, $stack47, $stack51, $stack61, $stack64;
+        JSONGenerator this;
+        org.ooc.frontend.model.Argument arg;
+        org.ooc.frontend.model.TypeDecl $stack116;
+        org.ooc.frontend.model.TypeParam typeParam;
+        java.lang.Boolean typeParam#28;
+        org.json.JSONObject $u0;
+        org.json.JSONArray $u1, $u2, $u3, $u4, $u5;
+        org.ooc.backend.json.JSONGenerator $r0, $r1;
+
+        this := @this: JSONGenerator;
+
+        node := @parameter0: org.ooc.frontend.model.FunctionDecl;
+
+        $u0 = new org.json.JSONObject;
+
+        specialinvoke $u0.<org.json.JSONObject: void <init>()>();
+
+        name = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack14 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getSuffix()>();
+
+        $stack15 = virtualinvoke $stack14.<java.lang.String: int length()>();
+
+        if $stack15 <= 0 goto label01;
+
+        $stack122 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getSuffix()>();
+
+        name = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>(name, $stack122) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001~\u0001");
+
+     label01:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("name", name);
+
+        $stack17 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean isMember()>();
+
+        if $stack17 == 0 goto label02;
+
+        $stack116 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.TypeDecl getTypeDecl()>();
+
+        $stack117 = virtualinvoke $stack116.<org.ooc.frontend.model.TypeDecl: java.lang.String getName()>();
+
+        $stack118 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>($stack117, name) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("memberFunction(\u0001, \u0001)");
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("tag", $stack118);
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("type", "memberFunction");
+
+        goto label03;
+
+     label02:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("tag", name);
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("type", "function");
+
+     label03:
+        $stack20 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.OocDocComment getComment()>();
+
+        if $stack20 == null goto label04;
+
+        $stack111 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.OocDocComment getComment()>();
+
+        $stack112 = virtualinvoke $stack111.<org.ooc.frontend.model.OocDocComment: java.lang.String getContent()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("doc", $stack112);
+
+        goto label05;
+
+     label04:
+        $stack21 = <org.json.JSONObject: java.lang.Object NULL>;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("doc", $stack21);
+
+     label05:
+        $stack23 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean isExtern()>();
+
+        if $stack23 == 0 goto label07;
+
+        $stack104 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean isExternWithName()>();
+
+        if $stack104 != 0 goto label06;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("extern", 1);
+
+        goto label08;
+
+     label06:
+        $stack106 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getExternName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("extern", $stack106);
+
+        goto label08;
+
+     label07:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("extern", 0);
+
+     label08:
+        $stack25 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean isUnmangled()>();
+
+        if $stack25 == 0 goto label10;
+
+        $stack96 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean isUnmangledWithName()>();
+
+        if $stack96 != 0 goto label09;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("unmangled", 1);
+
+        goto label11;
+
+     label09:
+        $stack98 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getUnmangledName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("unmangled", $stack98);
+
+        goto label11;
+
+     label10:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("unmangled", 0);
+
+     label11:
+        $stack28 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getFullName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("fullName", $stack28);
+
+        $u1 = new org.json.JSONArray;
+
+        specialinvoke $u1.<org.json.JSONArray: void <init>()>();
+
+        $stack31 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean isStatic()>();
+
+        if $stack31 == 0 goto label12;
+
+        virtualinvoke $u1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>("static");
+
+     label12:
+        $stack32 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean isFinal()>();
+
+        if $stack32 == 0 goto label13;
+
+        virtualinvoke $u1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>("final");
+
+     label13:
+        $stack33 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean isAbstract()>();
+
+        if $stack33 == 0 goto label14;
+
+        virtualinvoke $u1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>("abstract");
+
+     label14:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("modifiers", $u1);
+
+        $u2 = new org.json.JSONArray;
+
+        specialinvoke $u2.<org.json.JSONArray: void <init>()>();
+
+        $stack36 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.util.LinkedHashMap getTypeParams()>();
+
+        $stack37 = virtualinvoke $stack36.<java.util.LinkedHashMap: java.util.Collection values()>();
+
+        arguments = interfaceinvoke $stack37.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label15:
+        $stack39 = interfaceinvoke arguments.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack39 == 0 goto label16;
+
+        $stack83 = interfaceinvoke arguments.<java.util.Iterator: java.lang.Object next()>();
+
+        typeParam = (org.ooc.frontend.model.TypeParam) $stack83;
+
+        $stack84 = virtualinvoke typeParam.<org.ooc.frontend.model.TypeParam: java.lang.String getName()>();
+
+        virtualinvoke $u2.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack84);
+
+        goto label15;
+
+     label16:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("genericTypes", $u2);
+
+        $u3 = new org.json.JSONArray;
+
+        specialinvoke $u3.<org.json.JSONArray: void <init>()>();
+
+        typeParam#28 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        $stack42 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getArguments()>();
+
+        l8 = virtualinvoke $stack42.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label17:
+        $stack44 = interfaceinvoke l8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack44 == 0 goto label22;
+
+        $stack55 = interfaceinvoke l8.<java.util.Iterator: java.lang.Object next()>();
+
+        arg = (org.ooc.frontend.model.Argument) $stack55;
+
+        $stack56 = virtualinvoke typeParam#28.<java.lang.Boolean: boolean booleanValue()>();
+
+        if $stack56 == 0 goto label18;
+
+        $stack81 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean hasThis()>();
+
+        if $stack81 == 0 goto label18;
+
+        typeParam#28 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+        goto label17;
+
+     label18:
+        $stack57 = virtualinvoke typeParam#28.<java.lang.Boolean: boolean booleanValue()>();
+
+        if $stack57 == 0 goto label19;
+
+        typeParam#28 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+     label19:
+        $u4 = new org.json.JSONArray;
+
+        specialinvoke $u4.<org.json.JSONArray: void <init>()>();
+
+        $stack59 = virtualinvoke arg.<org.ooc.frontend.model.Argument: java.lang.String getName()>();
+
+        virtualinvoke $u4.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack59);
+
+        $stack61 = virtualinvoke arg.<org.ooc.frontend.model.Argument: org.ooc.frontend.model.Type getType()>();
+
+        $r0 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack62 = virtualinvoke $r0.<org.ooc.backend.json.JSONGenerator: java.lang.String resolveType(org.ooc.frontend.model.Type)>($stack61);
+
+        virtualinvoke $u4.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack62);
+
+        $stack64 = virtualinvoke arg.<org.ooc.frontend.model.Argument: org.ooc.frontend.model.Type getType()>();
+
+        $stack65 = virtualinvoke $stack64.<org.ooc.frontend.model.Type: boolean isConst()>();
+
+        if $stack65 == 0 goto label20;
+
+        $u5 = new org.json.JSONArray;
+
+        specialinvoke $u5.<org.json.JSONArray: void <init>()>();
+
+        virtualinvoke $u5.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>("const");
+
+        virtualinvoke $u4.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($u5);
+
+        goto label21;
+
+     label20:
+        $stack66 = <org.json.JSONObject: java.lang.Object NULL>;
+
+        virtualinvoke $u4.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack66);
+
+     label21:
+        virtualinvoke $u3.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($u4);
+
+        goto label17;
+
+     label22:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("arguments", $u3);
+
+        $stack46 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.Type getReturnType()>();
+
+        $stack47 = staticinvoke <org.ooc.frontend.model.Type: org.ooc.frontend.model.Type getVoid()>();
+
+        if $stack46 == $stack47 goto label23;
+
+        $stack51 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.Type getReturnType()>();
+
+        $r1 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack52 = virtualinvoke $r1.<org.ooc.backend.json.JSONGenerator: java.lang.String resolveType(org.ooc.frontend.model.Type)>($stack51);
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("returnType", $stack52);
+
+        goto label24;
+
+     label23:
+        $stack48 = <org.json.JSONObject: java.lang.Object NULL>;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("returnType", $stack48);
+
+     label24:
+        return $u0;
+    }
+
+    org.json.JSONObject buildVariableDecl(org.ooc.frontend.model.VariableDecl, org.ooc.frontend.model.ClassDecl) throws org.json.JSONException
+    {
+        org.ooc.frontend.model.VariableDecl decl;
+        java.lang.String $stack7, $stack10, $stack28, $stack42, $stack49, $stack59, $stack60, $stack61, $stack34, $stack21;
+        org.ooc.frontend.model.ClassDecl 'cls';
+        boolean $stack14, $stack16, $stack31, $stack40, $stack47, $stack18;
+        JSONGenerator this;
+        java.lang.Object $stack24;
+        org.ooc.frontend.model.Expression $stack27, $stack23;
+        org.ooc.frontend.model.Type $stack20;
+        org.json.JSONObject $u0;
+        org.json.JSONArray $u1;
+        org.ooc.backend.json.JSONGenerator $r0;
+
+        this := @this: JSONGenerator;
+
+        decl := @parameter0: org.ooc.frontend.model.VariableDecl;
+
+        'cls' := @parameter1: org.ooc.frontend.model.ClassDecl;
+
+        $u0 = new org.json.JSONObject;
+
+        specialinvoke $u0.<org.json.JSONObject: void <init>()>();
+
+        $stack7 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: java.lang.String getName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("name", $stack7);
+
+        if 'cls' == null goto label01;
+
+        $stack59 = virtualinvoke 'cls'.<org.ooc.frontend.model.ClassDecl: java.lang.String getName()>();
+
+        $stack60 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: java.lang.String getName()>();
+
+        $stack61 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>($stack59, $stack60) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("field(\u0001, \u0001)");
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("tag", $stack61);
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("type", "field");
+
+        goto label02;
+
+     label01:
+        $stack10 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: java.lang.String getName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("tag", $stack10);
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("type", "globalVariable");
+
+     label02:
+        $u1 = new org.json.JSONArray;
+
+        specialinvoke $u1.<org.json.JSONArray: void <init>()>();
+
+        $stack14 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: boolean isStatic()>();
+
+        if $stack14 == 0 goto label03;
+
+        virtualinvoke $u1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>("static");
+
+     label03:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("modifiers", $u1);
+
+        $stack16 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: boolean isExtern()>();
+
+        if $stack16 == 0 goto label05;
+
+        $stack47 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: boolean isExternWithName()>();
+
+        if $stack47 != 0 goto label04;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("extern", 1);
+
+        goto label06;
+
+     label04:
+        $stack49 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: java.lang.String getExternName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("extern", $stack49);
+
+        goto label06;
+
+     label05:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("extern", 0);
+
+     label06:
+        $stack18 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: boolean isGlobal()>();
+
+        if $stack18 == 0 goto label10;
+
+        $stack31 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: boolean isUnmangled()>();
+
+        if $stack31 == 0 goto label08;
+
+        $stack40 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: boolean isUnmangledWithName()>();
+
+        if $stack40 != 0 goto label07;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("unmangled", 1);
+
+        goto label09;
+
+     label07:
+        $stack42 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: java.lang.String getUnmangledName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("unmangled", $stack42);
+
+        goto label09;
+
+     label08:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("unmangled", 0);
+
+     label09:
+        $stack34 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: java.lang.String getFullName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("fullName", $stack34);
+
+     label10:
+        $stack20 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Type getType()>();
+
+        $r0 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack21 = virtualinvoke $r0.<org.ooc.backend.json.JSONGenerator: java.lang.String resolveType(org.ooc.frontend.model.Type)>($stack20);
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("varType", $stack21);
+
+        $stack23 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Expression getExpression()>();
+
+        if $stack23 == null goto label11;
+
+        $stack27 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Expression getExpression()>();
+
+        $stack28 = virtualinvoke $stack27.<org.ooc.frontend.model.Expression: java.lang.String toString()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("value", $stack28);
+
+        goto label12;
+
+     label11:
+        $stack24 = <org.json.JSONObject: java.lang.Object NULL>;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("value", $stack24);
+
+     label12:
+        return $u0;
+    }
+
+    public void visit(org.ooc.frontend.model.ClassDecl) throws java.io.IOException
+    {
+        org.ooc.frontend.model.ClassDecl node, $stack19, $stack80;
+        java.lang.String $stack10, $stack14, $stack46, $stack53, $stack57, $stack64, $stack71, $stack76, $stack81, $stack34;
+        boolean $stack17, $stack31, $stack42, $stack54, $stack62, $stack29, $stack39;
+        java.lang.Object $stack20, $stack23, $stack44, $stack52, $stack70;
+        org.ooc.frontend.model.OocDocComment $stack22, $stack75;
+        java.util.LinkedHashMap $stack26;
+        java.util.Collection $stack27;
+        java.lang.Iterable $stack40, $stack37;
+        JSONGenerator this;
+        org.json.JSONObject $stack48, $stack59, $u0;
+        java.lang.Throwable $stack84;
+        java.util.Iterator members, typeParam#26;
+        org.ooc.frontend.model.TypeParam typeParam;
+        org.ooc.frontend.model.FunctionDecl function;
+        org.ooc.frontend.model.VariableDecl function#36;
+        org.json.JSONArray $u1, $u2, $u3, $u4;
+        java.io.IOException $u5;
+        org.ooc.backend.json.JSONGenerator $r0, $r1, $r2;
+
+        this := @this: JSONGenerator;
+
+        node := @parameter0: org.ooc.frontend.model.ClassDecl;
+
+     label01:
+        $u0 = new org.json.JSONObject;
+
+        specialinvoke $u0.<org.json.JSONObject: void <init>()>();
+
+        $stack10 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: java.lang.String getName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("name", $stack10);
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("type", "class");
+
+        $stack14 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: java.lang.String getName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("tag", $stack14);
+
+        $stack17 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: boolean isAbstract()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("abstract", $stack17);
+
+        $stack19 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        if $stack19 == null goto label02;
+
+        $stack80 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.ClassDecl getSuperRef()>();
+
+        $stack81 = virtualinvoke $stack80.<org.ooc.frontend.model.ClassDecl: java.lang.String getName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("extends", $stack81);
+
+        goto label03;
+
+     label02:
+        $stack20 = <org.json.JSONObject: java.lang.Object NULL>;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("extends", $stack20);
+
+     label03:
+        $stack22 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.OocDocComment getComment()>();
+
+        if $stack22 == null goto label04;
+
+        $stack75 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.OocDocComment getComment()>();
+
+        $stack76 = virtualinvoke $stack75.<org.ooc.frontend.model.OocDocComment: java.lang.String getContent()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("doc", $stack76);
+
+        goto label05;
+
+     label04:
+        $stack23 = <org.json.JSONObject: java.lang.Object NULL>;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("doc", $stack23);
+
+     label05:
+        $u1 = new org.json.JSONArray;
+
+        specialinvoke $u1.<org.json.JSONArray: void <init>()>();
+
+        $stack26 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: java.util.LinkedHashMap getTypeParams()>();
+
+        $stack27 = virtualinvoke $stack26.<java.util.LinkedHashMap: java.util.Collection values()>();
+
+        members = interfaceinvoke $stack27.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label06:
+        $stack29 = interfaceinvoke members.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack29 == 0 goto label07;
+
+        $stack70 = interfaceinvoke members.<java.util.Iterator: java.lang.Object next()>();
+
+        typeParam = (org.ooc.frontend.model.TypeParam) $stack70;
+
+        $stack71 = virtualinvoke typeParam.<org.ooc.frontend.model.TypeParam: java.lang.String getName()>();
+
+        virtualinvoke $u1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack71);
+
+        goto label06;
+
+     label07:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("genericTypes", $u1);
+
+        $stack31 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: boolean isUnmangled()>();
+
+        if $stack31 == 0 goto label09;
+
+        $stack62 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: boolean isUnmangledWithName()>();
+
+        if $stack62 != 0 goto label08;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("unmangled", 1);
+
+        goto label10;
+
+     label08:
+        $stack64 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: java.lang.String getUnmangledName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("unmangled", $stack64);
+
+        goto label10;
+
+     label09:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("unmangled", 0);
+
+     label10:
+        $stack34 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: java.lang.String getUnderName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("fullName", $stack34);
+
+        $u2 = new org.json.JSONArray;
+
+        specialinvoke $u2.<org.json.JSONArray: void <init>()>();
+
+        $stack37 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: java.lang.Iterable getFunctions()>();
+
+        typeParam#26 = interfaceinvoke $stack37.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label11:
+        $stack39 = interfaceinvoke typeParam#26.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack39 == 0 goto label13;
+
+        $stack52 = interfaceinvoke typeParam#26.<java.util.Iterator: java.lang.Object next()>();
+
+        function = (org.ooc.frontend.model.FunctionDecl) $stack52;
+
+        $stack53 = virtualinvoke function.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack54 = virtualinvoke $stack53.<java.lang.String: boolean startsWith(java.lang.String)>("__");
+
+        if $stack54 != 0 goto label12;
+
+        $u3 = new org.json.JSONArray;
+
+        specialinvoke $u3.<org.json.JSONArray: void <init>()>();
+
+        $stack57 = virtualinvoke function.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        virtualinvoke $u3.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack57);
+
+        $r0 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack59 = virtualinvoke $r0.<org.ooc.backend.json.JSONGenerator: org.json.JSONObject buildFunctionDecl(org.ooc.frontend.model.FunctionDecl)>(function);
+
+        virtualinvoke $u3.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack59);
+
+        virtualinvoke $u2.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($u3);
+
+     label12:
+        goto label11;
+
+     label13:
+        $stack40 = virtualinvoke node.<org.ooc.frontend.model.ClassDecl: java.lang.Iterable getVariables()>();
+
+        typeParam#26 = interfaceinvoke $stack40.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label14:
+        $stack42 = interfaceinvoke typeParam#26.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack42 == 0 goto label15;
+
+        $stack44 = interfaceinvoke typeParam#26.<java.util.Iterator: java.lang.Object next()>();
+
+        function#36 = (org.ooc.frontend.model.VariableDecl) $stack44;
+
+        $u4 = new org.json.JSONArray;
+
+        specialinvoke $u4.<org.json.JSONArray: void <init>()>();
+
+        $stack46 = virtualinvoke function#36.<org.ooc.frontend.model.VariableDecl: java.lang.String getName()>();
+
+        virtualinvoke $u4.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack46);
+
+        $r1 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack48 = virtualinvoke $r1.<org.ooc.backend.json.JSONGenerator: org.json.JSONObject buildVariableDecl(org.ooc.frontend.model.VariableDecl,org.ooc.frontend.model.ClassDecl)>(function#36, node);
+
+        virtualinvoke $u4.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack48);
+
+        virtualinvoke $u2.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($u4);
+
+        goto label14;
+
+     label15:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("members", $u2);
+
+        $r2 = (org.ooc.backend.json.JSONGenerator) this;
+
+        virtualinvoke $r2.<org.ooc.backend.json.JSONGenerator: void addObject(org.json.JSONObject)>($u0);
+
+     label16:
+        goto label18;
+
+     label17:
+        $stack84 := @caughtexception;
+
+        $u5 = new java.io.IOException;
+
+        specialinvoke $u5.<java.io.IOException: void <init>(java.lang.String)>("Fail.");
+
+        throw $u5;
+
+     label18:
+        return;
+
+        catch org.json.JSONException from label01 to label16 with label17;
+    }
+
+    public void visit(org.ooc.frontend.model.CoverDecl) throws java.io.IOException
+    {
+        org.ooc.frontend.model.CoverDecl node;
+        java.lang.String $stack9, $stack13, $stack38, $stack42, $stack49, $stack57, $stack62, $stack67, $stack27;
+        org.ooc.frontend.model.TypeDecl $stack15, $stack66;
+        java.lang.Object $stack16, $stack19, $stack22, $stack37;
+        org.ooc.frontend.model.Type $stack18, $stack61;
+        org.ooc.frontend.model.OocDocComment $stack21, $stack56;
+        boolean $stack24, $stack34, $stack39, $stack47, $stack32;
+        java.util.Iterator l4;
+        JSONGenerator this;
+        org.ooc.frontend.model.FunctionDecl function;
+        org.json.JSONObject $stack44, $u0;
+        java.lang.Throwable $stack70;
+        java.lang.Iterable $stack30;
+        org.json.JSONArray $u1, $u2;
+        java.io.IOException $u3;
+        org.ooc.backend.json.JSONGenerator $r0, $r1;
+
+        this := @this: JSONGenerator;
+
+        node := @parameter0: org.ooc.frontend.model.CoverDecl;
+
+     label01:
+        $u0 = new org.json.JSONObject;
+
+        specialinvoke $u0.<org.json.JSONObject: void <init>()>();
+
+        $stack9 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: java.lang.String getName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("name", $stack9);
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("type", "cover");
+
+        $stack13 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: java.lang.String getName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("tag", $stack13);
+
+        $stack15 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        if $stack15 == null goto label02;
+
+        $stack66 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        $stack67 = virtualinvoke $stack66.<org.ooc.frontend.model.TypeDecl: java.lang.String getName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("extends", $stack67);
+
+        goto label03;
+
+     label02:
+        $stack16 = <org.json.JSONObject: java.lang.Object NULL>;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("extends", $stack16);
+
+     label03:
+        $stack18 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type getFromType()>();
+
+        if $stack18 == null goto label04;
+
+        $stack61 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type getFromType()>();
+
+        $stack62 = virtualinvoke $stack61.<org.ooc.frontend.model.Type: java.lang.String toString()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("from", $stack62);
+
+        goto label05;
+
+     label04:
+        $stack19 = <org.json.JSONObject: java.lang.Object NULL>;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("from", $stack19);
+
+     label05:
+        $stack21 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.OocDocComment getComment()>();
+
+        if $stack21 == null goto label06;
+
+        $stack56 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.OocDocComment getComment()>();
+
+        $stack57 = virtualinvoke $stack56.<org.ooc.frontend.model.OocDocComment: java.lang.String getContent()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("doc", $stack57);
+
+        goto label07;
+
+     label06:
+        $stack22 = <org.json.JSONObject: java.lang.Object NULL>;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("doc", $stack22);
+
+     label07:
+        $stack24 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: boolean isUnmangled()>();
+
+        if $stack24 == 0 goto label09;
+
+        $stack47 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: boolean isUnmangledWithName()>();
+
+        if $stack47 != 0 goto label08;
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("unmangled", 1);
+
+        goto label10;
+
+     label08:
+        $stack49 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: java.lang.String getUnmangledName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("unmangled", $stack49);
+
+        goto label10;
+
+     label09:
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("unmangled", 0);
+
+     label10:
+        $stack27 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: java.lang.String getUnderName()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("fullName", $stack27);
+
+        $u1 = new org.json.JSONArray;
+
+        specialinvoke $u1.<org.json.JSONArray: void <init>()>();
+
+        $stack30 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: java.lang.Iterable getFunctions()>();
+
+        l4 = interfaceinvoke $stack30.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label11:
+        $stack32 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack32 == 0 goto label13;
+
+        $stack37 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        function = (org.ooc.frontend.model.FunctionDecl) $stack37;
+
+        $stack38 = virtualinvoke function.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack39 = virtualinvoke $stack38.<java.lang.String: boolean equals(java.lang.Object)>("class");
+
+        if $stack39 != 0 goto label12;
+
+        $u2 = new org.json.JSONArray;
+
+        specialinvoke $u2.<org.json.JSONArray: void <init>()>();
+
+        $stack42 = virtualinvoke function.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        virtualinvoke $u2.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack42);
+
+        $r0 = (org.ooc.backend.json.JSONGenerator) this;
+
+        $stack44 = virtualinvoke $r0.<org.ooc.backend.json.JSONGenerator: org.json.JSONObject buildFunctionDecl(org.ooc.frontend.model.FunctionDecl)>(function);
+
+        virtualinvoke $u2.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($stack44);
+
+        virtualinvoke $u1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($u2);
+
+     label12:
+        goto label11;
+
+     label13:
+        $stack34 = virtualinvoke node.<org.ooc.frontend.model.CoverDecl: boolean isAddon()>();
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("addon", $stack34);
+
+        virtualinvoke $u0.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("members", $u1);
+
+        $r1 = (org.ooc.backend.json.JSONGenerator) this;
+
+        virtualinvoke $r1.<org.ooc.backend.json.JSONGenerator: void addObject(org.json.JSONObject)>($u0);
+
+     label14:
+        goto label16;
+
+     label15:
+        $stack70 := @caughtexception;
+
+        $u3 = new java.io.IOException;
+
+        specialinvoke $u3.<java.io.IOException: void <init>(java.lang.String)>("Fail.");
+
+        throw $u3;
+
+     label16:
+        return;
+
+        catch org.json.JSONException from label01 to label14 with label15;
+    }
+
+    public void visit(org.ooc.frontend.model.InterfaceDecl) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.InterfaceDecl interfaceDecl;
+
+        this := @this: JSONGenerator;
+
+        interfaceDecl := @parameter0: org.ooc.frontend.model.InterfaceDecl;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.parser.TypeArgument) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.parser.TypeArgument typeArgument;
+
+        this := @this: JSONGenerator;
+
+        typeArgument := @parameter0: org.ooc.frontend.parser.TypeArgument;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.RegularArgument) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.RegularArgument regularArgument;
+
+        this := @this: JSONGenerator;
+
+        regularArgument := @parameter0: org.ooc.frontend.model.RegularArgument;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.MemberArgument) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.MemberArgument memberArgument;
+
+        this := @this: JSONGenerator;
+
+        memberArgument := @parameter0: org.ooc.frontend.model.MemberArgument;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.MemberAssignArgument) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.MemberAssignArgument memberArgument;
+
+        this := @this: JSONGenerator;
+
+        memberArgument := @parameter0: org.ooc.frontend.model.MemberAssignArgument;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Type) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Type type;
+
+        this := @this: JSONGenerator;
+
+        type := @parameter0: org.ooc.frontend.model.Type;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.BuiltinType) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.BuiltinType builtinType;
+
+        this := @this: JSONGenerator;
+
+        builtinType := @parameter0: org.ooc.frontend.model.BuiltinType;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.VarArg) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.VarArg varArg;
+
+        this := @this: JSONGenerator;
+
+        varArg := @parameter0: org.ooc.frontend.model.VarArg;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.NodeList) throws java.io.IOException
+    {
+        org.ooc.frontend.model.NodeList list;
+        java.util.Iterator l2;
+        boolean $stack5;
+        java.lang.Object $stack6;
+        org.ooc.frontend.model.Node node;
+        JSONGenerator this;
+
+        this := @this: JSONGenerator;
+
+        list := @parameter0: org.ooc.frontend.model.NodeList;
+
+        l2 = virtualinvoke list.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack5 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack5 == 0 goto label2;
+
+        $stack6 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        node = (org.ooc.frontend.model.Node) $stack6;
+
+        virtualinvoke node.<org.ooc.frontend.model.Node: void accept(org.ooc.frontend.Visitor)>(this);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void visit(org.ooc.middle.structs.NodeMap) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.middle.structs.NodeMap list;
+
+        this := @this: JSONGenerator;
+
+        list := @parameter0: org.ooc.middle.structs.NodeMap;
+
+        return;
+    }
+
+    public void visit(org.ooc.middle.structs.MultiMap) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.middle.structs.MultiMap list;
+
+        this := @this: JSONGenerator;
+
+        list := @parameter0: org.ooc.middle.structs.MultiMap;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Block) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Block block;
+
+        this := @this: JSONGenerator;
+
+        block := @parameter0: org.ooc.frontend.model.Block;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.VersionBlock) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.VersionBlock versionBlock;
+
+        this := @this: JSONGenerator;
+
+        versionBlock := @parameter0: org.ooc.frontend.model.VersionBlock;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Cast) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Cast cast;
+
+        this := @this: JSONGenerator;
+
+        cast := @parameter0: org.ooc.frontend.model.Cast;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.AddressOf) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.AddressOf addressOf;
+
+        this := @this: JSONGenerator;
+
+        addressOf := @parameter0: org.ooc.frontend.model.AddressOf;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Dereference) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Dereference dereference;
+
+        this := @this: JSONGenerator;
+
+        dereference := @parameter0: org.ooc.frontend.model.Dereference;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.OpDecl) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.OpDecl opDecl;
+
+        this := @this: JSONGenerator;
+
+        opDecl := @parameter0: org.ooc.frontend.model.OpDecl;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.BinaryCombination) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.BinaryCombination binaryCombination;
+
+        this := @this: JSONGenerator;
+
+        binaryCombination := @parameter0: org.ooc.frontend.model.BinaryCombination;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Ternary) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Ternary ternary;
+
+        this := @this: JSONGenerator;
+
+        ternary := @parameter0: org.ooc.frontend.model.Ternary;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Match) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Match match;
+
+        this := @this: JSONGenerator;
+
+        match := @parameter0: org.ooc.frontend.model.Match;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.Case) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.Case case1;
+
+        this := @this: JSONGenerator;
+
+        case1 := @parameter0: org.ooc.frontend.model.Case;
+
+        return;
+    }
+
+    public void visit(org.ooc.frontend.model.CommaSequence) throws java.io.IOException
+    {
+        JSONGenerator this;
+        org.ooc.frontend.model.CommaSequence seq;
+
+        this := @this: JSONGenerator;
+
+        seq := @parameter0: org.ooc.frontend.model.CommaSequence;
+
+        return;
+    }
+}

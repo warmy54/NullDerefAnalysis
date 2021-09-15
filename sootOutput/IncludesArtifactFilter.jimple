@@ -1,0 +1,184 @@
+public class IncludesArtifactFilter extends java.lang.Object implements org.apache.maven.artifact.resolver.filter.ArtifactFilter
+{
+    private final java.util.Set patterns;
+
+    public void <init>(java.util.List)
+    {
+        IncludesArtifactFilter this;
+        java.util.List patterns;
+        java.util.LinkedHashSet $u0;
+        org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter $r0;
+
+        this := @this: IncludesArtifactFilter;
+
+        patterns := @parameter0: java.util.List;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.LinkedHashSet;
+
+        specialinvoke $u0.<java.util.LinkedHashSet: void <init>(java.util.Collection)>(patterns);
+
+        $r0 = (org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter) this;
+
+        $r0.<org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter: java.util.Set patterns> = $u0;
+
+        return;
+    }
+
+    public boolean include(org.apache.maven.artifact.Artifact)
+    {
+        org.apache.maven.artifact.Artifact artifact;
+        java.lang.String $stack6, $stack9, id;
+        java.lang.StringBuilder $stack7, $stack8, $stack10, $u0;
+        IncludesArtifactFilter this;
+        java.util.Set $stack12;
+        java.util.Iterator i;
+        boolean $stack14, $stack15, $stack17, matched, $stack20;
+        java.lang.Object $stack16;
+        org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter $r0;
+
+        this := @this: IncludesArtifactFilter;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack6);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack9 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        id = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        matched = 0;
+
+        $r0 = (org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter) this;
+
+        $stack12 = $r0.<org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter: java.util.Set patterns>;
+
+        i = interfaceinvoke $stack12.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $stack14 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+
+        if matched != 0 goto label2;
+
+        $stack20 = 1;
+
+        goto label3;
+
+     label2:
+        $stack20 = 0;
+
+     label3:
+        $stack15 = $stack14 & $stack20;
+
+        if $stack15 == 0 goto label4;
+
+        $stack16 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack17 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>($stack16);
+
+        if $stack17 == 0 goto label1;
+
+        matched = 1;
+
+        goto label1;
+
+     label4:
+        return matched;
+    }
+
+    public java.util.List getPatterns()
+    {
+        IncludesArtifactFilter this;
+        java.util.Set $stack2;
+        java.util.ArrayList $u0;
+        org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter $r0;
+
+        this := @this: IncludesArtifactFilter;
+
+        $u0 = new java.util.ArrayList;
+
+        $r0 = (org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter) this;
+
+        $stack2 = $r0.<org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter: java.util.Set patterns>;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(java.util.Collection)>($stack2);
+
+        return $u0;
+    }
+
+    public int hashCode()
+    {
+        IncludesArtifactFilter this;
+        java.util.Set $stack2;
+        int $stack3, $stack4, hash#2;
+        org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter $r0;
+
+        this := @this: IncludesArtifactFilter;
+
+        $stack3 = 17 * 31;
+
+        $r0 = (org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter) this;
+
+        $stack2 = $r0.<org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter: java.util.Set patterns>;
+
+        $stack4 = interfaceinvoke $stack2.<java.util.Set: int hashCode()>();
+
+        hash#2 = $stack3 + $stack4;
+
+        return hash#2;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        IncludesArtifactFilter this;
+        java.lang.Object obj;
+        java.lang.Class $stack3, $stack4;
+        org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter other, $r0;
+        java.util.Set $stack5, $stack6;
+        boolean $stack7;
+
+        this := @this: IncludesArtifactFilter;
+
+        obj := @parameter0: java.lang.Object;
+
+        if this != obj goto label1;
+
+        return 1;
+
+     label1:
+        if obj == null goto label2;
+
+        $stack3 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack4 = virtualinvoke obj.<java.lang.Object: java.lang.Class getClass()>();
+
+        if $stack3 == $stack4 goto label3;
+
+     label2:
+        return 0;
+
+     label3:
+        other = (org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter) obj;
+
+        $r0 = (org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter) this;
+
+        $stack6 = $r0.<org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter: java.util.Set patterns>;
+
+        $stack5 = other.<org.apache.maven.artifact.resolver.filter.IncludesArtifactFilter: java.util.Set patterns>;
+
+        $stack7 = interfaceinvoke $stack6.<java.util.Set: boolean equals(java.lang.Object)>($stack5);
+
+        return $stack7;
+    }
+}

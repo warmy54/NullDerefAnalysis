@@ -1,0 +1,542 @@
+public class ElementWrapperCreator extends java.lang.Object
+{
+    private sortpom.parameter.DependencySortOrder sortDependencies;
+    private sortpom.parameter.DependencySortOrder sortDependencyExclusions;
+    private sortpom.parameter.DependencySortOrder sortPlugins;
+    private boolean sortProperties;
+    private boolean sortModules;
+    private boolean sortExecutions;
+    private final sortpom.wrapper.ElementSortOrderMap elementNameSortOrderMap;
+
+    void <init>(sortpom.wrapper.ElementSortOrderMap)
+    {
+        ElementWrapperCreator this;
+        sortpom.wrapper.ElementSortOrderMap elementNameSortOrderMap;
+        sortpom.wrapper.ElementWrapperCreator $r0;
+
+        this := @this: ElementWrapperCreator;
+
+        elementNameSortOrderMap := @parameter0: sortpom.wrapper.ElementSortOrderMap;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $r0.<sortpom.wrapper.ElementWrapperCreator: sortpom.wrapper.ElementSortOrderMap elementNameSortOrderMap> = elementNameSortOrderMap;
+
+        return;
+    }
+
+    public void setup(sortpom.parameter.PluginParameters)
+    {
+        ElementWrapperCreator this;
+        sortpom.parameter.PluginParameters pluginParameters;
+        sortpom.parameter.DependencySortOrder $stack2, $stack3, $stack4;
+        boolean $stack5, $stack6, $stack7;
+        sortpom.wrapper.ElementWrapperCreator $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: ElementWrapperCreator;
+
+        pluginParameters := @parameter0: sortpom.parameter.PluginParameters;
+
+        $stack2 = pluginParameters.<sortpom.parameter.PluginParameters: sortpom.parameter.DependencySortOrder sortDependencies>;
+
+        $r0 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $r0.<sortpom.wrapper.ElementWrapperCreator: sortpom.parameter.DependencySortOrder sortDependencies> = $stack2;
+
+        $stack3 = pluginParameters.<sortpom.parameter.PluginParameters: sortpom.parameter.DependencySortOrder sortDependencyExclusions>;
+
+        $r1 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $r1.<sortpom.wrapper.ElementWrapperCreator: sortpom.parameter.DependencySortOrder sortDependencyExclusions> = $stack3;
+
+        $stack4 = pluginParameters.<sortpom.parameter.PluginParameters: sortpom.parameter.DependencySortOrder sortPlugins>;
+
+        $r2 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $r2.<sortpom.wrapper.ElementWrapperCreator: sortpom.parameter.DependencySortOrder sortPlugins> = $stack4;
+
+        $stack5 = pluginParameters.<sortpom.parameter.PluginParameters: boolean sortProperties>;
+
+        $r3 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $r3.<sortpom.wrapper.ElementWrapperCreator: boolean sortProperties> = $stack5;
+
+        $stack6 = pluginParameters.<sortpom.parameter.PluginParameters: boolean sortModules>;
+
+        $r4 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $r4.<sortpom.wrapper.ElementWrapperCreator: boolean sortModules> = $stack6;
+
+        $stack7 = pluginParameters.<sortpom.parameter.PluginParameters: boolean sortExecutions>;
+
+        $r5 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $r5.<sortpom.wrapper.ElementWrapperCreator: boolean sortExecutions> = $stack7;
+
+        return;
+    }
+
+    sortpom.wrapper.content.Wrapper createWrapper(org.jdom.Element)
+    {
+        ElementWrapperCreator this;
+        org.jdom.Element element;
+        sortpom.wrapper.ElementSortOrderMap $stack4, $stack15, $stack18, $stack21, $stack24, $stack28, $stack32;
+        boolean sortedBySortOrderFile, $stack6, $stack9, $stack10, $stack11, $stack12, $stack13;
+        int $stack16, $stack19, $stack22, $stack25, $stack29, $stack33;
+        sortpom.parameter.DependencySortOrder $stack26, $stack30, $stack34;
+        sortpom.wrapper.content.DependencySortedWrapper $u0;
+        sortpom.wrapper.content.ExclusionSortedWrapper $u1;
+        sortpom.wrapper.content.PluginSortedWrapper $u2;
+        sortpom.wrapper.content.ModuleSortedWrapper $u3;
+        sortpom.wrapper.content.ExecutionSortedWrapper $u4;
+        sortpom.wrapper.content.SortedWrapper $u5;
+        sortpom.wrapper.content.AlphabeticalSortedWrapper $u6;
+        sortpom.wrapper.content.UnsortedWrapper $u7;
+        sortpom.wrapper.ElementWrapperCreator $r0, $r1, $r2, $r3, $r5, $r6, $r7, $r9, $r10, $r11, $r13, $r14, $r16, $r17, $r19, $r21;
+        sortpom.wrapper.content.Wrapper $r4, $r8, $r12, $r15, $r18, $r20, $r22, $r24;
+        org.jdom.Content $r23;
+
+        this := @this: ElementWrapperCreator;
+
+        element := @parameter0: org.jdom.Element;
+
+        $r0 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack4 = $r0.<sortpom.wrapper.ElementWrapperCreator: sortpom.wrapper.ElementSortOrderMap elementNameSortOrderMap>;
+
+        sortedBySortOrderFile = virtualinvoke $stack4.<sortpom.wrapper.ElementSortOrderMap: boolean containsElement(org.jdom.Element)>(element);
+
+        if sortedBySortOrderFile == 0 goto label6;
+
+        $r1 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack9 = specialinvoke $r1.<sortpom.wrapper.ElementWrapperCreator: boolean isDependencyElement(org.jdom.Element)>(element);
+
+        if $stack9 == 0 goto label1;
+
+        $u0 = new sortpom.wrapper.content.DependencySortedWrapper;
+
+        $r2 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack32 = $r2.<sortpom.wrapper.ElementWrapperCreator: sortpom.wrapper.ElementSortOrderMap elementNameSortOrderMap>;
+
+        $stack33 = virtualinvoke $stack32.<sortpom.wrapper.ElementSortOrderMap: int getSortOrder(org.jdom.Element)>(element);
+
+        specialinvoke $u0.<sortpom.wrapper.content.DependencySortedWrapper: void <init>(org.jdom.Element,int)>(element, $stack33);
+
+        $r3 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack34 = $r3.<sortpom.wrapper.ElementWrapperCreator: sortpom.parameter.DependencySortOrder sortDependencies>;
+
+        virtualinvoke $u0.<sortpom.wrapper.content.DependencySortedWrapper: void setSortOrder(sortpom.parameter.DependencySortOrder)>($stack34);
+
+        $r4 = (sortpom.wrapper.content.Wrapper) $u0;
+
+        return $r4;
+
+     label1:
+        $r5 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack10 = specialinvoke $r5.<sortpom.wrapper.ElementWrapperCreator: boolean isExclusionElement(org.jdom.Element)>(element);
+
+        if $stack10 == 0 goto label2;
+
+        $u1 = new sortpom.wrapper.content.ExclusionSortedWrapper;
+
+        $r6 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack28 = $r6.<sortpom.wrapper.ElementWrapperCreator: sortpom.wrapper.ElementSortOrderMap elementNameSortOrderMap>;
+
+        $stack29 = virtualinvoke $stack28.<sortpom.wrapper.ElementSortOrderMap: int getSortOrder(org.jdom.Element)>(element);
+
+        specialinvoke $u1.<sortpom.wrapper.content.ExclusionSortedWrapper: void <init>(org.jdom.Element,int)>(element, $stack29);
+
+        $r7 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack30 = $r7.<sortpom.wrapper.ElementWrapperCreator: sortpom.parameter.DependencySortOrder sortDependencyExclusions>;
+
+        virtualinvoke $u1.<sortpom.wrapper.content.ExclusionSortedWrapper: void setSortOrder(sortpom.parameter.DependencySortOrder)>($stack30);
+
+        $r8 = (sortpom.wrapper.content.Wrapper) $u1;
+
+        return $r8;
+
+     label2:
+        $r9 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack11 = specialinvoke $r9.<sortpom.wrapper.ElementWrapperCreator: boolean isPluginElement(org.jdom.Element)>(element);
+
+        if $stack11 == 0 goto label3;
+
+        $u2 = new sortpom.wrapper.content.PluginSortedWrapper;
+
+        $r10 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack24 = $r10.<sortpom.wrapper.ElementWrapperCreator: sortpom.wrapper.ElementSortOrderMap elementNameSortOrderMap>;
+
+        $stack25 = virtualinvoke $stack24.<sortpom.wrapper.ElementSortOrderMap: int getSortOrder(org.jdom.Element)>(element);
+
+        specialinvoke $u2.<sortpom.wrapper.content.PluginSortedWrapper: void <init>(org.jdom.Element,int)>(element, $stack25);
+
+        $r11 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack26 = $r11.<sortpom.wrapper.ElementWrapperCreator: sortpom.parameter.DependencySortOrder sortPlugins>;
+
+        virtualinvoke $u2.<sortpom.wrapper.content.PluginSortedWrapper: void setSortOrder(sortpom.parameter.DependencySortOrder)>($stack26);
+
+        $r12 = (sortpom.wrapper.content.Wrapper) $u2;
+
+        return $r12;
+
+     label3:
+        $r13 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack12 = specialinvoke $r13.<sortpom.wrapper.ElementWrapperCreator: boolean isModuleElement(org.jdom.Element)>(element);
+
+        if $stack12 == 0 goto label4;
+
+        $u3 = new sortpom.wrapper.content.ModuleSortedWrapper;
+
+        $r14 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack21 = $r14.<sortpom.wrapper.ElementWrapperCreator: sortpom.wrapper.ElementSortOrderMap elementNameSortOrderMap>;
+
+        $stack22 = virtualinvoke $stack21.<sortpom.wrapper.ElementSortOrderMap: int getSortOrder(org.jdom.Element)>(element);
+
+        specialinvoke $u3.<sortpom.wrapper.content.ModuleSortedWrapper: void <init>(org.jdom.Element,int)>(element, $stack22);
+
+        $r15 = (sortpom.wrapper.content.Wrapper) $u3;
+
+        return $r15;
+
+     label4:
+        $r16 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack13 = specialinvoke $r16.<sortpom.wrapper.ElementWrapperCreator: boolean isExecutionElement(org.jdom.Element)>(element);
+
+        if $stack13 == 0 goto label5;
+
+        $u4 = new sortpom.wrapper.content.ExecutionSortedWrapper;
+
+        $r17 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack18 = $r17.<sortpom.wrapper.ElementWrapperCreator: sortpom.wrapper.ElementSortOrderMap elementNameSortOrderMap>;
+
+        $stack19 = virtualinvoke $stack18.<sortpom.wrapper.ElementSortOrderMap: int getSortOrder(org.jdom.Element)>(element);
+
+        specialinvoke $u4.<sortpom.wrapper.content.ExecutionSortedWrapper: void <init>(org.jdom.Element,int)>(element, $stack19);
+
+        $r18 = (sortpom.wrapper.content.Wrapper) $u4;
+
+        return $r18;
+
+     label5:
+        $u5 = new sortpom.wrapper.content.SortedWrapper;
+
+        $r19 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack15 = $r19.<sortpom.wrapper.ElementWrapperCreator: sortpom.wrapper.ElementSortOrderMap elementNameSortOrderMap>;
+
+        $stack16 = virtualinvoke $stack15.<sortpom.wrapper.ElementSortOrderMap: int getSortOrder(org.jdom.Element)>(element);
+
+        specialinvoke $u5.<sortpom.wrapper.content.SortedWrapper: void <init>(org.jdom.Element,int)>(element, $stack16);
+
+        $r20 = (sortpom.wrapper.content.Wrapper) $u5;
+
+        return $r20;
+
+     label6:
+        $r21 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack6 = specialinvoke $r21.<sortpom.wrapper.ElementWrapperCreator: boolean isPropertyElement(org.jdom.Element)>(element);
+
+        if $stack6 == 0 goto label7;
+
+        $u6 = new sortpom.wrapper.content.AlphabeticalSortedWrapper;
+
+        specialinvoke $u6.<sortpom.wrapper.content.AlphabeticalSortedWrapper: void <init>(org.jdom.Element)>(element);
+
+        $r22 = (sortpom.wrapper.content.Wrapper) $u6;
+
+        return $r22;
+
+     label7:
+        $u7 = new sortpom.wrapper.content.UnsortedWrapper;
+
+        $r23 = (org.jdom.Content) element;
+
+        specialinvoke $u7.<sortpom.wrapper.content.UnsortedWrapper: void <init>(org.jdom.Content)>($r23);
+
+        $r24 = (sortpom.wrapper.content.Wrapper) $u7;
+
+        return $r24;
+    }
+
+    private boolean isDependencyElement(org.jdom.Element)
+    {
+        ElementWrapperCreator this;
+        sortpom.parameter.DependencySortOrder $stack2;
+        boolean $stack3, $stack4, $stack5, $stack6;
+        org.jdom.Element element;
+        sortpom.wrapper.ElementWrapperCreator $r0;
+
+        this := @this: ElementWrapperCreator;
+
+        element := @parameter0: org.jdom.Element;
+
+        $r0 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack2 = $r0.<sortpom.wrapper.ElementWrapperCreator: sortpom.parameter.DependencySortOrder sortDependencies>;
+
+        $stack3 = virtualinvoke $stack2.<sortpom.parameter.DependencySortOrder: boolean isNoSorting()>();
+
+        if $stack3 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        $stack4 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementName(org.jdom.Element,java.lang.String)>(element, "dependency");
+
+        if $stack4 == 0 goto label2;
+
+        $stack5 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementParentName(org.jdom.Element,java.lang.String)>(element, "dependencies");
+
+        if $stack5 == 0 goto label2;
+
+        $stack6 = 1;
+
+        goto label3;
+
+     label2:
+        $stack6 = 0;
+
+     label3:
+        return $stack6;
+    }
+
+    private boolean isExclusionElement(org.jdom.Element)
+    {
+        ElementWrapperCreator this;
+        sortpom.parameter.DependencySortOrder $stack2;
+        boolean $stack3, $stack4, $stack5, $stack6;
+        org.jdom.Element element;
+        sortpom.wrapper.ElementWrapperCreator $r0;
+
+        this := @this: ElementWrapperCreator;
+
+        element := @parameter0: org.jdom.Element;
+
+        $r0 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack2 = $r0.<sortpom.wrapper.ElementWrapperCreator: sortpom.parameter.DependencySortOrder sortDependencyExclusions>;
+
+        $stack3 = virtualinvoke $stack2.<sortpom.parameter.DependencySortOrder: boolean isNoSorting()>();
+
+        if $stack3 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        $stack4 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementName(org.jdom.Element,java.lang.String)>(element, "exclusion");
+
+        if $stack4 == 0 goto label2;
+
+        $stack5 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementParentName(org.jdom.Element,java.lang.String)>(element, "exclusions");
+
+        if $stack5 == 0 goto label2;
+
+        $stack6 = 1;
+
+        goto label3;
+
+     label2:
+        $stack6 = 0;
+
+     label3:
+        return $stack6;
+    }
+
+    private boolean isPluginElement(org.jdom.Element)
+    {
+        ElementWrapperCreator this;
+        sortpom.parameter.DependencySortOrder $stack2;
+        boolean $stack3, $stack4, $stack5, $stack7, $stack6;
+        org.jdom.Element element;
+        sortpom.wrapper.ElementWrapperCreator $r0;
+
+        this := @this: ElementWrapperCreator;
+
+        element := @parameter0: org.jdom.Element;
+
+        $r0 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack2 = $r0.<sortpom.wrapper.ElementWrapperCreator: sortpom.parameter.DependencySortOrder sortPlugins>;
+
+        $stack3 = virtualinvoke $stack2.<sortpom.parameter.DependencySortOrder: boolean isNoSorting()>();
+
+        if $stack3 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        $stack4 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementName(org.jdom.Element,java.lang.String)>(element, "plugin");
+
+        if $stack4 == 0 goto label3;
+
+        $stack5 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementParentName(org.jdom.Element,java.lang.String)>(element, "plugins");
+
+        if $stack5 != 0 goto label2;
+
+        $stack7 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementParentName(org.jdom.Element,java.lang.String)>(element, "reportPlugins");
+
+        if $stack7 == 0 goto label3;
+
+     label2:
+        $stack6 = 1;
+
+        goto label4;
+
+     label3:
+        $stack6 = 0;
+
+     label4:
+        return $stack6;
+    }
+
+    private boolean isModuleElement(org.jdom.Element)
+    {
+        ElementWrapperCreator this;
+        boolean $stack2, $stack3, $stack4, $stack5;
+        org.jdom.Element element;
+        sortpom.wrapper.ElementWrapperCreator $r0;
+
+        this := @this: ElementWrapperCreator;
+
+        element := @parameter0: org.jdom.Element;
+
+        $r0 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack2 = $r0.<sortpom.wrapper.ElementWrapperCreator: boolean sortModules>;
+
+        if $stack2 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $stack3 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementName(org.jdom.Element,java.lang.String)>(element, "module");
+
+        if $stack3 == 0 goto label2;
+
+        $stack4 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementParentName(org.jdom.Element,java.lang.String)>(element, "modules");
+
+        if $stack4 == 0 goto label2;
+
+        $stack5 = 1;
+
+        goto label3;
+
+     label2:
+        $stack5 = 0;
+
+     label3:
+        return $stack5;
+    }
+
+    private boolean isExecutionElement(org.jdom.Element)
+    {
+        ElementWrapperCreator this;
+        boolean $stack2, $stack3, $stack4, $stack5;
+        org.jdom.Element element;
+        sortpom.wrapper.ElementWrapperCreator $r0;
+
+        this := @this: ElementWrapperCreator;
+
+        element := @parameter0: org.jdom.Element;
+
+        $r0 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack2 = $r0.<sortpom.wrapper.ElementWrapperCreator: boolean sortExecutions>;
+
+        if $stack2 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $stack3 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementName(org.jdom.Element,java.lang.String)>(element, "execution");
+
+        if $stack3 == 0 goto label2;
+
+        $stack4 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementParentName(org.jdom.Element,java.lang.String)>(element, "executions");
+
+        if $stack4 == 0 goto label2;
+
+        $stack5 = 1;
+
+        goto label3;
+
+     label2:
+        $stack5 = 0;
+
+     label3:
+        return $stack5;
+    }
+
+    private boolean isPropertyElement(org.jdom.Element)
+    {
+        ElementWrapperCreator this;
+        boolean $stack4, $stack6, $stack7, $stack9, $stack10, $stack8;
+        org.jdom.Element element;
+        java.lang.String deepName;
+        sortpom.wrapper.ElementWrapperCreator $r0;
+
+        this := @this: ElementWrapperCreator;
+
+        element := @parameter0: org.jdom.Element;
+
+        $r0 = (sortpom.wrapper.ElementWrapperCreator) this;
+
+        $stack4 = $r0.<sortpom.wrapper.ElementWrapperCreator: boolean sortProperties>;
+
+        if $stack4 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        deepName = staticinvoke <sortpom.wrapper.ElementUtil: java.lang.String getDeepName(org.jdom.Element)>(element);
+
+        $stack6 = virtualinvoke deepName.<java.lang.String: boolean startsWith(java.lang.String)>("/project/properties/");
+
+        if $stack6 != 0 goto label2;
+
+        $stack9 = virtualinvoke deepName.<java.lang.String: boolean startsWith(java.lang.String)>("/project/profiles/profile/properties/");
+
+        if $stack9 == 0 goto label3;
+
+     label2:
+        $stack10 = 1;
+
+        goto label4;
+
+     label3:
+        $stack10 = 0;
+
+     label4:
+        if $stack10 == 0 goto label5;
+
+        $stack7 = staticinvoke <sortpom.wrapper.ElementUtil: boolean isElementParentName(org.jdom.Element,java.lang.String)>(element, "properties");
+
+        if $stack7 == 0 goto label5;
+
+        $stack8 = 1;
+
+        goto label6;
+
+     label5:
+        $stack8 = 0;
+
+     label6:
+        return $stack8;
+    }
+}

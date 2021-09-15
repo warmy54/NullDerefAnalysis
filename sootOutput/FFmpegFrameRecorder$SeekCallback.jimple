@@ -1,0 +1,73 @@
+class FFmpegFrameRecorder$SeekCallback extends org.bytedeco.ffmpeg.avformat.Seek_Pointer_long_int
+{
+
+    void <init>()
+    {
+        FFmpegFrameRecorder$SeekCallback this;
+
+        this := @this: FFmpegFrameRecorder$SeekCallback;
+
+        specialinvoke this.<org.bytedeco.ffmpeg.avformat.Seek_Pointer_long_int: void <init>()>();
+
+        return;
+    }
+
+    public long call(org.bytedeco.javacpp.Pointer, long, int)
+    {
+        org.bytedeco.javacpp.Pointer opaque;
+        java.util.Map $stack6;
+        java.lang.Object $stack7;
+        long offset;
+        int whence;
+        org.bytedeco.javacv.Seekable $stack8;
+        java.lang.Throwable $stack9;
+        java.lang.StringBuilder $stack10, $stack12, $stack13;
+        java.io.PrintStream $stack11;
+        java.lang.String $stack14;
+        FFmpegFrameRecorder$SeekCallback this;
+        java.io.OutputStream os;
+
+        this := @this: FFmpegFrameRecorder$SeekCallback;
+
+        opaque := @parameter0: org.bytedeco.javacpp.Pointer;
+
+        offset := @parameter1: long;
+
+        whence := @parameter2: int;
+
+     label1:
+        $stack6 = <org.bytedeco.javacv.FFmpegFrameRecorder: java.util.Map outputStreams>;
+
+        $stack7 = interfaceinvoke $stack6.<java.util.Map: java.lang.Object get(java.lang.Object)>(opaque);
+
+        os = (java.io.OutputStream) $stack7;
+
+        $stack8 = (org.bytedeco.javacv.Seekable) os;
+
+        interfaceinvoke $stack8.<org.bytedeco.javacv.Seekable: void seek(long,int)>(offset, whence);
+
+     label2:
+        return 0L;
+
+     label3:
+        $stack9 := @caughtexception;
+
+        $stack11 = <java.lang.System: java.io.PrintStream err>;
+
+        $stack10 = new java.lang.StringBuilder;
+
+        specialinvoke $stack10.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error on OutputStream.seek(): ");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack9);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack11.<java.io.PrintStream: void println(java.lang.String)>($stack14);
+
+        return -1L;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+}

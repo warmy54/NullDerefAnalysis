@@ -1,0 +1,183 @@
+public class DefaultSuperPomProvider extends java.lang.Object implements org.apache.maven.model.superpom.SuperPomProvider
+{
+    private org.apache.maven.model.Model superModel;
+    private org.apache.maven.model.building.ModelProcessor modelProcessor;
+
+    public void <init>()
+    {
+        DefaultSuperPomProvider this;
+
+        this := @this: DefaultSuperPomProvider;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.model.superpom.DefaultSuperPomProvider setModelProcessor(org.apache.maven.model.building.ModelProcessor)
+    {
+        DefaultSuperPomProvider this;
+        org.apache.maven.model.building.ModelProcessor modelProcessor;
+        org.apache.maven.model.superpom.DefaultSuperPomProvider $r0, $r1;
+
+        this := @this: DefaultSuperPomProvider;
+
+        modelProcessor := @parameter0: org.apache.maven.model.building.ModelProcessor;
+
+        $r0 = (org.apache.maven.model.superpom.DefaultSuperPomProvider) this;
+
+        $r0.<org.apache.maven.model.superpom.DefaultSuperPomProvider: org.apache.maven.model.building.ModelProcessor modelProcessor> = modelProcessor;
+
+        $r1 = (org.apache.maven.model.superpom.DefaultSuperPomProvider) this;
+
+        return $r1;
+    }
+
+    public org.apache.maven.model.Model getSuperModel(java.lang.String)
+    {
+        DefaultSuperPomProvider this;
+        org.apache.maven.model.Model $stack7, $stack8, $stack32;
+        java.lang.StringBuilder $stack10, $stack11, $stack12, $stack19, $stack23, $stack24, $stack36, $stack37, $stack38, $stack43, $stack44, $stack45, $u0, $u1, $u4, $u6;
+        java.lang.String version, resource, $stack22, modelId, $stack29, $stack39, $stack46;
+        java.lang.Class $stack14, $stack20, $stack27;
+        java.io.InputStream is;
+        java.lang.Package $stack21;
+        java.net.URL $stack28;
+        org.apache.maven.model.building.ModelProcessor $stack31;
+        java.io.IOException $stack40;
+        java.lang.IllegalStateException $u2, $u7;
+        java.util.HashMap $u3;
+        org.apache.maven.model.InputSource $u5;
+        org.apache.maven.model.superpom.DefaultSuperPomProvider $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultSuperPomProvider;
+
+        version := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.model.superpom.DefaultSuperPomProvider) this;
+
+        $stack7 = $r0.<org.apache.maven.model.superpom.DefaultSuperPomProvider: org.apache.maven.model.Model superModel>;
+
+        if $stack7 != null goto label4;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack10 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/org/apache/maven/model/pom-");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(version);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".xml");
+
+        resource = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack14 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        is = virtualinvoke $stack14.<java.lang.Class: java.io.InputStream getResourceAsStream(java.lang.String)>(resource);
+
+        if is != null goto label1;
+
+        $u2 = new java.lang.IllegalStateException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack36 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The super POM ");
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(resource);
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" was not found, please verify the integrity of your Maven installation");
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<java.lang.IllegalStateException: void <init>(java.lang.String)>($stack39);
+
+        throw $u2;
+
+     label1:
+        $u3 = new java.util.HashMap;
+
+        specialinvoke $u3.<java.util.HashMap: void <init>(int)>(2);
+
+        interfaceinvoke $u3.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("xml:4.0.0", "xml:4.0.0");
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack19 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("org.apache.maven:maven-model-builder:");
+
+        $stack20 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack21 = virtualinvoke $stack20.<java.lang.Class: java.lang.Package getPackage()>();
+
+        $stack22 = virtualinvoke $stack21.<java.lang.Package: java.lang.String getImplementationVersion()>();
+
+        $stack23 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack22);
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":super-pom");
+
+        modelId = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $u5 = new org.apache.maven.model.InputSource;
+
+        specialinvoke $u5.<org.apache.maven.model.InputSource: void <init>()>();
+
+        virtualinvoke $u5.<org.apache.maven.model.InputSource: void setModelId(java.lang.String)>(modelId);
+
+        $stack27 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack28 = virtualinvoke $stack27.<java.lang.Class: java.net.URL getResource(java.lang.String)>(resource);
+
+        $stack29 = virtualinvoke $stack28.<java.net.URL: java.lang.String toExternalForm()>();
+
+        virtualinvoke $u5.<org.apache.maven.model.InputSource: void setLocation(java.lang.String)>($stack29);
+
+        interfaceinvoke $u3.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("org.apache.maven.model.io.inputSource", $u5);
+
+        $r1 = (org.apache.maven.model.superpom.DefaultSuperPomProvider) this;
+
+        $stack31 = $r1.<org.apache.maven.model.superpom.DefaultSuperPomProvider: org.apache.maven.model.building.ModelProcessor modelProcessor>;
+
+        $stack32 = interfaceinvoke $stack31.<org.apache.maven.model.building.ModelProcessor: org.apache.maven.model.Model read(java.io.InputStream,java.util.Map)>(is, $u3);
+
+        $r2 = (org.apache.maven.model.superpom.DefaultSuperPomProvider) this;
+
+        $r2.<org.apache.maven.model.superpom.DefaultSuperPomProvider: org.apache.maven.model.Model superModel> = $stack32;
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack40 := @caughtexception;
+
+        $u7 = new java.lang.IllegalStateException;
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack43 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The super POM ");
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(resource);
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" is damaged, please verify the integrity of your Maven installation");
+
+        $stack46 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u7.<java.lang.IllegalStateException: void <init>(java.lang.String,java.lang.Throwable)>($stack46, $stack40);
+
+        throw $u7;
+
+     label4:
+        $r3 = (org.apache.maven.model.superpom.DefaultSuperPomProvider) this;
+
+        $stack8 = $r3.<org.apache.maven.model.superpom.DefaultSuperPomProvider: org.apache.maven.model.Model superModel>;
+
+        return $stack8;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+}

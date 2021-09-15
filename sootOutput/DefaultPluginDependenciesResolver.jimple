@@ -1,0 +1,485 @@
+public class DefaultPluginDependenciesResolver extends java.lang.Object implements org.apache.maven.plugin.internal.PluginDependenciesResolver
+{
+    private static final java.lang.String REPOSITORY_CONTEXT;
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.eclipse.aether.RepositorySystem repoSystem;
+
+    public void <init>()
+    {
+        DefaultPluginDependenciesResolver this;
+
+        this := @this: DefaultPluginDependenciesResolver;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    private org.eclipse.aether.artifact.Artifact toArtifact(org.apache.maven.model.Plugin, org.eclipse.aether.RepositorySystemSession)
+    {
+        org.apache.maven.model.Plugin plugin;
+        java.lang.String $stack4, $stack5, $stack8;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.artifact.ArtifactTypeRegistry $stack9;
+        org.eclipse.aether.artifact.ArtifactType $stack10;
+        DefaultPluginDependenciesResolver this;
+        org.eclipse.aether.artifact.DefaultArtifact $u0;
+        org.eclipse.aether.artifact.Artifact $r0;
+
+        this := @this: DefaultPluginDependenciesResolver;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        session := @parameter1: org.eclipse.aether.RepositorySystemSession;
+
+        $u0 = new org.eclipse.aether.artifact.DefaultArtifact;
+
+        $stack4 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        $stack5 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        $stack8 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        $stack9 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.artifact.ArtifactTypeRegistry getArtifactTypeRegistry()>();
+
+        $stack10 = interfaceinvoke $stack9.<org.eclipse.aether.artifact.ArtifactTypeRegistry: org.eclipse.aether.artifact.ArtifactType get(java.lang.String)>("maven-plugin");
+
+        specialinvoke $u0.<org.eclipse.aether.artifact.DefaultArtifact: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.eclipse.aether.artifact.ArtifactType)>($stack4, $stack5, null, "jar", $stack8, $stack10);
+
+        $r0 = (org.eclipse.aether.artifact.Artifact) $u0;
+
+        return $r0;
+    }
+
+    public org.eclipse.aether.artifact.Artifact resolve(org.apache.maven.model.Plugin, java.util.List, org.eclipse.aether.RepositorySystemSession) throws org.apache.maven.plugin.PluginResolutionException
+    {
+        org.apache.maven.model.Plugin plugin;
+        org.eclipse.aether.RequestTrace trace;
+        DefaultPluginDependenciesResolver this;
+        org.eclipse.aether.RepositorySystemSession session, $r3;
+        java.util.List repositories;
+        org.eclipse.aether.RepositorySystem $stack18, $stack25;
+        org.eclipse.aether.resolution.ArtifactDescriptorResult result;
+        java.util.Map $stack21, $stack29;
+        java.lang.Object $stack22;
+        java.lang.String requiredMavenVersion;
+        org.eclipse.aether.resolution.ArtifactResult $stack26;
+        java.lang.Throwable $stack32, $stack34, $r4, $r6;
+        org.eclipse.aether.artifact.Artifact pluginArtifact;
+        org.eclipse.aether.DefaultRepositorySystemSession $u0;
+        org.eclipse.aether.util.repository.SimpleArtifactDescriptorPolicy $u1;
+        org.eclipse.aether.resolution.ArtifactDescriptorRequest $u2;
+        java.util.LinkedHashMap $u3;
+        org.apache.maven.plugin.PluginResolutionException $u4, $u6;
+        org.eclipse.aether.resolution.ArtifactRequest $u5;
+        org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver $r0, $r2, $r5;
+        org.eclipse.aether.resolution.ArtifactDescriptorPolicy $r1;
+
+        this := @this: DefaultPluginDependenciesResolver;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        repositories := @parameter1: java.util.List;
+
+        session := @parameter2: org.eclipse.aether.RepositorySystemSession;
+
+        trace = staticinvoke <org.eclipse.aether.RequestTrace: org.eclipse.aether.RequestTrace newChild(org.eclipse.aether.RequestTrace,java.lang.Object)>(null, plugin);
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver) this;
+
+        pluginArtifact = specialinvoke $r0.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver: org.eclipse.aether.artifact.Artifact toArtifact(org.apache.maven.model.Plugin,org.eclipse.aether.RepositorySystemSession)>(plugin, session);
+
+     label1:
+        $u0 = new org.eclipse.aether.DefaultRepositorySystemSession;
+
+        specialinvoke $u0.<org.eclipse.aether.DefaultRepositorySystemSession: void <init>(org.eclipse.aether.RepositorySystemSession)>(session);
+
+        $u1 = new org.eclipse.aether.util.repository.SimpleArtifactDescriptorPolicy;
+
+        specialinvoke $u1.<org.eclipse.aether.util.repository.SimpleArtifactDescriptorPolicy: void <init>(boolean,boolean)>(1, 0);
+
+        $r1 = (org.eclipse.aether.resolution.ArtifactDescriptorPolicy) $u1;
+
+        virtualinvoke $u0.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setArtifactDescriptorPolicy(org.eclipse.aether.resolution.ArtifactDescriptorPolicy)>($r1);
+
+        $u2 = new org.eclipse.aether.resolution.ArtifactDescriptorRequest;
+
+        specialinvoke $u2.<org.eclipse.aether.resolution.ArtifactDescriptorRequest: void <init>(org.eclipse.aether.artifact.Artifact,java.util.List,java.lang.String)>(pluginArtifact, repositories, "plugin");
+
+        virtualinvoke $u2.<org.eclipse.aether.resolution.ArtifactDescriptorRequest: org.eclipse.aether.resolution.ArtifactDescriptorRequest setTrace(org.eclipse.aether.RequestTrace)>(trace);
+
+        $r2 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver) this;
+
+        $stack18 = $r2.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver: org.eclipse.aether.RepositorySystem repoSystem>;
+
+        $r3 = (org.eclipse.aether.RepositorySystemSession) $u0;
+
+        result = interfaceinvoke $stack18.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.resolution.ArtifactDescriptorResult readArtifactDescriptor(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.resolution.ArtifactDescriptorRequest)>($r3, $u2);
+
+        pluginArtifact = virtualinvoke result.<org.eclipse.aether.resolution.ArtifactDescriptorResult: org.eclipse.aether.artifact.Artifact getArtifact()>();
+
+        $stack21 = virtualinvoke result.<org.eclipse.aether.resolution.ArtifactDescriptorResult: java.util.Map getProperties()>();
+
+        $stack22 = interfaceinvoke $stack21.<java.util.Map: java.lang.Object get(java.lang.Object)>("prerequisites.maven");
+
+        requiredMavenVersion = (java.lang.String) $stack22;
+
+        if requiredMavenVersion == null goto label2;
+
+        $u3 = new java.util.LinkedHashMap;
+
+        $stack29 = interfaceinvoke pluginArtifact.<org.eclipse.aether.artifact.Artifact: java.util.Map getProperties()>();
+
+        specialinvoke $u3.<java.util.LinkedHashMap: void <init>(java.util.Map)>($stack29);
+
+        interfaceinvoke $u3.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("requiredMavenVersion", requiredMavenVersion);
+
+        pluginArtifact = interfaceinvoke pluginArtifact.<org.eclipse.aether.artifact.Artifact: org.eclipse.aether.artifact.Artifact setProperties(java.util.Map)>($u3);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack34 := @caughtexception;
+
+        $u4 = new org.apache.maven.plugin.PluginResolutionException;
+
+        specialinvoke $u4.<org.apache.maven.plugin.PluginResolutionException: void <init>(org.apache.maven.model.Plugin,java.lang.Throwable)>(plugin, $stack34);
+
+        $r4 = (java.lang.Throwable) $u4;
+
+        throw $r4;
+
+     label4:
+        $u5 = new org.eclipse.aether.resolution.ArtifactRequest;
+
+        specialinvoke $u5.<org.eclipse.aether.resolution.ArtifactRequest: void <init>(org.eclipse.aether.artifact.Artifact,java.util.List,java.lang.String)>(pluginArtifact, repositories, "plugin");
+
+        virtualinvoke $u5.<org.eclipse.aether.resolution.ArtifactRequest: org.eclipse.aether.resolution.ArtifactRequest setTrace(org.eclipse.aether.RequestTrace)>(trace);
+
+        $r5 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver) this;
+
+        $stack25 = $r5.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver: org.eclipse.aether.RepositorySystem repoSystem>;
+
+        $stack26 = interfaceinvoke $stack25.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.resolution.ArtifactResult resolveArtifact(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.resolution.ArtifactRequest)>(session, $u5);
+
+        pluginArtifact = virtualinvoke $stack26.<org.eclipse.aether.resolution.ArtifactResult: org.eclipse.aether.artifact.Artifact getArtifact()>();
+
+     label5:
+        goto label7;
+
+     label6:
+        $stack32 := @caughtexception;
+
+        $u6 = new org.apache.maven.plugin.PluginResolutionException;
+
+        specialinvoke $u6.<org.apache.maven.plugin.PluginResolutionException: void <init>(org.apache.maven.model.Plugin,java.lang.Throwable)>(plugin, $stack32);
+
+        $r6 = (java.lang.Throwable) $u6;
+
+        throw $r6;
+
+     label7:
+        return pluginArtifact;
+
+        catch org.eclipse.aether.resolution.ArtifactDescriptorException from label1 to label2 with label3;
+        catch org.eclipse.aether.resolution.ArtifactResolutionException from label4 to label5 with label6;
+    }
+
+    public org.eclipse.aether.graph.DependencyNode resolveCoreExtension(org.apache.maven.model.Plugin, org.eclipse.aether.graph.DependencyFilter, java.util.List, org.eclipse.aether.RepositorySystemSession) throws org.apache.maven.plugin.PluginResolutionException
+    {
+        DefaultPluginDependenciesResolver this;
+        org.apache.maven.model.Plugin plugin;
+        org.eclipse.aether.graph.DependencyFilter dependencyFilter;
+        java.util.List repositories;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.graph.DependencyNode $stack5;
+        org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver $r0;
+
+        this := @this: DefaultPluginDependenciesResolver;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        dependencyFilter := @parameter1: org.eclipse.aether.graph.DependencyFilter;
+
+        repositories := @parameter2: java.util.List;
+
+        session := @parameter3: org.eclipse.aether.RepositorySystemSession;
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver) this;
+
+        $stack5 = specialinvoke $r0.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver: org.eclipse.aether.graph.DependencyNode resolveInternal(org.apache.maven.model.Plugin,org.eclipse.aether.artifact.Artifact,org.eclipse.aether.graph.DependencyFilter,java.util.List,org.eclipse.aether.RepositorySystemSession)>(plugin, null, dependencyFilter, repositories, session);
+
+        return $stack5;
+    }
+
+    public org.eclipse.aether.graph.DependencyNode resolve(org.apache.maven.model.Plugin, org.eclipse.aether.artifact.Artifact, org.eclipse.aether.graph.DependencyFilter, java.util.List, org.eclipse.aether.RepositorySystemSession) throws org.apache.maven.plugin.PluginResolutionException
+    {
+        DefaultPluginDependenciesResolver this;
+        org.apache.maven.model.Plugin plugin;
+        org.eclipse.aether.artifact.Artifact pluginArtifact;
+        org.eclipse.aether.graph.DependencyFilter dependencyFilter;
+        java.util.List repositories;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.graph.DependencyNode $stack6;
+        org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver $r0;
+
+        this := @this: DefaultPluginDependenciesResolver;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        pluginArtifact := @parameter1: org.eclipse.aether.artifact.Artifact;
+
+        dependencyFilter := @parameter2: org.eclipse.aether.graph.DependencyFilter;
+
+        repositories := @parameter3: java.util.List;
+
+        session := @parameter4: org.eclipse.aether.RepositorySystemSession;
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver) this;
+
+        $stack6 = specialinvoke $r0.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver: org.eclipse.aether.graph.DependencyNode resolveInternal(org.apache.maven.model.Plugin,org.eclipse.aether.artifact.Artifact,org.eclipse.aether.graph.DependencyFilter,java.util.List,org.eclipse.aether.RepositorySystemSession)>(plugin, pluginArtifact, dependencyFilter, repositories, session);
+
+        return $stack6;
+    }
+
+    private org.eclipse.aether.graph.DependencyNode resolveInternal(org.apache.maven.model.Plugin, org.eclipse.aether.artifact.Artifact, org.eclipse.aether.graph.DependencyFilter, java.util.List, org.eclipse.aether.RepositorySystemSession) throws org.apache.maven.plugin.PluginResolutionException
+    {
+        org.apache.maven.model.Plugin plugin;
+        org.eclipse.aether.RequestTrace trace, $stack37;
+        java.lang.String[] $stack18;
+        org.eclipse.aether.graph.DependencyFilter dependencyFilter, resolutionFilter, $r1;
+        org.eclipse.aether.RepositorySystemSession session, $r4;
+        org.eclipse.aether.collection.DependencySelector $stack20, selector, $r2;
+        org.eclipse.aether.collection.DependencyGraphTransformer $stack25;
+        java.util.List repositories, $stack32;
+        DefaultPluginDependenciesResolver this;
+        org.eclipse.aether.RepositorySystem $stack39, $stack45;
+        org.eclipse.aether.collection.CollectResult $stack40;
+        org.eclipse.aether.graph.DependencyNode node;
+        org.codehaus.plexus.logging.Logger $stack42;
+        boolean $stack43, $stack59, $stack34;
+        java.lang.Object $stack54;
+        org.apache.maven.model.Dependency dependency;
+        org.eclipse.aether.artifact.ArtifactTypeRegistry $stack55;
+        java.lang.String $stack57, $stack58;
+        java.lang.Throwable $stack87, $stack89, $stack90, $r9, $r11;
+        org.eclipse.aether.artifact.Artifact pluginArtifact;
+        java.util.Iterator depRequest;
+        org.eclipse.aether.graph.Dependency pluginDep, $u4;
+        org.eclipse.aether.util.filter.ScopeDependencyFilter $u0;
+        org.apache.maven.plugin.internal.WagonExcluder $u1;
+        org.eclipse.aether.DefaultRepositorySystemSession $u2;
+        org.eclipse.aether.collection.CollectRequest $u3;
+        org.eclipse.aether.resolution.DependencyRequest $u5;
+        org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger $u6;
+        org.apache.maven.plugin.PluginResolutionException $u7, $u8;
+        org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver $r0, $r3, $r5, $r6, $r8;
+        org.eclipse.aether.graph.DependencyVisitor $r7;
+        org.eclipse.aether.resolution.DependencyResolutionException $r10;
+
+        this := @this: DefaultPluginDependenciesResolver;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        pluginArtifact := @parameter1: org.eclipse.aether.artifact.Artifact;
+
+        dependencyFilter := @parameter2: org.eclipse.aether.graph.DependencyFilter;
+
+        repositories := @parameter3: java.util.List;
+
+        session := @parameter4: org.eclipse.aether.RepositorySystemSession;
+
+        trace = staticinvoke <org.eclipse.aether.RequestTrace: org.eclipse.aether.RequestTrace newChild(org.eclipse.aether.RequestTrace,java.lang.Object)>(null, plugin);
+
+        if pluginArtifact != null goto label01;
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver) this;
+
+        pluginArtifact = specialinvoke $r0.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver: org.eclipse.aether.artifact.Artifact toArtifact(org.apache.maven.model.Plugin,org.eclipse.aether.RepositorySystemSession)>(plugin, session);
+
+     label01:
+        $u0 = new org.eclipse.aether.util.filter.ScopeDependencyFilter;
+
+        $stack18 = newarray (java.lang.String)[2];
+
+        $stack18[0] = "provided";
+
+        $stack18[1] = "test";
+
+        specialinvoke $u0.<org.eclipse.aether.util.filter.ScopeDependencyFilter: void <init>(java.lang.String[])>($stack18);
+
+        $r1 = (org.eclipse.aether.graph.DependencyFilter) $u0;
+
+        resolutionFilter = staticinvoke <org.eclipse.aether.util.filter.AndDependencyFilter: org.eclipse.aether.graph.DependencyFilter newInstance(org.eclipse.aether.graph.DependencyFilter,org.eclipse.aether.graph.DependencyFilter)>($r1, dependencyFilter);
+
+     label02:
+        $stack20 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.collection.DependencySelector getDependencySelector()>();
+
+        $u1 = new org.apache.maven.plugin.internal.WagonExcluder;
+
+        specialinvoke $u1.<org.apache.maven.plugin.internal.WagonExcluder: void <init>()>();
+
+        $r2 = (org.eclipse.aether.collection.DependencySelector) $u1;
+
+        selector = staticinvoke <org.eclipse.aether.util.graph.selector.AndDependencySelector: org.eclipse.aether.collection.DependencySelector newInstance(org.eclipse.aether.collection.DependencySelector,org.eclipse.aether.collection.DependencySelector)>($stack20, $r2);
+
+        $u2 = new org.eclipse.aether.DefaultRepositorySystemSession;
+
+        specialinvoke $u2.<org.eclipse.aether.DefaultRepositorySystemSession: void <init>(org.eclipse.aether.RepositorySystemSession)>(session);
+
+        virtualinvoke $u2.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setDependencySelector(org.eclipse.aether.collection.DependencySelector)>(selector);
+
+        $stack25 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.collection.DependencyGraphTransformer getDependencyGraphTransformer()>();
+
+        virtualinvoke $u2.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setDependencyGraphTransformer(org.eclipse.aether.collection.DependencyGraphTransformer)>($stack25);
+
+        $u3 = new org.eclipse.aether.collection.CollectRequest;
+
+        specialinvoke $u3.<org.eclipse.aether.collection.CollectRequest: void <init>()>();
+
+        virtualinvoke $u3.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest setRequestContext(java.lang.String)>("plugin");
+
+        virtualinvoke $u3.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest setRepositories(java.util.List)>(repositories);
+
+        $u4 = new org.eclipse.aether.graph.Dependency;
+
+        specialinvoke $u4.<org.eclipse.aether.graph.Dependency: void <init>(org.eclipse.aether.artifact.Artifact,java.lang.String)>(pluginArtifact, null);
+
+        virtualinvoke $u3.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest setRoot(org.eclipse.aether.graph.Dependency)>($u4);
+
+        $stack32 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.util.List getDependencies()>();
+
+        depRequest = interfaceinvoke $stack32.<java.util.List: java.util.Iterator iterator()>();
+
+     label03:
+        $stack34 = interfaceinvoke depRequest.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack34 == 0 goto label05;
+
+        $stack54 = interfaceinvoke depRequest.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.Dependency) $stack54;
+
+        $stack55 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.artifact.ArtifactTypeRegistry getArtifactTypeRegistry()>();
+
+        pluginDep = staticinvoke <org.apache.maven.RepositoryUtils: org.eclipse.aether.graph.Dependency toDependency(org.apache.maven.model.Dependency,org.eclipse.aether.artifact.ArtifactTypeRegistry)>(dependency, $stack55);
+
+        $stack57 = "system";
+
+        $stack58 = virtualinvoke pluginDep.<org.eclipse.aether.graph.Dependency: java.lang.String getScope()>();
+
+        $stack59 = virtualinvoke $stack57.<java.lang.String: boolean equals(java.lang.Object)>($stack58);
+
+        if $stack59 != 0 goto label04;
+
+        pluginDep = virtualinvoke pluginDep.<org.eclipse.aether.graph.Dependency: org.eclipse.aether.graph.Dependency setScope(java.lang.String)>("runtime");
+
+     label04:
+        virtualinvoke $u3.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest addDependency(org.eclipse.aether.graph.Dependency)>(pluginDep);
+
+        goto label03;
+
+     label05:
+        $u5 = new org.eclipse.aether.resolution.DependencyRequest;
+
+        specialinvoke $u5.<org.eclipse.aether.resolution.DependencyRequest: void <init>(org.eclipse.aether.collection.CollectRequest,org.eclipse.aether.graph.DependencyFilter)>($u3, resolutionFilter);
+
+        virtualinvoke $u5.<org.eclipse.aether.resolution.DependencyRequest: org.eclipse.aether.resolution.DependencyRequest setTrace(org.eclipse.aether.RequestTrace)>(trace);
+
+        $stack37 = staticinvoke <org.eclipse.aether.RequestTrace: org.eclipse.aether.RequestTrace newChild(org.eclipse.aether.RequestTrace,java.lang.Object)>(trace, $u5);
+
+        virtualinvoke $u3.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest setTrace(org.eclipse.aether.RequestTrace)>($stack37);
+
+        $r3 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver) this;
+
+        $stack39 = $r3.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver: org.eclipse.aether.RepositorySystem repoSystem>;
+
+        $r4 = (org.eclipse.aether.RepositorySystemSession) $u2;
+
+        $stack40 = interfaceinvoke $stack39.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.collection.CollectResult collectDependencies(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.collection.CollectRequest)>($r4, $u3);
+
+        node = virtualinvoke $stack40.<org.eclipse.aether.collection.CollectResult: org.eclipse.aether.graph.DependencyNode getRoot()>();
+
+        $r5 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver) this;
+
+        $stack42 = $r5.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack43 = interfaceinvoke $stack42.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack43 == 0 goto label06;
+
+        $u6 = new org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger;
+
+        $r6 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver) this;
+
+        specialinvoke $u6.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver$GraphLogger: void <init>(org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver)>($r6);
+
+        $r7 = (org.eclipse.aether.graph.DependencyVisitor) $u6;
+
+        interfaceinvoke node.<org.eclipse.aether.graph.DependencyNode: boolean accept(org.eclipse.aether.graph.DependencyVisitor)>($r7);
+
+     label06:
+        virtualinvoke $u5.<org.eclipse.aether.resolution.DependencyRequest: org.eclipse.aether.resolution.DependencyRequest setRoot(org.eclipse.aether.graph.DependencyNode)>(node);
+
+        $r8 = (org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver) this;
+
+        $stack45 = $r8.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver: org.eclipse.aether.RepositorySystem repoSystem>;
+
+        interfaceinvoke $stack45.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.resolution.DependencyResult resolveDependencies(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.resolution.DependencyRequest)>(session, $u5);
+
+     label07:
+        goto label10;
+
+     label08:
+        $stack90 := @caughtexception;
+
+        $u7 = new org.apache.maven.plugin.PluginResolutionException;
+
+        specialinvoke $u7.<org.apache.maven.plugin.PluginResolutionException: void <init>(org.apache.maven.model.Plugin,java.lang.Throwable)>(plugin, $stack90);
+
+        $r9 = (java.lang.Throwable) $u7;
+
+        throw $r9;
+
+     label09:
+        $stack87 := @caughtexception;
+
+        $u8 = new org.apache.maven.plugin.PluginResolutionException;
+
+        $r10 = (org.eclipse.aether.resolution.DependencyResolutionException) $stack87;
+
+        $stack89 = virtualinvoke $r10.<org.eclipse.aether.resolution.DependencyResolutionException: java.lang.Throwable getCause()>();
+
+        specialinvoke $u8.<org.apache.maven.plugin.PluginResolutionException: void <init>(org.apache.maven.model.Plugin,java.lang.Throwable)>(plugin, $stack89);
+
+        $r11 = (java.lang.Throwable) $u8;
+
+        throw $r11;
+
+     label10:
+        return node;
+
+        catch org.eclipse.aether.collection.DependencyCollectionException from label02 to label07 with label08;
+        catch org.eclipse.aether.resolution.DependencyResolutionException from label02 to label07 with label09;
+    }
+
+    static org.codehaus.plexus.logging.Logger access$000(org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver)
+    {
+        org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver x0;
+        org.codehaus.plexus.logging.Logger $stack1;
+
+        x0 := @parameter0: org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver;
+
+        $stack1 = x0.<org.apache.maven.plugin.internal.DefaultPluginDependenciesResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        return $stack1;
+    }
+
+    public static void <clinit>()
+    {
+        <DefaultPluginDependenciesResolver: java.lang.String REPOSITORY_CONTEXT> = "plugin";
+
+        return;
+    }
+}

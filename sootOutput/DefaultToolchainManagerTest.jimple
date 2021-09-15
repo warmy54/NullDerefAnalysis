@@ -1,0 +1,467 @@
+public class DefaultToolchainManagerTest extends java.lang.Object
+{
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.apache.maven.toolchain.DefaultToolchainManager toolchainManager;
+    private org.apache.maven.toolchain.ToolchainFactory toolchainFactory_basicType;
+    private org.apache.maven.toolchain.ToolchainFactory toolchainFactory_rareType;
+
+    public void <init>()
+    {
+        DefaultToolchainManagerTest this;
+
+        this := @this: DefaultToolchainManagerTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onSetup() throws java.lang.Exception
+    {
+        DefaultToolchainManagerTest this;
+        org.apache.maven.toolchain.DefaultToolchainManager $stack3, $stack4, $stack8, $u0;
+        org.apache.maven.toolchain.ToolchainFactory $stack5, $stack9;
+        java.util.Map $stack6, $stack10;
+        java.util.HashMap $u1;
+        org.apache.maven.toolchain.DefaultToolchainManagerTest $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: DefaultToolchainManagerTest;
+
+        $u0 = new org.apache.maven.toolchain.DefaultToolchainManager;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.DefaultToolchainManager: void <init>()>();
+
+        $r0 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $r0.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.DefaultToolchainManager toolchainManager> = $u0;
+
+        staticinvoke <org.mockito.MockitoAnnotations: void initMocks(java.lang.Object)>(this);
+
+        $r1 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack3 = $r1.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.DefaultToolchainManager toolchainManager>;
+
+        $u1 = new java.util.HashMap;
+
+        specialinvoke $u1.<java.util.HashMap: void <init>()>();
+
+        $stack3.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.Map factories> = $u1;
+
+        $r2 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack4 = $r2.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.DefaultToolchainManager toolchainManager>;
+
+        $stack6 = $stack4.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.Map factories>;
+
+        $r3 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack5 = $r3.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.ToolchainFactory toolchainFactory_basicType>;
+
+        interfaceinvoke $stack6.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("basic", $stack5);
+
+        $r4 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack8 = $r4.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.DefaultToolchainManager toolchainManager>;
+
+        $stack10 = $stack8.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.Map factories>;
+
+        $r5 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack9 = $r5.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.ToolchainFactory toolchainFactory_rareType>;
+
+        interfaceinvoke $stack10.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("rare", $stack9);
+
+        return;
+    }
+
+    public void testNoModels()
+    {
+        java.lang.Object $stack4;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.MavenExecutionRequest $stack6;
+        org.mockito.stubbing.OngoingStubbing $stack7;
+        DefaultToolchainManagerTest this;
+        org.apache.maven.toolchain.DefaultToolchainManager $stack9;
+        java.util.List toolchains;
+        int $stack12;
+        org.apache.maven.execution.DefaultMavenExecutionRequest $u0;
+        org.apache.maven.toolchain.DefaultToolchainManagerTest $r0;
+
+        this := @this: DefaultToolchainManagerTest;
+
+        $stack4 = staticinvoke <org.mockito.Mockito: java.lang.Object mock(java.lang.Class)>(class "Lorg/apache/maven/execution/MavenSession;");
+
+        session = (org.apache.maven.execution.MavenSession) $stack4;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: void <init>()>();
+
+        $stack6 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack7 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.OngoingStubbing when(java.lang.Object)>($stack6);
+
+        interfaceinvoke $stack7.<org.mockito.stubbing.OngoingStubbing: org.mockito.stubbing.OngoingStubbing thenReturn(java.lang.Object)>($u0);
+
+        $r0 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack9 = $r0.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.DefaultToolchainManager toolchainManager>;
+
+        toolchains = virtualinvoke $stack9.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.List getToolchains(org.apache.maven.execution.MavenSession,java.lang.String,java.util.Map)>(session, "unknown", null);
+
+        $stack12 = interfaceinvoke toolchains.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack12);
+
+        return;
+    }
+
+    public void testModelNoFactory()
+    {
+        java.lang.Object $stack5, $stack21;
+        org.apache.maven.execution.MavenSession session;
+        java.util.List $stack10, toolchains;
+        org.apache.maven.execution.MavenExecutionRequest $stack13, $r0;
+        org.mockito.stubbing.OngoingStubbing $stack14;
+        DefaultToolchainManagerTest this;
+        org.apache.maven.toolchain.DefaultToolchainManager $stack16;
+        int $stack19;
+        org.codehaus.plexus.logging.Logger $stack20, $stack22;
+        org.apache.maven.execution.DefaultMavenExecutionRequest $u0;
+        java.util.HashMap $u1;
+        org.apache.maven.toolchain.model.ToolchainModel $u2;
+        org.apache.maven.toolchain.DefaultToolchainManagerTest $r1, $r2;
+
+        this := @this: DefaultToolchainManagerTest;
+
+        $stack5 = staticinvoke <org.mockito.Mockito: java.lang.Object mock(java.lang.Class)>(class "Lorg/apache/maven/execution/MavenSession;");
+
+        session = (org.apache.maven.execution.MavenSession) $stack5;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: void <init>()>();
+
+        $u1 = new java.util.HashMap;
+
+        specialinvoke $u1.<java.util.HashMap: void <init>()>();
+
+        $u2 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u2.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        $stack10 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($u2);
+
+        interfaceinvoke $u1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("unknown", $stack10);
+
+        $r0 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setToolchains(java.util.Map)>($u1);
+
+        $stack13 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack14 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.OngoingStubbing when(java.lang.Object)>($stack13);
+
+        interfaceinvoke $stack14.<org.mockito.stubbing.OngoingStubbing: org.mockito.stubbing.OngoingStubbing thenReturn(java.lang.Object)>($u0);
+
+        $r1 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack16 = $r1.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.DefaultToolchainManager toolchainManager>;
+
+        toolchains = virtualinvoke $stack16.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.List getToolchains(org.apache.maven.execution.MavenSession,java.lang.String,java.util.Map)>(session, "unknown", null);
+
+        $stack19 = interfaceinvoke toolchains.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack19);
+
+        $r2 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack20 = $r2.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack21 = staticinvoke <org.mockito.Mockito: java.lang.Object verify(java.lang.Object)>($stack20);
+
+        $stack22 = (org.codehaus.plexus.logging.Logger) $stack21;
+
+        interfaceinvoke $stack22.<org.codehaus.plexus.logging.Logger: void error(java.lang.String)>("Missing toolchain factory for type: unknown. Possibly caused by misconfigured project.");
+
+        return;
+    }
+
+    public void testModelAndFactory()
+    {
+        java.lang.Object $stack5;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.toolchain.model.ToolchainModel[] $stack8;
+        java.util.List $stack14, $stack18, toolchains;
+        org.apache.maven.execution.MavenExecutionRequest $stack21, $r0;
+        org.mockito.stubbing.OngoingStubbing $stack22;
+        DefaultToolchainManagerTest this;
+        org.apache.maven.toolchain.DefaultToolchainManager $stack24;
+        int $stack27;
+        org.apache.maven.execution.DefaultMavenExecutionRequest $u0;
+        java.util.HashMap $u1;
+        org.apache.maven.toolchain.model.ToolchainModel $u2, $u3, $u4;
+        org.apache.maven.toolchain.DefaultToolchainManagerTest $r1;
+
+        this := @this: DefaultToolchainManagerTest;
+
+        $stack5 = staticinvoke <org.mockito.Mockito: java.lang.Object mock(java.lang.Class)>(class "Lorg/apache/maven/execution/MavenSession;");
+
+        session = (org.apache.maven.execution.MavenSession) $stack5;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: void <init>()>();
+
+        $u1 = new java.util.HashMap;
+
+        specialinvoke $u1.<java.util.HashMap: void <init>()>();
+
+        $stack8 = newarray (org.apache.maven.toolchain.model.ToolchainModel)[2];
+
+        $u2 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u2.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        $stack8[0] = $u2;
+
+        $u3 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        $stack8[1] = $u3;
+
+        $stack14 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack8);
+
+        interfaceinvoke $u1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("basic", $stack14);
+
+        $u4 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u4.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        $stack18 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($u4);
+
+        interfaceinvoke $u1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("rare", $stack18);
+
+        $r0 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setToolchains(java.util.Map)>($u1);
+
+        $stack21 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack22 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.OngoingStubbing when(java.lang.Object)>($stack21);
+
+        interfaceinvoke $stack22.<org.mockito.stubbing.OngoingStubbing: org.mockito.stubbing.OngoingStubbing thenReturn(java.lang.Object)>($u0);
+
+        $r1 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack24 = $r1.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.DefaultToolchainManager toolchainManager>;
+
+        toolchains = virtualinvoke $stack24.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.List getToolchains(org.apache.maven.execution.MavenSession,java.lang.String,java.util.Map)>(session, "rare", null);
+
+        $stack27 = interfaceinvoke toolchains.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack27);
+
+        return;
+    }
+
+    public void testModelsAndFactory()
+    {
+        java.lang.Object $stack5;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.toolchain.model.ToolchainModel[] $stack8;
+        java.util.List $stack14, $stack18, toolchains;
+        org.apache.maven.execution.MavenExecutionRequest $stack21, $r0;
+        org.mockito.stubbing.OngoingStubbing $stack22;
+        DefaultToolchainManagerTest this;
+        org.apache.maven.toolchain.DefaultToolchainManager $stack24;
+        int $stack27;
+        org.apache.maven.execution.DefaultMavenExecutionRequest $u0;
+        java.util.HashMap $u1;
+        org.apache.maven.toolchain.model.ToolchainModel $u2, $u3, $u4;
+        org.apache.maven.toolchain.DefaultToolchainManagerTest $r1;
+
+        this := @this: DefaultToolchainManagerTest;
+
+        $stack5 = staticinvoke <org.mockito.Mockito: java.lang.Object mock(java.lang.Class)>(class "Lorg/apache/maven/execution/MavenSession;");
+
+        session = (org.apache.maven.execution.MavenSession) $stack5;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: void <init>()>();
+
+        $u1 = new java.util.HashMap;
+
+        specialinvoke $u1.<java.util.HashMap: void <init>()>();
+
+        $stack8 = newarray (org.apache.maven.toolchain.model.ToolchainModel)[2];
+
+        $u2 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u2.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        $stack8[0] = $u2;
+
+        $u3 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        $stack8[1] = $u3;
+
+        $stack14 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack8);
+
+        interfaceinvoke $u1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("basic", $stack14);
+
+        $u4 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u4.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        $stack18 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($u4);
+
+        interfaceinvoke $u1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("rare", $stack18);
+
+        $r0 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setToolchains(java.util.Map)>($u1);
+
+        $stack21 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack22 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.OngoingStubbing when(java.lang.Object)>($stack21);
+
+        interfaceinvoke $stack22.<org.mockito.stubbing.OngoingStubbing: org.mockito.stubbing.OngoingStubbing thenReturn(java.lang.Object)>($u0);
+
+        $r1 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack24 = $r1.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.DefaultToolchainManager toolchainManager>;
+
+        toolchains = virtualinvoke $stack24.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.List getToolchains(org.apache.maven.execution.MavenSession,java.lang.String,java.util.Map)>(session, "basic", null);
+
+        $stack27 = interfaceinvoke toolchains.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(2, $stack27);
+
+        return;
+    }
+
+    public void testRequirements() throws java.lang.Exception
+    {
+        java.lang.Object $stack6, $stack25, $stack35;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.toolchain.model.ToolchainModel[] $stack9;
+        java.util.List $stack15, $stack19, toolchains;
+        org.apache.maven.execution.MavenExecutionRequest $stack22, $r0;
+        org.mockito.stubbing.OngoingStubbing $stack23, $stack29, $stack31, $stack38;
+        org.apache.maven.toolchain.ToolchainPrivate basicPrivate, $stack37;
+        java.util.Map $stack26, $stack42;
+        boolean $stack27;
+        java.lang.Boolean $stack28, $stack30, $stack32;
+        DefaultToolchainManagerTest this;
+        org.apache.maven.toolchain.ToolchainFactory $stack34;
+        org.apache.maven.toolchain.model.ToolchainModel $stack36, $u2, $u3, $u4;
+        org.apache.maven.toolchain.DefaultToolchainManager $stack40;
+        int $stack45;
+        org.apache.maven.execution.DefaultMavenExecutionRequest $u0;
+        java.util.HashMap $u1;
+        org.apache.maven.toolchain.DefaultToolchainManagerTest $r1, $r2;
+
+        this := @this: DefaultToolchainManagerTest;
+
+        $stack6 = staticinvoke <org.mockito.Mockito: java.lang.Object mock(java.lang.Class)>(class "Lorg/apache/maven/execution/MavenSession;");
+
+        session = (org.apache.maven.execution.MavenSession) $stack6;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: void <init>()>();
+
+        $u1 = new java.util.HashMap;
+
+        specialinvoke $u1.<java.util.HashMap: void <init>()>();
+
+        $stack9 = newarray (org.apache.maven.toolchain.model.ToolchainModel)[2];
+
+        $u2 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u2.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        $stack9[0] = $u2;
+
+        $u3 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        $stack9[1] = $u3;
+
+        $stack15 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack9);
+
+        interfaceinvoke $u1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("basic", $stack15);
+
+        $u4 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u4.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        $stack19 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($u4);
+
+        interfaceinvoke $u1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("rare", $stack19);
+
+        $r0 = (org.apache.maven.execution.MavenExecutionRequest) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setToolchains(java.util.Map)>($u1);
+
+        $stack22 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack23 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.OngoingStubbing when(java.lang.Object)>($stack22);
+
+        interfaceinvoke $stack23.<org.mockito.stubbing.OngoingStubbing: org.mockito.stubbing.OngoingStubbing thenReturn(java.lang.Object)>($u0);
+
+        $stack25 = staticinvoke <org.mockito.Mockito: java.lang.Object mock(java.lang.Class)>(class "Lorg/apache/maven/toolchain/ToolchainPrivate;");
+
+        basicPrivate = (org.apache.maven.toolchain.ToolchainPrivate) $stack25;
+
+        $stack26 = staticinvoke <org.mockito.ArgumentMatchers: java.util.Map anyMap()>();
+
+        $stack27 = interfaceinvoke basicPrivate.<org.apache.maven.toolchain.ToolchainPrivate: boolean matchesRequirements(java.util.Map)>($stack26);
+
+        $stack28 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($stack27);
+
+        $stack29 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.OngoingStubbing when(java.lang.Object)>($stack28);
+
+        $stack30 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(0);
+
+        $stack31 = interfaceinvoke $stack29.<org.mockito.stubbing.OngoingStubbing: org.mockito.stubbing.OngoingStubbing thenReturn(java.lang.Object)>($stack30);
+
+        $stack32 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        interfaceinvoke $stack31.<org.mockito.stubbing.OngoingStubbing: org.mockito.stubbing.OngoingStubbing thenReturn(java.lang.Object)>($stack32);
+
+        $r1 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack34 = $r1.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.ToolchainFactory toolchainFactory_basicType>;
+
+        $stack35 = staticinvoke <org.mockito.Matchers: java.lang.Object isA(java.lang.Class)>(class "Lorg/apache/maven/toolchain/model/ToolchainModel;");
+
+        $stack36 = (org.apache.maven.toolchain.model.ToolchainModel) $stack35;
+
+        $stack37 = interfaceinvoke $stack34.<org.apache.maven.toolchain.ToolchainFactory: org.apache.maven.toolchain.ToolchainPrivate createToolchain(org.apache.maven.toolchain.model.ToolchainModel)>($stack36);
+
+        $stack38 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.OngoingStubbing when(java.lang.Object)>($stack37);
+
+        interfaceinvoke $stack38.<org.mockito.stubbing.OngoingStubbing: org.mockito.stubbing.OngoingStubbing thenReturn(java.lang.Object)>(basicPrivate);
+
+        $r2 = (org.apache.maven.toolchain.DefaultToolchainManagerTest) this;
+
+        $stack40 = $r2.<org.apache.maven.toolchain.DefaultToolchainManagerTest: org.apache.maven.toolchain.DefaultToolchainManager toolchainManager>;
+
+        $stack42 = staticinvoke <java.util.Collections: java.util.Map singletonMap(java.lang.Object,java.lang.Object)>("key", "value");
+
+        toolchains = virtualinvoke $stack40.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.List getToolchains(org.apache.maven.execution.MavenSession,java.lang.String,java.util.Map)>(session, "basic", $stack42);
+
+        $stack45 = interfaceinvoke toolchains.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack45);
+
+        return;
+    }
+}

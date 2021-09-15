@@ -1,0 +1,100 @@
+public class DefaultModelBuilderTest extends java.lang.Object
+{
+    private static final java.lang.String BASE1_ID;
+    private static final java.lang.String BASE1;
+    private static final java.lang.String BASE2_ID;
+    private static final java.lang.String BASE2;
+
+    public void <init>()
+    {
+        DefaultModelBuilderTest this;
+
+        this := @this: DefaultModelBuilderTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void testCycleInImports() throws java.lang.Exception
+    {
+        org.apache.maven.model.building.DefaultModelBuilder builder;
+        org.junit.jupiter.api.function.Executable $stack11;
+        DefaultModelBuilderTest this;
+        org.apache.maven.model.building.DefaultModelBuilderFactory $u0;
+        org.apache.maven.model.building.DefaultModelBuildingRequest $u1;
+        org.apache.maven.model.building.StringModelSource $u2;
+        org.apache.maven.model.building.DefaultModelBuilderTest$CycleInImportsResolver $u3;
+        org.apache.maven.model.building.ModelSource $r0;
+        org.apache.maven.model.resolution.ModelResolver $r1;
+        org.apache.maven.model.building.ModelBuilder $r2;
+
+        this := @this: DefaultModelBuilderTest;
+
+        $u0 = new org.apache.maven.model.building.DefaultModelBuilderFactory;
+
+        specialinvoke $u0.<org.apache.maven.model.building.DefaultModelBuilderFactory: void <init>()>();
+
+        builder = virtualinvoke $u0.<org.apache.maven.model.building.DefaultModelBuilderFactory: org.apache.maven.model.building.DefaultModelBuilder newInstance()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(builder);
+
+        $u1 = new org.apache.maven.model.building.DefaultModelBuildingRequest;
+
+        specialinvoke $u1.<org.apache.maven.model.building.DefaultModelBuildingRequest: void <init>()>();
+
+        $u2 = new org.apache.maven.model.building.StringModelSource;
+
+        specialinvoke $u2.<org.apache.maven.model.building.StringModelSource: void <init>(java.lang.CharSequence)>("<project>\n  <modelVersion>4.0.0</modelVersion>\n  <groupId>thegroup</groupId>\n  <artifactId>base1</artifactId>\n  <version>1</version>\n  <packaging>pom</packaging>\n  <dependencyManagement>\n    <dependencies>\n      <dependency>\n        <groupId>thegroup</groupId>\n        <artifactId>base2</artifactId>\n        <version>1</version>\n        <type>pom</type>\n        <scope>import</scope>\n      </dependency>\n    </dependencies>\n  </dependencyManagement>\n</project>\n");
+
+        $r0 = (org.apache.maven.model.building.ModelSource) $u2;
+
+        virtualinvoke $u1.<org.apache.maven.model.building.DefaultModelBuildingRequest: org.apache.maven.model.building.DefaultModelBuildingRequest setModelSource(org.apache.maven.model.building.ModelSource)>($r0);
+
+        $u3 = new org.apache.maven.model.building.DefaultModelBuilderTest$CycleInImportsResolver;
+
+        specialinvoke $u3.<org.apache.maven.model.building.DefaultModelBuilderTest$CycleInImportsResolver: void <init>()>();
+
+        $r1 = (org.apache.maven.model.resolution.ModelResolver) $u3;
+
+        virtualinvoke $u1.<org.apache.maven.model.building.DefaultModelBuildingRequest: org.apache.maven.model.building.DefaultModelBuildingRequest setModelResolver(org.apache.maven.model.resolution.ModelResolver)>($r1);
+
+        $r2 = (org.apache.maven.model.building.ModelBuilder) builder;
+
+        $stack11 = staticinvoke <DefaultModelBuilderTest$lambda_testCycleInImports_0__309: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.model.building.ModelBuilder,org.apache.maven.model.building.DefaultModelBuildingRequest)>($r2, $u1);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lorg/apache/maven/model/building/ModelBuildingException;", $stack11);
+
+        return;
+    }
+
+    private static void lambda$testCycleInImports$0(org.apache.maven.model.building.ModelBuilder, org.apache.maven.model.building.DefaultModelBuildingRequest) throws java.lang.Throwable
+    {
+        org.apache.maven.model.building.ModelBuilder builder;
+        org.apache.maven.model.building.DefaultModelBuildingRequest request;
+        org.apache.maven.model.building.ModelBuildingRequest $r0;
+
+        builder := @parameter0: org.apache.maven.model.building.ModelBuilder;
+
+        request := @parameter1: org.apache.maven.model.building.DefaultModelBuildingRequest;
+
+        $r0 = (org.apache.maven.model.building.ModelBuildingRequest) request;
+
+        interfaceinvoke builder.<org.apache.maven.model.building.ModelBuilder: org.apache.maven.model.building.ModelBuildingResult build(org.apache.maven.model.building.ModelBuildingRequest)>($r0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <DefaultModelBuilderTest: java.lang.String BASE2> = "<project>\n  <modelVersion>4.0.0</modelVersion>\n  <groupId>thegroup</groupId>\n  <artifactId>base2</artifactId>\n  <version>1</version>\n  <packaging>pom</packaging>\n  <dependencyManagement>\n    <dependencies>\n      <dependency>\n        <groupId>thegroup</groupId>\n        <artifactId>base1</artifactId>\n        <version>1</version>\n        <type>pom</type>\n        <scope>import</scope>\n      </dependency>\n    </dependencies>\n  </dependencyManagement>\n</project>\n";
+
+        <DefaultModelBuilderTest: java.lang.String BASE2_ID> = "thegroup:base2:pom";
+
+        <DefaultModelBuilderTest: java.lang.String BASE1> = "<project>\n  <modelVersion>4.0.0</modelVersion>\n  <groupId>thegroup</groupId>\n  <artifactId>base1</artifactId>\n  <version>1</version>\n  <packaging>pom</packaging>\n  <dependencyManagement>\n    <dependencies>\n      <dependency>\n        <groupId>thegroup</groupId>\n        <artifactId>base2</artifactId>\n        <version>1</version>\n        <type>pom</type>\n        <scope>import</scope>\n      </dependency>\n    </dependencies>\n  </dependencyManagement>\n</project>\n";
+
+        <DefaultModelBuilderTest: java.lang.String BASE1_ID> = "thegroup:base1:pom";
+
+        return;
+    }
+}

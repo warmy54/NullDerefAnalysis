@@ -1,0 +1,87 @@
+abstract class AbstractParentMojo extends org.apache.maven.plugin.AbstractMojo
+{
+    java.io.File pomFile;
+    boolean createBackupFile;
+    java.lang.String backupFileExtension;
+    java.lang.String encoding;
+    java.lang.String lineSeparator;
+    boolean expandEmptyElements;
+    boolean spaceBeforeCloseEmptyElement;
+    boolean keepBlankLines;
+    int nrOfIndentSpace;
+    boolean ignoreLineSeparators;
+    boolean indentBlankLines;
+    boolean indentSchemaLocation;
+    java.lang.String predefinedSortOrder;
+    java.lang.String sortOrderFile;
+    java.lang.String sortDependencies;
+    java.lang.String sortDependencyExclusions;
+    java.lang.String sortPlugins;
+    boolean sortProperties;
+    boolean sortModules;
+    boolean sortExecutions;
+    private boolean skip;
+    boolean keepTimestamp;
+    final sortpom.SortPomImpl sortPomImpl;
+
+    void <init>()
+    {
+        AbstractParentMojo this;
+        sortpom.SortPomImpl $u0;
+        sortpom.AbstractParentMojo $r0;
+
+        this := @this: AbstractParentMojo;
+
+        specialinvoke this.<org.apache.maven.plugin.AbstractMojo: void <init>()>();
+
+        $u0 = new sortpom.SortPomImpl;
+
+        specialinvoke $u0.<sortpom.SortPomImpl: void <init>()>();
+
+        $r0 = (sortpom.AbstractParentMojo) this;
+
+        $r0.<sortpom.AbstractParentMojo: sortpom.SortPomImpl sortPomImpl> = $u0;
+
+        return;
+    }
+
+    public void execute() throws org.apache.maven.plugin.MojoFailureException
+    {
+        AbstractParentMojo this;
+        boolean $stack1;
+        org.apache.maven.plugin.logging.Log $stack2;
+        sortpom.AbstractParentMojo $r0, $r1, $r2, $r3;
+
+        this := @this: AbstractParentMojo;
+
+        $r0 = (sortpom.AbstractParentMojo) this;
+
+        $stack1 = $r0.<sortpom.AbstractParentMojo: boolean skip>;
+
+        if $stack1 == 0 goto label1;
+
+        $r1 = (sortpom.AbstractParentMojo) this;
+
+        $stack2 = virtualinvoke $r1.<sortpom.AbstractParentMojo: org.apache.maven.plugin.logging.Log getLog()>();
+
+        interfaceinvoke $stack2.<org.apache.maven.plugin.logging.Log: void info(java.lang.CharSequence)>("Skipping Sortpom");
+
+        goto label2;
+
+     label1:
+        $r2 = (sortpom.AbstractParentMojo) this;
+
+        virtualinvoke $r2.<sortpom.AbstractParentMojo: void setup()>();
+
+        $r3 = (sortpom.AbstractParentMojo) this;
+
+        virtualinvoke $r3.<sortpom.AbstractParentMojo: void sortPom()>();
+
+     label2:
+        return;
+    }
+
+    protected abstract void sortPom() throws org.apache.maven.plugin.MojoFailureException;
+
+    protected abstract void setup() throws org.apache.maven.plugin.MojoFailureException;
+}

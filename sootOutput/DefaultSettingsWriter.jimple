@@ -1,0 +1,186 @@
+public class DefaultSettingsWriter extends java.lang.Object implements org.apache.maven.settings.io.SettingsWriter
+{
+
+    public void <init>()
+    {
+        DefaultSettingsWriter this;
+
+        this := @this: DefaultSettingsWriter;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void write(java.io.File, java.util.Map, org.apache.maven.settings.Settings) throws java.io.IOException
+    {
+        java.io.File output, $stack6;
+        org.apache.maven.settings.Settings settings;
+        DefaultSettingsWriter this;
+        org.codehaus.plexus.util.xml.XmlStreamWriter $stack8;
+        java.util.Map options;
+        org.apache.maven.settings.io.DefaultSettingsWriter $r0;
+        java.io.Writer $r1;
+
+        this := @this: DefaultSettingsWriter;
+
+        output := @parameter0: java.io.File;
+
+        options := @parameter1: java.util.Map;
+
+        settings := @parameter2: org.apache.maven.settings.Settings;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(output, "output cannot be null");
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(settings, "settings cannot be null");
+
+        $stack6 = virtualinvoke output.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $stack6.<java.io.File: boolean mkdirs()>();
+
+        $stack8 = staticinvoke <org.codehaus.plexus.util.WriterFactory: org.codehaus.plexus.util.xml.XmlStreamWriter newXmlWriter(java.io.File)>(output);
+
+        $r0 = (org.apache.maven.settings.io.DefaultSettingsWriter) this;
+
+        $r1 = (java.io.Writer) $stack8;
+
+        virtualinvoke $r0.<org.apache.maven.settings.io.DefaultSettingsWriter: void write(java.io.Writer,java.util.Map,org.apache.maven.settings.Settings)>($r1, options, settings);
+
+        return;
+    }
+
+    public void write(java.io.Writer, java.util.Map, org.apache.maven.settings.Settings) throws java.io.IOException
+    {
+        java.io.Writer output;
+        org.apache.maven.settings.Settings settings;
+        org.apache.maven.settings.io.xpp3.SettingsXpp3Writer $stack9;
+        java.lang.Throwable $stack10, $stack11;
+        DefaultSettingsWriter this;
+        java.util.Map options;
+
+        this := @this: DefaultSettingsWriter;
+
+        output := @parameter0: java.io.Writer;
+
+        options := @parameter1: java.util.Map;
+
+        settings := @parameter2: org.apache.maven.settings.Settings;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(output, "output cannot be null");
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(settings, "settings cannot be null");
+
+     label1:
+        $stack9 = new org.apache.maven.settings.io.xpp3.SettingsXpp3Writer;
+
+        specialinvoke $stack9.<org.apache.maven.settings.io.xpp3.SettingsXpp3Writer: void <init>()>();
+
+        virtualinvoke $stack9.<org.apache.maven.settings.io.xpp3.SettingsXpp3Writer: void write(java.io.Writer,org.apache.maven.settings.Settings)>(output, settings);
+
+     label2:
+        if output == null goto label8;
+
+        virtualinvoke output.<java.io.Writer: void close()>();
+
+        goto label8;
+
+     label3:
+        $stack11 := @caughtexception;
+
+        if output == null goto label7;
+
+     label4:
+        virtualinvoke output.<java.io.Writer: void close()>();
+
+     label5:
+        goto label7;
+
+     label6:
+        $stack10 := @caughtexception;
+
+        virtualinvoke $stack11.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack10);
+
+     label7:
+        throw $stack11;
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label6;
+    }
+
+    public void write(java.io.OutputStream, java.util.Map, org.apache.maven.settings.Settings) throws java.io.IOException
+    {
+        java.io.OutputStream output;
+        org.apache.maven.settings.Settings settings;
+        DefaultSettingsWriter this;
+        java.util.Map options;
+        int $stack12;
+        java.lang.Throwable $stack21, $stack22;
+        java.lang.String encoding;
+        java.io.OutputStreamWriter $u0;
+        org.apache.maven.settings.io.DefaultSettingsWriter $r0;
+
+        this := @this: DefaultSettingsWriter;
+
+        output := @parameter0: java.io.OutputStream;
+
+        options := @parameter1: java.util.Map;
+
+        settings := @parameter2: org.apache.maven.settings.Settings;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(output, "output cannot be null");
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(settings, "settings cannot be null");
+
+        encoding = virtualinvoke settings.<org.apache.maven.settings.Settings: java.lang.String getModelEncoding()>();
+
+        if encoding == null goto label01;
+
+        $stack12 = virtualinvoke encoding.<java.lang.String: int length()>();
+
+        if $stack12 > 0 goto label02;
+
+     label01:
+        encoding = "UTF-8";
+
+     label02:
+        $u0 = new java.io.OutputStreamWriter;
+
+        specialinvoke $u0.<java.io.OutputStreamWriter: void <init>(java.io.OutputStream,java.lang.String)>(output, encoding);
+
+     label03:
+        $r0 = (org.apache.maven.settings.io.DefaultSettingsWriter) this;
+
+        virtualinvoke $r0.<org.apache.maven.settings.io.DefaultSettingsWriter: void write(java.io.Writer,java.util.Map,org.apache.maven.settings.Settings)>($u0, options, settings);
+
+     label04:
+        virtualinvoke $u0.<java.io.Writer: void close()>();
+
+        goto label10;
+
+     label05:
+        $stack22 := @caughtexception;
+
+     label06:
+        virtualinvoke $u0.<java.io.Writer: void close()>();
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack21 := @caughtexception;
+
+        virtualinvoke $stack22.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack21);
+
+     label09:
+        throw $stack22;
+
+     label10:
+        return;
+
+        catch java.lang.Throwable from label03 to label04 with label05;
+        catch java.lang.Throwable from label06 to label07 with label08;
+    }
+}

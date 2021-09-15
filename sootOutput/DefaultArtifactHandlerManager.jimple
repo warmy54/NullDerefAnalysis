@@ -1,0 +1,118 @@
+public class DefaultArtifactHandlerManager extends java.lang.Object implements org.apache.maven.artifact.handler.manager.ArtifactHandlerManager
+{
+    private java.util.Map artifactHandlers;
+    private java.util.Map allHandlers;
+
+    public void <init>()
+    {
+        DefaultArtifactHandlerManager this;
+        java.util.concurrent.ConcurrentHashMap $u0;
+        org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager $r0;
+
+        this := @this: DefaultArtifactHandlerManager;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.concurrent.ConcurrentHashMap;
+
+        specialinvoke $u0.<java.util.concurrent.ConcurrentHashMap: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager) this;
+
+        $r0.<org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager: java.util.Map allHandlers> = $u0;
+
+        return;
+    }
+
+    public org.apache.maven.artifact.handler.ArtifactHandler getArtifactHandler(java.lang.String)
+    {
+        DefaultArtifactHandlerManager this;
+        java.lang.String type;
+        java.util.Map $stack3, $stack5, $stack7;
+        java.lang.Object $stack4, $stack6, handler;
+        org.apache.maven.artifact.handler.DefaultArtifactHandler $u0;
+        org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager $r0, $r1, $r2;
+        org.apache.maven.artifact.handler.ArtifactHandler $r3;
+
+        this := @this: DefaultArtifactHandlerManager;
+
+        type := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager: java.util.Map allHandlers>;
+
+        $stack4 = interfaceinvoke $stack3.<java.util.Map: java.lang.Object get(java.lang.Object)>(type);
+
+        handler = (org.apache.maven.artifact.handler.ArtifactHandler) $stack4;
+
+        if handler != null goto label2;
+
+        $r1 = (org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager) this;
+
+        $stack5 = $r1.<org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager: java.util.Map artifactHandlers>;
+
+        $stack6 = interfaceinvoke $stack5.<java.util.Map: java.lang.Object get(java.lang.Object)>(type);
+
+        handler = (org.apache.maven.artifact.handler.ArtifactHandler) $stack6;
+
+        if handler != null goto label1;
+
+        $u0 = new org.apache.maven.artifact.handler.DefaultArtifactHandler;
+
+        specialinvoke $u0.<org.apache.maven.artifact.handler.DefaultArtifactHandler: void <init>(java.lang.String)>(type);
+
+        handler = $u0;
+
+        goto label2;
+
+     label1:
+        $r2 = (org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager) this;
+
+        $stack7 = $r2.<org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager: java.util.Map allHandlers>;
+
+        interfaceinvoke $stack7.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(type, handler);
+
+     label2:
+        $r3 = (org.apache.maven.artifact.handler.ArtifactHandler) handler;
+
+        return $r3;
+    }
+
+    public void addHandlers(java.util.Map)
+    {
+        DefaultArtifactHandlerManager this;
+        java.util.Map handlers, $stack2;
+        org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager $r0;
+
+        this := @this: DefaultArtifactHandlerManager;
+
+        handlers := @parameter0: java.util.Map;
+
+        $r0 = (org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager) this;
+
+        $stack2 = $r0.<org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager: java.util.Map allHandlers>;
+
+        interfaceinvoke $stack2.<java.util.Map: void putAll(java.util.Map)>(handlers);
+
+        return;
+    }
+
+    public java.util.Set getHandlerTypes()
+    {
+        DefaultArtifactHandlerManager this;
+        java.util.Map $stack1;
+        java.util.Set $stack2;
+        org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager $r0;
+
+        this := @this: DefaultArtifactHandlerManager;
+
+        $r0 = (org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager) this;
+
+        $stack1 = $r0.<org.apache.maven.artifact.handler.manager.DefaultArtifactHandlerManager: java.util.Map artifactHandlers>;
+
+        $stack2 = interfaceinvoke $stack1.<java.util.Map: java.util.Set keySet()>();
+
+        return $stack2;
+    }
+}

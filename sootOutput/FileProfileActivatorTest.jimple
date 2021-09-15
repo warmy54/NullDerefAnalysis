@@ -1,0 +1,435 @@
+public class FileProfileActivatorTest extends org.apache.maven.model.profile.activation.AbstractProfileActivatorTest
+{
+    java.nio.file.Path tempDir;
+    private final org.apache.maven.model.profile.DefaultProfileActivationContext context;
+
+    public void <init>()
+    {
+        FileProfileActivatorTest this;
+        org.apache.maven.model.profile.DefaultProfileActivationContext $u0;
+        org.apache.maven.model.profile.activation.FileProfileActivatorTest $r0;
+
+        this := @this: FileProfileActivatorTest;
+
+        specialinvoke this.<org.apache.maven.model.profile.activation.AbstractProfileActivatorTest: void <init>(java.lang.Class)>(class "Lorg/apache/maven/model/profile/activation/FileProfileActivator;");
+
+        $u0 = new org.apache.maven.model.profile.DefaultProfileActivationContext;
+
+        specialinvoke $u0.<org.apache.maven.model.profile.DefaultProfileActivationContext: void <init>()>();
+
+        $r0 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r0.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context> = $u0;
+
+        return;
+    }
+
+    public void setUp() throws java.lang.Exception
+    {
+        FileProfileActivatorTest this;
+        org.apache.maven.model.profile.activation.ProfileActivator $stack2;
+        org.apache.maven.model.profile.activation.FileProfileActivator $stack4;
+        org.apache.maven.model.path.ProfileActivationFilePathInterpolator $stack6, $u0;
+        java.nio.file.Path $stack9, $stack14, $stack15;
+        org.apache.maven.model.profile.DefaultProfileActivationContext $stack10;
+        java.lang.String $stack11, $stack16, $stack22;
+        boolean $stack17;
+        java.lang.StringBuilder $stack20, $stack21, $u4;
+        org.apache.maven.model.path.DefaultPathTranslator $u1;
+        java.io.File $u2, $u3;
+        java.io.IOException $u5;
+        org.apache.maven.model.profile.activation.FileProfileActivatorTest $r0, $r2, $r3, $r4;
+        org.apache.maven.model.path.PathTranslator $r1;
+
+        this := @this: FileProfileActivatorTest;
+
+        specialinvoke this.<org.apache.maven.model.profile.activation.AbstractProfileActivatorTest: void setUp()>();
+
+        $r0 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack2 = $r0.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.activation.ProfileActivator activator>;
+
+        $stack4 = (org.apache.maven.model.profile.activation.FileProfileActivator) $stack2;
+
+        $u0 = new org.apache.maven.model.path.ProfileActivationFilePathInterpolator;
+
+        specialinvoke $u0.<org.apache.maven.model.path.ProfileActivationFilePathInterpolator: void <init>()>();
+
+        $u1 = new org.apache.maven.model.path.DefaultPathTranslator;
+
+        specialinvoke $u1.<org.apache.maven.model.path.DefaultPathTranslator: void <init>()>();
+
+        $r1 = (org.apache.maven.model.path.PathTranslator) $u1;
+
+        $stack6 = virtualinvoke $u0.<org.apache.maven.model.path.ProfileActivationFilePathInterpolator: org.apache.maven.model.path.ProfileActivationFilePathInterpolator setPathTranslator(org.apache.maven.model.path.PathTranslator)>($r1);
+
+        virtualinvoke $stack4.<org.apache.maven.model.profile.activation.FileProfileActivator: org.apache.maven.model.profile.activation.FileProfileActivator setProfileActivationFilePathInterpolator(org.apache.maven.model.path.ProfileActivationFilePathInterpolator)>($stack6);
+
+        $r2 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack10 = $r2.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $u2 = new java.io.File;
+
+        $r3 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack9 = $r3.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: java.nio.file.Path tempDir>;
+
+        $stack11 = interfaceinvoke $stack9.<java.nio.file.Path: java.lang.String toString()>();
+
+        specialinvoke $u2.<java.io.File: void <init>(java.lang.String)>($stack11);
+
+        virtualinvoke $stack10.<org.apache.maven.model.profile.DefaultProfileActivationContext: org.apache.maven.model.profile.DefaultProfileActivationContext setProjectDirectory(java.io.File)>($u2);
+
+        $u3 = new java.io.File;
+
+        $r4 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack14 = $r4.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: java.nio.file.Path tempDir>;
+
+        $stack15 = interfaceinvoke $stack14.<java.nio.file.Path: java.nio.file.Path resolve(java.lang.String)>("file.txt");
+
+        $stack16 = interfaceinvoke $stack15.<java.nio.file.Path: java.lang.String toString()>();
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String)>($stack16);
+
+        $stack17 = virtualinvoke $u3.<java.io.File: boolean createNewFile()>();
+
+        if $stack17 != 0 goto label1;
+
+        $u5 = new java.io.IOException;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack20 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Can\'t create ");
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($u3);
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u5.<java.io.IOException: void <init>(java.lang.String)>($stack22);
+
+        throw $u5;
+
+     label1:
+        return;
+    }
+
+    public void testIsActiveNoFile()
+    {
+        FileProfileActivatorTest this;
+        org.apache.maven.model.Profile $stack2, $stack5, $stack8, $stack11, $stack14, $stack17;
+        org.apache.maven.model.profile.DefaultProfileActivationContext $stack3, $stack6, $stack9, $stack12, $stack15, $stack18;
+        org.apache.maven.model.profile.activation.FileProfileActivatorTest $r0, $r1, $r2, $r4, $r5, $r6, $r8, $r9, $r10, $r12, $r13, $r14, $r16, $r17, $r18, $r20, $r21, $r22;
+        org.apache.maven.model.profile.ProfileActivationContext $r3, $r7, $r11, $r15, $r19, $r23;
+
+        this := @this: FileProfileActivatorTest;
+
+        $r0 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newExistsProfile(java.lang.String)>(null);
+
+        $r1 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack3 = $r1.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r2 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r3 = (org.apache.maven.model.profile.ProfileActivationContext) $stack3;
+
+        virtualinvoke $r2.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(0, $stack2, $r3);
+
+        $r4 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack5 = specialinvoke $r4.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newExistsProfile(java.lang.String)>("someFile.txt");
+
+        $r5 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack6 = $r5.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r6 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r7 = (org.apache.maven.model.profile.ProfileActivationContext) $stack6;
+
+        virtualinvoke $r6.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(0, $stack5, $r7);
+
+        $r8 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack8 = specialinvoke $r8.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newExistsProfile(java.lang.String)>("${basedir}/someFile.txt");
+
+        $r9 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack9 = $r9.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r10 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r11 = (org.apache.maven.model.profile.ProfileActivationContext) $stack9;
+
+        virtualinvoke $r10.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(0, $stack8, $r11);
+
+        $r12 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack11 = specialinvoke $r12.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newMissingProfile(java.lang.String)>(null);
+
+        $r13 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack12 = $r13.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r14 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r15 = (org.apache.maven.model.profile.ProfileActivationContext) $stack12;
+
+        virtualinvoke $r14.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(0, $stack11, $r15);
+
+        $r16 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack14 = specialinvoke $r16.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newMissingProfile(java.lang.String)>("someFile.txt");
+
+        $r17 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack15 = $r17.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r18 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r19 = (org.apache.maven.model.profile.ProfileActivationContext) $stack15;
+
+        virtualinvoke $r18.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(1, $stack14, $r19);
+
+        $r20 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack17 = specialinvoke $r20.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newMissingProfile(java.lang.String)>("${basedir}/someFile.txt");
+
+        $r21 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack18 = $r21.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r22 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r23 = (org.apache.maven.model.profile.ProfileActivationContext) $stack18;
+
+        virtualinvoke $r22.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(1, $stack17, $r23);
+
+        return;
+    }
+
+    public void testIsActiveExistsFileExists()
+    {
+        FileProfileActivatorTest this;
+        org.apache.maven.model.Profile $stack2, $stack5, $stack8, $stack11, $stack14, $stack17;
+        org.apache.maven.model.profile.DefaultProfileActivationContext $stack3, $stack6, $stack9, $stack12, $stack15, $stack18;
+        org.apache.maven.model.profile.activation.FileProfileActivatorTest $r0, $r1, $r2, $r4, $r5, $r6, $r8, $r9, $r10, $r12, $r13, $r14, $r16, $r17, $r18, $r20, $r21, $r22;
+        org.apache.maven.model.profile.ProfileActivationContext $r3, $r7, $r11, $r15, $r19, $r23;
+
+        this := @this: FileProfileActivatorTest;
+
+        $r0 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newExistsProfile(java.lang.String)>("file.txt");
+
+        $r1 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack3 = $r1.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r2 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r3 = (org.apache.maven.model.profile.ProfileActivationContext) $stack3;
+
+        virtualinvoke $r2.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(1, $stack2, $r3);
+
+        $r4 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack5 = specialinvoke $r4.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newExistsProfile(java.lang.String)>("${basedir}");
+
+        $r5 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack6 = $r5.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r6 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r7 = (org.apache.maven.model.profile.ProfileActivationContext) $stack6;
+
+        virtualinvoke $r6.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(1, $stack5, $r7);
+
+        $r8 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack8 = specialinvoke $r8.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newExistsProfile(java.lang.String)>("${basedir}/file.txt");
+
+        $r9 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack9 = $r9.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r10 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r11 = (org.apache.maven.model.profile.ProfileActivationContext) $stack9;
+
+        virtualinvoke $r10.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(1, $stack8, $r11);
+
+        $r12 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack11 = specialinvoke $r12.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newMissingProfile(java.lang.String)>("file.txt");
+
+        $r13 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack12 = $r13.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r14 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r15 = (org.apache.maven.model.profile.ProfileActivationContext) $stack12;
+
+        virtualinvoke $r14.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(0, $stack11, $r15);
+
+        $r16 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack14 = specialinvoke $r16.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newMissingProfile(java.lang.String)>("${basedir}");
+
+        $r17 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack15 = $r17.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r18 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r19 = (org.apache.maven.model.profile.ProfileActivationContext) $stack15;
+
+        virtualinvoke $r18.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(0, $stack14, $r19);
+
+        $r20 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack17 = specialinvoke $r20.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newMissingProfile(java.lang.String)>("${basedir}/file.txt");
+
+        $r21 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack18 = $r21.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r22 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r23 = (org.apache.maven.model.profile.ProfileActivationContext) $stack18;
+
+        virtualinvoke $r22.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(0, $stack17, $r23);
+
+        return;
+    }
+
+    public void testIsActiveExistsLeavesFileUnchanged()
+    {
+        FileProfileActivatorTest this;
+        org.apache.maven.model.Profile profile;
+        org.apache.maven.model.Activation $stack4, $stack9;
+        org.apache.maven.model.ActivationFile $stack5, $stack10;
+        java.lang.String $stack6, $stack11;
+        org.apache.maven.model.profile.DefaultProfileActivationContext $stack7;
+        org.apache.maven.model.profile.activation.FileProfileActivatorTest $r0, $r1, $r2;
+        org.apache.maven.model.profile.ProfileActivationContext $r3;
+
+        this := @this: FileProfileActivatorTest;
+
+        $r0 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        profile = specialinvoke $r0.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newExistsProfile(java.lang.String)>("file.txt");
+
+        $stack4 = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        $stack5 = virtualinvoke $stack4.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationFile getFile()>();
+
+        $stack6 = virtualinvoke $stack5.<org.apache.maven.model.ActivationFile: java.lang.String getExists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("file.txt", $stack6);
+
+        $r1 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack7 = $r1.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.profile.DefaultProfileActivationContext context>;
+
+        $r2 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $r3 = (org.apache.maven.model.profile.ProfileActivationContext) $stack7;
+
+        virtualinvoke $r2.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: void assertActivation(boolean,org.apache.maven.model.Profile,org.apache.maven.model.profile.ProfileActivationContext)>(1, profile, $r3);
+
+        $stack9 = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        $stack10 = virtualinvoke $stack9.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationFile getFile()>();
+
+        $stack11 = virtualinvoke $stack10.<org.apache.maven.model.ActivationFile: java.lang.String getExists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("file.txt", $stack11);
+
+        return;
+    }
+
+    private org.apache.maven.model.Profile newExistsProfile(java.lang.String)
+    {
+        java.lang.String filePath;
+        FileProfileActivatorTest this;
+        org.apache.maven.model.Profile $stack4;
+        org.apache.maven.model.ActivationFile $u0;
+        org.apache.maven.model.profile.activation.FileProfileActivatorTest $r0;
+
+        this := @this: FileProfileActivatorTest;
+
+        filePath := @parameter0: java.lang.String;
+
+        $u0 = new org.apache.maven.model.ActivationFile;
+
+        specialinvoke $u0.<org.apache.maven.model.ActivationFile: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.ActivationFile: void setExists(java.lang.String)>(filePath);
+
+        $r0 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newProfile(org.apache.maven.model.ActivationFile)>($u0);
+
+        return $stack4;
+    }
+
+    private org.apache.maven.model.Profile newMissingProfile(java.lang.String)
+    {
+        java.lang.String filePath;
+        FileProfileActivatorTest this;
+        org.apache.maven.model.Profile $stack4;
+        org.apache.maven.model.ActivationFile $u0;
+        org.apache.maven.model.profile.activation.FileProfileActivatorTest $r0;
+
+        this := @this: FileProfileActivatorTest;
+
+        filePath := @parameter0: java.lang.String;
+
+        $u0 = new org.apache.maven.model.ActivationFile;
+
+        specialinvoke $u0.<org.apache.maven.model.ActivationFile: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.ActivationFile: void setMissing(java.lang.String)>(filePath);
+
+        $r0 = (org.apache.maven.model.profile.activation.FileProfileActivatorTest) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.model.profile.activation.FileProfileActivatorTest: org.apache.maven.model.Profile newProfile(org.apache.maven.model.ActivationFile)>($u0);
+
+        return $stack4;
+    }
+
+    private org.apache.maven.model.Profile newProfile(org.apache.maven.model.ActivationFile)
+    {
+        org.apache.maven.model.Activation $stack4;
+        org.apache.maven.model.ActivationFile activationFile;
+        org.apache.maven.model.Profile $stack5;
+        FileProfileActivatorTest this;
+
+        this := @this: FileProfileActivatorTest;
+
+        activationFile := @parameter0: org.apache.maven.model.ActivationFile;
+
+        $stack4 = new org.apache.maven.model.Activation;
+
+        specialinvoke $stack4.<org.apache.maven.model.Activation: void <init>()>();
+
+        virtualinvoke $stack4.<org.apache.maven.model.Activation: void setFile(org.apache.maven.model.ActivationFile)>(activationFile);
+
+        $stack5 = new org.apache.maven.model.Profile;
+
+        specialinvoke $stack5.<org.apache.maven.model.Profile: void <init>()>();
+
+        virtualinvoke $stack5.<org.apache.maven.model.Profile: void setActivation(org.apache.maven.model.Activation)>($stack4);
+
+        return $stack5;
+    }
+}

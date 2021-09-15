@@ -1,0 +1,421 @@
+public class DefaultProfileManagerTest extends java.lang.Object
+{
+    org.codehaus.plexus.PlexusContainer container;
+
+    public void <init>()
+    {
+        DefaultProfileManagerTest this;
+
+        this := @this: DefaultProfileManagerTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    protected org.codehaus.plexus.PlexusContainer getContainer()
+    {
+        DefaultProfileManagerTest this;
+        org.codehaus.plexus.PlexusContainer $stack1;
+        org.apache.maven.profiles.manager.DefaultProfileManagerTest $r0;
+
+        this := @this: DefaultProfileManagerTest;
+
+        $r0 = (org.apache.maven.profiles.manager.DefaultProfileManagerTest) this;
+
+        $stack1 = $r0.<org.apache.maven.profiles.manager.DefaultProfileManagerTest: org.codehaus.plexus.PlexusContainer container>;
+
+        return $stack1;
+    }
+
+    public void testShouldActivateDefaultProfile() throws java.lang.Exception
+    {
+        java.util.Properties props;
+        DefaultProfileManagerTest this;
+        org.codehaus.plexus.PlexusContainer $stack14;
+        java.util.List active;
+        int $stack17;
+        java.lang.Object $stack19;
+        org.apache.maven.model.Profile $stack20, $u0, $u2;
+        java.lang.String $stack21;
+        org.apache.maven.model.Activation $u1, $u3;
+        org.apache.maven.profiles.DefaultProfileManager $u4;
+        org.apache.maven.profiles.manager.DefaultProfileManagerTest $r0;
+        org.apache.maven.profiles.ProfileManager $r1, $r2, $r3;
+
+        this := @this: DefaultProfileManagerTest;
+
+        $u0 = new org.apache.maven.model.Profile;
+
+        specialinvoke $u0.<org.apache.maven.model.Profile: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Profile: void setId(java.lang.String)>("notActivated");
+
+        $u1 = new org.apache.maven.model.Activation;
+
+        specialinvoke $u1.<org.apache.maven.model.Activation: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Activation: void setJdk(java.lang.String)>("19.2");
+
+        virtualinvoke $u0.<org.apache.maven.model.Profile: void setActivation(org.apache.maven.model.Activation)>($u1);
+
+        $u2 = new org.apache.maven.model.Profile;
+
+        specialinvoke $u2.<org.apache.maven.model.Profile: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.Profile: void setId(java.lang.String)>("defaultActivated");
+
+        $u3 = new org.apache.maven.model.Activation;
+
+        specialinvoke $u3.<org.apache.maven.model.Activation: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.model.Activation: void setActiveByDefault(boolean)>(1);
+
+        virtualinvoke $u2.<org.apache.maven.model.Profile: void setActivation(org.apache.maven.model.Activation)>($u3);
+
+        props = staticinvoke <java.lang.System: java.util.Properties getProperties()>();
+
+        $u4 = new org.apache.maven.profiles.DefaultProfileManager;
+
+        $r0 = (org.apache.maven.profiles.manager.DefaultProfileManagerTest) this;
+
+        $stack14 = virtualinvoke $r0.<org.apache.maven.profiles.manager.DefaultProfileManagerTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        specialinvoke $u4.<org.apache.maven.profiles.DefaultProfileManager: void <init>(org.codehaus.plexus.PlexusContainer,java.util.Properties)>($stack14, props);
+
+        $r1 = (org.apache.maven.profiles.ProfileManager) $u4;
+
+        interfaceinvoke $r1.<org.apache.maven.profiles.ProfileManager: void addProfile(org.apache.maven.model.Profile)>($u0);
+
+        $r2 = (org.apache.maven.profiles.ProfileManager) $u4;
+
+        interfaceinvoke $r2.<org.apache.maven.profiles.ProfileManager: void addProfile(org.apache.maven.model.Profile)>($u2);
+
+        $r3 = (org.apache.maven.profiles.ProfileManager) $u4;
+
+        active = interfaceinvoke $r3.<org.apache.maven.profiles.ProfileManager: java.util.List getActiveProfiles()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(active);
+
+        $stack17 = interfaceinvoke active.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack17);
+
+        $stack19 = interfaceinvoke active.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack20 = (org.apache.maven.model.Profile) $stack19;
+
+        $stack21 = virtualinvoke $stack20.<org.apache.maven.model.Profile: java.lang.String getId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("defaultActivated", $stack21);
+
+        return;
+    }
+
+    public void testShouldNotActivateDefaultProfile() throws java.lang.Exception
+    {
+        java.util.Properties props;
+        DefaultProfileManagerTest this;
+        org.codehaus.plexus.PlexusContainer $stack16;
+        java.util.List active;
+        int $stack19;
+        java.lang.Object $stack21;
+        org.apache.maven.model.Profile $stack22, $u0, $u3;
+        java.lang.String $stack23;
+        org.apache.maven.model.Activation $u1, $u4;
+        org.apache.maven.model.ActivationProperty $u2;
+        org.apache.maven.profiles.DefaultProfileManager $u5;
+        org.apache.maven.profiles.manager.DefaultProfileManagerTest $r0;
+        org.apache.maven.profiles.ProfileManager $r1, $r2, $r3;
+
+        this := @this: DefaultProfileManagerTest;
+
+        $u0 = new org.apache.maven.model.Profile;
+
+        specialinvoke $u0.<org.apache.maven.model.Profile: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Profile: void setId(java.lang.String)>("syspropActivated");
+
+        $u1 = new org.apache.maven.model.Activation;
+
+        specialinvoke $u1.<org.apache.maven.model.Activation: void <init>()>();
+
+        $u2 = new org.apache.maven.model.ActivationProperty;
+
+        specialinvoke $u2.<org.apache.maven.model.ActivationProperty: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.ActivationProperty: void setName(java.lang.String)>("java.version");
+
+        virtualinvoke $u1.<org.apache.maven.model.Activation: void setProperty(org.apache.maven.model.ActivationProperty)>($u2);
+
+        virtualinvoke $u0.<org.apache.maven.model.Profile: void setActivation(org.apache.maven.model.Activation)>($u1);
+
+        $u3 = new org.apache.maven.model.Profile;
+
+        specialinvoke $u3.<org.apache.maven.model.Profile: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.model.Profile: void setId(java.lang.String)>("defaultActivated");
+
+        $u4 = new org.apache.maven.model.Activation;
+
+        specialinvoke $u4.<org.apache.maven.model.Activation: void <init>()>();
+
+        virtualinvoke $u4.<org.apache.maven.model.Activation: void setActiveByDefault(boolean)>(1);
+
+        virtualinvoke $u3.<org.apache.maven.model.Profile: void setActivation(org.apache.maven.model.Activation)>($u4);
+
+        props = staticinvoke <java.lang.System: java.util.Properties getProperties()>();
+
+        $u5 = new org.apache.maven.profiles.DefaultProfileManager;
+
+        $r0 = (org.apache.maven.profiles.manager.DefaultProfileManagerTest) this;
+
+        $stack16 = virtualinvoke $r0.<org.apache.maven.profiles.manager.DefaultProfileManagerTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        specialinvoke $u5.<org.apache.maven.profiles.DefaultProfileManager: void <init>(org.codehaus.plexus.PlexusContainer,java.util.Properties)>($stack16, props);
+
+        $r1 = (org.apache.maven.profiles.ProfileManager) $u5;
+
+        interfaceinvoke $r1.<org.apache.maven.profiles.ProfileManager: void addProfile(org.apache.maven.model.Profile)>($u0);
+
+        $r2 = (org.apache.maven.profiles.ProfileManager) $u5;
+
+        interfaceinvoke $r2.<org.apache.maven.profiles.ProfileManager: void addProfile(org.apache.maven.model.Profile)>($u3);
+
+        $r3 = (org.apache.maven.profiles.ProfileManager) $u5;
+
+        active = interfaceinvoke $r3.<org.apache.maven.profiles.ProfileManager: java.util.List getActiveProfiles()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(active);
+
+        $stack19 = interfaceinvoke active.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack19);
+
+        $stack21 = interfaceinvoke active.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack22 = (org.apache.maven.model.Profile) $stack21;
+
+        $stack23 = virtualinvoke $stack22.<org.apache.maven.model.Profile: java.lang.String getId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("syspropActivated", $stack23);
+
+        return;
+    }
+
+    public void testShouldNotActivateReversalOfPresentSystemProperty() throws java.lang.Exception
+    {
+        java.util.Properties props;
+        DefaultProfileManagerTest this;
+        org.codehaus.plexus.PlexusContainer $stack12;
+        java.util.List active;
+        int $stack15;
+        org.apache.maven.model.Profile $u0;
+        org.apache.maven.model.Activation $u1;
+        org.apache.maven.model.ActivationProperty $u2;
+        org.apache.maven.profiles.DefaultProfileManager $u3;
+        org.apache.maven.profiles.manager.DefaultProfileManagerTest $r0;
+        org.apache.maven.profiles.ProfileManager $r1, $r2;
+
+        this := @this: DefaultProfileManagerTest;
+
+        $u0 = new org.apache.maven.model.Profile;
+
+        specialinvoke $u0.<org.apache.maven.model.Profile: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Profile: void setId(java.lang.String)>("syspropActivated");
+
+        $u1 = new org.apache.maven.model.Activation;
+
+        specialinvoke $u1.<org.apache.maven.model.Activation: void <init>()>();
+
+        $u2 = new org.apache.maven.model.ActivationProperty;
+
+        specialinvoke $u2.<org.apache.maven.model.ActivationProperty: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.ActivationProperty: void setName(java.lang.String)>("!java.version");
+
+        virtualinvoke $u1.<org.apache.maven.model.Activation: void setProperty(org.apache.maven.model.ActivationProperty)>($u2);
+
+        virtualinvoke $u0.<org.apache.maven.model.Profile: void setActivation(org.apache.maven.model.Activation)>($u1);
+
+        props = staticinvoke <java.lang.System: java.util.Properties getProperties()>();
+
+        $u3 = new org.apache.maven.profiles.DefaultProfileManager;
+
+        $r0 = (org.apache.maven.profiles.manager.DefaultProfileManagerTest) this;
+
+        $stack12 = virtualinvoke $r0.<org.apache.maven.profiles.manager.DefaultProfileManagerTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        specialinvoke $u3.<org.apache.maven.profiles.DefaultProfileManager: void <init>(org.codehaus.plexus.PlexusContainer,java.util.Properties)>($stack12, props);
+
+        $r1 = (org.apache.maven.profiles.ProfileManager) $u3;
+
+        interfaceinvoke $r1.<org.apache.maven.profiles.ProfileManager: void addProfile(org.apache.maven.model.Profile)>($u0);
+
+        $r2 = (org.apache.maven.profiles.ProfileManager) $u3;
+
+        active = interfaceinvoke $r2.<org.apache.maven.profiles.ProfileManager: java.util.List getActiveProfiles()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(active);
+
+        $stack15 = interfaceinvoke active.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack15);
+
+        return;
+    }
+
+    public void testShouldOverrideAndActivateInactiveProfile() throws java.lang.Exception
+    {
+        java.util.Properties props;
+        DefaultProfileManagerTest this;
+        org.codehaus.plexus.PlexusContainer $stack12;
+        java.util.List active;
+        int $stack15;
+        java.lang.Object $stack17;
+        org.apache.maven.model.Profile $stack18, $u0;
+        java.lang.String $stack19;
+        org.apache.maven.model.Activation $u1;
+        org.apache.maven.model.ActivationProperty $u2;
+        org.apache.maven.profiles.DefaultProfileManager $u3;
+        org.apache.maven.profiles.manager.DefaultProfileManagerTest $r0;
+        org.apache.maven.profiles.ProfileManager $r1, $r2, $r3;
+
+        this := @this: DefaultProfileManagerTest;
+
+        $u0 = new org.apache.maven.model.Profile;
+
+        specialinvoke $u0.<org.apache.maven.model.Profile: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Profile: void setId(java.lang.String)>("syspropActivated");
+
+        $u1 = new org.apache.maven.model.Activation;
+
+        specialinvoke $u1.<org.apache.maven.model.Activation: void <init>()>();
+
+        $u2 = new org.apache.maven.model.ActivationProperty;
+
+        specialinvoke $u2.<org.apache.maven.model.ActivationProperty: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.ActivationProperty: void setName(java.lang.String)>("!java.version");
+
+        virtualinvoke $u1.<org.apache.maven.model.Activation: void setProperty(org.apache.maven.model.ActivationProperty)>($u2);
+
+        virtualinvoke $u0.<org.apache.maven.model.Profile: void setActivation(org.apache.maven.model.Activation)>($u1);
+
+        props = staticinvoke <java.lang.System: java.util.Properties getProperties()>();
+
+        $u3 = new org.apache.maven.profiles.DefaultProfileManager;
+
+        $r0 = (org.apache.maven.profiles.manager.DefaultProfileManagerTest) this;
+
+        $stack12 = virtualinvoke $r0.<org.apache.maven.profiles.manager.DefaultProfileManagerTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        specialinvoke $u3.<org.apache.maven.profiles.DefaultProfileManager: void <init>(org.codehaus.plexus.PlexusContainer,java.util.Properties)>($stack12, props);
+
+        $r1 = (org.apache.maven.profiles.ProfileManager) $u3;
+
+        interfaceinvoke $r1.<org.apache.maven.profiles.ProfileManager: void addProfile(org.apache.maven.model.Profile)>($u0);
+
+        $r2 = (org.apache.maven.profiles.ProfileManager) $u3;
+
+        interfaceinvoke $r2.<org.apache.maven.profiles.ProfileManager: void explicitlyActivate(java.lang.String)>("syspropActivated");
+
+        $r3 = (org.apache.maven.profiles.ProfileManager) $u3;
+
+        active = interfaceinvoke $r3.<org.apache.maven.profiles.ProfileManager: java.util.List getActiveProfiles()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(active);
+
+        $stack15 = interfaceinvoke active.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack15);
+
+        $stack17 = interfaceinvoke active.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack18 = (org.apache.maven.model.Profile) $stack17;
+
+        $stack19 = virtualinvoke $stack18.<org.apache.maven.model.Profile: java.lang.String getId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("syspropActivated", $stack19);
+
+        return;
+    }
+
+    public void testShouldOverrideAndDeactivateActiveProfile() throws java.lang.Exception
+    {
+        java.util.Properties props;
+        DefaultProfileManagerTest this;
+        org.codehaus.plexus.PlexusContainer $stack12;
+        java.util.List active;
+        int $stack15;
+        org.apache.maven.model.Profile $u0;
+        org.apache.maven.model.Activation $u1;
+        org.apache.maven.model.ActivationProperty $u2;
+        org.apache.maven.profiles.DefaultProfileManager $u3;
+        org.apache.maven.profiles.manager.DefaultProfileManagerTest $r0;
+        org.apache.maven.profiles.ProfileManager $r1, $r2, $r3;
+
+        this := @this: DefaultProfileManagerTest;
+
+        $u0 = new org.apache.maven.model.Profile;
+
+        specialinvoke $u0.<org.apache.maven.model.Profile: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Profile: void setId(java.lang.String)>("syspropActivated");
+
+        $u1 = new org.apache.maven.model.Activation;
+
+        specialinvoke $u1.<org.apache.maven.model.Activation: void <init>()>();
+
+        $u2 = new org.apache.maven.model.ActivationProperty;
+
+        specialinvoke $u2.<org.apache.maven.model.ActivationProperty: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.ActivationProperty: void setName(java.lang.String)>("java.version");
+
+        virtualinvoke $u1.<org.apache.maven.model.Activation: void setProperty(org.apache.maven.model.ActivationProperty)>($u2);
+
+        virtualinvoke $u0.<org.apache.maven.model.Profile: void setActivation(org.apache.maven.model.Activation)>($u1);
+
+        props = staticinvoke <java.lang.System: java.util.Properties getProperties()>();
+
+        $u3 = new org.apache.maven.profiles.DefaultProfileManager;
+
+        $r0 = (org.apache.maven.profiles.manager.DefaultProfileManagerTest) this;
+
+        $stack12 = virtualinvoke $r0.<org.apache.maven.profiles.manager.DefaultProfileManagerTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        specialinvoke $u3.<org.apache.maven.profiles.DefaultProfileManager: void <init>(org.codehaus.plexus.PlexusContainer,java.util.Properties)>($stack12, props);
+
+        $r1 = (org.apache.maven.profiles.ProfileManager) $u3;
+
+        interfaceinvoke $r1.<org.apache.maven.profiles.ProfileManager: void addProfile(org.apache.maven.model.Profile)>($u0);
+
+        $r2 = (org.apache.maven.profiles.ProfileManager) $u3;
+
+        interfaceinvoke $r2.<org.apache.maven.profiles.ProfileManager: void explicitlyDeactivate(java.lang.String)>("syspropActivated");
+
+        $r3 = (org.apache.maven.profiles.ProfileManager) $u3;
+
+        active = interfaceinvoke $r3.<org.apache.maven.profiles.ProfileManager: java.util.List getActiveProfiles()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(active);
+
+        $stack15 = interfaceinvoke active.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack15);
+
+        return;
+    }
+
+    public void testOsActivationProfile() throws java.lang.Exception
+    {
+        DefaultProfileManagerTest this;
+
+        this := @this: DefaultProfileManagerTest;
+
+        return;
+    }
+}

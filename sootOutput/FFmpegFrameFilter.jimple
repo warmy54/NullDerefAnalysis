@@ -1,0 +1,4652 @@
+public class FFmpegFrameFilter extends org.bytedeco.javacv.FrameFilter
+{
+    private static org.bytedeco.javacv.FFmpegFrameFilter$Exception loadingException;
+    org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx;
+    org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx;
+    org.bytedeco.ffmpeg.avfilter.AVFilterContext[] setpts_ctx;
+    org.bytedeco.ffmpeg.avfilter.AVFilterGraph filter_graph;
+    org.bytedeco.ffmpeg.avutil.AVRational time_base;
+    org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx;
+    org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx;
+    org.bytedeco.ffmpeg.avfilter.AVFilterContext[] asetpts_ctx;
+    org.bytedeco.ffmpeg.avfilter.AVFilterGraph afilter_graph;
+    org.bytedeco.ffmpeg.avutil.AVRational atime_base;
+    org.bytedeco.ffmpeg.avutil.AVFrame image_frame;
+    org.bytedeco.ffmpeg.avutil.AVFrame samples_frame;
+    org.bytedeco.ffmpeg.avutil.AVFrame filt_frame;
+    org.bytedeco.javacpp.BytePointer[] image_ptr;
+    org.bytedeco.javacpp.BytePointer[] image_ptr2;
+    org.bytedeco.javacpp.BytePointer[] samples_ptr;
+    java.nio.Buffer[] image_buf;
+    java.nio.Buffer[] image_buf2;
+    java.nio.Buffer[] samples_buf;
+    org.bytedeco.javacv.Frame frame;
+    org.bytedeco.javacv.Frame inframe;
+    private volatile boolean started;
+    static final boolean $assertionsDisabled;
+
+    public static void tryLoad() throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        org.bytedeco.javacv.FFmpegFrameFilter$Exception $stack1, $stack9, $stack17, $u1;
+        java.lang.Throwable $stack10, $r0, $r1, $r2;
+        boolean $stack11;
+        java.lang.StringBuilder $stack14, $stack15, $u0;
+        java.lang.String $stack16;
+
+        $stack1 = <org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.FFmpegFrameFilter$Exception loadingException>;
+
+        if $stack1 == null goto label1;
+
+        $stack9 = <org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.FFmpegFrameFilter$Exception loadingException>;
+
+        $r0 = (java.lang.Throwable) $stack9;
+
+        throw $r0;
+
+     label1:
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/ffmpeg/global/avutil;");
+
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/ffmpeg/global/avcodec;");
+
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/ffmpeg/global/avformat;");
+
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/ffmpeg/global/postproc;");
+
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/ffmpeg/global/swresample;");
+
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/ffmpeg/global/swscale;");
+
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/ffmpeg/global/avfilter;");
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avformat: void av_register_all()>();
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: void avfilter_register_all()>();
+
+     label2:
+        goto label5;
+
+     label3:
+        $stack10 := @caughtexception;
+
+        $stack11 = $stack10 instanceof org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        if $stack11 == 0 goto label4;
+
+        $stack17 = (org.bytedeco.javacv.FFmpegFrameFilter$Exception) $stack10;
+
+        <org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.FFmpegFrameFilter$Exception loadingException> = $stack17;
+
+        $r1 = (java.lang.Throwable) $stack17;
+
+        throw $r1;
+
+     label4:
+        $u1 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack14 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to load ");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/FFmpegFrameRecorder;");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String,java.lang.Throwable)>($stack16, $stack10);
+
+        <org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.FFmpegFrameFilter$Exception loadingException> = $u1;
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void <init>(java.lang.String, java.lang.String, int, int, int)
+    {
+        FFmpegFrameFilter this;
+        java.lang.String videoFilters, audioFilters;
+        int imageWidth, imageHeight, audioChannels;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12;
+
+        this := @this: FFmpegFrameFilter;
+
+        videoFilters := @parameter0: java.lang.String;
+
+        audioFilters := @parameter1: java.lang.String;
+
+        imageWidth := @parameter2: int;
+
+        imageHeight := @parameter3: int;
+
+        audioChannels := @parameter4: int;
+
+        specialinvoke this.<org.bytedeco.javacv.FrameFilter: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r0.<org.bytedeco.javacv.FFmpegFrameFilter: boolean started> = 0;
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r1.<org.bytedeco.javacv.FFmpegFrameFilter: java.lang.String filters> = videoFilters;
+
+        $r2 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r2.<org.bytedeco.javacv.FFmpegFrameFilter: int imageWidth> = imageWidth;
+
+        $r3 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r3.<org.bytedeco.javacv.FFmpegFrameFilter: int imageHeight> = imageHeight;
+
+        $r4 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r4.<org.bytedeco.javacv.FFmpegFrameFilter: int pixelFormat> = 3;
+
+        $r5 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r5.<org.bytedeco.javacv.FFmpegFrameFilter: double frameRate> = 30.0;
+
+        $r6 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r6.<org.bytedeco.javacv.FFmpegFrameFilter: double aspectRatio> = 0.0;
+
+        $r7 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r7.<org.bytedeco.javacv.FFmpegFrameFilter: int videoInputs> = 1;
+
+        $r8 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r8.<org.bytedeco.javacv.FFmpegFrameFilter: java.lang.String afilters> = audioFilters;
+
+        $r9 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r9.<org.bytedeco.javacv.FFmpegFrameFilter: int audioChannels> = audioChannels;
+
+        $r10 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r10.<org.bytedeco.javacv.FFmpegFrameFilter: int sampleFormat> = 1;
+
+        $r11 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r11.<org.bytedeco.javacv.FFmpegFrameFilter: int sampleRate> = 44100;
+
+        $r12 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r12.<org.bytedeco.javacv.FFmpegFrameFilter: int audioInputs> = 1;
+
+        return;
+    }
+
+    public void <init>(java.lang.String, int, int)
+    {
+        FFmpegFrameFilter this;
+        java.lang.String filters;
+        int imageWidth, imageHeight;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0;
+
+        this := @this: FFmpegFrameFilter;
+
+        filters := @parameter0: java.lang.String;
+
+        imageWidth := @parameter1: int;
+
+        imageHeight := @parameter2: int;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.FFmpegFrameFilter: void <init>(java.lang.String,java.lang.String,int,int,int)>(filters, null, imageWidth, imageHeight, 0);
+
+        return;
+    }
+
+    public void <init>(java.lang.String, int)
+    {
+        FFmpegFrameFilter this;
+        java.lang.String afilters;
+        int audioChannels;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0;
+
+        this := @this: FFmpegFrameFilter;
+
+        afilters := @parameter0: java.lang.String;
+
+        audioChannels := @parameter1: int;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.FFmpegFrameFilter: void <init>(java.lang.String,java.lang.String,int,int,int)>(null, afilters, 0, 0, audioChannels);
+
+        return;
+    }
+
+    public void release() throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        FFmpegFrameFilter this;
+        java.lang.Throwable $stack4;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0;
+
+        this := @this: FFmpegFrameFilter;
+
+        entermonitor class "Lorg/bytedeco/ffmpeg/global/avfilter;";
+
+     label1:
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.FFmpegFrameFilter: void releaseUnsafe()>();
+
+        exitmonitor class "Lorg/bytedeco/ffmpeg/global/avfilter;";
+
+     label2:
+        goto label5;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        exitmonitor class "Lorg/bytedeco/ffmpeg/global/avfilter;";
+
+     label4:
+        throw $stack4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public synchronized void releaseUnsafe() throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.javacpp.BytePointer[] $stack2, $stack47, $stack50;
+        org.bytedeco.ffmpeg.avfilter.AVFilterGraph $stack3, $stack4, $stack15, $stack31;
+        org.bytedeco.ffmpeg.avutil.AVFrame $stack5, $stack6, $stack7, $stack8, $stack11, $stack13;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack16, $stack24, $stack27, $stack32, $stack40, $stack43;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext[] $stack18, $stack23, $stack26, $stack34, $stack39, $stack42;
+        int $stack19, $stack35, $stack48, i;
+        org.bytedeco.ffmpeg.avutil.AVRational $stack20, $stack36;
+        org.bytedeco.javacpp.BytePointer $stack51;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1, $r2, $r3, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r33, $r34, $r35, $r36, $r37, $r38, $r39;
+        org.bytedeco.javacpp.Pointer $r4;
+
+        this := @this: FFmpegFrameFilter;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r0.<org.bytedeco.javacv.FFmpegFrameFilter: boolean started> = 0;
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2>;
+
+        if $stack2 == null goto label03;
+
+        i = 0;
+
+     label01:
+        $r2 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack47 = $r2.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2>;
+
+        $stack48 = lengthof $stack47;
+
+        if i >= $stack48 goto label02;
+
+        $r3 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack50 = $r3.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2>;
+
+        $stack51 = $stack50[i];
+
+        $r4 = (org.bytedeco.javacpp.Pointer) $stack51;
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avutil: void av_free(org.bytedeco.javacpp.Pointer)>($r4);
+
+        i = i + 1;
+
+        goto label01;
+
+     label02:
+        $r5 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r5.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2> = null;
+
+     label03:
+        $r6 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack3 = $r6.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph filter_graph>;
+
+        if $stack3 == null goto label06;
+
+        $r7 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack31 = $r7.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph filter_graph>;
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: void avfilter_graph_free(org.bytedeco.ffmpeg.avfilter.AVFilterGraph)>($stack31);
+
+        $r8 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack32 = $r8.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        virtualinvoke $stack32.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: boolean releaseReference()>();
+
+        i = 0;
+
+     label04:
+        $r9 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack34 = $r9.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx>;
+
+        $stack35 = lengthof $stack34;
+
+        if i >= $stack35 goto label05;
+
+        $r10 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack39 = $r10.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx>;
+
+        $stack40 = $stack39[i];
+
+        virtualinvoke $stack40.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: boolean releaseReference()>();
+
+        $r11 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack42 = $r11.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] setpts_ctx>;
+
+        $stack43 = $stack42[i];
+
+        virtualinvoke $stack43.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: boolean releaseReference()>();
+
+        i = i + 1;
+
+        goto label04;
+
+     label05:
+        $r12 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack36 = $r12.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational time_base>;
+
+        virtualinvoke $stack36.<org.bytedeco.ffmpeg.avutil.AVRational: boolean releaseReference()>();
+
+        $r13 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r13.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx> = null;
+
+        $r14 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r14.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx> = null;
+
+        $r15 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r15.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] setpts_ctx> = null;
+
+        $r16 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r16.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph filter_graph> = null;
+
+        $r17 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r17.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational time_base> = null;
+
+     label06:
+        $r18 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack4 = $r18.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph afilter_graph>;
+
+        if $stack4 == null goto label09;
+
+        $r19 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack15 = $r19.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph afilter_graph>;
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: void avfilter_graph_free(org.bytedeco.ffmpeg.avfilter.AVFilterGraph)>($stack15);
+
+        $r20 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack16 = $r20.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx>;
+
+        virtualinvoke $stack16.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: boolean releaseReference()>();
+
+        i = 0;
+
+     label07:
+        $r21 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack18 = $r21.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx>;
+
+        $stack19 = lengthof $stack18;
+
+        if i >= $stack19 goto label08;
+
+        $r22 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack23 = $r22.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx>;
+
+        $stack24 = $stack23[i];
+
+        virtualinvoke $stack24.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: boolean releaseReference()>();
+
+        $r23 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack26 = $r23.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] asetpts_ctx>;
+
+        $stack27 = $stack26[i];
+
+        virtualinvoke $stack27.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: boolean releaseReference()>();
+
+        i = i + 1;
+
+        goto label07;
+
+     label08:
+        $r24 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack20 = $r24.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational atime_base>;
+
+        virtualinvoke $stack20.<org.bytedeco.ffmpeg.avutil.AVRational: boolean releaseReference()>();
+
+        $r25 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r25.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx> = null;
+
+        $r26 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r26.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx> = null;
+
+        $r27 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r27.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] asetpts_ctx> = null;
+
+        $r28 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r28.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph afilter_graph> = null;
+
+        $r29 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r29.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational atime_base> = null;
+
+     label09:
+        $r30 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack5 = $r30.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame>;
+
+        if $stack5 == null goto label10;
+
+        $r31 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack13 = $r31.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame>;
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avutil: void av_frame_free(org.bytedeco.ffmpeg.avutil.AVFrame)>($stack13);
+
+        $r32 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r32.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame> = null;
+
+     label10:
+        $r33 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack6 = $r33.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        if $stack6 == null goto label11;
+
+        $r34 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack11 = $r34.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avutil: void av_frame_free(org.bytedeco.ffmpeg.avutil.AVFrame)>($stack11);
+
+        $r35 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r35.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame> = null;
+
+     label11:
+        $r36 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack7 = $r36.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        if $stack7 == null goto label12;
+
+        $r37 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack8 = $r37.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avutil: void av_frame_free(org.bytedeco.ffmpeg.avutil.AVFrame)>($stack8);
+
+        $r38 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r38.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame> = null;
+
+     label12:
+        $r39 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r39.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame> = null;
+
+        return;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0;
+
+        this := @this: FFmpegFrameFilter;
+
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.FFmpegFrameFilter: void release()>();
+
+        return;
+    }
+
+    public int getImageWidth()
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack1, $stack3;
+        int $stack2;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1;
+
+        this := @this: FFmpegFrameFilter;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        $stack2 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersink_get_w(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack3);
+
+        goto label2;
+
+     label1:
+        $stack2 = specialinvoke this.<org.bytedeco.javacv.FrameFilter: int getImageWidth()>();
+
+     label2:
+        return $stack2;
+    }
+
+    public int getImageHeight()
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack1, $stack3;
+        int $stack2;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1;
+
+        this := @this: FFmpegFrameFilter;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        $stack2 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersink_get_h(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack3);
+
+        goto label2;
+
+     label1:
+        $stack2 = specialinvoke this.<org.bytedeco.javacv.FrameFilter: int getImageHeight()>();
+
+     label2:
+        return $stack2;
+    }
+
+    public int getPixelFormat()
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack1, $stack3;
+        int $stack2;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1;
+
+        this := @this: FFmpegFrameFilter;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        $stack2 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersink_get_format(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack3);
+
+        goto label2;
+
+     label1:
+        $stack2 = specialinvoke this.<org.bytedeco.javacv.FrameFilter: int getPixelFormat()>();
+
+     label2:
+        return $stack2;
+    }
+
+    public double getFrameRate()
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack2, $stack4, $stack15;
+        double $stack3, $stack8, $stack10, $stack11, $stack18, $stack20, $stack21;
+        int $stack6, $stack7, $stack9, $stack12, $stack17, $stack19;
+        org.bytedeco.ffmpeg.avutil.AVRational r;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1, $r2;
+
+        this := @this: FFmpegFrameFilter;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        if $stack2 == null goto label2;
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack4 = $r1.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        r = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avutil.AVRational av_buffersink_get_frame_rate(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack4);
+
+        $stack6 = virtualinvoke r.<org.bytedeco.ffmpeg.avutil.AVRational: int num()>();
+
+        if $stack6 != 0 goto label1;
+
+        $stack12 = virtualinvoke r.<org.bytedeco.ffmpeg.avutil.AVRational: int den()>();
+
+        if $stack12 != 0 goto label1;
+
+        $r2 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack15 = $r2.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        r = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avutil.AVRational av_buffersink_get_time_base(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack15);
+
+        $stack17 = virtualinvoke r.<org.bytedeco.ffmpeg.avutil.AVRational: int den()>();
+
+        $stack18 = (double) $stack17;
+
+        $stack19 = virtualinvoke r.<org.bytedeco.ffmpeg.avutil.AVRational: int num()>();
+
+        $stack20 = (double) $stack19;
+
+        $stack21 = $stack18 / $stack20;
+
+        return $stack21;
+
+     label1:
+        $stack7 = virtualinvoke r.<org.bytedeco.ffmpeg.avutil.AVRational: int num()>();
+
+        $stack8 = (double) $stack7;
+
+        $stack9 = virtualinvoke r.<org.bytedeco.ffmpeg.avutil.AVRational: int den()>();
+
+        $stack10 = (double) $stack9;
+
+        $stack11 = $stack8 / $stack10;
+
+        return $stack11;
+
+     label2:
+        $stack3 = specialinvoke this.<org.bytedeco.javacv.FrameFilter: double getFrameRate()>();
+
+        return $stack3;
+    }
+
+    public double getAspectRatio()
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack4, $stack6;
+        double $stack5, $stack9, $stack11, a, $stack13;
+        org.bytedeco.ffmpeg.avutil.AVRational r;
+        int $stack8, $stack10;
+        byte $stack12;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1;
+
+        this := @this: FFmpegFrameFilter;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        if $stack4 == null goto label3;
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack6 = $r1.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        r = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avutil.AVRational av_buffersink_get_sample_aspect_ratio(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack6);
+
+        $stack8 = virtualinvoke r.<org.bytedeco.ffmpeg.avutil.AVRational: int num()>();
+
+        $stack9 = (double) $stack8;
+
+        $stack10 = virtualinvoke r.<org.bytedeco.ffmpeg.avutil.AVRational: int den()>();
+
+        $stack11 = (double) $stack10;
+
+        a = $stack9 / $stack11;
+
+        $stack12 = a cmpl 0.0;
+
+        if $stack12 != 0 goto label1;
+
+        $stack13 = 1.0;
+
+        goto label2;
+
+     label1:
+        $stack13 = a;
+
+     label2:
+        return $stack13;
+
+     label3:
+        $stack5 = specialinvoke this.<org.bytedeco.javacv.FrameFilter: double getAspectRatio()>();
+
+        return $stack5;
+    }
+
+    public int getAudioChannels()
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack1, $stack3;
+        int $stack2;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1;
+
+        this := @this: FFmpegFrameFilter;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx>;
+
+        $stack2 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersink_get_channels(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack3);
+
+        goto label2;
+
+     label1:
+        $stack2 = specialinvoke this.<org.bytedeco.javacv.FrameFilter: int getAudioChannels()>();
+
+     label2:
+        return $stack2;
+    }
+
+    public int getSampleFormat()
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack1, $stack3;
+        int $stack2;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1;
+
+        this := @this: FFmpegFrameFilter;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx>;
+
+        $stack2 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersink_get_format(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack3);
+
+        goto label2;
+
+     label1:
+        $stack2 = specialinvoke this.<org.bytedeco.javacv.FrameFilter: int getSampleFormat()>();
+
+     label2:
+        return $stack2;
+    }
+
+    public int getSampleRate()
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack1, $stack3;
+        int $stack2;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1;
+
+        this := @this: FFmpegFrameFilter;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx>;
+
+        $stack2 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersink_get_sample_rate(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack3);
+
+        goto label2;
+
+     label1:
+        $stack2 = specialinvoke this.<org.bytedeco.javacv.FrameFilter: int getSampleRate()>();
+
+     label2:
+        return $stack2;
+    }
+
+    public void start() throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        FFmpegFrameFilter this;
+        java.lang.Throwable $stack4;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0;
+
+        this := @this: FFmpegFrameFilter;
+
+        entermonitor class "Lorg/bytedeco/ffmpeg/global/avfilter;";
+
+     label1:
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.FFmpegFrameFilter: void startUnsafe()>();
+
+        exitmonitor class "Lorg/bytedeco/ffmpeg/global/avfilter;";
+
+     label2:
+        goto label5;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        exitmonitor class "Lorg/bytedeco/ffmpeg/global/avfilter;";
+
+     label4:
+        throw $stack4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public synchronized void startUnsafe() throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        java.lang.Class[] $stack5;
+        FFmpegFrameFilter this;
+        org.bytedeco.javacv.Frame $stack6, $u2;
+        org.bytedeco.ffmpeg.avutil.AVFrame $stack7, $stack8, $stack9, $stack17, $stack19, $stack21;
+        org.bytedeco.javacpp.BytePointer[] $stack10, $stack11, $stack14;
+        java.nio.Buffer[] $stack12, $stack13, $stack15;
+        java.lang.String $stack22, $stack23;
+        int $stack24, $stack28, $stack29, $stack31, $stack32;
+        java.lang.Throwable $stack34, $stack35, $r1, $r15;
+        org.bytedeco.javacpp.PointerScope $u0;
+        org.bytedeco.javacv.FFmpegFrameFilter$Exception $u1, $u3;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25;
+
+        this := @this: FFmpegFrameFilter;
+
+        $u0 = new org.bytedeco.javacpp.PointerScope;
+
+        $stack5 = newarray (java.lang.Class)[0];
+
+        specialinvoke $u0.<org.bytedeco.javacpp.PointerScope: void <init>(java.lang.Class[])>($stack5);
+
+     label01:
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack6 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        if $stack6 == null goto label02;
+
+        $u1 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        specialinvoke $u1.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>("start() has already been called: Call stop() before calling start() again.");
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label02:
+        $stack7 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.ffmpeg.avutil.AVFrame av_frame_alloc()>();
+
+        $r2 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r2.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame> = $stack7;
+
+        $stack8 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.ffmpeg.avutil.AVFrame av_frame_alloc()>();
+
+        $r3 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r3.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame> = $stack8;
+
+        $stack9 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.ffmpeg.avutil.AVFrame av_frame_alloc()>();
+
+        $r4 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r4.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame> = $stack9;
+
+        $stack10 = newarray (org.bytedeco.javacpp.BytePointer)[1];
+
+        $stack10[0] = null;
+
+        $r5 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r5.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr> = $stack10;
+
+        $stack11 = newarray (org.bytedeco.javacpp.BytePointer)[1];
+
+        $stack11[0] = null;
+
+        $r6 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r6.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2> = $stack11;
+
+        $stack12 = newarray (java.nio.Buffer)[1];
+
+        $stack12[0] = null;
+
+        $r7 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r7.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] image_buf> = $stack12;
+
+        $stack13 = newarray (java.nio.Buffer)[1];
+
+        $stack13[0] = null;
+
+        $r8 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r8.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] image_buf2> = $stack13;
+
+        $stack14 = newarray (org.bytedeco.javacpp.BytePointer)[1];
+
+        $stack14[0] = null;
+
+        $r9 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r9.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] samples_ptr> = $stack14;
+
+        $stack15 = newarray (java.nio.Buffer)[1];
+
+        $stack15[0] = null;
+
+        $r10 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r10.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] samples_buf> = $stack15;
+
+        $u2 = new org.bytedeco.javacv.Frame;
+
+        specialinvoke $u2.<org.bytedeco.javacv.Frame: void <init>()>();
+
+        $r11 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r11.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame> = $u2;
+
+        $r12 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack17 = $r12.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame>;
+
+        if $stack17 == null goto label03;
+
+        $r13 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack19 = $r13.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        if $stack19 == null goto label03;
+
+        $r14 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack21 = $r14.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        if $stack21 != null goto label04;
+
+     label03:
+        $u3 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        specialinvoke $u3.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>("Could not allocate frames");
+
+        $r15 = (java.lang.Throwable) $u3;
+
+        throw $r15;
+
+     label04:
+        $r16 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack22 = $r16.<org.bytedeco.javacv.FFmpegFrameFilter: java.lang.String filters>;
+
+        if $stack22 == null goto label05;
+
+        $r17 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack29 = $r17.<org.bytedeco.javacv.FFmpegFrameFilter: int imageWidth>;
+
+        if $stack29 <= 0 goto label05;
+
+        $r18 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack31 = $r18.<org.bytedeco.javacv.FFmpegFrameFilter: int imageHeight>;
+
+        if $stack31 <= 0 goto label05;
+
+        $r19 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack32 = $r19.<org.bytedeco.javacv.FFmpegFrameFilter: int videoInputs>;
+
+        if $stack32 <= 0 goto label05;
+
+        $r20 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        specialinvoke $r20.<org.bytedeco.javacv.FFmpegFrameFilter: void startVideoUnsafe()>();
+
+     label05:
+        $r21 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack23 = $r21.<org.bytedeco.javacv.FFmpegFrameFilter: java.lang.String afilters>;
+
+        if $stack23 == null goto label06;
+
+        $r22 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack24 = $r22.<org.bytedeco.javacv.FFmpegFrameFilter: int audioChannels>;
+
+        if $stack24 <= 0 goto label06;
+
+        $r23 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack28 = $r23.<org.bytedeco.javacv.FFmpegFrameFilter: int audioInputs>;
+
+        if $stack28 <= 0 goto label06;
+
+        $r24 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        specialinvoke $r24.<org.bytedeco.javacv.FFmpegFrameFilter: void startAudioUnsafe()>();
+
+     label06:
+        $r25 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r25.<org.bytedeco.javacv.FFmpegFrameFilter: boolean started> = 1;
+
+     label07:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+        goto label13;
+
+     label08:
+        $stack35 := @caughtexception;
+
+     label09:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+     label10:
+        goto label12;
+
+     label11:
+        $stack34 := @caughtexception;
+
+        virtualinvoke $stack35.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack34);
+
+     label12:
+        throw $stack35;
+
+     label13:
+        return;
+
+        catch java.lang.Throwable from label01 to label07 with label08;
+        catch java.lang.Throwable from label09 to label10 with label11;
+    }
+
+    private void startVideoUnsafe() throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        org.bytedeco.ffmpeg.avfilter.AVFilter buffersrc, buffersink, setpts;
+        FFmpegFrameFilter this;
+        int $stack17, $stack23, $stack32, $stack37, $stack40, $stack44, $stack47, $stack50, $stack53, $stack56, $stack58, $stack61, $stack77, $stack79, $stack109, $stack121, $stack143, i, $stack60, 'ret';
+        org.bytedeco.ffmpeg.avfilter.AVFilterInOut[] outputs;
+        org.bytedeco.ffmpeg.avfilter.AVFilterInOut inputs, $stack74, $stack84, $stack110, $stack130, $stack135, $stack137, $stack139, $stack144, $stack145, $stack204;
+        double $stack19, $stack28, $stack188;
+        org.bytedeco.ffmpeg.avutil.AVRational $stack20, time_base, r, $stack81, $stack83;
+        int[] $stack22;
+        org.bytedeco.ffmpeg.avfilter.AVFilterGraph $stack24, $stack27, $stack65, $stack76, $stack78, $stack115, $stack122;
+        byte $stack29;
+        java.lang.Object[] $stack31;
+        java.util.Locale $stack33;
+        java.lang.Integer $stack36, $stack39, $stack42, $stack45, $stack48, $stack51, $stack54;
+        java.lang.String args, $stack75, $stack89, $stack94, $stack100, name, $stack152, $stack158, $stack173, $stack177, $stack162, $stack101;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext[] $stack57, $stack59, $stack112, $stack118, $stack124, $stack125, $stack133;
+        org.bytedeco.javacpp.Pointer $stack63, $stack82, $stack113, $stack119;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack64, $stack70, $stack80, $stack114, $stack120, $stack126, $stack127, $stack134, $u2, $u5, $u12;
+        org.bytedeco.javacpp.BytePointer $stack68, $stack131, $u11, $u15;
+        java.lang.StringBuilder $stack87, $stack88, $stack92, $stack93, $stack97, $stack98, $stack99, $stack149, $stack150, $stack151, $stack155, $stack156, $stack157, $stack160, $stack161, $stack170, $stack171, $stack172, $stack175, $stack176, $u1, $u3, $u6, $u7, $u9, $u13, $u16, $u18;
+        java.lang.Throwable $stack203, $r5, $r19, $r23, $r26, $r31, $r35, $r37;
+        org.bytedeco.javacv.FFmpegFrameFilter$Exception $u0, $u4, $u8, $u10, $u14, $u17, $u19;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1, $r2, $r3, $r4, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r20, $r21, $r22, $r24, $r25, $r27, $r28, $r29, $r30, $r32, $r33, $r34, $r36, $r38, $r39;
+
+        this := @this: FFmpegFrameFilter;
+
+        buffersrc = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilter avfilter_get_by_name(java.lang.String)>("buffer");
+
+        buffersink = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilter avfilter_get_by_name(java.lang.String)>("buffersink");
+
+        setpts = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilter avfilter_get_by_name(java.lang.String)>("setpts");
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack17 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: int videoInputs>;
+
+        outputs = newarray (org.bytedeco.ffmpeg.avfilter.AVFilterInOut)[$stack17];
+
+        inputs = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilterInOut avfilter_inout_alloc()>();
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack19 = $r1.<org.bytedeco.javacv.FFmpegFrameFilter: double frameRate>;
+
+        $stack20 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.ffmpeg.avutil.AVRational av_d2q(double,int)>($stack19, 1001000);
+
+        time_base = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.ffmpeg.avutil.AVRational av_inv_q(org.bytedeco.ffmpeg.avutil.AVRational)>($stack20);
+
+        $stack22 = newarray (int)[2];
+
+        $r2 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack23 = $r2.<org.bytedeco.javacv.FFmpegFrameFilter: int pixelFormat>;
+
+        $stack22[0] = $stack23;
+
+        $stack22[1] = -1;
+
+     label01:
+        $stack24 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph avfilter_graph_alloc()>();
+
+        $r3 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r3.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph filter_graph> = $stack24;
+
+        if outputs == null goto label02;
+
+        if inputs == null goto label02;
+
+        $r4 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack27 = $r4.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph filter_graph>;
+
+        if $stack27 != null goto label03;
+
+     label02:
+        $u0 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        specialinvoke $u0.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>("Could not allocate video filter graph: Out of memory?");
+
+        $r5 = (java.lang.Throwable) $u0;
+
+        throw $r5;
+
+     label03:
+        $r6 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack28 = $r6.<org.bytedeco.javacv.FFmpegFrameFilter: double aspectRatio>;
+
+        $stack29 = $stack28 cmpl 0.0;
+
+        if $stack29 <= 0 goto label04;
+
+        $r7 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack188 = $r7.<org.bytedeco.javacv.FFmpegFrameFilter: double aspectRatio>;
+
+        goto label05;
+
+     label04:
+        $stack188 = 1.0;
+
+     label05:
+        r = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.ffmpeg.avutil.AVRational av_d2q(double,int)>($stack188, 255);
+
+        $stack33 = <java.util.Locale: java.util.Locale ROOT>;
+
+        $stack31 = newarray (java.lang.Object)[7];
+
+        $r8 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack32 = $r8.<org.bytedeco.javacv.FFmpegFrameFilter: int imageWidth>;
+
+        $stack36 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($stack32);
+
+        $stack31[0] = $stack36;
+
+        $r9 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack37 = $r9.<org.bytedeco.javacv.FFmpegFrameFilter: int imageHeight>;
+
+        $stack39 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($stack37);
+
+        $stack31[1] = $stack39;
+
+        $r10 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack40 = $r10.<org.bytedeco.javacv.FFmpegFrameFilter: int pixelFormat>;
+
+        $stack42 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($stack40);
+
+        $stack31[2] = $stack42;
+
+        $stack44 = virtualinvoke time_base.<org.bytedeco.ffmpeg.avutil.AVRational: int num()>();
+
+        $stack45 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($stack44);
+
+        $stack31[3] = $stack45;
+
+        $stack47 = virtualinvoke time_base.<org.bytedeco.ffmpeg.avutil.AVRational: int den()>();
+
+        $stack48 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($stack47);
+
+        $stack31[4] = $stack48;
+
+        $stack50 = virtualinvoke r.<org.bytedeco.ffmpeg.avutil.AVRational: int num()>();
+
+        $stack51 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($stack50);
+
+        $stack31[5] = $stack51;
+
+        $stack53 = virtualinvoke r.<org.bytedeco.ffmpeg.avutil.AVRational: int den()>();
+
+        $stack54 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($stack53);
+
+        $stack31[6] = $stack54;
+
+        args = staticinvoke <java.lang.String: java.lang.String format(java.util.Locale,java.lang.String,java.lang.Object[])>($stack33, "video_size=%dx%d:pix_fmt=%d:time_base=%d/%d:pixel_aspect=%d/%d", $stack31);
+
+        $r11 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack56 = $r11.<org.bytedeco.javacv.FFmpegFrameFilter: int videoInputs>;
+
+        $stack57 = newarray (org.bytedeco.ffmpeg.avfilter.AVFilterContext)[$stack56];
+
+        $r12 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r12.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx> = $stack57;
+
+        $r13 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack58 = $r13.<org.bytedeco.javacv.FFmpegFrameFilter: int videoInputs>;
+
+        $stack59 = newarray (org.bytedeco.ffmpeg.avfilter.AVFilterContext)[$stack58];
+
+        $r14 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r14.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] setpts_ctx> = $stack59;
+
+        i = 0;
+
+     label06:
+        $r15 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack60 = $r15.<org.bytedeco.javacv.FFmpegFrameFilter: int videoInputs>;
+
+        if i >= $stack60 goto label15;
+
+        $r16 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack109 = $r16.<org.bytedeco.javacv.FFmpegFrameFilter: int videoInputs>;
+
+        if $stack109 <= 1 goto label07;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack175 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i);
+
+        $stack176 = virtualinvoke $stack175.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":v");
+
+        $stack177 = virtualinvoke $stack176.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label08;
+
+     label07:
+        $stack177 = "in";
+
+     label08:
+        name = $stack177;
+
+        $stack110 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilterInOut avfilter_inout_alloc()>();
+
+        outputs[i] = $stack110;
+
+        $r17 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack112 = $r17.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx>;
+
+        $u2 = new org.bytedeco.ffmpeg.avfilter.AVFilterContext;
+
+        specialinvoke $u2.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: void <init>()>();
+
+        $stack113 = virtualinvoke $u2.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: org.bytedeco.javacpp.Pointer retainReference()>();
+
+        $stack114 = (org.bytedeco.ffmpeg.avfilter.AVFilterContext) $stack113;
+
+        $stack112[i] = $stack114;
+
+        $r18 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack115 = $r18.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph filter_graph>;
+
+        'ret' = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_graph_create_filter(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avfilter.AVFilter,java.lang.String,java.lang.String,org.bytedeco.javacpp.Pointer,org.bytedeco.ffmpeg.avfilter.AVFilterGraph)>($stack114, buffersrc, $stack177, args, null, $stack115);
+
+        if 'ret' >= 0 goto label09;
+
+        $u4 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack170 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_create_filter() error ");
+
+        $stack171 = virtualinvoke $stack170.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>('ret');
+
+        $stack172 = virtualinvoke $stack171.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Cannot create video buffer source.");
+
+        $stack173 = virtualinvoke $stack172.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u4.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack173);
+
+        $r19 = (java.lang.Throwable) $u4;
+
+        throw $r19;
+
+     label09:
+        $r20 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack118 = $r20.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] setpts_ctx>;
+
+        $u5 = new org.bytedeco.ffmpeg.avfilter.AVFilterContext;
+
+        specialinvoke $u5.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: void <init>()>();
+
+        $stack119 = virtualinvoke $u5.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: org.bytedeco.javacpp.Pointer retainReference()>();
+
+        $stack120 = (org.bytedeco.ffmpeg.avfilter.AVFilterContext) $stack119;
+
+        $stack118[i] = $stack120;
+
+        $r21 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack121 = $r21.<org.bytedeco.javacv.FFmpegFrameFilter: int videoInputs>;
+
+        if $stack121 <= 1 goto label10;
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack160 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("setpts");
+
+        $stack161 = virtualinvoke $stack160.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i);
+
+        $stack162 = virtualinvoke $stack161.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label11;
+
+     label10:
+        $stack162 = "setpts";
+
+     label11:
+        $r22 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack122 = $r22.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph filter_graph>;
+
+        'ret' = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_graph_create_filter(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avfilter.AVFilter,java.lang.String,java.lang.String,org.bytedeco.javacpp.Pointer,org.bytedeco.ffmpeg.avfilter.AVFilterGraph)>($stack120, setpts, $stack162, "N", null, $stack122);
+
+        if 'ret' >= 0 goto label12;
+
+        $u8 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u7 = new java.lang.StringBuilder;
+
+        specialinvoke $u7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack155 = virtualinvoke $u7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_create_filter() error ");
+
+        $stack156 = virtualinvoke $stack155.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>('ret');
+
+        $stack157 = virtualinvoke $stack156.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Cannot create setpts filter.");
+
+        $stack158 = virtualinvoke $stack157.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u8.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack158);
+
+        $r23 = (java.lang.Throwable) $u8;
+
+        throw $r23;
+
+     label12:
+        $r24 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack124 = $r24.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx>;
+
+        $stack127 = $stack124[i];
+
+        $r25 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack125 = $r25.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] setpts_ctx>;
+
+        $stack126 = $stack125[i];
+
+        'ret' = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_link(org.bytedeco.ffmpeg.avfilter.AVFilterContext,int,org.bytedeco.ffmpeg.avfilter.AVFilterContext,int)>($stack127, 0, $stack126, 0);
+
+        if 'ret' >= 0 goto label13;
+
+        $u10 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u9 = new java.lang.StringBuilder;
+
+        specialinvoke $u9.<java.lang.StringBuilder: void <init>()>();
+
+        $stack149 = virtualinvoke $u9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_create_filter() error ");
+
+        $stack150 = virtualinvoke $stack149.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>('ret');
+
+        $stack151 = virtualinvoke $stack150.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Cannot link setpts filter.");
+
+        $stack152 = virtualinvoke $stack151.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u10.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack152);
+
+        $r26 = (java.lang.Throwable) $u10;
+
+        throw $r26;
+
+     label13:
+        $stack130 = outputs[i];
+
+        $u11 = new org.bytedeco.javacpp.BytePointer;
+
+        specialinvoke $u11.<org.bytedeco.javacpp.BytePointer: void <init>(java.lang.String)>(name);
+
+        $stack131 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.javacpp.BytePointer av_strdup(org.bytedeco.javacpp.BytePointer)>($u11);
+
+        virtualinvoke $stack130.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut name(org.bytedeco.javacpp.BytePointer)>($stack131);
+
+        $stack135 = outputs[i];
+
+        $r27 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack133 = $r27.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] setpts_ctx>;
+
+        $stack134 = $stack133[i];
+
+        virtualinvoke $stack135.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut filter_ctx(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack134);
+
+        $stack137 = outputs[i];
+
+        virtualinvoke $stack137.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut pad_idx(int)>(0);
+
+        $stack139 = outputs[i];
+
+        virtualinvoke $stack139.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut next(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>(null);
+
+        if i <= 0 goto label14;
+
+        $stack143 = i - 1;
+
+        $stack145 = outputs[$stack143];
+
+        $stack144 = outputs[i];
+
+        virtualinvoke $stack145.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut next(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>($stack144);
+
+     label14:
+        i = i + 1;
+
+        goto label06;
+
+     label15:
+        $r28 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack61 = $r28.<org.bytedeco.javacv.FFmpegFrameFilter: int videoInputs>;
+
+        if $stack61 <= 1 goto label16;
+
+        $stack101 = "v";
+
+        goto label17;
+
+     label16:
+        $stack101 = "out";
+
+     label17:
+        $u12 = new org.bytedeco.ffmpeg.avfilter.AVFilterContext;
+
+        specialinvoke $u12.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: void <init>()>();
+
+        $stack63 = virtualinvoke $u12.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: org.bytedeco.javacpp.Pointer retainReference()>();
+
+        $stack64 = (org.bytedeco.ffmpeg.avfilter.AVFilterContext) $stack63;
+
+        $r29 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r29.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx> = $stack64;
+
+        $r30 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack65 = $r30.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph filter_graph>;
+
+        'ret' = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_graph_create_filter(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avfilter.AVFilter,java.lang.String,java.lang.String,org.bytedeco.javacpp.Pointer,org.bytedeco.ffmpeg.avfilter.AVFilterGraph)>($stack64, buffersink, $stack101, null, null, $stack65);
+
+        if 'ret' >= 0 goto label18;
+
+        $u14 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u13 = new java.lang.StringBuilder;
+
+        specialinvoke $u13.<java.lang.StringBuilder: void <init>()>();
+
+        $stack97 = virtualinvoke $u13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_create_filter() error ");
+
+        $stack98 = virtualinvoke $stack97.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>('ret');
+
+        $stack99 = virtualinvoke $stack98.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Cannot create video buffer sink.");
+
+        $stack100 = virtualinvoke $stack99.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u14.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack100);
+
+        $r31 = (java.lang.Throwable) $u14;
+
+        throw $r31;
+
+     label18:
+        $u15 = new org.bytedeco.javacpp.BytePointer;
+
+        specialinvoke $u15.<org.bytedeco.javacpp.BytePointer: void <init>(java.lang.String)>($stack101);
+
+        $stack68 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.javacpp.BytePointer av_strdup(org.bytedeco.javacpp.BytePointer)>($u15);
+
+        virtualinvoke inputs.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut name(org.bytedeco.javacpp.BytePointer)>($stack68);
+
+        $r32 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack70 = $r32.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        virtualinvoke inputs.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut filter_ctx(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack70);
+
+        virtualinvoke inputs.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut pad_idx(int)>(0);
+
+        virtualinvoke inputs.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut next(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>(null);
+
+        $r33 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack76 = $r33.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph filter_graph>;
+
+        $r34 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack75 = $r34.<org.bytedeco.javacv.FFmpegFrameFilter: java.lang.String filters>;
+
+        $stack74 = outputs[0];
+
+        $stack77 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_graph_parse_ptr(org.bytedeco.ffmpeg.avfilter.AVFilterGraph,java.lang.String,org.bytedeco.ffmpeg.avfilter.AVFilterInOut,org.bytedeco.ffmpeg.avfilter.AVFilterInOut,org.bytedeco.javacpp.Pointer)>($stack76, $stack75, inputs, $stack74, null);
+
+        if $stack77 >= 0 goto label19;
+
+        $u17 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u16 = new java.lang.StringBuilder;
+
+        specialinvoke $u16.<java.lang.StringBuilder: void <init>()>();
+
+        $stack92 = virtualinvoke $u16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_parse_ptr() error ");
+
+        $stack93 = virtualinvoke $stack92.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack77);
+
+        $stack94 = virtualinvoke $stack93.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u17.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack94);
+
+        $r35 = (java.lang.Throwable) $u17;
+
+        throw $r35;
+
+     label19:
+        $r36 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack78 = $r36.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph filter_graph>;
+
+        $stack79 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_graph_config(org.bytedeco.ffmpeg.avfilter.AVFilterGraph,org.bytedeco.javacpp.Pointer)>($stack78, null);
+
+        if $stack79 >= 0 goto label20;
+
+        $u19 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u18 = new java.lang.StringBuilder;
+
+        specialinvoke $u18.<java.lang.StringBuilder: void <init>()>();
+
+        $stack87 = virtualinvoke $u18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_config() error ");
+
+        $stack88 = virtualinvoke $stack87.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack79);
+
+        $stack89 = virtualinvoke $stack88.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u19.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack89);
+
+        $r37 = (java.lang.Throwable) $u19;
+
+        throw $r37;
+
+     label20:
+        $r38 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack80 = $r38.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        $stack81 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avutil.AVRational av_buffersink_get_time_base(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack80);
+
+        $stack82 = virtualinvoke $stack81.<org.bytedeco.ffmpeg.avutil.AVRational: org.bytedeco.javacpp.Pointer retainReference()>();
+
+        $stack83 = (org.bytedeco.ffmpeg.avutil.AVRational) $stack82;
+
+        $r39 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r39.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational time_base> = $stack83;
+
+     label21:
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: void avfilter_inout_free(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>(inputs);
+
+        $stack84 = outputs[0];
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: void avfilter_inout_free(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>($stack84);
+
+        goto label24;
+
+     label22:
+        $stack203 := @caughtexception;
+
+     label23:
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: void avfilter_inout_free(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>(inputs);
+
+        $stack204 = outputs[0];
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: void avfilter_inout_free(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>($stack204);
+
+        throw $stack203;
+
+     label24:
+        return;
+
+        catch java.lang.Throwable from label01 to label21 with label22;
+        catch java.lang.Throwable from label22 to label23 with label22;
+    }
+
+    private void startAudioUnsafe() throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        org.bytedeco.ffmpeg.avfilter.AVFilter abuffersrc, abuffersink, asetpts;
+        FFmpegFrameFilter this;
+        int $stack15, $stack18, $stack23, $stack25, $stack27, $stack28, $stack44, $stack46, $stack76, $stack79, $stack84, $stack87, $stack90, $stack105, $stack127, i, 'ret';
+        org.bytedeco.ffmpeg.avfilter.AVFilterInOut[] aoutputs;
+        org.bytedeco.ffmpeg.avfilter.AVFilterInOut ainputs, $stack41, $stack51, $stack77, $stack114, $stack119, $stack121, $stack123, $stack128, $stack129, $stack178;
+        int[] $stack17;
+        org.bytedeco.ffmpeg.avfilter.AVFilterGraph $stack19, $stack22, $stack32, $stack43, $stack45, $stack99, $stack106;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext[] $stack24, $stack26, $stack96, $stack102, $stack108, $stack109, $stack117;
+        org.bytedeco.javacpp.Pointer $stack30, $stack49, $stack97, $stack103;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack31, $stack37, $stack47, $stack98, $stack104, $stack110, $stack111, $stack118, $u2, $u5, $u12;
+        org.bytedeco.javacpp.BytePointer $stack35, $stack115, $u11, $u15;
+        java.lang.String $stack42, $stack56, $stack61, $stack67, name, aargs, $stack136, $stack142, $stack157, $stack161, $stack146, $stack68;
+        org.bytedeco.ffmpeg.avutil.AVRational $stack48, $stack50;
+        java.lang.StringBuilder $stack54, $stack55, $stack59, $stack60, $stack64, $stack65, $stack66, $stack133, $stack134, $stack135, $stack139, $stack140, $stack141, $stack144, $stack145, $stack154, $stack155, $stack156, $stack159, $stack160, $u1, $u3, $u6, $u7, $u9, $u13, $u16, $u18;
+        java.lang.Object[] $stack78;
+        java.util.Locale $stack80;
+        java.lang.Integer $stack83, $stack86, $stack89;
+        long $stack92;
+        java.lang.Long $stack93;
+        java.lang.Throwable $stack177, $r4, $r17, $r21, $r24, $r29, $r33, $r35;
+        org.bytedeco.javacv.FFmpegFrameFilter$Exception $u0, $u4, $u8, $u10, $u14, $u17, $u19;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r1, $r2, $r3, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r18, $r19, $r20, $r22, $r23, $r25, $r26, $r27, $r28, $r30, $r31, $r32, $r34, $r36, $r37;
+
+        this := @this: FFmpegFrameFilter;
+
+        abuffersrc = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilter avfilter_get_by_name(java.lang.String)>("abuffer");
+
+        abuffersink = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilter avfilter_get_by_name(java.lang.String)>("abuffersink");
+
+        asetpts = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilter avfilter_get_by_name(java.lang.String)>("asetpts");
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack15 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: int audioInputs>;
+
+        aoutputs = newarray (org.bytedeco.ffmpeg.avfilter.AVFilterInOut)[$stack15];
+
+        ainputs = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilterInOut avfilter_inout_alloc()>();
+
+        $stack17 = newarray (int)[2];
+
+        $r1 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack18 = $r1.<org.bytedeco.javacv.FFmpegFrameFilter: int sampleFormat>;
+
+        $stack17[0] = $stack18;
+
+        $stack17[1] = -1;
+
+     label01:
+        $stack19 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph avfilter_graph_alloc()>();
+
+        $r2 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r2.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph afilter_graph> = $stack19;
+
+        if aoutputs == null goto label02;
+
+        if ainputs == null goto label02;
+
+        $r3 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack22 = $r3.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph afilter_graph>;
+
+        if $stack22 != null goto label03;
+
+     label02:
+        $u0 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        specialinvoke $u0.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>("Could not allocate audio filter graph: Out of memory?");
+
+        $r4 = (java.lang.Throwable) $u0;
+
+        throw $r4;
+
+     label03:
+        $r5 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack23 = $r5.<org.bytedeco.javacv.FFmpegFrameFilter: int audioInputs>;
+
+        $stack24 = newarray (org.bytedeco.ffmpeg.avfilter.AVFilterContext)[$stack23];
+
+        $r6 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r6.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx> = $stack24;
+
+        $r7 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack25 = $r7.<org.bytedeco.javacv.FFmpegFrameFilter: int audioInputs>;
+
+        $stack26 = newarray (org.bytedeco.ffmpeg.avfilter.AVFilterContext)[$stack25];
+
+        $r8 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r8.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] asetpts_ctx> = $stack26;
+
+        i = 0;
+
+     label04:
+        $r9 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack27 = $r9.<org.bytedeco.javacv.FFmpegFrameFilter: int audioInputs>;
+
+        if i >= $stack27 goto label13;
+
+        $r10 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack76 = $r10.<org.bytedeco.javacv.FFmpegFrameFilter: int audioInputs>;
+
+        if $stack76 <= 1 goto label05;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack159 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i);
+
+        $stack160 = virtualinvoke $stack159.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":a");
+
+        $stack161 = virtualinvoke $stack160.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label06;
+
+     label05:
+        $stack161 = "in";
+
+     label06:
+        name = $stack161;
+
+        $stack77 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avfilter.AVFilterInOut avfilter_inout_alloc()>();
+
+        aoutputs[i] = $stack77;
+
+        $stack80 = <java.util.Locale: java.util.Locale ROOT>;
+
+        $stack78 = newarray (java.lang.Object)[4];
+
+        $r11 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack79 = $r11.<org.bytedeco.javacv.FFmpegFrameFilter: int audioChannels>;
+
+        $stack83 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($stack79);
+
+        $stack78[0] = $stack83;
+
+        $r12 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack84 = $r12.<org.bytedeco.javacv.FFmpegFrameFilter: int sampleFormat>;
+
+        $stack86 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($stack84);
+
+        $stack78[1] = $stack86;
+
+        $r13 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack87 = $r13.<org.bytedeco.javacv.FFmpegFrameFilter: int sampleRate>;
+
+        $stack89 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($stack87);
+
+        $stack78[2] = $stack89;
+
+        $r14 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack90 = $r14.<org.bytedeco.javacv.FFmpegFrameFilter: int audioChannels>;
+
+        $stack92 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: long av_get_default_channel_layout(int)>($stack90);
+
+        $stack93 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($stack92);
+
+        $stack78[3] = $stack93;
+
+        aargs = staticinvoke <java.lang.String: java.lang.String format(java.util.Locale,java.lang.String,java.lang.Object[])>($stack80, "channels=%d:sample_fmt=%d:sample_rate=%d:channel_layout=%d", $stack78);
+
+        $r15 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack96 = $r15.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx>;
+
+        $u2 = new org.bytedeco.ffmpeg.avfilter.AVFilterContext;
+
+        specialinvoke $u2.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: void <init>()>();
+
+        $stack97 = virtualinvoke $u2.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: org.bytedeco.javacpp.Pointer retainReference()>();
+
+        $stack98 = (org.bytedeco.ffmpeg.avfilter.AVFilterContext) $stack97;
+
+        $stack96[i] = $stack98;
+
+        $r16 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack99 = $r16.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph afilter_graph>;
+
+        'ret' = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_graph_create_filter(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avfilter.AVFilter,java.lang.String,java.lang.String,org.bytedeco.javacpp.Pointer,org.bytedeco.ffmpeg.avfilter.AVFilterGraph)>($stack98, abuffersrc, $stack161, aargs, null, $stack99);
+
+        if 'ret' >= 0 goto label07;
+
+        $u4 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack154 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_create_filter() error ");
+
+        $stack155 = virtualinvoke $stack154.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>('ret');
+
+        $stack156 = virtualinvoke $stack155.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Cannot create audio buffer source.");
+
+        $stack157 = virtualinvoke $stack156.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u4.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack157);
+
+        $r17 = (java.lang.Throwable) $u4;
+
+        throw $r17;
+
+     label07:
+        $r18 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack102 = $r18.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] asetpts_ctx>;
+
+        $u5 = new org.bytedeco.ffmpeg.avfilter.AVFilterContext;
+
+        specialinvoke $u5.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: void <init>()>();
+
+        $stack103 = virtualinvoke $u5.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: org.bytedeco.javacpp.Pointer retainReference()>();
+
+        $stack104 = (org.bytedeco.ffmpeg.avfilter.AVFilterContext) $stack103;
+
+        $stack102[i] = $stack104;
+
+        $r19 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack105 = $r19.<org.bytedeco.javacv.FFmpegFrameFilter: int audioInputs>;
+
+        if $stack105 <= 1 goto label08;
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack144 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("asetpts");
+
+        $stack145 = virtualinvoke $stack144.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i);
+
+        $stack146 = virtualinvoke $stack145.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label09;
+
+     label08:
+        $stack146 = "asetpts";
+
+     label09:
+        $r20 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack106 = $r20.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph afilter_graph>;
+
+        'ret' = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_graph_create_filter(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avfilter.AVFilter,java.lang.String,java.lang.String,org.bytedeco.javacpp.Pointer,org.bytedeco.ffmpeg.avfilter.AVFilterGraph)>($stack104, asetpts, $stack146, "N", null, $stack106);
+
+        if 'ret' >= 0 goto label10;
+
+        $u8 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u7 = new java.lang.StringBuilder;
+
+        specialinvoke $u7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack139 = virtualinvoke $u7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_create_filter() error ");
+
+        $stack140 = virtualinvoke $stack139.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>('ret');
+
+        $stack141 = virtualinvoke $stack140.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Cannot create asetpts filter.");
+
+        $stack142 = virtualinvoke $stack141.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u8.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack142);
+
+        $r21 = (java.lang.Throwable) $u8;
+
+        throw $r21;
+
+     label10:
+        $r22 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack108 = $r22.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx>;
+
+        $stack111 = $stack108[i];
+
+        $r23 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack109 = $r23.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] asetpts_ctx>;
+
+        $stack110 = $stack109[i];
+
+        'ret' = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_link(org.bytedeco.ffmpeg.avfilter.AVFilterContext,int,org.bytedeco.ffmpeg.avfilter.AVFilterContext,int)>($stack111, 0, $stack110, 0);
+
+        if 'ret' >= 0 goto label11;
+
+        $u10 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u9 = new java.lang.StringBuilder;
+
+        specialinvoke $u9.<java.lang.StringBuilder: void <init>()>();
+
+        $stack133 = virtualinvoke $u9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_create_filter() error ");
+
+        $stack134 = virtualinvoke $stack133.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>('ret');
+
+        $stack135 = virtualinvoke $stack134.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Cannot link asetpts filter.");
+
+        $stack136 = virtualinvoke $stack135.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u10.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack136);
+
+        $r24 = (java.lang.Throwable) $u10;
+
+        throw $r24;
+
+     label11:
+        $stack114 = aoutputs[i];
+
+        $u11 = new org.bytedeco.javacpp.BytePointer;
+
+        specialinvoke $u11.<org.bytedeco.javacpp.BytePointer: void <init>(java.lang.String)>(name);
+
+        $stack115 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.javacpp.BytePointer av_strdup(org.bytedeco.javacpp.BytePointer)>($u11);
+
+        virtualinvoke $stack114.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut name(org.bytedeco.javacpp.BytePointer)>($stack115);
+
+        $stack119 = aoutputs[i];
+
+        $r25 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack117 = $r25.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] asetpts_ctx>;
+
+        $stack118 = $stack117[i];
+
+        virtualinvoke $stack119.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut filter_ctx(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack118);
+
+        $stack121 = aoutputs[i];
+
+        virtualinvoke $stack121.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut pad_idx(int)>(0);
+
+        $stack123 = aoutputs[i];
+
+        virtualinvoke $stack123.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut next(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>(null);
+
+        if i <= 0 goto label12;
+
+        $stack127 = i - 1;
+
+        $stack129 = aoutputs[$stack127];
+
+        $stack128 = aoutputs[i];
+
+        virtualinvoke $stack129.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut next(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>($stack128);
+
+     label12:
+        i = i + 1;
+
+        goto label04;
+
+     label13:
+        $r26 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack28 = $r26.<org.bytedeco.javacv.FFmpegFrameFilter: int audioInputs>;
+
+        if $stack28 <= 1 goto label14;
+
+        $stack68 = "a";
+
+        goto label15;
+
+     label14:
+        $stack68 = "out";
+
+     label15:
+        $u12 = new org.bytedeco.ffmpeg.avfilter.AVFilterContext;
+
+        specialinvoke $u12.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: void <init>()>();
+
+        $stack30 = virtualinvoke $u12.<org.bytedeco.ffmpeg.avfilter.AVFilterContext: org.bytedeco.javacpp.Pointer retainReference()>();
+
+        $stack31 = (org.bytedeco.ffmpeg.avfilter.AVFilterContext) $stack30;
+
+        $r27 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r27.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx> = $stack31;
+
+        $r28 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack32 = $r28.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph afilter_graph>;
+
+        'ret' = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_graph_create_filter(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avfilter.AVFilter,java.lang.String,java.lang.String,org.bytedeco.javacpp.Pointer,org.bytedeco.ffmpeg.avfilter.AVFilterGraph)>($stack31, abuffersink, $stack68, null, null, $stack32);
+
+        if 'ret' >= 0 goto label16;
+
+        $u14 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u13 = new java.lang.StringBuilder;
+
+        specialinvoke $u13.<java.lang.StringBuilder: void <init>()>();
+
+        $stack64 = virtualinvoke $u13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_create_filter() error ");
+
+        $stack65 = virtualinvoke $stack64.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>('ret');
+
+        $stack66 = virtualinvoke $stack65.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Cannot create audio buffer sink.");
+
+        $stack67 = virtualinvoke $stack66.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u14.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack67);
+
+        $r29 = (java.lang.Throwable) $u14;
+
+        throw $r29;
+
+     label16:
+        $u15 = new org.bytedeco.javacpp.BytePointer;
+
+        specialinvoke $u15.<org.bytedeco.javacpp.BytePointer: void <init>(java.lang.String)>($stack68);
+
+        $stack35 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.javacpp.BytePointer av_strdup(org.bytedeco.javacpp.BytePointer)>($u15);
+
+        virtualinvoke ainputs.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut name(org.bytedeco.javacpp.BytePointer)>($stack35);
+
+        $r30 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack37 = $r30.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx>;
+
+        virtualinvoke ainputs.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut filter_ctx(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack37);
+
+        virtualinvoke ainputs.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut pad_idx(int)>(0);
+
+        virtualinvoke ainputs.<org.bytedeco.ffmpeg.avfilter.AVFilterInOut: org.bytedeco.ffmpeg.avfilter.AVFilterInOut next(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>(null);
+
+        $r31 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack43 = $r31.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph afilter_graph>;
+
+        $r32 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack42 = $r32.<org.bytedeco.javacv.FFmpegFrameFilter: java.lang.String afilters>;
+
+        $stack41 = aoutputs[0];
+
+        $stack44 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_graph_parse_ptr(org.bytedeco.ffmpeg.avfilter.AVFilterGraph,java.lang.String,org.bytedeco.ffmpeg.avfilter.AVFilterInOut,org.bytedeco.ffmpeg.avfilter.AVFilterInOut,org.bytedeco.javacpp.Pointer)>($stack43, $stack42, ainputs, $stack41, null);
+
+        if $stack44 >= 0 goto label17;
+
+        $u17 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u16 = new java.lang.StringBuilder;
+
+        specialinvoke $u16.<java.lang.StringBuilder: void <init>()>();
+
+        $stack59 = virtualinvoke $u16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_parse_ptr() error ");
+
+        $stack60 = virtualinvoke $stack59.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack44);
+
+        $stack61 = virtualinvoke $stack60.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u17.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack61);
+
+        $r33 = (java.lang.Throwable) $u17;
+
+        throw $r33;
+
+     label17:
+        $r34 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack45 = $r34.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterGraph afilter_graph>;
+
+        $stack46 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int avfilter_graph_config(org.bytedeco.ffmpeg.avfilter.AVFilterGraph,org.bytedeco.javacpp.Pointer)>($stack45, null);
+
+        if $stack46 >= 0 goto label18;
+
+        $u19 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u18 = new java.lang.StringBuilder;
+
+        specialinvoke $u18.<java.lang.StringBuilder: void <init>()>();
+
+        $stack54 = virtualinvoke $u18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("avfilter_graph_config() error ");
+
+        $stack55 = virtualinvoke $stack54.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack46);
+
+        $stack56 = virtualinvoke $stack55.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u19.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack56);
+
+        $r35 = (java.lang.Throwable) $u19;
+
+        throw $r35;
+
+     label18:
+        $r36 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack47 = $r36.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx>;
+
+        $stack48 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: org.bytedeco.ffmpeg.avutil.AVRational av_buffersink_get_time_base(org.bytedeco.ffmpeg.avfilter.AVFilterContext)>($stack47);
+
+        $stack49 = virtualinvoke $stack48.<org.bytedeco.ffmpeg.avutil.AVRational: org.bytedeco.javacpp.Pointer retainReference()>();
+
+        $stack50 = (org.bytedeco.ffmpeg.avutil.AVRational) $stack49;
+
+        $r37 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r37.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational atime_base> = $stack50;
+
+     label19:
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: void avfilter_inout_free(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>(ainputs);
+
+        $stack51 = aoutputs[0];
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: void avfilter_inout_free(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>($stack51);
+
+        goto label22;
+
+     label20:
+        $stack177 := @caughtexception;
+
+     label21:
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: void avfilter_inout_free(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>(ainputs);
+
+        $stack178 = aoutputs[0];
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: void avfilter_inout_free(org.bytedeco.ffmpeg.avfilter.AVFilterInOut)>($stack178);
+
+        throw $stack177;
+
+     label22:
+        return;
+
+        catch java.lang.Throwable from label01 to label19 with label20;
+        catch java.lang.Throwable from label20 to label21 with label20;
+    }
+
+    public void stop() throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0;
+
+        this := @this: FFmpegFrameFilter;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.FFmpegFrameFilter: void release()>();
+
+        return;
+    }
+
+    public void push(org.bytedeco.javacv.Frame) throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.javacv.Frame frame;
+        java.lang.Object $stack2, $stack7;
+        boolean $stack3;
+        org.bytedeco.ffmpeg.avutil.AVFrame $stack8;
+        int $stack5;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0;
+
+        this := @this: FFmpegFrameFilter;
+
+        frame := @parameter0: org.bytedeco.javacv.Frame;
+
+        if frame == null goto label1;
+
+        $stack2 = frame.<org.bytedeco.javacv.Frame: java.lang.Object opaque>;
+
+        $stack3 = $stack2 instanceof org.bytedeco.ffmpeg.avutil.AVFrame;
+
+        if $stack3 == 0 goto label1;
+
+        $stack7 = frame.<org.bytedeco.javacv.Frame: java.lang.Object opaque>;
+
+        $stack8 = (org.bytedeco.ffmpeg.avutil.AVFrame) $stack7;
+
+        $stack5 = virtualinvoke $stack8.<org.bytedeco.ffmpeg.avutil.AVFrame: int format()>();
+
+        goto label2;
+
+     label1:
+        $stack5 = -1;
+
+     label2:
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.FFmpegFrameFilter: void push(org.bytedeco.javacv.Frame,int)>(frame, $stack5);
+
+        return;
+    }
+
+    public void push(org.bytedeco.javacv.Frame, int) throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        FFmpegFrameFilter this;
+        org.bytedeco.javacv.Frame frame;
+        int pixelFormat;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0;
+
+        this := @this: FFmpegFrameFilter;
+
+        frame := @parameter0: org.bytedeco.javacv.Frame;
+
+        pixelFormat := @parameter1: int;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.FFmpegFrameFilter: void push(int,org.bytedeco.javacv.Frame,int)>(0, frame, pixelFormat);
+
+        return;
+    }
+
+    public void push(int, org.bytedeco.javacv.Frame) throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        FFmpegFrameFilter this;
+        int n, $stack7;
+        org.bytedeco.javacv.Frame frame;
+        java.lang.Object $stack3, $stack9;
+        boolean $stack4;
+        org.bytedeco.ffmpeg.avutil.AVFrame $stack10;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0;
+
+        this := @this: FFmpegFrameFilter;
+
+        n := @parameter0: int;
+
+        frame := @parameter1: org.bytedeco.javacv.Frame;
+
+        if frame == null goto label1;
+
+        $stack3 = frame.<org.bytedeco.javacv.Frame: java.lang.Object opaque>;
+
+        $stack4 = $stack3 instanceof org.bytedeco.ffmpeg.avutil.AVFrame;
+
+        if $stack4 == 0 goto label1;
+
+        $stack9 = frame.<org.bytedeco.javacv.Frame: java.lang.Object opaque>;
+
+        $stack10 = (org.bytedeco.ffmpeg.avutil.AVFrame) $stack9;
+
+        $stack7 = virtualinvoke $stack10.<org.bytedeco.ffmpeg.avutil.AVFrame: int format()>();
+
+        goto label2;
+
+     label1:
+        $stack7 = -1;
+
+     label2:
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.FFmpegFrameFilter: void push(int,org.bytedeco.javacv.Frame,int)>(n, frame, $stack7);
+
+        return;
+    }
+
+    public synchronized void push(int, org.bytedeco.javacv.Frame, int) throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        FFmpegFrameFilter this;
+        boolean $stack4;
+        org.bytedeco.javacv.Frame frame;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext[] $stack5, $stack7, $stack9, $stack12, $stack15, $stack23, $stack43, $stack6;
+        int n, $stack8, $stack13, $stack27, $stack32, $stack38, $stack39, $stack40, $stack47, $stack52, pixelFormat, $stack58, $stack59, $stack60, $stack61, $stack62;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack10, $stack16;
+        java.nio.Buffer[] $stack18, $stack19, $stack21, $stack37, $stack41, $stack57;
+        org.bytedeco.ffmpeg.avutil.AVRational $stack24, $stack29, $stack44, $stack49;
+        org.bytedeco.ffmpeg.avutil.AVFrame $stack25, $stack45;
+        long $stack26, $stack28, $stack30, $stack33, $stack34, $stack35, $stack46, $stack48, $stack50, $stack53, $stack54, $stack55;
+        org.bytedeco.javacv.FFmpegFrameFilter$Exception $u0;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20;
+        java.lang.Throwable $r1;
+
+        this := @this: FFmpegFrameFilter;
+
+        n := @parameter0: int;
+
+        frame := @parameter1: org.bytedeco.javacv.Frame;
+
+        pixelFormat := @parameter2: int;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: boolean started>;
+
+        if $stack4 != 0 goto label1;
+
+        $u0 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        specialinvoke $u0.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>("start() was not called successfully!");
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r2.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame inframe> = frame;
+
+        if frame == null goto label2;
+
+        $stack41 = frame.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        if $stack41 == null goto label2;
+
+        $r3 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack43 = $r3.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx>;
+
+        if $stack43 == null goto label2;
+
+        $r4 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack45 = $r4.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame>;
+
+        $stack46 = frame.<org.bytedeco.javacv.Frame: long timestamp>;
+
+        $r5 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack44 = $r5.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational time_base>;
+
+        $stack47 = virtualinvoke $stack44.<org.bytedeco.ffmpeg.avutil.AVRational: int den()>();
+
+        $stack48 = (long) $stack47;
+
+        $stack50 = $stack46 * $stack48;
+
+        $r6 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack49 = $r6.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational time_base>;
+
+        $stack52 = virtualinvoke $stack49.<org.bytedeco.ffmpeg.avutil.AVRational: int num()>();
+
+        $stack53 = (long) $stack52;
+
+        $stack54 = 1000000L * $stack53;
+
+        $stack55 = $stack50 / $stack54;
+
+        virtualinvoke $stack45.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame pts(long)>($stack55);
+
+        $stack62 = frame.<org.bytedeco.javacv.Frame: int imageWidth>;
+
+        $stack61 = frame.<org.bytedeco.javacv.Frame: int imageHeight>;
+
+        $stack60 = frame.<org.bytedeco.javacv.Frame: int imageDepth>;
+
+        $stack59 = frame.<org.bytedeco.javacv.Frame: int imageChannels>;
+
+        $stack58 = frame.<org.bytedeco.javacv.Frame: int imageStride>;
+
+        $stack57 = frame.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $r7 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        virtualinvoke $r7.<org.bytedeco.javacv.FFmpegFrameFilter: void pushImage(int,int,int,int,int,int,int,java.nio.Buffer[])>(n, $stack62, $stack61, $stack60, $stack59, $stack58, pixelFormat, $stack57);
+
+     label2:
+        if frame == null goto label3;
+
+        $stack21 = frame.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples>;
+
+        if $stack21 == null goto label3;
+
+        $r8 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack23 = $r8.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx>;
+
+        if $stack23 == null goto label3;
+
+        $r9 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack25 = $r9.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        $stack26 = frame.<org.bytedeco.javacv.Frame: long timestamp>;
+
+        $r10 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack24 = $r10.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational atime_base>;
+
+        $stack27 = virtualinvoke $stack24.<org.bytedeco.ffmpeg.avutil.AVRational: int den()>();
+
+        $stack28 = (long) $stack27;
+
+        $stack30 = $stack26 * $stack28;
+
+        $r11 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack29 = $r11.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational atime_base>;
+
+        $stack32 = virtualinvoke $stack29.<org.bytedeco.ffmpeg.avutil.AVRational: int num()>();
+
+        $stack33 = (long) $stack32;
+
+        $stack34 = 1000000L * $stack33;
+
+        $stack35 = $stack30 / $stack34;
+
+        virtualinvoke $stack25.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame pts(long)>($stack35);
+
+        $stack40 = frame.<org.bytedeco.javacv.Frame: int audioChannels>;
+
+        $r12 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack39 = $r12.<org.bytedeco.javacv.FFmpegFrameFilter: int sampleRate>;
+
+        $r13 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack38 = $r13.<org.bytedeco.javacv.FFmpegFrameFilter: int sampleFormat>;
+
+        $stack37 = frame.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples>;
+
+        $r14 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        virtualinvoke $r14.<org.bytedeco.javacv.FFmpegFrameFilter: void pushSamples(int,int,int,int,java.nio.Buffer[])>(n, $stack40, $stack39, $stack38, $stack37);
+
+     label3:
+        if frame == null goto label4;
+
+        $stack18 = frame.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        if $stack18 != null goto label6;
+
+        $stack19 = frame.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples>;
+
+        if $stack19 != null goto label6;
+
+     label4:
+        $r15 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack5 = $r15.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx>;
+
+        if $stack5 == null goto label5;
+
+        $r16 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack12 = $r16.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx>;
+
+        $stack13 = lengthof $stack12;
+
+        if n >= $stack13 goto label5;
+
+        $r17 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack15 = $r17.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx>;
+
+        $stack16 = $stack15[n];
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersrc_add_frame_flags(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avutil.AVFrame,int)>($stack16, null, 4);
+
+     label5:
+        $r18 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack6 = $r18.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx>;
+
+        if $stack6 == null goto label6;
+
+        $r19 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack7 = $r19.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx>;
+
+        $stack8 = lengthof $stack7;
+
+        if n >= $stack8 goto label6;
+
+        $r20 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack9 = $r20.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx>;
+
+        $stack10 = $stack9[n];
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersrc_add_frame_flags(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avutil.AVFrame,int)>($stack10, null, 4);
+
+     label6:
+        return;
+    }
+
+    public synchronized transient void pushImage(int, int, int, int, int, int, int, java.nio.Buffer[]) throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        java.lang.Class[] $stack14;
+        FFmpegFrameFilter this;
+        boolean $stack15, $stack19, $stack88;
+        int stride, depth, $stack16, $stack17, width, height, n, $stack40, channels, pixelFormat, step;
+        java.nio.Buffer[] image;
+        java.nio.Buffer $stack18, $stack22, $stack103;
+        org.bytedeco.javacpp.Pointer $stack23, $u3, $r4;
+        org.bytedeco.javacpp.BytePointer data, $stack20, $u2, $u4;
+        org.bytedeco.ffmpeg.avutil.AVFrame $stack25, $stack26, $stack29, $stack31, $stack33, $stack35, $stack38;
+        org.bytedeco.javacpp.IntPointer $stack27;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext[] $stack37;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack39;
+        java.lang.StringBuilder $stack43, $stack44, $stack45, $stack69, $stack70, $stack71, $stack72, $u5, $u8;
+        java.lang.String $stack46, $stack73;
+        java.nio.ByteOrder $stack86, $stack87;
+        java.nio.ByteBuffer $stack104;
+        java.lang.Throwable $stack109, $stack110, $r1, $r2, $r12;
+        byte $stack89;
+        org.bytedeco.javacpp.PointerScope $u0;
+        org.bytedeco.javacv.FFmpegFrameFilter$Exception $u1, $u6, $u9;
+        org.bytedeco.javacpp.PointerPointer $u7;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r3, $r5, $r6, $r7, $r8, $r9, $r10, $r11;
+
+        this := @this: FFmpegFrameFilter;
+
+        n := @parameter0: int;
+
+        width := @parameter1: int;
+
+        height := @parameter2: int;
+
+        depth := @parameter3: int;
+
+        channels := @parameter4: int;
+
+        stride := @parameter5: int;
+
+        pixelFormat := @parameter6: int;
+
+        image := @parameter7: java.nio.Buffer[];
+
+        $u0 = new org.bytedeco.javacpp.PointerScope;
+
+        $stack14 = newarray (java.lang.Class)[0];
+
+        specialinvoke $u0.<org.bytedeco.javacpp.PointerScope: void <init>(java.lang.Class[])>($stack14);
+
+     label01:
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack15 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: boolean started>;
+
+        if $stack15 != 0 goto label02;
+
+        $u1 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        specialinvoke $u1.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>("start() was not called successfully!");
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label02:
+        $stack16 = staticinvoke <java.lang.Math: int abs(int)>(depth);
+
+        $stack17 = stride * $stack16;
+
+        step = $stack17 / 8;
+
+        $stack18 = image[0];
+
+        $stack19 = $stack18 instanceof java.nio.ByteBuffer;
+
+        if $stack19 == 0 goto label03;
+
+        $u2 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack103 = image[0];
+
+        $stack104 = (java.nio.ByteBuffer) $stack103;
+
+        specialinvoke $u2.<org.bytedeco.javacpp.BytePointer: void <init>(java.nio.ByteBuffer)>($stack104);
+
+        $stack20 = virtualinvoke $u2.<org.bytedeco.javacpp.BytePointer: org.bytedeco.javacpp.BytePointer position(long)>(0L);
+
+        goto label04;
+
+     label03:
+        $u4 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack20 = $u4;
+
+        $u3 = new org.bytedeco.javacpp.Pointer;
+
+        $stack22 = image[0];
+
+        specialinvoke $u3.<org.bytedeco.javacpp.Pointer: void <init>(java.nio.Buffer)>($stack22);
+
+        $stack23 = virtualinvoke $u3.<org.bytedeco.javacpp.Pointer: org.bytedeco.javacpp.Pointer position(long)>(0L);
+
+        specialinvoke $u4.<org.bytedeco.javacpp.BytePointer: void <init>(org.bytedeco.javacpp.Pointer)>($stack23);
+
+     label04:
+        data = $stack20;
+
+        if pixelFormat != -1 goto label17;
+
+        if depth == 8 goto label05;
+
+        if depth != -8 goto label06;
+
+     label05:
+        if channels != 3 goto label06;
+
+        pixelFormat = 3;
+
+        goto label17;
+
+     label06:
+        if depth == 8 goto label07;
+
+        if depth != -8 goto label08;
+
+     label07:
+        if channels != 1 goto label08;
+
+        pixelFormat = 8;
+
+        goto label17;
+
+     label08:
+        if depth == 16 goto label09;
+
+        if depth != -16 goto label12;
+
+     label09:
+        if channels != 1 goto label12;
+
+        $stack86 = staticinvoke <java.nio.ByteOrder: java.nio.ByteOrder nativeOrder()>();
+
+        $stack87 = <java.nio.ByteOrder: java.nio.ByteOrder BIG_ENDIAN>;
+
+        $stack88 = virtualinvoke $stack86.<java.lang.Object: boolean equals(java.lang.Object)>($stack87);
+
+        if $stack88 == 0 goto label10;
+
+        $stack89 = 29;
+
+        goto label11;
+
+     label10:
+        $stack89 = 30;
+
+     label11:
+        pixelFormat = $stack89;
+
+        goto label17;
+
+     label12:
+        if depth == 8 goto label13;
+
+        if depth != -8 goto label14;
+
+     label13:
+        if channels != 4 goto label14;
+
+        pixelFormat = 26;
+
+        goto label17;
+
+     label14:
+        if depth == 8 goto label15;
+
+        if depth != -8 goto label16;
+
+     label15:
+        if channels != 2 goto label16;
+
+        pixelFormat = 24;
+
+        goto label17;
+
+     label16:
+        $u6 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack69 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not guess pixel format of image: depth=");
+
+        $stack70 = virtualinvoke $stack69.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(depth);
+
+        $stack71 = virtualinvoke $stack70.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", channels=");
+
+        $stack72 = virtualinvoke $stack71.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(channels);
+
+        $stack73 = virtualinvoke $stack72.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u6.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack73);
+
+        $r2 = (java.lang.Throwable) $u6;
+
+        throw $r2;
+
+     label17:
+        if pixelFormat != 24 goto label18;
+
+        step = width;
+
+     label18:
+        $u7 = new org.bytedeco.javacpp.PointerPointer;
+
+        $r3 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack25 = $r3.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame>;
+
+        $r4 = (org.bytedeco.javacpp.Pointer) $stack25;
+
+        specialinvoke $u7.<org.bytedeco.javacpp.PointerPointer: void <init>(org.bytedeco.javacpp.Pointer)>($r4);
+
+        $r5 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack26 = $r5.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame>;
+
+        $stack27 = virtualinvoke $stack26.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.javacpp.IntPointer linesize()>();
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avutil: int av_image_fill_arrays(org.bytedeco.javacpp.PointerPointer,org.bytedeco.javacpp.IntPointer,org.bytedeco.javacpp.BytePointer,int,int,int,int)>($u7, $stack27, data, pixelFormat, width, height, 1);
+
+        $r6 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack29 = $r6.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame>;
+
+        virtualinvoke $stack29.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame linesize(int,int)>(0, step);
+
+        $r7 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack31 = $r7.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame>;
+
+        virtualinvoke $stack31.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame format(int)>(pixelFormat);
+
+        $r8 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack33 = $r8.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame>;
+
+        virtualinvoke $stack33.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame width(int)>(width);
+
+        $r9 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack35 = $r9.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame>;
+
+        virtualinvoke $stack35.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame height(int)>(height);
+
+        $r10 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack37 = $r10.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx>;
+
+        $stack39 = $stack37[n];
+
+        $r11 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack38 = $r11.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame image_frame>;
+
+        $stack40 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersrc_add_frame_flags(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avutil.AVFrame,int)>($stack39, $stack38, 12);
+
+        if $stack40 >= 0 goto label19;
+
+        $u9 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u8 = new java.lang.StringBuilder;
+
+        specialinvoke $u8.<java.lang.StringBuilder: void <init>()>();
+
+        $stack43 = virtualinvoke $u8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("av_buffersrc_add_frame_flags() error ");
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack40);
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Error while feeding the filtergraph.");
+
+        $stack46 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u9.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack46);
+
+        $r12 = (java.lang.Throwable) $u9;
+
+        throw $r12;
+
+     label19:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+        goto label25;
+
+     label20:
+        $stack110 := @caughtexception;
+
+     label21:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+     label22:
+        goto label24;
+
+     label23:
+        $stack109 := @caughtexception;
+
+        virtualinvoke $stack110.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack109);
+
+     label24:
+        throw $stack110;
+
+     label25:
+        return;
+
+        catch java.lang.Throwable from label01 to label19 with label20;
+        catch java.lang.Throwable from label21 to label22 with label23;
+    }
+
+    public synchronized transient void pushSamples(int, int, int, int, java.nio.Buffer[]) throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        java.lang.Class[] $stack12;
+        FFmpegFrameFilter this;
+        boolean $stack13, $stack65, $stack77, $stack89, $stack101, $stack113;
+        java.nio.Buffer[] samples;
+        int $stack14, sampleSize, audioChannels, sampleRate, n, $stack37, $stack50, $stack67, $stack79, $stack91, $stack103, $stack115, $stack125, $stack127, $stack128, $stack129, sampleFormat, $stack132, $stack130, i, $stack116, $stack104, $stack92, $stack80, $stack68, $stack22;
+        org.bytedeco.ffmpeg.avutil.AVFrame $stack23, $stack25, $stack28, $stack30, $stack32, $stack35, $stack46, $stack16, $stack17;
+        long $stack26;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext[] $stack34;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack36;
+        java.lang.StringBuilder $stack40, $stack41, $stack42, $u11;
+        java.lang.String $stack43;
+        java.lang.Object $stack45, $stack20;
+        java.nio.Buffer $stack61, $stack64, $stack70, $stack76, $stack82, $stack88, $stack94, $stack100, $stack106, $stack112, $stack118, $stack124, $stack126;
+        java.nio.DoubleBuffer $stack71;
+        java.nio.FloatBuffer $stack83;
+        java.nio.IntBuffer $stack95;
+        java.nio.ShortBuffer $stack107;
+        java.nio.ByteBuffer $stack119;
+        java.lang.Throwable $stack134, $stack135, $r1, $r15;
+        java.lang.Object[] data;
+        byte $stack122, $stack110, $stack98, $stack86, $stack74;
+        org.bytedeco.javacpp.IntPointer $stack18, $u4;
+        org.bytedeco.javacpp.PointerScope $u0;
+        org.bytedeco.javacv.FFmpegFrameFilter$Exception $u1, $u12;
+        org.bytedeco.javacpp.BytePointer $u2, $u9, $u10;
+        org.bytedeco.javacpp.ShortPointer $u3;
+        org.bytedeco.javacpp.FloatPointer $u5;
+        org.bytedeco.javacpp.DoublePointer $u6;
+        org.bytedeco.javacpp.Pointer $u7, $r3, $r5, $r7;
+        org.bytedeco.javacpp.PointerPointer $u8;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r2, $r4, $r6, $r8, $r9, $r10, $r11, $r12, $r13, $r14;
+
+        this := @this: FFmpegFrameFilter;
+
+        n := @parameter0: int;
+
+        audioChannels := @parameter1: int;
+
+        sampleRate := @parameter2: int;
+
+        sampleFormat := @parameter3: int;
+
+        samples := @parameter4: java.nio.Buffer[];
+
+        $u0 = new org.bytedeco.javacpp.PointerScope;
+
+        $stack12 = newarray (java.lang.Class)[0];
+
+        specialinvoke $u0.<org.bytedeco.javacpp.PointerScope: void <init>(java.lang.Class[])>($stack12);
+
+     label01:
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack13 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: boolean started>;
+
+        if $stack13 != 0 goto label02;
+
+        $u1 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        specialinvoke $u1.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>("start() was not called successfully!");
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label02:
+        $stack14 = lengthof samples;
+
+        data = newarray (org.bytedeco.javacpp.Pointer)[$stack14];
+
+        if samples == null goto label05;
+
+        $stack124 = samples[0];
+
+        $stack125 = virtualinvoke $stack124.<java.nio.Buffer: int limit()>();
+
+        $stack126 = samples[0];
+
+        $stack127 = virtualinvoke $stack126.<java.nio.Buffer: int position()>();
+
+        $stack129 = $stack125 - $stack127;
+
+        $stack128 = lengthof samples;
+
+        if $stack128 <= 1 goto label03;
+
+        $stack132 = 1;
+
+        goto label04;
+
+     label03:
+        $stack132 = audioChannels;
+
+     label04:
+        $stack130 = $stack129 / $stack132;
+
+        goto label06;
+
+     label05:
+        $stack130 = 0;
+
+     label06:
+        sampleSize = $stack130;
+
+        if samples == null goto label11;
+
+        $stack112 = samples[0];
+
+        $stack113 = $stack112 instanceof java.nio.ByteBuffer;
+
+        if $stack113 == 0 goto label11;
+
+        $stack115 = lengthof data;
+
+        if $stack115 <= 1 goto label07;
+
+        $stack122 = 5;
+
+        goto label08;
+
+     label07:
+        $stack122 = 0;
+
+     label08:
+        sampleFormat = $stack122;
+
+        i = 0;
+
+     label09:
+        $stack116 = lengthof data;
+
+        if i >= $stack116 goto label10;
+
+        $u2 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack118 = samples[i];
+
+        $stack119 = (java.nio.ByteBuffer) $stack118;
+
+        specialinvoke $u2.<org.bytedeco.javacpp.BytePointer: void <init>(java.nio.ByteBuffer)>($stack119);
+
+        data[i] = $u2;
+
+        i = i + 1;
+
+        goto label09;
+
+     label10:
+        goto label33;
+
+     label11:
+        if samples == null goto label16;
+
+        $stack100 = samples[0];
+
+        $stack101 = $stack100 instanceof java.nio.ShortBuffer;
+
+        if $stack101 == 0 goto label16;
+
+        $stack103 = lengthof data;
+
+        if $stack103 <= 1 goto label12;
+
+        $stack110 = 6;
+
+        goto label13;
+
+     label12:
+        $stack110 = 1;
+
+     label13:
+        sampleFormat = $stack110;
+
+        i = 0;
+
+     label14:
+        $stack104 = lengthof data;
+
+        if i >= $stack104 goto label15;
+
+        $u3 = new org.bytedeco.javacpp.ShortPointer;
+
+        $stack106 = samples[i];
+
+        $stack107 = (java.nio.ShortBuffer) $stack106;
+
+        specialinvoke $u3.<org.bytedeco.javacpp.ShortPointer: void <init>(java.nio.ShortBuffer)>($stack107);
+
+        data[i] = $u3;
+
+        i = i + 1;
+
+        goto label14;
+
+     label15:
+        goto label33;
+
+     label16:
+        if samples == null goto label21;
+
+        $stack88 = samples[0];
+
+        $stack89 = $stack88 instanceof java.nio.IntBuffer;
+
+        if $stack89 == 0 goto label21;
+
+        $stack91 = lengthof data;
+
+        if $stack91 <= 1 goto label17;
+
+        $stack98 = 7;
+
+        goto label18;
+
+     label17:
+        $stack98 = 2;
+
+     label18:
+        sampleFormat = $stack98;
+
+        i = 0;
+
+     label19:
+        $stack92 = lengthof data;
+
+        if i >= $stack92 goto label20;
+
+        $u4 = new org.bytedeco.javacpp.IntPointer;
+
+        $stack94 = samples[i];
+
+        $stack95 = (java.nio.IntBuffer) $stack94;
+
+        specialinvoke $u4.<org.bytedeco.javacpp.IntPointer: void <init>(java.nio.IntBuffer)>($stack95);
+
+        data[i] = $u4;
+
+        i = i + 1;
+
+        goto label19;
+
+     label20:
+        goto label33;
+
+     label21:
+        if samples == null goto label26;
+
+        $stack76 = samples[0];
+
+        $stack77 = $stack76 instanceof java.nio.FloatBuffer;
+
+        if $stack77 == 0 goto label26;
+
+        $stack79 = lengthof data;
+
+        if $stack79 <= 1 goto label22;
+
+        $stack86 = 8;
+
+        goto label23;
+
+     label22:
+        $stack86 = 3;
+
+     label23:
+        sampleFormat = $stack86;
+
+        i = 0;
+
+     label24:
+        $stack80 = lengthof data;
+
+        if i >= $stack80 goto label25;
+
+        $u5 = new org.bytedeco.javacpp.FloatPointer;
+
+        $stack82 = samples[i];
+
+        $stack83 = (java.nio.FloatBuffer) $stack82;
+
+        specialinvoke $u5.<org.bytedeco.javacpp.FloatPointer: void <init>(java.nio.FloatBuffer)>($stack83);
+
+        data[i] = $u5;
+
+        i = i + 1;
+
+        goto label24;
+
+     label25:
+        goto label33;
+
+     label26:
+        if samples == null goto label31;
+
+        $stack64 = samples[0];
+
+        $stack65 = $stack64 instanceof java.nio.DoubleBuffer;
+
+        if $stack65 == 0 goto label31;
+
+        $stack67 = lengthof data;
+
+        if $stack67 <= 1 goto label27;
+
+        $stack74 = 9;
+
+        goto label28;
+
+     label27:
+        $stack74 = 4;
+
+     label28:
+        sampleFormat = $stack74;
+
+        i = 0;
+
+     label29:
+        $stack68 = lengthof data;
+
+        if i >= $stack68 goto label30;
+
+        $u6 = new org.bytedeco.javacpp.DoublePointer;
+
+        $stack70 = samples[i];
+
+        $stack71 = (java.nio.DoubleBuffer) $stack70;
+
+        specialinvoke $u6.<org.bytedeco.javacpp.DoublePointer: void <init>(java.nio.DoubleBuffer)>($stack71);
+
+        data[i] = $u6;
+
+        i = i + 1;
+
+        goto label29;
+
+     label30:
+        goto label33;
+
+     label31:
+        if samples == null goto label33;
+
+        i = 0;
+
+     label32:
+        $stack50 = lengthof data;
+
+        if i >= $stack50 goto label33;
+
+        $u7 = new org.bytedeco.javacpp.Pointer;
+
+        $stack61 = samples[i];
+
+        specialinvoke $u7.<org.bytedeco.javacpp.Pointer: void <init>(java.nio.Buffer)>($stack61);
+
+        data[i] = $u7;
+
+        i = i + 1;
+
+        goto label32;
+
+     label33:
+        $u8 = new org.bytedeco.javacpp.PointerPointer;
+
+        $r2 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack16 = $r2.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        $r3 = (org.bytedeco.javacpp.Pointer) $stack16;
+
+        specialinvoke $u8.<org.bytedeco.javacpp.PointerPointer: void <init>(org.bytedeco.javacpp.Pointer)>($r3);
+
+        $r4 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack17 = $r4.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        $stack18 = virtualinvoke $stack17.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.javacpp.IntPointer linesize()>();
+
+        $u9 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack20 = data[0];
+
+        $r5 = (org.bytedeco.javacpp.Pointer) $stack20;
+
+        specialinvoke $u9.<org.bytedeco.javacpp.BytePointer: void <init>(org.bytedeco.javacpp.Pointer)>($r5);
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avutil: int av_samples_fill_arrays(org.bytedeco.javacpp.PointerPointer,org.bytedeco.javacpp.IntPointer,org.bytedeco.javacpp.BytePointer,int,int,int,int)>($u8, $stack18, $u9, audioChannels, sampleSize, sampleFormat, 1);
+
+        i = 0;
+
+     label34:
+        $stack22 = lengthof samples;
+
+        if i >= $stack22 goto label35;
+
+        $r6 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack46 = $r6.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        $u10 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack45 = data[i];
+
+        $r7 = (org.bytedeco.javacpp.Pointer) $stack45;
+
+        specialinvoke $u10.<org.bytedeco.javacpp.BytePointer: void <init>(org.bytedeco.javacpp.Pointer)>($r7);
+
+        virtualinvoke $stack46.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame data(int,org.bytedeco.javacpp.BytePointer)>(i, $u10);
+
+        i = i + 1;
+
+        goto label34;
+
+     label35:
+        $r8 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack23 = $r8.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        virtualinvoke $stack23.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame channels(int)>(audioChannels);
+
+        $r9 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack25 = $r9.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        $stack26 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: long av_get_default_channel_layout(int)>(audioChannels);
+
+        virtualinvoke $stack25.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame channel_layout(long)>($stack26);
+
+        $r10 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack28 = $r10.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        virtualinvoke $stack28.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame nb_samples(int)>(sampleSize);
+
+        $r11 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack30 = $r11.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        virtualinvoke $stack30.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame format(int)>(sampleFormat);
+
+        $r12 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack32 = $r12.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        virtualinvoke $stack32.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.ffmpeg.avutil.AVFrame sample_rate(int)>(sampleRate);
+
+        $r13 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack34 = $r13.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx>;
+
+        $stack36 = $stack34[n];
+
+        $r14 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack35 = $r14.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame samples_frame>;
+
+        $stack37 = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersrc_add_frame_flags(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avutil.AVFrame,int)>($stack36, $stack35, 12);
+
+        if $stack37 >= 0 goto label36;
+
+        $u12 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u11 = new java.lang.StringBuilder;
+
+        specialinvoke $u11.<java.lang.StringBuilder: void <init>()>();
+
+        $stack40 = virtualinvoke $u11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("av_buffersrc_add_frame_flags() error ");
+
+        $stack41 = virtualinvoke $stack40.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack37);
+
+        $stack42 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Error while feeding the filtergraph.");
+
+        $stack43 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u12.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack43);
+
+        $r15 = (java.lang.Throwable) $u12;
+
+        throw $r15;
+
+     label36:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+        goto label42;
+
+     label37:
+        $stack135 := @caughtexception;
+
+     label38:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+     label39:
+        goto label41;
+
+     label40:
+        $stack134 := @caughtexception;
+
+        virtualinvoke $stack135.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack134);
+
+     label41:
+        throw $stack135;
+
+     label42:
+        return;
+
+        catch java.lang.Throwable from label01 to label36 with label37;
+        catch java.lang.Throwable from label38 to label39 with label40;
+    }
+
+    public synchronized org.bytedeco.javacv.Frame pull() throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        FFmpegFrameFilter this;
+        boolean $stack2;
+        org.bytedeco.javacv.Frame $stack3, $stack4, $stack5, $stack6, $stack7, $stack8, $stack9, $stack10, $stack11, $stack12, $stack13, $stack14, $stack18, $stack20, f;
+        java.nio.Buffer[] $stack19, $stack21;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext[] $stack22, $stack23, $stack27, $stack30;
+        org.bytedeco.javacv.FFmpegFrameFilter$Exception $u0;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23;
+        java.lang.Throwable $r1;
+
+        this := @this: FFmpegFrameFilter;
+
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: boolean started>;
+
+        if $stack2 != 0 goto label1;
+
+        $u0 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        specialinvoke $u0.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>("start() was not called successfully!");
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack3 = $r2.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack3.<org.bytedeco.javacv.Frame: boolean keyFrame> = 0;
+
+        $r3 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack4 = $r3.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack4.<org.bytedeco.javacv.Frame: int imageWidth> = 0;
+
+        $r4 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack5 = $r4.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack5.<org.bytedeco.javacv.Frame: int imageHeight> = 0;
+
+        $r5 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack6 = $r5.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack6.<org.bytedeco.javacv.Frame: int imageDepth> = 0;
+
+        $r6 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack7 = $r6.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack7.<org.bytedeco.javacv.Frame: int imageChannels> = 0;
+
+        $r7 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack8 = $r7.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack8.<org.bytedeco.javacv.Frame: int imageStride> = 0;
+
+        $r8 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack9 = $r8.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack9.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image> = null;
+
+        $r9 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack10 = $r9.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack10.<org.bytedeco.javacv.Frame: int sampleRate> = 0;
+
+        $r10 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack11 = $r10.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack11.<org.bytedeco.javacv.Frame: int audioChannels> = 0;
+
+        $r11 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack12 = $r11.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack12.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples> = null;
+
+        $r12 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack13 = $r12.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack13.<org.bytedeco.javacv.Frame: java.lang.Object opaque> = null;
+
+        f = null;
+
+        $r13 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack30 = $r13.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx>;
+
+        if $stack30 == null goto label2;
+
+        $r14 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        f = virtualinvoke $r14.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame pullImage()>();
+
+     label2:
+        if f != null goto label3;
+
+        $r15 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack27 = $r15.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx>;
+
+        if $stack27 == null goto label3;
+
+        $r16 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        f = virtualinvoke $r16.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame pullSamples()>();
+
+     label3:
+        if f != null goto label6;
+
+        $r17 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack14 = $r17.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame inframe>;
+
+        if $stack14 == null goto label6;
+
+        $r18 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack18 = $r18.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame inframe>;
+
+        $stack19 = $stack18.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        if $stack19 == null goto label4;
+
+        $r19 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack23 = $r19.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] buffersrc_ctx>;
+
+        if $stack23 == null goto label5;
+
+     label4:
+        $r20 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack20 = $r20.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame inframe>;
+
+        $stack21 = $stack20.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples>;
+
+        if $stack21 == null goto label6;
+
+        $r21 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack22 = $r21.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext[] abuffersrc_ctx>;
+
+        if $stack22 != null goto label6;
+
+     label5:
+        $r22 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        f = $r22.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame inframe>;
+
+     label6:
+        $r23 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r23.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame inframe> = null;
+
+        return f;
+    }
+
+    public synchronized org.bytedeco.javacv.Frame pullImage() throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        java.lang.Class[] $stack5;
+        FFmpegFrameFilter this;
+        boolean $stack6, $stack184;
+        org.bytedeco.ffmpeg.avutil.AVFrame $stack7, $stack8, $stack13, $stack16, $stack20, $stack25, $stack90, $stack147, $stack150, $stack172, $stack76, $stack78, $stack80;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack9;
+        int $stack11, $stack12, $stack15, $stack18, $stack23, $stack26, $stack29, $stack30, $stack96, $stack100, $stack149, $stack199, $stack202, $stack203, $stack204, 'ret', $stack161, $stack160, $stack162, $stack163, $stack166, $stack168, $stack170, $stack171, ptr#70, $stack58, $stack57, $stack59, $stack60, $stack66, $stack64, $stack63, $stack65, $stack67, $stack77, $stack81, $stack85, $stack84;
+        org.bytedeco.javacv.Frame $stack14, $stack17, $stack19, $stack22, $stack24, $stack27, $stack28, $stack89, $stack91, $stack148, $stack197, $stack198, $stack153, $stack154, $stack158, $stack159, $stack167, $stack165, $stack169, $stack173, $stack49, $stack50, $stack68, $stack55, $stack56, $stack61, $stack62, $stack82, $stack83, ptr#199;
+        org.bytedeco.javacpp.BytePointer $stack21, $stack33, $stack35, $stack42, $stack44, $stack88, $stack110, $stack183, $stack206, $stack214, ptr#3, $stack70, $stack71, $stack73, $u3, $u5;
+        org.bytedeco.javacpp.BytePointer[] $stack32, $stack34, $stack38, $stack43, $stack87, $stack109, $stack182, $stack200, $stack69, $stack72;
+        long $stack37, $stack41, $stack93, $stack95, $stack97, $stack99, $stack101, $stack102, $stack111, $stack112, $stack205, $stack74;
+        org.bytedeco.javacpp.Pointer $stack40, $r38, $r53;
+        java.nio.Buffer[] $stack45, $stack207, $stack152, $stack155, $stack48, $stack51;
+        java.nio.ByteBuffer $stack47, $stack209;
+        org.bytedeco.ffmpeg.avutil.AVRational $stack94, $stack98;
+        java.lang.StringBuilder $stack105, $stack106, $stack107, $stack212, $stack216, $u2, $u7;
+        java.lang.String $stack108, $stack215, $stack217;
+        byte $stack113;
+        java.lang.Throwable $stack222, $stack223, $r1, $r5, $r58;
+        java.nio.Buffer $stack156, $stack157, $stack52, $stack53;
+        org.bytedeco.javacpp.IntPointer $stack79;
+        org.bytedeco.javacpp.PointerScope $u0;
+        org.bytedeco.javacv.FFmpegFrameFilter$Exception $u1, $u4, $u8;
+        org.bytedeco.javacpp.PointerPointer $u6;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r2, $r3, $r4, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r33, $r34, $r35, $r36, $r37, $r39, $r40, $r41, $r42, $r43, $r44, $r45, $r46, $r47, $r48, $r49, $r50, $r51, $r52, $r54, $r55, $r56, $r57, $r59, $r60, $r61, $r62, $r63, $r64, $r65;
+
+        this := @this: FFmpegFrameFilter;
+
+        $u0 = new org.bytedeco.javacpp.PointerScope;
+
+        $stack5 = newarray (java.lang.Class)[0];
+
+        specialinvoke $u0.<org.bytedeco.javacpp.PointerScope: void <init>(java.lang.Class[])>($stack5);
+
+     label01:
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack6 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: boolean started>;
+
+        if $stack6 != 0 goto label02;
+
+        $u1 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        specialinvoke $u1.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>("start() was not called successfully!");
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label02:
+        $r2 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack7 = $r2.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avutil: void av_frame_unref(org.bytedeco.ffmpeg.avutil.AVFrame)>($stack7);
+
+        $r3 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack9 = $r3.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext buffersink_ctx>;
+
+        $r4 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack8 = $r4.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        'ret' = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersink_get_frame(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avutil.AVFrame)>($stack9, $stack8);
+
+        $stack11 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: int AVERROR_EAGAIN()>();
+
+        if 'ret' == $stack11 goto label03;
+
+        $stack12 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: int AVERROR_EOF()>();
+
+        if 'ret' != $stack12 goto label04;
+
+     label03:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+        return null;
+
+     label04:
+        if 'ret' >= 0 goto label05;
+
+        $u4 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack212 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("av_buffersink_get_frame(): Error occurred: ");
+
+        $u3 = new org.bytedeco.javacpp.BytePointer;
+
+        specialinvoke $u3.<org.bytedeco.javacpp.BytePointer: void <init>(long)>(256L);
+
+        $stack214 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.javacpp.BytePointer av_make_error_string(org.bytedeco.javacpp.BytePointer,long,int)>($u3, 256L, 'ret');
+
+        $stack215 = virtualinvoke $stack214.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack216 = virtualinvoke $stack212.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack215);
+
+        $stack217 = virtualinvoke $stack216.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u4.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack217);
+
+        $r5 = (java.lang.Throwable) $u4;
+
+        throw $r5;
+
+     label05:
+        $r6 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack14 = $r6.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r7 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack13 = $r7.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack15 = virtualinvoke $stack13.<org.bytedeco.ffmpeg.avutil.AVFrame: int width()>();
+
+        $stack14.<org.bytedeco.javacv.Frame: int imageWidth> = $stack15;
+
+        $r8 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack17 = $r8.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r9 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack16 = $r9.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack18 = virtualinvoke $stack16.<org.bytedeco.ffmpeg.avutil.AVFrame: int height()>();
+
+        $stack17.<org.bytedeco.javacv.Frame: int imageHeight> = $stack18;
+
+        $r10 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack19 = $r10.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack19.<org.bytedeco.javacv.Frame: int imageDepth> = 8;
+
+        $r11 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack20 = $r11.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack21 = virtualinvoke $stack20.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.javacpp.BytePointer data(int)>(1);
+
+        if $stack21 != null goto label07;
+
+        $r12 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack148 = $r12.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r13 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack147 = $r13.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack149 = virtualinvoke $stack147.<org.bytedeco.ffmpeg.avutil.AVFrame: int linesize(int)>(0);
+
+        $stack148.<org.bytedeco.javacv.Frame: int imageStride> = $stack149;
+
+        $r14 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack150 = $r14.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        ptr#3 = virtualinvoke $stack150.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.javacpp.BytePointer data(int)>(0);
+
+        if ptr#3 == null goto label06;
+
+        $r15 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack182 = $r15.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr>;
+
+        $stack183 = $stack182[0];
+
+        $stack184 = virtualinvoke ptr#3.<org.bytedeco.javacpp.BytePointer: boolean equals(java.lang.Object)>($stack183);
+
+        if $stack184 != 0 goto label06;
+
+        $r16 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack200 = $r16.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr>;
+
+        $r17 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack197 = $r17.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack202 = $stack197.<org.bytedeco.javacv.Frame: int imageHeight>;
+
+        $r18 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack198 = $r18.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack199 = $stack198.<org.bytedeco.javacv.Frame: int imageStride>;
+
+        $stack203 = staticinvoke <java.lang.Math: int abs(int)>($stack199);
+
+        $stack204 = $stack202 * $stack203;
+
+        $stack205 = (long) $stack204;
+
+        $stack206 = virtualinvoke ptr#3.<org.bytedeco.javacpp.BytePointer: org.bytedeco.javacpp.BytePointer capacity(long)>($stack205);
+
+        $stack200[0] = $stack206;
+
+        $r19 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack207 = $r19.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] image_buf>;
+
+        $stack209 = virtualinvoke ptr#3.<org.bytedeco.javacpp.BytePointer: java.nio.ByteBuffer asBuffer()>();
+
+        $stack207[0] = $stack209;
+
+     label06:
+        $r20 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack153 = $r20.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r21 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack152 = $r21.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] image_buf>;
+
+        $stack153.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image> = $stack152;
+
+        $r22 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack154 = $r22.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack155 = $stack154.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $stack156 = $stack155[0];
+
+        $stack157 = virtualinvoke $stack156.<java.nio.Buffer: java.nio.Buffer position(int)>(0);
+
+        $r23 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack158 = $r23.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack161 = $stack158.<org.bytedeco.javacv.Frame: int imageHeight>;
+
+        $r24 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack159 = $r24.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack160 = $stack159.<org.bytedeco.javacv.Frame: int imageStride>;
+
+        $stack162 = staticinvoke <java.lang.Math: int abs(int)>($stack160);
+
+        $stack163 = $stack161 * $stack162;
+
+        virtualinvoke $stack157.<java.nio.Buffer: java.nio.Buffer limit(int)>($stack163);
+
+        $r25 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack167 = $r25.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r26 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack165 = $r26.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack166 = $stack165.<org.bytedeco.javacv.Frame: int imageStride>;
+
+        $stack168 = staticinvoke <java.lang.Math: int abs(int)>($stack166);
+
+        $r27 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack169 = $r27.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack170 = $stack169.<org.bytedeco.javacv.Frame: int imageWidth>;
+
+        $stack171 = $stack168 / $stack170;
+
+        $stack167.<org.bytedeco.javacv.Frame: int imageChannels> = $stack171;
+
+        $r28 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack173 = $r28.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r29 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack172 = $r29.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack173.<org.bytedeco.javacv.Frame: java.lang.Object opaque> = $stack172;
+
+        goto label11;
+
+     label07:
+        $r30 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack24 = $r30.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r31 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack22 = $r31.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack23 = $stack22.<org.bytedeco.javacv.Frame: int imageWidth>;
+
+        $stack24.<org.bytedeco.javacv.Frame: int imageStride> = $stack23;
+
+        $r32 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack25 = $r32.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack26 = virtualinvoke $stack25.<org.bytedeco.ffmpeg.avutil.AVFrame: int format()>();
+
+        $r33 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack27 = $r33.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack30 = $stack27.<org.bytedeco.javacv.Frame: int imageWidth>;
+
+        $r34 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack28 = $r34.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack29 = $stack28.<org.bytedeco.javacv.Frame: int imageHeight>;
+
+        ptr#70 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: int av_image_get_buffer_size(int,int,int,int)>($stack26, $stack30, $stack29, 1);
+
+        $r35 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack32 = $r35.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2>;
+
+        $stack33 = $stack32[0];
+
+        if $stack33 == null goto label08;
+
+        $r36 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack109 = $r36.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2>;
+
+        $stack110 = $stack109[0];
+
+        $stack111 = virtualinvoke $stack110.<org.bytedeco.javacpp.BytePointer: long capacity()>();
+
+        $stack112 = (long) ptr#70;
+
+        $stack113 = $stack111 cmp $stack112;
+
+        if $stack113 >= 0 goto label09;
+
+     label08:
+        $r37 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack34 = $r37.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2>;
+
+        $stack35 = $stack34[0];
+
+        $r38 = (org.bytedeco.javacpp.Pointer) $stack35;
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avutil: void av_free(org.bytedeco.javacpp.Pointer)>($r38);
+
+        $r39 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack38 = $r39.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2>;
+
+        $u5 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack37 = (long) ptr#70;
+
+        $stack40 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.javacpp.Pointer av_malloc(long)>($stack37);
+
+        specialinvoke $u5.<org.bytedeco.javacpp.BytePointer: void <init>(org.bytedeco.javacpp.Pointer)>($stack40);
+
+        $stack41 = (long) ptr#70;
+
+        $stack42 = virtualinvoke $u5.<org.bytedeco.javacpp.BytePointer: org.bytedeco.javacpp.BytePointer capacity(long)>($stack41);
+
+        $stack38[0] = $stack42;
+
+        $r40 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack45 = $r40.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] image_buf2>;
+
+        $r41 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack43 = $r41.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2>;
+
+        $stack44 = $stack43[0];
+
+        $stack47 = virtualinvoke $stack44.<org.bytedeco.javacpp.BytePointer: java.nio.ByteBuffer asBuffer()>();
+
+        $stack45[0] = $stack47;
+
+     label09:
+        $r42 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack49 = $r42.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r43 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack48 = $r43.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] image_buf2>;
+
+        $stack49.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image> = $stack48;
+
+        $r44 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack50 = $r44.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack51 = $stack50.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $stack52 = $stack51[0];
+
+        $stack53 = virtualinvoke $stack52.<java.nio.Buffer: java.nio.Buffer position(int)>(0);
+
+        virtualinvoke $stack53.<java.nio.Buffer: java.nio.Buffer limit(int)>(ptr#70);
+
+        $r45 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack68 = $r45.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r46 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack55 = $r46.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack58 = $stack55.<org.bytedeco.javacv.Frame: int imageWidth>;
+
+        $r47 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack56 = $r47.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack57 = $stack56.<org.bytedeco.javacv.Frame: int imageHeight>;
+
+        $stack59 = $stack58 * $stack57;
+
+        $stack60 = ptr#70 + $stack59;
+
+        $stack66 = $stack60 - 1;
+
+        $r48 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack61 = $r48.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack64 = $stack61.<org.bytedeco.javacv.Frame: int imageWidth>;
+
+        $r49 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack62 = $r49.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack63 = $stack62.<org.bytedeco.javacv.Frame: int imageHeight>;
+
+        $stack65 = $stack64 * $stack63;
+
+        $stack67 = $stack66 / $stack65;
+
+        $stack68.<org.bytedeco.javacv.Frame: int imageChannels> = $stack67;
+
+        $r50 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack69 = $r50.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2>;
+
+        $stack70 = $stack69[0];
+
+        $stack71 = virtualinvoke $stack70.<org.bytedeco.javacpp.BytePointer: org.bytedeco.javacpp.BytePointer position(long)>(0L);
+
+        $r51 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack72 = $r51.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2>;
+
+        $stack73 = $stack72[0];
+
+        $stack74 = virtualinvoke $stack73.<org.bytedeco.javacpp.BytePointer: long capacity()>();
+
+        $stack77 = (int) $stack74;
+
+        $u6 = new org.bytedeco.javacpp.PointerPointer;
+
+        $r52 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack76 = $r52.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $r53 = (org.bytedeco.javacpp.Pointer) $stack76;
+
+        specialinvoke $u6.<org.bytedeco.javacpp.PointerPointer: void <init>(org.bytedeco.javacpp.Pointer)>($r53);
+
+        $r54 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack78 = $r54.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack79 = virtualinvoke $stack78.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.javacpp.IntPointer linesize()>();
+
+        $r55 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack80 = $r55.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack81 = virtualinvoke $stack80.<org.bytedeco.ffmpeg.avutil.AVFrame: int format()>();
+
+        $r56 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack82 = $r56.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack85 = $stack82.<org.bytedeco.javacv.Frame: int imageWidth>;
+
+        $r57 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack83 = $r57.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $stack84 = $stack83.<org.bytedeco.javacv.Frame: int imageHeight>;
+
+        'ret' = staticinvoke <org.bytedeco.ffmpeg.global.avutil: int av_image_copy_to_buffer(org.bytedeco.javacpp.BytePointer,int,org.bytedeco.javacpp.PointerPointer,org.bytedeco.javacpp.IntPointer,int,int,int,int)>($stack71, $stack77, $u6, $stack79, $stack81, $stack85, $stack84, 1);
+
+        if 'ret' >= 0 goto label10;
+
+        $u8 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u7 = new java.lang.StringBuilder;
+
+        specialinvoke $u7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack105 = virtualinvoke $u7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("av_image_copy_to_buffer() error ");
+
+        $stack106 = virtualinvoke $stack105.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>('ret');
+
+        $stack107 = virtualinvoke $stack106.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Cannot pull image.");
+
+        $stack108 = virtualinvoke $stack107.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u8.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack108);
+
+        $r58 = (java.lang.Throwable) $u8;
+
+        throw $r58;
+
+     label10:
+        $r59 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack89 = $r59.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r60 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack87 = $r60.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] image_ptr2>;
+
+        $stack88 = $stack87[0];
+
+        $stack89.<org.bytedeco.javacv.Frame: java.lang.Object opaque> = $stack88;
+
+     label11:
+        $r61 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack91 = $r61.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r62 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack90 = $r62.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack93 = virtualinvoke $stack90.<org.bytedeco.ffmpeg.avutil.AVFrame: long pts()>();
+
+        $stack95 = 1000000L * $stack93;
+
+        $r63 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack94 = $r63.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational time_base>;
+
+        $stack96 = virtualinvoke $stack94.<org.bytedeco.ffmpeg.avutil.AVRational: int num()>();
+
+        $stack97 = (long) $stack96;
+
+        $stack99 = $stack95 * $stack97;
+
+        $r64 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack98 = $r64.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational time_base>;
+
+        $stack100 = virtualinvoke $stack98.<org.bytedeco.ffmpeg.avutil.AVRational: int den()>();
+
+        $stack101 = (long) $stack100;
+
+        $stack102 = $stack99 / $stack101;
+
+        $stack91.<org.bytedeco.javacv.Frame: long timestamp> = $stack102;
+
+        $r65 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        ptr#199 = $r65.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+     label12:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+        return ptr#199;
+
+     label13:
+        $stack223 := @caughtexception;
+
+     label14:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+     label15:
+        goto label17;
+
+     label16:
+        $stack222 := @caughtexception;
+
+        virtualinvoke $stack223.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack222);
+
+     label17:
+        throw $stack223;
+
+        catch java.lang.Throwable from label01 to label03 with label13;
+        catch java.lang.Throwable from label04 to label12 with label13;
+        catch java.lang.Throwable from label14 to label15 with label16;
+    }
+
+    public synchronized org.bytedeco.javacv.Frame pullSamples() throws org.bytedeco.javacv.FFmpegFrameFilter$Exception
+    {
+        java.lang.Class[] $stack11;
+        FFmpegFrameFilter this;
+        boolean $stack12, $stack61, $stack85;
+        org.bytedeco.ffmpeg.avutil.AVFrame $stack13, $stack14, $stack19, $stack22, $stack25, $stack27, $stack44, $stack57, $stack116, $stack33, $stack36, $stack41;
+        org.bytedeco.ffmpeg.avfilter.AVFilterContext $stack15;
+        int $stack17, $stack18, $stack21, planes, $stack24, $stack26, $stack28, $stack29, data_size, sample_size, $stack50, $stack54, $stack99, 'ret', sample_format#3, $stack117, $stack35, $stack38, $stack43, i;
+        org.bytedeco.javacpp.IntPointer $stack23;
+        java.nio.Buffer[] $stack30, $stack32, $stack66, $stack74, $stack80, $stack82, $stack84, $stack98, $stack39, $stack68;
+        org.bytedeco.javacpp.BytePointer[] $stack31, $stack59, $stack63, $stack87;
+        org.bytedeco.javacv.Frame $stack45, $stack34, $stack37, $stack40, $stack42, i#100;
+        long $stack47, $stack49, $stack51, $stack53, $stack55, $stack56, $stack62, $stack89, $stack90;
+        org.bytedeco.ffmpeg.avutil.AVRational $stack48, $stack52;
+        org.bytedeco.javacpp.BytePointer p, $stack60, $stack64, $stack88, $stack130, $u3;
+        java.nio.ByteBuffer b;
+        java.nio.DoubleBuffer $stack67;
+        java.nio.FloatBuffer $stack75;
+        java.nio.IntBuffer $stack81;
+        java.nio.ShortBuffer $stack83;
+        byte $stack91;
+        java.lang.StringBuilder $stack128, $stack132, $u2;
+        java.lang.String $stack131, $stack133;
+        java.lang.Throwable $stack138, $stack139, $r1, $r5;
+        java.nio.Buffer $stack69, $stack70;
+        org.bytedeco.javacpp.PointerScope $u0;
+        org.bytedeco.javacv.FFmpegFrameFilter$Exception $u1, $u4;
+        java.lang.AssertionError $u5;
+        org.bytedeco.javacv.FFmpegFrameFilter $r0, $r2, $r3, $r4, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r33, $r34, $r35, $r36, $r37;
+
+        this := @this: FFmpegFrameFilter;
+
+        $u0 = new org.bytedeco.javacpp.PointerScope;
+
+        $stack11 = newarray (java.lang.Class)[0];
+
+        specialinvoke $u0.<org.bytedeco.javacpp.PointerScope: void <init>(java.lang.Class[])>($stack11);
+
+     label01:
+        $r0 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack12 = $r0.<org.bytedeco.javacv.FFmpegFrameFilter: boolean started>;
+
+        if $stack12 != 0 goto label02;
+
+        $u1 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        specialinvoke $u1.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>("start() was not called successfully!");
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label02:
+        $r2 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack13 = $r2.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        staticinvoke <org.bytedeco.ffmpeg.global.avutil: void av_frame_unref(org.bytedeco.ffmpeg.avutil.AVFrame)>($stack13);
+
+        $r3 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack15 = $r3.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avfilter.AVFilterContext abuffersink_ctx>;
+
+        $r4 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack14 = $r4.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        'ret' = staticinvoke <org.bytedeco.ffmpeg.global.avfilter: int av_buffersink_get_frame(org.bytedeco.ffmpeg.avfilter.AVFilterContext,org.bytedeco.ffmpeg.avutil.AVFrame)>($stack15, $stack14);
+
+        $stack17 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: int AVERROR_EAGAIN()>();
+
+        if 'ret' == $stack17 goto label03;
+
+        $stack18 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: int AVERROR_EOF()>();
+
+        if 'ret' != $stack18 goto label04;
+
+     label03:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+        return null;
+
+     label04:
+        if 'ret' >= 0 goto label05;
+
+        $u4 = new org.bytedeco.javacv.FFmpegFrameFilter$Exception;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack128 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("av_buffersink_get_frame(): Error occurred: ");
+
+        $u3 = new org.bytedeco.javacpp.BytePointer;
+
+        specialinvoke $u3.<org.bytedeco.javacpp.BytePointer: void <init>(long)>(256L);
+
+        $stack130 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: org.bytedeco.javacpp.BytePointer av_make_error_string(org.bytedeco.javacpp.BytePointer,long,int)>($u3, 256L, 'ret');
+
+        $stack131 = virtualinvoke $stack130.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack132 = virtualinvoke $stack128.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack131);
+
+        $stack133 = virtualinvoke $stack132.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u4.<org.bytedeco.javacv.FFmpegFrameFilter$Exception: void <init>(java.lang.String)>($stack133);
+
+        $r5 = (java.lang.Throwable) $u4;
+
+        throw $r5;
+
+     label05:
+        $r6 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack19 = $r6.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        sample_format#3 = virtualinvoke $stack19.<org.bytedeco.ffmpeg.avutil.AVFrame: int format()>();
+
+        $stack21 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: int av_sample_fmt_is_planar(int)>(sample_format#3);
+
+        if $stack21 == 0 goto label06;
+
+        $r7 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack116 = $r7.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack117 = virtualinvoke $stack116.<org.bytedeco.ffmpeg.avutil.AVFrame: int channels()>();
+
+        goto label07;
+
+     label06:
+        $stack117 = 1;
+
+     label07:
+        planes = $stack117;
+
+        $stack23 = (org.bytedeco.javacpp.IntPointer) null;
+
+        $r8 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack22 = $r8.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack24 = virtualinvoke $stack22.<org.bytedeco.ffmpeg.avutil.AVFrame: int channels()>();
+
+        $r9 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack25 = $r9.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack26 = virtualinvoke $stack25.<org.bytedeco.ffmpeg.avutil.AVFrame: int nb_samples()>();
+
+        $r10 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack27 = $r10.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack28 = virtualinvoke $stack27.<org.bytedeco.ffmpeg.avutil.AVFrame: int format()>();
+
+        $stack29 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: int av_samples_get_buffer_size(org.bytedeco.javacpp.IntPointer,int,int,int,int)>($stack23, $stack24, $stack26, $stack28, 1);
+
+        data_size = $stack29 / $stack117;
+
+        $r11 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack30 = $r11.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] samples_buf>;
+
+        if $stack30 == null goto label08;
+
+        $r12 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack98 = $r12.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] samples_buf>;
+
+        $stack99 = lengthof $stack98;
+
+        if $stack99 == $stack117 goto label09;
+
+     label08:
+        $stack31 = newarray (org.bytedeco.javacpp.BytePointer)[planes];
+
+        $r13 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r13.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] samples_ptr> = $stack31;
+
+        $stack32 = newarray (java.nio.Buffer)[planes];
+
+        $r14 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $r14.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] samples_buf> = $stack32;
+
+     label09:
+        $r15 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack34 = $r15.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r16 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack33 = $r16.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack35 = virtualinvoke $stack33.<org.bytedeco.ffmpeg.avutil.AVFrame: int channels()>();
+
+        $stack34.<org.bytedeco.javacv.Frame: int audioChannels> = $stack35;
+
+        $r17 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack37 = $r17.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r18 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack36 = $r18.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack38 = virtualinvoke $stack36.<org.bytedeco.ffmpeg.avutil.AVFrame: int sample_rate()>();
+
+        $stack37.<org.bytedeco.javacv.Frame: int sampleRate> = $stack38;
+
+        $r19 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack40 = $r19.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r20 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack39 = $r20.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] samples_buf>;
+
+        $stack40.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples> = $stack39;
+
+        $r21 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack42 = $r21.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r22 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack41 = $r22.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack42.<org.bytedeco.javacv.Frame: java.lang.Object opaque> = $stack41;
+
+        $stack43 = staticinvoke <org.bytedeco.ffmpeg.global.avutil: int av_get_bytes_per_sample(int)>(sample_format#3);
+
+        sample_size = data_size / $stack43;
+
+        i = 0;
+
+     label10:
+        if i >= planes goto label19;
+
+        $r23 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack57 = $r23.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        p = virtualinvoke $stack57.<org.bytedeco.ffmpeg.avutil.AVFrame: org.bytedeco.javacpp.BytePointer data(int)>(i);
+
+        $r24 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack59 = $r24.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] samples_ptr>;
+
+        $stack60 = $stack59[i];
+
+        $stack61 = virtualinvoke p.<org.bytedeco.javacpp.BytePointer: boolean equals(java.lang.Object)>($stack60);
+
+        if $stack61 == 0 goto label11;
+
+        $r25 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack87 = $r25.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] samples_ptr>;
+
+        $stack88 = $stack87[i];
+
+        $stack89 = virtualinvoke $stack88.<org.bytedeco.javacpp.BytePointer: long capacity()>();
+
+        $stack90 = (long) data_size;
+
+        $stack91 = $stack89 cmp $stack90;
+
+        if $stack91 >= 0 goto label18;
+
+     label11:
+        $r26 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack63 = $r26.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacpp.BytePointer[] samples_ptr>;
+
+        $stack62 = (long) data_size;
+
+        $stack64 = virtualinvoke p.<org.bytedeco.javacpp.BytePointer: org.bytedeco.javacpp.BytePointer capacity(long)>($stack62);
+
+        $stack63[i] = $stack64;
+
+        b = virtualinvoke p.<org.bytedeco.javacpp.BytePointer: java.nio.ByteBuffer asBuffer()>();
+
+        tableswitch(sample_format#3)
+        {
+            case 0: goto label12;
+            case 1: goto label13;
+            case 2: goto label14;
+            case 3: goto label15;
+            case 4: goto label16;
+            case 5: goto label12;
+            case 6: goto label13;
+            case 7: goto label14;
+            case 8: goto label15;
+            case 9: goto label16;
+            default: goto label17;
+        };
+
+     label12:
+        $r27 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack84 = $r27.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] samples_buf>;
+
+        $stack84[i] = b;
+
+        goto label18;
+
+     label13:
+        $r28 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack82 = $r28.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] samples_buf>;
+
+        $stack83 = virtualinvoke b.<java.nio.ByteBuffer: java.nio.ShortBuffer asShortBuffer()>();
+
+        $stack82[i] = $stack83;
+
+        goto label18;
+
+     label14:
+        $r29 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack80 = $r29.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] samples_buf>;
+
+        $stack81 = virtualinvoke b.<java.nio.ByteBuffer: java.nio.IntBuffer asIntBuffer()>();
+
+        $stack80[i] = $stack81;
+
+        goto label18;
+
+     label15:
+        $r30 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack74 = $r30.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] samples_buf>;
+
+        $stack75 = virtualinvoke b.<java.nio.ByteBuffer: java.nio.FloatBuffer asFloatBuffer()>();
+
+        $stack74[i] = $stack75;
+
+        goto label18;
+
+     label16:
+        $r31 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack66 = $r31.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] samples_buf>;
+
+        $stack67 = virtualinvoke b.<java.nio.ByteBuffer: java.nio.DoubleBuffer asDoubleBuffer()>();
+
+        $stack66[i] = $stack67;
+
+        goto label18;
+
+     label17:
+        $stack85 = <org.bytedeco.javacv.FFmpegFrameFilter: boolean $assertionsDisabled>;
+
+        if $stack85 != 0 goto label18;
+
+        $u5 = new java.lang.AssertionError;
+
+        specialinvoke $u5.<java.lang.AssertionError: void <init>()>();
+
+        throw $u5;
+
+     label18:
+        $r32 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack68 = $r32.<org.bytedeco.javacv.FFmpegFrameFilter: java.nio.Buffer[] samples_buf>;
+
+        $stack69 = $stack68[i];
+
+        $stack70 = virtualinvoke $stack69.<java.nio.Buffer: java.nio.Buffer position(int)>(0);
+
+        virtualinvoke $stack70.<java.nio.Buffer: java.nio.Buffer limit(int)>(sample_size);
+
+        i = i + 1;
+
+        goto label10;
+
+     label19:
+        $r33 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack45 = $r33.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+        $r34 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack44 = $r34.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVFrame filt_frame>;
+
+        $stack47 = virtualinvoke $stack44.<org.bytedeco.ffmpeg.avutil.AVFrame: long pts()>();
+
+        $stack49 = 1000000L * $stack47;
+
+        $r35 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack48 = $r35.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational atime_base>;
+
+        $stack50 = virtualinvoke $stack48.<org.bytedeco.ffmpeg.avutil.AVRational: int num()>();
+
+        $stack51 = (long) $stack50;
+
+        $stack53 = $stack49 * $stack51;
+
+        $r36 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        $stack52 = $r36.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.ffmpeg.avutil.AVRational atime_base>;
+
+        $stack54 = virtualinvoke $stack52.<org.bytedeco.ffmpeg.avutil.AVRational: int den()>();
+
+        $stack55 = (long) $stack54;
+
+        $stack56 = $stack53 / $stack55;
+
+        $stack45.<org.bytedeco.javacv.Frame: long timestamp> = $stack56;
+
+        $r37 = (org.bytedeco.javacv.FFmpegFrameFilter) this;
+
+        i#100 = $r37.<org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.Frame frame>;
+
+     label20:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+        return i#100;
+
+     label21:
+        $stack139 := @caughtexception;
+
+     label22:
+        virtualinvoke $u0.<org.bytedeco.javacpp.PointerScope: void close()>();
+
+     label23:
+        goto label25;
+
+     label24:
+        $stack138 := @caughtexception;
+
+        virtualinvoke $stack139.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack138);
+
+     label25:
+        throw $stack139;
+
+        catch java.lang.Throwable from label01 to label03 with label21;
+        catch java.lang.Throwable from label04 to label20 with label21;
+        catch java.lang.Throwable from label22 to label23 with label24;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $stack1;
+        boolean $stack2, $stack3;
+        java.lang.Throwable $stack5;
+
+        $stack1 = class "Lorg/bytedeco/javacv/FFmpegFrameFilter;";
+
+        $stack2 = virtualinvoke $stack1.<java.lang.Class: boolean desiredAssertionStatus()>();
+
+        if $stack2 != 0 goto label1;
+
+        $stack3 = 1;
+
+        goto label2;
+
+     label1:
+        $stack3 = 0;
+
+     label2:
+        <org.bytedeco.javacv.FFmpegFrameFilter: boolean $assertionsDisabled> = $stack3;
+
+        <org.bytedeco.javacv.FFmpegFrameFilter: org.bytedeco.javacv.FFmpegFrameFilter$Exception loadingException> = null;
+
+     label3:
+        staticinvoke <org.bytedeco.javacv.FFmpegFrameFilter: void tryLoad()>();
+
+     label4:
+        goto label6;
+
+     label5:
+        $stack5 := @caughtexception;
+
+     label6:
+        return;
+
+        catch org.bytedeco.javacv.FFmpegFrameFilter$Exception from label3 to label4 with label5;
+    }
+}

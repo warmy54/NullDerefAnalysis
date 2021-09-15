@@ -1,0 +1,301 @@
+public class Dereference extends org.ooc.frontend.model.Access
+{
+    org.ooc.frontend.model.Type type;
+    org.ooc.frontend.model.Expression expression;
+
+    public void <init>(org.ooc.frontend.model.Expression, org.ooc.frontend.model.tokens.Token)
+    {
+        Dereference this;
+        org.ooc.frontend.model.tokens.Token startToken;
+        org.ooc.frontend.model.Expression expression;
+        org.ooc.frontend.model.Dereference $r0;
+
+        this := @this: Dereference;
+
+        expression := @parameter0: org.ooc.frontend.model.Expression;
+
+        startToken := @parameter1: org.ooc.frontend.model.tokens.Token;
+
+        specialinvoke this.<org.ooc.frontend.model.Access: void <init>(org.ooc.frontend.model.tokens.Token)>(startToken);
+
+        $r0 = (org.ooc.frontend.model.Dereference) this;
+
+        virtualinvoke $r0.<org.ooc.frontend.model.Dereference: void setExpression(org.ooc.frontend.model.Expression)>(expression);
+
+        return;
+    }
+
+    public org.ooc.frontend.model.Expression getGenericOperand()
+    {
+        Dereference this;
+        org.ooc.frontend.model.Expression $stack1, $stack4, $stack5, $stack9;
+        org.ooc.frontend.model.Type $stack2, $stack6;
+        boolean $stack3;
+        int $stack7;
+        org.ooc.frontend.model.Dereference $r0, $r1, $r2;
+
+        this := @this: Dereference;
+
+        $r0 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Expression expression>;
+
+        $stack2 = virtualinvoke $stack1.<org.ooc.frontend.model.Expression: org.ooc.frontend.model.Type getType()>();
+
+        $stack3 = virtualinvoke $stack2.<org.ooc.frontend.model.Type: boolean isGeneric()>();
+
+        if $stack3 == 0 goto label1;
+
+        $r1 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack5 = $r1.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Expression expression>;
+
+        $stack6 = virtualinvoke $stack5.<org.ooc.frontend.model.Expression: org.ooc.frontend.model.Type getType()>();
+
+        $stack7 = virtualinvoke $stack6.<org.ooc.frontend.model.Type: int getPointerLevel()>();
+
+        if $stack7 <= 0 goto label1;
+
+        $r2 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack9 = $r2.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Expression expression>;
+
+        return $stack9;
+
+     label1:
+        $stack4 = specialinvoke this.<org.ooc.frontend.model.Access: org.ooc.frontend.model.Expression getGenericOperand()>();
+
+        return $stack4;
+    }
+
+    public boolean replace(org.ooc.frontend.model.Node, org.ooc.frontend.model.Node)
+    {
+        Dereference this;
+        org.ooc.frontend.model.Node oldie, kiddo;
+        org.ooc.frontend.model.Expression $stack3, $stack4;
+        org.ooc.frontend.model.Dereference $r0, $r1;
+
+        this := @this: Dereference;
+
+        oldie := @parameter0: org.ooc.frontend.model.Node;
+
+        kiddo := @parameter1: org.ooc.frontend.model.Node;
+
+        $r0 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack3 = $r0.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Expression expression>;
+
+        if $stack3 != oldie goto label1;
+
+        $stack4 = (org.ooc.frontend.model.Expression) kiddo;
+
+        $r1 = (org.ooc.frontend.model.Dereference) this;
+
+        $r1.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Expression expression> = $stack4;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public org.ooc.frontend.model.Type getType()
+    {
+        Dereference this;
+        org.ooc.frontend.model.Type $stack3, exprType, $stack8, $stack9, $stack10, $stack13, $stack15, $stack18, $stack20, $stack21, $stack23, $stack24, $stack25, $stack26, $stack4;
+        org.ooc.frontend.model.Expression $stack5;
+        int $stack11, $stack12, $stack14, $stack27, $stack28;
+        org.ooc.frontend.model.Declaration $stack16, $stack19;
+        boolean $stack17, $stack22;
+        org.ooc.frontend.model.CoverDecl cover;
+        org.ooc.frontend.model.Dereference $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11;
+
+        this := @this: Dereference;
+
+        $r0 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack3 = $r0.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Type type>;
+
+        if $stack3 != null goto label1;
+
+        $r1 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack5 = $r1.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Expression expression>;
+
+        exprType = virtualinvoke $stack5.<org.ooc.frontend.model.Expression: org.ooc.frontend.model.Type getType()>();
+
+        if exprType == null goto label1;
+
+        $stack8 = virtualinvoke exprType.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Type clone()>();
+
+        $r2 = (org.ooc.frontend.model.Dereference) this;
+
+        $r2.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Type type> = $stack8;
+
+        $r3 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack10 = $r3.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Type type>;
+
+        $r4 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack9 = $r4.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Type type>;
+
+        $stack11 = virtualinvoke $stack9.<org.ooc.frontend.model.Type: int getPointerLevel()>();
+
+        $stack12 = $stack11 - 1;
+
+        virtualinvoke $stack10.<org.ooc.frontend.model.Type: void setPointerLevel(int)>($stack12);
+
+        $r5 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack13 = $r5.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Type type>;
+
+        $stack14 = virtualinvoke $stack13.<org.ooc.frontend.model.Type: int getPointerLevel()>();
+
+        if $stack14 >= 0 goto label1;
+
+        $r6 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack15 = $r6.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Type type>;
+
+        $stack16 = virtualinvoke $stack15.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        $stack17 = $stack16 instanceof org.ooc.frontend.model.CoverDecl;
+
+        if $stack17 == 0 goto label1;
+
+        $r7 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack18 = $r7.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Type type>;
+
+        $stack19 = virtualinvoke $stack18.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        cover = (org.ooc.frontend.model.CoverDecl) $stack19;
+
+        $stack20 = virtualinvoke cover.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type getFromType()>();
+
+        if $stack20 == null goto label1;
+
+        $stack21 = virtualinvoke cover.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type getFromType()>();
+
+        $stack22 = virtualinvoke $stack21.<org.ooc.frontend.model.Type: boolean isFlat()>();
+
+        if $stack22 != 0 goto label1;
+
+        $stack23 = virtualinvoke cover.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type getFromType()>();
+
+        $stack24 = virtualinvoke $stack23.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Type clone()>();
+
+        $r8 = (org.ooc.frontend.model.Dereference) this;
+
+        $r8.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Type type> = $stack24;
+
+        $r9 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack26 = $r9.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Type type>;
+
+        $r10 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack25 = $r10.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Type type>;
+
+        $stack27 = virtualinvoke $stack25.<org.ooc.frontend.model.Type: int getPointerLevel()>();
+
+        $stack28 = $stack27 - 1;
+
+        virtualinvoke $stack26.<org.ooc.frontend.model.Type: void setPointerLevel(int)>($stack28);
+
+     label1:
+        $r11 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack4 = $r11.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Type type>;
+
+        return $stack4;
+    }
+
+    public org.ooc.frontend.model.Expression getExpression()
+    {
+        Dereference this;
+        org.ooc.frontend.model.Expression $stack1;
+        org.ooc.frontend.model.Dereference $r0;
+
+        this := @this: Dereference;
+
+        $r0 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Expression expression>;
+
+        return $stack1;
+    }
+
+    public void setExpression(org.ooc.frontend.model.Expression)
+    {
+        Dereference this;
+        org.ooc.frontend.model.Expression expression;
+        org.ooc.frontend.model.Dereference $r0;
+
+        this := @this: Dereference;
+
+        expression := @parameter0: org.ooc.frontend.model.Expression;
+
+        $r0 = (org.ooc.frontend.model.Dereference) this;
+
+        $r0.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Expression expression> = expression;
+
+        return;
+    }
+
+    public void accept(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        org.ooc.frontend.Visitor visitor;
+        Dereference this;
+        org.ooc.frontend.model.Dereference $r0;
+
+        this := @this: Dereference;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.Dereference) this;
+
+        interfaceinvoke visitor.<org.ooc.frontend.Visitor: void visit(org.ooc.frontend.model.Dereference)>($r0);
+
+        return;
+    }
+
+    public void acceptChildren(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        Dereference this;
+        org.ooc.frontend.Visitor visitor;
+        org.ooc.frontend.model.Expression $stack2;
+        org.ooc.frontend.model.Dereference $r0;
+
+        this := @this: Dereference;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.Dereference) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.Dereference: org.ooc.frontend.model.Expression expression>;
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        return;
+    }
+
+    public boolean hasChildren()
+    {
+        Dereference this;
+
+        this := @this: Dereference;
+
+        return 1;
+    }
+
+    public boolean canBeReferenced()
+    {
+        Dereference this;
+
+        this := @this: Dereference;
+
+        return 1;
+    }
+}

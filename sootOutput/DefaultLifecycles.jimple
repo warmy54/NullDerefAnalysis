@@ -1,0 +1,361 @@
+public class DefaultLifecycles extends java.lang.Object
+{
+    public static final java.lang.String[] STANDARD_LIFECYCLES;
+    private final java.util.Map lifecyclesMap;
+    private final org.codehaus.plexus.logging.Logger logger;
+
+    public void <init>()
+    {
+        DefaultLifecycles this;
+        org.apache.maven.lifecycle.DefaultLifecycles $r0, $r1;
+
+        this := @this: DefaultLifecycles;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.DefaultLifecycles) this;
+
+        $r0.<org.apache.maven.lifecycle.DefaultLifecycles: java.util.Map lifecyclesMap> = null;
+
+        $r1 = (org.apache.maven.lifecycle.DefaultLifecycles) this;
+
+        $r1.<org.apache.maven.lifecycle.DefaultLifecycles: org.codehaus.plexus.logging.Logger logger> = null;
+
+        return;
+    }
+
+    public void <init>(java.util.Map, org.codehaus.plexus.logging.Logger)
+    {
+        DefaultLifecycles this;
+        java.util.Map lifecyclesMap;
+        org.codehaus.plexus.logging.Logger logger;
+        org.apache.maven.lifecycle.DefaultLifecycles $r0, $r1;
+
+        this := @this: DefaultLifecycles;
+
+        lifecyclesMap := @parameter0: java.util.Map;
+
+        logger := @parameter1: org.codehaus.plexus.logging.Logger;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.DefaultLifecycles) this;
+
+        $r0.<org.apache.maven.lifecycle.DefaultLifecycles: java.util.Map lifecyclesMap> = lifecyclesMap;
+
+        $r1 = (org.apache.maven.lifecycle.DefaultLifecycles) this;
+
+        $r1.<org.apache.maven.lifecycle.DefaultLifecycles: org.codehaus.plexus.logging.Logger logger> = logger;
+
+        return;
+    }
+
+    public org.apache.maven.lifecycle.Lifecycle get(java.lang.String)
+    {
+        DefaultLifecycles this;
+        java.util.Map $stack2;
+        java.lang.String phase;
+        java.lang.Object $stack3;
+        org.apache.maven.lifecycle.Lifecycle $stack4;
+        org.apache.maven.lifecycle.DefaultLifecycles $r0;
+
+        this := @this: DefaultLifecycles;
+
+        phase := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.lifecycle.DefaultLifecycles) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.lifecycle.DefaultLifecycles: java.util.Map getPhaseToLifecycleMap()>();
+
+        $stack3 = interfaceinvoke $stack2.<java.util.Map: java.lang.Object get(java.lang.Object)>(phase);
+
+        $stack4 = (org.apache.maven.lifecycle.Lifecycle) $stack3;
+
+        return $stack4;
+    }
+
+    public java.util.Map getPhaseToLifecycleMap()
+    {
+        DefaultLifecycles this;
+        java.util.List $stack8, $stack14;
+        java.util.Iterator l2, l4;
+        boolean $stack10, $stack13, $stack19, $stack16;
+        java.lang.Object $stack11, $stack18, $stack20;
+        org.apache.maven.lifecycle.Lifecycle lifecycle, original;
+        org.codehaus.plexus.logging.Logger $stack12, $stack22, $stack35;
+        java.lang.String phase, $stack26, $stack29, $stack31, $stack38;
+        java.lang.StringBuilder $stack23, $stack24, $stack25, $stack27, $stack28, $stack30, $stack36, $stack37, $u1, $u2;
+        java.util.HashMap $u0;
+        org.apache.maven.lifecycle.DefaultLifecycles $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultLifecycles;
+
+        $u0 = new java.util.HashMap;
+
+        specialinvoke $u0.<java.util.HashMap: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.DefaultLifecycles) this;
+
+        $stack8 = virtualinvoke $r0.<org.apache.maven.lifecycle.DefaultLifecycles: java.util.List getLifeCycles()>();
+
+        l2 = interfaceinvoke $stack8.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label7;
+
+        $stack11 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        lifecycle = (org.apache.maven.lifecycle.Lifecycle) $stack11;
+
+        $r1 = (org.apache.maven.lifecycle.DefaultLifecycles) this;
+
+        $stack12 = $r1.<org.apache.maven.lifecycle.DefaultLifecycles: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack13 = interfaceinvoke $stack12.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack13 == 0 goto label2;
+
+        $r2 = (org.apache.maven.lifecycle.DefaultLifecycles) this;
+
+        $stack35 = $r2.<org.apache.maven.lifecycle.DefaultLifecycles: org.codehaus.plexus.logging.Logger logger>;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack36 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Lifecycle ");
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(lifecycle);
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack35.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack38);
+
+     label2:
+        $stack14 = virtualinvoke lifecycle.<org.apache.maven.lifecycle.Lifecycle: java.util.List getPhases()>();
+
+        l4 = interfaceinvoke $stack14.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack16 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack16 == 0 goto label6;
+
+        $stack18 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        phase = (java.lang.String) $stack18;
+
+        $stack19 = interfaceinvoke $u0.<java.util.Map: boolean containsKey(java.lang.Object)>(phase);
+
+        if $stack19 != 0 goto label4;
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(phase, lifecycle);
+
+        goto label5;
+
+     label4:
+        $stack20 = interfaceinvoke $u0.<java.util.Map: java.lang.Object get(java.lang.Object)>(phase);
+
+        original = (org.apache.maven.lifecycle.Lifecycle) $stack20;
+
+        $r3 = (org.apache.maven.lifecycle.DefaultLifecycles) this;
+
+        $stack22 = $r3.<org.apache.maven.lifecycle.DefaultLifecycles: org.codehaus.plexus.logging.Logger logger>;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack23 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Duplicated lifecycle phase ");
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(phase);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(". Defined in ");
+
+        $stack26 = virtualinvoke original.<org.apache.maven.lifecycle.Lifecycle: java.lang.String getId()>();
+
+        $stack27 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack26);
+
+        $stack28 = virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" but also in ");
+
+        $stack29 = virtualinvoke lifecycle.<org.apache.maven.lifecycle.Lifecycle: java.lang.String getId()>();
+
+        $stack30 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack29);
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack22.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack31);
+
+     label5:
+        goto label3;
+
+     label6:
+        goto label1;
+
+     label7:
+        return $u0;
+    }
+
+    public java.util.List getLifeCycles()
+    {
+        java.lang.String[] $stack3;
+        java.util.List lifecycleIds, $stack16;
+        java.util.Comparator comparator, $stack12;
+        DefaultLifecycles this;
+        java.util.Map $stack6;
+        java.util.Collection $stack7;
+        java.util.stream.Stream $stack8, $stack10, $stack13;
+        java.util.function.Consumer $stack9;
+        java.util.function.Function $stack11;
+        java.util.stream.Collector $stack14;
+        java.lang.Object $stack15;
+        org.apache.maven.lifecycle.DefaultLifecycles $r0;
+
+        this := @this: DefaultLifecycles;
+
+        $stack3 = <org.apache.maven.lifecycle.DefaultLifecycles: java.lang.String[] STANDARD_LIFECYCLES>;
+
+        lifecycleIds = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack3);
+
+        comparator = staticinvoke <DefaultLifecycles$lambda_getLifeCycles_0__309: java.util.Comparator bootstrap$(java.util.List)>(lifecycleIds);
+
+        $r0 = (org.apache.maven.lifecycle.DefaultLifecycles) this;
+
+        $stack6 = $r0.<org.apache.maven.lifecycle.DefaultLifecycles: java.util.Map lifecyclesMap>;
+
+        $stack7 = interfaceinvoke $stack6.<java.util.Map: java.util.Collection values()>();
+
+        $stack8 = interfaceinvoke $stack7.<java.util.Collection: java.util.stream.Stream stream()>();
+
+        $stack9 = staticinvoke <DefaultLifecycles$lambda_getLifeCycles_1__311: java.util.function.Consumer bootstrap$()>();
+
+        $stack10 = interfaceinvoke $stack8.<java.util.stream.Stream: java.util.stream.Stream peek(java.util.function.Consumer)>($stack9);
+
+        $stack11 = staticinvoke <DefaultLifecycles$getId__312: java.util.function.Function bootstrap$()>();
+
+        $stack12 = staticinvoke <java.util.Comparator: java.util.Comparator comparing(java.util.function.Function,java.util.Comparator)>($stack11, comparator);
+
+        $stack13 = interfaceinvoke $stack10.<java.util.stream.Stream: java.util.stream.Stream sorted(java.util.Comparator)>($stack12);
+
+        $stack14 = staticinvoke <java.util.stream.Collectors: java.util.stream.Collector toList()>();
+
+        $stack15 = interfaceinvoke $stack13.<java.util.stream.Stream: java.lang.Object collect(java.util.stream.Collector)>($stack14);
+
+        $stack16 = (java.util.List) $stack15;
+
+        return $stack16;
+    }
+
+    public java.lang.String getLifecyclePhaseList()
+    {
+        DefaultLifecycles this;
+        java.util.List $stack1;
+        java.util.stream.Stream $stack2, $stack4;
+        java.util.function.Function $stack3;
+        java.util.stream.Collector $stack5;
+        java.lang.Object $stack6;
+        java.lang.String $stack7;
+        org.apache.maven.lifecycle.DefaultLifecycles $r0;
+
+        this := @this: DefaultLifecycles;
+
+        $r0 = (org.apache.maven.lifecycle.DefaultLifecycles) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.lifecycle.DefaultLifecycles: java.util.List getLifeCycles()>();
+
+        $stack2 = interfaceinvoke $stack1.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack3 = staticinvoke <DefaultLifecycles$lambda_getLifecyclePhaseList_2__310: java.util.function.Function bootstrap$()>();
+
+        $stack4 = interfaceinvoke $stack2.<java.util.stream.Stream: java.util.stream.Stream flatMap(java.util.function.Function)>($stack3);
+
+        $stack5 = staticinvoke <java.util.stream.Collectors: java.util.stream.Collector joining(java.lang.CharSequence)>(", ");
+
+        $stack6 = interfaceinvoke $stack4.<java.util.stream.Stream: java.lang.Object collect(java.util.stream.Collector)>($stack5);
+
+        $stack7 = (java.lang.String) $stack6;
+
+        return $stack7;
+    }
+
+    private static java.util.stream.Stream lambda$getLifecyclePhaseList$2(org.apache.maven.lifecycle.Lifecycle)
+    {
+        org.apache.maven.lifecycle.Lifecycle l;
+        java.util.List $stack1;
+        java.util.stream.Stream $stack2;
+
+        l := @parameter0: org.apache.maven.lifecycle.Lifecycle;
+
+        $stack1 = virtualinvoke l.<org.apache.maven.lifecycle.Lifecycle: java.util.List getPhases()>();
+
+        $stack2 = interfaceinvoke $stack1.<java.util.List: java.util.stream.Stream stream()>();
+
+        return $stack2;
+    }
+
+    private static void lambda$getLifeCycles$1(org.apache.maven.lifecycle.Lifecycle)
+    {
+        org.apache.maven.lifecycle.Lifecycle l;
+        java.lang.String $stack1;
+
+        l := @parameter0: org.apache.maven.lifecycle.Lifecycle;
+
+        $stack1 = virtualinvoke l.<org.apache.maven.lifecycle.Lifecycle: java.lang.String getId()>();
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>($stack1, "A lifecycle must have an id.");
+
+        return;
+    }
+
+    private static int lambda$getLifeCycles$0(java.util.List, java.lang.String, java.lang.String)
+    {
+        java.util.List lifecycleIds;
+        java.lang.String l, r;
+        int lx, rx, $stack7, $stack8;
+
+        lifecycleIds := @parameter0: java.util.List;
+
+        l := @parameter1: java.lang.String;
+
+        r := @parameter2: java.lang.String;
+
+        lx = interfaceinvoke lifecycleIds.<java.util.List: int indexOf(java.lang.Object)>(l);
+
+        rx = interfaceinvoke lifecycleIds.<java.util.List: int indexOf(java.lang.Object)>(r);
+
+        if lx < 0 goto label1;
+
+        if rx >= 0 goto label2;
+
+     label1:
+        $stack7 = rx - lx;
+
+        return $stack7;
+
+     label2:
+        $stack8 = lx - rx;
+
+        return $stack8;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String[] $stack0;
+
+        $stack0 = newarray (java.lang.String)[4];
+
+        $stack0[0] = "default";
+
+        $stack0[1] = "clean";
+
+        $stack0[2] = "site";
+
+        $stack0[3] = "wrapper";
+
+        <org.apache.maven.lifecycle.DefaultLifecycles: java.lang.String[] STANDARD_LIFECYCLES> = $stack0;
+
+        return;
+    }
+}

@@ -1,0 +1,401 @@
+public class PathAssemblerTest extends java.lang.Object
+{
+    public static final java.lang.String TEST_MAVEN_USER_HOME;
+    private org.apache.maven.wrapper.PathAssembler pathAssembler;
+    final org.apache.maven.wrapper.WrapperConfiguration configuration;
+
+    public void <init>()
+    {
+        PathAssemblerTest this;
+        java.lang.String[] $stack2;
+        java.nio.file.Path $stack3;
+        org.apache.maven.wrapper.PathAssembler $u0;
+        org.apache.maven.wrapper.WrapperConfiguration $u1;
+        org.apache.maven.wrapper.PathAssemblerTest $r0, $r1;
+
+        this := @this: PathAssemblerTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new org.apache.maven.wrapper.PathAssembler;
+
+        $stack2 = newarray (java.lang.String)[0];
+
+        $stack3 = staticinvoke <java.nio.file.Paths: java.nio.file.Path get(java.lang.String,java.lang.String[])>("someUserHome", $stack2);
+
+        specialinvoke $u0.<org.apache.maven.wrapper.PathAssembler: void <init>(java.nio.file.Path)>($stack3);
+
+        $r0 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $r0.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.PathAssembler pathAssembler> = $u0;
+
+        $u1 = new org.apache.maven.wrapper.WrapperConfiguration;
+
+        specialinvoke $u1.<org.apache.maven.wrapper.WrapperConfiguration: void <init>()>();
+
+        $r1 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $r1.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration> = $u1;
+
+        return;
+    }
+
+    public void setup()
+    {
+        PathAssemblerTest this;
+        org.apache.maven.wrapper.WrapperConfiguration $stack1, $stack2, $stack3, $stack4;
+        org.apache.maven.wrapper.PathAssemblerTest $r0, $r1, $r2, $r3;
+
+        this := @this: PathAssemblerTest;
+
+        $r0 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack1 = $r0.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        virtualinvoke $stack1.<org.apache.maven.wrapper.WrapperConfiguration: void setDistributionBase(java.lang.String)>("MAVEN_USER_HOME");
+
+        $r1 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack2 = $r1.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        virtualinvoke $stack2.<org.apache.maven.wrapper.WrapperConfiguration: void setDistributionPath(java.lang.String)>("somePath");
+
+        $r2 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack3 = $r2.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        virtualinvoke $stack3.<org.apache.maven.wrapper.WrapperConfiguration: void setZipBase(java.lang.String)>("MAVEN_USER_HOME");
+
+        $r3 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack4 = $r3.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        virtualinvoke $stack4.<org.apache.maven.wrapper.WrapperConfiguration: void setZipPath(java.lang.String)>("somePath");
+
+        return;
+    }
+
+    public void distributionDirWithMavenUserHomeBase() throws java.lang.Exception
+    {
+        PathAssemblerTest this;
+        org.apache.maven.wrapper.WrapperConfiguration $stack3, $stack4;
+        org.apache.maven.wrapper.PathAssembler $stack5;
+        org.apache.maven.wrapper.PathAssembler$LocalDistribution $stack6;
+        java.nio.file.Path distributionDir, $stack9;
+        java.lang.String[] $stack8;
+        org.hamcrest.Matcher $stack10;
+        java.net.URI $u0;
+        org.apache.maven.wrapper.PathAssemblerTest $r0, $r1, $r2;
+
+        this := @this: PathAssemblerTest;
+
+        $r0 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack3 = $r0.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        $u0 = new java.net.URI;
+
+        specialinvoke $u0.<java.net.URI: void <init>(java.lang.String)>("http://server/dist/maven-0.9-bin.zip");
+
+        virtualinvoke $stack3.<org.apache.maven.wrapper.WrapperConfiguration: void setDistribution(java.net.URI)>($u0);
+
+        $r1 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack5 = $r1.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.PathAssembler pathAssembler>;
+
+        $r2 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack4 = $r2.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        $stack6 = virtualinvoke $stack5.<org.apache.maven.wrapper.PathAssembler: org.apache.maven.wrapper.PathAssembler$LocalDistribution getDistribution(org.apache.maven.wrapper.WrapperConfiguration)>($stack4);
+
+        distributionDir = virtualinvoke $stack6.<org.apache.maven.wrapper.PathAssembler$LocalDistribution: java.nio.file.Path getDistributionDir()>();
+
+        $stack8 = newarray (java.lang.String)[1];
+
+        $stack8[0] = "/somePath/maven-0.9-bin";
+
+        $stack9 = staticinvoke <java.nio.file.Paths: java.nio.file.Path get(java.lang.String,java.lang.String[])>("someUserHome", $stack8);
+
+        $stack10 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>($stack9);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>(distributionDir, $stack10);
+
+        return;
+    }
+
+    public void distributionDirWithProjectBase() throws java.lang.Exception
+    {
+        PathAssemblerTest this;
+        org.apache.maven.wrapper.WrapperConfiguration $stack2, $stack4, $stack5;
+        org.apache.maven.wrapper.PathAssembler $stack6;
+        org.apache.maven.wrapper.PathAssembler$LocalDistribution $stack7;
+        java.nio.file.Path distributionDir, $stack11;
+        java.lang.String $stack9;
+        java.lang.String[] $stack10;
+        org.hamcrest.Matcher $stack12;
+        java.net.URI $u0;
+        org.apache.maven.wrapper.PathAssemblerTest $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: PathAssemblerTest;
+
+        $r0 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack2 = $r0.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        virtualinvoke $stack2.<org.apache.maven.wrapper.WrapperConfiguration: void setDistributionBase(java.lang.String)>("PROJECT");
+
+        $r1 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack4 = $r1.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        $u0 = new java.net.URI;
+
+        specialinvoke $u0.<java.net.URI: void <init>(java.lang.String)>("http://server/dist/maven-0.9-bin.zip");
+
+        virtualinvoke $stack4.<org.apache.maven.wrapper.WrapperConfiguration: void setDistribution(java.net.URI)>($u0);
+
+        $r2 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack6 = $r2.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.PathAssembler pathAssembler>;
+
+        $r3 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack5 = $r3.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        $stack7 = virtualinvoke $stack6.<org.apache.maven.wrapper.PathAssembler: org.apache.maven.wrapper.PathAssembler$LocalDistribution getDistribution(org.apache.maven.wrapper.WrapperConfiguration)>($stack5);
+
+        distributionDir = virtualinvoke $stack7.<org.apache.maven.wrapper.PathAssembler$LocalDistribution: java.nio.file.Path getDistributionDir()>();
+
+        $r4 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack9 = specialinvoke $r4.<org.apache.maven.wrapper.PathAssemblerTest: java.lang.String currentDirPath()>();
+
+        $stack10 = newarray (java.lang.String)[1];
+
+        $stack10[0] = "/somePath/maven-0.9-bin";
+
+        $stack11 = staticinvoke <java.nio.file.Paths: java.nio.file.Path get(java.lang.String,java.lang.String[])>($stack9, $stack10);
+
+        $stack12 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher equalTo(java.lang.Object)>($stack11);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>(distributionDir, $stack12);
+
+        return;
+    }
+
+    public void distributionDirWithUnknownBase() throws java.lang.Exception
+    {
+        PathAssemblerTest this;
+        org.apache.maven.wrapper.WrapperConfiguration $stack3, $stack4;
+        org.junit.jupiter.api.function.Executable $stack6;
+        java.lang.Throwable $stack7;
+        java.lang.RuntimeException e;
+        java.lang.String $stack9;
+        java.net.URI $u0;
+        org.apache.maven.wrapper.PathAssemblerTest $r0, $r1, $r2;
+
+        this := @this: PathAssemblerTest;
+
+        $r0 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack3 = $r0.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        $u0 = new java.net.URI;
+
+        specialinvoke $u0.<java.net.URI: void <init>(java.lang.String)>("http://server/dist/maven-1.0.zip");
+
+        virtualinvoke $stack3.<org.apache.maven.wrapper.WrapperConfiguration: void setDistribution(java.net.URI)>($u0);
+
+        $r1 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack4 = $r1.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        virtualinvoke $stack4.<org.apache.maven.wrapper.WrapperConfiguration: void setDistributionBase(java.lang.String)>("unknownBase");
+
+        $r2 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack6 = staticinvoke <PathAssemblerTest$lambda_distributionDirWithUnknownBase_0__309: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.wrapper.PathAssemblerTest)>($r2);
+
+        $stack7 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Ljava/lang/RuntimeException;", $stack6);
+
+        e = (java.lang.RuntimeException) $stack7;
+
+        $stack9 = virtualinvoke e.<java.lang.RuntimeException: java.lang.String getMessage()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("Base: unknownBase is unknown", $stack9);
+
+        return;
+    }
+
+    public void distZipWithMavenUserHomeBase() throws java.lang.Exception
+    {
+        PathAssemblerTest this;
+        org.apache.maven.wrapper.WrapperConfiguration $stack3, $stack4;
+        org.apache.maven.wrapper.PathAssembler $stack5;
+        org.apache.maven.wrapper.PathAssembler$LocalDistribution $stack6;
+        java.nio.file.Path dist, $stack8, $stack11, $stack13;
+        java.lang.String $stack9;
+        org.hamcrest.Matcher $stack10, $stack14;
+        java.lang.String[] $stack12;
+        java.net.URI $u0;
+        org.apache.maven.wrapper.PathAssemblerTest $r0, $r1, $r2;
+
+        this := @this: PathAssemblerTest;
+
+        $r0 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack3 = $r0.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        $u0 = new java.net.URI;
+
+        specialinvoke $u0.<java.net.URI: void <init>(java.lang.String)>("http://server/dist/maven-1.0.zip");
+
+        virtualinvoke $stack3.<org.apache.maven.wrapper.WrapperConfiguration: void setDistribution(java.net.URI)>($u0);
+
+        $r1 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack5 = $r1.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.PathAssembler pathAssembler>;
+
+        $r2 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack4 = $r2.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        $stack6 = virtualinvoke $stack5.<org.apache.maven.wrapper.PathAssembler: org.apache.maven.wrapper.PathAssembler$LocalDistribution getDistribution(org.apache.maven.wrapper.WrapperConfiguration)>($stack4);
+
+        dist = virtualinvoke $stack6.<org.apache.maven.wrapper.PathAssembler$LocalDistribution: java.nio.file.Path getZipFile()>();
+
+        $stack8 = interfaceinvoke dist.<java.nio.file.Path: java.nio.file.Path getFileName()>();
+
+        $stack9 = interfaceinvoke $stack8.<java.nio.file.Path: java.lang.String toString()>();
+
+        $stack10 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher equalTo(java.lang.Object)>("maven-1.0.zip");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack9, $stack10);
+
+        $stack11 = interfaceinvoke dist.<java.nio.file.Path: java.nio.file.Path getParent()>();
+
+        $stack12 = newarray (java.lang.String)[1];
+
+        $stack12[0] = "/somePath/maven-1.0";
+
+        $stack13 = staticinvoke <java.nio.file.Paths: java.nio.file.Path get(java.lang.String,java.lang.String[])>("someUserHome", $stack12);
+
+        $stack14 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher equalTo(java.lang.Object)>($stack13);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack11, $stack14);
+
+        return;
+    }
+
+    public void distZipWithProjectBase() throws java.lang.Exception
+    {
+        PathAssemblerTest this;
+        org.apache.maven.wrapper.WrapperConfiguration $stack2, $stack4, $stack5;
+        org.apache.maven.wrapper.PathAssembler $stack6;
+        org.apache.maven.wrapper.PathAssembler$LocalDistribution $stack7;
+        java.nio.file.Path dist, $stack9, $stack12, $stack15;
+        java.lang.String $stack10, $stack13;
+        org.hamcrest.Matcher $stack11, $stack16;
+        java.lang.String[] $stack14;
+        java.net.URI $u0;
+        org.apache.maven.wrapper.PathAssemblerTest $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: PathAssemblerTest;
+
+        $r0 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack2 = $r0.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        virtualinvoke $stack2.<org.apache.maven.wrapper.WrapperConfiguration: void setZipBase(java.lang.String)>("PROJECT");
+
+        $r1 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack4 = $r1.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        $u0 = new java.net.URI;
+
+        specialinvoke $u0.<java.net.URI: void <init>(java.lang.String)>("http://server/dist/maven-1.0.zip");
+
+        virtualinvoke $stack4.<org.apache.maven.wrapper.WrapperConfiguration: void setDistribution(java.net.URI)>($u0);
+
+        $r2 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack6 = $r2.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.PathAssembler pathAssembler>;
+
+        $r3 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack5 = $r3.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        $stack7 = virtualinvoke $stack6.<org.apache.maven.wrapper.PathAssembler: org.apache.maven.wrapper.PathAssembler$LocalDistribution getDistribution(org.apache.maven.wrapper.WrapperConfiguration)>($stack5);
+
+        dist = virtualinvoke $stack7.<org.apache.maven.wrapper.PathAssembler$LocalDistribution: java.nio.file.Path getZipFile()>();
+
+        $stack9 = interfaceinvoke dist.<java.nio.file.Path: java.nio.file.Path getFileName()>();
+
+        $stack10 = interfaceinvoke $stack9.<java.nio.file.Path: java.lang.String toString()>();
+
+        $stack11 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher equalTo(java.lang.Object)>("maven-1.0.zip");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack10, $stack11);
+
+        $stack12 = interfaceinvoke dist.<java.nio.file.Path: java.nio.file.Path getParent()>();
+
+        $r4 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack13 = specialinvoke $r4.<org.apache.maven.wrapper.PathAssemblerTest: java.lang.String currentDirPath()>();
+
+        $stack14 = newarray (java.lang.String)[1];
+
+        $stack14[0] = "/somePath/maven-1.0";
+
+        $stack15 = staticinvoke <java.nio.file.Paths: java.nio.file.Path get(java.lang.String,java.lang.String[])>($stack13, $stack14);
+
+        $stack16 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher equalTo(java.lang.Object)>($stack15);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack12, $stack16);
+
+        return;
+    }
+
+    private java.lang.String currentDirPath()
+    {
+        java.lang.String $stack1;
+        PathAssemblerTest this;
+
+        this := @this: PathAssemblerTest;
+
+        $stack1 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("user.dir");
+
+        return $stack1;
+    }
+
+    private void lambda$distributionDirWithUnknownBase$0() throws java.lang.Throwable
+    {
+        PathAssemblerTest this;
+        org.apache.maven.wrapper.WrapperConfiguration $stack1;
+        org.apache.maven.wrapper.PathAssembler $stack2;
+        org.apache.maven.wrapper.PathAssemblerTest $r0, $r1;
+
+        this := @this: PathAssemblerTest;
+
+        $r0 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack2 = $r0.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.PathAssembler pathAssembler>;
+
+        $r1 = (org.apache.maven.wrapper.PathAssemblerTest) this;
+
+        $stack1 = $r1.<org.apache.maven.wrapper.PathAssemblerTest: org.apache.maven.wrapper.WrapperConfiguration configuration>;
+
+        virtualinvoke $stack2.<org.apache.maven.wrapper.PathAssembler: org.apache.maven.wrapper.PathAssembler$LocalDistribution getDistribution(org.apache.maven.wrapper.WrapperConfiguration)>($stack1);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <PathAssemblerTest: java.lang.String TEST_MAVEN_USER_HOME> = "someUserHome";
+
+        return;
+    }
+}

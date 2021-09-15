@@ -1,0 +1,2094 @@
+public class MavenMetadataSource extends java.lang.Object implements org.apache.maven.artifact.metadata.ArtifactMetadataSource
+{
+    private org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager repositoryMetadataManager;
+    private org.apache.maven.artifact.factory.ArtifactFactory repositorySystem;
+    private org.apache.maven.project.ProjectBuilder projectBuilder;
+    private org.codehaus.plexus.PlexusContainer container;
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.apache.maven.project.artifact.MavenMetadataCache cache;
+    private org.apache.maven.plugin.LegacySupport legacySupport;
+
+    public void <init>()
+    {
+        MavenMetadataSource this;
+
+        this := @this: MavenMetadataSource;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    private void injectSession(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest)
+    {
+        MavenMetadataSource this;
+        org.apache.maven.plugin.LegacySupport $stack3;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest request;
+        boolean $stack5, $stack9;
+        java.lang.String $stack7, $stack8;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0;
+
+        this := @this: MavenMetadataSource;
+
+        request := @parameter0: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest;
+
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack3 = $r0.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        session = interfaceinvoke $stack3.<org.apache.maven.plugin.LegacySupport: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        if session == null goto label1;
+
+        $stack5 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: boolean isOffline()>();
+
+        interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setOffline(boolean)>($stack5);
+
+        $stack7 = "always";
+
+        $stack8 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: java.lang.String getUpdatePolicy()>();
+
+        $stack9 = virtualinvoke $stack7.<java.lang.String: boolean equals(java.lang.Object)>($stack8);
+
+        interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.artifact.repository.RepositoryRequest setForceUpdate(boolean)>($stack9);
+
+     label1:
+        return;
+    }
+
+    public org.apache.maven.artifact.metadata.ResolutionGroup retrieve(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository, java.util.List) throws org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException
+    {
+        MavenMetadataSource this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        java.util.List remoteRepositories;
+        org.apache.maven.artifact.metadata.ResolutionGroup $stack4;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0;
+
+        this := @this: MavenMetadataSource;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        remoteRepositories := @parameter2: java.util.List;
+
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack4 = virtualinvoke $r0.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.metadata.ResolutionGroup retrieve(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,java.util.List,boolean)>(artifact, localRepository, remoteRepositories, 0);
+
+        return $stack4;
+    }
+
+    public org.apache.maven.artifact.metadata.ResolutionGroup retrieve(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository, java.util.List, boolean) throws org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException
+    {
+        MavenMetadataSource this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        java.util.List remoteRepositories;
+        boolean resolveManagedVersions;
+        org.apache.maven.artifact.metadata.ResolutionGroup $stack11;
+        org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest $u0;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0, $r6;
+        org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest $r1, $r2, $r3, $r4, $r5, $r7;
+
+        this := @this: MavenMetadataSource;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        remoteRepositories := @parameter2: java.util.List;
+
+        resolveManagedVersions := @parameter3: boolean;
+
+        $u0 = new org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest: void <init>()>();
+
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $r1 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        specialinvoke $r0.<org.apache.maven.project.artifact.MavenMetadataSource: void injectSession(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest)>($r1);
+
+        $r2 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        interfaceinvoke $r2.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setArtifact(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $r3 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        interfaceinvoke $r3.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository);
+
+        $r4 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        interfaceinvoke $r4.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setRemoteRepositories(java.util.List)>(remoteRepositories);
+
+        $r5 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        interfaceinvoke $r5.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setResolveManagedVersions(boolean)>(resolveManagedVersions);
+
+        $r6 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $r7 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        $stack11 = virtualinvoke $r6.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.metadata.ResolutionGroup retrieve(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest)>($r7);
+
+        return $stack11;
+    }
+
+    public org.apache.maven.artifact.metadata.ResolutionGroup retrieve(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) throws org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException
+    {
+        org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest request;
+        org.apache.maven.artifact.Artifact artifact, managedArtifact, $stack112, relocatedArtifact, pomArtifact, dependencyArtifact;
+        java.lang.String $stack17, $stack69, $stack121;
+        MavenMetadataSource this;
+        org.apache.maven.project.artifact.MavenMetadataCache $stack18, $stack44;
+        boolean $stack19, $stack26, $stack27, $stack48, $stack66, $stack74, $stack111, $stack113, $stack122, $stack40, $stack45;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack20, $stack46;
+        java.util.List $stack21, $stack94, managedDependencies, pomRepositories, dependencies, $stack91, $stack81, $stack41, dependency#46, $stack47;
+        org.apache.maven.artifact.metadata.ResolutionGroup cached, $u0, $u3;
+        org.apache.maven.plugin.LegacySupport $stack23, $stack92;
+        org.eclipse.aether.RepositorySystemSession $stack24;
+        org.eclipse.aether.repository.WorkspaceReader workspace;
+        org.apache.maven.project.MavenProject $stack31, $stack32, $stack34, $stack36;
+        java.lang.Object $stack67, $stack77, $stack102;
+        org.apache.maven.project.artifact.ArtifactWithDependencies $stack85, $stack87;
+        java.util.stream.Stream $stack95, $stack97, $stack99;
+        java.util.function.Predicate $stack96;
+        java.util.function.Function $stack98;
+        java.util.Optional $stack100;
+        java.util.function.Supplier $stack101;
+        org.apache.maven.repository.internal.MavenWorkspaceReader $stack107;
+        org.eclipse.aether.artifact.Artifact $stack108;
+        org.apache.maven.model.Model model;
+        org.apache.maven.model.DependencyManagement dependencyManagement, session#11;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation dependencyManagement#10;
+        java.util.Set dependencyManagement#17;
+        org.apache.maven.artifact.handler.ArtifactHandler $stack39;
+        java.util.Iterator session#30, dependency#34;
+        org.apache.maven.model.Dependency dependency, dependencyArtifact#35;
+        java.util.HashMap session#33, $u2;
+        java.util.LinkedHashSet $u1;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: MavenMetadataSource;
+
+        request := @parameter0: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest;
+
+        artifact = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack17 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        if $stack17 == null goto label01;
+
+        $stack121 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack122 = virtualinvoke $stack121.<java.lang.String: boolean equals(java.lang.Object)>("system");
+
+        if $stack122 == 0 goto label01;
+
+        $u0 = new org.apache.maven.artifact.metadata.ResolutionGroup;
+
+        specialinvoke $u0.<org.apache.maven.artifact.metadata.ResolutionGroup: void <init>(org.apache.maven.artifact.Artifact,java.util.Set,java.util.List)>(null, null, null);
+
+        return $u0;
+
+     label01:
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack18 = $r0.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.project.artifact.MavenMetadataCache cache>;
+
+        $stack19 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: boolean isResolveManagedVersions()>();
+
+        $stack20 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        $stack21 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: java.util.List getRemoteRepositories()>();
+
+        cached = interfaceinvoke $stack18.<org.apache.maven.project.artifact.MavenMetadataCache: org.apache.maven.artifact.metadata.ResolutionGroup get(org.apache.maven.artifact.Artifact,boolean,org.apache.maven.artifact.repository.ArtifactRepository,java.util.List)>(artifact, $stack19, $stack20, $stack21);
+
+        if cached == null goto label03;
+
+        $stack111 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: boolean isForceUpdate()>();
+
+        if $stack111 == 0 goto label02;
+
+        $stack112 = virtualinvoke cached.<org.apache.maven.artifact.metadata.ResolutionGroup: org.apache.maven.artifact.Artifact getPomArtifact()>();
+
+        $r1 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack113 = specialinvoke $r1.<org.apache.maven.project.artifact.MavenMetadataSource: boolean hasFile(org.apache.maven.artifact.Artifact)>($stack112);
+
+        if $stack113 == 0 goto label03;
+
+     label02:
+        return cached;
+
+     label03:
+        managedDependencies = null;
+
+        pomRepositories = null;
+
+        relocatedArtifact = null;
+
+        $r2 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack23 = $r2.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        $stack24 = interfaceinvoke $stack23.<org.apache.maven.plugin.LegacySupport: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        workspace = interfaceinvoke $stack24.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.WorkspaceReader getWorkspaceReader()>();
+
+        model = null;
+
+        $stack26 = workspace instanceof org.apache.maven.repository.internal.MavenWorkspaceReader;
+
+        if $stack26 == 0 goto label04;
+
+        $stack107 = (org.apache.maven.repository.internal.MavenWorkspaceReader) workspace;
+
+        $stack108 = staticinvoke <org.apache.maven.RepositoryUtils: org.eclipse.aether.artifact.Artifact toArtifact(org.apache.maven.artifact.Artifact)>(artifact);
+
+        model = interfaceinvoke $stack107.<org.apache.maven.repository.internal.MavenWorkspaceReader: org.apache.maven.model.Model findModel(org.eclipse.aether.artifact.Artifact)>($stack108);
+
+     label04:
+        if model == null goto label07;
+
+        pomArtifact = artifact;
+
+        dependencies = virtualinvoke model.<org.apache.maven.model.Model: java.util.List getDependencies()>();
+
+        dependencyManagement = virtualinvoke model.<org.apache.maven.model.Model: org.apache.maven.model.DependencyManagement getDependencyManagement()>();
+
+        if dependencyManagement != null goto label05;
+
+        $stack91 = null;
+
+        goto label06;
+
+     label05:
+        $stack91 = virtualinvoke dependencyManagement.<org.apache.maven.model.DependencyManagement: java.util.List getDependencies()>();
+
+     label06:
+        managedDependencies = $stack91;
+
+        $r3 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack92 = $r3.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        session = interfaceinvoke $stack92.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+        $stack94 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $stack95 = interfaceinvoke $stack94.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack96 = staticinvoke <MavenMetadataSource$lambda_retrieve_0__309: java.util.function.Predicate bootstrap$(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $stack97 = interfaceinvoke $stack95.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack96);
+
+        $stack98 = staticinvoke <MavenMetadataSource$getRemoteArtifactRepositories__310: java.util.function.Function bootstrap$()>();
+
+        $stack99 = interfaceinvoke $stack97.<java.util.stream.Stream: java.util.stream.Stream map(java.util.function.Function)>($stack98);
+
+        $stack100 = interfaceinvoke $stack99.<java.util.stream.Stream: java.util.Optional findFirst()>();
+
+        $stack101 = staticinvoke <MavenMetadataSource$init__311: java.util.function.Supplier bootstrap$()>();
+
+        $stack102 = virtualinvoke $stack100.<java.util.Optional: java.lang.Object orElseGet(java.util.function.Supplier)>($stack101);
+
+        pomRepositories = (java.util.List) $stack102;
+
+        goto label13;
+
+     label07:
+        $stack27 = artifact instanceof org.apache.maven.project.artifact.ArtifactWithDependencies;
+
+        if $stack27 == 0 goto label08;
+
+        pomArtifact = artifact;
+
+        $stack85 = (org.apache.maven.project.artifact.ArtifactWithDependencies) artifact;
+
+        dependencies = interfaceinvoke $stack85.<org.apache.maven.project.artifact.ArtifactWithDependencies: java.util.List getDependencies()>();
+
+        $stack87 = (org.apache.maven.project.artifact.ArtifactWithDependencies) artifact;
+
+        managedDependencies = interfaceinvoke $stack87.<org.apache.maven.project.artifact.ArtifactWithDependencies: java.util.List getManagedDependencies()>();
+
+        goto label13;
+
+     label08:
+        $r4 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        dependencyManagement#10 = specialinvoke $r4.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation retrieveRelocatedProject(org.apache.maven.artifact.Artifact,org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest)>(artifact, request);
+
+        if dependencyManagement#10 != null goto label09;
+
+        return null;
+
+     label09:
+        pomArtifact = staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation: org.apache.maven.artifact.Artifact access$000(org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation)>(dependencyManagement#10);
+
+        relocatedArtifact = staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation: org.apache.maven.artifact.Artifact access$100(org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation)>(dependencyManagement#10);
+
+        $stack31 = staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation: org.apache.maven.project.MavenProject access$200(org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation)>(dependencyManagement#10);
+
+        if $stack31 != null goto label10;
+
+        dependencies = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        goto label13;
+
+     label10:
+        $stack32 = staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation: org.apache.maven.project.MavenProject access$200(org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation)>(dependencyManagement#10);
+
+        dependencies = virtualinvoke $stack32.<org.apache.maven.project.MavenProject: java.util.List getDependencies()>();
+
+        $stack34 = staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation: org.apache.maven.project.MavenProject access$200(org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation)>(dependencyManagement#10);
+
+        session#11 = virtualinvoke $stack34.<org.apache.maven.project.MavenProject: org.apache.maven.model.DependencyManagement getDependencyManagement()>();
+
+        if session#11 == null goto label11;
+
+        $stack81 = virtualinvoke session#11.<org.apache.maven.model.DependencyManagement: java.util.List getDependencies()>();
+
+        goto label12;
+
+     label11:
+        $stack81 = null;
+
+     label12:
+        managedDependencies = $stack81;
+
+        $stack36 = staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation: org.apache.maven.project.MavenProject access$200(org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation)>(dependencyManagement#10);
+
+        pomRepositories = virtualinvoke $stack36.<org.apache.maven.project.MavenProject: java.util.List getRemoteArtifactRepositories()>();
+
+     label13:
+        dependencyManagement#17 = staticinvoke <java.util.Collections: java.util.Set emptySet()>();
+
+        $stack39 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.handler.ArtifactHandler getArtifactHandler()>();
+
+        $stack40 = interfaceinvoke $stack39.<org.apache.maven.artifact.handler.ArtifactHandler: boolean isIncludesDependencies()>();
+
+        if $stack40 != 0 goto label16;
+
+        $u1 = new java.util.LinkedHashSet;
+
+        specialinvoke $u1.<java.util.LinkedHashSet: void <init>()>();
+
+        dependencyManagement#17 = $u1;
+
+        session#30 = interfaceinvoke dependencies.<java.util.List: java.util.Iterator iterator()>();
+
+     label14:
+        $stack74 = interfaceinvoke session#30.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack74 == 0 goto label16;
+
+        $stack77 = interfaceinvoke session#30.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.Dependency) $stack77;
+
+        $r5 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        dependencyArtifact = specialinvoke $r5.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.Artifact createDependencyArtifact(org.apache.maven.model.Dependency,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.Artifact)>(dependency, artifact, pomArtifact);
+
+        if dependencyArtifact == null goto label15;
+
+        interfaceinvoke $u1.<java.util.Set: boolean add(java.lang.Object)>(dependencyArtifact);
+
+     label15:
+        goto label14;
+
+     label16:
+        session#33 = null;
+
+        if managedDependencies == null goto label18;
+
+        $stack48 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: boolean isResolveManagedVersions()>();
+
+        if $stack48 == 0 goto label18;
+
+        $u2 = new java.util.HashMap;
+
+        specialinvoke $u2.<java.util.HashMap: void <init>()>();
+
+        session#33 = $u2;
+
+        dependency#34 = interfaceinvoke managedDependencies.<java.util.List: java.util.Iterator iterator()>();
+
+     label17:
+        $stack66 = interfaceinvoke dependency#34.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack66 == 0 goto label18;
+
+        $stack67 = interfaceinvoke dependency#34.<java.util.Iterator: java.lang.Object next()>();
+
+        dependencyArtifact#35 = (org.apache.maven.model.Dependency) $stack67;
+
+        $r6 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        managedArtifact = specialinvoke $r6.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.Artifact createDependencyArtifact(org.apache.maven.model.Dependency,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.Artifact)>(dependencyArtifact#35, null, pomArtifact);
+
+        $stack69 = virtualinvoke dependencyArtifact#35.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        interfaceinvoke $u2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack69, managedArtifact);
+
+        goto label17;
+
+     label18:
+        $stack41 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: java.util.List getRemoteRepositories()>();
+
+        $r7 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        dependency#46 = specialinvoke $r7.<org.apache.maven.project.artifact.MavenMetadataSource: java.util.List aggregateRepositories(java.util.List,java.util.List)>($stack41, pomRepositories);
+
+        $u3 = new org.apache.maven.artifact.metadata.ResolutionGroup;
+
+        specialinvoke $u3.<org.apache.maven.artifact.metadata.ResolutionGroup: void <init>(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.Artifact,java.util.Set,java.util.Map,java.util.List)>(pomArtifact, relocatedArtifact, dependencyManagement#17, session#33, dependency#46);
+
+        $r8 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack44 = $r8.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.project.artifact.MavenMetadataCache cache>;
+
+        $stack45 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: boolean isResolveManagedVersions()>();
+
+        $stack46 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        $stack47 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: java.util.List getRemoteRepositories()>();
+
+        interfaceinvoke $stack44.<org.apache.maven.project.artifact.MavenMetadataCache: void put(org.apache.maven.artifact.Artifact,boolean,org.apache.maven.artifact.repository.ArtifactRepository,java.util.List,org.apache.maven.artifact.metadata.ResolutionGroup)>(artifact, $stack45, $stack46, $stack47, $u3);
+
+        return $u3;
+    }
+
+    private boolean hasFile(org.apache.maven.artifact.Artifact)
+    {
+        org.apache.maven.artifact.Artifact artifact;
+        java.io.File $stack2, $stack4;
+        boolean $stack5, $stack3;
+        MavenMetadataSource this;
+
+        this := @this: MavenMetadataSource;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        if artifact == null goto label1;
+
+        $stack2 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        if $stack2 == null goto label1;
+
+        $stack4 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        $stack5 = virtualinvoke $stack4.<java.io.File: boolean exists()>();
+
+        if $stack5 == 0 goto label1;
+
+        $stack3 = 1;
+
+        goto label2;
+
+     label1:
+        $stack3 = 0;
+
+     label2:
+        return $stack3;
+    }
+
+    private java.util.List aggregateRepositories(java.util.List, java.util.List)
+    {
+        java.util.List requestRepositories, pomRepositories, repositories;
+        boolean $stack7, $stack11, $stack13, $stack18, $stack24;
+        java.util.LinkedHashMap $stack9;
+        java.util.ArrayList $stack14;
+        java.util.Collection $stack15;
+        java.lang.Object $stack16, $stack22;
+        java.lang.String $stack17, $stack20, $stack23, $stack26;
+        MavenMetadataSource this;
+        java.util.Iterator l5;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+
+        this := @this: MavenMetadataSource;
+
+        requestRepositories := @parameter0: java.util.List;
+
+        pomRepositories := @parameter1: java.util.List;
+
+        repositories = requestRepositories;
+
+        if pomRepositories == null goto label7;
+
+        $stack7 = interfaceinvoke pomRepositories.<java.util.List: boolean isEmpty()>();
+
+        if $stack7 != 0 goto label7;
+
+        $stack9 = new java.util.LinkedHashMap;
+
+        specialinvoke $stack9.<java.util.LinkedHashMap: void <init>()>();
+
+        l5 = interfaceinvoke requestRepositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack11 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label3;
+
+        $stack22 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        repo = (org.apache.maven.artifact.repository.ArtifactRepository) $stack22;
+
+        $stack23 = interfaceinvoke repo.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack24 = interfaceinvoke $stack9.<java.util.Map: boolean containsKey(java.lang.Object)>($stack23);
+
+        if $stack24 != 0 goto label2;
+
+        $stack26 = interfaceinvoke repo.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        interfaceinvoke $stack9.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack26, repo);
+
+     label2:
+        goto label1;
+
+     label3:
+        l5 = interfaceinvoke pomRepositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label4:
+        $stack13 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label6;
+
+        $stack16 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        repo = (org.apache.maven.artifact.repository.ArtifactRepository) $stack16;
+
+        $stack17 = interfaceinvoke repo.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack18 = interfaceinvoke $stack9.<java.util.Map: boolean containsKey(java.lang.Object)>($stack17);
+
+        if $stack18 != 0 goto label5;
+
+        $stack20 = interfaceinvoke repo.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        interfaceinvoke $stack9.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack20, repo);
+
+     label5:
+        goto label4;
+
+     label6:
+        $stack14 = new java.util.ArrayList;
+
+        $stack15 = interfaceinvoke $stack9.<java.util.Map: java.util.Collection values()>();
+
+        specialinvoke $stack14.<java.util.ArrayList: void <init>(java.util.Collection)>($stack15);
+
+        repositories = $stack14;
+
+     label7:
+        return repositories;
+    }
+
+    private org.apache.maven.artifact.Artifact createDependencyArtifact(org.apache.maven.model.Dependency, org.apache.maven.artifact.Artifact, org.apache.maven.artifact.Artifact) throws org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException
+    {
+        org.apache.maven.artifact.Artifact owner, $stack7, pom;
+        MavenMetadataSource this;
+        org.apache.maven.model.Dependency dependency;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack6;
+        java.lang.Throwable $stack15, $r2;
+        java.lang.StringBuilder $stack18, $stack20, $stack21, $stack23, $u0;
+        java.lang.String $stack19, $stack22, $stack24, $stack13, inheritedScope;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter $stack8;
+        org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException $u1;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0;
+        org.apache.maven.artifact.versioning.InvalidVersionSpecificationException $r1;
+
+        this := @this: MavenMetadataSource;
+
+        dependency := @parameter0: org.apache.maven.model.Dependency;
+
+        owner := @parameter1: org.apache.maven.artifact.Artifact;
+
+        pom := @parameter2: org.apache.maven.artifact.Artifact;
+
+     label1:
+        if owner == null goto label2;
+
+        $stack13 = interfaceinvoke owner.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        goto label3;
+
+     label2:
+        $stack13 = null;
+
+     label3:
+        inheritedScope = $stack13;
+
+        if owner == null goto label4;
+
+        $stack8 = interfaceinvoke owner.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.resolver.filter.ArtifactFilter getDependencyFilter()>();
+
+        goto label5;
+
+     label4:
+        $stack8 = null;
+
+     label5:
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack6 = $r0.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.factory.ArtifactFactory repositorySystem>;
+
+        $stack7 = staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.Artifact createDependencyArtifact(org.apache.maven.artifact.factory.ArtifactFactory,org.apache.maven.model.Dependency,java.lang.String,org.apache.maven.artifact.resolver.filter.ArtifactFilter)>($stack6, dependency, inheritedScope, $stack8);
+
+     label6:
+        return $stack7;
+
+     label7:
+        $stack15 := @caughtexception;
+
+        $u1 = new org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack18 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid version for dependency ");
+
+        $stack19 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getManagementKey()>();
+
+        $stack20 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $r1 = (org.apache.maven.artifact.versioning.InvalidVersionSpecificationException) $stack15;
+
+        $stack22 = virtualinvoke $r1.<org.apache.maven.artifact.versioning.InvalidVersionSpecificationException: java.lang.String getMessage()>();
+
+        $stack23 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack22);
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException: void <init>(java.lang.String,java.lang.Throwable,org.apache.maven.artifact.Artifact)>($stack24, $stack15, pom);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+        catch org.apache.maven.artifact.versioning.InvalidVersionSpecificationException from label1 to label6 with label7;
+    }
+
+    private static org.apache.maven.artifact.Artifact createDependencyArtifact(org.apache.maven.artifact.factory.ArtifactFactory, org.apache.maven.model.Dependency, java.lang.String, org.apache.maven.artifact.resolver.filter.ArtifactFilter) throws org.apache.maven.artifact.versioning.InvalidVersionSpecificationException
+    {
+        org.apache.maven.model.Dependency dependency;
+        java.lang.String $stack8, inheritedScope, effectiveScope, $stack10, $stack12, $stack13, $stack14, $stack15, $stack18, $stack22;
+        org.apache.maven.artifact.versioning.VersionRange versionRange;
+        org.apache.maven.artifact.factory.ArtifactFactory factory;
+        boolean $stack16, $stack19, $stack27;
+        org.apache.maven.artifact.Artifact dependencyArtifact;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter inheritedFilter, $stack20;
+        java.io.File $stack21;
+
+        factory := @parameter0: org.apache.maven.artifact.factory.ArtifactFactory;
+
+        dependency := @parameter1: org.apache.maven.model.Dependency;
+
+        inheritedScope := @parameter2: java.lang.String;
+
+        inheritedFilter := @parameter3: org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+
+        $stack8 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getScope()>();
+
+        effectiveScope = staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource: java.lang.String getEffectiveScope(java.lang.String,java.lang.String)>($stack8, inheritedScope);
+
+        if effectiveScope != null goto label1;
+
+        return null;
+
+     label1:
+        $stack10 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        versionRange = staticinvoke <org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.VersionRange createFromVersionSpec(java.lang.String)>($stack10);
+
+        $stack12 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack13 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack14 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getType()>();
+
+        $stack15 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getClassifier()>();
+
+        $stack16 = virtualinvoke dependency.<org.apache.maven.model.Dependency: boolean isOptional()>();
+
+        dependencyArtifact = interfaceinvoke factory.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createDependencyArtifact(java.lang.String,java.lang.String,org.apache.maven.artifact.versioning.VersionRange,java.lang.String,java.lang.String,java.lang.String,boolean)>($stack12, $stack13, versionRange, $stack14, $stack15, effectiveScope, $stack16);
+
+        if inheritedFilter == null goto label2;
+
+        $stack27 = interfaceinvoke inheritedFilter.<org.apache.maven.artifact.resolver.filter.ArtifactFilter: boolean include(org.apache.maven.artifact.Artifact)>(dependencyArtifact);
+
+        if $stack27 != 0 goto label2;
+
+        return null;
+
+     label2:
+        $stack18 = "system";
+
+        $stack19 = virtualinvoke $stack18.<java.lang.String: boolean equals(java.lang.Object)>(effectiveScope);
+
+        if $stack19 == 0 goto label3;
+
+        $stack21 = new java.io.File;
+
+        $stack22 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getSystemPath()>();
+
+        specialinvoke $stack21.<java.io.File: void <init>(java.lang.String)>($stack22);
+
+        interfaceinvoke dependencyArtifact.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($stack21);
+
+     label3:
+        $stack20 = staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.resolver.filter.ArtifactFilter createDependencyFilter(org.apache.maven.model.Dependency,org.apache.maven.artifact.resolver.filter.ArtifactFilter)>(dependency, inheritedFilter);
+
+        interfaceinvoke dependencyArtifact.<org.apache.maven.artifact.Artifact: void setDependencyFilter(org.apache.maven.artifact.resolver.filter.ArtifactFilter)>($stack20);
+
+        return dependencyArtifact;
+    }
+
+    private static java.lang.String getEffectiveScope(java.lang.String, java.lang.String)
+    {
+        java.lang.String inheritedScope, $stack3, $stack5, $stack7, $stack9, $stack11, $stack13, $stack16, originalScope, effectiveScope;
+        boolean $stack4, $stack6, $stack8, $stack10, $stack12, $stack14, $stack17;
+
+        originalScope := @parameter0: java.lang.String;
+
+        inheritedScope := @parameter1: java.lang.String;
+
+        effectiveScope = "runtime";
+
+        if originalScope != null goto label1;
+
+        originalScope = "compile";
+
+     label1:
+        if inheritedScope != null goto label2;
+
+        effectiveScope = originalScope;
+
+        goto label8;
+
+     label2:
+        $stack3 = "test";
+
+        $stack4 = virtualinvoke $stack3.<java.lang.String: boolean equals(java.lang.Object)>(originalScope);
+
+        if $stack4 != 0 goto label3;
+
+        $stack5 = "provided";
+
+        $stack6 = virtualinvoke $stack5.<java.lang.String: boolean equals(java.lang.Object)>(originalScope);
+
+        if $stack6 == 0 goto label4;
+
+     label3:
+        effectiveScope = null;
+
+        goto label8;
+
+     label4:
+        $stack7 = "system";
+
+        $stack8 = virtualinvoke $stack7.<java.lang.String: boolean equals(java.lang.Object)>(originalScope);
+
+        if $stack8 == 0 goto label5;
+
+        effectiveScope = "system";
+
+        goto label8;
+
+     label5:
+        $stack9 = "compile";
+
+        $stack10 = virtualinvoke $stack9.<java.lang.String: boolean equals(java.lang.Object)>(originalScope);
+
+        if $stack10 == 0 goto label6;
+
+        $stack16 = "compile";
+
+        $stack17 = virtualinvoke $stack16.<java.lang.String: boolean equals(java.lang.Object)>(inheritedScope);
+
+        if $stack17 == 0 goto label6;
+
+        effectiveScope = "compile";
+
+        goto label8;
+
+     label6:
+        $stack11 = "test";
+
+        $stack12 = virtualinvoke $stack11.<java.lang.String: boolean equals(java.lang.Object)>(inheritedScope);
+
+        if $stack12 == 0 goto label7;
+
+        effectiveScope = "test";
+
+        goto label8;
+
+     label7:
+        $stack13 = "provided";
+
+        $stack14 = virtualinvoke $stack13.<java.lang.String: boolean equals(java.lang.Object)>(inheritedScope);
+
+        if $stack14 == 0 goto label8;
+
+        effectiveScope = "provided";
+
+     label8:
+        return effectiveScope;
+    }
+
+    private static org.apache.maven.artifact.resolver.filter.ArtifactFilter createDependencyFilter(org.apache.maven.model.Dependency, org.apache.maven.artifact.resolver.filter.ArtifactFilter)
+    {
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter inheritedFilter, $r0;
+        org.apache.maven.model.Dependency dependency;
+        java.util.List $stack3, $stack6, $stack10;
+        boolean $stack4;
+        java.lang.Object[] $stack9;
+        java.lang.Object effectiveFilter;
+        org.apache.maven.artifact.resolver.filter.ExclusionArtifactFilter $u0;
+        org.apache.maven.artifact.resolver.filter.AndArtifactFilter $u1;
+
+        dependency := @parameter0: org.apache.maven.model.Dependency;
+
+        inheritedFilter := @parameter1: org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+
+        effectiveFilter = inheritedFilter;
+
+        $stack3 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.util.List getExclusions()>();
+
+        $stack4 = interfaceinvoke $stack3.<java.util.List: boolean isEmpty()>();
+
+        if $stack4 != 0 goto label1;
+
+        $u0 = new org.apache.maven.artifact.resolver.filter.ExclusionArtifactFilter;
+
+        $stack6 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.util.List getExclusions()>();
+
+        specialinvoke $u0.<org.apache.maven.artifact.resolver.filter.ExclusionArtifactFilter: void <init>(java.util.List)>($stack6);
+
+        effectiveFilter = $u0;
+
+        if inheritedFilter == null goto label1;
+
+        $u1 = new org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
+
+        $stack9 = newarray (org.apache.maven.artifact.resolver.filter.ArtifactFilter)[2];
+
+        $stack9[0] = inheritedFilter;
+
+        $stack9[1] = $u0;
+
+        $stack10 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack9);
+
+        specialinvoke $u1.<org.apache.maven.artifact.resolver.filter.AndArtifactFilter: void <init>(java.util.List)>($stack10);
+
+        effectiveFilter = $u1;
+
+     label1:
+        $r0 = (org.apache.maven.artifact.resolver.filter.ArtifactFilter) effectiveFilter;
+
+        return $r0;
+    }
+
+    public java.util.List retrieveAvailableVersions(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository, java.util.List) throws org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException
+    {
+        MavenMetadataSource this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        java.util.List remoteRepositories, $stack9;
+        org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest $u0;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0, $r5;
+        org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest $r1, $r2, $r3, $r4, $r6;
+
+        this := @this: MavenMetadataSource;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        remoteRepositories := @parameter2: java.util.List;
+
+        $u0 = new org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest: void <init>()>();
+
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $r1 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        specialinvoke $r0.<org.apache.maven.project.artifact.MavenMetadataSource: void injectSession(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest)>($r1);
+
+        $r2 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        interfaceinvoke $r2.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setArtifact(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $r3 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        interfaceinvoke $r3.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(localRepository);
+
+        $r4 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        interfaceinvoke $r4.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setRemoteRepositories(java.util.List)>(remoteRepositories);
+
+        $r5 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $r6 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u0;
+
+        $stack9 = virtualinvoke $r5.<org.apache.maven.project.artifact.MavenMetadataSource: java.util.List retrieveAvailableVersions(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest)>($r6);
+
+        return $stack9;
+    }
+
+    public java.util.List retrieveAvailableVersions(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) throws org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException
+    {
+        org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest request;
+        org.apache.maven.artifact.Artifact $stack5, $stack8, $stack15;
+        MavenMetadataSource this;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager $stack6;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack7;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack10;
+        java.util.List $stack11, e#2;
+        java.lang.Throwable $stack12, $r4;
+        java.lang.String $stack14;
+        org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata $u0;
+        org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException $u1;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0, $r6;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata $r1, $r5;
+        org.apache.maven.artifact.repository.RepositoryRequest $r2;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException $r3;
+
+        this := @this: MavenMetadataSource;
+
+        request := @parameter0: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest;
+
+        $u0 = new org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata;
+
+        $stack5 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata: void <init>(org.apache.maven.artifact.Artifact)>($stack5);
+
+     label1:
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack6 = $r0.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager repositoryMetadataManager>;
+
+        $r1 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        $r2 = (org.apache.maven.artifact.repository.RepositoryRequest) request;
+
+        interfaceinvoke $stack6.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager: void resolve(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.RepositoryRequest)>($r1, $r2);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack12 := @caughtexception;
+
+        $u1 = new org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException;
+
+        $r3 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException) $stack12;
+
+        $stack14 = virtualinvoke $r3.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException: java.lang.String getMessage()>();
+
+        $stack15 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        specialinvoke $u1.<org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException: void <init>(java.lang.String,java.lang.Throwable,org.apache.maven.artifact.Artifact)>($stack14, $stack12, $stack15);
+
+        $r4 = (java.lang.Throwable) $u1;
+
+        throw $r4;
+
+     label4:
+        $stack7 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        $stack8 = interfaceinvoke request.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        e#2 = interfaceinvoke $stack7.<org.apache.maven.artifact.repository.ArtifactRepository: java.util.List findVersions(org.apache.maven.artifact.Artifact)>($stack8);
+
+        $r5 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        $stack10 = interfaceinvoke $r5.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata getMetadata()>();
+
+        $r6 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack11 = specialinvoke $r6.<org.apache.maven.project.artifact.MavenMetadataSource: java.util.List retrieveAvailableVersionsFromMetadata(org.apache.maven.artifact.repository.metadata.Metadata,java.util.List)>($stack10, e#2);
+
+        return $stack11;
+
+        catch org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException from label1 to label2 with label3;
+    }
+
+    public java.util.List retrieveAvailableVersionsFromDeploymentRepository(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException
+    {
+        org.apache.maven.artifact.Artifact artifact;
+        MavenMetadataSource this;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository, deploymentRepository;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager $stack7;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack9;
+        java.util.List $stack10, e#2;
+        java.lang.Throwable $stack11, $r3;
+        java.lang.String $stack13;
+        org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata $u0;
+        org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException $u1;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0, $r5;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata $r1, $r4;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException $r2;
+
+        this := @this: MavenMetadataSource;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        localRepository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        deploymentRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $u0 = new org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata: void <init>(org.apache.maven.artifact.Artifact)>(artifact);
+
+     label1:
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack7 = $r0.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager repositoryMetadataManager>;
+
+        $r1 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        interfaceinvoke $stack7.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataManager: void resolveAlways(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.ArtifactRepository)>($r1, localRepository, deploymentRepository);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack11 := @caughtexception;
+
+        $u1 = new org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException;
+
+        $r2 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException) $stack11;
+
+        $stack13 = virtualinvoke $r2.<org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException: java.lang.String getMessage()>();
+
+        specialinvoke $u1.<org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException: void <init>(java.lang.String,java.lang.Throwable,org.apache.maven.artifact.Artifact)>($stack13, $stack11, artifact);
+
+        $r3 = (java.lang.Throwable) $u1;
+
+        throw $r3;
+
+     label4:
+        e#2 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.util.List findVersions(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $r4 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        $stack9 = interfaceinvoke $r4.<org.apache.maven.artifact.repository.metadata.RepositoryMetadata: org.apache.maven.artifact.repository.metadata.Metadata getMetadata()>();
+
+        $r5 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack10 = specialinvoke $r5.<org.apache.maven.project.artifact.MavenMetadataSource: java.util.List retrieveAvailableVersionsFromMetadata(org.apache.maven.artifact.repository.metadata.Metadata,java.util.List)>($stack9, e#2);
+
+        return $stack10;
+
+        catch org.apache.maven.artifact.repository.metadata.RepositoryMetadataResolutionException from label1 to label2 with label3;
+    }
+
+    private java.util.List retrieveAvailableVersionsFromMetadata(org.apache.maven.artifact.repository.metadata.Metadata, java.util.List)
+    {
+        java.util.LinkedHashSet $stack7;
+        org.apache.maven.artifact.repository.metadata.Metadata repoMetadata;
+        java.util.List availableVersions, $stack23;
+        java.util.Iterator l5;
+        java.lang.Object $stack13;
+        java.lang.String version;
+        org.apache.maven.artifact.versioning.DefaultArtifactVersion $stack14;
+        org.apache.maven.artifact.repository.metadata.Versioning $stack17, $stack22;
+        MavenMetadataSource this;
+        java.util.ArrayList $stack9;
+        int $stack10;
+        boolean $stack12;
+
+        this := @this: MavenMetadataSource;
+
+        repoMetadata := @parameter0: org.apache.maven.artifact.repository.metadata.Metadata;
+
+        availableVersions := @parameter1: java.util.List;
+
+        $stack7 = new java.util.LinkedHashSet;
+
+        specialinvoke $stack7.<java.util.LinkedHashSet: void <init>()>();
+
+        if repoMetadata == null goto label1;
+
+        $stack17 = virtualinvoke repoMetadata.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        if $stack17 == null goto label1;
+
+        $stack22 = virtualinvoke repoMetadata.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        $stack23 = virtualinvoke $stack22.<org.apache.maven.artifact.repository.metadata.Versioning: java.util.List getVersions()>();
+
+        interfaceinvoke $stack7.<java.util.Collection: boolean addAll(java.util.Collection)>($stack23);
+
+     label1:
+        interfaceinvoke $stack7.<java.util.Collection: boolean addAll(java.util.Collection)>(availableVersions);
+
+        $stack9 = new java.util.ArrayList;
+
+        $stack10 = interfaceinvoke $stack7.<java.util.Collection: int size()>();
+
+        specialinvoke $stack9.<java.util.ArrayList: void <init>(int)>($stack10);
+
+        l5 = interfaceinvoke $stack7.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label2:
+        $stack12 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack12 == 0 goto label3;
+
+        $stack13 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        version = (java.lang.String) $stack13;
+
+        $stack14 = new org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+
+        specialinvoke $stack14.<org.apache.maven.artifact.versioning.DefaultArtifactVersion: void <init>(java.lang.String)>(version);
+
+        interfaceinvoke $stack9.<java.util.List: boolean add(java.lang.Object)>($stack14);
+
+        goto label2;
+
+     label3:
+        return $stack9;
+    }
+
+    public static java.util.Set createArtifacts(org.apache.maven.artifact.factory.ArtifactFactory, java.util.List, java.lang.String, org.apache.maven.artifact.resolver.filter.ArtifactFilter, org.apache.maven.project.MavenProject) throws org.apache.maven.project.artifact.InvalidDependencyVersionException
+    {
+        java.util.List dependencies;
+        java.util.Iterator l6;
+        boolean $stack12;
+        java.lang.Object $stack13;
+        org.apache.maven.model.Dependency d;
+        org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
+        java.lang.String inheritedScope, $stack19;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter dependencyFilter;
+        org.apache.maven.artifact.Artifact dependencyArtifact;
+        java.lang.Throwable $stack17, $r1;
+        org.apache.maven.project.MavenProject project;
+        java.io.File $stack20;
+        java.util.LinkedHashSet $u0;
+        org.apache.maven.project.artifact.InvalidDependencyVersionException $u1;
+        org.apache.maven.artifact.versioning.InvalidVersionSpecificationException $r0;
+
+        artifactFactory := @parameter0: org.apache.maven.artifact.factory.ArtifactFactory;
+
+        dependencies := @parameter1: java.util.List;
+
+        inheritedScope := @parameter2: java.lang.String;
+
+        dependencyFilter := @parameter3: org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+
+        project := @parameter4: org.apache.maven.project.MavenProject;
+
+        $u0 = new java.util.LinkedHashSet;
+
+        specialinvoke $u0.<java.util.LinkedHashSet: void <init>()>();
+
+        l6 = interfaceinvoke dependencies.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack12 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack12 == 0 goto label7;
+
+        $stack13 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        d = (org.apache.maven.model.Dependency) $stack13;
+
+     label2:
+        dependencyArtifact = staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.Artifact createDependencyArtifact(org.apache.maven.artifact.factory.ArtifactFactory,org.apache.maven.model.Dependency,java.lang.String,org.apache.maven.artifact.resolver.filter.ArtifactFilter)>(artifactFactory, d, inheritedScope, dependencyFilter);
+
+     label3:
+        goto label5;
+
+     label4:
+        $stack17 := @caughtexception;
+
+        $u1 = new org.apache.maven.project.artifact.InvalidDependencyVersionException;
+
+        $stack19 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getId()>();
+
+        $stack20 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.io.File getFile()>();
+
+        $r0 = (org.apache.maven.artifact.versioning.InvalidVersionSpecificationException) $stack17;
+
+        specialinvoke $u1.<org.apache.maven.project.artifact.InvalidDependencyVersionException: void <init>(java.lang.String,org.apache.maven.model.Dependency,java.io.File,org.apache.maven.artifact.versioning.InvalidVersionSpecificationException)>($stack19, d, $stack20, $r0);
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label5:
+        if dependencyArtifact == null goto label6;
+
+        interfaceinvoke $u0.<java.util.Set: boolean add(java.lang.Object)>(dependencyArtifact);
+
+     label6:
+        goto label1;
+
+     label7:
+        return $u0;
+
+        catch org.apache.maven.artifact.versioning.InvalidVersionSpecificationException from label2 to label3 with label4;
+    }
+
+    private org.apache.maven.project.ProjectBuilder getProjectBuilder()
+    {
+        MavenMetadataSource this;
+        org.apache.maven.project.ProjectBuilder $stack2, $stack5, $stack6, $stack7;
+        org.codehaus.plexus.PlexusContainer $stack3;
+        java.lang.Object $stack4;
+        java.lang.Throwable $stack8;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: MavenMetadataSource;
+
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack2 = $r0.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        if $stack2 == null goto label1;
+
+        $r1 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack7 = $r1.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        return $stack7;
+
+     label1:
+        $r2 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack3 = $r2.<org.apache.maven.project.artifact.MavenMetadataSource: org.codehaus.plexus.PlexusContainer container>;
+
+        $stack4 = interfaceinvoke $stack3.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/apache/maven/project/ProjectBuilder;");
+
+        $stack5 = (org.apache.maven.project.ProjectBuilder) $stack4;
+
+        $r3 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $r3.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.project.ProjectBuilder projectBuilder> = $stack5;
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack8 := @caughtexception;
+
+     label4:
+        $r4 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack6 = $r4.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        return $stack6;
+
+        catch org.codehaus.plexus.component.repository.exception.ComponentLookupException from label1 to label2 with label3;
+    }
+
+    private org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation retrieveRelocatedProject(org.apache.maven.artifact.Artifact, org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) throws org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException
+    {
+        MavenMetadataSource this;
+        org.apache.maven.artifact.Artifact artifact, pomArtifact, relocatedArtifact;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack11;
+        java.lang.String $stack12, $stack13, $stack14, $stack15, $stack17, $stack18, $stack20, $stack21, $stack53, $stack54, $stack55, $stack75, $stack78, $stack81, $stack84, $stack98, $stack101, $stack104, $stack107, $stack111, $stack131, $stack133, $stack135, $stack136, $stack138, $stack139, $stack142, $stack143, $stack153, $stack164, $stack172, $stack176, $stack178, $stack182, $stack189, $stack192, $stack194, message, $stack60, $stack63, $stack66, metadataRequest#54, $stack70;
+        boolean $stack19, $stack22, $stack115, $stack128, $stack149, $stack150, $stack158, done;
+        org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest repositoryRequest, $r26, $r28;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack24;
+        java.util.List $stack26, $stack71, $stack85, message#12;
+        org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging $stack30;
+        java.util.Properties $stack32;
+        org.apache.maven.plugin.LegacySupport $stack34;
+        org.eclipse.aether.RepositorySystemSession $stack35;
+        org.apache.maven.project.ProjectBuilder $stack37;
+        org.apache.maven.project.ProjectBuildingResult $stack38;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter $stack56, $stack127;
+        org.codehaus.plexus.logging.Logger $stack73, $stack96, $stack157, $stack159;
+        java.lang.StringBuilder $stack74, $stack76, $stack77, $stack79, $stack80, $stack82, $stack83, $stack97, $stack99, $stack100, $stack102, $stack103, $stack105, $stack106, $stack109, $stack110, $stack112, $stack152, $stack154, $stack155, $stack162, $stack163, $stack165, $stack171, $stack173, $stack174, $stack177, $stack181, $stack183, $stack188, $stack190, $stack191, $stack193, $stack59, $stack61, $stack62, $stack64, $stack65, $stack67, $stack68, $u1, $u3, $u4, $u6, $u7, $u9, $u10, $u11, $u12;
+        int $stack86;
+        org.apache.maven.artifact.versioning.VersionRange $stack132;
+        java.io.File $stack145;
+        java.lang.Throwable $stack147, $stack175, $stack179, $r14, $r21;
+        java.lang.Exception $stack195, $r16, $r18;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.model.building.ModelProblem missingParentPom;
+        org.apache.maven.model.Relocation configuration#10;
+        org.apache.maven.model.DistributionManagement missingParentPom#11;
+        org.apache.maven.project.DefaultProjectBuildingRequest $u0;
+        org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException $u2, $u5;
+        org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest $u8;
+        org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation $u13;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0, $r6, $r8, $r10, $r12, $r15, $r17, $r22, $r24, $r27, $r29, $r30;
+        org.apache.maven.project.ProjectBuildingRequest $r1, $r2, $r3, $r4, $r5, $r7, $r9, $r11;
+        org.apache.maven.project.ProjectBuildingException $r13, $r19, $r20, $r23;
+        org.apache.maven.artifact.repository.RepositoryRequest $r25;
+
+        this := @this: MavenMetadataSource;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        repositoryRequest := @parameter1: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest;
+
+        relocatedArtifact = null;
+
+        done = 0;
+
+     label01:
+        project = null;
+
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack11 = $r0.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.factory.ArtifactFactory repositorySystem>;
+
+        $stack12 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack13 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack14 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack15 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        pomArtifact = interfaceinvoke $stack11.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createProjectArtifact(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>($stack12, $stack13, $stack14, $stack15);
+
+        $stack17 = "pom";
+
+        $stack18 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getType()>();
+
+        $stack19 = virtualinvoke $stack17.<java.lang.String: boolean equals(java.lang.Object)>($stack18);
+
+        if $stack19 == 0 goto label02;
+
+        $stack145 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
+
+        interfaceinvoke pomArtifact.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($stack145);
+
+     label02:
+        $stack20 = "system";
+
+        $stack21 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getScope()>();
+
+        $stack22 = virtualinvoke $stack20.<java.lang.String: boolean equals(java.lang.Object)>($stack21);
+
+        if $stack22 == 0 goto label03;
+
+        done = 1;
+
+        goto label24;
+
+     label03:
+        $u0 = new org.apache.maven.project.DefaultProjectBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: void <init>()>();
+
+        $stack24 = interfaceinvoke repositoryRequest.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        $r1 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        interfaceinvoke $r1.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>($stack24);
+
+        $stack26 = interfaceinvoke repositoryRequest.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: java.util.List getRemoteRepositories()>();
+
+        $r2 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        interfaceinvoke $r2.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setRemoteRepositories(java.util.List)>($stack26);
+
+        $r3 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        interfaceinvoke $r3.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setValidationLevel(int)>(0);
+
+        $r4 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        interfaceinvoke $r4.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setProcessPlugins(boolean)>(0);
+
+        $stack30 = <org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging: org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging REQUEST_DOMINANT>;
+
+        $r5 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        interfaceinvoke $r5.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setRepositoryMerging(org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging)>($stack30);
+
+        $r6 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack32 = specialinvoke $r6.<org.apache.maven.project.artifact.MavenMetadataSource: java.util.Properties getSystemProperties()>();
+
+        $r7 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        interfaceinvoke $r7.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setSystemProperties(java.util.Properties)>($stack32);
+
+        $r8 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack34 = $r8.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        $stack35 = interfaceinvoke $stack34.<org.apache.maven.plugin.LegacySupport: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $r9 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        interfaceinvoke $r9.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setRepositorySession(org.eclipse.aether.RepositorySystemSession)>($stack35);
+
+        $r10 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack37 = specialinvoke $r10.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.project.ProjectBuilder getProjectBuilder()>();
+
+        $r11 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        $stack38 = interfaceinvoke $stack37.<org.apache.maven.project.ProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(org.apache.maven.artifact.Artifact,org.apache.maven.project.ProjectBuildingRequest)>(pomArtifact, $r11);
+
+        project = interfaceinvoke $stack38.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+     label04:
+        goto label11;
+
+     label05:
+        $stack147 := @caughtexception;
+
+        $r12 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $r13 = (org.apache.maven.project.ProjectBuildingException) $stack147;
+
+        missingParentPom = specialinvoke $r12.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.model.building.ModelProblem hasMissingParentPom(org.apache.maven.project.ProjectBuildingException)>($r13);
+
+        if missingParentPom == null goto label06;
+
+        $u2 = new org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack188 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to process POM for ");
+
+        $stack189 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getId()>();
+
+        $stack190 = virtualinvoke $stack188.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack189);
+
+        $stack191 = virtualinvoke $stack190.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack192 = interfaceinvoke missingParentPom.<org.apache.maven.model.building.ModelProblem: java.lang.String getMessage()>();
+
+        $stack193 = virtualinvoke $stack191.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack192);
+
+        $stack194 = virtualinvoke $stack193.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack195 = interfaceinvoke missingParentPom.<org.apache.maven.model.building.ModelProblem: java.lang.Exception getException()>();
+
+        specialinvoke $u2.<org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException: void <init>(java.lang.String,java.lang.Throwable,org.apache.maven.artifact.Artifact)>($stack194, $stack195, artifact);
+
+        $r14 = (java.lang.Throwable) $u2;
+
+        throw $r14;
+
+     label06:
+        $r15 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $r16 = (java.lang.Exception) $stack147;
+
+        $stack149 = specialinvoke $r15.<org.apache.maven.project.artifact.MavenMetadataSource: boolean isMissingPom(java.lang.Exception)>($r16);
+
+        if $stack149 == 0 goto label07;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack181 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Missing POM for ");
+
+        $stack182 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getId()>();
+
+        $stack183 = virtualinvoke $stack181.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack182);
+
+        message = virtualinvoke $stack183.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label09;
+
+     label07:
+        $r17 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $r18 = (java.lang.Exception) $stack147;
+
+        $stack150 = specialinvoke $r17.<org.apache.maven.project.artifact.MavenMetadataSource: boolean isNonTransferrablePom(java.lang.Exception)>($r18);
+
+        if $stack150 == 0 goto label08;
+
+        $u5 = new org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack171 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to retrieve POM for ");
+
+        $stack172 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getId()>();
+
+        $stack173 = virtualinvoke $stack171.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack172);
+
+        $stack174 = virtualinvoke $stack173.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $r19 = (org.apache.maven.project.ProjectBuildingException) $stack147;
+
+        $stack175 = virtualinvoke $r19.<org.apache.maven.project.ProjectBuildingException: java.lang.Throwable getCause()>();
+
+        $stack176 = virtualinvoke $stack175.<java.lang.Throwable: java.lang.String getMessage()>();
+
+        $stack177 = virtualinvoke $stack174.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack176);
+
+        $stack178 = virtualinvoke $stack177.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r20 = (org.apache.maven.project.ProjectBuildingException) $stack147;
+
+        $stack179 = virtualinvoke $r20.<org.apache.maven.project.ProjectBuildingException: java.lang.Throwable getCause()>();
+
+        specialinvoke $u5.<org.apache.maven.artifact.metadata.ArtifactMetadataRetrievalException: void <init>(java.lang.String,java.lang.Throwable,org.apache.maven.artifact.Artifact)>($stack178, $stack179, artifact);
+
+        $r21 = (java.lang.Throwable) $u5;
+
+        throw $r21;
+
+     label08:
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack152 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid POM for ");
+
+        $stack153 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getId()>();
+
+        $stack154 = virtualinvoke $stack152.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack153);
+
+        $stack155 = virtualinvoke $stack154.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", transitive dependencies (if any) will not be available, enable verbose output (-X) for more details");
+
+        message = virtualinvoke $stack155.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label09:
+        $r22 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack157 = $r22.<org.apache.maven.project.artifact.MavenMetadataSource: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack158 = interfaceinvoke $stack157.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack158 == 0 goto label10;
+
+        $u7 = new java.lang.StringBuilder;
+
+        specialinvoke $u7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack162 = virtualinvoke $u7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(message);
+
+        $stack163 = virtualinvoke $stack162.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $r23 = (org.apache.maven.project.ProjectBuildingException) $stack147;
+
+        $stack164 = virtualinvoke $r23.<org.apache.maven.project.ProjectBuildingException: java.lang.String getMessage()>();
+
+        $stack165 = virtualinvoke $stack163.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack164);
+
+        message = virtualinvoke $stack165.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label10:
+        $r24 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack159 = $r24.<org.apache.maven.project.artifact.MavenMetadataSource: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack159.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>(message);
+
+     label11:
+        if project == null goto label23;
+
+        configuration#10 = null;
+
+        missingParentPom#11 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.model.DistributionManagement getDistributionManagement()>();
+
+        if missingParentPom#11 == null goto label12;
+
+        configuration#10 = virtualinvoke missingParentPom#11.<org.apache.maven.model.DistributionManagement: org.apache.maven.model.Relocation getRelocation()>();
+
+        $stack142 = virtualinvoke missingParentPom#11.<org.apache.maven.model.DistributionManagement: java.lang.String getDownloadUrl()>();
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setDownloadUrl(java.lang.String)>($stack142);
+
+        $stack143 = virtualinvoke missingParentPom#11.<org.apache.maven.model.DistributionManagement: java.lang.String getDownloadUrl()>();
+
+        interfaceinvoke pomArtifact.<org.apache.maven.artifact.Artifact: void setDownloadUrl(java.lang.String)>($stack143);
+
+     label12:
+        if configuration#10 == null goto label21;
+
+        $stack53 = virtualinvoke configuration#10.<org.apache.maven.model.Relocation: java.lang.String getGroupId()>();
+
+        if $stack53 == null goto label13;
+
+        $stack138 = virtualinvoke configuration#10.<org.apache.maven.model.Relocation: java.lang.String getGroupId()>();
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setGroupId(java.lang.String)>($stack138);
+
+        relocatedArtifact = artifact;
+
+        $stack139 = virtualinvoke configuration#10.<org.apache.maven.model.Relocation: java.lang.String getGroupId()>();
+
+        virtualinvoke project.<org.apache.maven.project.MavenProject: void setGroupId(java.lang.String)>($stack139);
+
+     label13:
+        $stack54 = virtualinvoke configuration#10.<org.apache.maven.model.Relocation: java.lang.String getArtifactId()>();
+
+        if $stack54 == null goto label14;
+
+        $stack135 = virtualinvoke configuration#10.<org.apache.maven.model.Relocation: java.lang.String getArtifactId()>();
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setArtifactId(java.lang.String)>($stack135);
+
+        relocatedArtifact = artifact;
+
+        $stack136 = virtualinvoke configuration#10.<org.apache.maven.model.Relocation: java.lang.String getArtifactId()>();
+
+        virtualinvoke project.<org.apache.maven.project.MavenProject: void setArtifactId(java.lang.String)>($stack136);
+
+     label14:
+        $stack55 = virtualinvoke configuration#10.<org.apache.maven.model.Relocation: java.lang.String getVersion()>();
+
+        if $stack55 == null goto label15;
+
+        $stack131 = virtualinvoke configuration#10.<org.apache.maven.model.Relocation: java.lang.String getVersion()>();
+
+        $stack132 = staticinvoke <org.apache.maven.artifact.versioning.VersionRange: org.apache.maven.artifact.versioning.VersionRange createFromVersion(java.lang.String)>($stack131);
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setVersionRange(org.apache.maven.artifact.versioning.VersionRange)>($stack132);
+
+        relocatedArtifact = artifact;
+
+        $stack133 = virtualinvoke configuration#10.<org.apache.maven.model.Relocation: java.lang.String getVersion()>();
+
+        virtualinvoke project.<org.apache.maven.project.MavenProject: void setVersion(java.lang.String)>($stack133);
+
+     label15:
+        $stack56 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.resolver.filter.ArtifactFilter getDependencyFilter()>();
+
+        if $stack56 == null goto label16;
+
+        $stack127 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: org.apache.maven.artifact.resolver.filter.ArtifactFilter getDependencyFilter()>();
+
+        $stack128 = interfaceinvoke $stack127.<org.apache.maven.artifact.resolver.filter.ArtifactFilter: boolean include(org.apache.maven.artifact.Artifact)>(artifact);
+
+        if $stack128 != 0 goto label16;
+
+        return null;
+
+     label16:
+        message#12 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.util.List getAvailableVersions()>();
+
+        if message#12 == null goto label17;
+
+        $stack115 = interfaceinvoke message#12.<java.util.List: boolean isEmpty()>();
+
+        if $stack115 != 0 goto label17;
+
+        $u8 = new org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest;
+
+        $r25 = (org.apache.maven.artifact.repository.RepositoryRequest) repositoryRequest;
+
+        specialinvoke $u8.<org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest: void <init>(org.apache.maven.artifact.repository.RepositoryRequest)>($r25);
+
+        $r26 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u8;
+
+        interfaceinvoke $r26.<org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest setArtifact(org.apache.maven.artifact.Artifact)>(artifact);
+
+        $r27 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $r28 = (org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) $u8;
+
+        message#12 = virtualinvoke $r27.<org.apache.maven.project.artifact.MavenMetadataSource: java.util.List retrieveAvailableVersions(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest)>($r28);
+
+        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setAvailableVersions(java.util.List)>(message#12);
+
+     label17:
+        $u9 = new java.lang.StringBuilder;
+
+        specialinvoke $u9.<java.lang.StringBuilder: void <init>()>();
+
+        $stack59 = virtualinvoke $u9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("  this artifact has been relocated to ");
+
+        $stack60 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack61 = virtualinvoke $stack59.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack60);
+
+        $stack62 = virtualinvoke $stack61.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack63 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack64 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack63);
+
+        $stack65 = virtualinvoke $stack64.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack66 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack67 = virtualinvoke $stack65.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack66);
+
+        $stack68 = virtualinvoke $stack67.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        metadataRequest#54 = virtualinvoke $stack68.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack70 = virtualinvoke configuration#10.<org.apache.maven.model.Relocation: java.lang.String getMessage()>();
+
+        if $stack70 == null goto label18;
+
+        $u10 = new java.lang.StringBuilder;
+
+        specialinvoke $u10.<java.lang.StringBuilder: void <init>()>();
+
+        $stack109 = virtualinvoke $u10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(metadataRequest#54);
+
+        $stack110 = virtualinvoke $stack109.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("  ");
+
+        $stack111 = virtualinvoke configuration#10.<org.apache.maven.model.Relocation: java.lang.String getMessage()>();
+
+        $stack112 = virtualinvoke $stack110.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack111);
+
+        metadataRequest#54 = virtualinvoke $stack112.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label18:
+        $stack71 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.util.List getDependencyTrail()>();
+
+        if $stack71 == null goto label19;
+
+        $stack85 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.util.List getDependencyTrail()>();
+
+        $stack86 = interfaceinvoke $stack85.<java.util.List: int size()>();
+
+        if $stack86 != 1 goto label19;
+
+        $r29 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack96 = $r29.<org.apache.maven.project.artifact.MavenMetadataSource: org.codehaus.plexus.logging.Logger logger>;
+
+        $u11 = new java.lang.StringBuilder;
+
+        specialinvoke $u11.<java.lang.StringBuilder: void <init>()>();
+
+        $stack97 = virtualinvoke $u11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("While downloading ");
+
+        $stack98 = interfaceinvoke pomArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack99 = virtualinvoke $stack97.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack98);
+
+        $stack100 = virtualinvoke $stack99.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack101 = interfaceinvoke pomArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack102 = virtualinvoke $stack100.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack101);
+
+        $stack103 = virtualinvoke $stack102.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack104 = interfaceinvoke pomArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack105 = virtualinvoke $stack103.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack104);
+
+        $stack106 = virtualinvoke $stack105.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(metadataRequest#54);
+
+        $stack107 = virtualinvoke $stack106.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack96.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack107);
+
+        goto label20;
+
+     label19:
+        $r30 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack73 = $r30.<org.apache.maven.project.artifact.MavenMetadataSource: org.codehaus.plexus.logging.Logger logger>;
+
+        $u12 = new java.lang.StringBuilder;
+
+        specialinvoke $u12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack74 = virtualinvoke $u12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("While downloading ");
+
+        $stack75 = interfaceinvoke pomArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack76 = virtualinvoke $stack74.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack75);
+
+        $stack77 = virtualinvoke $stack76.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack78 = interfaceinvoke pomArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack79 = virtualinvoke $stack77.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack78);
+
+        $stack80 = virtualinvoke $stack79.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack81 = interfaceinvoke pomArtifact.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack82 = virtualinvoke $stack80.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack81);
+
+        $stack83 = virtualinvoke $stack82.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(metadataRequest#54);
+
+        $stack84 = virtualinvoke $stack83.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack73.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack84);
+
+     label20:
+        goto label22;
+
+     label21:
+        done = 1;
+
+     label22:
+        goto label24;
+
+     label23:
+        done = 1;
+
+     label24:
+        if done == 0 goto label01;
+
+        $u13 = new org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation;
+
+        specialinvoke $u13.<org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation: void <init>(org.apache.maven.project.artifact.MavenMetadataSource$1)>(null);
+
+        staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation: org.apache.maven.project.MavenProject access$202(org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation,org.apache.maven.project.MavenProject)>($u13, project);
+
+        staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation: org.apache.maven.artifact.Artifact access$002(org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation,org.apache.maven.artifact.Artifact)>($u13, pomArtifact);
+
+        staticinvoke <org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation: org.apache.maven.artifact.Artifact access$102(org.apache.maven.project.artifact.MavenMetadataSource$ProjectRelocation,org.apache.maven.artifact.Artifact)>($u13, relocatedArtifact);
+
+        return $u13;
+
+        catch org.apache.maven.project.ProjectBuildingException from label03 to label04 with label05;
+    }
+
+    private org.apache.maven.model.building.ModelProblem hasMissingParentPom(org.apache.maven.project.ProjectBuildingException)
+    {
+        org.apache.maven.project.ProjectBuildingException e;
+        java.lang.Throwable $stack5, $stack7;
+        boolean $stack6, $stack10, $stack14;
+        org.apache.maven.model.building.ModelBuildingException mbe;
+        java.util.List $stack8;
+        java.util.Iterator l3;
+        java.lang.Object $stack12;
+        org.apache.maven.model.building.ModelProblem problem;
+        java.lang.Exception $stack13;
+        MavenMetadataSource this;
+
+        this := @this: MavenMetadataSource;
+
+        e := @parameter0: org.apache.maven.project.ProjectBuildingException;
+
+        $stack5 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.Throwable getCause()>();
+
+        $stack6 = $stack5 instanceof org.apache.maven.model.building.ModelBuildingException;
+
+        if $stack6 == 0 goto label3;
+
+        $stack7 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.Throwable getCause()>();
+
+        mbe = (org.apache.maven.model.building.ModelBuildingException) $stack7;
+
+        $stack8 = virtualinvoke mbe.<org.apache.maven.model.building.ModelBuildingException: java.util.List getProblems()>();
+
+        l3 = interfaceinvoke $stack8.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label3;
+
+        $stack12 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        problem = (org.apache.maven.model.building.ModelProblem) $stack12;
+
+        $stack13 = interfaceinvoke problem.<org.apache.maven.model.building.ModelProblem: java.lang.Exception getException()>();
+
+        $stack14 = $stack13 instanceof org.apache.maven.model.resolution.UnresolvableModelException;
+
+        if $stack14 == 0 goto label2;
+
+        return problem;
+
+     label2:
+        goto label1;
+
+     label3:
+        return null;
+    }
+
+    private boolean isMissingPom(java.lang.Exception)
+    {
+        java.lang.Exception e;
+        java.lang.Throwable $stack2, $stack4, $stack6, $stack7;
+        boolean $stack3, $stack5, $stack8, $stack9;
+        MavenMetadataSource this;
+
+        this := @this: MavenMetadataSource;
+
+        e := @parameter0: java.lang.Exception;
+
+        $stack2 = virtualinvoke e.<java.lang.Exception: java.lang.Throwable getCause()>();
+
+        $stack3 = $stack2 instanceof org.apache.maven.artifact.resolver.MultipleArtifactsNotFoundException;
+
+        if $stack3 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        $stack4 = virtualinvoke e.<java.lang.Exception: java.lang.Throwable getCause()>();
+
+        $stack5 = $stack4 instanceof org.eclipse.aether.resolution.ArtifactResolutionException;
+
+        if $stack5 == 0 goto label2;
+
+        $stack6 = virtualinvoke e.<java.lang.Exception: java.lang.Throwable getCause()>();
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Throwable: java.lang.Throwable getCause()>();
+
+        $stack8 = $stack7 instanceof org.eclipse.aether.transfer.ArtifactNotFoundException;
+
+        if $stack8 == 0 goto label2;
+
+        $stack9 = 1;
+
+        goto label3;
+
+     label2:
+        $stack9 = 0;
+
+     label3:
+        return $stack9;
+    }
+
+    private boolean isNonTransferrablePom(java.lang.Exception)
+    {
+        java.lang.Exception e;
+        java.lang.Throwable $stack2, $stack4, $stack6, $stack7;
+        boolean $stack3, $stack5, $stack8, $stack9;
+        MavenMetadataSource this;
+
+        this := @this: MavenMetadataSource;
+
+        e := @parameter0: java.lang.Exception;
+
+        $stack2 = virtualinvoke e.<java.lang.Exception: java.lang.Throwable getCause()>();
+
+        $stack3 = $stack2 instanceof org.apache.maven.artifact.resolver.ArtifactResolutionException;
+
+        if $stack3 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        $stack4 = virtualinvoke e.<java.lang.Exception: java.lang.Throwable getCause()>();
+
+        $stack5 = $stack4 instanceof org.eclipse.aether.resolution.ArtifactResolutionException;
+
+        if $stack5 == 0 goto label2;
+
+        $stack6 = virtualinvoke e.<java.lang.Exception: java.lang.Throwable getCause()>();
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Throwable: java.lang.Throwable getCause()>();
+
+        $stack8 = $stack7 instanceof org.eclipse.aether.transfer.ArtifactNotFoundException;
+
+        if $stack8 != 0 goto label2;
+
+        $stack9 = 1;
+
+        goto label3;
+
+     label2:
+        $stack9 = 0;
+
+     label3:
+        return $stack9;
+    }
+
+    private java.util.Properties getSystemProperties()
+    {
+        java.util.Properties $stack2;
+        MavenMetadataSource this;
+
+        this := @this: MavenMetadataSource;
+
+        $stack2 = new java.util.Properties;
+
+        specialinvoke $stack2.<java.util.Properties: void <init>()>();
+
+        staticinvoke <org.apache.maven.properties.internal.EnvironmentUtils: void addEnvVars(java.util.Properties)>($stack2);
+
+        staticinvoke <org.apache.maven.properties.internal.SystemProperties: void addSystemProperties(java.util.Properties)>($stack2);
+
+        return $stack2;
+    }
+
+    public volatile org.apache.maven.repository.legacy.metadata.ResolutionGroup retrieve(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository, java.util.List) throws org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalException
+    {
+        MavenMetadataSource this;
+        org.apache.maven.artifact.Artifact l1;
+        org.apache.maven.artifact.repository.ArtifactRepository l2;
+        java.util.List l3;
+        org.apache.maven.artifact.metadata.ResolutionGroup $stack4;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0;
+        org.apache.maven.repository.legacy.metadata.ResolutionGroup $r1;
+
+        this := @this: MavenMetadataSource;
+
+        l1 := @parameter0: org.apache.maven.artifact.Artifact;
+
+        l2 := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        l3 := @parameter2: java.util.List;
+
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack4 = virtualinvoke $r0.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.metadata.ResolutionGroup retrieve(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,java.util.List)>(l1, l2, l3);
+
+        $r1 = (org.apache.maven.repository.legacy.metadata.ResolutionGroup) $stack4;
+
+        return $r1;
+    }
+
+    public volatile org.apache.maven.repository.legacy.metadata.ResolutionGroup retrieve(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest) throws org.apache.maven.repository.legacy.metadata.ArtifactMetadataRetrievalException
+    {
+        MavenMetadataSource this;
+        org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest l1;
+        org.apache.maven.artifact.metadata.ResolutionGroup $stack2;
+        org.apache.maven.project.artifact.MavenMetadataSource $r0;
+        org.apache.maven.repository.legacy.metadata.ResolutionGroup $r1;
+
+        this := @this: MavenMetadataSource;
+
+        l1 := @parameter0: org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest;
+
+        $r0 = (org.apache.maven.project.artifact.MavenMetadataSource) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.project.artifact.MavenMetadataSource: org.apache.maven.artifact.metadata.ResolutionGroup retrieve(org.apache.maven.repository.legacy.metadata.MetadataResolutionRequest)>(l1);
+
+        $r1 = (org.apache.maven.repository.legacy.metadata.ResolutionGroup) $stack2;
+
+        return $r1;
+    }
+
+    private static boolean lambda$retrieve$0(org.apache.maven.artifact.Artifact, org.apache.maven.project.MavenProject)
+    {
+        org.apache.maven.artifact.Artifact artifact, $stack2;
+        org.apache.maven.project.MavenProject p;
+        boolean $stack3;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        p := @parameter1: org.apache.maven.project.MavenProject;
+
+        $stack2 = virtualinvoke p.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack3 = virtualinvoke artifact.<java.lang.Object: boolean equals(java.lang.Object)>($stack2);
+
+        return $stack3;
+    }
+}

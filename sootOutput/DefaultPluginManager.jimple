@@ -1,0 +1,597 @@
+public class DefaultPluginManager extends java.lang.Object implements org.apache.maven.plugin.PluginManager
+{
+    private org.codehaus.plexus.PlexusContainer container;
+    private org.apache.maven.plugin.MavenPluginManager pluginManager;
+    private org.apache.maven.plugin.version.PluginVersionResolver pluginVersionResolver;
+    private org.apache.maven.plugin.prefix.PluginPrefixResolver pluginPrefixResolver;
+    private org.apache.maven.plugin.LegacySupport legacySupport;
+
+    public void <init>()
+    {
+        DefaultPluginManager this;
+
+        this := @this: DefaultPluginManager;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void executeMojo(org.apache.maven.project.MavenProject, org.apache.maven.plugin.MojoExecution, org.apache.maven.execution.MavenSession) throws org.apache.maven.plugin.MojoExecutionException, org.apache.maven.artifact.resolver.ArtifactResolutionException, org.apache.maven.plugin.MojoFailureException, org.apache.maven.artifact.resolver.ArtifactNotFoundException, org.apache.maven.project.artifact.InvalidDependencyVersionException, org.apache.maven.plugin.PluginManagerException, org.apache.maven.plugin.PluginConfigurationException
+    {
+        java.lang.UnsupportedOperationException $stack4;
+        DefaultPluginManager this;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.plugin.MojoExecution execution;
+        org.apache.maven.execution.MavenSession session;
+
+        this := @this: DefaultPluginManager;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        execution := @parameter1: org.apache.maven.plugin.MojoExecution;
+
+        session := @parameter2: org.apache.maven.execution.MavenSession;
+
+        $stack4 = new java.lang.UnsupportedOperationException;
+
+        specialinvoke $stack4.<java.lang.UnsupportedOperationException: void <init>()>();
+
+        throw $stack4;
+    }
+
+    public java.lang.Object getPluginComponent(org.apache.maven.model.Plugin, java.lang.String, java.lang.String) throws org.apache.maven.plugin.PluginManagerException, org.codehaus.plexus.component.repository.exception.ComponentLookupException
+    {
+        DefaultPluginManager this;
+        org.apache.maven.plugin.LegacySupport $stack9;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.model.Plugin plugin;
+        org.apache.maven.plugin.MavenPluginManager $stack11, $stack16;
+        org.apache.maven.project.MavenProject $stack12;
+        java.util.List $stack13;
+        org.eclipse.aether.RepositorySystemSession $stack14;
+        org.apache.maven.plugin.descriptor.PluginDescriptor pluginDescriptor;
+        java.lang.Thread $stack17, $stack19, $stack23, $stack25;
+        org.codehaus.plexus.classworlds.realm.ClassRealm $stack20;
+        java.lang.String role, roleHint, $stack28;
+        org.codehaus.plexus.PlexusContainer $stack21;
+        java.lang.Object l7;
+        java.lang.Throwable $stack24, $r3;
+        java.lang.Exception $stack26;
+        java.lang.ClassLoader e#2, $r4;
+        org.apache.maven.plugin.PluginManagerException $u0;
+        org.apache.maven.plugin.internal.DefaultPluginManager $r0, $r1, $r2, $r5;
+
+        this := @this: DefaultPluginManager;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        role := @parameter1: java.lang.String;
+
+        roleHint := @parameter2: java.lang.String;
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack9 = $r0.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        session = interfaceinvoke $stack9.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+     label1:
+        $r1 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack11 = $r1.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.MavenPluginManager pluginManager>;
+
+        $stack12 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack13 = virtualinvoke $stack12.<org.apache.maven.project.MavenProject: java.util.List getRemotePluginRepositories()>();
+
+        $stack14 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        pluginDescriptor = interfaceinvoke $stack11.<org.apache.maven.plugin.MavenPluginManager: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor(org.apache.maven.model.Plugin,java.util.List,org.eclipse.aether.RepositorySystemSession)>(plugin, $stack13, $stack14);
+
+        $r2 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack16 = $r2.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.MavenPluginManager pluginManager>;
+
+        interfaceinvoke $stack16.<org.apache.maven.plugin.MavenPluginManager: void setupPluginRealm(org.apache.maven.plugin.descriptor.PluginDescriptor,org.apache.maven.execution.MavenSession,java.lang.ClassLoader,java.util.List,org.eclipse.aether.graph.DependencyFilter)>(pluginDescriptor, session, null, null, null);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack26 := @caughtexception;
+
+        $u0 = new org.apache.maven.plugin.PluginManagerException;
+
+        $stack28 = virtualinvoke $stack26.<java.lang.Exception: java.lang.String getMessage()>();
+
+        specialinvoke $u0.<org.apache.maven.plugin.PluginManagerException: void <init>(org.apache.maven.model.Plugin,java.lang.String,java.lang.Throwable)>(plugin, $stack28, $stack26);
+
+        $r3 = (java.lang.Throwable) $u0;
+
+        throw $r3;
+
+     label4:
+        $stack17 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        e#2 = virtualinvoke $stack17.<java.lang.Thread: java.lang.ClassLoader getContextClassLoader()>();
+
+     label5:
+        $stack19 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        $stack20 = virtualinvoke pluginDescriptor.<org.apache.maven.plugin.descriptor.PluginDescriptor: org.codehaus.plexus.classworlds.realm.ClassRealm getClassRealm()>();
+
+        $r4 = (java.lang.ClassLoader) $stack20;
+
+        virtualinvoke $stack19.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>($r4);
+
+        $r5 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack21 = $r5.<org.apache.maven.plugin.internal.DefaultPluginManager: org.codehaus.plexus.PlexusContainer container>;
+
+        l7 = interfaceinvoke $stack21.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.String,java.lang.String)>(role, roleHint);
+
+     label6:
+        $stack23 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack23.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(e#2);
+
+        return l7;
+
+     label7:
+        $stack24 := @caughtexception;
+
+     label8:
+        $stack25 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack25.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(e#2);
+
+        throw $stack24;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+        catch java.lang.Throwable from label5 to label6 with label7;
+        catch java.lang.Throwable from label7 to label8 with label7;
+    }
+
+    public java.util.Map getPluginComponents(org.apache.maven.model.Plugin, java.lang.String) throws org.codehaus.plexus.component.repository.exception.ComponentLookupException, org.apache.maven.plugin.PluginManagerException
+    {
+        DefaultPluginManager this;
+        org.apache.maven.plugin.LegacySupport $stack8;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.model.Plugin plugin;
+        org.apache.maven.plugin.MavenPluginManager $stack10, $stack15;
+        org.apache.maven.project.MavenProject $stack11;
+        java.util.List $stack12;
+        org.eclipse.aether.RepositorySystemSession $stack13;
+        org.apache.maven.plugin.descriptor.PluginDescriptor pluginDescriptor;
+        java.lang.Thread $stack16, $stack18, $stack22, $stack24;
+        org.codehaus.plexus.classworlds.realm.ClassRealm $stack19;
+        java.lang.String role, $stack27;
+        org.codehaus.plexus.PlexusContainer $stack20;
+        java.util.Map l6;
+        java.lang.Throwable $stack23, $r3;
+        java.lang.Exception $stack25;
+        java.lang.ClassLoader e#2, $r4;
+        org.apache.maven.plugin.PluginManagerException $u0;
+        org.apache.maven.plugin.internal.DefaultPluginManager $r0, $r1, $r2, $r5;
+
+        this := @this: DefaultPluginManager;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        role := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack8 = $r0.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        session = interfaceinvoke $stack8.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+     label1:
+        $r1 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack10 = $r1.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.MavenPluginManager pluginManager>;
+
+        $stack11 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack12 = virtualinvoke $stack11.<org.apache.maven.project.MavenProject: java.util.List getRemotePluginRepositories()>();
+
+        $stack13 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        pluginDescriptor = interfaceinvoke $stack10.<org.apache.maven.plugin.MavenPluginManager: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor(org.apache.maven.model.Plugin,java.util.List,org.eclipse.aether.RepositorySystemSession)>(plugin, $stack12, $stack13);
+
+        $r2 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack15 = $r2.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.MavenPluginManager pluginManager>;
+
+        interfaceinvoke $stack15.<org.apache.maven.plugin.MavenPluginManager: void setupPluginRealm(org.apache.maven.plugin.descriptor.PluginDescriptor,org.apache.maven.execution.MavenSession,java.lang.ClassLoader,java.util.List,org.eclipse.aether.graph.DependencyFilter)>(pluginDescriptor, session, null, null, null);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack25 := @caughtexception;
+
+        $u0 = new org.apache.maven.plugin.PluginManagerException;
+
+        $stack27 = virtualinvoke $stack25.<java.lang.Exception: java.lang.String getMessage()>();
+
+        specialinvoke $u0.<org.apache.maven.plugin.PluginManagerException: void <init>(org.apache.maven.model.Plugin,java.lang.String,java.lang.Throwable)>(plugin, $stack27, $stack25);
+
+        $r3 = (java.lang.Throwable) $u0;
+
+        throw $r3;
+
+     label4:
+        $stack16 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        e#2 = virtualinvoke $stack16.<java.lang.Thread: java.lang.ClassLoader getContextClassLoader()>();
+
+     label5:
+        $stack18 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        $stack19 = virtualinvoke pluginDescriptor.<org.apache.maven.plugin.descriptor.PluginDescriptor: org.codehaus.plexus.classworlds.realm.ClassRealm getClassRealm()>();
+
+        $r4 = (java.lang.ClassLoader) $stack19;
+
+        virtualinvoke $stack18.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>($r4);
+
+        $r5 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack20 = $r5.<org.apache.maven.plugin.internal.DefaultPluginManager: org.codehaus.plexus.PlexusContainer container>;
+
+        l6 = interfaceinvoke $stack20.<org.codehaus.plexus.PlexusContainer: java.util.Map lookupMap(java.lang.String)>(role);
+
+     label6:
+        $stack22 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack22.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(e#2);
+
+        return l6;
+
+     label7:
+        $stack23 := @caughtexception;
+
+     label8:
+        $stack24 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack24.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(e#2);
+
+        throw $stack23;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+        catch java.lang.Throwable from label5 to label6 with label7;
+        catch java.lang.Throwable from label7 to label8 with label7;
+    }
+
+    public org.apache.maven.model.Plugin getPluginDefinitionForPrefix(java.lang.String, org.apache.maven.execution.MavenSession, org.apache.maven.project.MavenProject)
+    {
+        java.lang.String prefix, $stack13, $stack14;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.model.Model $stack8;
+        DefaultPluginManager this;
+        org.apache.maven.plugin.prefix.PluginPrefixResolver $stack10;
+        java.lang.Throwable $stack15;
+        org.apache.maven.plugin.prefix.PluginPrefixResult result;
+        org.apache.maven.plugin.prefix.DefaultPluginPrefixRequest $u0;
+        org.apache.maven.model.Plugin $u1;
+        org.apache.maven.plugin.prefix.PluginPrefixRequest $r0, $r2;
+        org.apache.maven.plugin.internal.DefaultPluginManager $r1;
+
+        this := @this: DefaultPluginManager;
+
+        prefix := @parameter0: java.lang.String;
+
+        session := @parameter1: org.apache.maven.execution.MavenSession;
+
+        project := @parameter2: org.apache.maven.project.MavenProject;
+
+        $u0 = new org.apache.maven.plugin.prefix.DefaultPluginPrefixRequest;
+
+        specialinvoke $u0.<org.apache.maven.plugin.prefix.DefaultPluginPrefixRequest: void <init>(java.lang.String,org.apache.maven.execution.MavenSession)>(prefix, session);
+
+        $stack8 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.model.Model getModel()>();
+
+        $r0 = (org.apache.maven.plugin.prefix.PluginPrefixRequest) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.plugin.prefix.PluginPrefixRequest: org.apache.maven.plugin.prefix.PluginPrefixRequest setPom(org.apache.maven.model.Model)>($stack8);
+
+     label1:
+        $r1 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack10 = $r1.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.prefix.PluginPrefixResolver pluginPrefixResolver>;
+
+        $r2 = (org.apache.maven.plugin.prefix.PluginPrefixRequest) $u0;
+
+        result = interfaceinvoke $stack10.<org.apache.maven.plugin.prefix.PluginPrefixResolver: org.apache.maven.plugin.prefix.PluginPrefixResult resolve(org.apache.maven.plugin.prefix.PluginPrefixRequest)>($r2);
+
+        $u1 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $u1.<org.apache.maven.model.Plugin: void <init>()>();
+
+        $stack13 = interfaceinvoke result.<org.apache.maven.plugin.prefix.PluginPrefixResult: java.lang.String getGroupId()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>($stack13);
+
+        $stack14 = interfaceinvoke result.<org.apache.maven.plugin.prefix.PluginPrefixResult: java.lang.String getArtifactId()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>($stack14);
+
+     label2:
+        return $u1;
+
+     label3:
+        $stack15 := @caughtexception;
+
+        return null;
+
+        catch org.apache.maven.plugin.prefix.NoPluginFoundForPrefixException from label1 to label2 with label3;
+    }
+
+    public org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptorForPrefix(java.lang.String)
+    {
+        DefaultPluginManager this;
+        org.apache.maven.plugin.LegacySupport $stack6;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.String prefix, $stack12, $stack13;
+        org.apache.maven.plugin.prefix.PluginPrefixResolver $stack9;
+        org.apache.maven.project.MavenProject $stack14;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack15;
+        java.lang.Exception $stack16;
+        org.apache.maven.plugin.prefix.PluginPrefixResult result;
+        org.apache.maven.plugin.prefix.DefaultPluginPrefixRequest $u0;
+        org.apache.maven.model.Plugin $u1;
+        org.apache.maven.plugin.internal.DefaultPluginManager $r0, $r1, $r3;
+        org.apache.maven.plugin.prefix.PluginPrefixRequest $r2;
+
+        this := @this: DefaultPluginManager;
+
+        prefix := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack6 = $r0.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        session = interfaceinvoke $stack6.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+        $u0 = new org.apache.maven.plugin.prefix.DefaultPluginPrefixRequest;
+
+        specialinvoke $u0.<org.apache.maven.plugin.prefix.DefaultPluginPrefixRequest: void <init>(java.lang.String,org.apache.maven.execution.MavenSession)>(prefix, session);
+
+     label1:
+        $r1 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack9 = $r1.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.prefix.PluginPrefixResolver pluginPrefixResolver>;
+
+        $r2 = (org.apache.maven.plugin.prefix.PluginPrefixRequest) $u0;
+
+        result = interfaceinvoke $stack9.<org.apache.maven.plugin.prefix.PluginPrefixResolver: org.apache.maven.plugin.prefix.PluginPrefixResult resolve(org.apache.maven.plugin.prefix.PluginPrefixRequest)>($r2);
+
+        $u1 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $u1.<org.apache.maven.model.Plugin: void <init>()>();
+
+        $stack12 = interfaceinvoke result.<org.apache.maven.plugin.prefix.PluginPrefixResult: java.lang.String getGroupId()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>($stack12);
+
+        $stack13 = interfaceinvoke result.<org.apache.maven.plugin.prefix.PluginPrefixResult: java.lang.String getArtifactId()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setArtifactId(java.lang.String)>($stack13);
+
+        $stack14 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $r3 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack15 = virtualinvoke $r3.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.descriptor.PluginDescriptor loadPluginDescriptor(org.apache.maven.model.Plugin,org.apache.maven.project.MavenProject,org.apache.maven.execution.MavenSession)>($u1, $stack14, session);
+
+     label2:
+        return $stack15;
+
+     label3:
+        $stack16 := @caughtexception;
+
+        return null;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public org.apache.maven.plugin.descriptor.PluginDescriptor loadPluginDescriptor(org.apache.maven.model.Plugin, org.apache.maven.project.MavenProject, org.apache.maven.execution.MavenSession) throws org.apache.maven.artifact.resolver.ArtifactResolutionException, org.apache.maven.plugin.version.PluginVersionResolutionException, org.apache.maven.artifact.resolver.ArtifactNotFoundException, org.apache.maven.artifact.versioning.InvalidVersionSpecificationException, org.apache.maven.plugin.InvalidPluginException, org.apache.maven.plugin.PluginManagerException, org.apache.maven.plugin.PluginNotFoundException, org.apache.maven.plugin.version.PluginVersionNotFoundException
+    {
+        DefaultPluginManager this;
+        org.apache.maven.model.Plugin plugin;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.settings.Settings $stack4;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack5;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack6;
+        org.apache.maven.plugin.internal.DefaultPluginManager $r0;
+
+        this := @this: DefaultPluginManager;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        project := @parameter1: org.apache.maven.project.MavenProject;
+
+        session := @parameter2: org.apache.maven.execution.MavenSession;
+
+        $stack4 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.settings.Settings getSettings()>();
+
+        $stack5 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack6 = virtualinvoke $r0.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.descriptor.PluginDescriptor verifyPlugin(org.apache.maven.model.Plugin,org.apache.maven.project.MavenProject,org.apache.maven.settings.Settings,org.apache.maven.artifact.repository.ArtifactRepository)>(plugin, project, $stack4, $stack5);
+
+        return $stack6;
+    }
+
+    public org.apache.maven.plugin.descriptor.PluginDescriptor loadPluginFully(org.apache.maven.model.Plugin, org.apache.maven.project.MavenProject, org.apache.maven.execution.MavenSession) throws org.apache.maven.artifact.resolver.ArtifactResolutionException, org.apache.maven.plugin.version.PluginVersionResolutionException, org.apache.maven.artifact.resolver.ArtifactNotFoundException, org.apache.maven.artifact.versioning.InvalidVersionSpecificationException, org.apache.maven.plugin.InvalidPluginException, org.apache.maven.plugin.PluginManagerException, org.apache.maven.plugin.PluginNotFoundException, org.apache.maven.plugin.version.PluginVersionNotFoundException
+    {
+        DefaultPluginManager this;
+        org.apache.maven.model.Plugin plugin;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.plugin.descriptor.PluginDescriptor pluginDescriptor;
+        org.apache.maven.plugin.MavenPluginManager $stack7;
+        java.lang.Throwable $stack8, $r3;
+        java.lang.String $stack10;
+        org.apache.maven.plugin.PluginManagerException $u0;
+        org.apache.maven.plugin.internal.DefaultPluginManager $r0, $r1;
+        org.apache.maven.plugin.PluginResolutionException $r2;
+
+        this := @this: DefaultPluginManager;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        project := @parameter1: org.apache.maven.project.MavenProject;
+
+        session := @parameter2: org.apache.maven.execution.MavenSession;
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        pluginDescriptor = virtualinvoke $r0.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.descriptor.PluginDescriptor loadPluginDescriptor(org.apache.maven.model.Plugin,org.apache.maven.project.MavenProject,org.apache.maven.execution.MavenSession)>(plugin, project, session);
+
+     label1:
+        $r1 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack7 = $r1.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.MavenPluginManager pluginManager>;
+
+        interfaceinvoke $stack7.<org.apache.maven.plugin.MavenPluginManager: void setupPluginRealm(org.apache.maven.plugin.descriptor.PluginDescriptor,org.apache.maven.execution.MavenSession,java.lang.ClassLoader,java.util.List,org.eclipse.aether.graph.DependencyFilter)>(pluginDescriptor, session, null, null, null);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack8 := @caughtexception;
+
+        $u0 = new org.apache.maven.plugin.PluginManagerException;
+
+        $r2 = (org.apache.maven.plugin.PluginResolutionException) $stack8;
+
+        $stack10 = virtualinvoke $r2.<org.apache.maven.plugin.PluginResolutionException: java.lang.String getMessage()>();
+
+        specialinvoke $u0.<org.apache.maven.plugin.PluginManagerException: void <init>(org.apache.maven.model.Plugin,java.lang.String,java.lang.Throwable)>(plugin, $stack10, $stack8);
+
+        $r3 = (java.lang.Throwable) $u0;
+
+        throw $r3;
+
+     label4:
+        return pluginDescriptor;
+
+        catch org.apache.maven.plugin.PluginResolutionException from label1 to label2 with label3;
+    }
+
+    public org.apache.maven.plugin.descriptor.PluginDescriptor verifyPlugin(org.apache.maven.model.Plugin, org.apache.maven.project.MavenProject, org.apache.maven.settings.Settings, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.artifact.resolver.ArtifactResolutionException, org.apache.maven.plugin.version.PluginVersionResolutionException, org.apache.maven.artifact.resolver.ArtifactNotFoundException, org.apache.maven.artifact.versioning.InvalidVersionSpecificationException, org.apache.maven.plugin.InvalidPluginException, org.apache.maven.plugin.PluginManagerException, org.apache.maven.plugin.PluginNotFoundException, org.apache.maven.plugin.version.PluginVersionNotFoundException
+    {
+        DefaultPluginManager this;
+        org.apache.maven.plugin.LegacySupport $stack7;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.model.Plugin plugin;
+        java.lang.String $stack9, $stack19, $stack26;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.plugin.MavenPluginManager $stack10;
+        java.util.List $stack11, $stack16, $stack29;
+        org.eclipse.aether.RepositorySystemSession $stack12, $stack15;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack13;
+        org.apache.maven.plugin.version.PluginVersionResolver $stack17;
+        org.apache.maven.plugin.version.PluginVersionResult $stack18;
+        java.lang.Throwable $stack24, $stack27, $r4, $r6;
+        org.apache.maven.settings.Settings settings;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        org.apache.maven.plugin.version.DefaultPluginVersionRequest $u0;
+        org.apache.maven.plugin.PluginNotFoundException $u1;
+        org.apache.maven.plugin.PluginManagerException $u2;
+        org.apache.maven.plugin.internal.DefaultPluginManager $r0, $r1, $r3;
+        org.apache.maven.plugin.version.PluginVersionRequest $r2;
+        java.lang.Exception $r5;
+
+        this := @this: DefaultPluginManager;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        project := @parameter1: org.apache.maven.project.MavenProject;
+
+        settings := @parameter2: org.apache.maven.settings.Settings;
+
+        localRepository := @parameter3: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack7 = $r0.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        session = interfaceinvoke $stack7.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+        $stack9 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        if $stack9 != null goto label1;
+
+        $u0 = new org.apache.maven.plugin.version.DefaultPluginVersionRequest;
+
+        $stack15 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $stack16 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getRemotePluginRepositories()>();
+
+        specialinvoke $u0.<org.apache.maven.plugin.version.DefaultPluginVersionRequest: void <init>(org.apache.maven.model.Plugin,org.eclipse.aether.RepositorySystemSession,java.util.List)>(plugin, $stack15, $stack16);
+
+        $r1 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack17 = $r1.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.version.PluginVersionResolver pluginVersionResolver>;
+
+        $r2 = (org.apache.maven.plugin.version.PluginVersionRequest) $u0;
+
+        $stack18 = interfaceinvoke $stack17.<org.apache.maven.plugin.version.PluginVersionResolver: org.apache.maven.plugin.version.PluginVersionResult resolve(org.apache.maven.plugin.version.PluginVersionRequest)>($r2);
+
+        $stack19 = interfaceinvoke $stack18.<org.apache.maven.plugin.version.PluginVersionResult: java.lang.String getVersion()>();
+
+        virtualinvoke plugin.<org.apache.maven.model.Plugin: void setVersion(java.lang.String)>($stack19);
+
+     label1:
+        $r3 = (org.apache.maven.plugin.internal.DefaultPluginManager) this;
+
+        $stack10 = $r3.<org.apache.maven.plugin.internal.DefaultPluginManager: org.apache.maven.plugin.MavenPluginManager pluginManager>;
+
+        $stack11 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getRemotePluginRepositories()>();
+
+        $stack12 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $stack13 = interfaceinvoke $stack10.<org.apache.maven.plugin.MavenPluginManager: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor(org.apache.maven.model.Plugin,java.util.List,org.eclipse.aether.RepositorySystemSession)>(plugin, $stack11, $stack12);
+
+     label2:
+        return $stack13;
+
+     label3:
+        $stack27 := @caughtexception;
+
+        $u1 = new org.apache.maven.plugin.PluginNotFoundException;
+
+        $stack29 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getPluginArtifactRepositories()>();
+
+        specialinvoke $u1.<org.apache.maven.plugin.PluginNotFoundException: void <init>(org.apache.maven.model.Plugin,java.util.List)>(plugin, $stack29);
+
+        $r4 = (java.lang.Throwable) $u1;
+
+        throw $r4;
+
+     label4:
+        $stack24 := @caughtexception;
+
+        $u2 = new org.apache.maven.plugin.PluginManagerException;
+
+        $r5 = (java.lang.Exception) $stack24;
+
+        $stack26 = virtualinvoke $r5.<java.lang.Exception: java.lang.String getMessage()>();
+
+        specialinvoke $u2.<org.apache.maven.plugin.PluginManagerException: void <init>(org.apache.maven.model.Plugin,java.lang.String,java.lang.Throwable)>(plugin, $stack26, $stack24);
+
+        $r6 = (java.lang.Throwable) $u2;
+
+        throw $r6;
+
+        catch org.apache.maven.plugin.PluginResolutionException from label1 to label2 with label3;
+        catch org.apache.maven.plugin.PluginDescriptorParsingException from label1 to label2 with label4;
+        catch org.apache.maven.plugin.InvalidPluginDescriptorException from label1 to label2 with label4;
+    }
+}

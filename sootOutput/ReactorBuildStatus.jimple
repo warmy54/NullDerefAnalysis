@@ -1,0 +1,193 @@
+public class ReactorBuildStatus extends java.lang.Object
+{
+    private final org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph;
+    private final java.util.Collection blackListedProjects;
+    private volatile boolean halted;
+
+    public void <init>(org.apache.maven.execution.ProjectDependencyGraph)
+    {
+        ReactorBuildStatus this;
+        java.util.Set $stack3;
+        org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph;
+        java.util.HashSet $u0;
+        org.apache.maven.lifecycle.internal.ReactorBuildStatus $r0, $r1, $r2;
+
+        this := @this: ReactorBuildStatus;
+
+        projectDependencyGraph := @parameter0: org.apache.maven.execution.ProjectDependencyGraph;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        $stack3 = staticinvoke <java.util.Collections: java.util.Set synchronizedSet(java.util.Set)>($u0);
+
+        $r0 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $r0.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: java.util.Collection blackListedProjects> = $stack3;
+
+        $r1 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $r1.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: boolean halted> = 0;
+
+        $r2 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $r2.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph> = projectDependencyGraph;
+
+        return;
+    }
+
+    public boolean isBlackListed(org.apache.maven.project.MavenProject)
+    {
+        ReactorBuildStatus this;
+        org.apache.maven.project.MavenProject project;
+        java.util.Collection $stack2;
+        java.lang.String $stack3;
+        boolean $stack4;
+        org.apache.maven.lifecycle.internal.ReactorBuildStatus $r0;
+
+        this := @this: ReactorBuildStatus;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        $r0 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $stack2 = $r0.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: java.util.Collection blackListedProjects>;
+
+        $stack3 = staticinvoke <org.apache.maven.lifecycle.internal.builder.BuilderCommon: java.lang.String getKey(org.apache.maven.project.MavenProject)>(project);
+
+        $stack4 = interfaceinvoke $stack2.<java.util.Collection: boolean contains(java.lang.Object)>($stack3);
+
+        return $stack4;
+    }
+
+    public void blackList(org.apache.maven.project.MavenProject)
+    {
+        ReactorBuildStatus this;
+        org.apache.maven.project.MavenProject project, downstreamProject;
+        java.util.Collection $stack4, $stack13;
+        java.lang.String $stack5, $stack14;
+        boolean $stack6, $stack11;
+        org.apache.maven.execution.ProjectDependencyGraph $stack7, $stack8;
+        java.util.List $stack9;
+        java.util.Iterator l2;
+        java.lang.Object $stack12;
+        org.apache.maven.lifecycle.internal.ReactorBuildStatus $r0, $r1, $r2, $r3;
+
+        this := @this: ReactorBuildStatus;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        $r0 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $stack4 = $r0.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: java.util.Collection blackListedProjects>;
+
+        $stack5 = staticinvoke <org.apache.maven.lifecycle.internal.builder.BuilderCommon: java.lang.String getKey(org.apache.maven.project.MavenProject)>(project);
+
+        $stack6 = interfaceinvoke $stack4.<java.util.Collection: boolean add(java.lang.Object)>($stack5);
+
+        if $stack6 == 0 goto label2;
+
+        $r1 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $stack7 = $r1.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph>;
+
+        if $stack7 == null goto label2;
+
+        $r2 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $stack8 = $r2.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph>;
+
+        $stack9 = interfaceinvoke $stack8.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getDownstreamProjects(org.apache.maven.project.MavenProject,boolean)>(project, 1);
+
+        l2 = interfaceinvoke $stack9.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack11 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label2;
+
+        $stack12 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        downstreamProject = (org.apache.maven.project.MavenProject) $stack12;
+
+        $r3 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $stack13 = $r3.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: java.util.Collection blackListedProjects>;
+
+        $stack14 = staticinvoke <org.apache.maven.lifecycle.internal.builder.BuilderCommon: java.lang.String getKey(org.apache.maven.project.MavenProject)>(downstreamProject);
+
+        interfaceinvoke $stack13.<java.util.Collection: boolean add(java.lang.Object)>($stack14);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void halt()
+    {
+        ReactorBuildStatus this;
+        org.apache.maven.lifecycle.internal.ReactorBuildStatus $r0;
+
+        this := @this: ReactorBuildStatus;
+
+        $r0 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $r0.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: boolean halted> = 1;
+
+        return;
+    }
+
+    public boolean isHalted()
+    {
+        ReactorBuildStatus this;
+        boolean $stack1;
+        org.apache.maven.lifecycle.internal.ReactorBuildStatus $r0;
+
+        this := @this: ReactorBuildStatus;
+
+        $r0 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $stack1 = $r0.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: boolean halted>;
+
+        return $stack1;
+    }
+
+    public boolean isHaltedOrBlacklisted(org.apache.maven.project.MavenProject)
+    {
+        ReactorBuildStatus this;
+        org.apache.maven.project.MavenProject mavenProject;
+        boolean $stack2, $stack3, $stack4;
+        org.apache.maven.lifecycle.internal.ReactorBuildStatus $r0, $r1;
+
+        this := @this: ReactorBuildStatus;
+
+        mavenProject := @parameter0: org.apache.maven.project.MavenProject;
+
+        $r0 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: boolean isBlackListed(org.apache.maven.project.MavenProject)>(mavenProject);
+
+        if $stack2 != 0 goto label1;
+
+        $r1 = (org.apache.maven.lifecycle.internal.ReactorBuildStatus) this;
+
+        $stack3 = virtualinvoke $r1.<org.apache.maven.lifecycle.internal.ReactorBuildStatus: boolean isHalted()>();
+
+        if $stack3 == 0 goto label2;
+
+     label1:
+        $stack4 = 1;
+
+        goto label3;
+
+     label2:
+        $stack4 = 0;
+
+     label3:
+        return $stack4;
+    }
+}

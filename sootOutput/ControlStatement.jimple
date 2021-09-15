@@ -1,0 +1,196 @@
+public abstract class ControlStatement extends org.ooc.frontend.model.Statement implements org.ooc.frontend.model.Scope
+{
+    protected org.ooc.frontend.model.NodeList body;
+
+    public void <init>(org.ooc.frontend.model.tokens.Token)
+    {
+        ControlStatement this;
+        org.ooc.frontend.model.tokens.Token startToken;
+        org.ooc.frontend.model.NodeList $u0;
+        org.ooc.frontend.model.ControlStatement $r0;
+
+        this := @this: ControlStatement;
+
+        startToken := @parameter0: org.ooc.frontend.model.tokens.Token;
+
+        specialinvoke this.<org.ooc.frontend.model.Statement: void <init>(org.ooc.frontend.model.tokens.Token)>(startToken);
+
+        $u0 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u0.<org.ooc.frontend.model.NodeList: void <init>(org.ooc.frontend.model.tokens.Token)>(startToken);
+
+        $r0 = (org.ooc.frontend.model.ControlStatement) this;
+
+        $r0.<org.ooc.frontend.model.ControlStatement: org.ooc.frontend.model.NodeList body> = $u0;
+
+        return;
+    }
+
+    public org.ooc.frontend.model.NodeList getBody()
+    {
+        ControlStatement this;
+        org.ooc.frontend.model.NodeList $stack1;
+        org.ooc.frontend.model.ControlStatement $r0;
+
+        this := @this: ControlStatement;
+
+        $r0 = (org.ooc.frontend.model.ControlStatement) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.ControlStatement: org.ooc.frontend.model.NodeList body>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.VariableDecl getVariable(java.lang.String)
+    {
+        ControlStatement this;
+        org.ooc.frontend.model.NodeList $stack6, $stack8;
+        int $stack7;
+        java.util.Iterator l2;
+        boolean $stack10, $stack14, $stack17;
+        java.lang.Object $stack12;
+        org.ooc.frontend.model.Line line;
+        org.ooc.frontend.model.Statement node;
+        org.ooc.frontend.model.VariableDecl varDecl;
+        java.lang.String $stack16, name;
+        org.ooc.frontend.model.ControlStatement $r0, $r1;
+
+        this := @this: ControlStatement;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.model.ControlStatement) this;
+
+        $stack6 = $r0.<org.ooc.frontend.model.ControlStatement: org.ooc.frontend.model.NodeList body>;
+
+        $stack7 = virtualinvoke $stack6.<org.ooc.frontend.model.NodeList: int size()>();
+
+        if $stack7 <= 0 goto label3;
+
+        $r1 = (org.ooc.frontend.model.ControlStatement) this;
+
+        $stack8 = $r1.<org.ooc.frontend.model.ControlStatement: org.ooc.frontend.model.NodeList body>;
+
+        l2 = virtualinvoke $stack8.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label3;
+
+        $stack12 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        line = (org.ooc.frontend.model.Line) $stack12;
+
+        node = virtualinvoke line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack14 = node instanceof org.ooc.frontend.model.VariableDecl;
+
+        if $stack14 == 0 goto label2;
+
+        varDecl = (org.ooc.frontend.model.VariableDecl) node;
+
+        $stack16 = virtualinvoke varDecl.<org.ooc.frontend.model.VariableDecl: java.lang.String getName()>();
+
+        $stack17 = virtualinvoke $stack16.<java.lang.String: boolean equals(java.lang.Object)>(name);
+
+        if $stack17 == 0 goto label2;
+
+        return varDecl;
+
+     label2:
+        goto label1;
+
+     label3:
+        return null;
+    }
+
+    public void getVariables(org.ooc.frontend.model.NodeList)
+    {
+        ControlStatement this;
+        org.ooc.frontend.model.NodeList $stack5, $stack7, variables;
+        int $stack6;
+        java.util.Iterator l2;
+        boolean $stack9, $stack12;
+        java.lang.Object $stack10;
+        org.ooc.frontend.model.Line line;
+        org.ooc.frontend.model.Statement node;
+        org.ooc.frontend.model.VariableDecl $stack14;
+        org.ooc.frontend.model.ControlStatement $r0, $r1;
+        org.ooc.frontend.model.Node $r2;
+
+        this := @this: ControlStatement;
+
+        variables := @parameter0: org.ooc.frontend.model.NodeList;
+
+        $r0 = (org.ooc.frontend.model.ControlStatement) this;
+
+        $stack5 = $r0.<org.ooc.frontend.model.ControlStatement: org.ooc.frontend.model.NodeList body>;
+
+        $stack6 = virtualinvoke $stack5.<org.ooc.frontend.model.NodeList: int size()>();
+
+        if $stack6 <= 0 goto label3;
+
+        $r1 = (org.ooc.frontend.model.ControlStatement) this;
+
+        $stack7 = $r1.<org.ooc.frontend.model.ControlStatement: org.ooc.frontend.model.NodeList body>;
+
+        l2 = virtualinvoke $stack7.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack9 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label3;
+
+        $stack10 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        line = (org.ooc.frontend.model.Line) $stack10;
+
+        node = virtualinvoke line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack12 = node instanceof org.ooc.frontend.model.VariableDecl;
+
+        if $stack12 == 0 goto label2;
+
+        $stack14 = (org.ooc.frontend.model.VariableDecl) node;
+
+        $r2 = (org.ooc.frontend.model.Node) $stack14;
+
+        virtualinvoke variables.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r2);
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String, java.lang.String, org.ooc.frontend.model.FunctionCall)
+    {
+        ControlStatement this;
+        java.lang.String name, suffix;
+        org.ooc.frontend.model.FunctionCall call;
+
+        this := @this: ControlStatement;
+
+        name := @parameter0: java.lang.String;
+
+        suffix := @parameter1: java.lang.String;
+
+        call := @parameter2: org.ooc.frontend.model.FunctionCall;
+
+        return null;
+    }
+
+    public void getFunctions(org.ooc.frontend.model.NodeList)
+    {
+        ControlStatement this;
+        org.ooc.frontend.model.NodeList functions;
+
+        this := @this: ControlStatement;
+
+        functions := @parameter0: org.ooc.frontend.model.NodeList;
+
+        return;
+    }
+}

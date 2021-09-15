@@ -1,0 +1,1590 @@
+public abstract class TypeDecl extends org.ooc.frontend.model.Declaration implements org.ooc.frontend.model.Scope, org.ooc.frontend.model.Generic, org.ooc.frontend.model.interfaces.Versioned
+{
+    private org.ooc.frontend.model.VersionBlock version;
+    protected org.ooc.frontend.model.NodeList variables;
+    protected org.ooc.frontend.model.NodeList functions;
+    protected org.ooc.frontend.model.Type superType;
+    protected org.ooc.frontend.model.Type instanceType;
+    protected java.util.LinkedHashMap typeParams;
+    protected org.ooc.frontend.model.VariableDecl thisDecl;
+    private boolean finishedGhosting;
+
+    public void <init>(java.lang.String, org.ooc.frontend.model.Type, org.ooc.frontend.model.Module, org.ooc.frontend.model.tokens.Token)
+    {
+        TypeDecl this;
+        java.lang.String name;
+        org.ooc.frontend.model.tokens.Token startToken;
+        org.ooc.frontend.model.Module module;
+        org.ooc.frontend.model.Type superType, $stack8, $stack11, $u2;
+        org.ooc.frontend.model.NodeList $u0, $u1;
+        java.util.LinkedHashMap $u3;
+        org.ooc.frontend.model.VariableDecl $u4;
+        org.ooc.frontend.model.TypeDecl $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9;
+
+        this := @this: TypeDecl;
+
+        name := @parameter0: java.lang.String;
+
+        superType := @parameter1: org.ooc.frontend.model.Type;
+
+        module := @parameter2: org.ooc.frontend.model.Module;
+
+        startToken := @parameter3: org.ooc.frontend.model.tokens.Token;
+
+        specialinvoke this.<org.ooc.frontend.model.Declaration: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>(name, startToken, module);
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.VersionBlock version> = null;
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $r1.<org.ooc.frontend.model.TypeDecl: boolean finishedGhosting> = 0;
+
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $r2.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType> = superType;
+
+        $u0 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u0.<org.ooc.frontend.model.NodeList: void <init>(org.ooc.frontend.model.tokens.Token)>(startToken);
+
+        $r3 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $r3.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables> = $u0;
+
+        $u1 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u1.<org.ooc.frontend.model.NodeList: void <init>(org.ooc.frontend.model.tokens.Token)>(startToken);
+
+        $r4 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $r4.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList functions> = $u1;
+
+        $u2 = new org.ooc.frontend.model.Type;
+
+        specialinvoke $u2.<org.ooc.frontend.model.Type: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>(name, startToken);
+
+        $r5 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $r5.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type instanceType> = $u2;
+
+        $r6 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack8 = $r6.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type instanceType>;
+
+        virtualinvoke $stack8.<org.ooc.frontend.model.Type: void setRef(org.ooc.frontend.model.Declaration)>(this);
+
+        $u3 = new java.util.LinkedHashMap;
+
+        specialinvoke $u3.<java.util.LinkedHashMap: void <init>()>();
+
+        $r7 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $r7.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap typeParams> = $u3;
+
+        $u4 = new org.ooc.frontend.model.VariableDecl;
+
+        $r8 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack11 = $r8.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type instanceType>;
+
+        specialinvoke $u4.<org.ooc.frontend.model.VariableDecl: void <init>(org.ooc.frontend.model.Type,java.lang.String,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>($stack11, "this", startToken, module);
+
+        $r9 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $r9.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.VariableDecl thisDecl> = $u4;
+
+        return;
+    }
+
+    public org.ooc.frontend.model.VariableDecl getThisDecl()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.VariableDecl $stack1;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.VariableDecl thisDecl>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.Type getInstanceType()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.Type $stack1;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type instanceType>;
+
+        return $stack1;
+    }
+
+    public boolean hasVariables()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.NodeList $stack1;
+        boolean $stack2, $stack3;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables>;
+
+        $stack2 = virtualinvoke $stack1.<org.ooc.frontend.model.NodeList: boolean isEmpty()>();
+
+        if $stack2 != 0 goto label1;
+
+        $stack3 = 1;
+
+        goto label2;
+
+     label1:
+        $stack3 = 0;
+
+     label2:
+        return $stack3;
+    }
+
+    public boolean hasFunctions()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.NodeList $stack1;
+        boolean $stack2, $stack3;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList functions>;
+
+        $stack2 = virtualinvoke $stack1.<org.ooc.frontend.model.NodeList: boolean isEmpty()>();
+
+        if $stack2 != 0 goto label1;
+
+        $stack3 = 1;
+
+        goto label2;
+
+     label1:
+        $stack3 = 0;
+
+     label2:
+        return $stack3;
+    }
+
+    public java.lang.Iterable getVariables()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.NodeList $stack1;
+        org.ooc.frontend.model.TypeDecl $r0;
+        java.lang.Iterable $r1;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables>;
+
+        $r1 = (java.lang.Iterable) $stack1;
+
+        return $r1;
+    }
+
+    public void getVariables(org.ooc.frontend.model.NodeList)
+    {
+        org.ooc.frontend.model.NodeList variables, $stack2;
+        TypeDecl this;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        variables := @parameter0: org.ooc.frontend.model.NodeList;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables>;
+
+        virtualinvoke variables.<org.ooc.frontend.model.NodeList: void addAll(org.ooc.frontend.model.NodeList)>($stack2);
+
+        return;
+    }
+
+    public void addVariable(org.ooc.frontend.model.VariableDecl)
+    {
+        org.ooc.frontend.model.VariableDecl decl;
+        TypeDecl this;
+        org.ooc.frontend.model.NodeList $stack2;
+        org.ooc.frontend.model.TypeDecl $r0, $r1;
+        org.ooc.frontend.model.Node $r2;
+
+        this := @this: TypeDecl;
+
+        decl := @parameter0: org.ooc.frontend.model.VariableDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: void setTypeDecl(org.ooc.frontend.model.TypeDecl)>($r0);
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack2 = $r1.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables>;
+
+        $r2 = (org.ooc.frontend.model.Node) decl;
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r2);
+
+        return;
+    }
+
+    public java.lang.Iterable getFunctions()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.NodeList $stack1;
+        org.ooc.frontend.model.TypeDecl $r0;
+        java.lang.Iterable $r1;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList functions>;
+
+        $r1 = (java.lang.Iterable) $stack1;
+
+        return $r1;
+    }
+
+    public org.ooc.frontend.model.Type getSuperType()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.Type $stack1;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getSuperName()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.Type $stack1, $stack2;
+        java.lang.String $stack3;
+        org.ooc.frontend.model.TypeDecl $r0, $r1;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+        if $stack1 != null goto label1;
+
+        $stack3 = "";
+
+        goto label2;
+
+     label1:
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack2 = $r1.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+        $stack3 = virtualinvoke $stack2.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+     label2:
+        return $stack3;
+    }
+
+    public void setSuperType(org.ooc.frontend.model.Type)
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.Type superType;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        superType := @parameter0: org.ooc.frontend.model.Type;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType> = superType;
+
+        return;
+    }
+
+    public org.ooc.frontend.model.FunctionDecl getFunction(org.ooc.frontend.model.FunctionCall)
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.FunctionCall call;
+        java.lang.String $stack2, $stack3;
+        org.ooc.frontend.model.FunctionDecl $stack4;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        call := @parameter0: org.ooc.frontend.model.FunctionCall;
+
+        $stack2 = virtualinvoke call.<org.ooc.frontend.model.FunctionCall: java.lang.String getName()>();
+
+        $stack3 = virtualinvoke call.<org.ooc.frontend.model.FunctionCall: java.lang.String getSuffix()>();
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack4 = virtualinvoke $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall)>($stack2, $stack3, call);
+
+        return $stack4;
+    }
+
+    public org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String, java.lang.String, org.ooc.frontend.model.FunctionCall, boolean)
+    {
+        TypeDecl this;
+        java.lang.String name, suffix;
+        org.ooc.frontend.model.FunctionCall call;
+        boolean recursive;
+        org.ooc.frontend.model.FunctionDecl $stack5;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        name := @parameter0: java.lang.String;
+
+        suffix := @parameter1: java.lang.String;
+
+        call := @parameter2: org.ooc.frontend.model.FunctionCall;
+
+        recursive := @parameter3: boolean;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack5 = virtualinvoke $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall,boolean,int,org.ooc.frontend.model.FunctionDecl)>(name, suffix, call, recursive, 0, null);
+
+        return $stack5;
+    }
+
+    public org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String, java.lang.String, org.ooc.frontend.model.FunctionCall, boolean, int, org.ooc.frontend.model.FunctionDecl)
+    {
+        int bestScoreParam, score, bestScore;
+        org.ooc.frontend.model.FunctionDecl bestMatchParam, $stack18, func, bestMatch;
+        TypeDecl this;
+        org.ooc.frontend.model.NodeList $stack12;
+        java.util.Iterator l9;
+        boolean $stack14, recursive, $stack21, $stack25;
+        org.ooc.frontend.model.TypeDecl $stack15, $stack17, $r0, $r1, $r2;
+        java.lang.String name, suffix, $stack20, $stack24;
+        org.ooc.frontend.model.FunctionCall call;
+        java.lang.Object $stack19;
+
+        this := @this: TypeDecl;
+
+        name := @parameter0: java.lang.String;
+
+        suffix := @parameter1: java.lang.String;
+
+        call := @parameter2: org.ooc.frontend.model.FunctionCall;
+
+        recursive := @parameter3: boolean;
+
+        bestScoreParam := @parameter4: int;
+
+        bestMatchParam := @parameter5: org.ooc.frontend.model.FunctionDecl;
+
+        bestScore = bestScoreParam;
+
+        bestMatch = bestMatchParam;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack12 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList functions>;
+
+        l9 = virtualinvoke $stack12.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack14 = interfaceinvoke l9.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label6;
+
+        $stack19 = interfaceinvoke l9.<java.util.Iterator: java.lang.Object next()>();
+
+        func = (org.ooc.frontend.model.FunctionDecl) $stack19;
+
+        $stack20 = virtualinvoke func.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack21 = virtualinvoke $stack20.<java.lang.String: boolean equals(java.lang.Object)>(name);
+
+        if $stack21 == 0 goto label5;
+
+        if suffix == null goto label2;
+
+        $stack24 = virtualinvoke func.<org.ooc.frontend.model.FunctionDecl: java.lang.String getSuffix()>();
+
+        $stack25 = virtualinvoke $stack24.<java.lang.String: boolean equals(java.lang.Object)>(suffix);
+
+        if $stack25 == 0 goto label5;
+
+     label2:
+        if call != null goto label3;
+
+        return func;
+
+     label3:
+        score = virtualinvoke call.<org.ooc.frontend.model.FunctionCall: int getScore(org.ooc.frontend.model.FunctionDecl)>(func);
+
+        if score != -1 goto label4;
+
+        return null;
+
+     label4:
+        if score <= bestScore goto label5;
+
+        bestScore = score;
+
+        bestMatch = func;
+
+     label5:
+        goto label1;
+
+     label6:
+        if recursive == 0 goto label7;
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack15 = virtualinvoke $r1.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        if $stack15 == null goto label7;
+
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack17 = virtualinvoke $r2.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        $stack18 = virtualinvoke $stack17.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall,boolean,int,org.ooc.frontend.model.FunctionDecl)>(name, suffix, call, 1, bestScore, bestMatch);
+
+        return $stack18;
+
+     label7:
+        return bestMatch;
+    }
+
+    public org.ooc.frontend.model.TypeDecl getSuperRef()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.Type $stack1, $stack2, $stack4;
+        org.ooc.frontend.model.Declaration $stack3, $stack5;
+        org.ooc.frontend.model.TypeDecl $stack6, $r0, $r1, $r2;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack2 = $r1.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+        $stack3 = virtualinvoke $stack2.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        if $stack3 != null goto label2;
+
+     label1:
+        return null;
+
+     label2:
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack4 = $r2.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+        $stack5 = virtualinvoke $stack4.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        $stack6 = (org.ooc.frontend.model.TypeDecl) $stack5;
+
+        return $stack6;
+    }
+
+    public org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String, java.lang.String, org.ooc.frontend.model.FunctionCall)
+    {
+        TypeDecl this;
+        java.lang.String name, suffix;
+        org.ooc.frontend.model.FunctionCall call;
+        org.ooc.frontend.model.FunctionDecl $stack4;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        name := @parameter0: java.lang.String;
+
+        suffix := @parameter1: java.lang.String;
+
+        call := @parameter2: org.ooc.frontend.model.FunctionCall;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack4 = virtualinvoke $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall,boolean,int,org.ooc.frontend.model.FunctionDecl)>(name, suffix, call, 1, 0, null);
+
+        return $stack4;
+    }
+
+    public void getFunctions(org.ooc.frontend.model.NodeList)
+    {
+        org.ooc.frontend.model.NodeList functions, $stack2;
+        TypeDecl this;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        functions := @parameter0: org.ooc.frontend.model.NodeList;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList functions>;
+
+        virtualinvoke functions.<org.ooc.frontend.model.NodeList: void addAll(org.ooc.frontend.model.NodeList)>($stack2);
+
+        return;
+    }
+
+    public void addFunction(org.ooc.frontend.model.FunctionDecl)
+    {
+        org.ooc.frontend.model.FunctionDecl decl, tok#3;
+        TypeDecl this;
+        boolean $stack3, $stack6, $stack17;
+        java.util.LinkedHashMap $stack4, $stack5;
+        java.lang.String $stack9, $stack10;
+        org.ooc.frontend.model.NodeList $stack14, $stack16, $stack18, $stack21, $stack7;
+        org.ooc.frontend.model.Node $stack19, $r3, $r7, $r9;
+        org.ooc.frontend.model.Argument $stack20;
+        org.ooc.frontend.model.Type $stack24;
+        org.ooc.frontend.model.tokens.Token $stack26;
+        org.ooc.frontend.model.RegularArgument $u0;
+        org.ooc.frontend.model.TypeDecl $r0, $r1, $r2, $r4, $r5, $r6, $r8;
+
+        this := @this: TypeDecl;
+
+        decl := @parameter0: org.ooc.frontend.model.FunctionDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: void setTypeDecl(org.ooc.frontend.model.TypeDecl)>($r0);
+
+        $stack3 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: boolean isStatic()>();
+
+        if $stack3 != 0 goto label3;
+
+        $stack16 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getArguments()>();
+
+        $stack17 = virtualinvoke $stack16.<org.ooc.frontend.model.NodeList: boolean isEmpty()>();
+
+        if $stack17 == 0 goto label1;
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack26 = $r1.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.tokens.Token startToken>;
+
+        goto label2;
+
+     label1:
+        $stack18 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getArguments()>();
+
+        $stack19 = virtualinvoke $stack18.<org.ooc.frontend.model.NodeList: org.ooc.frontend.model.Node getFirst()>();
+
+        $stack20 = (org.ooc.frontend.model.Argument) $stack19;
+
+        $stack26 = $stack20.<org.ooc.frontend.model.Argument: org.ooc.frontend.model.tokens.Token startToken>;
+
+     label2:
+        $stack21 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getArguments()>();
+
+        $u0 = new org.ooc.frontend.model.RegularArgument;
+
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack24 = virtualinvoke $r2.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type getInstanceType()>();
+
+        specialinvoke $u0.<org.ooc.frontend.model.RegularArgument: void <init>(org.ooc.frontend.model.Type,java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack24, "this", $stack26);
+
+        $r3 = (org.ooc.frontend.model.Node) $u0;
+
+        virtualinvoke $stack21.<org.ooc.frontend.model.NodeList: void add(int,org.ooc.frontend.model.Node)>(0, $r3);
+
+        goto label4;
+
+     label3:
+        $stack4 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.util.LinkedHashMap getTypeParams()>();
+
+        $r4 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack5 = $r4.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap typeParams>;
+
+        virtualinvoke $stack4.<java.util.LinkedHashMap: void putAll(java.util.Map)>($stack5);
+
+     label4:
+        $stack6 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: boolean isSpecialFunc()>();
+
+        if $stack6 == 0 goto label5;
+
+        $stack9 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack10 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getSuffix()>();
+
+        $r5 = (org.ooc.frontend.model.TypeDecl) this;
+
+        tok#3 = virtualinvoke $r5.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall)>($stack9, $stack10, null);
+
+        if tok#3 == null goto label5;
+
+        $r6 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack14 = $r6.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList functions>;
+
+        $r7 = (org.ooc.frontend.model.Node) tok#3;
+
+        virtualinvoke $stack14.<org.ooc.frontend.model.NodeList: boolean remove(org.ooc.frontend.model.Node)>($r7);
+
+     label5:
+        $r8 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack7 = $r8.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList functions>;
+
+        $r9 = (org.ooc.frontend.model.Node) decl;
+
+        virtualinvoke $stack7.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r9);
+
+        return;
+    }
+
+    public void getFunctionsRecursive(org.ooc.frontend.model.NodeList)
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.NodeList $stack7, functions;
+        java.util.Iterator l2, l5;
+        boolean $stack9, $stack14, $stack19, already;
+        org.ooc.frontend.model.TypeDecl $stack10, $stack11, $r0, $r2, $r3;
+        java.lang.Object $stack12, $stack17;
+        org.ooc.frontend.model.FunctionDecl decl, decl2;
+        org.ooc.frontend.model.Node $r1;
+
+        this := @this: TypeDecl;
+
+        functions := @parameter0: org.ooc.frontend.model.NodeList;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack7 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList functions>;
+
+        l2 = virtualinvoke $stack7.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack9 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label6;
+
+        $stack12 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        decl = (org.ooc.frontend.model.FunctionDecl) $stack12;
+
+        already = 0;
+
+        l5 = virtualinvoke functions.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label2:
+        $stack14 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label4;
+
+        $stack17 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        decl2 = (org.ooc.frontend.model.FunctionDecl) $stack17;
+
+        if decl == decl2 goto label3;
+
+        $stack19 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: boolean sameProto(org.ooc.frontend.model.FunctionDecl)>(decl2);
+
+        if $stack19 == 0 goto label3;
+
+        already = 1;
+
+        goto label4;
+
+     label3:
+        goto label2;
+
+     label4:
+        if already != 0 goto label5;
+
+        $r1 = (org.ooc.frontend.model.Node) decl;
+
+        virtualinvoke functions.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r1);
+
+     label5:
+        goto label1;
+
+     label6:
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack10 = virtualinvoke $r2.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        if $stack10 == null goto label7;
+
+        $r3 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack11 = virtualinvoke $r3.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        virtualinvoke $stack11.<org.ooc.frontend.model.TypeDecl: void getFunctionsRecursive(org.ooc.frontend.model.NodeList)>(functions);
+
+     label7:
+        return;
+    }
+
+    public org.ooc.frontend.model.VariableDecl getVariable(java.lang.String)
+    {
+        TypeDecl this;
+        boolean $stack5, $stack9, $stack15;
+        java.lang.String name, realTypeParam, $stack14;
+        org.ooc.frontend.model.NodeList $stack7;
+        java.util.Iterator l3;
+        org.ooc.frontend.model.TypeDecl $stack10, $stack11, $r0, $r1, $r2, $r3, $r4, $r5;
+        org.ooc.frontend.model.VariableDecl $stack12, decl, $stack17;
+        java.lang.Object $stack13;
+
+        this := @this: TypeDecl;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack5 = $r0.<org.ooc.frontend.model.TypeDecl: boolean finishedGhosting>;
+
+        if $stack5 != 0 goto label1;
+
+        return null;
+
+     label1:
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        realTypeParam = virtualinvoke $r1.<org.ooc.frontend.model.TypeDecl: java.lang.String translateTypeParam(java.lang.String)>(name);
+
+        if realTypeParam == null goto label2;
+
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack17 = virtualinvoke $r2.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.VariableDecl getVariable(java.lang.String)>(realTypeParam);
+
+        return $stack17;
+
+     label2:
+        $r3 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack7 = $r3.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables>;
+
+        l3 = virtualinvoke $stack7.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label3:
+        $stack9 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label5;
+
+        $stack13 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        decl = (org.ooc.frontend.model.VariableDecl) $stack13;
+
+        $stack14 = virtualinvoke decl.<org.ooc.frontend.model.VariableDecl: java.lang.String getName()>();
+
+        $stack15 = virtualinvoke $stack14.<java.lang.String: boolean equals(java.lang.Object)>(name);
+
+        if $stack15 == 0 goto label4;
+
+        return decl;
+
+     label4:
+        goto label3;
+
+     label5:
+        $r4 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack10 = virtualinvoke $r4.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        if $stack10 == null goto label6;
+
+        $r5 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack11 = virtualinvoke $r5.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        $stack12 = virtualinvoke $stack11.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.VariableDecl getVariable(java.lang.String)>(name);
+
+        return $stack12;
+
+     label6:
+        return null;
+    }
+
+    private java.lang.String translateTypeParam(java.lang.String)
+    {
+        TypeDecl this;
+        java.lang.String name, candidate, $stack22, result;
+        java.util.LinkedHashMap $stack8, $stack14;
+        boolean $stack9, $stack17, $stack20, $stack23, $stack24;
+        org.ooc.frontend.model.Type $stack10;
+        org.ooc.frontend.model.NodeList $stack11;
+        java.util.Iterator iter1, iter2;
+        org.ooc.frontend.model.TypeDecl $stack13, $r0, $r1, $r2;
+        java.util.Set $stack15;
+        java.lang.Object $stack18, $stack19;
+        org.ooc.frontend.model.Access a;
+        org.ooc.frontend.model.VariableAccess va;
+
+        this := @this: TypeDecl;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack8 = $r0.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap typeParams>;
+
+        $stack9 = virtualinvoke $stack8.<java.util.LinkedHashMap: boolean containsKey(java.lang.Object)>(name);
+
+        if $stack9 == 0 goto label4;
+
+        result = null;
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack10 = virtualinvoke $r1.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type getSuperType()>();
+
+        $stack11 = virtualinvoke $stack10.<org.ooc.frontend.model.Type: org.ooc.frontend.model.NodeList getTypeParams()>();
+
+        iter1 = virtualinvoke $stack11.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack13 = virtualinvoke $r2.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        $stack14 = virtualinvoke $stack13.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap getTypeParams()>();
+
+        $stack15 = virtualinvoke $stack14.<java.util.LinkedHashMap: java.util.Set keySet()>();
+
+        iter2 = interfaceinvoke $stack15.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $stack17 = interfaceinvoke iter1.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack17 == 0 goto label3;
+
+        $stack18 = interfaceinvoke iter1.<java.util.Iterator: java.lang.Object next()>();
+
+        a = (org.ooc.frontend.model.Access) $stack18;
+
+        $stack19 = interfaceinvoke iter2.<java.util.Iterator: java.lang.Object next()>();
+
+        candidate = (java.lang.String) $stack19;
+
+        $stack20 = a instanceof org.ooc.frontend.model.VariableAccess;
+
+        if $stack20 == 0 goto label2;
+
+        va = (org.ooc.frontend.model.VariableAccess) a;
+
+        $stack22 = virtualinvoke va.<org.ooc.frontend.model.VariableAccess: java.lang.String getName()>();
+
+        $stack23 = virtualinvoke $stack22.<java.lang.String: boolean equals(java.lang.Object)>(name);
+
+        if $stack23 == 0 goto label2;
+
+        $stack24 = virtualinvoke name.<java.lang.String: boolean equals(java.lang.Object)>(candidate);
+
+        if $stack24 != 0 goto label2;
+
+        result = candidate;
+
+        goto label3;
+
+     label2:
+        goto label1;
+
+     label3:
+        return result;
+
+     label4:
+        return null;
+    }
+
+    public void acceptChildren(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.Type $stack4, $stack11, $stack14;
+        java.util.LinkedHashMap $stack5;
+        java.util.Collection $stack6;
+        java.util.Iterator l2;
+        org.ooc.frontend.Visitor visitor;
+        org.ooc.frontend.model.NodeList $stack9, $stack10;
+        java.lang.Object $stack12;
+        org.ooc.frontend.model.TypeParam genType;
+        boolean $stack8;
+        org.ooc.frontend.model.TypeDecl $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: TypeDecl;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack4 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+        if $stack4 == null goto label1;
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack14 = $r1.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+        virtualinvoke $stack14.<org.ooc.frontend.model.Type: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+     label1:
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack5 = $r2.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap typeParams>;
+
+        $stack6 = virtualinvoke $stack5.<java.util.LinkedHashMap: java.util.Collection values()>();
+
+        l2 = interfaceinvoke $stack6.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label2:
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label3;
+
+        $stack12 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        genType = (org.ooc.frontend.model.TypeParam) $stack12;
+
+        virtualinvoke genType.<org.ooc.frontend.model.TypeParam: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        goto label2;
+
+     label3:
+        $r3 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack9 = $r3.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables>;
+
+        virtualinvoke $stack9.<org.ooc.frontend.model.NodeList: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        $r4 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack10 = $r4.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList functions>;
+
+        virtualinvoke $stack10.<org.ooc.frontend.model.NodeList: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        $r5 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack11 = $r5.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type instanceType>;
+
+        virtualinvoke $stack11.<org.ooc.frontend.model.Type: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        return;
+    }
+
+    public boolean hasChildren()
+    {
+        TypeDecl this;
+
+        this := @this: TypeDecl;
+
+        return 1;
+    }
+
+    public boolean replace(org.ooc.frontend.model.Node, org.ooc.frontend.model.Node)
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.Node oldie, kiddo;
+
+        this := @this: TypeDecl;
+
+        oldie := @parameter0: org.ooc.frontend.model.Node;
+
+        kiddo := @parameter1: org.ooc.frontend.model.Node;
+
+        return 0;
+    }
+
+    public org.ooc.frontend.model.TypeDecl getTypeDecl()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        return $r0;
+    }
+
+    public org.ooc.frontend.model.Type getType()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.Type $stack1;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = virtualinvoke $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type getInstanceType()>();
+
+        return $stack1;
+    }
+
+    public java.lang.String getVariablesRepr()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.NodeList $stack1;
+        java.lang.String $stack2;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables>;
+
+        $stack2 = virtualinvoke $stack1.<org.ooc.frontend.model.NodeList: java.lang.String toString()>();
+
+        return $stack2;
+    }
+
+    public java.lang.String getFunctionsRepr()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.NodeList $stack1;
+        java.lang.String $stack2;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList functions>;
+
+        $stack2 = virtualinvoke $stack1.<org.ooc.frontend.model.NodeList: java.lang.String toString()>();
+
+        return $stack2;
+    }
+
+    public java.util.LinkedHashMap getTypeParams()
+    {
+        TypeDecl this;
+        java.util.LinkedHashMap $stack1;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap typeParams>;
+
+        return $stack1;
+    }
+
+    public void addTypeParam(org.ooc.frontend.model.TypeParam)
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.TypeParam genType;
+        java.util.LinkedHashMap $stack2;
+        java.lang.String $stack3, $stack9;
+        org.ooc.frontend.model.Argument $stack5, $stack14;
+        org.ooc.frontend.model.Type $stack6;
+        org.ooc.frontend.model.NodeList $stack7, $stack12;
+        org.ooc.frontend.model.tokens.Token $stack10;
+        org.ooc.frontend.model.VariableAccess $u0;
+        org.ooc.frontend.model.TypeDecl $r0, $r1, $r2, $r4;
+        org.ooc.frontend.model.Node $r3, $r5;
+
+        this := @this: TypeDecl;
+
+        genType := @parameter0: org.ooc.frontend.model.TypeParam;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap typeParams>;
+
+        $stack3 = virtualinvoke genType.<org.ooc.frontend.model.TypeParam: java.lang.String getName()>();
+
+        virtualinvoke $stack2.<java.util.LinkedHashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack3, genType);
+
+        $stack5 = virtualinvoke genType.<org.ooc.frontend.model.TypeParam: org.ooc.frontend.model.Argument getArgument()>();
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        virtualinvoke $stack5.<org.ooc.frontend.model.Argument: void setTypeDecl(org.ooc.frontend.model.TypeDecl)>($r1);
+
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack6 = $r2.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type instanceType>;
+
+        $stack7 = virtualinvoke $stack6.<org.ooc.frontend.model.Type: org.ooc.frontend.model.NodeList getTypeParams()>();
+
+        $u0 = new org.ooc.frontend.model.VariableAccess;
+
+        $stack9 = virtualinvoke genType.<org.ooc.frontend.model.TypeParam: java.lang.String getName()>();
+
+        $stack10 = genType.<org.ooc.frontend.model.TypeParam: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u0.<org.ooc.frontend.model.VariableAccess: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack9, $stack10);
+
+        $r3 = (org.ooc.frontend.model.Node) $u0;
+
+        virtualinvoke $stack7.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r3);
+
+        $r4 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack12 = $r4.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables>;
+
+        $stack14 = virtualinvoke genType.<org.ooc.frontend.model.TypeParam: org.ooc.frontend.model.Argument getArgument()>();
+
+        $r5 = (org.ooc.frontend.model.Node) $stack14;
+
+        virtualinvoke $stack12.<org.ooc.frontend.model.NodeList: void add(int,org.ooc.frontend.model.Node)>(0, $r5);
+
+        return;
+    }
+
+    public org.ooc.frontend.model.interfaces.MustBeResolved$Response resolve(org.ooc.frontend.model.NodeList, org.ooc.middle.hobgoblins.Resolver, boolean)
+    {
+        org.ooc.frontend.model.NodeList stack;
+        TypeDecl this;
+        org.ooc.middle.hobgoblins.Resolver res;
+        boolean fatal;
+        org.ooc.frontend.model.interfaces.MustBeResolved$Response $stack5;
+        org.ooc.frontend.model.Node $r0, $r2;
+        org.ooc.frontend.model.TypeDecl $r1;
+
+        this := @this: TypeDecl;
+
+        stack := @parameter0: org.ooc.frontend.model.NodeList;
+
+        res := @parameter1: org.ooc.middle.hobgoblins.Resolver;
+
+        fatal := @parameter2: boolean;
+
+        $r0 = (org.ooc.frontend.model.Node) this;
+
+        virtualinvoke stack.<org.ooc.frontend.model.NodeList: void push(org.ooc.frontend.model.Node)>($r0);
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        virtualinvoke $r1.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.interfaces.MustBeResolved$Response ghostTypeParams(org.ooc.frontend.model.NodeList,org.ooc.middle.hobgoblins.Resolver,boolean)>(stack, res, fatal);
+
+        $r2 = (org.ooc.frontend.model.Node) this;
+
+        virtualinvoke stack.<org.ooc.frontend.model.NodeList: void pop(org.ooc.frontend.model.Node)>($r2);
+
+        $stack5 = specialinvoke this.<org.ooc.frontend.model.Declaration: org.ooc.frontend.model.interfaces.MustBeResolved$Response resolve(org.ooc.frontend.model.NodeList,org.ooc.middle.hobgoblins.Resolver,boolean)>(stack, res, fatal);
+
+        return $stack5;
+    }
+
+    private org.ooc.frontend.model.interfaces.MustBeResolved$Response ghostTypeParams(org.ooc.frontend.model.NodeList, org.ooc.middle.hobgoblins.Resolver, boolean)
+    {
+        TypeDecl this;
+        boolean $stack12, fatal, $stack24, $stack30, $stack35, $stack44;
+        org.ooc.frontend.model.Type $stack13, $stack15, sType;
+        org.ooc.frontend.model.interfaces.MustBeResolved$Response $stack14, response, $stack17, $stack49, $stack50;
+        org.ooc.frontend.model.NodeList stack, $stack37, $stack39, $stack47;
+        org.ooc.middle.hobgoblins.Resolver res;
+        org.ooc.frontend.model.Declaration $stack20;
+        org.ooc.frontend.model.TypeDecl sTypeRef, $r0, $r1, $r2, $r4, $r6, $r7, $r8, $r9, $r10;
+        java.util.LinkedHashMap $stack21, $stack27;
+        java.util.Collection $stack22, $stack28;
+        java.util.Iterator l7, l9;
+        java.lang.Object $stack26, $stack32;
+        org.ooc.frontend.model.TypeParam typeArg, candidate;
+        java.lang.String $stack33, $stack34, $stack42, $stack43;
+        int $stack38, i;
+        org.ooc.frontend.model.Node $stack40, $r3, $r5;
+        org.ooc.frontend.model.VariableDecl $stack41;
+
+        this := @this: TypeDecl;
+
+        stack := @parameter0: org.ooc.frontend.model.NodeList;
+
+        res := @parameter1: org.ooc.middle.hobgoblins.Resolver;
+
+        fatal := @parameter2: boolean;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack12 = $r0.<org.ooc.frontend.model.TypeDecl: boolean finishedGhosting>;
+
+        if $stack12 == 0 goto label01;
+
+        $stack50 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response OK>;
+
+        return $stack50;
+
+     label01:
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack13 = $r1.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+        if $stack13 == null goto label12;
+
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack15 = $r2.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+        response = virtualinvoke $stack15.<org.ooc.frontend.model.Type: org.ooc.frontend.model.interfaces.MustBeResolved$Response resolve(org.ooc.frontend.model.NodeList,org.ooc.middle.hobgoblins.Resolver,boolean)>(stack, res, fatal);
+
+        $stack17 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response OK>;
+
+        if response == $stack17 goto label02;
+
+        $r3 = (org.ooc.frontend.model.Node) this;
+
+        virtualinvoke stack.<org.ooc.frontend.model.NodeList: void pop(org.ooc.frontend.model.Node)>($r3);
+
+        return response;
+
+     label02:
+        $r4 = (org.ooc.frontend.model.TypeDecl) this;
+
+        sType = $r4.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+     label03:
+        if sType == null goto label12;
+
+        $stack20 = virtualinvoke sType.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        sTypeRef = (org.ooc.frontend.model.TypeDecl) $stack20;
+
+        if sTypeRef != null goto label04;
+
+        $r5 = (org.ooc.frontend.model.Node) this;
+
+        virtualinvoke stack.<org.ooc.frontend.model.NodeList: void pop(org.ooc.frontend.model.Node)>($r5);
+
+        $stack49 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response LOOP>;
+
+        return $stack49;
+
+     label04:
+        $r6 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack21 = $r6.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap typeParams>;
+
+        $stack22 = virtualinvoke $stack21.<java.util.LinkedHashMap: java.util.Collection values()>();
+
+        l7 = interfaceinvoke $stack22.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label05:
+        $stack24 = interfaceinvoke l7.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack24 == 0 goto label11;
+
+        $stack26 = interfaceinvoke l7.<java.util.Iterator: java.lang.Object next()>();
+
+        typeArg = (org.ooc.frontend.model.TypeParam) $stack26;
+
+        $stack27 = virtualinvoke sTypeRef.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap getTypeParams()>();
+
+        $stack28 = virtualinvoke $stack27.<java.util.LinkedHashMap: java.util.Collection values()>();
+
+        l9 = interfaceinvoke $stack28.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label06:
+        $stack30 = interfaceinvoke l9.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack30 == 0 goto label10;
+
+        $stack32 = interfaceinvoke l9.<java.util.Iterator: java.lang.Object next()>();
+
+        candidate = (org.ooc.frontend.model.TypeParam) $stack32;
+
+        $stack33 = virtualinvoke typeArg.<org.ooc.frontend.model.TypeParam: java.lang.String getName()>();
+
+        $stack34 = virtualinvoke candidate.<org.ooc.frontend.model.TypeParam: java.lang.String getName()>();
+
+        $stack35 = virtualinvoke $stack33.<java.lang.String: boolean equals(java.lang.Object)>($stack34);
+
+        if $stack35 == 0 goto label09;
+
+        i = 0;
+
+     label07:
+        $r7 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack37 = $r7.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables>;
+
+        $stack38 = virtualinvoke $stack37.<org.ooc.frontend.model.NodeList: int size()>();
+
+        if i >= $stack38 goto label09;
+
+        $r8 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack39 = $r8.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables>;
+
+        $stack40 = virtualinvoke $stack39.<org.ooc.frontend.model.NodeList: org.ooc.frontend.model.Node get(int)>(i);
+
+        $stack41 = (org.ooc.frontend.model.VariableDecl) $stack40;
+
+        $stack42 = virtualinvoke $stack41.<org.ooc.frontend.model.VariableDecl: java.lang.String getName()>();
+
+        $stack43 = virtualinvoke typeArg.<org.ooc.frontend.model.TypeParam: java.lang.String getName()>();
+
+        $stack44 = virtualinvoke $stack42.<java.lang.String: boolean equals(java.lang.Object)>($stack43);
+
+        if $stack44 == 0 goto label08;
+
+        $r9 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack47 = $r9.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.NodeList variables>;
+
+        virtualinvoke $stack47.<org.ooc.frontend.model.NodeList: org.ooc.frontend.model.Node removeAt(int)>(i);
+
+        goto label09;
+
+     label08:
+        i = i + 1;
+
+        goto label07;
+
+     label09:
+        goto label06;
+
+     label10:
+        goto label05;
+
+     label11:
+        sType = sTypeRef.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Type superType>;
+
+        goto label03;
+
+     label12:
+        $r10 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $r10.<org.ooc.frontend.model.TypeDecl: boolean finishedGhosting> = 1;
+
+        $stack14 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response OK>;
+
+        return $stack14;
+    }
+
+    public java.lang.String toString()
+    {
+        TypeDecl this;
+        java.lang.Class $stack6;
+        java.lang.String $stack7, $stack9, $stack13, typeParam;
+        java.util.LinkedHashMap $stack11, $stack15;
+        boolean $stack12, $stack18, isFirst;
+        java.util.Set $stack16;
+        java.util.Iterator l3;
+        java.lang.Object $stack21;
+        java.lang.StringBuilder $u0;
+        org.ooc.frontend.model.TypeDecl $r0, $r1, $r2;
+
+        this := @this: TypeDecl;
+
+        $u0 = new java.lang.StringBuilder;
+
+        $stack6 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(java.lang.String)>($stack7);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack9 = $r0.<org.ooc.frontend.model.TypeDecl: java.lang.String name>;
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack11 = $r1.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap typeParams>;
+
+        $stack12 = virtualinvoke $stack11.<java.util.LinkedHashMap: boolean isEmpty()>();
+
+        if $stack12 != 0 goto label5;
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(60);
+
+        isFirst = 1;
+
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack15 = $r2.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap typeParams>;
+
+        $stack16 = virtualinvoke $stack15.<java.util.LinkedHashMap: java.util.Set keySet()>();
+
+        l3 = interfaceinvoke $stack16.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $stack18 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack18 == 0 goto label4;
+
+        $stack21 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        typeParam = (java.lang.String) $stack21;
+
+        if isFirst == 0 goto label2;
+
+        isFirst = 0;
+
+        goto label3;
+
+     label2:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+     label3:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(typeParam);
+
+        goto label1;
+
+     label4:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(62);
+
+     label5:
+        $stack13 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack13;
+    }
+
+    public java.lang.String getUnderName()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.Module $stack1, $stack5;
+        java.lang.String $stack2, $stack6, $stack7, $stack8;
+        boolean $stack3;
+        org.ooc.frontend.model.TypeDecl $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Module module>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack3 = virtualinvoke $r1.<org.ooc.frontend.model.TypeDecl: boolean isExtern()>();
+
+        if $stack3 != 0 goto label1;
+
+        $r2 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack5 = $r2.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Module module>;
+
+        $stack6 = virtualinvoke $stack5.<org.ooc.frontend.model.Module: java.lang.String getMemberPrefix()>();
+
+        $r3 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack7 = virtualinvoke $r3.<org.ooc.frontend.model.TypeDecl: java.lang.String getName()>();
+
+        $stack8 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>($stack6, $stack7) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001\u0001");
+
+        return $stack8;
+
+     label1:
+        $r4 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack2 = virtualinvoke $r4.<org.ooc.frontend.model.TypeDecl: java.lang.String getName()>();
+
+        return $stack2;
+    }
+
+    public org.ooc.frontend.model.Module getModule()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.Module $stack1;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.Module module>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.VersionBlock getVersion()
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.VersionBlock $stack1;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.VersionBlock version>;
+
+        return $stack1;
+    }
+
+    public void setVersion(org.ooc.frontend.model.VersionBlock)
+    {
+        TypeDecl this;
+        org.ooc.frontend.model.VersionBlock block;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        block := @parameter0: org.ooc.frontend.model.VersionBlock;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $r0.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.VersionBlock version> = block;
+
+        return;
+    }
+
+    public void addToModule(org.ooc.frontend.model.Module)
+    {
+        org.ooc.frontend.model.Module module;
+        TypeDecl this;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        virtualinvoke module.<org.ooc.frontend.model.Module: void addType(org.ooc.frontend.model.TypeDecl)>($r0);
+
+        return;
+    }
+
+    public volatile java.util.Map getTypeParams()
+    {
+        TypeDecl this;
+        java.util.LinkedHashMap $stack1;
+        org.ooc.frontend.model.TypeDecl $r0;
+
+        this := @this: TypeDecl;
+
+        $r0 = (org.ooc.frontend.model.TypeDecl) this;
+
+        $stack1 = virtualinvoke $r0.<org.ooc.frontend.model.TypeDecl: java.util.LinkedHashMap getTypeParams()>();
+
+        return $stack1;
+    }
+}

@@ -1,0 +1,374 @@
+public class Case extends org.ooc.frontend.model.Node implements org.ooc.frontend.model.Scope
+{
+    private org.ooc.frontend.model.NodeList body;
+    private org.ooc.frontend.model.Expression expr;
+    private org.ooc.frontend.model.Match match;
+    private boolean isFallthrough;
+
+    public void <init>(org.ooc.frontend.model.Expression, org.ooc.frontend.model.Match, boolean, org.ooc.frontend.model.tokens.Token)
+    {
+        Case this;
+        org.ooc.frontend.model.tokens.Token startToken;
+        org.ooc.frontend.model.Expression expr, $stack5, $stack9, $stack13, $r2, $r3, $r5;
+        org.ooc.frontend.model.Match match;
+        boolean $stack6, isFallthrough, $stack15;
+        org.ooc.frontend.model.Compare$CompareType $stack11;
+        org.ooc.frontend.model.BoolLiteral $stack14;
+        org.ooc.frontend.model.Parenthesis $u0, $u1;
+        org.ooc.frontend.model.Compare $u2;
+        org.ooc.frontend.model.NodeList $u3;
+        org.ooc.frontend.model.Case $r0, $r1, $r4, $r6, $r7;
+
+        this := @this: Case;
+
+        expr := @parameter0: org.ooc.frontend.model.Expression;
+
+        match := @parameter1: org.ooc.frontend.model.Match;
+
+        isFallthrough := @parameter2: boolean;
+
+        startToken := @parameter3: org.ooc.frontend.model.tokens.Token;
+
+        specialinvoke this.<org.ooc.frontend.model.Node: void <init>(org.ooc.frontend.model.tokens.Token)>(startToken);
+
+        if expr != null goto label1;
+
+        $r0 = (org.ooc.frontend.model.Case) this;
+
+        $r0.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Expression expr> = null;
+
+        goto label3;
+
+     label1:
+        $stack5 = virtualinvoke match.<org.ooc.frontend.model.Match: org.ooc.frontend.model.Expression getExpr()>();
+
+        $stack6 = $stack5 instanceof org.ooc.frontend.model.BoolLiteral;
+
+        if $stack6 == 0 goto label2;
+
+        $stack13 = virtualinvoke match.<org.ooc.frontend.model.Match: org.ooc.frontend.model.Expression getExpr()>();
+
+        $stack14 = (org.ooc.frontend.model.BoolLiteral) $stack13;
+
+        $stack15 = virtualinvoke $stack14.<org.ooc.frontend.model.BoolLiteral: boolean getValue()>();
+
+        if $stack15 != 1 goto label2;
+
+        $r1 = (org.ooc.frontend.model.Case) this;
+
+        $r1.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Expression expr> = expr;
+
+        goto label3;
+
+     label2:
+        $u2 = new org.ooc.frontend.model.Compare;
+
+        $u0 = new org.ooc.frontend.model.Parenthesis;
+
+        $stack9 = virtualinvoke match.<org.ooc.frontend.model.Match: org.ooc.frontend.model.Expression getExpr()>();
+
+        specialinvoke $u0.<org.ooc.frontend.model.Parenthesis: void <init>(org.ooc.frontend.model.Expression)>($stack9);
+
+        $u1 = new org.ooc.frontend.model.Parenthesis;
+
+        specialinvoke $u1.<org.ooc.frontend.model.Parenthesis: void <init>(org.ooc.frontend.model.Expression)>(expr);
+
+        $stack11 = <org.ooc.frontend.model.Compare$CompareType: org.ooc.frontend.model.Compare$CompareType EQUAL>;
+
+        $r2 = (org.ooc.frontend.model.Expression) $u0;
+
+        $r3 = (org.ooc.frontend.model.Expression) $u1;
+
+        specialinvoke $u2.<org.ooc.frontend.model.Compare: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Expression,org.ooc.frontend.model.Compare$CompareType,org.ooc.frontend.model.tokens.Token)>($r2, $r3, $stack11, startToken);
+
+        $r4 = (org.ooc.frontend.model.Case) this;
+
+        $r5 = (org.ooc.frontend.model.Expression) $u2;
+
+        $r4.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Expression expr> = $r5;
+
+     label3:
+        $u3 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u3.<org.ooc.frontend.model.NodeList: void <init>()>();
+
+        $r6 = (org.ooc.frontend.model.Case) this;
+
+        $r6.<org.ooc.frontend.model.Case: org.ooc.frontend.model.NodeList body> = $u3;
+
+        $r7 = (org.ooc.frontend.model.Case) this;
+
+        $r7.<org.ooc.frontend.model.Case: boolean isFallthrough> = isFallthrough;
+
+        return;
+    }
+
+    public boolean replace(org.ooc.frontend.model.Node, org.ooc.frontend.model.Node)
+    {
+        Case this;
+        org.ooc.frontend.model.Node oldie, kiddo;
+        org.ooc.frontend.model.Expression $stack3, $stack4;
+        org.ooc.frontend.model.Case $r0, $r1;
+
+        this := @this: Case;
+
+        oldie := @parameter0: org.ooc.frontend.model.Node;
+
+        kiddo := @parameter1: org.ooc.frontend.model.Node;
+
+        $r0 = (org.ooc.frontend.model.Case) this;
+
+        $stack3 = $r0.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Expression expr>;
+
+        if $stack3 != oldie goto label1;
+
+        $stack4 = (org.ooc.frontend.model.Expression) kiddo;
+
+        $r1 = (org.ooc.frontend.model.Case) this;
+
+        $r1.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Expression expr> = $stack4;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public void accept(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        org.ooc.frontend.Visitor visitor;
+        Case this;
+        org.ooc.frontend.model.Case $r0;
+
+        this := @this: Case;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.Case) this;
+
+        interfaceinvoke visitor.<org.ooc.frontend.Visitor: void visit(org.ooc.frontend.model.Case)>($r0);
+
+        return;
+    }
+
+    public void acceptChildren(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        Case this;
+        org.ooc.frontend.model.Expression $stack2, $stack4;
+        org.ooc.frontend.Visitor visitor;
+        org.ooc.frontend.model.NodeList $stack3;
+        org.ooc.frontend.model.Case $r0, $r1, $r2;
+
+        this := @this: Case;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.Case) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Expression expr>;
+
+        if $stack2 == null goto label1;
+
+        $r1 = (org.ooc.frontend.model.Case) this;
+
+        $stack4 = $r1.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Expression expr>;
+
+        virtualinvoke $stack4.<org.ooc.frontend.model.Expression: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+     label1:
+        $r2 = (org.ooc.frontend.model.Case) this;
+
+        $stack3 = $r2.<org.ooc.frontend.model.Case: org.ooc.frontend.model.NodeList body>;
+
+        virtualinvoke $stack3.<org.ooc.frontend.model.NodeList: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        return;
+    }
+
+    public boolean hasChildren()
+    {
+        Case this;
+
+        this := @this: Case;
+
+        return 1;
+    }
+
+    public org.ooc.frontend.model.NodeList getBody()
+    {
+        Case this;
+        org.ooc.frontend.model.NodeList $stack1;
+        org.ooc.frontend.model.Case $r0;
+
+        this := @this: Case;
+
+        $r0 = (org.ooc.frontend.model.Case) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Case: org.ooc.frontend.model.NodeList body>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.Expression getExpr()
+    {
+        Case this;
+        org.ooc.frontend.model.Expression $stack1;
+        org.ooc.frontend.model.Case $r0;
+
+        this := @this: Case;
+
+        $r0 = (org.ooc.frontend.model.Case) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Expression expr>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.Match getMatch()
+    {
+        Case this;
+        org.ooc.frontend.model.Match $stack1;
+        org.ooc.frontend.model.Case $r0;
+
+        this := @this: Case;
+
+        $r0 = (org.ooc.frontend.model.Case) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Match match>;
+
+        return $stack1;
+    }
+
+    public boolean isFallthrough()
+    {
+        Case this;
+        boolean $stack1;
+        org.ooc.frontend.model.Case $r0;
+
+        this := @this: Case;
+
+        $r0 = (org.ooc.frontend.model.Case) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Case: boolean isFallthrough>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String, java.lang.String, org.ooc.frontend.model.FunctionCall)
+    {
+        Case this;
+        java.lang.String name, suffix;
+        org.ooc.frontend.model.FunctionCall call;
+
+        this := @this: Case;
+
+        name := @parameter0: java.lang.String;
+
+        suffix := @parameter1: java.lang.String;
+
+        call := @parameter2: org.ooc.frontend.model.FunctionCall;
+
+        return null;
+    }
+
+    public void getFunctions(org.ooc.frontend.model.NodeList)
+    {
+        Case this;
+        org.ooc.frontend.model.NodeList functions;
+
+        this := @this: Case;
+
+        functions := @parameter0: org.ooc.frontend.model.NodeList;
+
+        return;
+    }
+
+    public org.ooc.frontend.model.VariableDecl getVariable(java.lang.String)
+    {
+        Case this;
+        java.lang.String name;
+        org.ooc.frontend.model.NodeList $stack2;
+        org.ooc.frontend.model.VariableDecl $stack3;
+        org.ooc.frontend.model.Case $r0, $r1;
+
+        this := @this: Case;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.model.Case) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.Case: org.ooc.frontend.model.NodeList body>;
+
+        $r1 = (org.ooc.frontend.model.Case) this;
+
+        $stack3 = virtualinvoke $r1.<org.ooc.frontend.model.Case: org.ooc.frontend.model.VariableDecl getVariable(org.ooc.frontend.model.NodeList,java.lang.String)>($stack2, name);
+
+        return $stack3;
+    }
+
+    public void getVariables(org.ooc.frontend.model.NodeList)
+    {
+        Case this;
+        org.ooc.frontend.model.NodeList variables, $stack2;
+        org.ooc.frontend.model.Case $r0, $r1;
+
+        this := @this: Case;
+
+        variables := @parameter0: org.ooc.frontend.model.NodeList;
+
+        $r0 = (org.ooc.frontend.model.Case) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.Case: org.ooc.frontend.model.NodeList body>;
+
+        $r1 = (org.ooc.frontend.model.Case) this;
+
+        virtualinvoke $r1.<org.ooc.frontend.model.Case: void getVariables(org.ooc.frontend.model.NodeList,org.ooc.frontend.model.NodeList)>($stack2, variables);
+
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        Case this;
+        org.ooc.frontend.model.Expression $stack4;
+        org.ooc.frontend.model.NodeList $stack6;
+        java.util.Iterator l2;
+        boolean $stack8;
+        java.lang.Object $stack10;
+        org.ooc.frontend.model.Line line;
+        java.lang.String repr;
+        org.ooc.frontend.model.Case $r0, $r1;
+
+        this := @this: Case;
+
+        $r0 = (org.ooc.frontend.model.Case) this;
+
+        $stack4 = $r0.<org.ooc.frontend.model.Case: org.ooc.frontend.model.Expression expr>;
+
+        repr = dynamicinvoke "makeConcatWithConstants" <java.lang.String (org.ooc.frontend.model.Expression)>($stack4) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001{ \n");
+
+        $r1 = (org.ooc.frontend.model.Case) this;
+
+        $stack6 = $r1.<org.ooc.frontend.model.Case: org.ooc.frontend.model.NodeList body>;
+
+        l2 = virtualinvoke $stack6.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label2;
+
+        $stack10 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        line = (org.ooc.frontend.model.Line) $stack10;
+
+        repr = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,org.ooc.frontend.model.Line)>(repr, line) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001\u0001\n");
+
+        goto label1;
+
+     label2:
+        repr = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(repr) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001 }");
+
+        return repr;
+    }
+}

@@ -1,0 +1,249 @@
+public class LifecyclePhase extends java.lang.Object
+{
+    private java.util.List mojos;
+
+    public void <init>()
+    {
+        LifecyclePhase this;
+
+        this := @this: LifecyclePhase;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(java.lang.String)
+    {
+        LifecyclePhase this;
+        java.lang.String goals;
+        org.apache.maven.lifecycle.mapping.LifecyclePhase $r0;
+
+        this := @this: LifecyclePhase;
+
+        goals := @parameter0: java.lang.String;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.mapping.LifecyclePhase) this;
+
+        virtualinvoke $r0.<org.apache.maven.lifecycle.mapping.LifecyclePhase: void set(java.lang.String)>(goals);
+
+        return;
+    }
+
+    public java.util.List getMojos()
+    {
+        LifecyclePhase this;
+        java.util.List $stack1;
+        org.apache.maven.lifecycle.mapping.LifecyclePhase $r0;
+
+        this := @this: LifecyclePhase;
+
+        $r0 = (org.apache.maven.lifecycle.mapping.LifecyclePhase) this;
+
+        $stack1 = $r0.<org.apache.maven.lifecycle.mapping.LifecyclePhase: java.util.List mojos>;
+
+        return $stack1;
+    }
+
+    public void setMojos(java.util.List)
+    {
+        LifecyclePhase this;
+        java.util.List mojos;
+        org.apache.maven.lifecycle.mapping.LifecyclePhase $r0;
+
+        this := @this: LifecyclePhase;
+
+        mojos := @parameter0: java.util.List;
+
+        $r0 = (org.apache.maven.lifecycle.mapping.LifecyclePhase) this;
+
+        $r0.<org.apache.maven.lifecycle.mapping.LifecyclePhase: java.util.List mojos> = mojos;
+
+        return;
+    }
+
+    public void set(java.lang.String)
+    {
+        LifecyclePhase this;
+        java.lang.String goals, mojoGoal, $stack12;
+        boolean $stack9;
+        java.lang.String[] mojoGoals;
+        int l4, l5;
+        java.util.List $stack13;
+        java.util.ArrayList $u0;
+        org.apache.maven.lifecycle.mapping.LifecycleMojo $u1;
+        org.apache.maven.lifecycle.mapping.LifecyclePhase $r0, $r1;
+
+        this := @this: LifecyclePhase;
+
+        goals := @parameter0: java.lang.String;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.mapping.LifecyclePhase) this;
+
+        $r0.<org.apache.maven.lifecycle.mapping.LifecyclePhase: java.util.List mojos> = $u0;
+
+        $stack9 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>(goals);
+
+        if $stack9 == 0 goto label2;
+
+        mojoGoals = staticinvoke <org.codehaus.plexus.util.StringUtils: java.lang.String[] split(java.lang.String,java.lang.String)>(goals, ",");
+
+        l4 = lengthof mojoGoals;
+
+        l5 = 0;
+
+     label1:
+        if l5 >= l4 goto label2;
+
+        mojoGoal = mojoGoals[l5];
+
+        $u1 = new org.apache.maven.lifecycle.mapping.LifecycleMojo;
+
+        specialinvoke $u1.<org.apache.maven.lifecycle.mapping.LifecycleMojo: void <init>()>();
+
+        $stack12 = virtualinvoke mojoGoal.<java.lang.String: java.lang.String trim()>();
+
+        virtualinvoke $u1.<org.apache.maven.lifecycle.mapping.LifecycleMojo: void setGoal(java.lang.String)>($stack12);
+
+        $r1 = (org.apache.maven.lifecycle.mapping.LifecyclePhase) this;
+
+        $stack13 = $r1.<org.apache.maven.lifecycle.mapping.LifecyclePhase: java.util.List mojos>;
+
+        interfaceinvoke $stack13.<java.util.List: boolean add(java.lang.Object)>($u1);
+
+        l5 = l5 + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        LifecyclePhase this;
+        java.util.List mojos;
+        java.lang.String $stack8, $stack14;
+        java.util.Iterator l4;
+        boolean $stack10, first;
+        java.lang.Object $stack12;
+        org.apache.maven.lifecycle.mapping.LifecycleMojo mojo;
+        java.lang.StringBuilder $u0;
+        org.apache.maven.lifecycle.mapping.LifecyclePhase $r0;
+
+        this := @this: LifecyclePhase;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        first = 1;
+
+        $r0 = (org.apache.maven.lifecycle.mapping.LifecyclePhase) this;
+
+        mojos = virtualinvoke $r0.<org.apache.maven.lifecycle.mapping.LifecyclePhase: java.util.List getMojos()>();
+
+        if mojos == null goto label4;
+
+        l4 = interfaceinvoke mojos.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label4;
+
+        $stack12 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        mojo = (org.apache.maven.lifecycle.mapping.LifecycleMojo) $stack12;
+
+        if first == 0 goto label2;
+
+        first = 0;
+
+        goto label3;
+
+     label2:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(44);
+
+     label3:
+        $stack14 = virtualinvoke mojo.<org.apache.maven.lifecycle.mapping.LifecycleMojo: java.lang.String getGoal()>();
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        goto label1;
+
+     label4:
+        $stack8 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack8;
+    }
+
+    public static java.util.Map toLegacyMap(java.util.Map)
+    {
+        java.util.Map lifecyclePhases, $stack17;
+        boolean $stack4, $stack8;
+        java.util.LinkedHashMap $stack5;
+        java.util.Set $stack6;
+        java.util.Iterator l2;
+        java.lang.Object $stack9, $stack10, $stack12;
+        java.util.Map$Entry e;
+        java.lang.String $stack11, $stack14;
+        org.apache.maven.lifecycle.mapping.LifecyclePhase $stack13;
+
+        lifecyclePhases := @parameter0: java.util.Map;
+
+        if lifecyclePhases != null goto label1;
+
+        return null;
+
+     label1:
+        $stack4 = interfaceinvoke lifecyclePhases.<java.util.Map: boolean isEmpty()>();
+
+        if $stack4 == 0 goto label2;
+
+        $stack17 = staticinvoke <java.util.Collections: java.util.Map emptyMap()>();
+
+        return $stack17;
+
+     label2:
+        $stack5 = new java.util.LinkedHashMap;
+
+        specialinvoke $stack5.<java.util.LinkedHashMap: void <init>()>();
+
+        $stack6 = interfaceinvoke lifecyclePhases.<java.util.Map: java.util.Set entrySet()>();
+
+        l2 = interfaceinvoke $stack6.<java.util.Set: java.util.Iterator iterator()>();
+
+     label3:
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label4;
+
+        $stack9 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        e = (java.util.Map$Entry) $stack9;
+
+        $stack10 = interfaceinvoke e.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $stack11 = (java.lang.String) $stack10;
+
+        $stack12 = interfaceinvoke e.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $stack13 = (org.apache.maven.lifecycle.mapping.LifecyclePhase) $stack12;
+
+        $stack14 = virtualinvoke $stack13.<org.apache.maven.lifecycle.mapping.LifecyclePhase: java.lang.String toString()>();
+
+        interfaceinvoke $stack5.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack11, $stack14);
+
+        goto label3;
+
+     label4:
+        return $stack5;
+    }
+}

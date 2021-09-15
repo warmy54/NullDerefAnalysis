@@ -1,0 +1,83 @@
+class AbstractModelSourceTransformer$ThreadAwareInputStream extends java.io.FilterInputStream
+{
+    final org.apache.maven.model.building.AbstractModelSourceTransformer$IOExceptionHandler h;
+    final org.apache.maven.model.building.AbstractModelSourceTransformer this$0;
+
+    protected void <init>(org.apache.maven.model.building.AbstractModelSourceTransformer, java.io.InputStream, org.apache.maven.model.building.AbstractModelSourceTransformer$IOExceptionHandler)
+    {
+        AbstractModelSourceTransformer$ThreadAwareInputStream this;
+        org.apache.maven.model.building.AbstractModelSourceTransformer l1;
+        java.io.InputStream in;
+        org.apache.maven.model.building.AbstractModelSourceTransformer$IOExceptionHandler h;
+        org.apache.maven.model.building.AbstractModelSourceTransformer$ThreadAwareInputStream $r0, $r1;
+
+        this := @this: AbstractModelSourceTransformer$ThreadAwareInputStream;
+
+        l1 := @parameter0: org.apache.maven.model.building.AbstractModelSourceTransformer;
+
+        in := @parameter1: java.io.InputStream;
+
+        h := @parameter2: org.apache.maven.model.building.AbstractModelSourceTransformer$IOExceptionHandler;
+
+        $r0 = (org.apache.maven.model.building.AbstractModelSourceTransformer$ThreadAwareInputStream) this;
+
+        $r0.<org.apache.maven.model.building.AbstractModelSourceTransformer$ThreadAwareInputStream: org.apache.maven.model.building.AbstractModelSourceTransformer this$0> = l1;
+
+        specialinvoke this.<java.io.FilterInputStream: void <init>(java.io.InputStream)>(in);
+
+        $r1 = (org.apache.maven.model.building.AbstractModelSourceTransformer$ThreadAwareInputStream) this;
+
+        $r1.<org.apache.maven.model.building.AbstractModelSourceTransformer$ThreadAwareInputStream: org.apache.maven.model.building.AbstractModelSourceTransformer$IOExceptionHandler h> = h;
+
+        return;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        AbstractModelSourceTransformer$ThreadAwareInputStream this;
+        org.apache.maven.model.building.AbstractModelSourceTransformer$IOExceptionHandler eh;
+        java.lang.Throwable $stack4, $stack5;
+        org.apache.maven.model.building.AbstractModelSourceTransformer$ThreadAwareInputStream $r0;
+
+        this := @this: AbstractModelSourceTransformer$ThreadAwareInputStream;
+
+        $r0 = (org.apache.maven.model.building.AbstractModelSourceTransformer$ThreadAwareInputStream) this;
+
+        eh = $r0.<org.apache.maven.model.building.AbstractModelSourceTransformer$ThreadAwareInputStream: org.apache.maven.model.building.AbstractModelSourceTransformer$IOExceptionHandler h>;
+
+     label1:
+        specialinvoke this.<java.io.FilterInputStream: void close()>();
+
+     label2:
+        if eh == null goto label8;
+
+        virtualinvoke eh.<org.apache.maven.model.building.AbstractModelSourceTransformer$IOExceptionHandler: void close()>();
+
+        goto label8;
+
+     label3:
+        $stack5 := @caughtexception;
+
+        if eh == null goto label7;
+
+     label4:
+        virtualinvoke eh.<org.apache.maven.model.building.AbstractModelSourceTransformer$IOExceptionHandler: void close()>();
+
+     label5:
+        goto label7;
+
+     label6:
+        $stack4 := @caughtexception;
+
+        virtualinvoke $stack5.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack4);
+
+     label7:
+        throw $stack5;
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label6;
+    }
+}

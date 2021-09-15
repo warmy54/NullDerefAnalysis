@@ -1,0 +1,224 @@
+class EncodingParameterTest extends java.lang.Object
+{
+
+    void <init>()
+    {
+        EncodingParameterTest this;
+
+        this := @this: EncodingParameterTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    void illegalEncodingWhenGettingPomFileShouldNotWork()
+    {
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack4;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack5;
+        org.hamcrest.Matcher $stack6, $stack7;
+        EncodingParameterTest this;
+
+        this := @this: EncodingParameterTest;
+
+        testMethod = staticinvoke <EncodingParameterTest$lambda_illegalEncodingWhenGettingPomFileShouldNotWork_0__309: org.junit.jupiter.api.function.Executable bootstrap$()>();
+
+        $stack4 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack4;
+
+        $stack5 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $stack6 = staticinvoke <org.hamcrest.core.IsEqual: org.hamcrest.Matcher equalTo(java.lang.Object)>("Could not handle encoding: gurka-2000");
+
+        $stack7 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack6);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack5, $stack7);
+
+        return;
+    }
+
+    void illegalEncodingWhenGeneratingPomFileShouldWork()
+    {
+        sortpom.XmlOutputGenerator $stack3;
+        sortpom.parameter.PluginParameters$Builder $stack4, $stack5, $stack6, $stack7;
+        sortpom.parameter.PluginParameters $stack8;
+        org.jdom.Document $stack9;
+        java.lang.String actual;
+        org.hamcrest.Matcher $stack11;
+        EncodingParameterTest this;
+
+        this := @this: EncodingParameterTest;
+
+        $stack3 = new sortpom.XmlOutputGenerator;
+
+        specialinvoke $stack3.<sortpom.XmlOutputGenerator: void <init>()>();
+
+        $stack4 = staticinvoke <sortpom.parameter.PluginParameters: sortpom.parameter.PluginParameters$Builder builder()>();
+
+        $stack5 = virtualinvoke $stack4.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setEncoding(java.lang.String)>("gurka-2000");
+
+        $stack6 = virtualinvoke $stack5.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setFormatting(java.lang.String,boolean,boolean,boolean)>("\n", 1, 1, 0);
+
+        $stack7 = virtualinvoke $stack6.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setIndent(int,boolean,boolean)>(2, 0, 0);
+
+        $stack8 = virtualinvoke $stack7.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters build()>();
+
+        virtualinvoke $stack3.<sortpom.XmlOutputGenerator: void setup(sortpom.parameter.PluginParameters)>($stack8);
+
+        $stack9 = staticinvoke <sortpom.sort.XmlFragment: org.jdom.Document createXmlFragment()>();
+
+        actual = virtualinvoke $stack3.<sortpom.XmlOutputGenerator: java.lang.String getSortedXml(org.jdom.Document)>($stack9);
+
+        $stack11 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(java.lang.Object)>("<?xml version=\"1.0\" encoding=\"gurka-2000\"?>\n<Gurka></Gurka>\n");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>(actual, $stack11);
+
+        return;
+    }
+
+    void illegalEncodingWhenSavingPomFileShouldNotWork() throws java.io.IOException
+    {
+        java.io.File $stack6, pomFileTemp;
+        sortpom.util.FileUtil $stack10;
+        sortpom.parameter.PluginParameters$Builder builder;
+        sortpom.parameter.PluginParameters $stack14;
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack16, $stack17, $stack21;
+        java.lang.RuntimeException thrown;
+        java.lang.Class $stack18;
+        java.lang.String $stack19, $stack22;
+        org.hamcrest.Matcher $stack20, $stack23;
+        EncodingParameterTest this;
+
+        this := @this: EncodingParameterTest;
+
+        $stack6 = new java.io.File;
+
+        specialinvoke $stack6.<java.io.File: void <init>(java.lang.String)>("target");
+
+        pomFileTemp = staticinvoke <java.io.File: java.io.File createTempFile(java.lang.String,java.lang.String,java.io.File)>("pom", ".xml", $stack6);
+
+        virtualinvoke pomFileTemp.<java.io.File: void deleteOnExit()>();
+
+        $stack10 = new sortpom.util.FileUtil;
+
+        specialinvoke $stack10.<sortpom.util.FileUtil: void <init>()>();
+
+        builder = staticinvoke <sortpom.parameter.PluginParameters: sortpom.parameter.PluginParameters$Builder builder()>();
+
+        virtualinvoke builder.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setPomFile(java.io.File)>(pomFileTemp);
+
+        virtualinvoke builder.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setEncoding(java.lang.String)>("gurka-2000");
+
+        $stack14 = virtualinvoke builder.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters build()>();
+
+        virtualinvoke $stack10.<sortpom.util.FileUtil: void setup(sortpom.parameter.PluginParameters)>($stack14);
+
+        testMethod = staticinvoke <EncodingParameterTest$lambda_illegalEncodingWhenSavingPomFileShouldNotWork_1__310: org.junit.jupiter.api.function.Executable bootstrap$(sortpom.util.FileUtil)>($stack10);
+
+        $stack16 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Ljava/lang/RuntimeException;", testMethod);
+
+        thrown = (java.lang.RuntimeException) $stack16;
+
+        $stack17 = virtualinvoke thrown.<java.lang.RuntimeException: java.lang.Throwable getCause()>();
+
+        $stack18 = virtualinvoke $stack17.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack19 = virtualinvoke $stack18.<java.lang.Class: java.lang.String getName()>();
+
+        $stack20 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(java.lang.Object)>("java.io.UnsupportedEncodingException");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack19, $stack20);
+
+        $stack21 = virtualinvoke thrown.<java.lang.RuntimeException: java.lang.Throwable getCause()>();
+
+        $stack22 = virtualinvoke $stack21.<java.lang.Throwable: java.lang.String getMessage()>();
+
+        $stack23 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(java.lang.Object)>("gurka-2000");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack22, $stack23);
+
+        return;
+    }
+
+    void differentEncodingShouldWork1() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2, $stack3;
+        EncodingParameterTest this;
+
+        this := @this: EncodingParameterTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil predefinedSortOrder(java.lang.String)>("default_0_4_0");
+
+        $stack3 = virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil encoding(java.lang.String)>("UTF-32BE");
+
+        virtualinvoke $stack3.<sortpom.util.SortPomImplUtil: void testFiles(java.lang.String,java.lang.String)>("/UTF32Encoding_input.xml", "/UTF32Encoding_expected.xml");
+
+        return;
+    }
+
+    void differentEncodingShouldWork2() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2, $stack3;
+        EncodingParameterTest this;
+
+        this := @this: EncodingParameterTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil predefinedSortOrder(java.lang.String)>("default_0_4_0");
+
+        $stack3 = virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil encoding(java.lang.String)>("UTF-16");
+
+        virtualinvoke $stack3.<sortpom.util.SortPomImplUtil: void testFiles(java.lang.String,java.lang.String)>("/UTF16Encoding_input.xml", "/UTF16Encoding_expected.xml");
+
+        return;
+    }
+
+    void differentEncodingShouldWork3() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2, $stack3;
+        EncodingParameterTest this;
+
+        this := @this: EncodingParameterTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil predefinedSortOrder(java.lang.String)>("default_0_4_0");
+
+        $stack3 = virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil encoding(java.lang.String)>("ISO-8859-1");
+
+        virtualinvoke $stack3.<sortpom.util.SortPomImplUtil: void testFiles(java.lang.String,java.lang.String)>("/ISO88591Encoding_input.xml", "/ISO88591Encoding_expected.xml");
+
+        return;
+    }
+
+    private static void lambda$illegalEncodingWhenSavingPomFileShouldNotWork$1(sortpom.util.FileUtil) throws java.lang.Throwable
+    {
+        sortpom.util.FileUtil fileUtil;
+
+        fileUtil := @parameter0: sortpom.util.FileUtil;
+
+        virtualinvoke fileUtil.<sortpom.util.FileUtil: void savePomFile(java.lang.String)>("<?xml version=\"1.0\" encoding=\"gurka-2000\"?>\n<Gurka></Gurka>\n");
+
+        return;
+    }
+
+    private static void lambda$illegalEncodingWhenGettingPomFileShouldNotWork$0() throws java.lang.Throwable
+    {
+        sortpom.util.SortPomImplUtil $stack0, $stack1;
+
+        $stack0 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack1 = virtualinvoke $stack0.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil encoding(java.lang.String)>("gurka-2000");
+
+        virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: void testFiles(java.lang.String,java.lang.String)>("/Xml_deviations_input.xml", "/Xml_deviations_output.xml");
+
+        return;
+    }
+}

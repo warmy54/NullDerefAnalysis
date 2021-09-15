@@ -1,0 +1,711 @@
+public class DefaultInheritanceAssembler$InheritanceModelMerger extends org.apache.maven.model.merge.MavenModelMerger
+{
+
+    protected void <init>()
+    {
+        DefaultInheritanceAssembler$InheritanceModelMerger this;
+
+        this := @this: DefaultInheritanceAssembler$InheritanceModelMerger;
+
+        specialinvoke this.<org.apache.maven.model.merge.MavenModelMerger: void <init>()>();
+
+        return;
+    }
+
+    protected java.lang.String extrapolateChildUrl(java.lang.String, boolean, java.util.Map)
+    {
+        java.util.Map context;
+        java.lang.Object childDirectory, childPathAdjustment;
+        java.lang.String parentUrl, $stack10, $stack11, $stack12;
+        boolean $stack8, appendPath;
+        DefaultInheritanceAssembler$InheritanceModelMerger this;
+        org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger $r0;
+
+        this := @this: DefaultInheritanceAssembler$InheritanceModelMerger;
+
+        parentUrl := @parameter0: java.lang.String;
+
+        appendPath := @parameter1: boolean;
+
+        context := @parameter2: java.util.Map;
+
+        childDirectory = interfaceinvoke context.<java.util.Map: java.lang.Object get(java.lang.Object)>("child-directory");
+
+        childPathAdjustment = interfaceinvoke context.<java.util.Map: java.lang.Object get(java.lang.Object)>("child-path-adjustment");
+
+        $stack8 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isBlank(java.lang.String)>(parentUrl);
+
+        if $stack8 != 0 goto label1;
+
+        if childDirectory == null goto label1;
+
+        if childPathAdjustment == null goto label1;
+
+        if appendPath != 0 goto label2;
+
+     label1:
+        return parentUrl;
+
+     label2:
+        $stack10 = virtualinvoke childDirectory.<java.lang.Object: java.lang.String toString()>();
+
+        $stack11 = virtualinvoke childPathAdjustment.<java.lang.Object: java.lang.String toString()>();
+
+        $r0 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        $stack12 = specialinvoke $r0.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: java.lang.String appendPath(java.lang.String,java.lang.String,java.lang.String)>(parentUrl, $stack10, $stack11);
+
+        return $stack12;
+    }
+
+    private java.lang.String appendPath(java.lang.String, java.lang.String, java.lang.String)
+    {
+        java.lang.String parentUrl, pathAdjustment, childPath, $stack14;
+        int $stack6, $stack7, $stack8, $stack9, $stack10, $stack11, $stack12;
+        DefaultInheritanceAssembler$InheritanceModelMerger this;
+        byte $stack15;
+        java.lang.StringBuilder $u0;
+        org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger $r0, $r1;
+
+        this := @this: DefaultInheritanceAssembler$InheritanceModelMerger;
+
+        parentUrl := @parameter0: java.lang.String;
+
+        childPath := @parameter1: java.lang.String;
+
+        pathAdjustment := @parameter2: java.lang.String;
+
+        $u0 = new java.lang.StringBuilder;
+
+        $stack6 = virtualinvoke parentUrl.<java.lang.String: int length()>();
+
+        $stack7 = virtualinvoke pathAdjustment.<java.lang.String: int length()>();
+
+        $stack8 = $stack6 + $stack7;
+
+        $stack9 = virtualinvoke childPath.<java.lang.String: int length()>();
+
+        $stack10 = $stack8 + $stack9;
+
+        $stack11 = virtualinvoke pathAdjustment.<java.lang.String: int length()>();
+
+        if $stack11 != 0 goto label1;
+
+        $stack15 = 1;
+
+        goto label2;
+
+     label1:
+        $stack15 = 2;
+
+     label2:
+        $stack12 = $stack10 + $stack15;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(int)>($stack12);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(parentUrl);
+
+        $r0 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        specialinvoke $r0.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void concatPath(java.lang.StringBuilder,java.lang.String)>($u0, pathAdjustment);
+
+        $r1 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        specialinvoke $r1.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void concatPath(java.lang.StringBuilder,java.lang.String)>($u0, childPath);
+
+        $stack14 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack14;
+    }
+
+    private void concatPath(java.lang.StringBuilder, java.lang.String)
+    {
+        java.lang.String path;
+        int $stack5, $stack6, $stack7, $stack17, $stack18;
+        java.lang.StringBuilder url;
+        char $stack8, $stack9;
+        boolean initialUrlEndsWithSlash, $stack11, $stack21, $stack19;
+        DefaultInheritanceAssembler$InheritanceModelMerger this;
+
+        this := @this: DefaultInheritanceAssembler$InheritanceModelMerger;
+
+        url := @parameter0: java.lang.StringBuilder;
+
+        path := @parameter1: java.lang.String;
+
+        $stack5 = virtualinvoke path.<java.lang.String: int length()>();
+
+        if $stack5 <= 0 goto label7;
+
+        $stack6 = virtualinvoke url.<java.lang.StringBuilder: int length()>();
+
+        $stack7 = $stack6 - 1;
+
+        $stack8 = virtualinvoke url.<java.lang.StringBuilder: char charAt(int)>($stack7);
+
+        if $stack8 != 47 goto label1;
+
+        $stack21 = 1;
+
+        goto label2;
+
+     label1:
+        $stack21 = 0;
+
+     label2:
+        initialUrlEndsWithSlash = $stack21;
+
+        $stack9 = virtualinvoke path.<java.lang.String: char charAt(int)>(0);
+
+        if $stack9 != 47 goto label3;
+
+        $stack19 = 1;
+
+        goto label4;
+
+     label3:
+        $stack19 = 0;
+
+     label4:
+        if $stack19 == 0 goto label5;
+
+        if initialUrlEndsWithSlash == 0 goto label6;
+
+        $stack17 = virtualinvoke url.<java.lang.StringBuilder: int length()>();
+
+        $stack18 = $stack17 - 1;
+
+        virtualinvoke url.<java.lang.StringBuilder: void setLength(int)>($stack18);
+
+        goto label6;
+
+     label5:
+        if initialUrlEndsWithSlash != 0 goto label6;
+
+        virtualinvoke url.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+     label6:
+        virtualinvoke url.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(path);
+
+        if initialUrlEndsWithSlash == 0 goto label7;
+
+        $stack11 = virtualinvoke path.<java.lang.String: boolean endsWith(java.lang.String)>("/");
+
+        if $stack11 != 0 goto label7;
+
+        virtualinvoke url.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+     label7:
+        return;
+    }
+
+    protected void mergeModelBase_Properties(org.apache.maven.model.ModelBase, org.apache.maven.model.ModelBase, boolean, java.util.Map)
+    {
+        boolean sourceDominant;
+        DefaultInheritanceAssembler$InheritanceModelMerger this;
+        org.apache.maven.model.ModelBase source, target;
+        java.util.Properties $stack7, $stack8, $stack13, $stack14, $u0;
+        org.apache.maven.model.InputLocation $stack10, $stack11, $stack12;
+        java.util.Map context;
+        org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger $r0, $r1;
+
+        this := @this: DefaultInheritanceAssembler$InheritanceModelMerger;
+
+        target := @parameter0: org.apache.maven.model.ModelBase;
+
+        source := @parameter1: org.apache.maven.model.ModelBase;
+
+        sourceDominant := @parameter2: boolean;
+
+        context := @parameter3: java.util.Map;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        if sourceDominant == 0 goto label1;
+
+        $stack13 = virtualinvoke target.<org.apache.maven.model.ModelBase: java.util.Properties getProperties()>();
+
+        virtualinvoke $u0.<java.util.Properties: void putAll(java.util.Map)>($stack13);
+
+        $stack14 = virtualinvoke source.<org.apache.maven.model.ModelBase: java.util.Properties getProperties()>();
+
+        $r0 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        specialinvoke $r0.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void putAll(java.util.Map,java.util.Map,java.lang.Object)>($u0, $stack14, "project.directory");
+
+        goto label2;
+
+     label1:
+        $stack7 = virtualinvoke source.<org.apache.maven.model.ModelBase: java.util.Properties getProperties()>();
+
+        $r1 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        specialinvoke $r1.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void putAll(java.util.Map,java.util.Map,java.lang.Object)>($u0, $stack7, "project.directory");
+
+        $stack8 = virtualinvoke target.<org.apache.maven.model.ModelBase: java.util.Properties getProperties()>();
+
+        virtualinvoke $u0.<java.util.Properties: void putAll(java.util.Map)>($stack8);
+
+     label2:
+        virtualinvoke target.<org.apache.maven.model.ModelBase: void setProperties(java.util.Properties)>($u0);
+
+        $stack10 = virtualinvoke target.<org.apache.maven.model.ModelBase: org.apache.maven.model.InputLocation getLocation(java.lang.Object)>("properties");
+
+        $stack11 = virtualinvoke source.<org.apache.maven.model.ModelBase: org.apache.maven.model.InputLocation getLocation(java.lang.Object)>("properties");
+
+        $stack12 = staticinvoke <org.apache.maven.model.InputLocation: org.apache.maven.model.InputLocation merge(org.apache.maven.model.InputLocation,org.apache.maven.model.InputLocation,boolean)>($stack10, $stack11, sourceDominant);
+
+        virtualinvoke target.<org.apache.maven.model.ModelBase: void setLocation(java.lang.Object,org.apache.maven.model.InputLocation)>("properties", $stack12);
+
+        return;
+    }
+
+    private void putAll(java.util.Map, java.util.Map, java.lang.Object)
+    {
+        java.util.Map t, s;
+        java.util.Set $stack6;
+        java.util.Iterator l4;
+        boolean $stack8, $stack11;
+        java.lang.Object $stack9, $stack10, excludeKey, $stack13, $stack14;
+        java.util.Map$Entry e;
+        DefaultInheritanceAssembler$InheritanceModelMerger this;
+
+        this := @this: DefaultInheritanceAssembler$InheritanceModelMerger;
+
+        s := @parameter0: java.util.Map;
+
+        t := @parameter1: java.util.Map;
+
+        excludeKey := @parameter2: java.lang.Object;
+
+        $stack6 = interfaceinvoke t.<java.util.Map: java.util.Set entrySet()>();
+
+        l4 = interfaceinvoke $stack6.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label3;
+
+        $stack9 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        e = (java.util.Map$Entry) $stack9;
+
+        $stack10 = interfaceinvoke e.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $stack11 = virtualinvoke $stack10.<java.lang.Object: boolean equals(java.lang.Object)>(excludeKey);
+
+        if $stack11 != 0 goto label2;
+
+        $stack13 = interfaceinvoke e.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $stack14 = interfaceinvoke e.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        interfaceinvoke s.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack13, $stack14);
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    protected void mergePluginContainer_Plugins(org.apache.maven.model.PluginContainer, org.apache.maven.model.PluginContainer, boolean, java.util.Map)
+    {
+        org.apache.maven.model.PluginContainer source, target;
+        java.util.List src, tgt, $stack63, existing#14;
+        boolean $stack15, $stack21, $stack25, $stack32, sourceDominant, $stack51, $stack55, $stack64;
+        int $stack18, $stack19, $stack27, $stack28, $stack29;
+        java.util.Set $stack30;
+        java.lang.Object $stack34, $stack35, $stack36, $stack37, $stack44, $stack47, $stack54, key;
+        org.apache.maven.model.Plugin $stack38, element, key#8, existing, $u1;
+        DefaultInheritanceAssembler$InheritanceModelMerger this;
+        org.apache.maven.model.merge.ModelMerger$KeyComputer $stack45, $stack59;
+        java.util.Map context;
+        org.apache.maven.model.InputLocation $stack58;
+        java.util.Iterator predecessors, plugin#7, key#12;
+        java.util.ArrayList element#6, $u3, $u4, $u5;
+        java.util.Map$Entry key#13;
+        java.util.LinkedHashMap $u0, $u2;
+        org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultInheritanceAssembler$InheritanceModelMerger;
+
+        target := @parameter0: org.apache.maven.model.PluginContainer;
+
+        source := @parameter1: org.apache.maven.model.PluginContainer;
+
+        sourceDominant := @parameter2: boolean;
+
+        context := @parameter3: java.util.Map;
+
+        src = virtualinvoke source.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        $stack15 = interfaceinvoke src.<java.util.List: boolean isEmpty()>();
+
+        if $stack15 != 0 goto label12;
+
+        tgt = virtualinvoke target.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        $u0 = new java.util.LinkedHashMap;
+
+        $stack18 = interfaceinvoke src.<java.util.List: int size()>();
+
+        $stack19 = $stack18 * 2;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>(int)>($stack19);
+
+        predecessors = interfaceinvoke src.<java.util.List: java.util.Iterator iterator()>();
+
+     label01:
+        $stack21 = interfaceinvoke predecessors.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack21 == 0 goto label04;
+
+        $stack54 = interfaceinvoke predecessors.<java.util.Iterator: java.lang.Object next()>();
+
+        element = (org.apache.maven.model.Plugin) $stack54;
+
+        $stack55 = virtualinvoke element.<org.apache.maven.model.Plugin: boolean isInherited()>();
+
+        if $stack55 != 0 goto label02;
+
+        $stack63 = virtualinvoke element.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack64 = interfaceinvoke $stack63.<java.util.List: boolean isEmpty()>();
+
+        if $stack64 != 0 goto label03;
+
+     label02:
+        $u1 = new org.apache.maven.model.Plugin;
+
+        specialinvoke $u1.<org.apache.maven.model.Plugin: void <init>()>();
+
+        $stack58 = virtualinvoke element.<org.apache.maven.model.Plugin: org.apache.maven.model.InputLocation getLocation(java.lang.Object)>("");
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setLocation(java.lang.Object,org.apache.maven.model.InputLocation)>("", $stack58);
+
+        virtualinvoke $u1.<org.apache.maven.model.Plugin: void setGroupId(java.lang.String)>(null);
+
+        $r0 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        virtualinvoke $r0.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void mergePlugin(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean,java.util.Map)>($u1, element, sourceDominant, context);
+
+        $r1 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        $stack59 = virtualinvoke $r1.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: org.apache.maven.model.merge.ModelMerger$KeyComputer getPluginKey()>();
+
+        key = interfaceinvoke $stack59.<org.apache.maven.model.merge.ModelMerger$KeyComputer: java.lang.Object apply(java.lang.Object)>(element);
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, $u1);
+
+     label03:
+        goto label01;
+
+     label04:
+        $u2 = new java.util.LinkedHashMap;
+
+        specialinvoke $u2.<java.util.LinkedHashMap: void <init>()>();
+
+        $u3 = new java.util.ArrayList;
+
+        specialinvoke $u3.<java.util.ArrayList: void <init>()>();
+
+        element#6 = $u3;
+
+        plugin#7 = interfaceinvoke tgt.<java.util.List: java.util.Iterator iterator()>();
+
+     label05:
+        $stack25 = interfaceinvoke plugin#7.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack25 == 0 goto label08;
+
+        $stack44 = interfaceinvoke plugin#7.<java.util.Iterator: java.lang.Object next()>();
+
+        key#8 = (org.apache.maven.model.Plugin) $stack44;
+
+        $r2 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        $stack45 = virtualinvoke $r2.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: org.apache.maven.model.merge.ModelMerger$KeyComputer getPluginKey()>();
+
+        key = interfaceinvoke $stack45.<org.apache.maven.model.merge.ModelMerger$KeyComputer: java.lang.Object apply(java.lang.Object)>(key#8);
+
+        $stack47 = interfaceinvoke $u0.<java.util.Map: java.lang.Object get(java.lang.Object)>(key);
+
+        existing = (org.apache.maven.model.Plugin) $stack47;
+
+        if existing == null goto label06;
+
+        $r3 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        virtualinvoke $r3.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void mergePlugin(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean,java.util.Map)>(key#8, existing, sourceDominant, context);
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, key#8);
+
+        $stack51 = interfaceinvoke element#6.<java.util.List: boolean isEmpty()>();
+
+        if $stack51 != 0 goto label07;
+
+        interfaceinvoke $u2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, element#6);
+
+        $u4 = new java.util.ArrayList;
+
+        specialinvoke $u4.<java.util.ArrayList: void <init>()>();
+
+        element#6 = $u4;
+
+        goto label07;
+
+     label06:
+        interfaceinvoke element#6.<java.util.List: boolean add(java.lang.Object)>(key#8);
+
+     label07:
+        goto label05;
+
+     label08:
+        $u5 = new java.util.ArrayList;
+
+        $stack27 = interfaceinvoke src.<java.util.List: int size()>();
+
+        $stack28 = interfaceinvoke tgt.<java.util.List: int size()>();
+
+        $stack29 = $stack27 + $stack28;
+
+        specialinvoke $u5.<java.util.ArrayList: void <init>(int)>($stack29);
+
+        $stack30 = interfaceinvoke $u0.<java.util.Map: java.util.Set entrySet()>();
+
+        key#12 = interfaceinvoke $stack30.<java.util.Set: java.util.Iterator iterator()>();
+
+     label09:
+        $stack32 = interfaceinvoke key#12.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack32 == 0 goto label11;
+
+        $stack34 = interfaceinvoke key#12.<java.util.Iterator: java.lang.Object next()>();
+
+        key#13 = (java.util.Map$Entry) $stack34;
+
+        $stack35 = interfaceinvoke key#13.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $stack36 = interfaceinvoke $u2.<java.util.Map: java.lang.Object get(java.lang.Object)>($stack35);
+
+        existing#14 = (java.util.List) $stack36;
+
+        if existing#14 == null goto label10;
+
+        interfaceinvoke $u5.<java.util.List: boolean addAll(java.util.Collection)>(existing#14);
+
+     label10:
+        $stack37 = interfaceinvoke key#13.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $stack38 = (org.apache.maven.model.Plugin) $stack37;
+
+        interfaceinvoke $u5.<java.util.List: boolean add(java.lang.Object)>($stack38);
+
+        goto label09;
+
+     label11:
+        interfaceinvoke $u5.<java.util.List: boolean addAll(java.util.Collection)>(element#6);
+
+        virtualinvoke target.<org.apache.maven.model.PluginContainer: void setPlugins(java.util.List)>($u5);
+
+     label12:
+        return;
+    }
+
+    protected void mergePlugin(org.apache.maven.model.Plugin, org.apache.maven.model.Plugin, boolean, java.util.Map)
+    {
+        org.apache.maven.model.Plugin source, target;
+        boolean $stack5, sourceDominant;
+        DefaultInheritanceAssembler$InheritanceModelMerger this;
+        java.util.Map context;
+        org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger $r0, $r3, $r4, $r5, $r6, $r7, $r8;
+        org.apache.maven.model.ConfigurationContainer $r1, $r2;
+
+        this := @this: DefaultInheritanceAssembler$InheritanceModelMerger;
+
+        target := @parameter0: org.apache.maven.model.Plugin;
+
+        source := @parameter1: org.apache.maven.model.Plugin;
+
+        sourceDominant := @parameter2: boolean;
+
+        context := @parameter3: java.util.Map;
+
+        $stack5 = virtualinvoke source.<org.apache.maven.model.Plugin: boolean isInherited()>();
+
+        if $stack5 == 0 goto label1;
+
+        $r0 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        $r1 = (org.apache.maven.model.ConfigurationContainer) target;
+
+        $r2 = (org.apache.maven.model.ConfigurationContainer) source;
+
+        virtualinvoke $r0.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void mergeConfigurationContainer(org.apache.maven.model.ConfigurationContainer,org.apache.maven.model.ConfigurationContainer,boolean,java.util.Map)>($r1, $r2, sourceDominant, context);
+
+     label1:
+        $r3 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        virtualinvoke $r3.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void mergePlugin_GroupId(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean,java.util.Map)>(target, source, sourceDominant, context);
+
+        $r4 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void mergePlugin_ArtifactId(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean,java.util.Map)>(target, source, sourceDominant, context);
+
+        $r5 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        virtualinvoke $r5.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void mergePlugin_Version(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean,java.util.Map)>(target, source, sourceDominant, context);
+
+        $r6 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        virtualinvoke $r6.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void mergePlugin_Extensions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean,java.util.Map)>(target, source, sourceDominant, context);
+
+        $r7 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        virtualinvoke $r7.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void mergePlugin_Dependencies(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean,java.util.Map)>(target, source, sourceDominant, context);
+
+        $r8 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        virtualinvoke $r8.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void mergePlugin_Executions(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean,java.util.Map)>(target, source, sourceDominant, context);
+
+        return;
+    }
+
+    protected void mergeReporting_Plugins(org.apache.maven.model.Reporting, org.apache.maven.model.Reporting, boolean, java.util.Map)
+    {
+        org.apache.maven.model.Reporting source, target;
+        java.util.List src, tgt;
+        boolean $stack13, $stack21, $stack23, sourceDominant, $stack38;
+        int $stack16, $stack17, $stack18, $stack19;
+        java.util.Collection $stack25;
+        java.lang.Object $stack26, $stack29, $stack35, key;
+        DefaultInheritanceAssembler$InheritanceModelMerger this;
+        org.apache.maven.model.merge.ModelMerger$KeyComputer $stack27, $stack36;
+        java.util.Map context;
+        org.apache.maven.model.InputLocation $stack42;
+        java.util.Iterator l8;
+        org.apache.maven.model.ReportPlugin element, plugin, $u1;
+        java.util.LinkedHashMap $u0;
+        java.util.ArrayList $u2;
+        org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultInheritanceAssembler$InheritanceModelMerger;
+
+        target := @parameter0: org.apache.maven.model.Reporting;
+
+        source := @parameter1: org.apache.maven.model.Reporting;
+
+        sourceDominant := @parameter2: boolean;
+
+        context := @parameter3: java.util.Map;
+
+        src = virtualinvoke source.<org.apache.maven.model.Reporting: java.util.List getPlugins()>();
+
+        $stack13 = interfaceinvoke src.<java.util.List: boolean isEmpty()>();
+
+        if $stack13 != 0 goto label7;
+
+        tgt = virtualinvoke target.<org.apache.maven.model.Reporting: java.util.List getPlugins()>();
+
+        $u0 = new java.util.LinkedHashMap;
+
+        $stack16 = interfaceinvoke src.<java.util.List: int size()>();
+
+        $stack17 = interfaceinvoke tgt.<java.util.List: int size()>();
+
+        $stack18 = $stack16 + $stack17;
+
+        $stack19 = $stack18 * 2;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>(int)>($stack19);
+
+        l8 = interfaceinvoke src.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack21 = interfaceinvoke l8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack21 == 0 goto label3;
+
+        $stack35 = interfaceinvoke l8.<java.util.Iterator: java.lang.Object next()>();
+
+        element = (org.apache.maven.model.ReportPlugin) $stack35;
+
+        $r0 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        $stack36 = virtualinvoke $r0.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: org.apache.maven.model.merge.ModelMerger$KeyComputer getReportPluginKey()>();
+
+        key = interfaceinvoke $stack36.<org.apache.maven.model.merge.ModelMerger$KeyComputer: java.lang.Object apply(java.lang.Object)>(element);
+
+        $stack38 = virtualinvoke element.<org.apache.maven.model.ReportPlugin: boolean isInherited()>();
+
+        if $stack38 == 0 goto label2;
+
+        $u1 = new org.apache.maven.model.ReportPlugin;
+
+        specialinvoke $u1.<org.apache.maven.model.ReportPlugin: void <init>()>();
+
+        $stack42 = virtualinvoke element.<org.apache.maven.model.ReportPlugin: org.apache.maven.model.InputLocation getLocation(java.lang.Object)>("");
+
+        virtualinvoke $u1.<org.apache.maven.model.ReportPlugin: void setLocation(java.lang.Object,org.apache.maven.model.InputLocation)>("", $stack42);
+
+        virtualinvoke $u1.<org.apache.maven.model.ReportPlugin: void setGroupId(java.lang.String)>(null);
+
+        $r1 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        virtualinvoke $r1.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void mergeReportPlugin(org.apache.maven.model.ReportPlugin,org.apache.maven.model.ReportPlugin,boolean,java.util.Map)>($u1, element, sourceDominant, context);
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, $u1);
+
+     label2:
+        goto label1;
+
+     label3:
+        l8 = interfaceinvoke tgt.<java.util.List: java.util.Iterator iterator()>();
+
+     label4:
+        $stack23 = interfaceinvoke l8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack23 == 0 goto label6;
+
+        $stack26 = interfaceinvoke l8.<java.util.Iterator: java.lang.Object next()>();
+
+        element = (org.apache.maven.model.ReportPlugin) $stack26;
+
+        $r2 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        $stack27 = virtualinvoke $r2.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: org.apache.maven.model.merge.ModelMerger$KeyComputer getReportPluginKey()>();
+
+        key = interfaceinvoke $stack27.<org.apache.maven.model.merge.ModelMerger$KeyComputer: java.lang.Object apply(java.lang.Object)>(element);
+
+        $stack29 = interfaceinvoke $u0.<java.util.Map: java.lang.Object get(java.lang.Object)>(key);
+
+        plugin = (org.apache.maven.model.ReportPlugin) $stack29;
+
+        if plugin == null goto label5;
+
+        $r3 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger) this;
+
+        virtualinvoke $r3.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void mergeReportPlugin(org.apache.maven.model.ReportPlugin,org.apache.maven.model.ReportPlugin,boolean,java.util.Map)>(element, plugin, sourceDominant, context);
+
+     label5:
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, element);
+
+        goto label4;
+
+     label6:
+        $u2 = new java.util.ArrayList;
+
+        $stack25 = interfaceinvoke $u0.<java.util.Map: java.util.Collection values()>();
+
+        specialinvoke $u2.<java.util.ArrayList: void <init>(java.util.Collection)>($stack25);
+
+        virtualinvoke target.<org.apache.maven.model.Reporting: void setPlugins(java.util.List)>($u2);
+
+     label7:
+        return;
+    }
+}

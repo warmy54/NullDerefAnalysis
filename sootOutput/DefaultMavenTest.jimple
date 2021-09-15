@@ -1,0 +1,161 @@
+public class DefaultMavenTest extends org.apache.maven.AbstractCoreMavenComponentTestCase
+{
+    private org.apache.maven.Maven maven;
+
+    public void <init>()
+    {
+        DefaultMavenTest this;
+
+        this := @this: DefaultMavenTest;
+
+        specialinvoke this.<org.apache.maven.AbstractCoreMavenComponentTestCase: void <init>()>();
+
+        return;
+    }
+
+    protected java.lang.String getProjectsDirectory()
+    {
+        DefaultMavenTest this;
+
+        this := @this: DefaultMavenTest;
+
+        return "src/test/projects/default-maven";
+    }
+
+    public void testThatErrorDuringProjectDependencyGraphCreationAreStored() throws java.lang.Exception
+    {
+        DefaultMavenTest this;
+        java.io.File $stack3;
+        org.apache.maven.execution.MavenExecutionRequest $stack4, request;
+        java.lang.String[] $stack5;
+        java.util.List $stack6, $stack11;
+        org.apache.maven.Maven $stack8;
+        org.apache.maven.execution.MavenExecutionResult result;
+        java.lang.Object $stack12;
+        java.lang.Throwable $stack13;
+        java.lang.Class $stack14;
+        org.apache.maven.DefaultMavenTest $r0, $r1, $r2;
+
+        this := @this: DefaultMavenTest;
+
+        $r0 = (org.apache.maven.DefaultMavenTest) this;
+
+        $stack3 = virtualinvoke $r0.<org.apache.maven.DefaultMavenTest: java.io.File getProject(java.lang.String)>("cyclic-reference");
+
+        $r1 = (org.apache.maven.DefaultMavenTest) this;
+
+        $stack4 = virtualinvoke $r1.<org.apache.maven.DefaultMavenTest: org.apache.maven.execution.MavenExecutionRequest createMavenExecutionRequest(java.io.File)>($stack3);
+
+        $stack5 = newarray (java.lang.String)[1];
+
+        $stack5[0] = "validate";
+
+        $stack6 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack5);
+
+        request = interfaceinvoke $stack4.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setGoals(java.util.List)>($stack6);
+
+        $r2 = (org.apache.maven.DefaultMavenTest) this;
+
+        $stack8 = $r2.<org.apache.maven.DefaultMavenTest: org.apache.maven.Maven maven>;
+
+        result = interfaceinvoke $stack8.<org.apache.maven.Maven: org.apache.maven.execution.MavenExecutionResult execute(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+        $stack11 = interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: java.util.List getExceptions()>();
+
+        $stack12 = interfaceinvoke $stack11.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack13 = (java.lang.Throwable) $stack12;
+
+        $stack14 = virtualinvoke $stack13.<java.lang.Object: java.lang.Class getClass()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>(class "Lorg/apache/maven/ProjectCycleException;", $stack14);
+
+        return;
+    }
+
+    public void testMavenProjectNoDuplicateArtifacts() throws java.lang.Exception
+    {
+        DefaultMavenTest this;
+        org.codehaus.plexus.PlexusContainer $stack5;
+        java.lang.Object $stack6;
+        org.apache.maven.project.MavenProjectHelper mavenProjectHelper;
+        java.nio.file.attribute.FileAttribute[] $stack9;
+        java.nio.file.Path $stack10, $stack18, $stack21;
+        java.io.File artifactFile;
+        java.util.List $stack13, $stack16;
+        int $stack14, $stack17;
+        java.lang.Throwable $stack20;
+        org.apache.maven.project.MavenProject $u0;
+        org.apache.maven.artifact.DefaultArtifact $u1;
+        org.apache.maven.DefaultMavenTest $r0;
+        org.apache.maven.artifact.Artifact $r1;
+
+        this := @this: DefaultMavenTest;
+
+        $r0 = (org.apache.maven.DefaultMavenTest) this;
+
+        $stack5 = virtualinvoke $r0.<org.apache.maven.DefaultMavenTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        $stack6 = interfaceinvoke $stack5.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/apache/maven/project/MavenProjectHelper;");
+
+        mavenProjectHelper = (org.apache.maven.project.MavenProjectHelper) $stack6;
+
+        $u0 = new org.apache.maven.project.MavenProject;
+
+        specialinvoke $u0.<org.apache.maven.project.MavenProject: void <init>()>();
+
+        $u1 = new org.apache.maven.artifact.DefaultArtifact;
+
+        specialinvoke $u1.<org.apache.maven.artifact.DefaultArtifact: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.apache.maven.artifact.handler.ArtifactHandler)>("g", "a", "1.0", "test", "jar", "", null);
+
+        $r1 = (org.apache.maven.artifact.Artifact) $u1;
+
+        virtualinvoke $u0.<org.apache.maven.project.MavenProject: void setArtifact(org.apache.maven.artifact.Artifact)>($r1);
+
+        $stack9 = newarray (java.nio.file.attribute.FileAttribute)[0];
+
+        $stack10 = staticinvoke <java.nio.file.Files: java.nio.file.Path createTempFile(java.lang.String,java.lang.String,java.nio.file.attribute.FileAttribute[])>("foo", "tmp", $stack9);
+
+        artifactFile = interfaceinvoke $stack10.<java.nio.file.Path: java.io.File toFile()>();
+
+     label1:
+        interfaceinvoke mavenProjectHelper.<org.apache.maven.project.MavenProjectHelper: void attachArtifact(org.apache.maven.project.MavenProject,java.lang.String,java.io.File)>($u0, "sources", artifactFile);
+
+        $stack13 = virtualinvoke $u0.<org.apache.maven.project.MavenProject: java.util.List getAttachedArtifacts()>();
+
+        $stack14 = interfaceinvoke $stack13.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack14);
+
+        interfaceinvoke mavenProjectHelper.<org.apache.maven.project.MavenProjectHelper: void attachArtifact(org.apache.maven.project.MavenProject,java.lang.String,java.io.File)>($u0, "sources", artifactFile);
+
+        $stack16 = virtualinvoke $u0.<org.apache.maven.project.MavenProject: java.util.List getAttachedArtifacts()>();
+
+        $stack17 = interfaceinvoke $stack16.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack17);
+
+     label2:
+        $stack18 = virtualinvoke artifactFile.<java.io.File: java.nio.file.Path toPath()>();
+
+        staticinvoke <java.nio.file.Files: boolean deleteIfExists(java.nio.file.Path)>($stack18);
+
+        goto label5;
+
+     label3:
+        $stack20 := @caughtexception;
+
+     label4:
+        $stack21 = virtualinvoke artifactFile.<java.io.File: java.nio.file.Path toPath()>();
+
+        staticinvoke <java.nio.file.Files: boolean deleteIfExists(java.nio.file.Path)>($stack21);
+
+        throw $stack20;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+}

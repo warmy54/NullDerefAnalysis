@@ -1,0 +1,913 @@
+public class ProjectModelResolver extends java.lang.Object implements org.apache.maven.model.resolution.ModelResolver
+{
+    private final org.eclipse.aether.RepositorySystemSession session;
+    private final org.eclipse.aether.RequestTrace trace;
+    private final java.lang.String context;
+    private java.util.List repositories;
+    private java.util.List pomRepositories;
+    private final java.util.List externalRepositories;
+    private final org.eclipse.aether.RepositorySystem resolver;
+    private final org.eclipse.aether.impl.RemoteRepositoryManager remoteRepositoryManager;
+    private final java.util.Set repositoryIds;
+    private final org.apache.maven.project.ReactorModelPool modelPool;
+    private final org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging repositoryMerging;
+
+    public void <init>(org.eclipse.aether.RepositorySystemSession, org.eclipse.aether.RequestTrace, org.eclipse.aether.RepositorySystem, org.eclipse.aether.impl.RemoteRepositoryManager, java.util.List, org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging, org.apache.maven.project.ReactorModelPool)
+    {
+        ProjectModelResolver this;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.RequestTrace trace;
+        org.eclipse.aether.RepositorySystem resolver;
+        org.eclipse.aether.impl.RemoteRepositoryManager remoteRepositoryManager;
+        java.util.List repositories, $stack10, $stack12, $stack13;
+        org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging repositoryMerging;
+        org.apache.maven.project.ReactorModelPool modelPool;
+        java.util.ArrayList $u0, $u1, $u2;
+        java.util.HashSet $u3;
+        org.apache.maven.project.ProjectModelResolver $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12;
+
+        this := @this: ProjectModelResolver;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        trace := @parameter1: org.eclipse.aether.RequestTrace;
+
+        resolver := @parameter2: org.eclipse.aether.RepositorySystem;
+
+        remoteRepositoryManager := @parameter3: org.eclipse.aether.impl.RemoteRepositoryManager;
+
+        repositories := @parameter4: java.util.List;
+
+        repositoryMerging := @parameter5: org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging;
+
+        modelPool := @parameter6: org.apache.maven.project.ReactorModelPool;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<ProjectModelResolver: java.lang.String context> = "project";
+
+        $r0 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r0.<org.apache.maven.project.ProjectModelResolver: java.lang.String context> = "project";
+
+        $r1 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r1.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystemSession session> = session;
+
+        $r2 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r2.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RequestTrace trace> = trace;
+
+        $r3 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r3.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystem resolver> = resolver;
+
+        $r4 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r4.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.impl.RemoteRepositoryManager remoteRepositoryManager> = remoteRepositoryManager;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r5 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r5.<org.apache.maven.project.ProjectModelResolver: java.util.List pomRepositories> = $u0;
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>(java.util.Collection)>(repositories);
+
+        $stack10 = staticinvoke <java.util.Collections: java.util.List unmodifiableList(java.util.List)>($u1);
+
+        $r6 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r6.<org.apache.maven.project.ProjectModelResolver: java.util.List externalRepositories> = $stack10;
+
+        $u2 = new java.util.ArrayList;
+
+        specialinvoke $u2.<java.util.ArrayList: void <init>()>();
+
+        $r7 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r7.<org.apache.maven.project.ProjectModelResolver: java.util.List repositories> = $u2;
+
+        $r8 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack13 = $r8.<org.apache.maven.project.ProjectModelResolver: java.util.List repositories>;
+
+        $r9 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack12 = $r9.<org.apache.maven.project.ProjectModelResolver: java.util.List externalRepositories>;
+
+        interfaceinvoke $stack13.<java.util.List: boolean addAll(java.util.Collection)>($stack12);
+
+        $r10 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r10.<org.apache.maven.project.ProjectModelResolver: org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging repositoryMerging> = repositoryMerging;
+
+        $u3 = new java.util.HashSet;
+
+        specialinvoke $u3.<java.util.HashSet: void <init>()>();
+
+        $r11 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r11.<org.apache.maven.project.ProjectModelResolver: java.util.Set repositoryIds> = $u3;
+
+        $r12 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r12.<org.apache.maven.project.ProjectModelResolver: org.apache.maven.project.ReactorModelPool modelPool> = modelPool;
+
+        return;
+    }
+
+    private void <init>(org.apache.maven.project.ProjectModelResolver)
+    {
+        ProjectModelResolver this;
+        org.apache.maven.project.ProjectModelResolver original, $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10;
+        org.eclipse.aether.RepositorySystemSession $stack2;
+        org.eclipse.aether.RequestTrace $stack3;
+        org.eclipse.aether.RepositorySystem $stack4;
+        org.eclipse.aether.impl.RemoteRepositoryManager $stack5;
+        java.util.List $stack7, $stack8, $stack10;
+        org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging $stack11;
+        java.util.Set $stack13;
+        org.apache.maven.project.ReactorModelPool $stack14;
+        java.util.ArrayList $u0, $u1;
+        java.util.HashSet $u2;
+
+        this := @this: ProjectModelResolver;
+
+        original := @parameter0: org.apache.maven.project.ProjectModelResolver;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<ProjectModelResolver: java.lang.String context> = "project";
+
+        $r0 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r0.<org.apache.maven.project.ProjectModelResolver: java.lang.String context> = "project";
+
+        $stack2 = original.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystemSession session>;
+
+        $r1 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r1.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystemSession session> = $stack2;
+
+        $stack3 = original.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RequestTrace trace>;
+
+        $r2 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r2.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RequestTrace trace> = $stack3;
+
+        $stack4 = original.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystem resolver>;
+
+        $r3 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r3.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystem resolver> = $stack4;
+
+        $stack5 = original.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.impl.RemoteRepositoryManager remoteRepositoryManager>;
+
+        $r4 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r4.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.impl.RemoteRepositoryManager remoteRepositoryManager> = $stack5;
+
+        $u0 = new java.util.ArrayList;
+
+        $stack7 = original.<org.apache.maven.project.ProjectModelResolver: java.util.List pomRepositories>;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(java.util.Collection)>($stack7);
+
+        $r5 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r5.<org.apache.maven.project.ProjectModelResolver: java.util.List pomRepositories> = $u0;
+
+        $stack8 = original.<org.apache.maven.project.ProjectModelResolver: java.util.List externalRepositories>;
+
+        $r6 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r6.<org.apache.maven.project.ProjectModelResolver: java.util.List externalRepositories> = $stack8;
+
+        $u1 = new java.util.ArrayList;
+
+        $stack10 = original.<org.apache.maven.project.ProjectModelResolver: java.util.List repositories>;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>(java.util.Collection)>($stack10);
+
+        $r7 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r7.<org.apache.maven.project.ProjectModelResolver: java.util.List repositories> = $u1;
+
+        $stack11 = original.<org.apache.maven.project.ProjectModelResolver: org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging repositoryMerging>;
+
+        $r8 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r8.<org.apache.maven.project.ProjectModelResolver: org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging repositoryMerging> = $stack11;
+
+        $u2 = new java.util.HashSet;
+
+        $stack13 = original.<org.apache.maven.project.ProjectModelResolver: java.util.Set repositoryIds>;
+
+        specialinvoke $u2.<java.util.HashSet: void <init>(java.util.Collection)>($stack13);
+
+        $r9 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r9.<org.apache.maven.project.ProjectModelResolver: java.util.Set repositoryIds> = $u2;
+
+        $stack14 = original.<org.apache.maven.project.ProjectModelResolver: org.apache.maven.project.ReactorModelPool modelPool>;
+
+        $r10 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r10.<org.apache.maven.project.ProjectModelResolver: org.apache.maven.project.ReactorModelPool modelPool> = $stack14;
+
+        return;
+    }
+
+    public void addRepository(org.apache.maven.model.Repository) throws org.apache.maven.model.resolution.InvalidRepositoryException
+    {
+        ProjectModelResolver this;
+        org.apache.maven.model.Repository repository;
+        org.apache.maven.project.ProjectModelResolver $r0;
+
+        this := @this: ProjectModelResolver;
+
+        repository := @parameter0: org.apache.maven.model.Repository;
+
+        $r0 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        virtualinvoke $r0.<org.apache.maven.project.ProjectModelResolver: void addRepository(org.apache.maven.model.Repository,boolean)>(repository, 0);
+
+        return;
+    }
+
+    public void addRepository(org.apache.maven.model.Repository, boolean) throws org.apache.maven.model.resolution.InvalidRepositoryException
+    {
+        ProjectModelResolver this;
+        org.apache.maven.model.Repository repository;
+        java.util.Set $stack4;
+        java.lang.String $stack5, $stack26, $stack28;
+        boolean $stack6, $stack11, replace;
+        org.eclipse.aether.repository.RemoteRepository $stack7;
+        java.util.List newRepositories, $stack12, $stack15, $stack16, $stack17, $stack20, $stack21, $stack24, $stack25, $stack27;
+        org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging $stack9, $stack10;
+        org.eclipse.aether.RepositorySystemSession $stack13, $stack18, $stack22;
+        org.eclipse.aether.impl.RemoteRepositoryManager $stack14, $stack19, $stack23;
+        org.apache.maven.project.ProjectModelResolver $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16;
+
+        this := @this: ProjectModelResolver;
+
+        repository := @parameter0: org.apache.maven.model.Repository;
+
+        replace := @parameter1: boolean;
+
+        $r0 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack4 = $r0.<org.apache.maven.project.ProjectModelResolver: java.util.Set repositoryIds>;
+
+        $stack5 = virtualinvoke repository.<org.apache.maven.model.Repository: java.lang.String getId()>();
+
+        $stack6 = interfaceinvoke $stack4.<java.util.Set: boolean add(java.lang.Object)>($stack5);
+
+        if $stack6 != 0 goto label2;
+
+        if replace != 0 goto label1;
+
+        return;
+
+     label1:
+        $r1 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack25 = $r1.<org.apache.maven.project.ProjectModelResolver: java.util.List repositories>;
+
+        $stack26 = virtualinvoke repository.<org.apache.maven.model.Repository: java.lang.String getId()>();
+
+        staticinvoke <org.apache.maven.project.ProjectModelResolver: void removeMatchingRepository(java.lang.Iterable,java.lang.String)>($stack25, $stack26);
+
+        $r2 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack27 = $r2.<org.apache.maven.project.ProjectModelResolver: java.util.List pomRepositories>;
+
+        $stack28 = virtualinvoke repository.<org.apache.maven.model.Repository: java.lang.String getId()>();
+
+        staticinvoke <org.apache.maven.project.ProjectModelResolver: void removeMatchingRepository(java.lang.Iterable,java.lang.String)>($stack27, $stack28);
+
+     label2:
+        $stack7 = staticinvoke <org.apache.maven.repository.internal.ArtifactDescriptorUtils: org.eclipse.aether.repository.RemoteRepository toRemoteRepository(org.apache.maven.model.Repository)>(repository);
+
+        newRepositories = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($stack7);
+
+        $stack10 = <org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging: org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging REQUEST_DOMINANT>;
+
+        $r3 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack9 = $r3.<org.apache.maven.project.ProjectModelResolver: org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging repositoryMerging>;
+
+        $stack11 = virtualinvoke $stack10.<org.apache.maven.project.ProjectBuildingRequest$RepositoryMerging: boolean equals(java.lang.Object)>($stack9);
+
+        if $stack11 == 0 goto label3;
+
+        $r4 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack23 = $r4.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.impl.RemoteRepositoryManager remoteRepositoryManager>;
+
+        $r5 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack22 = $r5.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystemSession session>;
+
+        $r6 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack21 = $r6.<org.apache.maven.project.ProjectModelResolver: java.util.List repositories>;
+
+        $stack24 = interfaceinvoke $stack23.<org.eclipse.aether.impl.RemoteRepositoryManager: java.util.List aggregateRepositories(org.eclipse.aether.RepositorySystemSession,java.util.List,java.util.List,boolean)>($stack22, $stack21, newRepositories, 1);
+
+        $r7 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r7.<org.apache.maven.project.ProjectModelResolver: java.util.List repositories> = $stack24;
+
+        goto label4;
+
+     label3:
+        $r8 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack14 = $r8.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.impl.RemoteRepositoryManager remoteRepositoryManager>;
+
+        $r9 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack13 = $r9.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystemSession session>;
+
+        $r10 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack12 = $r10.<org.apache.maven.project.ProjectModelResolver: java.util.List pomRepositories>;
+
+        $stack15 = interfaceinvoke $stack14.<org.eclipse.aether.impl.RemoteRepositoryManager: java.util.List aggregateRepositories(org.eclipse.aether.RepositorySystemSession,java.util.List,java.util.List,boolean)>($stack13, $stack12, newRepositories, 1);
+
+        $r11 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r11.<org.apache.maven.project.ProjectModelResolver: java.util.List pomRepositories> = $stack15;
+
+        $r12 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack19 = $r12.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.impl.RemoteRepositoryManager remoteRepositoryManager>;
+
+        $r13 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack18 = $r13.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystemSession session>;
+
+        $r14 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack17 = $r14.<org.apache.maven.project.ProjectModelResolver: java.util.List pomRepositories>;
+
+        $r15 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack16 = $r15.<org.apache.maven.project.ProjectModelResolver: java.util.List externalRepositories>;
+
+        $stack20 = interfaceinvoke $stack19.<org.eclipse.aether.impl.RemoteRepositoryManager: java.util.List aggregateRepositories(org.eclipse.aether.RepositorySystemSession,java.util.List,java.util.List,boolean)>($stack18, $stack17, $stack16, 0);
+
+        $r16 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $r16.<org.apache.maven.project.ProjectModelResolver: java.util.List repositories> = $stack20;
+
+     label4:
+        return;
+    }
+
+    private static void removeMatchingRepository(java.lang.Iterable, java.lang.String)
+    {
+        java.lang.Iterable repositories;
+        java.util.Iterator iterator;
+        boolean $stack5, $stack8;
+        java.lang.Object $stack6;
+        org.eclipse.aether.repository.RemoteRepository next;
+        java.lang.String $stack7, id;
+
+        repositories := @parameter0: java.lang.Iterable;
+
+        id := @parameter1: java.lang.String;
+
+        iterator = interfaceinvoke repositories.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label1:
+        $stack5 = interfaceinvoke iterator.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack5 == 0 goto label3;
+
+        $stack6 = interfaceinvoke iterator.<java.util.Iterator: java.lang.Object next()>();
+
+        next = (org.eclipse.aether.repository.RemoteRepository) $stack6;
+
+        $stack7 = virtualinvoke next.<org.eclipse.aether.repository.RemoteRepository: java.lang.String getId()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.String: boolean equals(java.lang.Object)>(id);
+
+        if $stack8 == 0 goto label2;
+
+        interfaceinvoke iterator.<java.util.Iterator: void remove()>();
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public org.apache.maven.model.resolution.ModelResolver newCopy()
+    {
+        ProjectModelResolver this;
+        org.apache.maven.project.ProjectModelResolver $u0, $r0;
+        org.apache.maven.model.resolution.ModelResolver $r1;
+
+        this := @this: ProjectModelResolver;
+
+        $u0 = new org.apache.maven.project.ProjectModelResolver;
+
+        $r0 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        specialinvoke $u0.<org.apache.maven.project.ProjectModelResolver: void <init>(org.apache.maven.project.ProjectModelResolver)>($r0);
+
+        $r1 = (org.apache.maven.model.resolution.ModelResolver) $u0;
+
+        return $r1;
+    }
+
+    public org.apache.maven.model.building.ModelSource resolveModel(java.lang.String, java.lang.String, java.lang.String) throws org.apache.maven.model.resolution.UnresolvableModelException
+    {
+        java.lang.String groupId, artifactId, version, $stack19;
+        ProjectModelResolver this;
+        java.util.List $stack8;
+        org.eclipse.aether.RequestTrace $stack9;
+        org.eclipse.aether.RepositorySystemSession $stack11;
+        org.eclipse.aether.RepositorySystem $stack12;
+        org.eclipse.aether.resolution.ArtifactResult $stack13;
+        java.io.File $stack16;
+        java.lang.Throwable $stack17, $r6;
+        org.eclipse.aether.artifact.Artifact pomArtifact#3, $r1;
+        org.eclipse.aether.artifact.DefaultArtifact $u0;
+        org.eclipse.aether.resolution.ArtifactRequest $u1;
+        org.apache.maven.model.resolution.UnresolvableModelException $u2;
+        org.apache.maven.model.building.ArtifactModelSource $u3;
+        org.apache.maven.project.ProjectModelResolver $r0, $r2, $r3, $r4;
+        org.eclipse.aether.resolution.ArtifactResolutionException $r5;
+        org.apache.maven.model.building.ModelSource $r7;
+
+        this := @this: ProjectModelResolver;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        version := @parameter2: java.lang.String;
+
+        $u0 = new org.eclipse.aether.artifact.DefaultArtifact;
+
+        specialinvoke $u0.<org.eclipse.aether.artifact.DefaultArtifact: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)>(groupId, artifactId, "", "pom", version);
+
+     label1:
+        $u1 = new org.eclipse.aether.resolution.ArtifactRequest;
+
+        $r0 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack8 = $r0.<org.apache.maven.project.ProjectModelResolver: java.util.List repositories>;
+
+        $r1 = (org.eclipse.aether.artifact.Artifact) $u0;
+
+        specialinvoke $u1.<org.eclipse.aether.resolution.ArtifactRequest: void <init>(org.eclipse.aether.artifact.Artifact,java.util.List,java.lang.String)>($r1, $stack8, "project");
+
+        $r2 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack9 = $r2.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RequestTrace trace>;
+
+        virtualinvoke $u1.<org.eclipse.aether.resolution.ArtifactRequest: org.eclipse.aether.resolution.ArtifactRequest setTrace(org.eclipse.aether.RequestTrace)>($stack9);
+
+        $r3 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack12 = $r3.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystem resolver>;
+
+        $r4 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack11 = $r4.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystemSession session>;
+
+        $stack13 = interfaceinvoke $stack12.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.resolution.ArtifactResult resolveArtifact(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.resolution.ArtifactRequest)>($stack11, $u1);
+
+        pomArtifact#3 = virtualinvoke $stack13.<org.eclipse.aether.resolution.ArtifactResult: org.eclipse.aether.artifact.Artifact getArtifact()>();
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack17 := @caughtexception;
+
+        $u2 = new org.apache.maven.model.resolution.UnresolvableModelException;
+
+        $r5 = (org.eclipse.aether.resolution.ArtifactResolutionException) $stack17;
+
+        $stack19 = virtualinvoke $r5.<org.eclipse.aether.resolution.ArtifactResolutionException: java.lang.String getMessage()>();
+
+        specialinvoke $u2.<org.apache.maven.model.resolution.UnresolvableModelException: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Throwable)>($stack19, groupId, artifactId, version, $stack17);
+
+        $r6 = (java.lang.Throwable) $u2;
+
+        throw $r6;
+
+     label4:
+        $u3 = new org.apache.maven.model.building.ArtifactModelSource;
+
+        $stack16 = interfaceinvoke pomArtifact#3.<org.eclipse.aether.artifact.Artifact: java.io.File getFile()>();
+
+        specialinvoke $u3.<org.apache.maven.model.building.ArtifactModelSource: void <init>(java.io.File,java.lang.String,java.lang.String,java.lang.String)>($stack16, groupId, artifactId, version);
+
+        $r7 = (org.apache.maven.model.building.ModelSource) $u3;
+
+        return $r7;
+
+        catch org.eclipse.aether.resolution.ArtifactResolutionException from label1 to label2 with label3;
+    }
+
+    public org.apache.maven.model.building.ModelSource resolveModel(org.apache.maven.model.Parent) throws org.apache.maven.model.resolution.UnresolvableModelException
+    {
+        org.apache.maven.model.Parent parent;
+        java.lang.String $stack6, $stack7, $stack10, $stack41, $stack42, $stack43, $stack44, $stack45, $stack50, $stack51, $stack52, $stack53, $stack54, $stack57, $stack58, $stack59, $stack60, $stack21, $stack22, $stack23, $stack24;
+        ProjectModelResolver this;
+        java.util.List $stack12;
+        org.eclipse.aether.RequestTrace $stack13;
+        org.eclipse.aether.RepositorySystemSession $stack15;
+        org.eclipse.aether.RepositorySystem $stack16;
+        org.eclipse.aether.resolution.VersionRangeResult versionRangeResult;
+        org.eclipse.aether.version.Version $stack18, $stack20;
+        org.eclipse.aether.version.VersionConstraint $stack19, $stack26, $stack34;
+        org.eclipse.aether.version.VersionRange $stack27, $stack35;
+        org.eclipse.aether.version.VersionRange$Bound $stack36;
+        java.lang.Object[] $stack38, $stack47;
+        java.lang.Throwable $stack55, $r5, $r6, $r9;
+        org.apache.maven.model.building.ModelSource $stack25;
+        org.eclipse.aether.artifact.DefaultArtifact $u0;
+        org.eclipse.aether.resolution.VersionRangeRequest $u1;
+        org.apache.maven.model.resolution.UnresolvableModelException $u2, $u3, $u4;
+        org.apache.maven.project.ProjectModelResolver $r0, $r2, $r3, $r4, $r7;
+        org.eclipse.aether.artifact.Artifact $r1;
+        org.eclipse.aether.resolution.VersionRangeResolutionException $r8;
+
+        this := @this: ProjectModelResolver;
+
+        parent := @parameter0: org.apache.maven.model.Parent;
+
+     label1:
+        $u0 = new org.eclipse.aether.artifact.DefaultArtifact;
+
+        $stack6 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getGroupId()>();
+
+        $stack7 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getArtifactId()>();
+
+        $stack10 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getVersion()>();
+
+        specialinvoke $u0.<org.eclipse.aether.artifact.DefaultArtifact: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)>($stack6, $stack7, "", "pom", $stack10);
+
+        $u1 = new org.eclipse.aether.resolution.VersionRangeRequest;
+
+        $r0 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack12 = $r0.<org.apache.maven.project.ProjectModelResolver: java.util.List repositories>;
+
+        $r1 = (org.eclipse.aether.artifact.Artifact) $u0;
+
+        specialinvoke $u1.<org.eclipse.aether.resolution.VersionRangeRequest: void <init>(org.eclipse.aether.artifact.Artifact,java.util.List,java.lang.String)>($r1, $stack12, "project");
+
+        $r2 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack13 = $r2.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RequestTrace trace>;
+
+        virtualinvoke $u1.<org.eclipse.aether.resolution.VersionRangeRequest: org.eclipse.aether.resolution.VersionRangeRequest setTrace(org.eclipse.aether.RequestTrace)>($stack13);
+
+        $r3 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack16 = $r3.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystem resolver>;
+
+        $r4 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack15 = $r4.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystemSession session>;
+
+        versionRangeResult = interfaceinvoke $stack16.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.resolution.VersionRangeResult resolveVersionRange(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.resolution.VersionRangeRequest)>($stack15, $u1);
+
+        $stack18 = virtualinvoke versionRangeResult.<org.eclipse.aether.resolution.VersionRangeResult: org.eclipse.aether.version.Version getHighestVersion()>();
+
+        if $stack18 != null goto label2;
+
+        $u2 = new org.apache.maven.model.resolution.UnresolvableModelException;
+
+        $stack47 = newarray (java.lang.Object)[1];
+
+        $stack50 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getVersion()>();
+
+        $stack47[0] = $stack50;
+
+        $stack51 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("No versions matched the requested parent version range \'%s\'", $stack47);
+
+        $stack52 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getGroupId()>();
+
+        $stack53 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getArtifactId()>();
+
+        $stack54 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getVersion()>();
+
+        specialinvoke $u2.<org.apache.maven.model.resolution.UnresolvableModelException: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>($stack51, $stack52, $stack53, $stack54);
+
+        $r5 = (java.lang.Throwable) $u2;
+
+        throw $r5;
+
+     label2:
+        $stack19 = virtualinvoke versionRangeResult.<org.eclipse.aether.resolution.VersionRangeResult: org.eclipse.aether.version.VersionConstraint getVersionConstraint()>();
+
+        if $stack19 == null goto label3;
+
+        $stack26 = virtualinvoke versionRangeResult.<org.eclipse.aether.resolution.VersionRangeResult: org.eclipse.aether.version.VersionConstraint getVersionConstraint()>();
+
+        $stack27 = interfaceinvoke $stack26.<org.eclipse.aether.version.VersionConstraint: org.eclipse.aether.version.VersionRange getRange()>();
+
+        if $stack27 == null goto label3;
+
+        $stack34 = virtualinvoke versionRangeResult.<org.eclipse.aether.resolution.VersionRangeResult: org.eclipse.aether.version.VersionConstraint getVersionConstraint()>();
+
+        $stack35 = interfaceinvoke $stack34.<org.eclipse.aether.version.VersionConstraint: org.eclipse.aether.version.VersionRange getRange()>();
+
+        $stack36 = interfaceinvoke $stack35.<org.eclipse.aether.version.VersionRange: org.eclipse.aether.version.VersionRange$Bound getUpperBound()>();
+
+        if $stack36 != null goto label3;
+
+        $u3 = new org.apache.maven.model.resolution.UnresolvableModelException;
+
+        $stack38 = newarray (java.lang.Object)[1];
+
+        $stack41 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getVersion()>();
+
+        $stack38[0] = $stack41;
+
+        $stack42 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("The requested parent version range \'%s\' does not specify an upper bound", $stack38);
+
+        $stack43 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getGroupId()>();
+
+        $stack44 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getArtifactId()>();
+
+        $stack45 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getVersion()>();
+
+        specialinvoke $u3.<org.apache.maven.model.resolution.UnresolvableModelException: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>($stack42, $stack43, $stack44, $stack45);
+
+        $r6 = (java.lang.Throwable) $u3;
+
+        throw $r6;
+
+     label3:
+        $stack20 = virtualinvoke versionRangeResult.<org.eclipse.aether.resolution.VersionRangeResult: org.eclipse.aether.version.Version getHighestVersion()>();
+
+        $stack21 = interfaceinvoke $stack20.<org.eclipse.aether.version.Version: java.lang.String toString()>();
+
+        virtualinvoke parent.<org.apache.maven.model.Parent: void setVersion(java.lang.String)>($stack21);
+
+        $stack22 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getGroupId()>();
+
+        $stack23 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getArtifactId()>();
+
+        $stack24 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getVersion()>();
+
+        $r7 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack25 = virtualinvoke $r7.<org.apache.maven.project.ProjectModelResolver: org.apache.maven.model.building.ModelSource resolveModel(java.lang.String,java.lang.String,java.lang.String)>($stack22, $stack23, $stack24);
+
+     label4:
+        return $stack25;
+
+     label5:
+        $stack55 := @caughtexception;
+
+        $u4 = new org.apache.maven.model.resolution.UnresolvableModelException;
+
+        $r8 = (org.eclipse.aether.resolution.VersionRangeResolutionException) $stack55;
+
+        $stack57 = virtualinvoke $r8.<org.eclipse.aether.resolution.VersionRangeResolutionException: java.lang.String getMessage()>();
+
+        $stack58 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getGroupId()>();
+
+        $stack59 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getArtifactId()>();
+
+        $stack60 = virtualinvoke parent.<org.apache.maven.model.Parent: java.lang.String getVersion()>();
+
+        specialinvoke $u4.<org.apache.maven.model.resolution.UnresolvableModelException: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Throwable)>($stack57, $stack58, $stack59, $stack60, $stack55);
+
+        $r9 = (java.lang.Throwable) $u4;
+
+        throw $r9;
+
+        catch org.eclipse.aether.resolution.VersionRangeResolutionException from label1 to label4 with label5;
+    }
+
+    public org.apache.maven.model.building.ModelSource resolveModel(org.apache.maven.model.Dependency) throws org.apache.maven.model.resolution.UnresolvableModelException
+    {
+        org.apache.maven.model.Dependency dependency;
+        java.lang.String $stack7, $stack8, $stack11, $stack24, $stack25, $stack26, $stack29, $stack30, $stack31, $stack51, $stack52, $stack53, $stack54, $stack55, $stack60, $stack61, $stack62, $stack63, $stack64, $stack67, $stack68, $stack69, $stack70, $stack22;
+        ProjectModelResolver this;
+        java.util.List $stack13;
+        org.eclipse.aether.RequestTrace $stack14;
+        org.eclipse.aether.RepositorySystemSession $stack16;
+        org.eclipse.aether.RepositorySystem $stack17;
+        org.eclipse.aether.resolution.VersionRangeResult versionRangeResult;
+        org.eclipse.aether.version.Version $stack19, $stack21;
+        org.eclipse.aether.version.VersionConstraint $stack20, $stack39, $stack44;
+        org.apache.maven.model.building.ModelSource $stack27, $r9;
+        org.apache.maven.project.ReactorModelPool $stack28, $stack23;
+        org.apache.maven.model.Model model;
+        java.io.File $stack38;
+        org.eclipse.aether.version.VersionRange $stack40, $stack45;
+        org.eclipse.aether.version.VersionRange$Bound $stack46;
+        java.lang.Object[] $stack48, $stack57;
+        java.lang.Throwable $stack65, $r5, $r6, $r12;
+        org.eclipse.aether.artifact.DefaultArtifact $u0;
+        org.eclipse.aether.resolution.VersionRangeRequest $u1;
+        org.apache.maven.model.resolution.UnresolvableModelException $u2, $u3, $u5;
+        org.apache.maven.model.building.FileModelSource $u4;
+        org.apache.maven.project.ProjectModelResolver $r0, $r2, $r3, $r4, $r7, $r8, $r10;
+        org.eclipse.aether.artifact.Artifact $r1;
+        org.eclipse.aether.resolution.VersionRangeResolutionException $r11;
+
+        this := @this: ProjectModelResolver;
+
+        dependency := @parameter0: org.apache.maven.model.Dependency;
+
+     label1:
+        $u0 = new org.eclipse.aether.artifact.DefaultArtifact;
+
+        $stack7 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack8 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack11 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        specialinvoke $u0.<org.eclipse.aether.artifact.DefaultArtifact: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)>($stack7, $stack8, "", "pom", $stack11);
+
+        $u1 = new org.eclipse.aether.resolution.VersionRangeRequest;
+
+        $r0 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack13 = $r0.<org.apache.maven.project.ProjectModelResolver: java.util.List repositories>;
+
+        $r1 = (org.eclipse.aether.artifact.Artifact) $u0;
+
+        specialinvoke $u1.<org.eclipse.aether.resolution.VersionRangeRequest: void <init>(org.eclipse.aether.artifact.Artifact,java.util.List,java.lang.String)>($r1, $stack13, "project");
+
+        $r2 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack14 = $r2.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RequestTrace trace>;
+
+        virtualinvoke $u1.<org.eclipse.aether.resolution.VersionRangeRequest: org.eclipse.aether.resolution.VersionRangeRequest setTrace(org.eclipse.aether.RequestTrace)>($stack14);
+
+        $r3 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack17 = $r3.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystem resolver>;
+
+        $r4 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack16 = $r4.<org.apache.maven.project.ProjectModelResolver: org.eclipse.aether.RepositorySystemSession session>;
+
+        versionRangeResult = interfaceinvoke $stack17.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.resolution.VersionRangeResult resolveVersionRange(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.resolution.VersionRangeRequest)>($stack16, $u1);
+
+        $stack19 = virtualinvoke versionRangeResult.<org.eclipse.aether.resolution.VersionRangeResult: org.eclipse.aether.version.Version getHighestVersion()>();
+
+        if $stack19 != null goto label2;
+
+        $u2 = new org.apache.maven.model.resolution.UnresolvableModelException;
+
+        $stack57 = newarray (java.lang.Object)[1];
+
+        $stack60 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        $stack57[0] = $stack60;
+
+        $stack61 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("No versions matched the requested dependency version range \'%s\'", $stack57);
+
+        $stack62 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack63 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack64 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        specialinvoke $u2.<org.apache.maven.model.resolution.UnresolvableModelException: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>($stack61, $stack62, $stack63, $stack64);
+
+        $r5 = (java.lang.Throwable) $u2;
+
+        throw $r5;
+
+     label2:
+        $stack20 = virtualinvoke versionRangeResult.<org.eclipse.aether.resolution.VersionRangeResult: org.eclipse.aether.version.VersionConstraint getVersionConstraint()>();
+
+        if $stack20 == null goto label3;
+
+        $stack39 = virtualinvoke versionRangeResult.<org.eclipse.aether.resolution.VersionRangeResult: org.eclipse.aether.version.VersionConstraint getVersionConstraint()>();
+
+        $stack40 = interfaceinvoke $stack39.<org.eclipse.aether.version.VersionConstraint: org.eclipse.aether.version.VersionRange getRange()>();
+
+        if $stack40 == null goto label3;
+
+        $stack44 = virtualinvoke versionRangeResult.<org.eclipse.aether.resolution.VersionRangeResult: org.eclipse.aether.version.VersionConstraint getVersionConstraint()>();
+
+        $stack45 = interfaceinvoke $stack44.<org.eclipse.aether.version.VersionConstraint: org.eclipse.aether.version.VersionRange getRange()>();
+
+        $stack46 = interfaceinvoke $stack45.<org.eclipse.aether.version.VersionRange: org.eclipse.aether.version.VersionRange$Bound getUpperBound()>();
+
+        if $stack46 != null goto label3;
+
+        $u3 = new org.apache.maven.model.resolution.UnresolvableModelException;
+
+        $stack48 = newarray (java.lang.Object)[1];
+
+        $stack51 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        $stack48[0] = $stack51;
+
+        $stack52 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("The requested dependency version range \'%s\' does not specify an upper bound", $stack48);
+
+        $stack53 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack54 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack55 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        specialinvoke $u3.<org.apache.maven.model.resolution.UnresolvableModelException: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>($stack52, $stack53, $stack54, $stack55);
+
+        $r6 = (java.lang.Throwable) $u3;
+
+        throw $r6;
+
+     label3:
+        $stack21 = virtualinvoke versionRangeResult.<org.eclipse.aether.resolution.VersionRangeResult: org.eclipse.aether.version.Version getHighestVersion()>();
+
+        $stack22 = interfaceinvoke $stack21.<org.eclipse.aether.version.Version: java.lang.String toString()>();
+
+        virtualinvoke dependency.<org.apache.maven.model.Dependency: void setVersion(java.lang.String)>($stack22);
+
+        $r7 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack23 = $r7.<org.apache.maven.project.ProjectModelResolver: org.apache.maven.project.ReactorModelPool modelPool>;
+
+        if $stack23 == null goto label5;
+
+        $r8 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack28 = $r8.<org.apache.maven.project.ProjectModelResolver: org.apache.maven.project.ReactorModelPool modelPool>;
+
+        $stack29 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack30 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack31 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        model = virtualinvoke $stack28.<org.apache.maven.project.ReactorModelPool: org.apache.maven.model.Model get(java.lang.String,java.lang.String,java.lang.String)>($stack29, $stack30, $stack31);
+
+        if model == null goto label5;
+
+        $u4 = new org.apache.maven.model.building.FileModelSource;
+
+        $stack38 = virtualinvoke model.<org.apache.maven.model.Model: java.io.File getPomFile()>();
+
+        specialinvoke $u4.<org.apache.maven.model.building.FileModelSource: void <init>(java.io.File)>($stack38);
+
+     label4:
+        $r9 = (org.apache.maven.model.building.ModelSource) $u4;
+
+        return $r9;
+
+     label5:
+        $stack24 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack25 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack26 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        $r10 = (org.apache.maven.project.ProjectModelResolver) this;
+
+        $stack27 = virtualinvoke $r10.<org.apache.maven.project.ProjectModelResolver: org.apache.maven.model.building.ModelSource resolveModel(java.lang.String,java.lang.String,java.lang.String)>($stack24, $stack25, $stack26);
+
+     label6:
+        return $stack27;
+
+     label7:
+        $stack65 := @caughtexception;
+
+        $u5 = new org.apache.maven.model.resolution.UnresolvableModelException;
+
+        $r11 = (org.eclipse.aether.resolution.VersionRangeResolutionException) $stack65;
+
+        $stack67 = virtualinvoke $r11.<org.eclipse.aether.resolution.VersionRangeResolutionException: java.lang.String getMessage()>();
+
+        $stack68 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack69 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack70 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        specialinvoke $u5.<org.apache.maven.model.resolution.UnresolvableModelException: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Throwable)>($stack67, $stack68, $stack69, $stack70, $stack65);
+
+        $r12 = (java.lang.Throwable) $u5;
+
+        throw $r12;
+
+        catch org.eclipse.aether.resolution.VersionRangeResolutionException from label1 to label4 with label7;
+        catch org.eclipse.aether.resolution.VersionRangeResolutionException from label5 to label6 with label7;
+    }
+}

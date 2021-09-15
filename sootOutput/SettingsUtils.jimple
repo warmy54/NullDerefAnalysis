@@ -1,0 +1,604 @@
+public final class SettingsUtils extends java.lang.Object
+{
+
+    private void <init>()
+    {
+        SettingsUtils this;
+
+        this := @this: SettingsUtils;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void merge(org.apache.maven.settings.Settings, org.apache.maven.settings.Settings, java.lang.String)
+    {
+        org.apache.maven.settings.merge.MavenSettingsMerger $stack3;
+        org.apache.maven.settings.Settings dominant, recessive;
+        java.lang.String recessiveSourceLevel;
+
+        dominant := @parameter0: org.apache.maven.settings.Settings;
+
+        recessive := @parameter1: org.apache.maven.settings.Settings;
+
+        recessiveSourceLevel := @parameter2: java.lang.String;
+
+        $stack3 = new org.apache.maven.settings.merge.MavenSettingsMerger;
+
+        specialinvoke $stack3.<org.apache.maven.settings.merge.MavenSettingsMerger: void <init>()>();
+
+        virtualinvoke $stack3.<org.apache.maven.settings.merge.MavenSettingsMerger: void merge(org.apache.maven.settings.Settings,org.apache.maven.settings.Settings,java.lang.String)>(dominant, recessive, recessiveSourceLevel);
+
+        return;
+    }
+
+    public static org.apache.maven.settings.Profile convertToSettingsProfile(org.apache.maven.model.Profile)
+    {
+        org.apache.maven.settings.Profile $stack8;
+        org.apache.maven.model.Profile modelProfile;
+        java.lang.String $stack9, $stack29, $stack38, $stack39, $stack43, $stack44, $stack45, $stack46, $stack50, $stack51;
+        org.apache.maven.model.Activation modelActivation;
+        boolean $stack15, $stack21, $stack28;
+        java.lang.Object $stack17, $stack24;
+        org.apache.maven.settings.Repository $stack18, $stack25;
+        org.apache.maven.settings.Activation $stack27;
+        org.apache.maven.settings.ActivationFile $stack37;
+        org.apache.maven.settings.ActivationOS $stack42;
+        org.apache.maven.settings.ActivationProperty $stack49;
+        org.apache.maven.model.ActivationProperty modelProp;
+        org.apache.maven.model.ActivationOS prop#4;
+        org.apache.maven.model.ActivationFile os#6;
+        java.util.Properties $stack11;
+        java.util.List activation#17, modelProp#22;
+        java.util.Iterator modelProp#20, prop#23;
+        org.apache.maven.model.Repository prop#21, os#24;
+
+        modelProfile := @parameter0: org.apache.maven.model.Profile;
+
+        $stack8 = new org.apache.maven.settings.Profile;
+
+        specialinvoke $stack8.<org.apache.maven.settings.Profile: void <init>()>();
+
+        $stack9 = virtualinvoke modelProfile.<org.apache.maven.model.Profile: java.lang.String getId()>();
+
+        virtualinvoke $stack8.<org.apache.maven.settings.Profile: void setId(java.lang.String)>($stack9);
+
+        modelActivation = virtualinvoke modelProfile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        if modelActivation == null goto label4;
+
+        $stack27 = new org.apache.maven.settings.Activation;
+
+        specialinvoke $stack27.<org.apache.maven.settings.Activation: void <init>()>();
+
+        $stack28 = virtualinvoke modelActivation.<org.apache.maven.model.Activation: boolean isActiveByDefault()>();
+
+        virtualinvoke $stack27.<org.apache.maven.settings.Activation: void setActiveByDefault(boolean)>($stack28);
+
+        $stack29 = virtualinvoke modelActivation.<org.apache.maven.model.Activation: java.lang.String getJdk()>();
+
+        virtualinvoke $stack27.<org.apache.maven.settings.Activation: void setJdk(java.lang.String)>($stack29);
+
+        modelProp = virtualinvoke modelActivation.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationProperty getProperty()>();
+
+        if modelProp == null goto label1;
+
+        $stack49 = new org.apache.maven.settings.ActivationProperty;
+
+        specialinvoke $stack49.<org.apache.maven.settings.ActivationProperty: void <init>()>();
+
+        $stack50 = virtualinvoke modelProp.<org.apache.maven.model.ActivationProperty: java.lang.String getName()>();
+
+        virtualinvoke $stack49.<org.apache.maven.settings.ActivationProperty: void setName(java.lang.String)>($stack50);
+
+        $stack51 = virtualinvoke modelProp.<org.apache.maven.model.ActivationProperty: java.lang.String getValue()>();
+
+        virtualinvoke $stack49.<org.apache.maven.settings.ActivationProperty: void setValue(java.lang.String)>($stack51);
+
+        virtualinvoke $stack27.<org.apache.maven.settings.Activation: void setProperty(org.apache.maven.settings.ActivationProperty)>($stack49);
+
+     label1:
+        prop#4 = virtualinvoke modelActivation.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationOS getOs()>();
+
+        if prop#4 == null goto label2;
+
+        $stack42 = new org.apache.maven.settings.ActivationOS;
+
+        specialinvoke $stack42.<org.apache.maven.settings.ActivationOS: void <init>()>();
+
+        $stack43 = virtualinvoke prop#4.<org.apache.maven.model.ActivationOS: java.lang.String getArch()>();
+
+        virtualinvoke $stack42.<org.apache.maven.settings.ActivationOS: void setArch(java.lang.String)>($stack43);
+
+        $stack44 = virtualinvoke prop#4.<org.apache.maven.model.ActivationOS: java.lang.String getFamily()>();
+
+        virtualinvoke $stack42.<org.apache.maven.settings.ActivationOS: void setFamily(java.lang.String)>($stack44);
+
+        $stack45 = virtualinvoke prop#4.<org.apache.maven.model.ActivationOS: java.lang.String getName()>();
+
+        virtualinvoke $stack42.<org.apache.maven.settings.ActivationOS: void setName(java.lang.String)>($stack45);
+
+        $stack46 = virtualinvoke prop#4.<org.apache.maven.model.ActivationOS: java.lang.String getVersion()>();
+
+        virtualinvoke $stack42.<org.apache.maven.settings.ActivationOS: void setVersion(java.lang.String)>($stack46);
+
+        virtualinvoke $stack27.<org.apache.maven.settings.Activation: void setOs(org.apache.maven.settings.ActivationOS)>($stack42);
+
+     label2:
+        os#6 = virtualinvoke modelActivation.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationFile getFile()>();
+
+        if os#6 == null goto label3;
+
+        $stack37 = new org.apache.maven.settings.ActivationFile;
+
+        specialinvoke $stack37.<org.apache.maven.settings.ActivationFile: void <init>()>();
+
+        $stack38 = virtualinvoke os#6.<org.apache.maven.model.ActivationFile: java.lang.String getExists()>();
+
+        virtualinvoke $stack37.<org.apache.maven.settings.ActivationFile: void setExists(java.lang.String)>($stack38);
+
+        $stack39 = virtualinvoke os#6.<org.apache.maven.model.ActivationFile: java.lang.String getMissing()>();
+
+        virtualinvoke $stack37.<org.apache.maven.settings.ActivationFile: void setMissing(java.lang.String)>($stack39);
+
+        virtualinvoke $stack27.<org.apache.maven.settings.Activation: void setFile(org.apache.maven.settings.ActivationFile)>($stack37);
+
+     label3:
+        virtualinvoke $stack8.<org.apache.maven.settings.Profile: void setActivation(org.apache.maven.settings.Activation)>($stack27);
+
+     label4:
+        $stack11 = virtualinvoke modelProfile.<org.apache.maven.model.Profile: java.util.Properties getProperties()>();
+
+        virtualinvoke $stack8.<org.apache.maven.settings.Profile: void setProperties(java.util.Properties)>($stack11);
+
+        activation#17 = virtualinvoke modelProfile.<org.apache.maven.model.Profile: java.util.List getRepositories()>();
+
+        if activation#17 == null goto label6;
+
+        modelProp#20 = interfaceinvoke activation#17.<java.util.List: java.util.Iterator iterator()>();
+
+     label5:
+        $stack21 = interfaceinvoke modelProp#20.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack21 == 0 goto label6;
+
+        $stack24 = interfaceinvoke modelProp#20.<java.util.Iterator: java.lang.Object next()>();
+
+        prop#21 = (org.apache.maven.model.Repository) $stack24;
+
+        $stack25 = staticinvoke <org.apache.maven.settings.SettingsUtils: org.apache.maven.settings.Repository convertToSettingsRepository(org.apache.maven.model.Repository)>(prop#21);
+
+        virtualinvoke $stack8.<org.apache.maven.settings.Profile: void addRepository(org.apache.maven.settings.Repository)>($stack25);
+
+        goto label5;
+
+     label6:
+        modelProp#22 = virtualinvoke modelProfile.<org.apache.maven.model.Profile: java.util.List getPluginRepositories()>();
+
+        if modelProp#22 == null goto label8;
+
+        prop#23 = interfaceinvoke modelProp#22.<java.util.List: java.util.Iterator iterator()>();
+
+     label7:
+        $stack15 = interfaceinvoke prop#23.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label8;
+
+        $stack17 = interfaceinvoke prop#23.<java.util.Iterator: java.lang.Object next()>();
+
+        os#24 = (org.apache.maven.model.Repository) $stack17;
+
+        $stack18 = staticinvoke <org.apache.maven.settings.SettingsUtils: org.apache.maven.settings.Repository convertToSettingsRepository(org.apache.maven.model.Repository)>(os#24);
+
+        virtualinvoke $stack8.<org.apache.maven.settings.Profile: void addPluginRepository(org.apache.maven.settings.Repository)>($stack18);
+
+        goto label7;
+
+     label8:
+        return $stack8;
+    }
+
+    public static org.apache.maven.model.Profile convertFromSettingsProfile(org.apache.maven.settings.Profile)
+    {
+        org.apache.maven.model.Profile $stack8;
+        org.apache.maven.settings.Profile settingsProfile;
+        java.lang.String $stack9, $stack29, $stack38, $stack39, $stack43, $stack44, $stack45, $stack46, $stack50, $stack51;
+        org.apache.maven.settings.Activation settingsActivation;
+        boolean $stack15, $stack21, $stack28;
+        java.lang.Object $stack17, $stack24;
+        org.apache.maven.model.Repository $stack18, $stack25;
+        org.apache.maven.model.Activation $stack27;
+        org.apache.maven.model.ActivationFile $stack37;
+        org.apache.maven.model.ActivationOS $stack42;
+        org.apache.maven.model.ActivationProperty $stack49;
+        org.apache.maven.settings.ActivationProperty settingsProp;
+        org.apache.maven.settings.ActivationOS prop#4;
+        org.apache.maven.settings.ActivationFile os#6;
+        java.util.Properties $stack11;
+        java.util.List activation#17, settingsProp#22;
+        java.util.Iterator settingsProp#20, prop#23;
+        org.apache.maven.settings.Repository prop#21, os#24;
+
+        settingsProfile := @parameter0: org.apache.maven.settings.Profile;
+
+        $stack8 = new org.apache.maven.model.Profile;
+
+        specialinvoke $stack8.<org.apache.maven.model.Profile: void <init>()>();
+
+        $stack9 = virtualinvoke settingsProfile.<org.apache.maven.settings.Profile: java.lang.String getId()>();
+
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void setId(java.lang.String)>($stack9);
+
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void setSource(java.lang.String)>("settings.xml");
+
+        settingsActivation = virtualinvoke settingsProfile.<org.apache.maven.settings.Profile: org.apache.maven.settings.Activation getActivation()>();
+
+        if settingsActivation == null goto label4;
+
+        $stack27 = new org.apache.maven.model.Activation;
+
+        specialinvoke $stack27.<org.apache.maven.model.Activation: void <init>()>();
+
+        $stack28 = virtualinvoke settingsActivation.<org.apache.maven.settings.Activation: boolean isActiveByDefault()>();
+
+        virtualinvoke $stack27.<org.apache.maven.model.Activation: void setActiveByDefault(boolean)>($stack28);
+
+        $stack29 = virtualinvoke settingsActivation.<org.apache.maven.settings.Activation: java.lang.String getJdk()>();
+
+        virtualinvoke $stack27.<org.apache.maven.model.Activation: void setJdk(java.lang.String)>($stack29);
+
+        settingsProp = virtualinvoke settingsActivation.<org.apache.maven.settings.Activation: org.apache.maven.settings.ActivationProperty getProperty()>();
+
+        if settingsProp == null goto label1;
+
+        $stack49 = new org.apache.maven.model.ActivationProperty;
+
+        specialinvoke $stack49.<org.apache.maven.model.ActivationProperty: void <init>()>();
+
+        $stack50 = virtualinvoke settingsProp.<org.apache.maven.settings.ActivationProperty: java.lang.String getName()>();
+
+        virtualinvoke $stack49.<org.apache.maven.model.ActivationProperty: void setName(java.lang.String)>($stack50);
+
+        $stack51 = virtualinvoke settingsProp.<org.apache.maven.settings.ActivationProperty: java.lang.String getValue()>();
+
+        virtualinvoke $stack49.<org.apache.maven.model.ActivationProperty: void setValue(java.lang.String)>($stack51);
+
+        virtualinvoke $stack27.<org.apache.maven.model.Activation: void setProperty(org.apache.maven.model.ActivationProperty)>($stack49);
+
+     label1:
+        prop#4 = virtualinvoke settingsActivation.<org.apache.maven.settings.Activation: org.apache.maven.settings.ActivationOS getOs()>();
+
+        if prop#4 == null goto label2;
+
+        $stack42 = new org.apache.maven.model.ActivationOS;
+
+        specialinvoke $stack42.<org.apache.maven.model.ActivationOS: void <init>()>();
+
+        $stack43 = virtualinvoke prop#4.<org.apache.maven.settings.ActivationOS: java.lang.String getArch()>();
+
+        virtualinvoke $stack42.<org.apache.maven.model.ActivationOS: void setArch(java.lang.String)>($stack43);
+
+        $stack44 = virtualinvoke prop#4.<org.apache.maven.settings.ActivationOS: java.lang.String getFamily()>();
+
+        virtualinvoke $stack42.<org.apache.maven.model.ActivationOS: void setFamily(java.lang.String)>($stack44);
+
+        $stack45 = virtualinvoke prop#4.<org.apache.maven.settings.ActivationOS: java.lang.String getName()>();
+
+        virtualinvoke $stack42.<org.apache.maven.model.ActivationOS: void setName(java.lang.String)>($stack45);
+
+        $stack46 = virtualinvoke prop#4.<org.apache.maven.settings.ActivationOS: java.lang.String getVersion()>();
+
+        virtualinvoke $stack42.<org.apache.maven.model.ActivationOS: void setVersion(java.lang.String)>($stack46);
+
+        virtualinvoke $stack27.<org.apache.maven.model.Activation: void setOs(org.apache.maven.model.ActivationOS)>($stack42);
+
+     label2:
+        os#6 = virtualinvoke settingsActivation.<org.apache.maven.settings.Activation: org.apache.maven.settings.ActivationFile getFile()>();
+
+        if os#6 == null goto label3;
+
+        $stack37 = new org.apache.maven.model.ActivationFile;
+
+        specialinvoke $stack37.<org.apache.maven.model.ActivationFile: void <init>()>();
+
+        $stack38 = virtualinvoke os#6.<org.apache.maven.settings.ActivationFile: java.lang.String getExists()>();
+
+        virtualinvoke $stack37.<org.apache.maven.model.ActivationFile: void setExists(java.lang.String)>($stack38);
+
+        $stack39 = virtualinvoke os#6.<org.apache.maven.settings.ActivationFile: java.lang.String getMissing()>();
+
+        virtualinvoke $stack37.<org.apache.maven.model.ActivationFile: void setMissing(java.lang.String)>($stack39);
+
+        virtualinvoke $stack27.<org.apache.maven.model.Activation: void setFile(org.apache.maven.model.ActivationFile)>($stack37);
+
+     label3:
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void setActivation(org.apache.maven.model.Activation)>($stack27);
+
+     label4:
+        $stack11 = virtualinvoke settingsProfile.<org.apache.maven.settings.Profile: java.util.Properties getProperties()>();
+
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void setProperties(java.util.Properties)>($stack11);
+
+        activation#17 = virtualinvoke settingsProfile.<org.apache.maven.settings.Profile: java.util.List getRepositories()>();
+
+        if activation#17 == null goto label6;
+
+        settingsProp#20 = interfaceinvoke activation#17.<java.util.List: java.util.Iterator iterator()>();
+
+     label5:
+        $stack21 = interfaceinvoke settingsProp#20.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack21 == 0 goto label6;
+
+        $stack24 = interfaceinvoke settingsProp#20.<java.util.Iterator: java.lang.Object next()>();
+
+        prop#21 = (org.apache.maven.settings.Repository) $stack24;
+
+        $stack25 = staticinvoke <org.apache.maven.settings.SettingsUtils: org.apache.maven.model.Repository convertFromSettingsRepository(org.apache.maven.settings.Repository)>(prop#21);
+
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void addRepository(org.apache.maven.model.Repository)>($stack25);
+
+        goto label5;
+
+     label6:
+        settingsProp#22 = virtualinvoke settingsProfile.<org.apache.maven.settings.Profile: java.util.List getPluginRepositories()>();
+
+        if settingsProp#22 == null goto label8;
+
+        prop#23 = interfaceinvoke settingsProp#22.<java.util.List: java.util.Iterator iterator()>();
+
+     label7:
+        $stack15 = interfaceinvoke prop#23.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label8;
+
+        $stack17 = interfaceinvoke prop#23.<java.util.Iterator: java.lang.Object next()>();
+
+        os#24 = (org.apache.maven.settings.Repository) $stack17;
+
+        $stack18 = staticinvoke <org.apache.maven.settings.SettingsUtils: org.apache.maven.model.Repository convertFromSettingsRepository(org.apache.maven.settings.Repository)>(os#24);
+
+        virtualinvoke $stack8.<org.apache.maven.model.Profile: void addPluginRepository(org.apache.maven.model.Repository)>($stack18);
+
+        goto label7;
+
+     label8:
+        return $stack8;
+    }
+
+    private static org.apache.maven.model.Repository convertFromSettingsRepository(org.apache.maven.settings.Repository)
+    {
+        org.apache.maven.model.Repository $stack2;
+        org.apache.maven.settings.Repository settingsRepo;
+        java.lang.String $stack3, $stack4, $stack5, $stack6;
+        org.apache.maven.settings.RepositoryPolicy $stack7, $stack8, $stack9, $stack12;
+        org.apache.maven.model.RepositoryPolicy $stack10, $stack13;
+
+        settingsRepo := @parameter0: org.apache.maven.settings.Repository;
+
+        $stack2 = new org.apache.maven.model.Repository;
+
+        specialinvoke $stack2.<org.apache.maven.model.Repository: void <init>()>();
+
+        $stack3 = virtualinvoke settingsRepo.<org.apache.maven.settings.Repository: java.lang.String getId()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setId(java.lang.String)>($stack3);
+
+        $stack4 = virtualinvoke settingsRepo.<org.apache.maven.settings.Repository: java.lang.String getLayout()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setLayout(java.lang.String)>($stack4);
+
+        $stack5 = virtualinvoke settingsRepo.<org.apache.maven.settings.Repository: java.lang.String getName()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setName(java.lang.String)>($stack5);
+
+        $stack6 = virtualinvoke settingsRepo.<org.apache.maven.settings.Repository: java.lang.String getUrl()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setUrl(java.lang.String)>($stack6);
+
+        $stack7 = virtualinvoke settingsRepo.<org.apache.maven.settings.Repository: org.apache.maven.settings.RepositoryPolicy getSnapshots()>();
+
+        if $stack7 == null goto label1;
+
+        $stack12 = virtualinvoke settingsRepo.<org.apache.maven.settings.Repository: org.apache.maven.settings.RepositoryPolicy getSnapshots()>();
+
+        $stack13 = staticinvoke <org.apache.maven.settings.SettingsUtils: org.apache.maven.model.RepositoryPolicy convertRepositoryPolicy(org.apache.maven.settings.RepositoryPolicy)>($stack12);
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setSnapshots(org.apache.maven.model.RepositoryPolicy)>($stack13);
+
+     label1:
+        $stack8 = virtualinvoke settingsRepo.<org.apache.maven.settings.Repository: org.apache.maven.settings.RepositoryPolicy getReleases()>();
+
+        if $stack8 == null goto label2;
+
+        $stack9 = virtualinvoke settingsRepo.<org.apache.maven.settings.Repository: org.apache.maven.settings.RepositoryPolicy getReleases()>();
+
+        $stack10 = staticinvoke <org.apache.maven.settings.SettingsUtils: org.apache.maven.model.RepositoryPolicy convertRepositoryPolicy(org.apache.maven.settings.RepositoryPolicy)>($stack9);
+
+        virtualinvoke $stack2.<org.apache.maven.model.Repository: void setReleases(org.apache.maven.model.RepositoryPolicy)>($stack10);
+
+     label2:
+        return $stack2;
+    }
+
+    private static org.apache.maven.model.RepositoryPolicy convertRepositoryPolicy(org.apache.maven.settings.RepositoryPolicy)
+    {
+        org.apache.maven.model.RepositoryPolicy $stack2;
+        org.apache.maven.settings.RepositoryPolicy settingsPolicy;
+        boolean $stack3;
+        java.lang.String $stack4, $stack5;
+
+        settingsPolicy := @parameter0: org.apache.maven.settings.RepositoryPolicy;
+
+        $stack2 = new org.apache.maven.model.RepositoryPolicy;
+
+        specialinvoke $stack2.<org.apache.maven.model.RepositoryPolicy: void <init>()>();
+
+        $stack3 = virtualinvoke settingsPolicy.<org.apache.maven.settings.RepositoryPolicy: boolean isEnabled()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.RepositoryPolicy: void setEnabled(boolean)>($stack3);
+
+        $stack4 = virtualinvoke settingsPolicy.<org.apache.maven.settings.RepositoryPolicy: java.lang.String getUpdatePolicy()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.RepositoryPolicy: void setUpdatePolicy(java.lang.String)>($stack4);
+
+        $stack5 = virtualinvoke settingsPolicy.<org.apache.maven.settings.RepositoryPolicy: java.lang.String getChecksumPolicy()>();
+
+        virtualinvoke $stack2.<org.apache.maven.model.RepositoryPolicy: void setChecksumPolicy(java.lang.String)>($stack5);
+
+        return $stack2;
+    }
+
+    private static org.apache.maven.settings.Repository convertToSettingsRepository(org.apache.maven.model.Repository)
+    {
+        org.apache.maven.settings.Repository $stack2;
+        org.apache.maven.model.Repository modelRepo;
+        java.lang.String $stack3, $stack4, $stack5, $stack6;
+        org.apache.maven.model.RepositoryPolicy $stack7, $stack8, $stack9, $stack12;
+        org.apache.maven.settings.RepositoryPolicy $stack10, $stack13;
+
+        modelRepo := @parameter0: org.apache.maven.model.Repository;
+
+        $stack2 = new org.apache.maven.settings.Repository;
+
+        specialinvoke $stack2.<org.apache.maven.settings.Repository: void <init>()>();
+
+        $stack3 = virtualinvoke modelRepo.<org.apache.maven.model.Repository: java.lang.String getId()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Repository: void setId(java.lang.String)>($stack3);
+
+        $stack4 = virtualinvoke modelRepo.<org.apache.maven.model.Repository: java.lang.String getLayout()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Repository: void setLayout(java.lang.String)>($stack4);
+
+        $stack5 = virtualinvoke modelRepo.<org.apache.maven.model.Repository: java.lang.String getName()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Repository: void setName(java.lang.String)>($stack5);
+
+        $stack6 = virtualinvoke modelRepo.<org.apache.maven.model.Repository: java.lang.String getUrl()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Repository: void setUrl(java.lang.String)>($stack6);
+
+        $stack7 = virtualinvoke modelRepo.<org.apache.maven.model.Repository: org.apache.maven.model.RepositoryPolicy getSnapshots()>();
+
+        if $stack7 == null goto label1;
+
+        $stack12 = virtualinvoke modelRepo.<org.apache.maven.model.Repository: org.apache.maven.model.RepositoryPolicy getSnapshots()>();
+
+        $stack13 = staticinvoke <org.apache.maven.settings.SettingsUtils: org.apache.maven.settings.RepositoryPolicy convertRepositoryPolicy(org.apache.maven.model.RepositoryPolicy)>($stack12);
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Repository: void setSnapshots(org.apache.maven.settings.RepositoryPolicy)>($stack13);
+
+     label1:
+        $stack8 = virtualinvoke modelRepo.<org.apache.maven.model.Repository: org.apache.maven.model.RepositoryPolicy getReleases()>();
+
+        if $stack8 == null goto label2;
+
+        $stack9 = virtualinvoke modelRepo.<org.apache.maven.model.Repository: org.apache.maven.model.RepositoryPolicy getReleases()>();
+
+        $stack10 = staticinvoke <org.apache.maven.settings.SettingsUtils: org.apache.maven.settings.RepositoryPolicy convertRepositoryPolicy(org.apache.maven.model.RepositoryPolicy)>($stack9);
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Repository: void setReleases(org.apache.maven.settings.RepositoryPolicy)>($stack10);
+
+     label2:
+        return $stack2;
+    }
+
+    private static org.apache.maven.settings.RepositoryPolicy convertRepositoryPolicy(org.apache.maven.model.RepositoryPolicy)
+    {
+        org.apache.maven.settings.RepositoryPolicy $stack2;
+        org.apache.maven.model.RepositoryPolicy modelPolicy;
+        boolean $stack3;
+        java.lang.String $stack4, $stack5;
+
+        modelPolicy := @parameter0: org.apache.maven.model.RepositoryPolicy;
+
+        $stack2 = new org.apache.maven.settings.RepositoryPolicy;
+
+        specialinvoke $stack2.<org.apache.maven.settings.RepositoryPolicy: void <init>()>();
+
+        $stack3 = virtualinvoke modelPolicy.<org.apache.maven.model.RepositoryPolicy: boolean isEnabled()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.RepositoryPolicy: void setEnabled(boolean)>($stack3);
+
+        $stack4 = virtualinvoke modelPolicy.<org.apache.maven.model.RepositoryPolicy: java.lang.String getUpdatePolicy()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.RepositoryPolicy: void setUpdatePolicy(java.lang.String)>($stack4);
+
+        $stack5 = virtualinvoke modelPolicy.<org.apache.maven.model.RepositoryPolicy: java.lang.String getChecksumPolicy()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.RepositoryPolicy: void setChecksumPolicy(java.lang.String)>($stack5);
+
+        return $stack2;
+    }
+
+    public static org.apache.maven.settings.Settings copySettings(org.apache.maven.settings.Settings)
+    {
+        org.apache.maven.settings.Settings settings, $stack2;
+        java.util.List $stack3, $stack6, $stack9, $stack10, $stack11, $stack12;
+        boolean $stack4, $stack8, $stack14;
+        java.lang.String $stack5, $stack7, $stack13;
+
+        settings := @parameter0: org.apache.maven.settings.Settings;
+
+        if settings != null goto label1;
+
+        return null;
+
+     label1:
+        $stack2 = new org.apache.maven.settings.Settings;
+
+        specialinvoke $stack2.<org.apache.maven.settings.Settings: void <init>()>();
+
+        $stack3 = virtualinvoke settings.<org.apache.maven.settings.Settings: java.util.List getActiveProfiles()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setActiveProfiles(java.util.List)>($stack3);
+
+        $stack4 = virtualinvoke settings.<org.apache.maven.settings.Settings: boolean isInteractiveMode()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setInteractiveMode(boolean)>($stack4);
+
+        $stack5 = virtualinvoke settings.<org.apache.maven.settings.Settings: java.lang.String getLocalRepository()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setLocalRepository(java.lang.String)>($stack5);
+
+        $stack6 = virtualinvoke settings.<org.apache.maven.settings.Settings: java.util.List getMirrors()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setMirrors(java.util.List)>($stack6);
+
+        $stack7 = virtualinvoke settings.<org.apache.maven.settings.Settings: java.lang.String getModelEncoding()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setModelEncoding(java.lang.String)>($stack7);
+
+        $stack8 = virtualinvoke settings.<org.apache.maven.settings.Settings: boolean isOffline()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setOffline(boolean)>($stack8);
+
+        $stack9 = virtualinvoke settings.<org.apache.maven.settings.Settings: java.util.List getPluginGroups()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setPluginGroups(java.util.List)>($stack9);
+
+        $stack10 = virtualinvoke settings.<org.apache.maven.settings.Settings: java.util.List getProfiles()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setProfiles(java.util.List)>($stack10);
+
+        $stack11 = virtualinvoke settings.<org.apache.maven.settings.Settings: java.util.List getProxies()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setProxies(java.util.List)>($stack11);
+
+        $stack12 = virtualinvoke settings.<org.apache.maven.settings.Settings: java.util.List getServers()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setServers(java.util.List)>($stack12);
+
+        $stack13 = virtualinvoke settings.<org.apache.maven.settings.Settings: java.lang.String getSourceLevel()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setSourceLevel(java.lang.String)>($stack13);
+
+        $stack14 = virtualinvoke settings.<org.apache.maven.settings.Settings: boolean isUsePluginRegistry()>();
+
+        virtualinvoke $stack2.<org.apache.maven.settings.Settings: void setUsePluginRegistry(boolean)>($stack14);
+
+        return $stack2;
+    }
+}

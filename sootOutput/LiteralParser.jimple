@@ -1,0 +1,302 @@
+public class LiteralParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        LiteralParser this;
+
+        this := @this: LiteralParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.ooc.frontend.model.Literal parse(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        int mark;
+        java.lang.Object $stack7;
+        org.ooc.frontend.model.tokens.Token token;
+        byte $stack8, $stack9, $stack10, $stack11, $stack12, $stack13, $stack14, $stack15, $stack16, $stack17, $stack18;
+        org.ooc.frontend.model.Module module;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.NodeList $stack20;
+        boolean $stack21;
+        java.lang.String $stack27, $stack28, $stack32, $stack33, $stack34, $stack38, $stack39, $stack40, $stack44, $stack45, $stack46, $stack50, $stack51, $stack54, $stack57, $stack61;
+        double $stack29;
+        org.ooc.frontend.model.IntLiteral$Format $stack35, $stack41, $stack47, $stack52;
+        char $stack55;
+        java.lang.Throwable $stack58, $r4, $r13;
+        org.ubi.FileLocation $stack60;
+        org.ooc.frontend.model.StringLiteral $u0;
+        org.ooc.frontend.model.CharLiteral $u1;
+        org.ubi.CompilationFailedError $u2, $u16;
+        java.math.BigInteger $u3, $u5, $u7, $u9;
+        org.ooc.frontend.model.IntLiteral $u4, $u6, $u8, $u10;
+        org.ooc.frontend.model.FloatLiteral $u11;
+        org.ooc.frontend.model.BoolLiteral $u12, $u13;
+        org.ooc.frontend.model.NullLiteral $u14;
+        org.ooc.frontend.model.ArrayLiteral $u15;
+        org.ooc.frontend.model.Literal $r0, $r1, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r14;
+        org.ubi.Locatable $r2;
+        org.ubi.SyntaxError $r3;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        mark = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: int mark()>();
+
+        $stack7 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        token = (org.ooc.frontend.model.tokens.Token) $stack7;
+
+        $stack8 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack8 != 76 goto label01;
+
+        $u0 = new org.ooc.frontend.model.StringLiteral;
+
+        $stack57 = virtualinvoke token.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        specialinvoke $u0.<org.ooc.frontend.model.StringLiteral: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack57, token);
+
+        $r0 = (org.ooc.frontend.model.Literal) $u0;
+
+        return $r0;
+
+     label01:
+        $stack9 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack9 != 75 goto label05;
+
+     label02:
+        $u1 = new org.ooc.frontend.model.CharLiteral;
+
+        $stack54 = virtualinvoke token.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        $stack55 = staticinvoke <org.ubi.SourceReader: char parseCharLiteral(java.lang.String)>($stack54);
+
+        specialinvoke $u1.<org.ooc.frontend.model.CharLiteral: void <init>(char,org.ooc.frontend.model.tokens.Token)>($stack55, token);
+
+     label03:
+        $r1 = (org.ooc.frontend.model.Literal) $u1;
+
+        return $r1;
+
+     label04:
+        $stack58 := @caughtexception;
+
+        $u2 = new org.ubi.CompilationFailedError;
+
+        $r2 = (org.ubi.Locatable) token;
+
+        $stack60 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($r2);
+
+        $r3 = (org.ubi.SyntaxError) $stack58;
+
+        $stack61 = virtualinvoke $r3.<org.ubi.SyntaxError: java.lang.String getMessage()>();
+
+        specialinvoke $u2.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack60, $stack61);
+
+        $r4 = (java.lang.Throwable) $u2;
+
+        throw $r4;
+
+     label05:
+        $stack10 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack10 != 77 goto label06;
+
+        $u4 = new org.ooc.frontend.model.IntLiteral;
+
+        $u3 = new java.math.BigInteger;
+
+        $stack50 = virtualinvoke token.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        $stack51 = virtualinvoke $stack50.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("_", "");
+
+        specialinvoke $u3.<java.math.BigInteger: void <init>(java.lang.String)>($stack51);
+
+        $stack52 = <org.ooc.frontend.model.IntLiteral$Format: org.ooc.frontend.model.IntLiteral$Format DEC>;
+
+        specialinvoke $u4.<org.ooc.frontend.model.IntLiteral: void <init>(java.math.BigInteger,org.ooc.frontend.model.IntLiteral$Format,org.ooc.frontend.model.tokens.Token)>($u3, $stack52, token);
+
+        $r5 = (org.ooc.frontend.model.Literal) $u4;
+
+        return $r5;
+
+     label06:
+        $stack11 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack11 != 78 goto label07;
+
+        $u6 = new org.ooc.frontend.model.IntLiteral;
+
+        $u5 = new java.math.BigInteger;
+
+        $stack44 = virtualinvoke token.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        $stack45 = virtualinvoke $stack44.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("_", "");
+
+        $stack46 = virtualinvoke $stack45.<java.lang.String: java.lang.String toUpperCase()>();
+
+        specialinvoke $u5.<java.math.BigInteger: void <init>(java.lang.String,int)>($stack46, 16);
+
+        $stack47 = <org.ooc.frontend.model.IntLiteral$Format: org.ooc.frontend.model.IntLiteral$Format HEX>;
+
+        specialinvoke $u6.<org.ooc.frontend.model.IntLiteral: void <init>(java.math.BigInteger,org.ooc.frontend.model.IntLiteral$Format,org.ooc.frontend.model.tokens.Token)>($u5, $stack47, token);
+
+        $r6 = (org.ooc.frontend.model.Literal) $u6;
+
+        return $r6;
+
+     label07:
+        $stack12 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack12 != 79 goto label08;
+
+        $u8 = new org.ooc.frontend.model.IntLiteral;
+
+        $u7 = new java.math.BigInteger;
+
+        $stack38 = virtualinvoke token.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        $stack39 = virtualinvoke $stack38.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("_", "");
+
+        $stack40 = virtualinvoke $stack39.<java.lang.String: java.lang.String toUpperCase()>();
+
+        specialinvoke $u7.<java.math.BigInteger: void <init>(java.lang.String,int)>($stack40, 8);
+
+        $stack41 = <org.ooc.frontend.model.IntLiteral$Format: org.ooc.frontend.model.IntLiteral$Format OCT>;
+
+        specialinvoke $u8.<org.ooc.frontend.model.IntLiteral: void <init>(java.math.BigInteger,org.ooc.frontend.model.IntLiteral$Format,org.ooc.frontend.model.tokens.Token)>($u7, $stack41, token);
+
+        $r7 = (org.ooc.frontend.model.Literal) $u8;
+
+        return $r7;
+
+     label08:
+        $stack13 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack13 != 80 goto label09;
+
+        $u10 = new org.ooc.frontend.model.IntLiteral;
+
+        $u9 = new java.math.BigInteger;
+
+        $stack32 = virtualinvoke token.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        $stack33 = virtualinvoke $stack32.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("_", "");
+
+        $stack34 = virtualinvoke $stack33.<java.lang.String: java.lang.String toUpperCase()>();
+
+        specialinvoke $u9.<java.math.BigInteger: void <init>(java.lang.String,int)>($stack34, 2);
+
+        $stack35 = <org.ooc.frontend.model.IntLiteral$Format: org.ooc.frontend.model.IntLiteral$Format BIN>;
+
+        specialinvoke $u10.<org.ooc.frontend.model.IntLiteral: void <init>(java.math.BigInteger,org.ooc.frontend.model.IntLiteral$Format,org.ooc.frontend.model.tokens.Token)>($u9, $stack35, token);
+
+        $r8 = (org.ooc.frontend.model.Literal) $u10;
+
+        return $r8;
+
+     label09:
+        $stack14 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack14 != 81 goto label10;
+
+        $u11 = new org.ooc.frontend.model.FloatLiteral;
+
+        $stack27 = virtualinvoke token.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        $stack28 = virtualinvoke $stack27.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("_", "");
+
+        $stack29 = staticinvoke <java.lang.Double: double parseDouble(java.lang.String)>($stack28);
+
+        specialinvoke $u11.<org.ooc.frontend.model.FloatLiteral: void <init>(double,org.ooc.frontend.model.tokens.Token)>($stack29, token);
+
+        $r9 = (org.ooc.frontend.model.Literal) $u11;
+
+        return $r9;
+
+     label10:
+        $stack15 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack15 != 35 goto label11;
+
+        $u12 = new org.ooc.frontend.model.BoolLiteral;
+
+        specialinvoke $u12.<org.ooc.frontend.model.BoolLiteral: void <init>(boolean,org.ooc.frontend.model.tokens.Token)>(1, token);
+
+        $r10 = (org.ooc.frontend.model.Literal) $u12;
+
+        return $r10;
+
+     label11:
+        $stack16 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack16 != 36 goto label12;
+
+        $u13 = new org.ooc.frontend.model.BoolLiteral;
+
+        specialinvoke $u13.<org.ooc.frontend.model.BoolLiteral: void <init>(boolean,org.ooc.frontend.model.tokens.Token)>(0, token);
+
+        $r11 = (org.ooc.frontend.model.Literal) $u13;
+
+        return $r11;
+
+     label12:
+        $stack17 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack17 != 37 goto label13;
+
+        $u14 = new org.ooc.frontend.model.NullLiteral;
+
+        specialinvoke $u14.<org.ooc.frontend.model.NullLiteral: void <init>(org.ooc.frontend.model.tokens.Token)>(token);
+
+        $r12 = (org.ooc.frontend.model.Literal) $u14;
+
+        return $r12;
+
+     label13:
+        $stack18 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack18 != 86 goto label15;
+
+        $u15 = new org.ooc.frontend.model.ArrayLiteral;
+
+        specialinvoke $u15.<org.ooc.frontend.model.ArrayLiteral: void <init>(org.ooc.frontend.model.tokens.Token)>(token);
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void rewind()>();
+
+        $stack20 = virtualinvoke $u15.<org.ooc.frontend.model.ArrayLiteral: org.ooc.frontend.model.NodeList getElements()>();
+
+        $stack21 = staticinvoke <org.ooc.frontend.parser.ExpressionListFiller: boolean fill(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,org.ooc.frontend.model.NodeList,byte,byte)>(module, sReader, reader, $stack20, 86, 87);
+
+        if $stack21 != 0 goto label14;
+
+        $u16 = new org.ubi.CompilationFailedError;
+
+        specialinvoke $u16.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>(null, "Malformed array literal");
+
+        $r13 = (java.lang.Throwable) $u16;
+
+        throw $r13;
+
+     label14:
+        $r14 = (org.ooc.frontend.model.Literal) $u15;
+
+        return $r14;
+
+     label15:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void reset(int)>(mark);
+
+        return null;
+
+        catch org.ubi.SyntaxError from label02 to label03 with label04;
+    }
+}

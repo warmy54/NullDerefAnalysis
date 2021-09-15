@@ -1,0 +1,707 @@
+class Checker$1 extends java.lang.Object implements org.ooc.middle.walkers.Opportunist
+{
+    final org.ooc.middle.hobgoblins.Checker this$0;
+
+    void <init>(org.ooc.middle.hobgoblins.Checker)
+    {
+        Checker$1 this;
+        org.ooc.middle.hobgoblins.Checker this$0;
+        org.ooc.middle.hobgoblins.Checker$1 $r0;
+
+        this := @this: Checker$1;
+
+        this$0 := @parameter0: org.ooc.middle.hobgoblins.Checker;
+
+        $r0 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        $r0.<org.ooc.middle.hobgoblins.Checker$1: org.ooc.middle.hobgoblins.Checker this$0> = this$0;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean take(org.ooc.frontend.model.Node, org.ooc.frontend.model.NodeList) throws java.io.IOException
+    {
+        org.ooc.frontend.model.Node node;
+        boolean $stack3, $stack4, $stack5, $stack6, $stack7, $stack8;
+        Checker$1 this;
+        org.ooc.frontend.model.NodeList stack;
+        org.ooc.frontend.model.ValuedReturn $stack9;
+        org.ooc.frontend.model.TypeDecl $stack11;
+        org.ooc.frontend.model.VariableDecl $stack12;
+        org.ooc.frontend.model.FunctionDecl $stack13;
+        org.ooc.frontend.model.VariableAccess $stack14;
+        org.ooc.frontend.model.FunctionCall $stack15;
+        org.ooc.middle.hobgoblins.Checker$1 $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: Checker$1;
+
+        node := @parameter0: org.ooc.frontend.model.Node;
+
+        stack := @parameter1: org.ooc.frontend.model.NodeList;
+
+        $stack3 = node instanceof org.ooc.frontend.model.FunctionCall;
+
+        if $stack3 == 0 goto label1;
+
+        $stack15 = (org.ooc.frontend.model.FunctionCall) node;
+
+        $r0 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        virtualinvoke $r0.<org.ooc.middle.hobgoblins.Checker$1: void checkFunctionCall(org.ooc.frontend.model.FunctionCall,org.ooc.frontend.model.NodeList)>($stack15, stack);
+
+        goto label6;
+
+     label1:
+        $stack4 = node instanceof org.ooc.frontend.model.VariableAccess;
+
+        if $stack4 == 0 goto label2;
+
+        $stack14 = (org.ooc.frontend.model.VariableAccess) node;
+
+        $r1 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        virtualinvoke $r1.<org.ooc.middle.hobgoblins.Checker$1: void checkVariableAccess(org.ooc.frontend.model.VariableAccess,org.ooc.frontend.model.NodeList)>($stack14, stack);
+
+        goto label6;
+
+     label2:
+        $stack5 = node instanceof org.ooc.frontend.model.FunctionDecl;
+
+        if $stack5 == 0 goto label3;
+
+        $stack13 = (org.ooc.frontend.model.FunctionDecl) node;
+
+        $r2 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        virtualinvoke $r2.<org.ooc.middle.hobgoblins.Checker$1: void checkFunctionDecl(org.ooc.frontend.model.FunctionDecl,org.ooc.frontend.model.NodeList)>($stack13, stack);
+
+        goto label6;
+
+     label3:
+        $stack6 = node instanceof org.ooc.frontend.model.VariableDecl;
+
+        if $stack6 == 0 goto label4;
+
+        $stack12 = (org.ooc.frontend.model.VariableDecl) node;
+
+        $r3 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        virtualinvoke $r3.<org.ooc.middle.hobgoblins.Checker$1: void checkVariableDecl(org.ooc.frontend.model.VariableDecl,org.ooc.frontend.model.NodeList)>($stack12, stack);
+
+        goto label6;
+
+     label4:
+        $stack7 = node instanceof org.ooc.frontend.model.TypeDecl;
+
+        if $stack7 == 0 goto label5;
+
+        $stack11 = (org.ooc.frontend.model.TypeDecl) node;
+
+        $r4 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        virtualinvoke $r4.<org.ooc.middle.hobgoblins.Checker$1: void checkTypeDecl(org.ooc.frontend.model.TypeDecl,org.ooc.frontend.model.NodeList)>($stack11, stack);
+
+        goto label6;
+
+     label5:
+        $stack8 = node instanceof org.ooc.frontend.model.ValuedReturn;
+
+        if $stack8 == 0 goto label6;
+
+        $stack9 = (org.ooc.frontend.model.ValuedReturn) node;
+
+        $r5 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        virtualinvoke $r5.<org.ooc.middle.hobgoblins.Checker$1: void checkValuedReturn(org.ooc.frontend.model.ValuedReturn,org.ooc.frontend.model.NodeList)>($stack9, stack);
+
+     label6:
+        return 1;
+    }
+
+    private void checkFunctionCall(org.ooc.frontend.model.FunctionCall, org.ooc.frontend.model.NodeList)
+    {
+        org.ooc.frontend.model.FunctionCall node;
+        org.ooc.frontend.model.FunctionDecl $stack3;
+        org.ooc.frontend.model.NodeList stack;
+        java.lang.Class $stack5;
+        java.lang.String $stack6, $stack7, $stack8;
+        Checker$1 this;
+        org.ooc.middle.OocCompilationError $u0;
+        org.ooc.frontend.model.Node $r0;
+        java.lang.Throwable $r1;
+
+        this := @this: Checker$1;
+
+        node := @parameter0: org.ooc.frontend.model.FunctionCall;
+
+        stack := @parameter1: org.ooc.frontend.model.NodeList;
+
+        $stack3 = virtualinvoke node.<org.ooc.frontend.model.FunctionCall: org.ooc.frontend.model.FunctionDecl getImpl()>();
+
+        if $stack3 != null goto label1;
+
+        $u0 = new org.ooc.middle.OocCompilationError;
+
+        $stack5 = virtualinvoke node.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack6 = virtualinvoke $stack5.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        $stack7 = virtualinvoke node.<org.ooc.frontend.model.FunctionCall: java.lang.String getName()>();
+
+        $stack8 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>($stack6, $stack7) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001 to \u0001 hasn\'t been resolved :/");
+
+        $r0 = (org.ooc.frontend.model.Node) node;
+
+        specialinvoke $u0.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList,java.lang.String)>($r0, stack, $stack8);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        return;
+    }
+
+    private void checkVariableAccess(org.ooc.frontend.model.VariableAccess, org.ooc.frontend.model.NodeList)
+    {
+        org.ooc.frontend.model.VariableAccess node;
+        org.ooc.frontend.model.Declaration $stack3;
+        org.ooc.frontend.model.NodeList stack;
+        java.lang.Class $stack5;
+        java.lang.String $stack6, $stack7, $stack8, $stack9;
+        Checker$1 this;
+        org.ooc.middle.OocCompilationError $u0;
+        org.ooc.frontend.model.Node $r0;
+        java.lang.Throwable $r1;
+
+        this := @this: Checker$1;
+
+        node := @parameter0: org.ooc.frontend.model.VariableAccess;
+
+        stack := @parameter1: org.ooc.frontend.model.NodeList;
+
+        $stack3 = virtualinvoke node.<org.ooc.frontend.model.VariableAccess: org.ooc.frontend.model.Declaration getRef()>();
+
+        if $stack3 != null goto label1;
+
+        $u0 = new org.ooc.middle.OocCompilationError;
+
+        $stack5 = virtualinvoke node.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack6 = virtualinvoke $stack5.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        $stack7 = virtualinvoke node.<org.ooc.frontend.model.VariableAccess: java.lang.String getName()>();
+
+        $stack8 = virtualinvoke stack.<org.ooc.frontend.model.NodeList: java.lang.String toString(boolean)>(1);
+
+        $stack9 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String,java.lang.String)>($stack6, $stack7, $stack8) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001 to \u0001 hasn\'t been resolved :S stack = \u0001");
+
+        $r0 = (org.ooc.frontend.model.Node) node;
+
+        specialinvoke $u0.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList,java.lang.String)>($r0, stack, $stack9);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        return;
+    }
+
+    private void checkFunctionDecl(org.ooc.frontend.model.FunctionDecl, org.ooc.frontend.model.NodeList)
+    {
+        org.ooc.frontend.model.FunctionDecl node, other;
+        java.lang.String $stack7, $stack12, $stack13, suffixedName, $stack47, $stack52, $stack58, $stack59, name;
+        int $stack8;
+        org.ooc.frontend.model.TypeDecl $stack11, $stack33, $stack40, $stack46;
+        boolean $stack15, $stack54, $stack56, $stack9, $stack22;
+        Checker$1 this;
+        org.ooc.middle.hobgoblins.Checker $stack16, $stack31, $stack38;
+        java.util.HashMap $stack17, $stack32, $stack39, set, $u1;
+        java.lang.Object $stack18, $stack34, $stack35;
+        org.ooc.frontend.model.VersionBlock $stack19, $stack23, $stack20, $stack21;
+        org.ooc.frontend.model.NodeList stack;
+        char $stack53;
+        org.ooc.middle.OocCompilationError $u0;
+        org.ooc.frontend.model.Node $r0;
+        org.ooc.middle.hobgoblins.Checker$1 $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: Checker$1;
+
+        node := @parameter0: org.ooc.frontend.model.FunctionDecl;
+
+        stack := @parameter1: org.ooc.frontend.model.NodeList;
+
+        $stack7 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.String: int length()>();
+
+        if $stack8 <= 0 goto label1;
+
+        $stack52 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack53 = virtualinvoke $stack52.<java.lang.String: char charAt(int)>(0);
+
+        $stack54 = staticinvoke <java.lang.Character: boolean isUpperCase(char)>($stack53);
+
+        if $stack54 == 0 goto label1;
+
+        $stack56 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean isExtern()>();
+
+        if $stack56 != 0 goto label1;
+
+        $u0 = new org.ooc.middle.OocCompilationError;
+
+        $stack58 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getProtoRepr()>();
+
+        $stack59 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack58) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Upper-case function name \'\u0001\'. Function should always begin with a lowercase letter, e.g. camelCase");
+
+        $r0 = (org.ooc.frontend.model.Node) node;
+
+        specialinvoke $u0.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList,java.lang.String)>($r0, stack, $stack59);
+
+        virtualinvoke $u0.<org.ooc.middle.OocCompilationError: void printStackTrace()>();
+
+     label1:
+        $stack9 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean isFromPointer()>();
+
+        if $stack9 != 0 goto label8;
+
+        name = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack11 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.TypeDecl getTypeDecl()>();
+
+        if $stack11 == null goto label2;
+
+        $stack46 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.TypeDecl getTypeDecl()>();
+
+        $stack47 = virtualinvoke $stack46.<org.ooc.frontend.model.TypeDecl: java.lang.String toString()>();
+
+        name = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>($stack47, name) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001.\u0001");
+
+     label2:
+        $stack12 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack13 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getSuffix()>();
+
+        suffixedName = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>($stack12, $stack13) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001_\u0001");
+
+        $stack15 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: boolean isMember()>();
+
+        if $stack15 == 0 goto label4;
+
+        $r1 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        $stack31 = $r1.<org.ooc.middle.hobgoblins.Checker$1: org.ooc.middle.hobgoblins.Checker this$0>;
+
+        $stack32 = $stack31.<org.ooc.middle.hobgoblins.Checker: java.util.HashMap classFuncNames>;
+
+        $stack33 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.TypeDecl getTypeDecl()>();
+
+        $stack34 = virtualinvoke $stack32.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($stack33);
+
+        set = (java.util.HashMap) $stack34;
+
+        if set != null goto label3;
+
+        $u1 = new java.util.HashMap;
+
+        specialinvoke $u1.<java.util.HashMap: void <init>()>();
+
+        set = $u1;
+
+        $r2 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        $stack38 = $r2.<org.ooc.middle.hobgoblins.Checker$1: org.ooc.middle.hobgoblins.Checker this$0>;
+
+        $stack39 = $stack38.<org.ooc.middle.hobgoblins.Checker: java.util.HashMap classFuncNames>;
+
+        $stack40 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.TypeDecl getTypeDecl()>();
+
+        virtualinvoke $stack39.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack40, $u1);
+
+     label3:
+        $stack35 = virtualinvoke set.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(suffixedName, node);
+
+        other = (org.ooc.frontend.model.FunctionDecl) $stack35;
+
+        goto label5;
+
+     label4:
+        $r3 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        $stack16 = $r3.<org.ooc.middle.hobgoblins.Checker$1: org.ooc.middle.hobgoblins.Checker this$0>;
+
+        $stack17 = $stack16.<org.ooc.middle.hobgoblins.Checker: java.util.HashMap funcNames>;
+
+        $stack18 = virtualinvoke $stack17.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(suffixedName, node);
+
+        other = (org.ooc.frontend.model.FunctionDecl) $stack18;
+
+     label5:
+        if other == null goto label8;
+
+        $stack19 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.VersionBlock getVersion()>();
+
+        if $stack19 == null goto label6;
+
+        $stack23 = virtualinvoke other.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.VersionBlock getVersion()>();
+
+        if $stack23 != null goto label7;
+
+     label6:
+        $r4 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        virtualinvoke $r4.<org.ooc.middle.hobgoblins.Checker$1: void throwError(org.ooc.frontend.model.FunctionDecl,org.ooc.frontend.model.FunctionDecl,org.ooc.frontend.model.NodeList,java.lang.String)>(node, other, stack, name);
+
+     label7:
+        $stack20 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.VersionBlock getVersion()>();
+
+        $stack21 = virtualinvoke other.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.VersionBlock getVersion()>();
+
+        $stack22 = virtualinvoke $stack20.<org.ooc.frontend.model.VersionBlock: boolean equals(java.lang.Object)>($stack21);
+
+        if $stack22 == 0 goto label8;
+
+        $r5 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        virtualinvoke $r5.<org.ooc.middle.hobgoblins.Checker$1: void throwError(org.ooc.frontend.model.FunctionDecl,org.ooc.frontend.model.FunctionDecl,org.ooc.frontend.model.NodeList,java.lang.String)>(node, other, stack, name);
+
+     label8:
+        return;
+    }
+
+    void throwError(org.ooc.frontend.model.FunctionDecl, org.ooc.frontend.model.FunctionDecl, org.ooc.frontend.model.NodeList, java.lang.String) throws org.ooc.middle.OocCompilationError
+    {
+        java.lang.String name, $stack7, $stack9;
+        boolean $stack5;
+        org.ooc.frontend.model.FunctionDecl node, other;
+        org.ooc.frontend.model.NodeList stack;
+        org.ooc.frontend.model.Type $stack8;
+        int $stack11;
+        Checker$1 this;
+        org.ooc.middle.OocCompilationError $u0, $u1;
+        org.ooc.frontend.model.Node $r0, $r1;
+        java.lang.Throwable $r2;
+
+        this := @this: Checker$1;
+
+        node := @parameter0: org.ooc.frontend.model.FunctionDecl;
+
+        other := @parameter1: org.ooc.frontend.model.FunctionDecl;
+
+        stack := @parameter2: org.ooc.frontend.model.NodeList;
+
+        name := @parameter3: java.lang.String;
+
+        $stack5 = virtualinvoke name.<java.lang.String: boolean equals(java.lang.Object)>("class");
+
+        if $stack5 == 0 goto label1;
+
+        $stack11 = virtualinvoke stack.<org.ooc.frontend.model.NodeList: int find(java.lang.Class)>(class "Lorg/ooc/frontend/model/CoverDecl;");
+
+        if $stack11 == -1 goto label1;
+
+        return;
+
+     label1:
+        $u0 = new org.ooc.middle.OocCompilationError;
+
+        $stack7 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: java.lang.String getArgsRepr()>();
+
+        $stack8 = virtualinvoke node.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.Type getReturnType()>();
+
+        $stack9 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String,java.lang.String,org.ooc.frontend.model.Type)>(name, name, $stack7, $stack8) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Two functions have the same name \'\u0001\', add suffix to one of them! (even if they have different signatures). e.g. \u0001: func ~suffix \u0001 -> \u0001");
+
+        $r0 = (org.ooc.frontend.model.Node) node;
+
+        specialinvoke $u0.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList,java.lang.String)>($r0, stack, $stack9);
+
+        virtualinvoke $u0.<org.ooc.middle.OocCompilationError: void printStackTrace()>();
+
+        $u1 = new org.ooc.middle.OocCompilationError;
+
+        $r1 = (org.ooc.frontend.model.Node) other;
+
+        specialinvoke $u1.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList,java.lang.String)>($r1, stack, "The other definition is here:");
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+    }
+
+    private void checkVariableDecl(org.ooc.frontend.model.VariableDecl, org.ooc.frontend.model.NodeList)
+    {
+        org.ooc.frontend.model.VariableDecl node;
+        org.ooc.frontend.model.Type varDeclType;
+        org.ooc.frontend.model.Declaration $stack5, $stack6;
+        boolean $stack7, $stack10, $stack13;
+        java.lang.String $stack8, $stack11, $stack15, $stack16;
+        int $stack9;
+        char $stack12;
+        org.ooc.frontend.model.NodeList stack;
+        Checker$1 this;
+        org.ooc.middle.OocCompilationError $u0;
+        org.ooc.frontend.model.Node $r0;
+        java.lang.Throwable $r1;
+
+        this := @this: Checker$1;
+
+        node := @parameter0: org.ooc.frontend.model.VariableDecl;
+
+        stack := @parameter1: org.ooc.frontend.model.NodeList;
+
+        varDeclType = virtualinvoke node.<org.ooc.frontend.model.VariableDecl: org.ooc.frontend.model.Type getType()>();
+
+        if varDeclType == null goto label1;
+
+        $stack5 = virtualinvoke varDeclType.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        if $stack5 == null goto label1;
+
+        $stack6 = virtualinvoke varDeclType.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        $stack7 = virtualinvoke $stack6.<org.ooc.frontend.model.Declaration: boolean isExtern()>();
+
+        if $stack7 != 0 goto label1;
+
+        $stack8 = virtualinvoke varDeclType.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+        $stack9 = virtualinvoke $stack8.<java.lang.String: int length()>();
+
+        if $stack9 <= 0 goto label1;
+
+        $stack10 = virtualinvoke varDeclType.<org.ooc.frontend.model.Type: boolean isGeneric()>();
+
+        if $stack10 != 0 goto label1;
+
+        $stack11 = virtualinvoke varDeclType.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+        $stack12 = virtualinvoke $stack11.<java.lang.String: char charAt(int)>(0);
+
+        $stack13 = staticinvoke <java.lang.Character: boolean isLowerCase(char)>($stack12);
+
+        if $stack13 == 0 goto label1;
+
+        $u0 = new org.ooc.middle.OocCompilationError;
+
+        $stack15 = virtualinvoke varDeclType.<org.ooc.frontend.model.Type: java.lang.String getName()>();
+
+        $stack16 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack15) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Variable declaration has type \'\u0001\', which begins with a lowercase letter. Types should always begin with an uppercase letter, e.g. CamelCase");
+
+        $r0 = (org.ooc.frontend.model.Node) varDeclType;
+
+        specialinvoke $u0.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList,java.lang.String)>($r0, stack, $stack16);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        return;
+    }
+
+    private void checkTypeDecl(org.ooc.frontend.model.TypeDecl, org.ooc.frontend.model.NodeList) throws org.ooc.middle.OocCompilationError
+    {
+        org.ooc.frontend.model.TypeDecl node;
+        boolean $stack8, $stack13, $stack14, $stack15, $stack18, $stack23;
+        java.lang.String $stack9, $stack11, $stack20, $stack21, $stack26, $stack27, $stack28, $stack29, $stack31, $stack32;
+        int $stack10;
+        char $stack12;
+        org.ooc.frontend.model.ClassDecl classDecl;
+        java.util.Iterator l5;
+        java.lang.Object $stack19;
+        org.ooc.frontend.model.FunctionDecl decl, realDecl;
+        org.ooc.frontend.model.NodeList stack, $u1;
+        Checker$1 this;
+        org.ooc.middle.OocCompilationError $u0, $u2;
+        org.ooc.frontend.model.Node $r0, $r2;
+        java.lang.Throwable $r1, $r3;
+
+        this := @this: Checker$1;
+
+        node := @parameter0: org.ooc.frontend.model.TypeDecl;
+
+        stack := @parameter1: org.ooc.frontend.model.NodeList;
+
+        $stack8 = virtualinvoke node.<org.ooc.frontend.model.TypeDecl: boolean isExtern()>();
+
+        if $stack8 != 0 goto label1;
+
+        $stack9 = virtualinvoke node.<org.ooc.frontend.model.TypeDecl: java.lang.String getName()>();
+
+        $stack10 = virtualinvoke $stack9.<java.lang.String: int length()>();
+
+        if $stack10 != 0 goto label2;
+
+     label1:
+        return;
+
+     label2:
+        $stack11 = virtualinvoke node.<org.ooc.frontend.model.TypeDecl: java.lang.String getName()>();
+
+        $stack12 = virtualinvoke $stack11.<java.lang.String: char charAt(int)>(0);
+
+        $stack13 = staticinvoke <java.lang.Character: boolean isLowerCase(char)>($stack12);
+
+        if $stack13 == 0 goto label3;
+
+        $u0 = new org.ooc.middle.OocCompilationError;
+
+        $stack31 = virtualinvoke node.<org.ooc.frontend.model.TypeDecl: java.lang.String getName()>();
+
+        $stack32 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,org.ooc.frontend.model.NodeList)>($stack31, stack) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Lower-case type name \'\u0001\'. Types should always begin with a capital letter, e.g. CamelCase (stack = \u0001");
+
+        $r0 = (org.ooc.frontend.model.Node) node;
+
+        specialinvoke $u0.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList,java.lang.String)>($r0, stack, $stack32);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label3:
+        $stack14 = node instanceof org.ooc.frontend.model.ClassDecl;
+
+        if $stack14 != 0 goto label4;
+
+        return;
+
+     label4:
+        classDecl = (org.ooc.frontend.model.ClassDecl) node;
+
+        $stack15 = virtualinvoke classDecl.<org.ooc.frontend.model.ClassDecl: boolean isAbstract()>();
+
+        if $stack15 == 0 goto label5;
+
+        return;
+
+     label5:
+        $u1 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u1.<org.ooc.frontend.model.NodeList: void <init>()>();
+
+        virtualinvoke classDecl.<org.ooc.frontend.model.ClassDecl: void getFunctionsRecursive(org.ooc.frontend.model.NodeList)>($u1);
+
+        l5 = virtualinvoke $u1.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label6:
+        $stack18 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack18 == 0 goto label8;
+
+        $stack19 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        decl = (org.ooc.frontend.model.FunctionDecl) $stack19;
+
+        $stack20 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getName()>();
+
+        $stack21 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getSuffix()>();
+
+        realDecl = virtualinvoke classDecl.<org.ooc.frontend.model.ClassDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall)>($stack20, $stack21, null);
+
+        $stack23 = virtualinvoke realDecl.<org.ooc.frontend.model.FunctionDecl: boolean isAbstract()>();
+
+        if $stack23 == 0 goto label7;
+
+        $u2 = new org.ooc.middle.OocCompilationError;
+
+        $stack26 = virtualinvoke classDecl.<org.ooc.frontend.model.ClassDecl: java.lang.String getName()>();
+
+        $stack27 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getProtoRepr()>();
+
+        $stack28 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getStub()>();
+
+        $stack29 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String,java.lang.String)>($stack26, $stack27, $stack28) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Class \u0001 must implement \u0001, or be declared abstract. Little help: \u0001");
+
+        $r2 = (org.ooc.frontend.model.Node) classDecl;
+
+        specialinvoke $u2.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList,java.lang.String)>($r2, stack, $stack29);
+
+        $r3 = (java.lang.Throwable) $u2;
+
+        throw $r3;
+
+     label7:
+        goto label6;
+
+     label8:
+        return;
+    }
+
+    private void checkValuedReturn(org.ooc.frontend.model.ValuedReturn, org.ooc.frontend.model.NodeList)
+    {
+        org.ooc.frontend.model.NodeList stack;
+        int $stack4;
+        org.ooc.frontend.model.Node $stack5, $r0;
+        org.ooc.frontend.model.FunctionDecl decl;
+        org.ooc.frontend.model.Type $stack6;
+        boolean $stack7;
+        org.ooc.frontend.model.ValuedReturn node;
+        java.lang.String $stack9, $stack10;
+        Checker$1 this;
+        org.ooc.middle.OocCompilationError $u0;
+        java.lang.Throwable $r1;
+
+        this := @this: Checker$1;
+
+        node := @parameter0: org.ooc.frontend.model.ValuedReturn;
+
+        stack := @parameter1: org.ooc.frontend.model.NodeList;
+
+        $stack4 = virtualinvoke stack.<org.ooc.frontend.model.NodeList: int find(java.lang.Class)>(class "Lorg/ooc/frontend/model/FunctionDecl;");
+
+        $stack5 = virtualinvoke stack.<org.ooc.frontend.model.NodeList: org.ooc.frontend.model.Node get(int)>($stack4);
+
+        decl = (org.ooc.frontend.model.FunctionDecl) $stack5;
+
+        $stack6 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.Type getReturnType()>();
+
+        $stack7 = virtualinvoke $stack6.<org.ooc.frontend.model.Type: boolean isVoid()>();
+
+        if $stack7 == 0 goto label1;
+
+        $u0 = new org.ooc.middle.OocCompilationError;
+
+        $stack9 = virtualinvoke decl.<org.ooc.frontend.model.FunctionDecl: java.lang.String getProtoRepr()>();
+
+        $stack10 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack9) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Returning a value in function \u0001 which is declared as returning nothing");
+
+        $r0 = (org.ooc.frontend.model.Node) node;
+
+        specialinvoke $u0.<org.ooc.middle.OocCompilationError: void <init>(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList,java.lang.String)>($r0, stack, $stack10);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        return;
+    }
+
+    public volatile boolean take(java.lang.Object, org.ooc.frontend.model.NodeList) throws java.io.IOException
+    {
+        Checker$1 this;
+        java.lang.Object l1;
+        org.ooc.frontend.model.NodeList l2;
+        org.ooc.frontend.model.Node $stack3;
+        boolean $stack4;
+        org.ooc.middle.hobgoblins.Checker$1 $r0;
+
+        this := @this: Checker$1;
+
+        l1 := @parameter0: java.lang.Object;
+
+        l2 := @parameter1: org.ooc.frontend.model.NodeList;
+
+        $stack3 = (org.ooc.frontend.model.Node) l1;
+
+        $r0 = (org.ooc.middle.hobgoblins.Checker$1) this;
+
+        $stack4 = virtualinvoke $r0.<org.ooc.middle.hobgoblins.Checker$1: boolean take(org.ooc.frontend.model.Node,org.ooc.frontend.model.NodeList)>($stack3, l2);
+
+        return $stack4;
+    }
+}

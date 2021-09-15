@@ -1,0 +1,197 @@
+public class MatchParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        MatchParser this;
+
+        this := @this: MatchParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.ooc.frontend.model.Match parse(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        java.lang.Object $stack10, $stack14, $stack19, $stack28, $stack47, $stack50, $stack54;
+        org.ooc.frontend.model.tokens.Token startToken, $stack15, $stack29, token;
+        byte $stack11, $stack16, $stack20, $stack21, $stack22, $stack30;
+        org.ooc.frontend.model.Module module;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.Expression expr, caseExpr;
+        org.ubi.FileLocation $stack24, $stack46, $stack56;
+        java.lang.String $stack25, $stack48;
+        org.ooc.frontend.model.NodeList $stack32, $stack34;
+        boolean $stack33, isFallthrough;
+        org.ubi.Locatable $stack55, $r1, $r4;
+        org.ubi.CompilationFailedError $u0, $u2, $u4;
+        org.ooc.frontend.model.Match $u1;
+        org.ooc.frontend.model.Case $u3;
+        java.lang.Throwable $r0, $r2, $r5;
+        org.ooc.frontend.model.Node $r3;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        $stack10 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        startToken = (org.ooc.frontend.model.tokens.Token) $stack10;
+
+        $stack11 = startToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack11 == 29 goto label01;
+
+        return null;
+
+     label01:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        expr = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, 1);
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        $stack14 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack15 = (org.ooc.frontend.model.tokens.Token) $stack14;
+
+        $stack16 = $stack15.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack16 == 84 goto label02;
+
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $stack54 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack55 = (org.ubi.Locatable) $stack54;
+
+        $stack56 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack55);
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack56, "Expected a \'{\' after match.");
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label02:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $u1 = new org.ooc.frontend.model.Match;
+
+        specialinvoke $u1.<org.ooc.frontend.model.Match: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.tokens.Token)>(expr, startToken);
+
+     label03:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        $stack19 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        token = (org.ooc.frontend.model.tokens.Token) $stack19;
+
+        $stack20 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack20 != 85 goto label04;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        goto label10;
+
+     label04:
+        isFallthrough = 0;
+
+        $stack21 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack21 != 22 goto label05;
+
+        isFallthrough = 1;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        $stack50 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        token = (org.ooc.frontend.model.tokens.Token) $stack50;
+
+     label05:
+        $stack22 = token.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack22 != 30 goto label09;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        caseExpr = staticinvoke <org.ooc.frontend.parser.ExpressionParser: org.ooc.frontend.model.Expression parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, 1);
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        $stack28 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack29 = (org.ooc.frontend.model.tokens.Token) $stack28;
+
+        $stack30 = $stack29.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack30 == 95 goto label06;
+
+        $u2 = new org.ubi.CompilationFailedError;
+
+        $r1 = (org.ubi.Locatable) token;
+
+        $stack46 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($r1);
+
+        $stack47 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack48 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.Object)>($stack47) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Unexpected token \u0001 Expected a \'=>\' after a case.");
+
+        specialinvoke $u2.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack46, $stack48);
+
+        $r2 = (java.lang.Throwable) $u2;
+
+        throw $r2;
+
+     label06:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $u3 = new org.ooc.frontend.model.Case;
+
+        specialinvoke $u3.<org.ooc.frontend.model.Case: void <init>(org.ooc.frontend.model.Expression,org.ooc.frontend.model.Match,boolean,org.ooc.frontend.model.tokens.Token)>(caseExpr, $u1, isFallthrough, token);
+
+     label07:
+        $stack32 = virtualinvoke $u3.<org.ooc.frontend.model.Case: org.ooc.frontend.model.NodeList getBody()>();
+
+        $stack33 = staticinvoke <org.ooc.frontend.parser.LineParser: boolean fill(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,org.ooc.frontend.model.NodeList)>(module, sReader, reader, $stack32);
+
+        if $stack33 == 0 goto label08;
+
+        goto label07;
+
+     label08:
+        $stack34 = virtualinvoke $u1.<org.ooc.frontend.model.Match: org.ooc.frontend.model.NodeList getCases()>();
+
+        $r3 = (org.ooc.frontend.model.Node) $u3;
+
+        virtualinvoke $stack34.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r3);
+
+        goto label03;
+
+     label09:
+        $u4 = new org.ubi.CompilationFailedError;
+
+        $r4 = (org.ubi.Locatable) token;
+
+        $stack24 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($r4);
+
+        $stack25 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (org.ooc.frontend.model.tokens.Token)>(token) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Unexpected token \u0001 Expected either a \'}\' or a case.");
+
+        specialinvoke $u4.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack24, $stack25);
+
+        $r5 = (java.lang.Throwable) $u4;
+
+        throw $r5;
+
+     label10:
+        return $u1;
+    }
+}

@@ -1,0 +1,95 @@
+public class ExternParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        ExternParser this;
+
+        this := @this: ExternParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String parse(org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader) throws org.ubi.CompilationFailedError
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        java.lang.Object $stack4, $stack7, $stack11, $stack13, $stack17, $stack20;
+        org.ooc.frontend.model.tokens.Token $stack5, $stack8, nameToken, $stack14;
+        byte $stack6, $stack9, $stack15;
+        org.ubi.SourceReader sReader;
+        org.ubi.Locatable $stack18;
+        org.ubi.FileLocation $stack19;
+        java.lang.String $stack21, externName;
+        org.ubi.CompilationFailedError $u0;
+        java.lang.Throwable $r0;
+
+        sReader := @parameter0: org.ubi.SourceReader;
+
+        reader := @parameter1: org.ooc.frontend.model.tokens.TokenReader;
+
+        externName = null;
+
+        $stack4 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack5 = (org.ooc.frontend.model.tokens.Token) $stack4;
+
+        $stack6 = $stack5.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack6 != 16 goto label3;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $stack7 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack8 = (org.ooc.frontend.model.tokens.Token) $stack7;
+
+        $stack9 = $stack8.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack9 != 82 goto label2;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $stack11 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        nameToken = (org.ooc.frontend.model.tokens.Token) $stack11;
+
+        externName = virtualinvoke nameToken.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        $stack13 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        $stack14 = (org.ooc.frontend.model.tokens.Token) $stack13;
+
+        $stack15 = $stack14.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack15 == 83 goto label1;
+
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $stack17 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack18 = (org.ubi.Locatable) $stack17;
+
+        $stack19 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack18);
+
+        $stack20 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack21 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.Object)>($stack20) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Expected closing parenthesis after extern specification, but got \u0001");
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack19, $stack21);
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label1:
+        goto label3;
+
+     label2:
+        externName = "";
+
+     label3:
+        return externName;
+    }
+}

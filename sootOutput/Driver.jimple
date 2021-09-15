@@ -1,0 +1,729 @@
+public abstract class Driver extends java.lang.Object
+{
+    public org.ooc.frontend.BuildParams params;
+
+    public void <init>(org.ooc.frontend.BuildParams)
+    {
+        Driver this;
+        org.ooc.frontend.BuildParams params;
+        org.ooc.frontend.drivers.Driver $r0;
+
+        this := @this: Driver;
+
+        params := @parameter0: org.ooc.frontend.BuildParams;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.ooc.frontend.drivers.Driver) this;
+
+        $r0.<org.ooc.frontend.drivers.Driver: org.ooc.frontend.BuildParams params> = params;
+
+        return;
+    }
+
+    public abstract int compile(org.ooc.frontend.model.Module, java.lang.String) throws java.lang.Error, java.io.IOException, java.lang.InterruptedException;
+
+    protected void copyLocalHeaders(org.ooc.frontend.model.Module, org.ooc.frontend.BuildParams, java.util.HashSet)
+    {
+        java.util.HashSet done;
+        org.ooc.frontend.model.Module module, $stack17;
+        boolean $stack8, $stack12, $stack15;
+        org.ooc.frontend.model.NodeList $stack10, $stack13;
+        java.lang.Object $stack16, $stack19;
+        Driver this;
+        org.ooc.frontend.BuildParams params;
+        org.ooc.frontend.model.Include$Mode $stack20, $stack21;
+        org.ooc.frontend.PathList $stack23;
+        java.lang.String $stack24, $stack29, $stack30, $stack34, $stack35;
+        java.io.File $stack25, $stack28, $stack31, file, $u0, $u1;
+        java.lang.Exception $stack36;
+        java.util.Iterator l4;
+        org.ooc.frontend.model.Include inc;
+        org.ooc.frontend.model.Import inc#6;
+        org.ooc.frontend.drivers.Driver $r0;
+
+        this := @this: Driver;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        params := @parameter1: org.ooc.frontend.BuildParams;
+
+        done := @parameter2: java.util.HashSet;
+
+        $stack8 = virtualinvoke done.<java.util.HashSet: boolean contains(java.lang.Object)>(module);
+
+        if $stack8 == 0 goto label1;
+
+        return;
+
+     label1:
+        virtualinvoke done.<java.util.HashSet: boolean add(java.lang.Object)>(module);
+
+        $stack10 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getIncludes()>();
+
+        l4 = virtualinvoke $stack10.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label2:
+        $stack12 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack12 == 0 goto label7;
+
+        $stack19 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        inc = (org.ooc.frontend.model.Include) $stack19;
+
+        $stack20 = virtualinvoke inc.<org.ooc.frontend.model.Include: org.ooc.frontend.model.Include$Mode getMode()>();
+
+        $stack21 = <org.ooc.frontend.model.Include$Mode: org.ooc.frontend.model.Include$Mode LOCAL>;
+
+        if $stack20 != $stack21 goto label6;
+
+     label3:
+        $stack23 = params.<org.ooc.frontend.BuildParams: org.ooc.frontend.PathList sourcePath>;
+
+        $stack24 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getPrefixLessPath()>();
+
+        $stack25 = virtualinvoke $stack23.<org.ooc.frontend.PathList: java.io.File getFile(java.lang.String)>($stack24);
+
+        file = virtualinvoke $stack25.<java.io.File: java.io.File getParentFile()>();
+
+        $u0 = new java.io.File;
+
+        $stack28 = params.<org.ooc.frontend.BuildParams: java.io.File outPath>;
+
+        $stack29 = virtualinvoke inc.<org.ooc.frontend.model.Include: java.lang.String getPath()>();
+
+        $stack30 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack29) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001.h");
+
+        specialinvoke $u0.<java.io.File: void <init>(java.io.File,java.lang.String)>($stack28, $stack30);
+
+        $stack31 = virtualinvoke $u0.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $stack31.<java.io.File: boolean mkdirs()>();
+
+        $u1 = new java.io.File;
+
+        $stack34 = virtualinvoke inc.<org.ooc.frontend.model.Include: java.lang.String getPath()>();
+
+        $stack35 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack34) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001.h");
+
+        specialinvoke $u1.<java.io.File: void <init>(java.io.File,java.lang.String)>(file, $stack35);
+
+        staticinvoke <org.ooc.utils.FileUtils: void copy(java.io.File,java.io.File)>($u1, $u0);
+
+     label4:
+        goto label6;
+
+     label5:
+        $stack36 := @caughtexception;
+
+        virtualinvoke $stack36.<java.lang.Exception: void printStackTrace()>();
+
+     label6:
+        goto label2;
+
+     label7:
+        $stack13 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getAllImports()>();
+
+        l4 = virtualinvoke $stack13.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label8:
+        $stack15 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label9;
+
+        $stack16 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        inc#6 = (org.ooc.frontend.model.Import) $stack16;
+
+        $stack17 = virtualinvoke inc#6.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        $r0 = (org.ooc.frontend.drivers.Driver) this;
+
+        virtualinvoke $r0.<org.ooc.frontend.drivers.Driver: void copyLocalHeaders(org.ooc.frontend.model.Module,org.ooc.frontend.BuildParams,java.util.HashSet)>($stack17, params, done);
+
+        goto label8;
+
+     label9:
+        return;
+
+        catch java.lang.Exception from label3 to label4 with label5;
+    }
+
+    protected void addDeps(org.ooc.frontend.model.Module, java.util.Set, java.util.Set)
+    {
+        java.util.Set toCompile, done;
+        org.ooc.frontend.model.Module module, $stack20, $stack24;
+        java.lang.String $stack7, $stack14, $stack15, $stack21;
+        Driver this;
+        org.ooc.frontend.BuildParams $stack9, $stack11;
+        org.ooc.frontend.compilers.AbstractCompiler $stack12;
+        java.io.File $stack13, $u0;
+        org.ooc.frontend.model.NodeList $stack16;
+        java.util.Iterator l4;
+        boolean $stack18, $stack22;
+        java.lang.Object $stack19;
+        org.ooc.frontend.model.Import imp;
+        org.ooc.frontend.drivers.Driver $r0, $r1, $r2;
+
+        this := @this: Driver;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        toCompile := @parameter1: java.util.Set;
+
+        done := @parameter2: java.util.Set;
+
+        interfaceinvoke toCompile.<java.util.Set: boolean add(java.lang.Object)>(module);
+
+        $stack7 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getPath()>();
+
+        interfaceinvoke done.<java.util.Set: boolean add(java.lang.Object)>($stack7);
+
+        $r0 = (org.ooc.frontend.drivers.Driver) this;
+
+        $stack9 = $r0.<org.ooc.frontend.drivers.Driver: org.ooc.frontend.BuildParams params>;
+
+        $stack12 = $stack9.<org.ooc.frontend.BuildParams: org.ooc.frontend.compilers.AbstractCompiler compiler>;
+
+        $u0 = new java.io.File;
+
+        $r1 = (org.ooc.frontend.drivers.Driver) this;
+
+        $stack11 = $r1.<org.ooc.frontend.drivers.Driver: org.ooc.frontend.BuildParams params>;
+
+        $stack13 = $stack11.<org.ooc.frontend.BuildParams: java.io.File outPath>;
+
+        $stack14 = virtualinvoke module.<org.ooc.frontend.model.Module: java.lang.String getPath(java.lang.String)>(".c");
+
+        specialinvoke $u0.<java.io.File: void <init>(java.io.File,java.lang.String)>($stack13, $stack14);
+
+        $stack15 = virtualinvoke $u0.<java.io.File: java.lang.String getPath()>();
+
+        interfaceinvoke $stack12.<org.ooc.frontend.compilers.AbstractCompiler: void addObjectFile(java.lang.String)>($stack15);
+
+        $stack16 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getAllImports()>();
+
+        l4 = virtualinvoke $stack16.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack18 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack18 == 0 goto label3;
+
+        $stack19 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        imp = (org.ooc.frontend.model.Import) $stack19;
+
+        $stack20 = virtualinvoke imp.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        $stack21 = virtualinvoke $stack20.<org.ooc.frontend.model.Module: java.lang.String getPath()>();
+
+        $stack22 = interfaceinvoke done.<java.util.Set: boolean contains(java.lang.Object)>($stack21);
+
+        if $stack22 != 0 goto label2;
+
+        $stack24 = virtualinvoke imp.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        $r2 = (org.ooc.frontend.drivers.Driver) this;
+
+        virtualinvoke $r2.<org.ooc.frontend.drivers.Driver: void addDeps(org.ooc.frontend.model.Module,java.util.Set,java.util.Set)>($stack24, toCompile, done);
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    protected java.util.Collection getFlagsFromUse(org.ooc.frontend.model.Module, boolean) throws java.io.IOException, java.lang.InterruptedException
+    {
+        Driver this;
+        org.ooc.frontend.model.Module module;
+        boolean doLinking;
+        java.util.HashSet $u0, $u1, $u2;
+        org.ooc.frontend.drivers.Driver $r0;
+
+        this := @this: Driver;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        doLinking := @parameter1: boolean;
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        $u1 = new java.util.HashSet;
+
+        specialinvoke $u1.<java.util.HashSet: void <init>()>();
+
+        $u2 = new java.util.HashSet;
+
+        specialinvoke $u2.<java.util.HashSet: void <init>()>();
+
+        $r0 = (org.ooc.frontend.drivers.Driver) this;
+
+        virtualinvoke $r0.<org.ooc.frontend.drivers.Driver: void getFlagsFromUse(org.ooc.frontend.model.Module,java.util.Set,java.util.Set,java.util.Set,boolean)>(module, $u0, $u1, $u2, doLinking);
+
+        return $u0;
+    }
+
+    protected void getFlagsFromUse(org.ooc.frontend.model.Module, java.util.Set, java.util.Set, java.util.Set, boolean) throws java.io.IOException, java.lang.InterruptedException
+    {
+        java.util.Set modulesDone, flagsDone, usesDone;
+        org.ooc.frontend.model.Module module, $stack18;
+        boolean $stack9, $stack13, $stack16, doLinking;
+        org.ooc.frontend.model.NodeList $stack11, $stack14;
+        java.lang.Object $stack17, $stack20;
+        Driver this;
+        org.ooc.middle.UseDef useDef;
+        java.util.Iterator l6;
+        org.ooc.frontend.model.Use use;
+        org.ooc.frontend.model.Import use#4;
+        org.ooc.frontend.drivers.Driver $r0, $r1;
+
+        this := @this: Driver;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        flagsDone := @parameter1: java.util.Set;
+
+        modulesDone := @parameter2: java.util.Set;
+
+        usesDone := @parameter3: java.util.Set;
+
+        doLinking := @parameter4: boolean;
+
+        $stack9 = interfaceinvoke modulesDone.<java.util.Set: boolean contains(java.lang.Object)>(module);
+
+        if $stack9 == 0 goto label1;
+
+        return;
+
+     label1:
+        interfaceinvoke modulesDone.<java.util.Set: boolean add(java.lang.Object)>(module);
+
+        $stack11 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getUses()>();
+
+        l6 = virtualinvoke $stack11.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label2:
+        $stack13 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label3;
+
+        $stack20 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        use = (org.ooc.frontend.model.Use) $stack20;
+
+        useDef = virtualinvoke use.<org.ooc.frontend.model.Use: org.ooc.middle.UseDef getUseDef()>();
+
+        $r0 = (org.ooc.frontend.drivers.Driver) this;
+
+        virtualinvoke $r0.<org.ooc.frontend.drivers.Driver: void getFlagsFromUse(org.ooc.middle.UseDef,java.util.Set,java.util.Set,boolean)>(useDef, flagsDone, usesDone, doLinking);
+
+        goto label2;
+
+     label3:
+        $stack14 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getAllImports()>();
+
+        l6 = virtualinvoke $stack14.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label4:
+        $stack16 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack16 == 0 goto label5;
+
+        $stack17 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        use#4 = (org.ooc.frontend.model.Import) $stack17;
+
+        $stack18 = virtualinvoke use#4.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        $r1 = (org.ooc.frontend.drivers.Driver) this;
+
+        virtualinvoke $r1.<org.ooc.frontend.drivers.Driver: void getFlagsFromUse(org.ooc.frontend.model.Module,java.util.Set,java.util.Set,java.util.Set,boolean)>($stack18, flagsDone, modulesDone, usesDone, doLinking);
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private void getFlagsFromUse(org.ooc.middle.UseDef, java.util.Set, java.util.Set, boolean) throws java.io.IOException, java.lang.InterruptedException
+    {
+        java.util.Set usesDone, flagsDone;
+        org.ooc.middle.UseDef useDef, $stack26;
+        boolean $stack11, doLinking, $stack18, $stack21, $stack24, $stack30, $stack35, $stack42, $stack46, $stack49, $stack53, $stack15;
+        java.util.List $stack13, $stack16, $stack19, $stack22, $stack40, $stack44, $stack56;
+        java.lang.Object $stack25, $stack28, $stack33, $stack38, $stack47, $stack52;
+        Driver this;
+        java.lang.String lpath, pkg, cflag, info#14;
+        java.util.Iterator l5, l8;
+        org.ooc.frontend.pkgconfig.PkgInfo info;
+        org.ooc.middle.UseDef$Requirement pkg#19;
+        org.ooc.frontend.drivers.Driver $r0, $r1;
+
+        this := @this: Driver;
+
+        useDef := @parameter0: org.ooc.middle.UseDef;
+
+        flagsDone := @parameter1: java.util.Set;
+
+        usesDone := @parameter2: java.util.Set;
+
+        doLinking := @parameter3: boolean;
+
+        $stack11 = interfaceinvoke usesDone.<java.util.Set: boolean contains(java.lang.Object)>(useDef);
+
+        if $stack11 == 0 goto label01;
+
+        return;
+
+     label01:
+        interfaceinvoke usesDone.<java.util.Set: boolean add(java.lang.Object)>(useDef);
+
+        if doLinking == 0 goto label02;
+
+        $stack56 = virtualinvoke useDef.<org.ooc.middle.UseDef: java.util.List getLibs()>();
+
+        $r0 = (org.ooc.frontend.drivers.Driver) this;
+
+        virtualinvoke $r0.<org.ooc.frontend.drivers.Driver: void compileNasms(java.util.List,java.util.Collection)>($stack56, flagsDone);
+
+     label02:
+        $stack13 = virtualinvoke useDef.<org.ooc.middle.UseDef: java.util.List getPkgs()>();
+
+        l5 = interfaceinvoke $stack13.<java.util.List: java.util.Iterator iterator()>();
+
+     label03:
+        $stack15 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label10;
+
+        $stack38 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        pkg = (java.lang.String) $stack38;
+
+        info = staticinvoke <org.ooc.frontend.pkgconfig.PkgConfigFrontend: org.ooc.frontend.pkgconfig.PkgInfo getInfo(java.lang.String)>(pkg);
+
+        $stack40 = info.<org.ooc.frontend.pkgconfig.PkgInfo: java.util.List cflags>;
+
+        l8 = interfaceinvoke $stack40.<java.util.List: java.util.Iterator iterator()>();
+
+     label04:
+        $stack42 = interfaceinvoke l8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack42 == 0 goto label06;
+
+        $stack52 = interfaceinvoke l8.<java.util.Iterator: java.lang.Object next()>();
+
+        cflag = (java.lang.String) $stack52;
+
+        $stack53 = interfaceinvoke flagsDone.<java.util.Set: boolean contains(java.lang.Object)>(cflag);
+
+        if $stack53 != 0 goto label05;
+
+        interfaceinvoke flagsDone.<java.util.Set: boolean add(java.lang.Object)>(cflag);
+
+     label05:
+        goto label04;
+
+     label06:
+        if doLinking == 0 goto label09;
+
+        $stack44 = info.<org.ooc.frontend.pkgconfig.PkgInfo: java.util.List libraries>;
+
+        l8 = interfaceinvoke $stack44.<java.util.List: java.util.Iterator iterator()>();
+
+     label07:
+        $stack46 = interfaceinvoke l8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack46 == 0 goto label09;
+
+        $stack47 = interfaceinvoke l8.<java.util.Iterator: java.lang.Object next()>();
+
+        cflag = (java.lang.String) $stack47;
+
+        lpath = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(cflag) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("-l\u0001");
+
+        $stack49 = interfaceinvoke flagsDone.<java.util.Set: boolean contains(java.lang.Object)>(lpath);
+
+        if $stack49 != 0 goto label08;
+
+        interfaceinvoke flagsDone.<java.util.Set: boolean add(java.lang.Object)>(lpath);
+
+     label08:
+        goto label07;
+
+     label09:
+        goto label03;
+
+     label10:
+        $stack16 = virtualinvoke useDef.<org.ooc.middle.UseDef: java.util.List getIncludePaths()>();
+
+        l5 = interfaceinvoke $stack16.<java.util.List: java.util.Iterator iterator()>();
+
+     label11:
+        $stack18 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack18 == 0 goto label13;
+
+        $stack33 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        pkg = (java.lang.String) $stack33;
+
+        info#14 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(pkg) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("-I\u0001");
+
+        $stack35 = interfaceinvoke flagsDone.<java.util.Set: boolean contains(java.lang.Object)>(info#14);
+
+        if $stack35 != 0 goto label12;
+
+        interfaceinvoke flagsDone.<java.util.Set: boolean add(java.lang.Object)>(info#14);
+
+     label12:
+        goto label11;
+
+     label13:
+        $stack19 = virtualinvoke useDef.<org.ooc.middle.UseDef: java.util.List getLibPaths()>();
+
+        l5 = interfaceinvoke $stack19.<java.util.List: java.util.Iterator iterator()>();
+
+     label14:
+        $stack21 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack21 == 0 goto label16;
+
+        $stack28 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        pkg = (java.lang.String) $stack28;
+
+        info#14 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(pkg) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("-L\u0001");
+
+        $stack30 = interfaceinvoke flagsDone.<java.util.Set: boolean contains(java.lang.Object)>(info#14);
+
+        if $stack30 != 0 goto label15;
+
+        interfaceinvoke flagsDone.<java.util.Set: boolean add(java.lang.Object)>(info#14);
+
+     label15:
+        goto label14;
+
+     label16:
+        $stack22 = virtualinvoke useDef.<org.ooc.middle.UseDef: java.util.List getRequirements()>();
+
+        l5 = interfaceinvoke $stack22.<java.util.List: java.util.Iterator iterator()>();
+
+     label17:
+        $stack24 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack24 == 0 goto label18;
+
+        $stack25 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        pkg#19 = (org.ooc.middle.UseDef$Requirement) $stack25;
+
+        $stack26 = virtualinvoke pkg#19.<org.ooc.middle.UseDef$Requirement: org.ooc.middle.UseDef getUseDef()>();
+
+        $r1 = (org.ooc.frontend.drivers.Driver) this;
+
+        virtualinvoke $r1.<org.ooc.frontend.drivers.Driver: void getFlagsFromUse(org.ooc.middle.UseDef,java.util.Set,java.util.Set,boolean)>($stack26, flagsDone, usesDone, doLinking);
+
+        goto label17;
+
+     label18:
+        return;
+    }
+
+    public void compileNasms(java.util.List, java.util.Collection) throws java.io.IOException, java.lang.InterruptedException
+    {
+        java.util.List nasms;
+        boolean $stack11, $stack14, $stack17, $stack31, $stack59, has, $stack29;
+        java.util.Collection list;
+        Driver this;
+        org.ooc.frontend.BuildParams $stack16;
+        java.io.File $stack19;
+        java.lang.String $stack20, nasm, $stack37, $stack38, $stack43;
+        java.lang.Process process;
+        int code, $stack35, $stack36;
+        java.util.Iterator l9, command;
+        java.lang.Object $stack30, $stack58;
+        java.io.PrintStream $stack40, $stack42;
+        java.util.ArrayList $u0, $u1;
+        java.lang.ProcessBuilder $u2;
+        org.ooc.frontend.drivers.Driver $r0, $r1;
+
+        this := @this: Driver;
+
+        nasms := @parameter0: java.util.List;
+
+        list := @parameter1: java.util.Collection;
+
+        has = 0;
+
+        $stack11 = interfaceinvoke nasms.<java.util.List: boolean isEmpty()>();
+
+        if $stack11 == 0 goto label01;
+
+        return;
+
+     label01:
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        command = interfaceinvoke nasms.<java.util.List: java.util.Iterator iterator()>();
+
+     label02:
+        $stack14 = interfaceinvoke command.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label04;
+
+        $stack58 = interfaceinvoke command.<java.util.Iterator: java.lang.Object next()>();
+
+        nasm = (java.lang.String) $stack58;
+
+        $stack59 = virtualinvoke nasm.<java.lang.String: boolean endsWith(java.lang.String)>(".s");
+
+        if $stack59 == 0 goto label03;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(nasm);
+
+        has = 1;
+
+     label03:
+        goto label02;
+
+     label04:
+        if has == 0 goto label11;
+
+        $r0 = (org.ooc.frontend.drivers.Driver) this;
+
+        $stack16 = $r0.<org.ooc.frontend.drivers.Driver: org.ooc.frontend.BuildParams params>;
+
+        $stack17 = $stack16.<org.ooc.frontend.BuildParams: boolean verbose>;
+
+        if $stack17 == 0 goto label05;
+
+        $stack42 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack43 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.util.List)>($u0) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Should compile nasms \u0001");
+
+        virtualinvoke $stack42.<java.io.PrintStream: void println(java.lang.String)>($stack43);
+
+     label05:
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        $r1 = (org.ooc.frontend.drivers.Driver) this;
+
+        $stack19 = virtualinvoke $r1.<org.ooc.frontend.drivers.Driver: java.io.File findExec(java.lang.String)>("nasm");
+
+        $stack20 = virtualinvoke $stack19.<java.io.File: java.lang.String getPath()>();
+
+        interfaceinvoke $u1.<java.util.List: boolean add(java.lang.Object)>($stack20);
+
+        interfaceinvoke $u1.<java.util.List: boolean add(java.lang.Object)>("-f");
+
+        interfaceinvoke $u1.<java.util.List: boolean add(java.lang.Object)>("elf");
+
+        interfaceinvoke $u1.<java.util.List: boolean addAll(java.util.Collection)>($u0);
+
+        $u2 = new java.lang.ProcessBuilder;
+
+        specialinvoke $u2.<java.lang.ProcessBuilder: void <init>(java.util.List)>($u1);
+
+        process = virtualinvoke $u2.<java.lang.ProcessBuilder: java.lang.Process start()>();
+
+        staticinvoke <org.ooc.utils.ProcessUtils: void redirectIO(java.lang.Process)>(process);
+
+        code = virtualinvoke process.<java.lang.Process: int waitFor()>();
+
+        if code == 0 goto label06;
+
+        $stack40 = <java.lang.System: java.io.PrintStream err>;
+
+        virtualinvoke $stack40.<java.io.PrintStream: void println(java.lang.String)>("nasm failed, aborting compilation process");
+
+        staticinvoke <java.lang.System: void exit(int)>(code);
+
+     label06:
+        l9 = interfaceinvoke nasms.<java.util.List: java.util.Iterator iterator()>();
+
+     label07:
+        $stack29 = interfaceinvoke l9.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack29 == 0 goto label10;
+
+        $stack30 = interfaceinvoke l9.<java.util.Iterator: java.lang.Object next()>();
+
+        nasm = (java.lang.String) $stack30;
+
+        $stack31 = virtualinvoke nasm.<java.lang.String: boolean endsWith(java.lang.String)>(".s");
+
+        if $stack31 == 0 goto label08;
+
+        $stack35 = virtualinvoke nasm.<java.lang.String: int length()>();
+
+        $stack36 = $stack35 - 1;
+
+        $stack37 = virtualinvoke nasm.<java.lang.String: java.lang.String substring(int,int)>(0, $stack36);
+
+        $stack38 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack37) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001o");
+
+        interfaceinvoke list.<java.util.Collection: boolean add(java.lang.Object)>($stack38);
+
+        goto label09;
+
+     label08:
+        interfaceinvoke list.<java.util.Collection: boolean add(java.lang.Object)>(nasm);
+
+     label09:
+        goto label07;
+
+     label10:
+        goto label12;
+
+     label11:
+        interfaceinvoke list.<java.util.Collection: boolean addAll(java.util.Collection)>(nasms);
+
+     label12:
+        return;
+    }
+
+    protected java.io.File findExec(java.lang.String) throws java.lang.Error
+    {
+        java.lang.String name, $stack5, $stack6;
+        java.lang.Error $stack4;
+        Driver this;
+        java.io.File execFile;
+
+        this := @this: Driver;
+
+        name := @parameter0: java.lang.String;
+
+        execFile = staticinvoke <org.ooc.utils.ShellUtils: java.io.File findExecutable(java.lang.String)>(name);
+
+        if execFile != null goto label1;
+
+        $stack6 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(name) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001.exe");
+
+        execFile = staticinvoke <org.ooc.utils.ShellUtils: java.io.File findExecutable(java.lang.String)>($stack6);
+
+     label1:
+        if execFile != null goto label2;
+
+        $stack4 = new java.lang.Error;
+
+        $stack5 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(name) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001 not found :/");
+
+        specialinvoke $stack4.<java.lang.Error: void <init>(java.lang.String)>($stack5);
+
+        throw $stack4;
+
+     label2:
+        return execFile;
+    }
+}

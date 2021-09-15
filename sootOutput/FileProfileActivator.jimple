@@ -1,6 +1,6 @@
-public class FileProfileActivator extends org.apache.maven.profiles.activation.DetectedProfileActivator implements org.codehaus.plexus.logging.LogEnabled
+public class FileProfileActivator extends java.lang.Object implements org.apache.maven.model.profile.activation.ProfileActivator
 {
-    private org.codehaus.plexus.logging.Logger logger;
+    private org.apache.maven.model.path.ProfileActivationFilePathInterpolator profileActivationFilePathInterpolator;
 
     public void <init>()
     {
@@ -8,217 +8,243 @@ public class FileProfileActivator extends org.apache.maven.profiles.activation.D
 
         this := @this: FileProfileActivator;
 
-        specialinvoke this.<org.apache.maven.profiles.activation.DetectedProfileActivator: void <init>()>();
+        specialinvoke this.<java.lang.Object: void <init>()>();
 
         return;
     }
 
-    protected boolean canDetectActivation(org.apache.maven.model.Profile)
+    public org.apache.maven.model.profile.activation.FileProfileActivator setProfileActivationFilePathInterpolator(org.apache.maven.model.path.ProfileActivationFilePathInterpolator)
     {
-        org.apache.maven.model.Profile profile;
-        org.apache.maven.model.Activation $stack2, $stack3;
-        org.apache.maven.model.ActivationFile $stack4;
         FileProfileActivator this;
-        boolean $stack5;
+        org.apache.maven.model.path.ProfileActivationFilePathInterpolator profileActivationFilePathInterpolator;
+        org.apache.maven.model.profile.activation.FileProfileActivator $r0, $r1;
 
         this := @this: FileProfileActivator;
 
-        profile := @parameter0: org.apache.maven.model.Profile;
+        profileActivationFilePathInterpolator := @parameter0: org.apache.maven.model.path.ProfileActivationFilePathInterpolator;
 
-        $stack2 = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+        $r0 = (org.apache.maven.model.profile.activation.FileProfileActivator) this;
 
-        if $stack2 == null goto label1;
+        $r0.<org.apache.maven.model.profile.activation.FileProfileActivator: org.apache.maven.model.path.ProfileActivationFilePathInterpolator profileActivationFilePathInterpolator> = profileActivationFilePathInterpolator;
 
-        $stack3 = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+        $r1 = (org.apache.maven.model.profile.activation.FileProfileActivator) this;
 
-        $stack4 = virtualinvoke $stack3.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationFile getFile()>();
-
-        if $stack4 == null goto label1;
-
-        $stack5 = 1;
-
-        goto label2;
-
-     label1:
-        $stack5 = 0;
-
-     label2:
-        return $stack5;
+        return $r1;
     }
 
-    public boolean isActive(org.apache.maven.model.Profile)
+    public boolean isActive(org.apache.maven.model.Profile, org.apache.maven.model.profile.ProfileActivationContext, org.apache.maven.model.building.ModelProblemCollector)
     {
         org.apache.maven.model.Profile profile;
         org.apache.maven.model.Activation activation;
-        org.apache.maven.model.ActivationFile actFile;
-        java.util.Properties $stack13;
-        boolean $stack14, $stack16, $stack20, $stack24, $stack27, $stack21;
-        java.lang.String $stack18, $stack22, $stack33, $stack38, fileString;
-        java.lang.Throwable $stack25;
+        org.apache.maven.model.ActivationFile file;
+        java.lang.String $stack12, $stack14, $stack35, $stack38, $stack40, path, path#3, $stack45;
+        boolean $stack13, $stack15, $stack20, fileExists, missing, $stack22;
         FileProfileActivator this;
-        org.codehaus.plexus.logging.Logger $stack26, $stack29, $stack35;
-        java.lang.StringBuilder $stack30, $stack31, $stack32, $stack36, $stack37, $u3, $u4;
-        java.io.IOException $stack39;
-        org.codehaus.plexus.interpolation.RegexBasedInterpolator $u0;
-        org.codehaus.plexus.interpolation.EnvarBasedValueSource $u1;
-        org.codehaus.plexus.interpolation.MapBasedValueSource $u2;
-        org.codehaus.plexus.interpolation.ValueSource $r0, $r1;
-        org.apache.maven.profiles.activation.FileProfileActivator $r2, $r3, $r4;
+        org.apache.maven.model.profile.ProfileActivationContext context;
+        org.apache.maven.model.path.ProfileActivationFilePathInterpolator $stack17;
+        java.lang.Throwable $stack27;
+        org.apache.maven.model.building.ModelProblemCollector problems;
+        org.apache.maven.model.building.ModelProblem$Version $stack29;
+        org.apache.maven.model.building.ModelProblem$Severity $stack30;
+        java.lang.StringBuilder $stack32, $stack33, $stack34, $stack36, $stack37, $stack39, $u1;
+        org.apache.maven.model.building.ModelProblemCollectorRequest $stack41, $stack43, $stack44, $u0;
+        org.apache.maven.model.InputLocation $stack42;
+        java.io.File $u2;
+        org.apache.maven.model.profile.activation.FileProfileActivator $r0;
+        org.codehaus.plexus.interpolation.InterpolationException $r1;
+        java.lang.Exception $r2;
 
         this := @this: FileProfileActivator;
 
         profile := @parameter0: org.apache.maven.model.Profile;
 
+        context := @parameter1: org.apache.maven.model.profile.ProfileActivationContext;
+
+        problems := @parameter2: org.apache.maven.model.building.ModelProblemCollector;
+
         activation = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
 
-        actFile = virtualinvoke activation.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationFile getFile()>();
+        if activation != null goto label01;
 
-        if actFile == null goto label13;
-
-        fileString = virtualinvoke actFile.<org.apache.maven.model.ActivationFile: java.lang.String getExists()>();
-
-        $u0 = new org.codehaus.plexus.interpolation.RegexBasedInterpolator;
-
-        specialinvoke $u0.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: void <init>()>();
+        return 0;
 
      label01:
-        $u1 = new org.codehaus.plexus.interpolation.EnvarBasedValueSource;
+        file = virtualinvoke activation.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationFile getFile()>();
 
-        specialinvoke $u1.<org.codehaus.plexus.interpolation.EnvarBasedValueSource: void <init>()>();
+        if file != null goto label02;
 
-        $r0 = (org.codehaus.plexus.interpolation.ValueSource) $u1;
-
-        virtualinvoke $u0.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: void addValueSource(org.codehaus.plexus.interpolation.ValueSource)>($r0);
+        return 0;
 
      label02:
-        goto label04;
+        $stack12 = virtualinvoke file.<org.apache.maven.model.ActivationFile: java.lang.String getExists()>();
+
+        $stack13 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack12);
+
+        if $stack13 == 0 goto label03;
+
+        path = virtualinvoke file.<org.apache.maven.model.ActivationFile: java.lang.String getExists()>();
+
+        missing = 0;
+
+        goto label05;
 
      label03:
-        $stack39 := @caughtexception;
+        $stack14 = virtualinvoke file.<org.apache.maven.model.ActivationFile: java.lang.String getMissing()>();
+
+        $stack15 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack14);
+
+        if $stack15 == 0 goto label04;
+
+        path = virtualinvoke file.<org.apache.maven.model.ActivationFile: java.lang.String getMissing()>();
+
+        missing = 1;
+
+        goto label05;
 
      label04:
-        $u2 = new org.codehaus.plexus.interpolation.MapBasedValueSource;
-
-        $stack13 = staticinvoke <java.lang.System: java.util.Properties getProperties()>();
-
-        specialinvoke $u2.<org.codehaus.plexus.interpolation.MapBasedValueSource: void <init>(java.util.Map)>($stack13);
-
-        $r1 = (org.codehaus.plexus.interpolation.ValueSource) $u2;
-
-        virtualinvoke $u0.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: void addValueSource(org.codehaus.plexus.interpolation.ValueSource)>($r1);
+        return 0;
 
      label05:
-        $stack14 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>(fileString);
+        $r0 = (org.apache.maven.model.profile.activation.FileProfileActivator) this;
 
-        if $stack14 == 0 goto label07;
+        $stack17 = $r0.<org.apache.maven.model.profile.activation.FileProfileActivator: org.apache.maven.model.path.ProfileActivationFilePathInterpolator profileActivationFilePathInterpolator>;
 
-        $stack22 = virtualinvoke $u0.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: java.lang.String interpolate(java.lang.String,java.lang.String)>(fileString, "");
-
-        fileString = staticinvoke <org.codehaus.plexus.util.StringUtils: java.lang.String replace(java.lang.String,java.lang.String,java.lang.String)>($stack22, "\\", "/");
-
-        $stack24 = staticinvoke <org.codehaus.plexus.util.FileUtils: boolean fileExists(java.lang.String)>(fileString);
+        path#3 = virtualinvoke $stack17.<org.apache.maven.model.path.ProfileActivationFilePathInterpolator: java.lang.String interpolate(java.lang.String,org.apache.maven.model.profile.ProfileActivationContext)>(path, context);
 
      label06:
-        return $stack24;
+        goto label10;
 
      label07:
-        fileString = virtualinvoke actFile.<org.apache.maven.model.ActivationFile: java.lang.String getMissing()>();
+        $stack27 := @caughtexception;
 
-        $stack16 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>(fileString);
+        $u0 = new org.apache.maven.model.building.ModelProblemCollectorRequest;
 
-        if $stack16 == 0 goto label10;
+        $stack30 = <org.apache.maven.model.building.ModelProblem$Severity: org.apache.maven.model.building.ModelProblem$Severity ERROR>;
 
-        $stack18 = virtualinvoke $u0.<org.codehaus.plexus.interpolation.RegexBasedInterpolator: java.lang.String interpolate(java.lang.String,java.lang.String)>(fileString, "");
+        $stack29 = <org.apache.maven.model.building.ModelProblem$Version: org.apache.maven.model.building.ModelProblem$Version BASE>;
 
-        fileString = staticinvoke <org.codehaus.plexus.util.StringUtils: java.lang.String replace(java.lang.String,java.lang.String,java.lang.String)>($stack18, "\\", "/");
+        specialinvoke $u0.<org.apache.maven.model.building.ModelProblemCollectorRequest: void <init>(org.apache.maven.model.building.ModelProblem$Severity,org.apache.maven.model.building.ModelProblem$Version)>($stack30, $stack29);
 
-        $stack20 = staticinvoke <org.codehaus.plexus.util.FileUtils: boolean fileExists(java.lang.String)>(fileString);
+        $u1 = new java.lang.StringBuilder;
 
-        if $stack20 != 0 goto label08;
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
 
-        $stack21 = 1;
+        $stack32 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to interpolate file location ");
+
+        $stack33 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(path);
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" for profile ");
+
+        $stack35 = virtualinvoke profile.<org.apache.maven.model.Profile: java.lang.String getId()>();
+
+        $stack36 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack35);
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $r1 = (org.codehaus.plexus.interpolation.InterpolationException) $stack27;
+
+        $stack38 = virtualinvoke $r1.<org.codehaus.plexus.interpolation.InterpolationException: java.lang.String getMessage()>();
+
+        $stack39 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack38);
+
+        $stack40 = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack41 = virtualinvoke $u0.<org.apache.maven.model.building.ModelProblemCollectorRequest: org.apache.maven.model.building.ModelProblemCollectorRequest setMessage(java.lang.String)>($stack40);
+
+        if missing == 0 goto label08;
+
+        $stack45 = "missing";
 
         goto label09;
 
      label08:
-        $stack21 = 0;
+        $stack45 = "exists";
 
      label09:
-        return $stack21;
+        $stack42 = virtualinvoke file.<org.apache.maven.model.ActivationFile: org.apache.maven.model.InputLocation getLocation(java.lang.Object)>($stack45);
 
-     label10:
-        goto label13;
+        $stack43 = virtualinvoke $stack41.<org.apache.maven.model.building.ModelProblemCollectorRequest: org.apache.maven.model.building.ModelProblemCollectorRequest setLocation(org.apache.maven.model.InputLocation)>($stack42);
 
-     label11:
-        $stack25 := @caughtexception;
+        $r2 = (java.lang.Exception) $stack27;
 
-        $r2 = (org.apache.maven.profiles.activation.FileProfileActivator) this;
+        $stack44 = virtualinvoke $stack43.<org.apache.maven.model.building.ModelProblemCollectorRequest: org.apache.maven.model.building.ModelProblemCollectorRequest setException(java.lang.Exception)>($r2);
 
-        $stack26 = $r2.<org.apache.maven.profiles.activation.FileProfileActivator: org.codehaus.plexus.logging.Logger logger>;
+        interfaceinvoke problems.<org.apache.maven.model.building.ModelProblemCollector: void add(org.apache.maven.model.building.ModelProblemCollectorRequest)>($stack44);
 
-        $stack27 = interfaceinvoke $stack26.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
-
-        if $stack27 == 0 goto label12;
-
-        $r3 = (org.apache.maven.profiles.activation.FileProfileActivator) this;
-
-        $stack35 = $r3.<org.apache.maven.profiles.activation.FileProfileActivator: org.codehaus.plexus.logging.Logger logger>;
-
-        $u3 = new java.lang.StringBuilder;
-
-        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
-
-        $stack36 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to interpolate missing file location for profile activator: ");
-
-        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(fileString);
-
-        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack35.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack38, $stack25);
-
-        goto label13;
-
-     label12:
-        $r4 = (org.apache.maven.profiles.activation.FileProfileActivator) this;
-
-        $stack29 = $r4.<org.apache.maven.profiles.activation.FileProfileActivator: org.codehaus.plexus.logging.Logger logger>;
-
-        $u4 = new java.lang.StringBuilder;
-
-        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
-
-        $stack30 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to interpolate missing file location for profile activator: ");
-
-        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(fileString);
-
-        $stack32 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", enable verbose output (-X) for more details");
-
-        $stack33 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack29.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack33);
-
-     label13:
         return 0;
 
-        catch java.io.IOException from label01 to label02 with label03;
-        catch org.codehaus.plexus.interpolation.InterpolationException from label05 to label06 with label11;
-        catch org.codehaus.plexus.interpolation.InterpolationException from label07 to label09 with label11;
+     label10:
+        if path#3 != null goto label11;
+
+        return 0;
+
+     label11:
+        $u2 = new java.io.File;
+
+        specialinvoke $u2.<java.io.File: void <init>(java.lang.String)>(path#3);
+
+        $stack20 = virtualinvoke $u2.<java.io.File: boolean isAbsolute()>();
+
+        if $stack20 != 0 goto label12;
+
+        return 0;
+
+     label12:
+        fileExists = virtualinvoke $u2.<java.io.File: boolean exists()>();
+
+        if missing == 0 goto label14;
+
+        if fileExists != 0 goto label13;
+
+        $stack22 = 1;
+
+        goto label15;
+
+     label13:
+        $stack22 = 0;
+
+        goto label15;
+
+     label14:
+        $stack22 = fileExists;
+
+     label15:
+        return $stack22;
+
+        catch org.codehaus.plexus.interpolation.InterpolationException from label05 to label06 with label07;
     }
 
-    public void enableLogging(org.codehaus.plexus.logging.Logger)
+    public boolean presentInConfig(org.apache.maven.model.Profile, org.apache.maven.model.profile.ProfileActivationContext, org.apache.maven.model.building.ModelProblemCollector)
     {
+        org.apache.maven.model.Profile profile;
+        org.apache.maven.model.Activation activation;
+        org.apache.maven.model.ActivationFile file;
         FileProfileActivator this;
-        org.codehaus.plexus.logging.Logger logger;
-        org.apache.maven.profiles.activation.FileProfileActivator $r0;
+        org.apache.maven.model.profile.ProfileActivationContext context;
+        org.apache.maven.model.building.ModelProblemCollector problems;
 
         this := @this: FileProfileActivator;
 
-        logger := @parameter0: org.codehaus.plexus.logging.Logger;
+        profile := @parameter0: org.apache.maven.model.Profile;
 
-        $r0 = (org.apache.maven.profiles.activation.FileProfileActivator) this;
+        context := @parameter1: org.apache.maven.model.profile.ProfileActivationContext;
 
-        $r0.<org.apache.maven.profiles.activation.FileProfileActivator: org.codehaus.plexus.logging.Logger logger> = logger;
+        problems := @parameter2: org.apache.maven.model.building.ModelProblemCollector;
 
-        return;
+        activation = virtualinvoke profile.<org.apache.maven.model.Profile: org.apache.maven.model.Activation getActivation()>();
+
+        if activation != null goto label1;
+
+        return 0;
+
+     label1:
+        file = virtualinvoke activation.<org.apache.maven.model.Activation: org.apache.maven.model.ActivationFile getFile()>();
+
+        if file != null goto label2;
+
+        return 0;
+
+     label2:
+        return 1;
     }
 }

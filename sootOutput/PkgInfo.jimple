@@ -1,0 +1,137 @@
+public class PkgInfo extends java.lang.Object
+{
+    public final java.lang.String name;
+    public final java.lang.String libsString;
+    public final java.lang.String cflagsString;
+    public final java.util.List cflags;
+    public final java.util.List libraries;
+    public final java.util.List includePaths;
+
+    public void <init>(java.lang.String, java.lang.String, java.lang.String)
+    {
+        PkgInfo this;
+        java.lang.String name, libsString, cflagsString;
+        java.util.List $stack7, $stack8, $stack9;
+        java.util.ArrayList $u0, $u1, $u2;
+        org.ooc.frontend.pkgconfig.PkgInfo $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11;
+
+        this := @this: PkgInfo;
+
+        name := @parameter0: java.lang.String;
+
+        libsString := @parameter1: java.lang.String;
+
+        cflagsString := @parameter2: java.lang.String;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        $r0.<org.ooc.frontend.pkgconfig.PkgInfo: java.lang.String name> = name;
+
+        $r1 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        $r1.<org.ooc.frontend.pkgconfig.PkgInfo: java.lang.String libsString> = libsString;
+
+        $r2 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        $r2.<org.ooc.frontend.pkgconfig.PkgInfo: java.lang.String cflagsString> = cflagsString;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r3 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        $r3.<org.ooc.frontend.pkgconfig.PkgInfo: java.util.List cflags> = $u0;
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        $r4 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        $r4.<org.ooc.frontend.pkgconfig.PkgInfo: java.util.List libraries> = $u1;
+
+        $u2 = new java.util.ArrayList;
+
+        specialinvoke $u2.<java.util.ArrayList: void <init>()>();
+
+        $r5 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        $r5.<org.ooc.frontend.pkgconfig.PkgInfo: java.util.List includePaths> = $u2;
+
+        $r6 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        $stack7 = $r6.<org.ooc.frontend.pkgconfig.PkgInfo: java.util.List libraries>;
+
+        $r7 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        virtualinvoke $r7.<org.ooc.frontend.pkgconfig.PkgInfo: void extractTokens(java.lang.String,java.lang.String,java.util.List)>("-l", libsString, $stack7);
+
+        $r8 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        $stack8 = $r8.<org.ooc.frontend.pkgconfig.PkgInfo: java.util.List includePaths>;
+
+        $r9 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        virtualinvoke $r9.<org.ooc.frontend.pkgconfig.PkgInfo: void extractTokens(java.lang.String,java.lang.String,java.util.List)>("-I", cflagsString, $stack8);
+
+        $r10 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        $stack9 = $r10.<org.ooc.frontend.pkgconfig.PkgInfo: java.util.List cflags>;
+
+        $r11 = (org.ooc.frontend.pkgconfig.PkgInfo) this;
+
+        virtualinvoke $r11.<org.ooc.frontend.pkgconfig.PkgInfo: void extractTokens(java.lang.String,java.lang.String,java.util.List)>("", cflagsString, $stack9);
+
+        return;
+    }
+
+    protected void extractTokens(java.lang.String, java.lang.String, java.util.List)
+    {
+        java.lang.String prefix, string, token, $stack13, $stack14;
+        int prefixLength;
+        java.util.StringTokenizer $stack8;
+        boolean $stack9, $stack11;
+        java.util.List list;
+        PkgInfo this;
+
+        this := @this: PkgInfo;
+
+        prefix := @parameter0: java.lang.String;
+
+        string := @parameter1: java.lang.String;
+
+        list := @parameter2: java.util.List;
+
+        prefixLength = virtualinvoke prefix.<java.lang.String: int length()>();
+
+        $stack8 = new java.util.StringTokenizer;
+
+        specialinvoke $stack8.<java.util.StringTokenizer: void <init>(java.lang.String)>(string);
+
+     label1:
+        $stack9 = virtualinvoke $stack8.<java.util.StringTokenizer: boolean hasMoreTokens()>();
+
+        if $stack9 == 0 goto label3;
+
+        token = virtualinvoke $stack8.<java.util.StringTokenizer: java.lang.String nextToken()>();
+
+        $stack11 = virtualinvoke token.<java.lang.String: boolean startsWith(java.lang.String)>(prefix);
+
+        if $stack11 == 0 goto label2;
+
+        $stack13 = virtualinvoke token.<java.lang.String: java.lang.String substring(int)>(prefixLength);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.String: java.lang.String trim()>();
+
+        interfaceinvoke list.<java.util.List: boolean add(java.lang.Object)>($stack14);
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+}

@@ -1,0 +1,704 @@
+public class ProjectiveTransformerCL extends org.bytedeco.javacv.ProjectiveTransformer implements org.bytedeco.javacv.ImageTransformerCL
+{
+    protected final org.bytedeco.javacv.JavaCVCL context;
+    protected final com.jogamp.opencl.CLBuffer HBuffer;
+    private com.jogamp.opencl.CLKernel oneKernel;
+    private com.jogamp.opencl.CLKernel subKernel;
+    private com.jogamp.opencl.CLKernel dotKernel;
+    private com.jogamp.opencl.CLKernel reduceKernel;
+    static final boolean $assertionsDisabled;
+
+    public void <init>(org.bytedeco.javacv.JavaCVCL)
+    {
+        ProjectiveTransformerCL this;
+        org.bytedeco.javacv.JavaCVCL context;
+        double[] $stack2;
+        org.bytedeco.javacv.ProjectiveTransformerCL $r0;
+
+        this := @this: ProjectiveTransformerCL;
+
+        context := @parameter0: org.bytedeco.javacv.JavaCVCL;
+
+        $stack2 = newarray (double)[0];
+
+        $r0 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.ProjectiveTransformerCL: void <init>(org.bytedeco.javacv.JavaCVCL,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,double[],double[])>(context, null, null, null, null, null, $stack2, null);
+
+        return;
+    }
+
+    public void <init>(org.bytedeco.javacv.JavaCVCL, double[])
+    {
+        ProjectiveTransformerCL this;
+        org.bytedeco.javacv.JavaCVCL context;
+        double[] referencePoints;
+        org.bytedeco.javacv.ProjectiveTransformerCL $r0;
+
+        this := @this: ProjectiveTransformerCL;
+
+        context := @parameter0: org.bytedeco.javacv.JavaCVCL;
+
+        referencePoints := @parameter1: double[];
+
+        $r0 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.ProjectiveTransformerCL: void <init>(org.bytedeco.javacv.JavaCVCL,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,double[],double[])>(context, null, null, null, null, null, referencePoints, null);
+
+        return;
+    }
+
+    public void <init>(org.bytedeco.javacv.JavaCVCL, org.bytedeco.javacv.ProjectiveDevice, org.bytedeco.javacv.ProjectiveDevice, org.bytedeco.opencv.opencv_core.CvMat, double[], double[])
+    {
+        ProjectiveTransformerCL this;
+        org.bytedeco.javacv.JavaCVCL context;
+        org.bytedeco.javacv.ProjectiveDevice d1, d2;
+        org.bytedeco.opencv.opencv_core.CvMat n, $stack7, $stack8, $stack9, $stack10;
+        double[] referencePoints1, referencePoints2;
+        org.bytedeco.javacv.ProjectiveTransformerCL $r0;
+
+        this := @this: ProjectiveTransformerCL;
+
+        context := @parameter0: org.bytedeco.javacv.JavaCVCL;
+
+        d1 := @parameter1: org.bytedeco.javacv.ProjectiveDevice;
+
+        d2 := @parameter2: org.bytedeco.javacv.ProjectiveDevice;
+
+        n := @parameter3: org.bytedeco.opencv.opencv_core.CvMat;
+
+        referencePoints1 := @parameter4: double[];
+
+        referencePoints2 := @parameter5: double[];
+
+        $stack10 = d1.<org.bytedeco.javacv.ProjectiveDevice: org.bytedeco.opencv.opencv_core.CvMat cameraMatrix>;
+
+        $stack9 = d2.<org.bytedeco.javacv.ProjectiveDevice: org.bytedeco.opencv.opencv_core.CvMat cameraMatrix>;
+
+        $stack8 = d2.<org.bytedeco.javacv.ProjectiveDevice: org.bytedeco.opencv.opencv_core.CvMat R>;
+
+        $stack7 = d2.<org.bytedeco.javacv.ProjectiveDevice: org.bytedeco.opencv.opencv_core.CvMat T>;
+
+        $r0 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.ProjectiveTransformerCL: void <init>(org.bytedeco.javacv.JavaCVCL,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,double[],double[])>(context, $stack10, $stack9, $stack8, $stack7, n, referencePoints1, referencePoints2);
+
+        return;
+    }
+
+    public void <init>(org.bytedeco.javacv.JavaCVCL, org.bytedeco.opencv.opencv_core.CvMat, org.bytedeco.opencv.opencv_core.CvMat, org.bytedeco.opencv.opencv_core.CvMat, org.bytedeco.opencv.opencv_core.CvMat, org.bytedeco.opencv.opencv_core.CvMat, double[], double[])
+    {
+        ProjectiveTransformerCL this;
+        org.bytedeco.opencv.opencv_core.CvMat K1, K2, R, t, n;
+        double[] referencePoints1, referencePoints2;
+        org.bytedeco.javacv.ProjectiveTransformer$Parameters $stack11;
+        int dotSize, $stack16;
+        org.bytedeco.javacv.JavaCVCL context;
+        com.jogamp.opencl.CLContext $stack13;
+        com.jogamp.opencl.CLMemory$Mem[] $stack14;
+        com.jogamp.opencl.CLMemory$Mem $stack15;
+        com.jogamp.opencl.CLBuffer $stack17;
+        java.lang.Class $stack18;
+        java.lang.StringBuilder $stack20, $stack21, $u0;
+        java.lang.String $stack22;
+        java.lang.String[] $stack23;
+        com.jogamp.opencl.CLKernel[] kernels;
+        com.jogamp.opencl.CLKernel $stack25, $stack26, $stack27, $stack28;
+        org.bytedeco.javacv.ProjectiveTransformerCL $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: ProjectiveTransformerCL;
+
+        context := @parameter0: org.bytedeco.javacv.JavaCVCL;
+
+        K1 := @parameter1: org.bytedeco.opencv.opencv_core.CvMat;
+
+        K2 := @parameter2: org.bytedeco.opencv.opencv_core.CvMat;
+
+        R := @parameter3: org.bytedeco.opencv.opencv_core.CvMat;
+
+        t := @parameter4: org.bytedeco.opencv.opencv_core.CvMat;
+
+        n := @parameter5: org.bytedeco.opencv.opencv_core.CvMat;
+
+        referencePoints1 := @parameter6: double[];
+
+        referencePoints2 := @parameter7: double[];
+
+        specialinvoke this.<org.bytedeco.javacv.ProjectiveTransformer: void <init>(org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,double[],double[])>(K1, K2, R, t, n, referencePoints1, referencePoints2);
+
+        $r0 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack11 = virtualinvoke $r0.<org.bytedeco.javacv.ProjectiveTransformerCL: org.bytedeco.javacv.ProjectiveTransformer$Parameters createParameters()>();
+
+        dotSize = virtualinvoke $stack11.<org.bytedeco.javacv.ProjectiveTransformer$Parameters: int size()>();
+
+        $r1 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $r1.<org.bytedeco.javacv.ProjectiveTransformerCL: org.bytedeco.javacv.JavaCVCL context> = context;
+
+        $stack13 = virtualinvoke context.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLContext getCLContext()>();
+
+        $stack16 = dotSize * 9;
+
+        $stack14 = newarray (com.jogamp.opencl.CLMemory$Mem)[1];
+
+        $stack15 = <com.jogamp.opencl.CLMemory$Mem: com.jogamp.opencl.CLMemory$Mem READ_ONLY>;
+
+        $stack14[0] = $stack15;
+
+        $stack17 = virtualinvoke $stack13.<com.jogamp.opencl.CLContext: com.jogamp.opencl.CLBuffer createFloatBuffer(int,com.jogamp.opencl.CLMemory$Mem[])>($stack16, $stack14);
+
+        $r2 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $r2.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLBuffer HBuffer> = $stack17;
+
+        $stack18 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        if $stack18 != class "Lorg/bytedeco/javacv/ProjectiveTransformerCL;" goto label1;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack20 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("-cl-fast-relaxed-math -cl-mad-enable -DDOT_SIZE=");
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(dotSize);
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack23 = newarray (java.lang.String)[4];
+
+        $stack23[0] = "transformOne";
+
+        $stack23[1] = "transformSub";
+
+        $stack23[2] = "transformDot";
+
+        $stack23[3] = "reduceOutputData";
+
+        kernels = virtualinvoke context.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLKernel[] buildKernels(java.lang.String,java.lang.String,java.lang.String[])>($stack22, "ImageTransformer.cl:ProjectiveTransformer.cl", $stack23);
+
+        $stack25 = kernels[0];
+
+        $r3 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $r3.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLKernel oneKernel> = $stack25;
+
+        $stack26 = kernels[1];
+
+        $r4 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $r4.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLKernel subKernel> = $stack26;
+
+        $stack27 = kernels[2];
+
+        $r5 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $r5.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLKernel dotKernel> = $stack27;
+
+        $stack28 = kernels[3];
+
+        $r6 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $r6.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLKernel reduceKernel> = $stack28;
+
+     label1:
+        return;
+    }
+
+    public org.bytedeco.javacv.JavaCVCL getContext()
+    {
+        ProjectiveTransformerCL this;
+        org.bytedeco.javacv.JavaCVCL $stack1;
+        org.bytedeco.javacv.ProjectiveTransformerCL $r0;
+
+        this := @this: ProjectiveTransformerCL;
+
+        $r0 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.ProjectiveTransformerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        return $stack1;
+    }
+
+    protected void prepareHomographies(com.jogamp.opencl.CLBuffer, int, org.bytedeco.javacv.ImageTransformer$Parameters[], boolean[])
+    {
+        com.jogamp.opencl.CLBuffer HBuffer;
+        java.nio.Buffer $stack9, $stack10;
+        java.nio.FloatBuffer floatH;
+        java.lang.ThreadLocal $stack11;
+        java.lang.Object $stack12;
+        org.bytedeco.opencv.opencv_core.CvMat H;
+        org.bytedeco.javacv.ImageTransformer$Parameters[] parameters;
+        int $stack13, pyramidLevel, i, j;
+        ProjectiveTransformerCL this;
+        org.bytedeco.javacv.ImageTransformer$Parameters $stack15;
+        boolean[] inverses;
+        org.bytedeco.javacv.ProjectiveTransformer$Parameters $stack17;
+        double $stack20;
+        float $stack21;
+        boolean $stack16;
+        org.bytedeco.javacv.ProjectiveTransformerCL $r0;
+
+        this := @this: ProjectiveTransformerCL;
+
+        HBuffer := @parameter0: com.jogamp.opencl.CLBuffer;
+
+        pyramidLevel := @parameter1: int;
+
+        parameters := @parameter2: org.bytedeco.javacv.ImageTransformer$Parameters[];
+
+        inverses := @parameter3: boolean[];
+
+        $stack9 = virtualinvoke HBuffer.<com.jogamp.opencl.CLBuffer: java.nio.Buffer getBuffer()>();
+
+        $stack10 = virtualinvoke $stack9.<java.nio.Buffer: java.nio.Buffer rewind()>();
+
+        floatH = (java.nio.FloatBuffer) $stack10;
+
+        $stack11 = <org.bytedeco.javacv.ProjectiveTransformerCL: java.lang.ThreadLocal H3x3>;
+
+        $stack12 = virtualinvoke $stack11.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        H = (org.bytedeco.opencv.opencv_core.CvMat) $stack12;
+
+        i = 0;
+
+     label1:
+        $stack13 = lengthof parameters;
+
+        if i >= $stack13 goto label6;
+
+        $stack15 = parameters[i];
+
+        $stack17 = (org.bytedeco.javacv.ProjectiveTransformer$Parameters) $stack15;
+
+        if inverses != null goto label2;
+
+        $stack16 = 0;
+
+        goto label3;
+
+     label2:
+        $stack16 = inverses[i];
+
+     label3:
+        $r0 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.ProjectiveTransformerCL: void prepareHomography(org.bytedeco.opencv.opencv_core.CvMat,int,org.bytedeco.javacv.ProjectiveTransformer$Parameters,boolean)>(H, pyramidLevel, $stack17, $stack16);
+
+        j = 0;
+
+     label4:
+        if j >= 9 goto label5;
+
+        $stack20 = virtualinvoke H.<org.bytedeco.opencv.opencv_core.CvMat: double get(int)>(j);
+
+        $stack21 = (float) $stack20;
+
+        virtualinvoke floatH.<java.nio.FloatBuffer: java.nio.FloatBuffer put(float)>($stack21);
+
+        j = j + 1;
+
+        goto label4;
+
+     label5:
+        i = i + 1;
+
+        goto label1;
+
+     label6:
+        virtualinvoke floatH.<java.nio.FloatBuffer: java.nio.FloatBuffer rewind()>();
+
+        return;
+    }
+
+    public void transform(com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d, com.jogamp.opencl.CLImage2d, org.bytedeco.javacv.ImageTransformer$Parameters[], boolean[], org.bytedeco.javacv.ImageTransformerCL$InputData, org.bytedeco.javacv.ImageTransformerCL$OutputData)
+    {
+        ProjectiveTransformerCL this;
+        org.bytedeco.javacv.ImageTransformerCL$InputData inputData;
+        org.bytedeco.javacv.ImageTransformer$Parameters[] parameters;
+        boolean[] inverses;
+        int $stack19, dotSize, $stack23, $stack24, localSize, globalSize, reduceSize, $stack66, $stack102, $stack128, $stack137, $stack25, $stack46, $stack47, $stack48;
+        com.jogamp.opencl.CLBuffer $stack20, inputBuffer, outputBuffer, $stack41, $stack97, $stack118, $stack32;
+        org.bytedeco.javacv.ImageTransformer$Parameters $stack21;
+        org.bytedeco.javacv.ImageTransformerCL$OutputData outputData;
+        com.jogamp.opencl.CLImage2d subImg, srcDotImg, srcImg, maskImg, transImg, dstImg, $stack123;
+        boolean $stack35, $stack55, $stack90, $stack113, $stack34;
+        com.jogamp.opencl.CLKernel $stack36, $stack37, $stack38, $stack39, $stack40, $stack42, $stack43, $stack44, $stack58, $stack59, $stack63, $stack91, $stack92, $stack93, $stack94, $stack95, $stack96, $stack98, $stack99, $stack100, $stack114, $stack115, $stack116, $stack117, $stack119, $stack120, $stack121, kernel#57;
+        org.bytedeco.javacv.JavaCVCL $stack56, $stack64, $stack133, $stack27, $stack29, $stack33, $stack54;
+        long $stack61, $stack62, $stack53, $stack52, $stack51, $stack50, $stack49;
+        com.jogamp.opencl.CLEventList $u0;
+        java.lang.AssertionError $u1, $u2, $u3;
+        org.bytedeco.javacv.ProjectiveTransformerCL $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r11, $r15, $r21, $r25, $r30, $r34, $r35, $r37, $r38, $r39;
+        com.jogamp.opencl.CLMemory $r8, $r9, $r10, $r12, $r13, $r14, $r16, $r17, $r18, $r19, $r20, $r22, $r23, $r24, $r26, $r27, $r28, $r29, $r31, $r32, $r33, $r36;
+
+        this := @this: ProjectiveTransformerCL;
+
+        srcImg := @parameter0: com.jogamp.opencl.CLImage2d;
+
+        subImg := @parameter1: com.jogamp.opencl.CLImage2d;
+
+        srcDotImg := @parameter2: com.jogamp.opencl.CLImage2d;
+
+        transImg := @parameter3: com.jogamp.opencl.CLImage2d;
+
+        dstImg := @parameter4: com.jogamp.opencl.CLImage2d;
+
+        maskImg := @parameter5: com.jogamp.opencl.CLImage2d;
+
+        parameters := @parameter6: org.bytedeco.javacv.ImageTransformer$Parameters[];
+
+        inverses := @parameter7: boolean[];
+
+        inputData := @parameter8: org.bytedeco.javacv.ImageTransformerCL$InputData;
+
+        outputData := @parameter9: org.bytedeco.javacv.ImageTransformerCL$OutputData;
+
+        $r0 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack20 = $r0.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLBuffer HBuffer>;
+
+        $stack19 = inputData.<org.bytedeco.javacv.ImageTransformerCL$InputData: int pyramidLevel>;
+
+        $r1 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        virtualinvoke $r1.<org.bytedeco.javacv.ProjectiveTransformerCL: void prepareHomographies(com.jogamp.opencl.CLBuffer,int,org.bytedeco.javacv.ImageTransformer$Parameters[],boolean[])>($stack20, $stack19, parameters, inverses);
+
+        $stack21 = parameters[0];
+
+        dotSize = interfaceinvoke $stack21.<org.bytedeco.javacv.ImageTransformer$Parameters: int size()>();
+
+        $stack23 = lengthof parameters;
+
+        if $stack23 <= 1 goto label01;
+
+        $stack137 = lengthof parameters;
+
+        goto label03;
+
+     label01:
+        $stack24 = inputData.<org.bytedeco.javacv.ImageTransformerCL$InputData: int roiWidth>;
+
+        if $stack24 <= 32 goto label02;
+
+        $stack137 = 64;
+
+        goto label03;
+
+     label02:
+        $stack137 = 32;
+
+     label03:
+        localSize = $stack137;
+
+        $stack25 = inputData.<org.bytedeco.javacv.ImageTransformerCL$InputData: int roiWidth>;
+
+        globalSize = staticinvoke <org.bytedeco.javacv.JavaCVCL: int alignCeil(int,int)>($stack25, $stack137);
+
+        reduceSize = globalSize / $stack137;
+
+        $r2 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack27 = $r2.<org.bytedeco.javacv.ProjectiveTransformerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        inputBuffer = virtualinvoke inputData.<org.bytedeco.javacv.ImageTransformerCL$InputData: com.jogamp.opencl.CLBuffer getBuffer(org.bytedeco.javacv.JavaCVCL)>($stack27);
+
+        $r3 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack29 = $r3.<org.bytedeco.javacv.ProjectiveTransformerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        outputBuffer = virtualinvoke outputData.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer getBuffer(org.bytedeco.javacv.JavaCVCL,int,int)>($stack29, dotSize, reduceSize);
+
+        $u0 = new com.jogamp.opencl.CLEventList;
+
+        specialinvoke $u0.<com.jogamp.opencl.CLEventList: void <init>(int)>(1);
+
+        $r4 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack33 = $r4.<org.bytedeco.javacv.ProjectiveTransformerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r5 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack32 = $r5.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLBuffer HBuffer>;
+
+        virtualinvoke $stack33.<org.bytedeco.javacv.JavaCVCL: void writeBuffer(com.jogamp.opencl.CLBuffer,boolean)>($stack32, 0);
+
+        $stack34 = inputData.<org.bytedeco.javacv.ImageTransformerCL$InputData: boolean autoWrite>;
+
+        if $stack34 == 0 goto label04;
+
+        $r6 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack133 = $r6.<org.bytedeco.javacv.ProjectiveTransformerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        virtualinvoke inputData.<org.bytedeco.javacv.ImageTransformerCL$InputData: com.jogamp.opencl.CLBuffer writeBuffer(org.bytedeco.javacv.JavaCVCL)>($stack133);
+
+     label04:
+        if subImg != null goto label08;
+
+        $stack113 = <org.bytedeco.javacv.ProjectiveTransformerCL: boolean $assertionsDisabled>;
+
+        if $stack113 != 0 goto label05;
+
+        $stack128 = lengthof parameters;
+
+        if $stack128 == 1 goto label05;
+
+        $u1 = new java.lang.AssertionError;
+
+        specialinvoke $u1.<java.lang.AssertionError: void <init>()>();
+
+        throw $u1;
+
+     label05:
+        $r7 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack114 = $r7.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLKernel oneKernel>;
+
+        $r8 = (com.jogamp.opencl.CLMemory) srcImg;
+
+        $stack115 = virtualinvoke $stack114.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r8);
+
+        if dstImg != null goto label06;
+
+        $stack123 = transImg;
+
+        goto label07;
+
+     label06:
+        $stack123 = dstImg;
+
+     label07:
+        $r9 = (com.jogamp.opencl.CLMemory) $stack123;
+
+        $stack116 = virtualinvoke $stack115.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r9);
+
+        $r10 = (com.jogamp.opencl.CLMemory) maskImg;
+
+        $stack117 = virtualinvoke $stack116.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r10);
+
+        $r11 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack118 = $r11.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLBuffer HBuffer>;
+
+        $r12 = (com.jogamp.opencl.CLMemory) $stack118;
+
+        $stack119 = virtualinvoke $stack117.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r12);
+
+        $r13 = (com.jogamp.opencl.CLMemory) inputBuffer;
+
+        $stack120 = virtualinvoke $stack119.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r13);
+
+        $r14 = (com.jogamp.opencl.CLMemory) outputBuffer;
+
+        $stack121 = virtualinvoke $stack120.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r14);
+
+        kernel#57 = virtualinvoke $stack121.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel rewind()>();
+
+        goto label12;
+
+     label08:
+        if srcDotImg != null goto label10;
+
+        $stack90 = <org.bytedeco.javacv.ProjectiveTransformerCL: boolean $assertionsDisabled>;
+
+        if $stack90 != 0 goto label09;
+
+        $stack102 = lengthof parameters;
+
+        if $stack102 == 1 goto label09;
+
+        $u2 = new java.lang.AssertionError;
+
+        specialinvoke $u2.<java.lang.AssertionError: void <init>()>();
+
+        throw $u2;
+
+     label09:
+        $r15 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack91 = $r15.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLKernel subKernel>;
+
+        $r16 = (com.jogamp.opencl.CLMemory) srcImg;
+
+        $stack92 = virtualinvoke $stack91.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r16);
+
+        $r17 = (com.jogamp.opencl.CLMemory) subImg;
+
+        $stack93 = virtualinvoke $stack92.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r17);
+
+        $r18 = (com.jogamp.opencl.CLMemory) transImg;
+
+        $stack94 = virtualinvoke $stack93.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r18);
+
+        $r19 = (com.jogamp.opencl.CLMemory) dstImg;
+
+        $stack95 = virtualinvoke $stack94.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r19);
+
+        $r20 = (com.jogamp.opencl.CLMemory) maskImg;
+
+        $stack96 = virtualinvoke $stack95.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r20);
+
+        $r21 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack97 = $r21.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLBuffer HBuffer>;
+
+        $r22 = (com.jogamp.opencl.CLMemory) $stack97;
+
+        $stack98 = virtualinvoke $stack96.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r22);
+
+        $r23 = (com.jogamp.opencl.CLMemory) inputBuffer;
+
+        $stack99 = virtualinvoke $stack98.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r23);
+
+        $r24 = (com.jogamp.opencl.CLMemory) outputBuffer;
+
+        $stack100 = virtualinvoke $stack99.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r24);
+
+        kernel#57 = virtualinvoke $stack100.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel rewind()>();
+
+        goto label12;
+
+     label10:
+        $stack35 = <org.bytedeco.javacv.ProjectiveTransformerCL: boolean $assertionsDisabled>;
+
+        if $stack35 != 0 goto label11;
+
+        $stack66 = lengthof parameters;
+
+        if $stack66 == dotSize goto label11;
+
+        $u3 = new java.lang.AssertionError;
+
+        specialinvoke $u3.<java.lang.AssertionError: void <init>()>();
+
+        throw $u3;
+
+     label11:
+        $r25 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack36 = $r25.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLKernel dotKernel>;
+
+        $r26 = (com.jogamp.opencl.CLMemory) srcImg;
+
+        $stack37 = virtualinvoke $stack36.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r26);
+
+        $r27 = (com.jogamp.opencl.CLMemory) subImg;
+
+        $stack38 = virtualinvoke $stack37.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r27);
+
+        $r28 = (com.jogamp.opencl.CLMemory) srcDotImg;
+
+        $stack39 = virtualinvoke $stack38.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r28);
+
+        $r29 = (com.jogamp.opencl.CLMemory) maskImg;
+
+        $stack40 = virtualinvoke $stack39.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r29);
+
+        $r30 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack41 = $r30.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLBuffer HBuffer>;
+
+        $r31 = (com.jogamp.opencl.CLMemory) $stack41;
+
+        $stack42 = virtualinvoke $stack40.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r31);
+
+        $r32 = (com.jogamp.opencl.CLMemory) inputBuffer;
+
+        $stack43 = virtualinvoke $stack42.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r32);
+
+        $r33 = (com.jogamp.opencl.CLMemory) outputBuffer;
+
+        $stack44 = virtualinvoke $stack43.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r33);
+
+        kernel#57 = virtualinvoke $stack44.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel rewind()>();
+
+     label12:
+        $r34 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack54 = $r34.<org.bytedeco.javacv.ProjectiveTransformerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $stack46 = inputData.<org.bytedeco.javacv.ImageTransformerCL$InputData: int roiX>;
+
+        $stack53 = (long) $stack46;
+
+        $stack52 = (long) globalSize;
+
+        $stack47 = lengthof parameters;
+
+        $stack51 = (long) $stack47;
+
+        $stack50 = (long) localSize;
+
+        $stack48 = lengthof parameters;
+
+        $stack49 = (long) $stack48;
+
+        virtualinvoke $stack54.<org.bytedeco.javacv.JavaCVCL: void executeKernel(com.jogamp.opencl.CLKernel,long,long,long,long,long,long,long,long,long,com.jogamp.opencl.CLEventList)>(kernel#57, $stack53, 0L, 0L, $stack52, 1L, $stack51, $stack50, 1L, $stack49, $u0);
+
+        if reduceSize <= 1 goto label13;
+
+        $r35 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack58 = $r35.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLKernel reduceKernel>;
+
+        $r36 = (com.jogamp.opencl.CLMemory) outputBuffer;
+
+        $stack59 = virtualinvoke $stack58.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel putArg(com.jogamp.opencl.CLMemory)>($r36);
+
+        virtualinvoke $stack59.<com.jogamp.opencl.CLKernel: com.jogamp.opencl.CLKernel rewind()>();
+
+        $r37 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack64 = $r37.<org.bytedeco.javacv.ProjectiveTransformerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r38 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack63 = $r38.<org.bytedeco.javacv.ProjectiveTransformerCL: com.jogamp.opencl.CLKernel reduceKernel>;
+
+        $stack62 = (long) reduceSize;
+
+        $stack61 = (long) reduceSize;
+
+        virtualinvoke $stack64.<org.bytedeco.javacv.JavaCVCL: void executeKernel(com.jogamp.opencl.CLKernel,long,long,long)>($stack63, 0L, $stack62, $stack61);
+
+     label13:
+        $stack55 = outputData.<org.bytedeco.javacv.ImageTransformerCL$OutputData: boolean autoRead>;
+
+        if $stack55 == 0 goto label14;
+
+        $r39 = (org.bytedeco.javacv.ProjectiveTransformerCL) this;
+
+        $stack56 = $r39.<org.bytedeco.javacv.ProjectiveTransformerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        virtualinvoke outputData.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer readBuffer(org.bytedeco.javacv.JavaCVCL)>($stack56);
+
+     label14:
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $stack0;
+        boolean $stack1, $stack2;
+
+        $stack0 = class "Lorg/bytedeco/javacv/ProjectiveTransformerCL;";
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Class: boolean desiredAssertionStatus()>();
+
+        if $stack1 != 0 goto label1;
+
+        $stack2 = 1;
+
+        goto label2;
+
+     label1:
+        $stack2 = 0;
+
+     label2:
+        <org.bytedeco.javacv.ProjectiveTransformerCL: boolean $assertionsDisabled> = $stack2;
+
+        return;
+    }
+}

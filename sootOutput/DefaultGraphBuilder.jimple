@@ -1,0 +1,1525 @@
+public class DefaultGraphBuilder extends java.lang.Object implements org.apache.maven.graph.GraphBuilder
+{
+    private static final org.slf4j.Logger LOGGER;
+    private final org.apache.maven.execution.BuildResumptionDataRepository buildResumptionDataRepository;
+    private final org.apache.maven.project.collector.PomlessCollectionStrategy pomlessCollectionStrategy;
+    private final org.apache.maven.project.collector.MultiModuleCollectionStrategy multiModuleCollectionStrategy;
+    private final org.apache.maven.project.collector.RequestPomCollectionStrategy requestPomCollectionStrategy;
+
+    public void <init>(org.apache.maven.execution.BuildResumptionDataRepository, org.apache.maven.project.collector.PomlessCollectionStrategy, org.apache.maven.project.collector.MultiModuleCollectionStrategy, org.apache.maven.project.collector.RequestPomCollectionStrategy)
+    {
+        DefaultGraphBuilder this;
+        org.apache.maven.execution.BuildResumptionDataRepository buildResumptionDataRepository;
+        org.apache.maven.project.collector.PomlessCollectionStrategy pomlessCollectionStrategy;
+        org.apache.maven.project.collector.MultiModuleCollectionStrategy multiModuleCollectionStrategy;
+        org.apache.maven.project.collector.RequestPomCollectionStrategy requestPomCollectionStrategy;
+        org.apache.maven.graph.DefaultGraphBuilder $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultGraphBuilder;
+
+        buildResumptionDataRepository := @parameter0: org.apache.maven.execution.BuildResumptionDataRepository;
+
+        pomlessCollectionStrategy := @parameter1: org.apache.maven.project.collector.PomlessCollectionStrategy;
+
+        multiModuleCollectionStrategy := @parameter2: org.apache.maven.project.collector.MultiModuleCollectionStrategy;
+
+        requestPomCollectionStrategy := @parameter3: org.apache.maven.project.collector.RequestPomCollectionStrategy;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $r0.<org.apache.maven.graph.DefaultGraphBuilder: org.apache.maven.execution.BuildResumptionDataRepository buildResumptionDataRepository> = buildResumptionDataRepository;
+
+        $r1 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $r1.<org.apache.maven.graph.DefaultGraphBuilder: org.apache.maven.project.collector.PomlessCollectionStrategy pomlessCollectionStrategy> = pomlessCollectionStrategy;
+
+        $r2 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $r2.<org.apache.maven.graph.DefaultGraphBuilder: org.apache.maven.project.collector.MultiModuleCollectionStrategy multiModuleCollectionStrategy> = multiModuleCollectionStrategy;
+
+        $r3 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $r3.<org.apache.maven.graph.DefaultGraphBuilder: org.apache.maven.project.collector.RequestPomCollectionStrategy requestPomCollectionStrategy> = requestPomCollectionStrategy;
+
+        return;
+    }
+
+    public org.apache.maven.model.building.Result build(org.apache.maven.execution.MavenSession)
+    {
+        DefaultGraphBuilder this;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.MavenExecutionRequest $stack7, $stack8;
+        java.lang.Throwable $stack11, $stack21;
+        java.lang.StringBuilder $stack13, $stack15, $u1;
+        java.lang.String $stack14, projects#5;
+        java.util.List $stack19, $stack23, projects;
+        org.apache.maven.model.building.Result $stack20, $stack24, result;
+        org.apache.maven.model.building.DefaultModelProblem $u0, $u3;
+        org.apache.maven.ProjectCycleException $u2;
+        org.apache.maven.graph.DefaultGraphBuilder $r0, $r1, $r2, $r3, $r4;
+        java.lang.Exception $r5, $r8;
+        org.codehaus.plexus.util.dag.CycleDetectedException $r6, $r7;
+
+        this := @this: DefaultGraphBuilder;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+     label1:
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        result = specialinvoke $r0.<org.apache.maven.graph.DefaultGraphBuilder: org.apache.maven.model.building.Result sessionDependencyGraph(org.apache.maven.execution.MavenSession)>(session);
+
+        if result != null goto label2;
+
+        $r1 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        projects = specialinvoke $r1.<org.apache.maven.graph.DefaultGraphBuilder: java.util.List getProjectsForMavenReactor(org.apache.maven.execution.MavenSession)>(session);
+
+        $stack7 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $r2 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        specialinvoke $r2.<org.apache.maven.graph.DefaultGraphBuilder: void validateProjects(java.util.List,org.apache.maven.execution.MavenExecutionRequest)>(projects, $stack7);
+
+        $stack8 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $r3 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        specialinvoke $r3.<org.apache.maven.graph.DefaultGraphBuilder: void enrichRequestFromResumptionData(java.util.List,org.apache.maven.execution.MavenExecutionRequest)>(projects, $stack8);
+
+        $r4 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        result = specialinvoke $r4.<org.apache.maven.graph.DefaultGraphBuilder: org.apache.maven.model.building.Result reactorDependencyGraph(org.apache.maven.execution.MavenSession,java.util.List)>(session, projects);
+
+     label2:
+        return result;
+
+     label3:
+        $stack21 := @caughtexception;
+
+        $u0 = new org.apache.maven.model.building.DefaultModelProblem;
+
+        $r5 = (java.lang.Exception) $stack21;
+
+        specialinvoke $u0.<org.apache.maven.model.building.DefaultModelProblem: void <init>(java.lang.String,org.apache.maven.model.building.ModelProblem$Severity,org.apache.maven.model.building.ModelProblem$Version,org.apache.maven.model.Model,int,int,java.lang.Exception)>(null, null, null, null, 0, 0, $r5);
+
+        $stack23 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($u0);
+
+        $stack24 = staticinvoke <org.apache.maven.model.building.Result: org.apache.maven.model.building.Result error(java.lang.Iterable)>($stack23);
+
+        return $stack24;
+
+     label4:
+        $stack11 := @caughtexception;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The projects in the reactor contain a cyclic reference: ");
+
+        $r6 = (org.codehaus.plexus.util.dag.CycleDetectedException) $stack11;
+
+        $stack14 = virtualinvoke $r6.<org.codehaus.plexus.util.dag.CycleDetectedException: java.lang.String getMessage()>();
+
+        $stack15 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        projects#5 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $u2 = new org.apache.maven.ProjectCycleException;
+
+        $r7 = (org.codehaus.plexus.util.dag.CycleDetectedException) $stack11;
+
+        specialinvoke $u2.<org.apache.maven.ProjectCycleException: void <init>(java.lang.String,org.codehaus.plexus.util.dag.CycleDetectedException)>(projects#5, $r7);
+
+        $u3 = new org.apache.maven.model.building.DefaultModelProblem;
+
+        $r8 = (java.lang.Exception) $u2;
+
+        specialinvoke $u3.<org.apache.maven.model.building.DefaultModelProblem: void <init>(java.lang.String,org.apache.maven.model.building.ModelProblem$Severity,org.apache.maven.model.building.ModelProblem$Version,org.apache.maven.model.Model,int,int,java.lang.Exception)>(null, null, null, null, 0, 0, $r8);
+
+        $stack19 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>($u3);
+
+        $stack20 = staticinvoke <org.apache.maven.model.building.Result: org.apache.maven.model.building.Result error(java.lang.Iterable)>($stack19);
+
+        return $stack20;
+
+        catch org.apache.maven.project.ProjectBuildingException from label1 to label2 with label3;
+        catch org.apache.maven.project.DuplicateProjectException from label1 to label2 with label3;
+        catch org.apache.maven.MavenExecutionException from label1 to label2 with label3;
+        catch org.codehaus.plexus.util.dag.CycleDetectedException from label1 to label2 with label4;
+    }
+
+    private org.apache.maven.model.building.Result sessionDependencyGraph(org.apache.maven.execution.MavenSession) throws org.codehaus.plexus.util.dag.CycleDetectedException, org.apache.maven.project.DuplicateProjectException
+    {
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.ProjectDependencyGraph $stack4;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $stack5;
+        java.util.List $stack6, $stack7, $stack9;
+        DefaultGraphBuilder this;
+        org.apache.maven.model.building.Result result;
+
+        this := @this: DefaultGraphBuilder;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        result = null;
+
+        $stack4 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.ProjectDependencyGraph getProjectDependencyGraph()>();
+
+        if $stack4 != null goto label1;
+
+        $stack9 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        if $stack9 == null goto label2;
+
+     label1:
+        $stack5 = new org.apache.maven.graph.DefaultProjectDependencyGraph;
+
+        $stack6 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getAllProjects()>();
+
+        $stack7 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        specialinvoke $stack5.<org.apache.maven.graph.DefaultProjectDependencyGraph: void <init>(java.util.List,java.util.Collection)>($stack6, $stack7);
+
+        result = staticinvoke <org.apache.maven.model.building.Result: org.apache.maven.model.building.Result success(java.lang.Object)>($stack5);
+
+     label2:
+        return result;
+    }
+
+    private org.apache.maven.model.building.Result reactorDependencyGraph(org.apache.maven.execution.MavenSession, java.util.List) throws org.codehaus.plexus.util.dag.CycleDetectedException, org.apache.maven.project.DuplicateProjectException, org.apache.maven.MavenExecutionException
+    {
+        java.util.List projects, $stack16, activeProjects;
+        DefaultGraphBuilder this;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.MavenExecutionRequest $stack7, $stack9, $stack11, $stack13;
+        int $stack15, $stack17;
+        org.apache.maven.model.building.Result $stack18;
+        java.lang.Object projectDependencyGraph;
+        org.apache.maven.graph.DefaultProjectDependencyGraph $u0;
+        org.apache.maven.graph.FilteredProjectDependencyGraph $u1;
+        org.apache.maven.execution.ProjectDependencyGraph $r0, $r2, $r4, $r6, $r8, $r9, $r10;
+        org.apache.maven.graph.DefaultGraphBuilder $r1, $r3, $r5, $r7;
+
+        this := @this: DefaultGraphBuilder;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        projects := @parameter1: java.util.List;
+
+        $u0 = new org.apache.maven.graph.DefaultProjectDependencyGraph;
+
+        specialinvoke $u0.<org.apache.maven.graph.DefaultProjectDependencyGraph: void <init>(java.util.Collection)>(projects);
+
+        projectDependencyGraph = $u0;
+
+        $r0 = (org.apache.maven.execution.ProjectDependencyGraph) $u0;
+
+        activeProjects = interfaceinvoke $r0.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getSortedProjects()>();
+
+        $stack7 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $r1 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $r2 = (org.apache.maven.execution.ProjectDependencyGraph) $u0;
+
+        activeProjects = specialinvoke $r1.<org.apache.maven.graph.DefaultGraphBuilder: java.util.List trimProjectsToRequest(java.util.List,org.apache.maven.execution.ProjectDependencyGraph,org.apache.maven.execution.MavenExecutionRequest)>(activeProjects, $r2, $stack7);
+
+        $stack9 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $r3 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $r4 = (org.apache.maven.execution.ProjectDependencyGraph) $u0;
+
+        activeProjects = specialinvoke $r3.<org.apache.maven.graph.DefaultGraphBuilder: java.util.List trimSelectedProjects(java.util.List,org.apache.maven.execution.ProjectDependencyGraph,org.apache.maven.execution.MavenExecutionRequest)>(activeProjects, $r4, $stack9);
+
+        $stack11 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $r5 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $r6 = (org.apache.maven.execution.ProjectDependencyGraph) $u0;
+
+        activeProjects = specialinvoke $r5.<org.apache.maven.graph.DefaultGraphBuilder: java.util.List trimResumedProjects(java.util.List,org.apache.maven.execution.ProjectDependencyGraph,org.apache.maven.execution.MavenExecutionRequest)>(activeProjects, $r6, $stack11);
+
+        $stack13 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $r7 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $r8 = (org.apache.maven.execution.ProjectDependencyGraph) $u0;
+
+        activeProjects = specialinvoke $r7.<org.apache.maven.graph.DefaultGraphBuilder: java.util.List trimExcludedProjects(java.util.List,org.apache.maven.execution.ProjectDependencyGraph,org.apache.maven.execution.MavenExecutionRequest)>(activeProjects, $r8, $stack13);
+
+        $stack15 = interfaceinvoke activeProjects.<java.util.List: int size()>();
+
+        $r9 = (org.apache.maven.execution.ProjectDependencyGraph) $u0;
+
+        $stack16 = interfaceinvoke $r9.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getSortedProjects()>();
+
+        $stack17 = interfaceinvoke $stack16.<java.util.List: int size()>();
+
+        if $stack15 == $stack17 goto label1;
+
+        $u1 = new org.apache.maven.graph.FilteredProjectDependencyGraph;
+
+        $r10 = (org.apache.maven.execution.ProjectDependencyGraph) $u0;
+
+        specialinvoke $u1.<org.apache.maven.graph.FilteredProjectDependencyGraph: void <init>(org.apache.maven.execution.ProjectDependencyGraph,java.util.Collection)>($r10, activeProjects);
+
+        projectDependencyGraph = $u1;
+
+     label1:
+        $stack18 = staticinvoke <org.apache.maven.model.building.Result: org.apache.maven.model.building.Result success(java.lang.Object)>(projectDependencyGraph);
+
+        return $stack18;
+    }
+
+    private java.util.List trimProjectsToRequest(java.util.List, org.apache.maven.execution.ProjectDependencyGraph, org.apache.maven.execution.MavenExecutionRequest) throws org.apache.maven.MavenExecutionException
+    {
+        java.util.List activeProjects, sortedProjects, result;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.io.File $stack6;
+        DefaultGraphBuilder this;
+        org.apache.maven.execution.ProjectDependencyGraph graph;
+        java.util.function.Function $stack10;
+        java.util.Comparator $stack11;
+        org.apache.maven.graph.DefaultGraphBuilder $r0, $r1;
+
+        this := @this: DefaultGraphBuilder;
+
+        activeProjects := @parameter0: java.util.List;
+
+        graph := @parameter1: org.apache.maven.execution.ProjectDependencyGraph;
+
+        request := @parameter2: org.apache.maven.execution.MavenExecutionRequest;
+
+        result = activeProjects;
+
+        $stack6 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getPom()>();
+
+        if $stack6 == null goto label1;
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        result = specialinvoke $r0.<org.apache.maven.graph.DefaultGraphBuilder: java.util.List getProjectsInRequestScope(org.apache.maven.execution.MavenExecutionRequest,java.util.List)>(request, activeProjects);
+
+        sortedProjects = interfaceinvoke graph.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getSortedProjects()>();
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(sortedProjects);
+
+        $stack10 = staticinvoke <DefaultGraphBuilder$indexOf__315: java.util.function.Function bootstrap$(java.util.List)>(sortedProjects);
+
+        $stack11 = staticinvoke <java.util.Comparator: java.util.Comparator comparing(java.util.function.Function)>($stack10);
+
+        interfaceinvoke result.<java.util.List: void sort(java.util.Comparator)>($stack11);
+
+        $r1 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        result = specialinvoke $r1.<org.apache.maven.graph.DefaultGraphBuilder: java.util.List includeAlsoMakeTransitively(java.util.List,org.apache.maven.execution.MavenExecutionRequest,org.apache.maven.execution.ProjectDependencyGraph)>(result, request, graph);
+
+     label1:
+        return result;
+    }
+
+    private java.util.List trimSelectedProjects(java.util.List, org.apache.maven.execution.ProjectDependencyGraph, org.apache.maven.execution.MavenExecutionRequest) throws org.apache.maven.MavenExecutionException
+    {
+        java.util.List projects, sortedProjects, result;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        org.apache.maven.execution.ProjectActivation projectActivation;
+        java.util.Set requiredSelectors, optionalSelectors, $stack18, $stack20;
+        boolean $stack13, $stack22, $stack30;
+        int $stack15, $stack16, $stack17;
+        DefaultGraphBuilder this;
+        org.apache.maven.execution.ProjectDependencyGraph graph;
+        java.util.function.Function $stack27;
+        java.util.Comparator $stack28;
+        java.util.HashSet $u0;
+        java.util.ArrayList $u1;
+        org.apache.maven.graph.DefaultGraphBuilder $r0, $r1, $r2;
+
+        this := @this: DefaultGraphBuilder;
+
+        projects := @parameter0: java.util.List;
+
+        graph := @parameter1: org.apache.maven.execution.ProjectDependencyGraph;
+
+        request := @parameter2: org.apache.maven.execution.MavenExecutionRequest;
+
+        result = projects;
+
+        projectActivation = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.ProjectActivation getProjectActivation()>();
+
+        requiredSelectors = virtualinvoke projectActivation.<org.apache.maven.execution.ProjectActivation: java.util.Set getRequiredActiveProjectSelectors()>();
+
+        optionalSelectors = virtualinvoke projectActivation.<org.apache.maven.execution.ProjectActivation: java.util.Set getOptionalActiveProjectSelectors()>();
+
+        $stack13 = interfaceinvoke requiredSelectors.<java.util.Set: boolean isEmpty()>();
+
+        if $stack13 == 0 goto label1;
+
+        $stack30 = interfaceinvoke optionalSelectors.<java.util.Set: boolean isEmpty()>();
+
+        if $stack30 != 0 goto label2;
+
+     label1:
+        $u0 = new java.util.HashSet;
+
+        $stack15 = interfaceinvoke requiredSelectors.<java.util.Set: int size()>();
+
+        $stack16 = interfaceinvoke optionalSelectors.<java.util.Set: int size()>();
+
+        $stack17 = $stack15 + $stack16;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>(int)>($stack17);
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack18 = specialinvoke $r0.<org.apache.maven.graph.DefaultGraphBuilder: java.util.Set getProjectsBySelectors(org.apache.maven.execution.MavenExecutionRequest,java.util.List,java.util.Set,boolean)>(request, projects, requiredSelectors, 1);
+
+        interfaceinvoke $u0.<java.util.Set: boolean addAll(java.util.Collection)>($stack18);
+
+        $r1 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack20 = specialinvoke $r1.<org.apache.maven.graph.DefaultGraphBuilder: java.util.Set getProjectsBySelectors(org.apache.maven.execution.MavenExecutionRequest,java.util.List,java.util.Set,boolean)>(request, projects, optionalSelectors, 0);
+
+        interfaceinvoke $u0.<java.util.Set: boolean addAll(java.util.Collection)>($stack20);
+
+        $stack22 = interfaceinvoke $u0.<java.util.Set: boolean isEmpty()>();
+
+        if $stack22 != 0 goto label2;
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>(java.util.Collection)>($u0);
+
+        $r2 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        result = specialinvoke $r2.<org.apache.maven.graph.DefaultGraphBuilder: java.util.List includeAlsoMakeTransitively(java.util.List,org.apache.maven.execution.MavenExecutionRequest,org.apache.maven.execution.ProjectDependencyGraph)>($u1, request, graph);
+
+        sortedProjects = interfaceinvoke graph.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getSortedProjects()>();
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(sortedProjects);
+
+        $stack27 = staticinvoke <DefaultGraphBuilder$indexOf__311: java.util.function.Function bootstrap$(java.util.List)>(sortedProjects);
+
+        $stack28 = staticinvoke <java.util.Comparator: java.util.Comparator comparing(java.util.function.Function)>($stack27);
+
+        interfaceinvoke result.<java.util.List: void sort(java.util.Comparator)>($stack28);
+
+     label2:
+        return result;
+    }
+
+    private java.util.Set getProjectsBySelectors(org.apache.maven.execution.MavenExecutionRequest, java.util.List, java.util.Set, boolean) throws org.apache.maven.MavenExecutionException
+    {
+        DefaultGraphBuilder this;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.io.File reactorDirectory, $stack35;
+        java.util.Set projectSelectors;
+        java.util.Iterator l7;
+        boolean $stack15, $stack21, $stack26, required;
+        java.lang.Object $stack16, $stack22;
+        java.lang.String selector, message;
+        java.util.List projects, children;
+        java.util.stream.Stream $stack17, $stack19;
+        java.util.function.Predicate $stack18;
+        java.util.Optional optSelectedProject;
+        java.lang.StringBuilder $stack29, $stack30, $u1;
+        org.slf4j.Logger $stack32;
+        org.apache.maven.project.MavenProject message#2;
+        java.util.LinkedHashSet $u0;
+        org.apache.maven.MavenExecutionException $u2;
+        org.apache.maven.graph.DefaultGraphBuilder $r0, $r1;
+        java.lang.Throwable $r2;
+
+        this := @this: DefaultGraphBuilder;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        projects := @parameter1: java.util.List;
+
+        projectSelectors := @parameter2: java.util.Set;
+
+        required := @parameter3: boolean;
+
+        $u0 = new java.util.LinkedHashSet;
+
+        specialinvoke $u0.<java.util.LinkedHashSet: void <init>()>();
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        reactorDirectory = specialinvoke $r0.<org.apache.maven.graph.DefaultGraphBuilder: java.io.File getReactorDirectory(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+        l7 = interfaceinvoke projectSelectors.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $stack15 = interfaceinvoke l7.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label5;
+
+        $stack16 = interfaceinvoke l7.<java.util.Iterator: java.lang.Object next()>();
+
+        selector = (java.lang.String) $stack16;
+
+        $stack17 = interfaceinvoke projects.<java.util.List: java.util.stream.Stream stream()>();
+
+        $r1 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack18 = staticinvoke <DefaultGraphBuilder$lambda_getProjectsBySelectors_0__314: java.util.function.Predicate bootstrap$(org.apache.maven.graph.DefaultGraphBuilder,java.lang.String,java.io.File)>($r1, selector, reactorDirectory);
+
+        $stack19 = interfaceinvoke $stack17.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack18);
+
+        optSelectedProject = interfaceinvoke $stack19.<java.util.stream.Stream: java.util.Optional findFirst()>();
+
+        $stack21 = virtualinvoke optSelectedProject.<java.util.Optional: boolean isPresent()>();
+
+        if $stack21 != 0 goto label3;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack29 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not find the selected project in the reactor: ");
+
+        $stack30 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(selector);
+
+        message = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        if required == 0 goto label2;
+
+        $u2 = new org.apache.maven.MavenExecutionException;
+
+        $stack35 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getPom()>();
+
+        specialinvoke $u2.<org.apache.maven.MavenExecutionException: void <init>(java.lang.String,java.io.File)>(message, $stack35);
+
+        $r2 = (java.lang.Throwable) $u2;
+
+        throw $r2;
+
+     label2:
+        $stack32 = <org.apache.maven.graph.DefaultGraphBuilder: org.slf4j.Logger LOGGER>;
+
+        interfaceinvoke $stack32.<org.slf4j.Logger: void info(java.lang.String)>(message);
+
+        goto label5;
+
+     label3:
+        $stack22 = virtualinvoke optSelectedProject.<java.util.Optional: java.lang.Object get()>();
+
+        message#2 = (org.apache.maven.project.MavenProject) $stack22;
+
+        interfaceinvoke $u0.<java.util.Set: boolean add(java.lang.Object)>(message#2);
+
+        children = virtualinvoke message#2.<org.apache.maven.project.MavenProject: java.util.List getCollectedProjects()>();
+
+        if children == null goto label4;
+
+        $stack26 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: boolean isRecursive()>();
+
+        if $stack26 == 0 goto label4;
+
+        interfaceinvoke $u0.<java.util.Set: boolean addAll(java.util.Collection)>(children);
+
+     label4:
+        goto label1;
+
+     label5:
+        return $u0;
+    }
+
+    private java.util.List trimResumedProjects(java.util.List, org.apache.maven.execution.ProjectDependencyGraph, org.apache.maven.execution.MavenExecutionRequest) throws org.apache.maven.MavenExecutionException
+    {
+        java.util.List projects, retainingProjects, result;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.lang.String $stack10, selector;
+        boolean $stack11;
+        DefaultGraphBuilder this;
+        java.io.File reactorDirectory;
+        java.util.stream.Stream $stack14, $stack16;
+        java.util.function.Predicate $stack15;
+        java.util.Optional $stack17;
+        java.util.function.Supplier $stack18;
+        java.lang.Object $stack19;
+        org.apache.maven.project.MavenProject resumingFromProject;
+        int resumeFromProjectIndex, $stack21;
+        org.apache.maven.execution.ProjectDependencyGraph graph;
+        org.apache.maven.graph.DefaultGraphBuilder $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultGraphBuilder;
+
+        projects := @parameter0: java.util.List;
+
+        graph := @parameter1: org.apache.maven.execution.ProjectDependencyGraph;
+
+        request := @parameter2: org.apache.maven.execution.MavenExecutionRequest;
+
+        result = projects;
+
+        $stack10 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.lang.String getResumeFrom()>();
+
+        $stack11 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack10);
+
+        if $stack11 == 0 goto label1;
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        reactorDirectory = specialinvoke $r0.<org.apache.maven.graph.DefaultGraphBuilder: java.io.File getReactorDirectory(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+        selector = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.lang.String getResumeFrom()>();
+
+        $stack14 = interfaceinvoke projects.<java.util.List: java.util.stream.Stream stream()>();
+
+        $r1 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack15 = staticinvoke <DefaultGraphBuilder$lambda_trimResumedProjects_1__309: java.util.function.Predicate bootstrap$(org.apache.maven.graph.DefaultGraphBuilder,java.lang.String,java.io.File)>($r1, selector, reactorDirectory);
+
+        $stack16 = interfaceinvoke $stack14.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack15);
+
+        $stack17 = interfaceinvoke $stack16.<java.util.stream.Stream: java.util.Optional findFirst()>();
+
+        $r2 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack18 = staticinvoke <DefaultGraphBuilder$lambda_trimResumedProjects_2__318: java.util.function.Supplier bootstrap$(org.apache.maven.graph.DefaultGraphBuilder,java.lang.String,java.util.List,org.apache.maven.execution.MavenExecutionRequest)>($r2, selector, projects, request);
+
+        $stack19 = virtualinvoke $stack17.<java.util.Optional: java.lang.Object orElseThrow(java.util.function.Supplier)>($stack18);
+
+        resumingFromProject = (org.apache.maven.project.MavenProject) $stack19;
+
+        resumeFromProjectIndex = interfaceinvoke projects.<java.util.List: int indexOf(java.lang.Object)>(resumingFromProject);
+
+        $stack21 = interfaceinvoke projects.<java.util.List: int size()>();
+
+        retainingProjects = interfaceinvoke projects.<java.util.List: java.util.List subList(int,int)>(resumeFromProjectIndex, $stack21);
+
+        $r3 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        result = specialinvoke $r3.<org.apache.maven.graph.DefaultGraphBuilder: java.util.List includeAlsoMakeTransitively(java.util.List,org.apache.maven.execution.MavenExecutionRequest,org.apache.maven.execution.ProjectDependencyGraph)>(retainingProjects, request, graph);
+
+     label1:
+        return result;
+    }
+
+    private java.util.List trimExcludedProjects(java.util.List, org.apache.maven.execution.ProjectDependencyGraph, org.apache.maven.execution.MavenExecutionRequest) throws org.apache.maven.MavenExecutionException
+    {
+        java.util.List projects, allProjects, result;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        org.apache.maven.execution.ProjectActivation projectActivation;
+        java.util.Set requiredSelectors, optionalSelectors, $stack21, $stack23;
+        boolean $stack15, $stack27, isPlural, $stack44, $stack41;
+        int $stack17, $stack18, $stack19, $stack28;
+        org.apache.maven.execution.ProjectDependencyGraph graph;
+        DefaultGraphBuilder this;
+        java.lang.Object[] $stack29;
+        java.lang.String message, $stack38, $stack33;
+        java.io.File $stack32;
+        java.util.HashSet $u0;
+        java.util.ArrayList $u1;
+        org.apache.maven.MavenExecutionException $u2;
+        org.apache.maven.graph.DefaultGraphBuilder $r0, $r1;
+        java.lang.Throwable $r2;
+
+        this := @this: DefaultGraphBuilder;
+
+        projects := @parameter0: java.util.List;
+
+        graph := @parameter1: org.apache.maven.execution.ProjectDependencyGraph;
+
+        request := @parameter2: org.apache.maven.execution.MavenExecutionRequest;
+
+        result = projects;
+
+        projectActivation = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.ProjectActivation getProjectActivation()>();
+
+        requiredSelectors = virtualinvoke projectActivation.<org.apache.maven.execution.ProjectActivation: java.util.Set getRequiredInactiveProjectSelectors()>();
+
+        optionalSelectors = virtualinvoke projectActivation.<org.apache.maven.execution.ProjectActivation: java.util.Set getOptionalInactiveProjectSelectors()>();
+
+        $stack15 = interfaceinvoke requiredSelectors.<java.util.Set: boolean isEmpty()>();
+
+        if $stack15 == 0 goto label1;
+
+        $stack44 = interfaceinvoke optionalSelectors.<java.util.Set: boolean isEmpty()>();
+
+        if $stack44 != 0 goto label8;
+
+     label1:
+        $u0 = new java.util.HashSet;
+
+        $stack17 = interfaceinvoke requiredSelectors.<java.util.Set: int size()>();
+
+        $stack18 = interfaceinvoke optionalSelectors.<java.util.Set: int size()>();
+
+        $stack19 = $stack17 + $stack18;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>(int)>($stack19);
+
+        allProjects = interfaceinvoke graph.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getAllProjects()>();
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack21 = specialinvoke $r0.<org.apache.maven.graph.DefaultGraphBuilder: java.util.Set getProjectsBySelectors(org.apache.maven.execution.MavenExecutionRequest,java.util.List,java.util.Set,boolean)>(request, allProjects, requiredSelectors, 1);
+
+        interfaceinvoke $u0.<java.util.Set: boolean addAll(java.util.Collection)>($stack21);
+
+        $r1 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack23 = specialinvoke $r1.<org.apache.maven.graph.DefaultGraphBuilder: java.util.Set getProjectsBySelectors(org.apache.maven.execution.MavenExecutionRequest,java.util.List,java.util.Set,boolean)>(request, allProjects, optionalSelectors, 0);
+
+        interfaceinvoke $u0.<java.util.Set: boolean addAll(java.util.Collection)>($stack23);
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>(java.util.Collection)>(projects);
+
+        result = $u1;
+
+        interfaceinvoke $u1.<java.util.List: boolean removeAll(java.util.Collection)>($u0);
+
+        $stack27 = interfaceinvoke $u1.<java.util.List: boolean isEmpty()>();
+
+        if $stack27 == 0 goto label8;
+
+        $stack28 = interfaceinvoke $u0.<java.util.Set: int size()>();
+
+        if $stack28 <= 1 goto label2;
+
+        $stack41 = 1;
+
+        goto label3;
+
+     label2:
+        $stack41 = 0;
+
+     label3:
+        isPlural = $stack41;
+
+        $stack29 = newarray (java.lang.Object)[2];
+
+        if $stack41 == 0 goto label4;
+
+        $stack38 = "s";
+
+        goto label5;
+
+     label4:
+        $stack38 = "";
+
+     label5:
+        $stack29[0] = $stack38;
+
+        if isPlural == 0 goto label6;
+
+        $stack33 = "them";
+
+        goto label7;
+
+     label6:
+        $stack33 = "it";
+
+     label7:
+        $stack29[1] = $stack33;
+
+        message = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("The project exclusion%s in --projects/-pl resulted in an empty reactor, please correct %s.", $stack29);
+
+        $u2 = new org.apache.maven.MavenExecutionException;
+
+        $stack32 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getPom()>();
+
+        specialinvoke $u2.<org.apache.maven.MavenExecutionException: void <init>(java.lang.String,java.io.File)>(message, $stack32);
+
+        $r2 = (java.lang.Throwable) $u2;
+
+        throw $r2;
+
+     label8:
+        return result;
+    }
+
+    private java.util.List includeAlsoMakeTransitively(java.util.List, org.apache.maven.execution.MavenExecutionRequest, org.apache.maven.execution.ProjectDependencyGraph) throws org.apache.maven.MavenExecutionException
+    {
+        java.util.List projects, $stack26, $stack28, result, sortedProjects#11;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.lang.String makeBehavior, $stack13, $stack39, $stack41, $stack45;
+        boolean makeBoth, makeUpstream, makeDownstream, $stack15, $stack42, $stack46, $stack47, $stack43, $stack18;
+        org.apache.maven.execution.ProjectDependencyGraph graph;
+        java.util.function.Function $stack22;
+        java.util.Comparator $stack23;
+        java.lang.Object $stack24;
+        org.apache.maven.project.MavenProject project;
+        java.lang.StringBuilder $stack37, $stack38, $u0;
+        java.io.File $stack40;
+        DefaultGraphBuilder this;
+        java.util.Iterator sortedProjects;
+        org.apache.maven.MavenExecutionException $u1;
+        java.util.HashSet $u2;
+        java.util.ArrayList $u3;
+        java.lang.Throwable $r0;
+
+        this := @this: DefaultGraphBuilder;
+
+        projects := @parameter0: java.util.List;
+
+        request := @parameter1: org.apache.maven.execution.MavenExecutionRequest;
+
+        graph := @parameter2: org.apache.maven.execution.ProjectDependencyGraph;
+
+        result = projects;
+
+        makeBehavior = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.lang.String getMakeBehavior()>();
+
+        $stack13 = "make-both";
+
+        makeBoth = virtualinvoke $stack13.<java.lang.String: boolean equals(java.lang.Object)>(makeBehavior);
+
+        if makeBoth != 0 goto label01;
+
+        $stack45 = "make-upstream";
+
+        $stack46 = virtualinvoke $stack45.<java.lang.String: boolean equals(java.lang.Object)>(makeBehavior);
+
+        if $stack46 == 0 goto label02;
+
+     label01:
+        $stack47 = 1;
+
+        goto label03;
+
+     label02:
+        $stack47 = 0;
+
+     label03:
+        makeUpstream = $stack47;
+
+        if makeBoth != 0 goto label04;
+
+        $stack41 = "make-downstream";
+
+        $stack42 = virtualinvoke $stack41.<java.lang.String: boolean equals(java.lang.Object)>(makeBehavior);
+
+        if $stack42 == 0 goto label05;
+
+     label04:
+        $stack43 = 1;
+
+        goto label06;
+
+     label05:
+        $stack43 = 0;
+
+     label06:
+        makeDownstream = $stack43;
+
+        $stack15 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>(makeBehavior);
+
+        if $stack15 == 0 goto label07;
+
+        if makeUpstream != 0 goto label07;
+
+        if $stack43 != 0 goto label07;
+
+        $u1 = new org.apache.maven.MavenExecutionException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack37 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid reactor make behavior: ");
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(makeBehavior);
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack40 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getPom()>();
+
+        specialinvoke $u1.<org.apache.maven.MavenExecutionException: void <init>(java.lang.String,java.io.File)>($stack39, $stack40);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label07:
+        if makeUpstream != 0 goto label08;
+
+        if makeDownstream == 0 goto label13;
+
+     label08:
+        $u2 = new java.util.HashSet;
+
+        specialinvoke $u2.<java.util.HashSet: void <init>(java.util.Collection)>(projects);
+
+        sortedProjects = interfaceinvoke projects.<java.util.List: java.util.Iterator iterator()>();
+
+     label09:
+        $stack18 = interfaceinvoke sortedProjects.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack18 == 0 goto label12;
+
+        $stack24 = interfaceinvoke sortedProjects.<java.util.Iterator: java.lang.Object next()>();
+
+        project = (org.apache.maven.project.MavenProject) $stack24;
+
+        if makeUpstream == 0 goto label10;
+
+        $stack28 = interfaceinvoke graph.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getUpstreamProjects(org.apache.maven.project.MavenProject,boolean)>(project, 1);
+
+        interfaceinvoke $u2.<java.util.Set: boolean addAll(java.util.Collection)>($stack28);
+
+     label10:
+        if makeDownstream == 0 goto label11;
+
+        $stack26 = interfaceinvoke graph.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getDownstreamProjects(org.apache.maven.project.MavenProject,boolean)>(project, 1);
+
+        interfaceinvoke $u2.<java.util.Set: boolean addAll(java.util.Collection)>($stack26);
+
+     label11:
+        goto label09;
+
+     label12:
+        $u3 = new java.util.ArrayList;
+
+        specialinvoke $u3.<java.util.ArrayList: void <init>(java.util.Collection)>($u2);
+
+        result = $u3;
+
+        sortedProjects#11 = interfaceinvoke graph.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getSortedProjects()>();
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(sortedProjects#11);
+
+        $stack22 = staticinvoke <DefaultGraphBuilder$indexOf__312: java.util.function.Function bootstrap$(java.util.List)>(sortedProjects#11);
+
+        $stack23 = staticinvoke <java.util.Comparator: java.util.Comparator comparing(java.util.function.Function)>($stack22);
+
+        interfaceinvoke $u3.<java.util.List: void sort(java.util.Comparator)>($stack23);
+
+     label13:
+        return result;
+    }
+
+    private void enrichRequestFromResumptionData(java.util.List, org.apache.maven.execution.MavenExecutionRequest)
+    {
+        org.apache.maven.execution.MavenExecutionRequest request;
+        boolean $stack3;
+        java.util.List projects;
+        java.util.stream.Stream $stack4, $stack6;
+        java.util.function.Predicate $stack5;
+        java.util.Optional $stack7;
+        DefaultGraphBuilder this;
+        java.util.function.Consumer $stack8;
+        org.apache.maven.graph.DefaultGraphBuilder $r0;
+
+        this := @this: DefaultGraphBuilder;
+
+        projects := @parameter0: java.util.List;
+
+        request := @parameter1: org.apache.maven.execution.MavenExecutionRequest;
+
+        $stack3 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: boolean isResume()>();
+
+        if $stack3 == 0 goto label1;
+
+        $stack4 = interfaceinvoke projects.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack5 = staticinvoke <DefaultGraphBuilder$isExecutionRoot__310: java.util.function.Predicate bootstrap$()>();
+
+        $stack6 = interfaceinvoke $stack4.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack5);
+
+        $stack7 = interfaceinvoke $stack6.<java.util.stream.Stream: java.util.Optional findFirst()>();
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack8 = staticinvoke <DefaultGraphBuilder$lambda_enrichRequestFromResumptionData_3__316: java.util.function.Consumer bootstrap$(org.apache.maven.graph.DefaultGraphBuilder,org.apache.maven.execution.MavenExecutionRequest)>($r0, request);
+
+        virtualinvoke $stack7.<java.util.Optional: void ifPresent(java.util.function.Consumer)>($stack8);
+
+     label1:
+        return;
+    }
+
+    private java.util.List getProjectsInRequestScope(org.apache.maven.execution.MavenExecutionRequest, java.util.List) throws org.apache.maven.MavenExecutionException
+    {
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.io.File $stack6;
+        java.util.List projects, $stack13, $stack14;
+        java.util.stream.Stream $stack7, $stack9;
+        java.util.function.Predicate $stack8;
+        java.util.Optional $stack10;
+        java.util.function.Supplier $stack11;
+        java.lang.Object $stack12;
+        org.apache.maven.project.MavenProject requestPomProject;
+        java.util.ArrayList $stack15;
+        DefaultGraphBuilder this;
+
+        this := @this: DefaultGraphBuilder;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        projects := @parameter1: java.util.List;
+
+        $stack6 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getPom()>();
+
+        if $stack6 != null goto label1;
+
+        return projects;
+
+     label1:
+        $stack7 = interfaceinvoke projects.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack8 = staticinvoke <DefaultGraphBuilder$lambda_getProjectsInRequestScope_4__313: java.util.function.Predicate bootstrap$(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+        $stack9 = interfaceinvoke $stack7.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack8);
+
+        $stack10 = interfaceinvoke $stack9.<java.util.stream.Stream: java.util.Optional findFirst()>();
+
+        $stack11 = staticinvoke <DefaultGraphBuilder$lambda_getProjectsInRequestScope_5__317: java.util.function.Supplier bootstrap$(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+        $stack12 = virtualinvoke $stack10.<java.util.Optional: java.lang.Object orElseThrow(java.util.function.Supplier)>($stack11);
+
+        requestPomProject = (org.apache.maven.project.MavenProject) $stack12;
+
+        $stack13 = virtualinvoke requestPomProject.<org.apache.maven.project.MavenProject: java.util.List getCollectedProjects()>();
+
+        if $stack13 == null goto label2;
+
+        $stack14 = virtualinvoke requestPomProject.<org.apache.maven.project.MavenProject: java.util.List getCollectedProjects()>();
+
+        goto label3;
+
+     label2:
+        $stack14 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+     label3:
+        $stack15 = new java.util.ArrayList;
+
+        specialinvoke $stack15.<java.util.ArrayList: void <init>(java.util.Collection)>($stack14);
+
+        interfaceinvoke $stack15.<java.util.List: boolean add(java.lang.Object)>(requestPomProject);
+
+        return $stack15;
+    }
+
+    private java.lang.String formatProjects(java.util.List)
+    {
+        java.lang.StringBuilder $stack5, $stack11, $stack12;
+        java.util.List projects;
+        java.util.Iterator iterator;
+        boolean $stack7, $stack15;
+        java.lang.String $stack8, $stack10, $stack13;
+        java.lang.Object $stack9;
+        org.apache.maven.project.MavenProject project;
+        DefaultGraphBuilder this;
+
+        this := @this: DefaultGraphBuilder;
+
+        projects := @parameter0: java.util.List;
+
+        $stack5 = new java.lang.StringBuilder;
+
+        specialinvoke $stack5.<java.lang.StringBuilder: void <init>()>();
+
+        iterator = interfaceinvoke projects.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke iterator.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label3;
+
+        $stack9 = interfaceinvoke iterator.<java.util.Iterator: java.lang.Object next()>();
+
+        project = (org.apache.maven.project.MavenProject) $stack9;
+
+        $stack10 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        $stack11 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack13 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack13);
+
+        $stack15 = interfaceinvoke iterator.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label2;
+
+        virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+     label2:
+        goto label1;
+
+     label3:
+        $stack8 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack8;
+    }
+
+    private boolean isMatchingProject(org.apache.maven.project.MavenProject, java.lang.String, java.io.File)
+    {
+        java.lang.String selector, $stack19, $stack24, id;
+        int $stack5;
+        java.io.File reactorDirectory, $stack6, $stack7, $stack13, $stack15;
+        java.net.URI $stack8, $stack9;
+        boolean $stack10, $stack11, $stack14, $stack16, $stack22, $stack28;
+        org.apache.maven.project.MavenProject project;
+        java.lang.StringBuilder $stack17, $stack18, $stack20, $stack23, $stack25, $stack26;
+        DefaultGraphBuilder this;
+
+        this := @this: DefaultGraphBuilder;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        selector := @parameter1: java.lang.String;
+
+        reactorDirectory := @parameter2: java.io.File;
+
+        $stack5 = virtualinvoke selector.<java.lang.String: int indexOf(int)>(58);
+
+        if $stack5 < 0 goto label3;
+
+        $stack17 = new java.lang.StringBuilder;
+
+        specialinvoke $stack17.<java.lang.StringBuilder: void <init>()>();
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack19 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        $stack20 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+        id = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack22 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>(selector);
+
+        if $stack22 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        $stack23 = new java.lang.StringBuilder;
+
+        specialinvoke $stack23.<java.lang.StringBuilder: void <init>()>();
+
+        $stack24 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        $stack25 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack24);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(id);
+
+        id = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack28 = virtualinvoke id.<java.lang.String: boolean equals(java.lang.Object)>(selector);
+
+        if $stack28 == 0 goto label2;
+
+        return 1;
+
+     label2:
+        goto label5;
+
+     label3:
+        if reactorDirectory == null goto label5;
+
+        $stack6 = new java.io.File;
+
+        $stack7 = new java.io.File;
+
+        specialinvoke $stack7.<java.io.File: void <init>(java.io.File,java.lang.String)>(reactorDirectory, selector);
+
+        $stack8 = virtualinvoke $stack7.<java.io.File: java.net.URI toURI()>();
+
+        $stack9 = virtualinvoke $stack8.<java.net.URI: java.net.URI normalize()>();
+
+        specialinvoke $stack6.<java.io.File: void <init>(java.net.URI)>($stack9);
+
+        $stack10 = virtualinvoke $stack6.<java.io.File: boolean isFile()>();
+
+        if $stack10 == 0 goto label4;
+
+        $stack15 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.io.File getFile()>();
+
+        $stack16 = virtualinvoke $stack6.<java.io.File: boolean equals(java.lang.Object)>($stack15);
+
+        return $stack16;
+
+     label4:
+        $stack11 = virtualinvoke $stack6.<java.io.File: boolean isDirectory()>();
+
+        if $stack11 == 0 goto label5;
+
+        $stack13 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.io.File getBasedir()>();
+
+        $stack14 = virtualinvoke $stack6.<java.io.File: boolean equals(java.lang.Object)>($stack13);
+
+        return $stack14;
+
+     label5:
+        return 0;
+    }
+
+    private java.io.File getReactorDirectory(org.apache.maven.execution.MavenExecutionRequest)
+    {
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.lang.String $stack2, $stack4;
+        java.io.File $stack3;
+        DefaultGraphBuilder this;
+
+        this := @this: DefaultGraphBuilder;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        $stack2 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.lang.String getBaseDirectory()>();
+
+        if $stack2 == null goto label1;
+
+        $stack3 = new java.io.File;
+
+        $stack4 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.lang.String getBaseDirectory()>();
+
+        specialinvoke $stack3.<java.io.File: void <init>(java.lang.String)>($stack4);
+
+        return $stack3;
+
+     label1:
+        return null;
+    }
+
+    private java.util.List getProjectsForMavenReactor(org.apache.maven.execution.MavenSession) throws org.apache.maven.project.ProjectBuildingException
+    {
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        org.apache.maven.project.ProjectBuildingRequest $stack5;
+        org.eclipse.aether.RepositorySystemSession $stack6;
+        java.io.File $stack8;
+        DefaultGraphBuilder this;
+        org.apache.maven.project.collector.MultiModuleCollectionStrategy $stack9;
+        java.util.List projects, $stack13, $stack15;
+        boolean $stack11;
+        org.apache.maven.project.collector.RequestPomCollectionStrategy $stack12;
+        org.apache.maven.project.collector.PomlessCollectionStrategy $stack14;
+        org.apache.maven.graph.DefaultGraphBuilder $r0, $r1, $r2;
+
+        this := @this: DefaultGraphBuilder;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        request = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack5 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.project.ProjectBuildingRequest getProjectBuildingRequest()>();
+
+        $stack6 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        interfaceinvoke $stack5.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setRepositorySession(org.eclipse.aether.RepositorySystemSession)>($stack6);
+
+        $stack8 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getPom()>();
+
+        if $stack8 != null goto label1;
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack14 = $r0.<org.apache.maven.graph.DefaultGraphBuilder: org.apache.maven.project.collector.PomlessCollectionStrategy pomlessCollectionStrategy>;
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.project.collector.PomlessCollectionStrategy: java.util.List collectProjects(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+        return $stack15;
+
+     label1:
+        $r1 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack9 = $r1.<org.apache.maven.graph.DefaultGraphBuilder: org.apache.maven.project.collector.MultiModuleCollectionStrategy multiModuleCollectionStrategy>;
+
+        projects = virtualinvoke $stack9.<org.apache.maven.project.collector.MultiModuleCollectionStrategy: java.util.List collectProjects(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+        $stack11 = interfaceinvoke projects.<java.util.List: boolean isEmpty()>();
+
+        if $stack11 != 0 goto label2;
+
+        return projects;
+
+     label2:
+        $r2 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack12 = $r2.<org.apache.maven.graph.DefaultGraphBuilder: org.apache.maven.project.collector.RequestPomCollectionStrategy requestPomCollectionStrategy>;
+
+        $stack13 = virtualinvoke $stack12.<org.apache.maven.project.collector.RequestPomCollectionStrategy: java.util.List collectProjects(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+        return $stack13;
+    }
+
+    private void validateProjects(java.util.List, org.apache.maven.execution.MavenExecutionRequest) throws org.apache.maven.MavenExecutionException
+    {
+        DefaultGraphBuilder this;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.util.List projects, projectsInRequestScope, $stack17;
+        boolean $stack13, $stack15, $stack19, $stack22, $stack28;
+        java.lang.Object $stack16, $stack21, $stack33;
+        org.apache.maven.model.Plugin plugin;
+        java.lang.String $stack24, $stack25, $stack26, pluginKey, $stack31, $stack32, $stack34, $stack35, $stack36, projectKey;
+        org.slf4j.Logger $stack29;
+        java.util.Iterator l5, projectKey#6;
+        org.apache.maven.project.MavenProject p;
+        java.util.HashMap $u0;
+        org.apache.maven.graph.DefaultGraphBuilder $r0;
+
+        this := @this: DefaultGraphBuilder;
+
+        projects := @parameter0: java.util.List;
+
+        request := @parameter1: org.apache.maven.execution.MavenExecutionRequest;
+
+        $u0 = new java.util.HashMap;
+
+        specialinvoke $u0.<java.util.HashMap: void <init>()>();
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        projectsInRequestScope = specialinvoke $r0.<org.apache.maven.graph.DefaultGraphBuilder: java.util.List getProjectsInRequestScope(org.apache.maven.execution.MavenExecutionRequest,java.util.List)>(request, projects);
+
+        l5 = interfaceinvoke projectsInRequestScope.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack13 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label2;
+
+        $stack33 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        p = (org.apache.maven.project.MavenProject) $stack33;
+
+        $stack34 = virtualinvoke p.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        $stack35 = virtualinvoke p.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        $stack36 = virtualinvoke p.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        projectKey = staticinvoke <org.apache.maven.artifact.ArtifactUtils: java.lang.String key(java.lang.String,java.lang.String,java.lang.String)>($stack34, $stack35, $stack36);
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(projectKey, p);
+
+        goto label1;
+
+     label2:
+        l5 = interfaceinvoke projects.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack15 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label7;
+
+        $stack16 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        p = (org.apache.maven.project.MavenProject) $stack16;
+
+        $stack17 = virtualinvoke p.<org.apache.maven.project.MavenProject: java.util.List getBuildPlugins()>();
+
+        projectKey#6 = interfaceinvoke $stack17.<java.util.List: java.util.Iterator iterator()>();
+
+     label4:
+        $stack19 = interfaceinvoke projectKey#6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack19 == 0 goto label6;
+
+        $stack21 = interfaceinvoke projectKey#6.<java.util.Iterator: java.lang.Object next()>();
+
+        plugin = (org.apache.maven.model.Plugin) $stack21;
+
+        $stack22 = virtualinvoke plugin.<org.apache.maven.model.Plugin: boolean isExtensions()>();
+
+        if $stack22 == 0 goto label5;
+
+        $stack24 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getGroupId()>();
+
+        $stack25 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getArtifactId()>();
+
+        $stack26 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getVersion()>();
+
+        pluginKey = staticinvoke <org.apache.maven.artifact.ArtifactUtils: java.lang.String key(java.lang.String,java.lang.String,java.lang.String)>($stack24, $stack25, $stack26);
+
+        $stack28 = interfaceinvoke $u0.<java.util.Map: boolean containsKey(java.lang.Object)>(pluginKey);
+
+        if $stack28 == 0 goto label5;
+
+        $stack29 = <org.apache.maven.graph.DefaultGraphBuilder: org.slf4j.Logger LOGGER>;
+
+        $stack31 = virtualinvoke p.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        $stack32 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getKey()>();
+
+        interfaceinvoke $stack29.<org.slf4j.Logger: void warn(java.lang.String,java.lang.Object,java.lang.Object)>("\'{}\' uses \'{}\' as extension which is not possible within the same reactor build. This plugin was pulled from the local repository!", $stack31, $stack32);
+
+     label5:
+        goto label4;
+
+     label6:
+        goto label3;
+
+     label7:
+        return;
+    }
+
+    private static org.apache.maven.MavenExecutionException lambda$getProjectsInRequestScope$5(org.apache.maven.execution.MavenExecutionRequest)
+    {
+        org.apache.maven.MavenExecutionException $stack1;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.io.File $stack3;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        $stack1 = new org.apache.maven.MavenExecutionException;
+
+        $stack3 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getPom()>();
+
+        specialinvoke $stack1.<org.apache.maven.MavenExecutionException: void <init>(java.lang.String,java.io.File)>("Could not find a project in reactor matching the request POM", $stack3);
+
+        return $stack1;
+    }
+
+    private static boolean lambda$getProjectsInRequestScope$4(org.apache.maven.execution.MavenExecutionRequest, org.apache.maven.project.MavenProject)
+    {
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.io.File $stack2, $stack3;
+        org.apache.maven.project.MavenProject project;
+        boolean $stack4;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        project := @parameter1: org.apache.maven.project.MavenProject;
+
+        $stack2 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getPom()>();
+
+        $stack3 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.io.File getFile()>();
+
+        $stack4 = virtualinvoke $stack2.<java.io.File: boolean equals(java.lang.Object)>($stack3);
+
+        return $stack4;
+    }
+
+    private void lambda$enrichRequestFromResumptionData$3(org.apache.maven.execution.MavenExecutionRequest, org.apache.maven.project.MavenProject)
+    {
+        DefaultGraphBuilder this;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        org.apache.maven.project.MavenProject rootProject;
+        org.apache.maven.execution.BuildResumptionDataRepository $stack3;
+        org.apache.maven.graph.DefaultGraphBuilder $r0;
+
+        this := @this: DefaultGraphBuilder;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        rootProject := @parameter1: org.apache.maven.project.MavenProject;
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack3 = $r0.<org.apache.maven.graph.DefaultGraphBuilder: org.apache.maven.execution.BuildResumptionDataRepository buildResumptionDataRepository>;
+
+        interfaceinvoke $stack3.<org.apache.maven.execution.BuildResumptionDataRepository: void applyResumptionData(org.apache.maven.execution.MavenExecutionRequest,org.apache.maven.project.MavenProject)>(request, rootProject);
+
+        return;
+    }
+
+    private org.apache.maven.MavenExecutionException lambda$trimResumedProjects$2(java.lang.String, java.util.List, org.apache.maven.execution.MavenExecutionRequest)
+    {
+        java.lang.StringBuilder $stack6, $stack7, $stack8, $stack10, $u0;
+        java.lang.String selector, $stack9, $stack11;
+        DefaultGraphBuilder this;
+        java.util.List projects;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.io.File $stack12;
+        org.apache.maven.MavenExecutionException $u1;
+        org.apache.maven.graph.DefaultGraphBuilder $r0;
+
+        this := @this: DefaultGraphBuilder;
+
+        selector := @parameter0: java.lang.String;
+
+        projects := @parameter1: java.util.List;
+
+        request := @parameter2: org.apache.maven.execution.MavenExecutionRequest;
+
+        $u1 = new org.apache.maven.MavenExecutionException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not find project to resume reactor build from: ");
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(selector);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" vs ");
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack9 = specialinvoke $r0.<org.apache.maven.graph.DefaultGraphBuilder: java.lang.String formatProjects(java.util.List)>(projects);
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getPom()>();
+
+        specialinvoke $u1.<org.apache.maven.MavenExecutionException: void <init>(java.lang.String,java.io.File)>($stack11, $stack12);
+
+        return $u1;
+    }
+
+    private boolean lambda$trimResumedProjects$1(java.lang.String, java.io.File, org.apache.maven.project.MavenProject)
+    {
+        DefaultGraphBuilder this;
+        org.apache.maven.project.MavenProject project;
+        java.lang.String selector;
+        java.io.File reactorDirectory;
+        boolean $stack4;
+        org.apache.maven.graph.DefaultGraphBuilder $r0;
+
+        this := @this: DefaultGraphBuilder;
+
+        selector := @parameter0: java.lang.String;
+
+        reactorDirectory := @parameter1: java.io.File;
+
+        project := @parameter2: org.apache.maven.project.MavenProject;
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.graph.DefaultGraphBuilder: boolean isMatchingProject(org.apache.maven.project.MavenProject,java.lang.String,java.io.File)>(project, selector, reactorDirectory);
+
+        return $stack4;
+    }
+
+    private boolean lambda$getProjectsBySelectors$0(java.lang.String, java.io.File, org.apache.maven.project.MavenProject)
+    {
+        DefaultGraphBuilder this;
+        org.apache.maven.project.MavenProject project;
+        java.lang.String selector;
+        java.io.File reactorDirectory;
+        boolean $stack4;
+        org.apache.maven.graph.DefaultGraphBuilder $r0;
+
+        this := @this: DefaultGraphBuilder;
+
+        selector := @parameter0: java.lang.String;
+
+        reactorDirectory := @parameter1: java.io.File;
+
+        project := @parameter2: org.apache.maven.project.MavenProject;
+
+        $r0 = (org.apache.maven.graph.DefaultGraphBuilder) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.graph.DefaultGraphBuilder: boolean isMatchingProject(org.apache.maven.project.MavenProject,java.lang.String,java.io.File)>(project, selector, reactorDirectory);
+
+        return $stack4;
+    }
+
+    static void <clinit>()
+    {
+        org.slf4j.Logger $stack0;
+
+        $stack0 = staticinvoke <org.slf4j.LoggerFactory: org.slf4j.Logger getLogger(java.lang.Class)>(class "Lorg/apache/maven/graph/DefaultGraphBuilder;");
+
+        <org.apache.maven.graph.DefaultGraphBuilder: org.slf4j.Logger LOGGER> = $stack0;
+
+        return;
+    }
+}

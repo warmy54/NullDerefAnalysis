@@ -1,0 +1,211 @@
+class DefaultClasspathTransformation$ClasspathGraphVisitor extends java.lang.Object
+{
+    org.apache.maven.repository.metadata.MetadataGraph graph;
+    org.apache.maven.repository.metadata.ClasspathContainer cpc;
+    java.util.List visited;
+    final org.apache.maven.repository.metadata.DefaultClasspathTransformation this$0;
+
+    protected void <init>(org.apache.maven.repository.metadata.DefaultClasspathTransformation, org.apache.maven.repository.metadata.MetadataGraph, org.apache.maven.repository.metadata.ClasspathContainer)
+    {
+        DefaultClasspathTransformation$ClasspathGraphVisitor this;
+        org.apache.maven.repository.metadata.DefaultClasspathTransformation l1;
+        org.apache.maven.repository.metadata.ClasspathContainer cpc;
+        org.apache.maven.repository.metadata.MetadataGraph cleanGraph;
+        java.util.TreeSet $stack5;
+        int $stack6;
+        java.util.ArrayList $u0;
+        org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultClasspathTransformation$ClasspathGraphVisitor;
+
+        l1 := @parameter0: org.apache.maven.repository.metadata.DefaultClasspathTransformation;
+
+        cleanGraph := @parameter1: org.apache.maven.repository.metadata.MetadataGraph;
+
+        cpc := @parameter2: org.apache.maven.repository.metadata.ClasspathContainer;
+
+        $r0 = (org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor) this;
+
+        $r0.<org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor: org.apache.maven.repository.metadata.DefaultClasspathTransformation this$0> = l1;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r1 = (org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor) this;
+
+        $r1.<org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor: org.apache.maven.repository.metadata.ClasspathContainer cpc> = cpc;
+
+        $r2 = (org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor) this;
+
+        $r2.<org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor: org.apache.maven.repository.metadata.MetadataGraph graph> = cleanGraph;
+
+        $u0 = new java.util.ArrayList;
+
+        $stack5 = virtualinvoke cleanGraph.<org.apache.maven.repository.metadata.MetadataGraph: java.util.TreeSet getVertices()>();
+
+        $stack6 = virtualinvoke $stack5.<java.util.TreeSet: int size()>();
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(int)>($stack6);
+
+        $r3 = (org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor) this;
+
+        $r3.<org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor: java.util.List visited> = $u0;
+
+        return;
+    }
+
+    protected void visit(org.apache.maven.repository.metadata.MetadataGraphVertex)
+    {
+        org.apache.maven.repository.metadata.MetadataGraphVertex node, targetNode, $stack25;
+        org.apache.maven.repository.metadata.ArtifactMetadata md, $stack22, $stack24, $stack26;
+        DefaultClasspathTransformation$ClasspathGraphVisitor this;
+        java.util.List $stack11, exits;
+        boolean $stack12;
+        org.apache.maven.repository.metadata.ClasspathContainer $stack13;
+        org.apache.maven.repository.metadata.MetadataGraph $stack15;
+        int $stack17, l6, l7;
+        org.apache.maven.repository.metadata.MetadataGraphEdge[] $stack18, sortedExits;
+        java.lang.Object[] $stack19;
+        java.util.Comparator $stack20;
+        org.apache.maven.repository.metadata.MetadataGraphEdge e;
+        org.apache.maven.artifact.ArtifactScopeEnum $stack23;
+        java.lang.String $stack27;
+        org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultClasspathTransformation$ClasspathGraphVisitor;
+
+        node := @parameter0: org.apache.maven.repository.metadata.MetadataGraphVertex;
+
+        md = virtualinvoke node.<org.apache.maven.repository.metadata.MetadataGraphVertex: org.apache.maven.repository.metadata.ArtifactMetadata getMd()>();
+
+        $r0 = (org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor) this;
+
+        $stack11 = $r0.<org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor: java.util.List visited>;
+
+        $stack12 = interfaceinvoke $stack11.<java.util.List: boolean contains(java.lang.Object)>(node);
+
+        if $stack12 == 0 goto label1;
+
+        return;
+
+     label1:
+        $r1 = (org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor) this;
+
+        $stack13 = $r1.<org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor: org.apache.maven.repository.metadata.ClasspathContainer cpc>;
+
+        virtualinvoke $stack13.<org.apache.maven.repository.metadata.ClasspathContainer: org.apache.maven.repository.metadata.ClasspathContainer add(org.apache.maven.repository.metadata.ArtifactMetadata)>(md);
+
+        $r2 = (org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor) this;
+
+        $stack15 = $r2.<org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor: org.apache.maven.repository.metadata.MetadataGraph graph>;
+
+        exits = virtualinvoke $stack15.<org.apache.maven.repository.metadata.MetadataGraph: java.util.List getExcidentEdges(org.apache.maven.repository.metadata.MetadataGraphVertex)>(node);
+
+        if exits == null goto label3;
+
+        $stack17 = interfaceinvoke exits.<java.util.List: int size()>();
+
+        if $stack17 <= 0 goto label3;
+
+        $stack18 = newarray (org.apache.maven.repository.metadata.MetadataGraphEdge)[0];
+
+        $stack19 = interfaceinvoke exits.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($stack18);
+
+        sortedExits = (org.apache.maven.repository.metadata.MetadataGraphEdge[]) $stack19;
+
+        $stack20 = staticinvoke <DefaultClasspathTransformation$ClasspathGraphVisitor$lambda_visit_0__309: java.util.Comparator bootstrap$()>();
+
+        staticinvoke <java.util.Arrays: void sort(java.lang.Object[],java.util.Comparator)>(sortedExits, $stack20);
+
+        l6 = lengthof sortedExits;
+
+        l7 = 0;
+
+     label2:
+        if l7 >= l6 goto label3;
+
+        e = sortedExits[l7];
+
+        targetNode = virtualinvoke e.<org.apache.maven.repository.metadata.MetadataGraphEdge: org.apache.maven.repository.metadata.MetadataGraphVertex getTarget()>();
+
+        $stack22 = virtualinvoke targetNode.<org.apache.maven.repository.metadata.MetadataGraphVertex: org.apache.maven.repository.metadata.ArtifactMetadata getMd()>();
+
+        $stack23 = virtualinvoke e.<org.apache.maven.repository.metadata.MetadataGraphEdge: org.apache.maven.artifact.ArtifactScopeEnum getScope()>();
+
+        virtualinvoke $stack22.<org.apache.maven.repository.metadata.ArtifactMetadata: void setArtifactScope(org.apache.maven.artifact.ArtifactScopeEnum)>($stack23);
+
+        $stack24 = virtualinvoke targetNode.<org.apache.maven.repository.metadata.MetadataGraphVertex: org.apache.maven.repository.metadata.ArtifactMetadata getMd()>();
+
+        $stack25 = virtualinvoke e.<org.apache.maven.repository.metadata.MetadataGraphEdge: org.apache.maven.repository.metadata.MetadataGraphVertex getSource()>();
+
+        $stack26 = virtualinvoke $stack25.<org.apache.maven.repository.metadata.MetadataGraphVertex: org.apache.maven.repository.metadata.ArtifactMetadata getMd()>();
+
+        $stack27 = virtualinvoke $stack26.<org.apache.maven.repository.metadata.ArtifactMetadata: java.lang.String toString()>();
+
+        virtualinvoke $stack24.<org.apache.maven.repository.metadata.ArtifactMetadata: void setWhy(java.lang.String)>($stack27);
+
+        $r3 = (org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor) this;
+
+        virtualinvoke $r3.<org.apache.maven.repository.metadata.DefaultClasspathTransformation$ClasspathGraphVisitor: void visit(org.apache.maven.repository.metadata.MetadataGraphVertex)>(targetNode);
+
+        l7 = l7 + 1;
+
+        goto label2;
+
+     label3:
+        return;
+    }
+
+    private static int lambda$visit$0(org.apache.maven.repository.metadata.MetadataGraphEdge, org.apache.maven.repository.metadata.MetadataGraphEdge)
+    {
+        org.apache.maven.repository.metadata.MetadataGraphEdge e1, e2;
+        int $stack2, $stack3, $stack4, $stack5, $stack6, $stack7, $stack8, $stack9, $stack10, $stack11, $stack16;
+        org.apache.maven.repository.metadata.MetadataGraphVertex $stack12, $stack14;
+        java.lang.String $stack13, $stack15;
+
+        e1 := @parameter0: org.apache.maven.repository.metadata.MetadataGraphEdge;
+
+        e2 := @parameter1: org.apache.maven.repository.metadata.MetadataGraphEdge;
+
+        $stack2 = virtualinvoke e1.<org.apache.maven.repository.metadata.MetadataGraphEdge: int getDepth()>();
+
+        $stack3 = virtualinvoke e2.<org.apache.maven.repository.metadata.MetadataGraphEdge: int getDepth()>();
+
+        if $stack2 != $stack3 goto label2;
+
+        $stack7 = virtualinvoke e2.<org.apache.maven.repository.metadata.MetadataGraphEdge: int getPomOrder()>();
+
+        $stack8 = virtualinvoke e1.<org.apache.maven.repository.metadata.MetadataGraphEdge: int getPomOrder()>();
+
+        if $stack7 != $stack8 goto label1;
+
+        $stack12 = virtualinvoke e1.<org.apache.maven.repository.metadata.MetadataGraphEdge: org.apache.maven.repository.metadata.MetadataGraphVertex getTarget()>();
+
+        $stack13 = virtualinvoke $stack12.<org.apache.maven.repository.metadata.MetadataGraphVertex: java.lang.String toString()>();
+
+        $stack14 = virtualinvoke e2.<org.apache.maven.repository.metadata.MetadataGraphEdge: org.apache.maven.repository.metadata.MetadataGraphVertex getTarget()>();
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.repository.metadata.MetadataGraphVertex: java.lang.String toString()>();
+
+        $stack16 = virtualinvoke $stack13.<java.lang.String: int compareTo(java.lang.String)>($stack15);
+
+        return $stack16;
+
+     label1:
+        $stack9 = virtualinvoke e2.<org.apache.maven.repository.metadata.MetadataGraphEdge: int getPomOrder()>();
+
+        $stack10 = virtualinvoke e1.<org.apache.maven.repository.metadata.MetadataGraphEdge: int getPomOrder()>();
+
+        $stack11 = $stack9 - $stack10;
+
+        return $stack11;
+
+     label2:
+        $stack4 = virtualinvoke e2.<org.apache.maven.repository.metadata.MetadataGraphEdge: int getDepth()>();
+
+        $stack5 = virtualinvoke e1.<org.apache.maven.repository.metadata.MetadataGraphEdge: int getDepth()>();
+
+        $stack6 = $stack4 - $stack5;
+
+        return $stack6;
+    }
+}

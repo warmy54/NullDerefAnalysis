@@ -1,0 +1,482 @@
+public class ThreadOutputMuxer extends java.lang.Object
+{
+    private final java.util.Iterator projects;
+    private final java.lang.ThreadLocal projectBuildThreadLocal;
+    private final java.util.Map streams;
+    private final java.util.Map printStreams;
+    private final java.io.ByteArrayOutputStream defaultOutputStreamForUnknownData;
+    private final java.io.PrintStream defaultPrintStream;
+    private final java.util.Set completedBuilds;
+    private volatile org.apache.maven.lifecycle.internal.ProjectSegment currentBuild;
+    private final java.io.PrintStream originalSystemOUtStream;
+    private final org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter printer;
+
+    public void <init>(org.apache.maven.lifecycle.internal.ProjectBuildList, java.io.PrintStream)
+    {
+        ThreadOutputMuxer this;
+        java.io.ByteArrayOutputStream $stack11, $u3, $u6;
+        java.util.Set $stack13;
+        org.apache.maven.lifecycle.internal.ProjectBuildList segmentChunks;
+        java.util.Iterator $stack14, l3;
+        boolean $stack16;
+        java.io.PrintStream originalSystemOut, $stack18, $u4, $u7, $r14;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter $stack21, $stack22, $u9;
+        java.lang.Object $stack23;
+        org.apache.maven.lifecycle.internal.ProjectSegment segmentChunk;
+        java.util.Map $stack25, $stack28;
+        java.lang.ThreadLocal $u0;
+        java.util.HashMap $u1, $u2;
+        java.util.HashSet $u5;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ThreadBoundPrintStream $u8;
+        java.lang.Thread $u10;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r15, $r16, $r17, $r19;
+        java.lang.Runnable $r18;
+
+        this := @this: ThreadOutputMuxer;
+
+        segmentChunks := @parameter0: org.apache.maven.lifecycle.internal.ProjectBuildList;
+
+        originalSystemOut := @parameter1: java.io.PrintStream;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.lang.ThreadLocal;
+
+        specialinvoke $u0.<java.lang.ThreadLocal: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $r0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.lang.ThreadLocal projectBuildThreadLocal> = $u0;
+
+        $u1 = new java.util.HashMap;
+
+        specialinvoke $u1.<java.util.HashMap: void <init>()>();
+
+        $r1 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $r1.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Map streams> = $u1;
+
+        $u2 = new java.util.HashMap;
+
+        specialinvoke $u2.<java.util.HashMap: void <init>()>();
+
+        $r2 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $r2.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Map printStreams> = $u2;
+
+        $u3 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $u3.<java.io.ByteArrayOutputStream: void <init>()>();
+
+        $r3 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $r3.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.io.ByteArrayOutputStream defaultOutputStreamForUnknownData> = $u3;
+
+        $u4 = new java.io.PrintStream;
+
+        $r4 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack11 = $r4.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.io.ByteArrayOutputStream defaultOutputStreamForUnknownData>;
+
+        specialinvoke $u4.<java.io.PrintStream: void <init>(java.io.OutputStream)>($stack11);
+
+        $r5 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $r5.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.io.PrintStream defaultPrintStream> = $u4;
+
+        $u5 = new java.util.HashSet;
+
+        specialinvoke $u5.<java.util.HashSet: void <init>()>();
+
+        $stack13 = staticinvoke <java.util.Collections: java.util.Set synchronizedSet(java.util.Set)>($u5);
+
+        $r6 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $r6.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Set completedBuilds> = $stack13;
+
+        $stack14 = virtualinvoke segmentChunks.<org.apache.maven.lifecycle.internal.ProjectBuildList: java.util.Iterator iterator()>();
+
+        $r7 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $r7.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Iterator projects> = $stack14;
+
+        l3 = virtualinvoke segmentChunks.<org.apache.maven.lifecycle.internal.ProjectBuildList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack16 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack16 == 0 goto label2;
+
+        $stack23 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        segmentChunk = (org.apache.maven.lifecycle.internal.ProjectSegment) $stack23;
+
+        $u6 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $u6.<java.io.ByteArrayOutputStream: void <init>()>();
+
+        $r8 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack25 = $r8.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Map streams>;
+
+        interfaceinvoke $stack25.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(segmentChunk, $u6);
+
+        $r9 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack28 = $r9.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Map printStreams>;
+
+        $u7 = new java.io.PrintStream;
+
+        specialinvoke $u7.<java.io.PrintStream: void <init>(java.io.OutputStream)>($u6);
+
+        interfaceinvoke $stack28.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(segmentChunk, $u7);
+
+        goto label1;
+
+     label2:
+        $r10 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        specialinvoke $r10.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: void setNext()>();
+
+        $r11 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $r11.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.io.PrintStream originalSystemOUtStream> = originalSystemOut;
+
+        $u8 = new org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ThreadBoundPrintStream;
+
+        $r12 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack18 = $r12.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.io.PrintStream originalSystemOUtStream>;
+
+        $r13 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        specialinvoke $u8.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ThreadBoundPrintStream: void <init>(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer,java.io.PrintStream)>($r13, $stack18);
+
+        $r14 = (java.io.PrintStream) $u8;
+
+        staticinvoke <java.lang.System: void setOut(java.io.PrintStream)>($r14);
+
+        $u9 = new org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter;
+
+        $r15 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        specialinvoke $u9.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: void <init>(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer,org.apache.maven.lifecycle.internal.ProjectBuildList)>($r15, segmentChunks);
+
+        $r16 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $r16.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter printer> = $u9;
+
+        $u10 = new java.lang.Thread;
+
+        $r17 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack21 = $r17.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter printer>;
+
+        $r18 = (java.lang.Runnable) $stack21;
+
+        specialinvoke $u10.<java.lang.Thread: void <init>(java.lang.Runnable)>($r18);
+
+        virtualinvoke $u10.<java.lang.Thread: void start()>();
+
+        $r19 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack22 = $r19.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter printer>;
+
+        virtualinvoke $stack22.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: void waitUntilRunning(boolean)>(1);
+
+        return;
+    }
+
+    public void close()
+    {
+        ThreadOutputMuxer this;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter $stack1;
+        java.io.PrintStream $stack2;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer $r0, $r1;
+
+        this := @this: ThreadOutputMuxer;
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack1 = $r0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter printer>;
+
+        virtualinvoke $stack1.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer$ConsolePrinter: void waitUntilRunning(boolean)>(0);
+
+        $r1 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack2 = $r1.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.io.PrintStream originalSystemOUtStream>;
+
+        staticinvoke <java.lang.System: void setOut(java.io.PrintStream)>($stack2);
+
+        return;
+    }
+
+    private void setNext()
+    {
+        ThreadOutputMuxer this;
+        java.util.Iterator $stack1, $stack3;
+        boolean $stack2;
+        java.lang.Object $stack4;
+        org.apache.maven.lifecycle.internal.ProjectSegment $stack5;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer $r0, $r1, $r2;
+
+        this := @this: ThreadOutputMuxer;
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack1 = $r0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Iterator projects>;
+
+        $stack2 = interfaceinvoke $stack1.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack2 == 0 goto label1;
+
+        $r1 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack3 = $r1.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Iterator projects>;
+
+        $stack4 = interfaceinvoke $stack3.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack5 = (org.apache.maven.lifecycle.internal.ProjectSegment) $stack4;
+
+        goto label2;
+
+     label1:
+        $stack5 = null;
+
+     label2:
+        $r2 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $r2.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: org.apache.maven.lifecycle.internal.ProjectSegment currentBuild> = $stack5;
+
+        return;
+    }
+
+    private boolean ownsRealOutputStream(org.apache.maven.lifecycle.internal.ProjectSegment)
+    {
+        org.apache.maven.lifecycle.internal.ProjectSegment projectBuild, $stack2;
+        ThreadOutputMuxer this;
+        boolean $stack3;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer $r0;
+
+        this := @this: ThreadOutputMuxer;
+
+        projectBuild := @parameter0: org.apache.maven.lifecycle.internal.ProjectSegment;
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack2 = $r0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: org.apache.maven.lifecycle.internal.ProjectSegment currentBuild>;
+
+        $stack3 = virtualinvoke projectBuild.<java.lang.Object: boolean equals(java.lang.Object)>($stack2);
+
+        return $stack3;
+    }
+
+    private java.io.PrintStream getThreadBoundPrintStream()
+    {
+        ThreadOutputMuxer this;
+        java.lang.ThreadLocal $stack2;
+        java.lang.Object $stack3, $stack6;
+        org.apache.maven.lifecycle.internal.ProjectSegment threadProject;
+        boolean $stack4;
+        java.util.Map $stack5;
+        java.io.PrintStream $stack7, $stack8, $stack9;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: ThreadOutputMuxer;
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack2 = $r0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.lang.ThreadLocal projectBuildThreadLocal>;
+
+        $stack3 = virtualinvoke $stack2.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        threadProject = (org.apache.maven.lifecycle.internal.ProjectSegment) $stack3;
+
+        if threadProject != null goto label1;
+
+        $r1 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack9 = $r1.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.io.PrintStream defaultPrintStream>;
+
+        return $stack9;
+
+     label1:
+        $r2 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack4 = specialinvoke $r2.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: boolean ownsRealOutputStream(org.apache.maven.lifecycle.internal.ProjectSegment)>(threadProject);
+
+        if $stack4 == 0 goto label2;
+
+        $r3 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack8 = $r3.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.io.PrintStream originalSystemOUtStream>;
+
+        return $stack8;
+
+     label2:
+        $r4 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack5 = $r4.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Map printStreams>;
+
+        $stack6 = interfaceinvoke $stack5.<java.util.Map: java.lang.Object get(java.lang.Object)>(threadProject);
+
+        $stack7 = (java.io.PrintStream) $stack6;
+
+        return $stack7;
+    }
+
+    public void associateThreadWithProjectSegment(org.apache.maven.lifecycle.internal.ProjectSegment)
+    {
+        ThreadOutputMuxer this;
+        org.apache.maven.lifecycle.internal.ProjectSegment projectBuild;
+        java.lang.ThreadLocal $stack2;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer $r0;
+
+        this := @this: ThreadOutputMuxer;
+
+        projectBuild := @parameter0: org.apache.maven.lifecycle.internal.ProjectSegment;
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack2 = $r0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.lang.ThreadLocal projectBuildThreadLocal>;
+
+        virtualinvoke $stack2.<java.lang.ThreadLocal: void set(java.lang.Object)>(projectBuild);
+
+        return;
+    }
+
+    public void setThisModuleComplete(org.apache.maven.lifecycle.internal.ProjectSegment)
+    {
+        ThreadOutputMuxer this;
+        org.apache.maven.lifecycle.internal.ProjectSegment projectBuild;
+        java.util.Set $stack5;
+        java.util.Map $stack7;
+        java.lang.Object $stack8;
+        java.io.PrintStream stream;
+        java.lang.Throwable $stack11;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer $r0, $r1, $r2;
+
+        this := @this: ThreadOutputMuxer;
+
+        projectBuild := @parameter0: org.apache.maven.lifecycle.internal.ProjectSegment;
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack5 = $r0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Set completedBuilds>;
+
+        interfaceinvoke $stack5.<java.util.Set: boolean add(java.lang.Object)>(projectBuild);
+
+        $r1 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack7 = $r1.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Map printStreams>;
+
+        $stack8 = interfaceinvoke $stack7.<java.util.Map: java.lang.Object get(java.lang.Object)>(projectBuild);
+
+        stream = (java.io.PrintStream) $stack8;
+
+        entermonitor stream;
+
+     label1:
+        virtualinvoke stream.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor stream;
+
+     label2:
+        goto label5;
+
+     label3:
+        $stack11 := @caughtexception;
+
+        exitmonitor stream;
+
+     label4:
+        throw $stack11;
+
+     label5:
+        $r2 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        specialinvoke $r2.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: void disconnectThreadFromProject()>();
+
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    private void disconnectThreadFromProject()
+    {
+        ThreadOutputMuxer this;
+        java.lang.ThreadLocal $stack1;
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer $r0;
+
+        this := @this: ThreadOutputMuxer;
+
+        $r0 = (org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer) this;
+
+        $stack1 = $r0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.lang.ThreadLocal projectBuildThreadLocal>;
+
+        virtualinvoke $stack1.<java.lang.ThreadLocal: void remove()>();
+
+        return;
+    }
+
+    static java.util.Map access$000(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer)
+    {
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer x0;
+        java.util.Map $stack1;
+
+        x0 := @parameter0: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer;
+
+        $stack1 = x0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Map printStreams>;
+
+        return $stack1;
+    }
+
+    static java.util.Map access$100(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer)
+    {
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer x0;
+        java.util.Map $stack1;
+
+        x0 := @parameter0: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer;
+
+        $stack1 = x0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Map streams>;
+
+        return $stack1;
+    }
+
+    static java.io.PrintStream access$200(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer)
+    {
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer x0;
+        java.io.PrintStream $stack1;
+
+        x0 := @parameter0: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer;
+
+        $stack1 = x0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.io.PrintStream originalSystemOUtStream>;
+
+        return $stack1;
+    }
+
+    static java.util.Set access$300(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer)
+    {
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer x0;
+        java.util.Set $stack1;
+
+        x0 := @parameter0: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer;
+
+        $stack1 = x0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.util.Set completedBuilds>;
+
+        return $stack1;
+    }
+
+    static java.io.PrintStream access$400(org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer)
+    {
+        org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer x0;
+        java.io.PrintStream $stack1;
+
+        x0 := @parameter0: org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer;
+
+        $stack1 = specialinvoke x0.<org.apache.maven.lifecycle.internal.builder.multithreaded.ThreadOutputMuxer: java.io.PrintStream getThreadBoundPrintStream()>();
+
+        return $stack1;
+    }
+}

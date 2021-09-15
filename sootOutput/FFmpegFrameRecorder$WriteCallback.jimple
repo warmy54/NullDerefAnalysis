@@ -1,0 +1,75 @@
+class FFmpegFrameRecorder$WriteCallback extends org.bytedeco.ffmpeg.avformat.Write_packet_Pointer_BytePointer_int
+{
+
+    void <init>()
+    {
+        FFmpegFrameRecorder$WriteCallback this;
+
+        this := @this: FFmpegFrameRecorder$WriteCallback;
+
+        specialinvoke this.<org.bytedeco.ffmpeg.avformat.Write_packet_Pointer_BytePointer_int: void <init>()>();
+
+        return;
+    }
+
+    public int call(org.bytedeco.javacpp.Pointer, org.bytedeco.javacpp.BytePointer, int)
+    {
+        int buf_size;
+        org.bytedeco.javacpp.Pointer opaque;
+        java.util.Map $stack6;
+        java.lang.Object $stack7;
+        java.io.OutputStream os;
+        org.bytedeco.javacpp.BytePointer buf;
+        java.lang.Throwable $stack9;
+        java.lang.StringBuilder $stack10, $stack12, $stack13;
+        java.io.PrintStream $stack11;
+        java.lang.String $stack14;
+        FFmpegFrameRecorder$WriteCallback this;
+        byte[] b;
+
+        this := @this: FFmpegFrameRecorder$WriteCallback;
+
+        opaque := @parameter0: org.bytedeco.javacpp.Pointer;
+
+        buf := @parameter1: org.bytedeco.javacpp.BytePointer;
+
+        buf_size := @parameter2: int;
+
+     label1:
+        b = newarray (byte)[buf_size];
+
+        $stack6 = <org.bytedeco.javacv.FFmpegFrameRecorder: java.util.Map outputStreams>;
+
+        $stack7 = interfaceinvoke $stack6.<java.util.Map: java.lang.Object get(java.lang.Object)>(opaque);
+
+        os = (java.io.OutputStream) $stack7;
+
+        virtualinvoke buf.<org.bytedeco.javacpp.BytePointer: org.bytedeco.javacpp.BytePointer get(byte[],int,int)>(b, 0, buf_size);
+
+        virtualinvoke os.<java.io.OutputStream: void write(byte[],int,int)>(b, 0, buf_size);
+
+     label2:
+        return buf_size;
+
+     label3:
+        $stack9 := @caughtexception;
+
+        $stack11 = <java.lang.System: java.io.PrintStream err>;
+
+        $stack10 = new java.lang.StringBuilder;
+
+        specialinvoke $stack10.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error on OutputStream.write(): ");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack9);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack11.<java.io.PrintStream: void println(java.lang.String)>($stack14);
+
+        return -1;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+}

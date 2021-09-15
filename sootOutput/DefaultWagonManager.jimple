@@ -1,11 +1,10 @@
-public class DefaultWagonManager extends java.lang.Object implements org.apache.maven.repository.legacy.WagonManager
+public class DefaultWagonManager extends org.apache.maven.repository.legacy.DefaultWagonManager implements org.apache.maven.artifact.manager.WagonManager
 {
-    private static final java.lang.String[] CHECKSUM_IDS;
-    private static final java.lang.String[] CHECKSUM_ALGORITHMS;
-    private org.codehaus.plexus.logging.Logger logger;
-    private org.codehaus.plexus.PlexusContainer container;
-    private org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager;
+    private org.codehaus.plexus.logging.Logger log;
     private org.apache.maven.plugin.LegacySupport legacySupport;
+    private org.apache.maven.settings.crypto.SettingsDecrypter settingsDecrypter;
+    private org.apache.maven.repository.MirrorSelector mirrorSelector;
+    private org.apache.maven.artifact.repository.ArtifactRepositoryFactory artifactRepositoryFactory;
 
     public void <init>()
     {
@@ -13,29 +12,236 @@ public class DefaultWagonManager extends java.lang.Object implements org.apache.
 
         this := @this: DefaultWagonManager;
 
-        specialinvoke this.<java.lang.Object: void <init>()>();
+        specialinvoke this.<org.apache.maven.repository.legacy.DefaultWagonManager: void <init>()>();
 
         return;
     }
 
-    public void getArtifact(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.wagon.events.TransferListener, boolean) throws org.apache.maven.wagon.TransferFailedException, org.apache.maven.wagon.ResourceDoesNotExistException
+    public org.apache.maven.wagon.authentication.AuthenticationInfo getAuthenticationInfo(java.lang.String)
     {
-        org.apache.maven.artifact.repository.ArtifactRepository repository;
-        org.apache.maven.artifact.Artifact artifact;
-        java.lang.String remotePath, $stack17, $stack20, $stack24, $stack26, $stack31, $stack36, $stack48, $stack51, $stack54, $stack60, $stack63, $stack67, $stack92, $stack95, $stack97, $stack101, $stack103, e#5;
-        boolean $stack10, $stack12, $stack13, force, $stack38, $stack40, $stack87;
-        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy policy, $stack11;
         DefaultWagonManager this;
-        org.codehaus.plexus.logging.Logger $stack15, $stack29, $stack90;
-        java.lang.StringBuilder $stack16, $stack18, $stack19, $stack21, $stack22, $stack23, $stack30, $stack32, $stack33, $stack35, $stack45, $stack46, $stack47, $stack49, $stack50, $stack52, $stack53, $stack57, $stack58, $stack59, $stack61, $stack62, $stack64, $stack65, $stack66, $stack91, $stack93, $stack94, $stack96, $u0, $u1, $u2, $u3, $u5;
-        java.io.File $stack25, $stack34, $stack39, $stack86;
-        org.apache.maven.wagon.events.TransferListener downloadMonitor;
-        org.apache.maven.repository.legacy.UpdateCheckManager $stack27, $stack37, $stack41, $stack104, $stack112;
-        java.lang.Throwable $stack100, $stack111, $r11, $r12;
-        java.lang.Class $stack102;
-        org.apache.maven.wagon.TransferFailedException $u4, $r6, $r7;
-        org.apache.maven.wagon.ResourceDoesNotExistException $u6;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0, $r1, $r2, $r3, $r4, $r5, $r8, $r9, $r10;
+        org.apache.maven.plugin.LegacySupport $stack9;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.String id, $stack17, $stack25, $stack26, $stack27, $stack28;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.util.List servers;
+        java.util.Iterator l5;
+        boolean $stack15, $stack18;
+        java.lang.Object $stack16;
+        org.apache.maven.settings.crypto.SettingsDecrypter $stack21;
+        org.apache.maven.settings.crypto.SettingsDecryptionResult result;
+        org.apache.maven.settings.Server server;
+        org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest $u0;
+        org.apache.maven.wagon.authentication.AuthenticationInfo $u1, $u2;
+        org.apache.maven.artifact.manager.DefaultWagonManager $r0, $r1;
+        org.apache.maven.settings.crypto.SettingsDecryptionRequest $r2;
+
+        this := @this: DefaultWagonManager;
+
+        id := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.artifact.manager.DefaultWagonManager) this;
+
+        $stack9 = $r0.<org.apache.maven.artifact.manager.DefaultWagonManager: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        session = interfaceinvoke $stack9.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+        if session == null goto label3;
+
+        if id == null goto label3;
+
+        request = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        if request == null goto label3;
+
+        servers = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getServers()>();
+
+        if servers == null goto label3;
+
+        l5 = interfaceinvoke servers.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack15 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label3;
+
+        $stack16 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        server = (org.apache.maven.settings.Server) $stack16;
+
+        $stack17 = virtualinvoke server.<org.apache.maven.settings.Server: java.lang.String getId()>();
+
+        $stack18 = virtualinvoke id.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($stack17);
+
+        if $stack18 == 0 goto label2;
+
+        $r1 = (org.apache.maven.artifact.manager.DefaultWagonManager) this;
+
+        $stack21 = $r1.<org.apache.maven.artifact.manager.DefaultWagonManager: org.apache.maven.settings.crypto.SettingsDecrypter settingsDecrypter>;
+
+        $u0 = new org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
+
+        specialinvoke $u0.<org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest: void <init>(org.apache.maven.settings.Server)>(server);
+
+        $r2 = (org.apache.maven.settings.crypto.SettingsDecryptionRequest) $u0;
+
+        result = interfaceinvoke $stack21.<org.apache.maven.settings.crypto.SettingsDecrypter: org.apache.maven.settings.crypto.SettingsDecryptionResult decrypt(org.apache.maven.settings.crypto.SettingsDecryptionRequest)>($r2);
+
+        server = interfaceinvoke result.<org.apache.maven.settings.crypto.SettingsDecryptionResult: org.apache.maven.settings.Server getServer()>();
+
+        $u1 = new org.apache.maven.wagon.authentication.AuthenticationInfo;
+
+        specialinvoke $u1.<org.apache.maven.wagon.authentication.AuthenticationInfo: void <init>()>();
+
+        $stack25 = virtualinvoke server.<org.apache.maven.settings.Server: java.lang.String getUsername()>();
+
+        virtualinvoke $u1.<org.apache.maven.wagon.authentication.AuthenticationInfo: void setUserName(java.lang.String)>($stack25);
+
+        $stack26 = virtualinvoke server.<org.apache.maven.settings.Server: java.lang.String getPassword()>();
+
+        virtualinvoke $u1.<org.apache.maven.wagon.authentication.AuthenticationInfo: void setPassword(java.lang.String)>($stack26);
+
+        $stack27 = virtualinvoke server.<org.apache.maven.settings.Server: java.lang.String getPrivateKey()>();
+
+        virtualinvoke $u1.<org.apache.maven.wagon.authentication.AuthenticationInfo: void setPrivateKey(java.lang.String)>($stack27);
+
+        $stack28 = virtualinvoke server.<org.apache.maven.settings.Server: java.lang.String getPassphrase()>();
+
+        virtualinvoke $u1.<org.apache.maven.wagon.authentication.AuthenticationInfo: void setPassphrase(java.lang.String)>($stack28);
+
+        return $u1;
+
+     label2:
+        goto label1;
+
+     label3:
+        $u2 = new org.apache.maven.wagon.authentication.AuthenticationInfo;
+
+        specialinvoke $u2.<org.apache.maven.wagon.authentication.AuthenticationInfo: void <init>()>();
+
+        return $u2;
+    }
+
+    public org.apache.maven.wagon.proxy.ProxyInfo getProxy(java.lang.String)
+    {
+        DefaultWagonManager this;
+        org.apache.maven.plugin.LegacySupport $stack9;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.String protocol, $stack19, $stack26, $stack27, $stack29, $stack30, $stack31;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.util.List proxies;
+        java.util.Iterator l5;
+        boolean $stack15, $stack17, $stack20;
+        java.lang.Object $stack16;
+        org.apache.maven.settings.crypto.SettingsDecrypter $stack22;
+        org.apache.maven.settings.crypto.SettingsDecryptionResult result;
+        int $stack28;
+        org.apache.maven.settings.Proxy proxy;
+        org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest $u0;
+        org.apache.maven.wagon.proxy.ProxyInfo $u1;
+        org.apache.maven.artifact.manager.DefaultWagonManager $r0, $r1;
+        org.apache.maven.settings.crypto.SettingsDecryptionRequest $r2;
+
+        this := @this: DefaultWagonManager;
+
+        protocol := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.artifact.manager.DefaultWagonManager) this;
+
+        $stack9 = $r0.<org.apache.maven.artifact.manager.DefaultWagonManager: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        session = interfaceinvoke $stack9.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+        if session == null goto label3;
+
+        if protocol == null goto label3;
+
+        request = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        if request == null goto label3;
+
+        proxies = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.util.List getProxies()>();
+
+        if proxies == null goto label3;
+
+        l5 = interfaceinvoke proxies.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack15 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label3;
+
+        $stack16 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        proxy = (org.apache.maven.settings.Proxy) $stack16;
+
+        $stack17 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: boolean isActive()>();
+
+        if $stack17 == 0 goto label2;
+
+        $stack19 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getProtocol()>();
+
+        $stack20 = virtualinvoke protocol.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($stack19);
+
+        if $stack20 == 0 goto label2;
+
+        $r1 = (org.apache.maven.artifact.manager.DefaultWagonManager) this;
+
+        $stack22 = $r1.<org.apache.maven.artifact.manager.DefaultWagonManager: org.apache.maven.settings.crypto.SettingsDecrypter settingsDecrypter>;
+
+        $u0 = new org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
+
+        specialinvoke $u0.<org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest: void <init>(org.apache.maven.settings.Proxy)>(proxy);
+
+        $r2 = (org.apache.maven.settings.crypto.SettingsDecryptionRequest) $u0;
+
+        result = interfaceinvoke $stack22.<org.apache.maven.settings.crypto.SettingsDecrypter: org.apache.maven.settings.crypto.SettingsDecryptionResult decrypt(org.apache.maven.settings.crypto.SettingsDecryptionRequest)>($r2);
+
+        proxy = interfaceinvoke result.<org.apache.maven.settings.crypto.SettingsDecryptionResult: org.apache.maven.settings.Proxy getProxy()>();
+
+        $u1 = new org.apache.maven.wagon.proxy.ProxyInfo;
+
+        specialinvoke $u1.<org.apache.maven.wagon.proxy.ProxyInfo: void <init>()>();
+
+        $stack26 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getHost()>();
+
+        virtualinvoke $u1.<org.apache.maven.wagon.proxy.ProxyInfo: void setHost(java.lang.String)>($stack26);
+
+        $stack27 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getProtocol()>();
+
+        virtualinvoke $u1.<org.apache.maven.wagon.proxy.ProxyInfo: void setType(java.lang.String)>($stack27);
+
+        $stack28 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: int getPort()>();
+
+        virtualinvoke $u1.<org.apache.maven.wagon.proxy.ProxyInfo: void setPort(int)>($stack28);
+
+        $stack29 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getNonProxyHosts()>();
+
+        virtualinvoke $u1.<org.apache.maven.wagon.proxy.ProxyInfo: void setNonProxyHosts(java.lang.String)>($stack29);
+
+        $stack30 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getUsername()>();
+
+        virtualinvoke $u1.<org.apache.maven.wagon.proxy.ProxyInfo: void setUserName(java.lang.String)>($stack30);
+
+        $stack31 = virtualinvoke proxy.<org.apache.maven.settings.Proxy: java.lang.String getPassword()>();
+
+        virtualinvoke $u1.<org.apache.maven.wagon.proxy.ProxyInfo: void setPassword(java.lang.String)>($stack31);
+
+        return $u1;
+
+     label2:
+        goto label1;
+
+     label3:
+        return null;
+    }
+
+    public void getArtifact(org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.wagon.TransferFailedException, org.apache.maven.wagon.ResourceDoesNotExistException
+    {
+        DefaultWagonManager this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        org.apache.maven.artifact.manager.DefaultWagonManager $r0;
 
         this := @this: DefaultWagonManager;
 
@@ -43,301 +249,19 @@ public class DefaultWagonManager extends java.lang.Object implements org.apache.
 
         repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
 
-        downloadMonitor := @parameter2: org.apache.maven.wagon.events.TransferListener;
+        $r0 = (org.apache.maven.artifact.manager.DefaultWagonManager) this;
 
-        force := @parameter3: boolean;
+        virtualinvoke $r0.<org.apache.maven.artifact.manager.DefaultWagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>(artifact, repository, null, 0);
 
-        remotePath = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
-
-        $stack10 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: boolean isSnapshot()>();
-
-        if $stack10 == 0 goto label01;
-
-        $stack11 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getSnapshots()>();
-
-        goto label02;
-
-     label01:
-        $stack11 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getReleases()>();
-
-     label02:
-        policy = $stack11;
-
-        $stack12 = virtualinvoke $stack11.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: boolean isEnabled()>();
-
-        if $stack12 != 0 goto label03;
-
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack90 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u0 = new java.lang.StringBuilder;
-
-        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
-
-        $stack91 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Skipping disabled repository ");
-
-        $stack92 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
-
-        $stack93 = virtualinvoke $stack91.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack92);
-
-        $stack94 = virtualinvoke $stack93.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" for resolution of ");
-
-        $stack95 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getId()>();
-
-        $stack96 = virtualinvoke $stack94.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack95);
-
-        $stack97 = virtualinvoke $stack96.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack90.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack97);
-
-        goto label15;
-
-     label03:
-        $stack13 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: boolean isSnapshot()>();
-
-        if $stack13 != 0 goto label04;
-
-        $stack86 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
-
-        $stack87 = virtualinvoke $stack86.<java.io.File: boolean exists()>();
-
-        if $stack87 != 0 goto label15;
-
-     label04:
-        if force != 0 goto label05;
-
-        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack37 = $r1.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
-
-        $stack38 = interfaceinvoke $stack37.<org.apache.maven.repository.legacy.UpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>(artifact, repository);
-
-        if $stack38 == 0 goto label13;
-
-     label05:
-        $r2 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack15 = $r2.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u1 = new java.lang.StringBuilder;
-
-        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
-
-        $stack16 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Trying repository ");
-
-        $stack17 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
-
-        $stack18 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack17);
-
-        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" for resolution of ");
-
-        $stack20 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getId()>();
-
-        $stack21 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack20);
-
-        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" from ");
-
-        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(remotePath);
-
-        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack15.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack24);
-
-     label06:
-        $stack25 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
-
-        $stack26 = virtualinvoke policy.<org.apache.maven.artifact.repository.ArtifactRepositoryPolicy: java.lang.String getChecksumPolicy()>();
-
-        $r3 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        virtualinvoke $r3.<org.apache.maven.repository.legacy.DefaultWagonManager: void getRemoteFile(org.apache.maven.artifact.repository.ArtifactRepository,java.io.File,java.lang.String,org.apache.maven.wagon.events.TransferListener,java.lang.String,boolean)>(repository, $stack25, remotePath, downloadMonitor, $stack26, 0);
-
-        $r4 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack27 = $r4.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
-
-        interfaceinvoke $stack27.<org.apache.maven.repository.legacy.UpdateCheckManager: void touch(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,java.lang.String)>(artifact, repository, null);
-
-     label07:
-        goto label12;
-
-     label08:
-        $stack111 := @caughtexception;
-
-        $r5 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack112 = $r5.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
-
-        interfaceinvoke $stack112.<org.apache.maven.repository.legacy.UpdateCheckManager: void touch(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,java.lang.String)>(artifact, repository, null);
-
-        throw $stack111;
-
-     label09:
-        $stack100 := @caughtexception;
-
-        $r6 = (org.apache.maven.wagon.TransferFailedException) $stack100;
-
-        $stack101 = virtualinvoke $r6.<org.apache.maven.wagon.TransferFailedException: java.lang.String getMessage()>();
-
-        if $stack101 == null goto label10;
-
-        $r7 = (org.apache.maven.wagon.TransferFailedException) $stack100;
-
-        $stack103 = virtualinvoke $r7.<org.apache.maven.wagon.TransferFailedException: java.lang.String getMessage()>();
-
-        goto label11;
-
-     label10:
-        $stack102 = virtualinvoke $stack100.<java.lang.Object: java.lang.Class getClass()>();
-
-        $stack103 = virtualinvoke $stack102.<java.lang.Class: java.lang.String getSimpleName()>();
-
-     label11:
-        $r8 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack104 = $r8.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
-
-        interfaceinvoke $stack104.<org.apache.maven.repository.legacy.UpdateCheckManager: void touch(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,java.lang.String)>(artifact, repository, $stack103);
-
-        throw $stack100;
-
-     label12:
-        $r9 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack29 = $r9.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u2 = new java.lang.StringBuilder;
-
-        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
-
-        $stack30 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("  Artifact ");
-
-        $stack31 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getId()>();
-
-        $stack32 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack31);
-
-        $stack33 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" resolved to ");
-
-        $stack34 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
-
-        $stack35 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack34);
-
-        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack29.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack36);
-
-        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setResolved(boolean)>(1);
-
-        goto label15;
-
-     label13:
-        $stack39 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
-
-        $stack40 = virtualinvoke $stack39.<java.io.File: boolean exists()>();
-
-        if $stack40 != 0 goto label15;
-
-        $r10 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack41 = $r10.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.repository.legacy.UpdateCheckManager updateCheckManager>;
-
-        e#5 = interfaceinvoke $stack41.<org.apache.maven.repository.legacy.UpdateCheckManager: java.lang.String getError(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>(artifact, repository);
-
-        if e#5 == null goto label14;
-
-        $u4 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u3 = new java.lang.StringBuilder;
-
-        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
-
-        $stack57 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failure to resolve ");
-
-        $stack58 = virtualinvoke $stack57.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(remotePath);
-
-        $stack59 = virtualinvoke $stack58.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" from ");
-
-        $stack60 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
-
-        $stack61 = virtualinvoke $stack59.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack60);
-
-        $stack62 = virtualinvoke $stack61.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" was cached in the local repository. Resolution will not be reattempted until the update interval of ");
-
-        $stack63 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
-
-        $stack64 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack63);
-
-        $stack65 = virtualinvoke $stack64.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" has elapsed or updates are forced. Original error: ");
-
-        $stack66 = virtualinvoke $stack65.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(e#5);
-
-        $stack67 = virtualinvoke $stack66.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u4.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String)>($stack67);
-
-        $r11 = (java.lang.Throwable) $u4;
-
-        throw $r11;
-
-     label14:
-        $u6 = new org.apache.maven.wagon.ResourceDoesNotExistException;
-
-        $u5 = new java.lang.StringBuilder;
-
-        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
-
-        $stack45 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failure to resolve ");
-
-        $stack46 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(remotePath);
-
-        $stack47 = virtualinvoke $stack46.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" from ");
-
-        $stack48 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
-
-        $stack49 = virtualinvoke $stack47.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack48);
-
-        $stack50 = virtualinvoke $stack49.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" was cached in the local repository. Resolution will not be reattempted until the update interval of ");
-
-        $stack51 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
-
-        $stack52 = virtualinvoke $stack50.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack51);
-
-        $stack53 = virtualinvoke $stack52.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" has elapsed or updates are forced.");
-
-        $stack54 = virtualinvoke $stack53.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u6.<org.apache.maven.wagon.ResourceDoesNotExistException: void <init>(java.lang.String)>($stack54);
-
-        $r12 = (java.lang.Throwable) $u6;
-
-        throw $r12;
-
-     label15:
         return;
-
-        catch org.apache.maven.wagon.ResourceDoesNotExistException from label06 to label07 with label08;
-        catch org.apache.maven.wagon.TransferFailedException from label06 to label07 with label09;
     }
 
-    public void getArtifact(org.apache.maven.artifact.Artifact, java.util.List, org.apache.maven.wagon.events.TransferListener, boolean) throws org.apache.maven.wagon.TransferFailedException, org.apache.maven.wagon.ResourceDoesNotExistException
+    public void getArtifact(org.apache.maven.artifact.Artifact, java.util.List) throws org.apache.maven.wagon.TransferFailedException, org.apache.maven.wagon.ResourceDoesNotExistException
     {
-        java.util.List remoteRepositories;
-        java.util.Iterator l6;
-        boolean $stack11, $stack13, force, $stack16, $stack35;
-        org.apache.maven.artifact.Artifact artifact;
-        java.io.File $stack12;
-        java.lang.Object $stack15;
-        org.apache.maven.artifact.repository.ArtifactRepository repository;
         DefaultWagonManager this;
-        org.apache.maven.wagon.events.TransferListener downloadMonitor;
-        java.lang.Throwable $stack19, $stack38, tfe, $r6;
-        java.lang.StringBuilder $stack21, $stack23, $stack24, $stack26, $stack27, $stack29, $stack30, $stack32, $stack41, $stack43, $stack44, $stack46, $stack47, $stack49, $stack50, $u0, $u1;
-        java.lang.String $stack22, $stack25, $stack28, $stack31, msg, $stack42, $stack45, $stack48, $stack51;
-        org.codehaus.plexus.logging.Logger $stack34, $stack36, $stack37, $stack40;
-        org.apache.maven.wagon.ResourceDoesNotExistException $u2;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0, $r1, $r3, $r4, $r5;
-        org.apache.maven.wagon.TransferFailedException $r2;
+        org.apache.maven.artifact.Artifact artifact;
+        java.util.List remoteRepositories;
+        org.apache.maven.artifact.manager.DefaultWagonManager $r0;
 
         this := @this: DefaultWagonManager;
 
@@ -345,2192 +269,99 @@ public class DefaultWagonManager extends java.lang.Object implements org.apache.
 
         remoteRepositories := @parameter1: java.util.List;
 
-        downloadMonitor := @parameter2: org.apache.maven.wagon.events.TransferListener;
+        $r0 = (org.apache.maven.artifact.manager.DefaultWagonManager) this;
 
-        force := @parameter3: boolean;
-
-        tfe = null;
-
-        l6 = interfaceinvoke remoteRepositories.<java.util.List: java.util.Iterator iterator()>();
-
-     label01:
-        $stack11 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
-
-        if $stack11 == 0 goto label09;
-
-        $stack15 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
-
-        repository = (org.apache.maven.artifact.repository.ArtifactRepository) $stack15;
-
-     label02:
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: void getArtifact(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.wagon.events.TransferListener,boolean)>(artifact, repository, downloadMonitor, force);
-
-        $stack16 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: boolean isResolved()>();
-
-        if $stack16 == 0 goto label04;
-
-        interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: void setRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
-
-     label03:
-        goto label09;
-
-     label04:
-        goto label08;
-
-     label05:
-        $stack38 := @caughtexception;
-
-        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack40 = $r1.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u0 = new java.lang.StringBuilder;
-
-        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
-
-        $stack41 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to find artifact ");
-
-        $stack42 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getId()>();
-
-        $stack43 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack42);
-
-        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" in repository ");
-
-        $stack45 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
-
-        $stack46 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack45);
-
-        $stack47 = virtualinvoke $stack46.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
-
-        $stack48 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
-
-        $stack49 = virtualinvoke $stack47.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack48);
-
-        $stack50 = virtualinvoke $stack49.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
-
-        $stack51 = virtualinvoke $stack50.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack40.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>($stack51, $stack38);
-
-        goto label08;
-
-     label06:
-        $stack19 := @caughtexception;
-
-        tfe = $stack19;
-
-        $u1 = new java.lang.StringBuilder;
-
-        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
-
-        $stack21 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to get artifact ");
-
-        $stack22 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.lang.String getId()>();
-
-        $stack23 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack22);
-
-        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" from repository ");
-
-        $stack25 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
-
-        $stack26 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack25);
-
-        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
-
-        $stack28 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
-
-        $stack29 = virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack28);
-
-        $stack30 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("): ");
-
-        $r2 = (org.apache.maven.wagon.TransferFailedException) $stack19;
-
-        $stack31 = virtualinvoke $r2.<org.apache.maven.wagon.TransferFailedException: java.lang.String getMessage()>();
-
-        $stack32 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack31);
-
-        msg = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        $r3 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack34 = $r3.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $stack35 = interfaceinvoke $stack34.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
-
-        if $stack35 == 0 goto label07;
-
-        $r4 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack37 = $r4.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        interfaceinvoke $stack37.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String,java.lang.Throwable)>(msg, $stack19);
-
-        goto label08;
-
-     label07:
-        $r5 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack36 = $r5.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        interfaceinvoke $stack36.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>(msg);
-
-     label08:
-        goto label01;
-
-     label09:
-        $stack12 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: java.io.File getFile()>();
-
-        $stack13 = virtualinvoke $stack12.<java.io.File: boolean exists()>();
-
-        if $stack13 != 0 goto label11;
-
-        if tfe == null goto label10;
-
-        throw tfe;
-
-     label10:
-        $u2 = new org.apache.maven.wagon.ResourceDoesNotExistException;
-
-        specialinvoke $u2.<org.apache.maven.wagon.ResourceDoesNotExistException: void <init>(java.lang.String)>("Unable to download the artifact from any repository");
-
-        $r6 = (java.lang.Throwable) $u2;
-
-        throw $r6;
-
-     label11:
-        return;
-
-        catch org.apache.maven.wagon.ResourceDoesNotExistException from label02 to label03 with label05;
-        catch org.apache.maven.wagon.TransferFailedException from label02 to label03 with label06;
-    }
-
-    public void getArtifactMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata, org.apache.maven.artifact.repository.ArtifactRepository, java.io.File, java.lang.String) throws org.apache.maven.wagon.TransferFailedException, org.apache.maven.wagon.ResourceDoesNotExistException
-    {
-        org.apache.maven.artifact.repository.ArtifactRepository repository;
-        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
-        java.lang.String remotePath, checksumPolicy;
-        DefaultWagonManager this;
-        java.io.File destination;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0;
-
-        this := @this: DefaultWagonManager;
-
-        metadata := @parameter0: org.apache.maven.artifact.metadata.ArtifactMetadata;
-
-        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
-
-        destination := @parameter2: java.io.File;
-
-        checksumPolicy := @parameter3: java.lang.String;
-
-        remotePath = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfRemoteRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata)>(metadata);
-
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: void getRemoteFile(org.apache.maven.artifact.repository.ArtifactRepository,java.io.File,java.lang.String,org.apache.maven.wagon.events.TransferListener,java.lang.String,boolean)>(repository, destination, remotePath, null, checksumPolicy, 1);
+        virtualinvoke $r0.<org.apache.maven.artifact.manager.DefaultWagonManager: void getArtifact(org.apache.maven.artifact.Artifact,java.util.List,org.apache.maven.wagon.events.TransferListener,boolean)>(artifact, remoteRepositories, null, 0);
 
         return;
     }
 
-    public void getArtifactMetadataFromDeploymentRepository(org.apache.maven.artifact.metadata.ArtifactMetadata, org.apache.maven.artifact.repository.ArtifactRepository, java.io.File, java.lang.String) throws org.apache.maven.wagon.TransferFailedException, org.apache.maven.wagon.ResourceDoesNotExistException
-    {
-        org.apache.maven.artifact.repository.ArtifactRepository repository;
-        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
-        java.lang.String remotePath, checksumPolicy;
-        DefaultWagonManager this;
-        java.io.File destination;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0;
-
-        this := @this: DefaultWagonManager;
-
-        metadata := @parameter0: org.apache.maven.artifact.metadata.ArtifactMetadata;
-
-        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
-
-        destination := @parameter2: java.io.File;
-
-        checksumPolicy := @parameter3: java.lang.String;
-
-        remotePath = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfRemoteRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata)>(metadata);
-
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: void getRemoteFile(org.apache.maven.artifact.repository.ArtifactRepository,java.io.File,java.lang.String,org.apache.maven.wagon.events.TransferListener,java.lang.String,boolean)>(repository, destination, remotePath, null, checksumPolicy, 1);
-
-        return;
-    }
-
-    private void connectWagon(org.apache.maven.wagon.Wagon, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.wagon.ConnectionException, org.apache.maven.wagon.authentication.AuthenticationException
+    public org.apache.maven.artifact.repository.ArtifactRepository getMirrorRepository(org.apache.maven.artifact.repository.ArtifactRepository)
     {
         DefaultWagonManager this;
-        org.apache.maven.plugin.LegacySupport $stack6, $stack47, $stack53;
-        org.eclipse.aether.RepositorySystemSession $stack7, $stack48, $stack55;
+        org.apache.maven.plugin.LegacySupport $stack4;
+        org.apache.maven.repository.MirrorSelector $stack5;
+        org.apache.maven.execution.MavenSession $stack6;
+        org.apache.maven.settings.Settings $stack7;
+        java.util.List $stack8;
+        org.apache.maven.settings.Mirror mirror;
+        org.codehaus.plexus.logging.Logger $stack12;
+        java.lang.StringBuilder $stack13, $stack15, $stack16, $stack17, $stack18, $u0;
+        java.lang.String $stack14, $stack19, $stack21, id;
+        org.apache.maven.artifact.repository.ArtifactRepositoryFactory $stack20;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $stack22;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy $stack23, $stack24;
         org.apache.maven.artifact.repository.ArtifactRepository repository;
-        org.apache.maven.artifact.repository.Authentication $stack10, $stack9;
-        org.apache.maven.repository.Proxy $stack11, $stack23, $stack36, $stack40, $stack8;
-        org.apache.maven.wagon.Wagon wagon;
-        java.lang.String $stack13, $stack14, $stack16, $stack17, $stack20, $stack21, $stack26, $stack27, $stack37, $stack44, $stack46, userAgent, $stack57, $stack69, $stack73;
-        org.apache.maven.wagon.proxy.ProxyInfo $stack18, $stack29;
-        org.apache.maven.wagon.authentication.AuthenticationInfo $stack22, $stack28;
-        org.codehaus.plexus.logging.Logger $stack30, $stack34, $stack66;
-        boolean $stack31;
-        java.lang.StringBuilder $stack35, $stack38, $stack39, $stack42, $stack43, $stack45, $stack67, $stack70, $stack71, $stack72, $u1, $u2;
-        int $stack41;
-        java.lang.String[] $stack49, $stack56;
-        java.lang.Class $stack59, $stack68;
-        java.lang.Class[] $stack60;
-        java.lang.Object[] $stack62;
-        java.lang.Exception $stack64;
-        java.lang.NoSuchMethodException $stack74;
-        java.lang.reflect.Method setHttpHeaders;
-        java.util.Properties $u0;
-        org.apache.maven.wagon.repository.Repository $u3, $u4, $u5, $u6;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9;
-
-        this := @this: DefaultWagonManager;
-
-        wagon := @parameter0: org.apache.maven.wagon.Wagon;
-
-        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
-
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack6 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.plugin.LegacySupport legacySupport>;
-
-        $stack7 = interfaceinvoke $stack6.<org.apache.maven.plugin.LegacySupport: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
-
-        if $stack7 == null goto label05;
-
-        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack47 = $r1.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.plugin.LegacySupport legacySupport>;
-
-        $stack48 = interfaceinvoke $stack47.<org.apache.maven.plugin.LegacySupport: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
-
-        $stack49 = newarray (java.lang.String)[1];
-
-        $stack49[0] = "aether.connector.userAgent";
-
-        userAgent = staticinvoke <org.eclipse.aether.util.ConfigUtils: java.lang.String getString(org.eclipse.aether.RepositorySystemSession,java.lang.String,java.lang.String[])>($stack48, null, $stack49);
-
-        if userAgent != null goto label05;
-
-        $u0 = new java.util.Properties;
-
-        specialinvoke $u0.<java.util.Properties: void <init>()>();
-
-        $r2 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack53 = $r2.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.plugin.LegacySupport legacySupport>;
-
-        $stack55 = interfaceinvoke $stack53.<org.apache.maven.plugin.LegacySupport: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
-
-        $stack56 = newarray (java.lang.String)[1];
-
-        $stack56[0] = "aether.connector.userAgent";
-
-        $stack57 = staticinvoke <org.eclipse.aether.util.ConfigUtils: java.lang.String getString(org.eclipse.aether.RepositorySystemSession,java.lang.String,java.lang.String[])>($stack55, "Maven", $stack56);
-
-        virtualinvoke $u0.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>("User-Agent", $stack57);
-
-     label01:
-        $stack59 = virtualinvoke wagon.<java.lang.Object: java.lang.Class getClass()>();
-
-        $stack60 = newarray (java.lang.Class)[1];
-
-        $stack60[0] = class "Ljava/util/Properties;";
-
-        setHttpHeaders = virtualinvoke $stack59.<java.lang.Class: java.lang.reflect.Method getMethod(java.lang.String,java.lang.Class[])>("setHttpHeaders", $stack60);
-
-        $stack62 = newarray (java.lang.Object)[1];
-
-        $stack62[0] = $u0;
-
-        virtualinvoke setHttpHeaders.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>(wagon, $stack62);
-
-     label02:
-        goto label05;
-
-     label03:
-        $stack74 := @caughtexception;
-
-        goto label05;
-
-     label04:
-        $stack64 := @caughtexception;
-
-        $r3 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack66 = $r3.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u1 = new java.lang.StringBuilder;
-
-        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
-
-        $stack67 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not set user agent for wagon ");
-
-        $stack68 = virtualinvoke wagon.<java.lang.Object: java.lang.Class getClass()>();
-
-        $stack69 = virtualinvoke $stack68.<java.lang.Class: java.lang.String getName()>();
-
-        $stack70 = virtualinvoke $stack67.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack69);
-
-        $stack71 = virtualinvoke $stack70.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
-
-        $stack72 = virtualinvoke $stack71.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack64);
-
-        $stack73 = virtualinvoke $stack72.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack66.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack73);
-
-     label05:
-        $stack8 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
-
-        if $stack8 == null goto label06;
-
-        $r4 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack30 = $r4.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $stack31 = interfaceinvoke $stack30.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
-
-        if $stack31 == 0 goto label06;
-
-        $r5 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack34 = $r5.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u2 = new java.lang.StringBuilder;
-
-        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
-
-        $stack35 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Using proxy ");
-
-        $stack36 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
-
-        $stack37 = virtualinvoke $stack36.<org.apache.maven.repository.Proxy: java.lang.String getHost()>();
-
-        $stack38 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack37);
-
-        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
-
-        $stack40 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
-
-        $stack41 = virtualinvoke $stack40.<org.apache.maven.repository.Proxy: int getPort()>();
-
-        $stack42 = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack41);
-
-        $stack43 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" for ");
-
-        $stack44 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
-
-        $stack45 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack44);
-
-        $stack46 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack34.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack46);
-
-     label06:
-        $stack9 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.Authentication getAuthentication()>();
-
-        if $stack9 == null goto label07;
-
-        $stack23 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
-
-        if $stack23 == null goto label07;
-
-        $u3 = new org.apache.maven.wagon.repository.Repository;
-
-        $stack26 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
-
-        $stack27 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
-
-        specialinvoke $u3.<org.apache.maven.wagon.repository.Repository: void <init>(java.lang.String,java.lang.String)>($stack26, $stack27);
-
-        $r6 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack28 = specialinvoke $r6.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.wagon.authentication.AuthenticationInfo authenticationInfo(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
-
-        $r7 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack29 = specialinvoke $r7.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.wagon.proxy.ProxyInfo proxyInfo(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void connect(org.apache.maven.wagon.repository.Repository,org.apache.maven.wagon.authentication.AuthenticationInfo,org.apache.maven.wagon.proxy.ProxyInfo)>($u3, $stack28, $stack29);
-
-        goto label10;
-
-     label07:
-        $stack10 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.Authentication getAuthentication()>();
-
-        if $stack10 == null goto label08;
-
-        $u4 = new org.apache.maven.wagon.repository.Repository;
-
-        $stack20 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
-
-        $stack21 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
-
-        specialinvoke $u4.<org.apache.maven.wagon.repository.Repository: void <init>(java.lang.String,java.lang.String)>($stack20, $stack21);
-
-        $r8 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack22 = specialinvoke $r8.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.wagon.authentication.AuthenticationInfo authenticationInfo(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void connect(org.apache.maven.wagon.repository.Repository,org.apache.maven.wagon.authentication.AuthenticationInfo)>($u4, $stack22);
-
-        goto label10;
-
-     label08:
-        $stack11 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
-
-        if $stack11 == null goto label09;
-
-        $u5 = new org.apache.maven.wagon.repository.Repository;
-
-        $stack16 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
-
-        $stack17 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
-
-        specialinvoke $u5.<org.apache.maven.wagon.repository.Repository: void <init>(java.lang.String,java.lang.String)>($stack16, $stack17);
-
-        $r9 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack18 = specialinvoke $r9.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.wagon.proxy.ProxyInfo proxyInfo(org.apache.maven.artifact.repository.ArtifactRepository)>(repository);
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void connect(org.apache.maven.wagon.repository.Repository,org.apache.maven.wagon.proxy.ProxyInfo)>($u5, $stack18);
-
-        goto label10;
-
-     label09:
-        $u6 = new org.apache.maven.wagon.repository.Repository;
-
-        $stack13 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
-
-        $stack14 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
-
-        specialinvoke $u6.<org.apache.maven.wagon.repository.Repository: void <init>(java.lang.String,java.lang.String)>($stack13, $stack14);
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void connect(org.apache.maven.wagon.repository.Repository)>($u6);
-
-     label10:
-        return;
-
-        catch java.lang.NoSuchMethodException from label01 to label02 with label03;
-        catch java.lang.Exception from label01 to label02 with label04;
-    }
-
-    private org.apache.maven.wagon.authentication.AuthenticationInfo authenticationInfo(org.apache.maven.artifact.repository.ArtifactRepository)
-    {
-        org.apache.maven.wagon.authentication.AuthenticationInfo $stack3;
-        org.apache.maven.artifact.repository.ArtifactRepository repository;
-        org.apache.maven.artifact.repository.Authentication $stack4, $stack6;
-        java.lang.String $stack5, $stack7;
-        DefaultWagonManager this;
+        org.apache.maven.artifact.manager.DefaultWagonManager $r0, $r1, $r2, $r3;
 
         this := @this: DefaultWagonManager;
 
         repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
 
-        $stack3 = new org.apache.maven.wagon.authentication.AuthenticationInfo;
+        $r0 = (org.apache.maven.artifact.manager.DefaultWagonManager) this;
 
-        specialinvoke $stack3.<org.apache.maven.wagon.authentication.AuthenticationInfo: void <init>()>();
+        $stack5 = $r0.<org.apache.maven.artifact.manager.DefaultWagonManager: org.apache.maven.repository.MirrorSelector mirrorSelector>;
 
-        $stack4 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.Authentication getAuthentication()>();
+        $r1 = (org.apache.maven.artifact.manager.DefaultWagonManager) this;
 
-        $stack5 = virtualinvoke $stack4.<org.apache.maven.artifact.repository.Authentication: java.lang.String getUsername()>();
+        $stack4 = $r1.<org.apache.maven.artifact.manager.DefaultWagonManager: org.apache.maven.plugin.LegacySupport legacySupport>;
 
-        virtualinvoke $stack3.<org.apache.maven.wagon.authentication.AuthenticationInfo: void setUserName(java.lang.String)>($stack5);
+        $stack6 = interfaceinvoke $stack4.<org.apache.maven.plugin.LegacySupport: org.apache.maven.execution.MavenSession getSession()>();
 
-        $stack6 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.Authentication getAuthentication()>();
+        $stack7 = virtualinvoke $stack6.<org.apache.maven.execution.MavenSession: org.apache.maven.settings.Settings getSettings()>();
 
-        $stack7 = virtualinvoke $stack6.<org.apache.maven.artifact.repository.Authentication: java.lang.String getPassword()>();
+        $stack8 = virtualinvoke $stack7.<org.apache.maven.settings.Settings: java.util.List getMirrors()>();
 
-        virtualinvoke $stack3.<org.apache.maven.wagon.authentication.AuthenticationInfo: void setPassword(java.lang.String)>($stack7);
+        mirror = interfaceinvoke $stack5.<org.apache.maven.repository.MirrorSelector: org.apache.maven.settings.Mirror getMirror(org.apache.maven.artifact.repository.ArtifactRepository,java.util.List)>(repository, $stack8);
 
-        return $stack3;
-    }
+        if mirror == null goto label2;
 
-    private org.apache.maven.wagon.proxy.ProxyInfo proxyInfo(org.apache.maven.artifact.repository.ArtifactRepository)
-    {
-        org.apache.maven.wagon.proxy.ProxyInfo $stack3;
-        org.apache.maven.artifact.repository.ArtifactRepository repository;
-        org.apache.maven.repository.Proxy $stack4, $stack6, $stack8, $stack10, $stack12, $stack14;
-        java.lang.String $stack5, $stack7, $stack11, $stack13, $stack15;
-        int $stack9;
-        DefaultWagonManager this;
+        id = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getId()>();
 
-        this := @this: DefaultWagonManager;
+        if id != null goto label1;
 
-        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
-
-        $stack3 = new org.apache.maven.wagon.proxy.ProxyInfo;
-
-        specialinvoke $stack3.<org.apache.maven.wagon.proxy.ProxyInfo: void <init>()>();
-
-        $stack4 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
-
-        $stack5 = virtualinvoke $stack4.<org.apache.maven.repository.Proxy: java.lang.String getHost()>();
-
-        virtualinvoke $stack3.<org.apache.maven.wagon.proxy.ProxyInfo: void setHost(java.lang.String)>($stack5);
-
-        $stack6 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
-
-        $stack7 = virtualinvoke $stack6.<org.apache.maven.repository.Proxy: java.lang.String getProtocol()>();
-
-        virtualinvoke $stack3.<org.apache.maven.wagon.proxy.ProxyInfo: void setType(java.lang.String)>($stack7);
-
-        $stack8 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
-
-        $stack9 = virtualinvoke $stack8.<org.apache.maven.repository.Proxy: int getPort()>();
-
-        virtualinvoke $stack3.<org.apache.maven.wagon.proxy.ProxyInfo: void setPort(int)>($stack9);
-
-        $stack10 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
-
-        $stack11 = virtualinvoke $stack10.<org.apache.maven.repository.Proxy: java.lang.String getNonProxyHosts()>();
-
-        virtualinvoke $stack3.<org.apache.maven.wagon.proxy.ProxyInfo: void setNonProxyHosts(java.lang.String)>($stack11);
-
-        $stack12 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
-
-        $stack13 = virtualinvoke $stack12.<org.apache.maven.repository.Proxy: java.lang.String getUserName()>();
-
-        virtualinvoke $stack3.<org.apache.maven.wagon.proxy.ProxyInfo: void setUserName(java.lang.String)>($stack13);
-
-        $stack14 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.repository.Proxy getProxy()>();
-
-        $stack15 = virtualinvoke $stack14.<org.apache.maven.repository.Proxy: java.lang.String getPassword()>();
-
-        virtualinvoke $stack3.<org.apache.maven.wagon.proxy.ProxyInfo: void setPassword(java.lang.String)>($stack15);
-
-        return $stack3;
-    }
-
-    public void getRemoteFile(org.apache.maven.artifact.repository.ArtifactRepository, java.io.File, java.lang.String, org.apache.maven.wagon.events.TransferListener, java.lang.String, boolean) throws org.apache.maven.wagon.TransferFailedException, org.apache.maven.wagon.ResourceDoesNotExistException
-    {
-        org.apache.maven.artifact.repository.ArtifactRepository repository;
-        java.lang.String protocol, $stack25, $stack28, $stack32, remotePath, $stack63, $stack91, $stack93, $stack105, $stack107, $stack112, $stack114, $stack119, $stack121, checksumPolicy, $stack126, $stack129, $stack135, $stack137, $stack139, $stack144, $stack147, $stack156, $stack158;
-        DefaultWagonManager this;
-        org.apache.maven.wagon.Wagon wagon;
-        org.apache.maven.wagon.events.TransferListener downloadMonitor, $r6, $r7, $r8, $r9;
-        java.io.File destination, $u3;
-        java.lang.StringBuilder $stack23, $stack24, $stack61, $stack62, $stack90, $stack92, $stack104, $stack106, $stack111, $stack113, $stack118, $stack120, $stack124, $stack125, $stack134, $stack136, $stack143, $stack145, $stack146, $stack153, $stack154, $stack155, $stack157, $u0, $u2, $u4, $u5, $u6, $u7, $u9, $u11, $u13, $u15;
-        java.lang.String[] $stack27, $stack31;
-        boolean $stack34, force, $stack56, $stack57, $stack58, downloaded, firstRun, retry;
-        long $stack52, $stack54;
-        java.io.IOException $stack87;
-        java.lang.Throwable $stack94, $stack101, $stack108, $stack115, $stack122, $stack128, $stack130, $stack131, $stack138, $stack140, $stack148, $stack150, $r2, $r26, $r28, $r30, $r33, $r34;
-        org.codehaus.plexus.logging.Logger $stack133, $stack142;
-        java.lang.UnsupportedOperationException $stack149;
-        org.apache.maven.wagon.observers.ChecksumObserver md5ChecksumObserver, sha1ChecksumObserver;
-        int i#11;
-        org.apache.maven.wagon.TransferFailedException $u1, $u8, $u10, $u12, $u16;
-        org.apache.maven.wagon.ResourceDoesNotExistException $u14, $r17;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0, $r3, $r4, $r5, $r10, $r11, $r15, $r16, $r18, $r21, $r22, $r23, $r24, $r31, $r32;
-        org.apache.maven.wagon.UnsupportedProtocolException $r1;
-        org.apache.maven.repository.legacy.ChecksumFailedException $r12, $r13, $r14, $r19, $r20;
-        org.apache.maven.wagon.ConnectionException $r25;
-        org.apache.maven.wagon.authentication.AuthenticationException $r27;
-        org.apache.maven.wagon.authorization.AuthorizationException $r29;
-
-        this := @this: DefaultWagonManager;
-
-        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
-
-        destination := @parameter1: java.io.File;
-
-        remotePath := @parameter2: java.lang.String;
-
-        downloadMonitor := @parameter3: org.apache.maven.wagon.events.TransferListener;
-
-        checksumPolicy := @parameter4: java.lang.String;
-
-        force := @parameter5: boolean;
-
-        protocol = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getProtocol()>();
-
-     label01:
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        wagon = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.wagon.Wagon getWagon(java.lang.String)>(protocol);
-
-     label02:
-        goto label04;
-
-     label03:
-        $stack150 := @caughtexception;
-
-        $u1 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u0 = new java.lang.StringBuilder;
-
-        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
-
-        $stack153 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unsupported Protocol: \'");
-
-        $stack154 = virtualinvoke $stack153.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(protocol);
-
-        $stack155 = virtualinvoke $stack154.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\': ");
-
-        $r1 = (org.apache.maven.wagon.UnsupportedProtocolException) $stack150;
-
-        $stack156 = virtualinvoke $r1.<org.apache.maven.wagon.UnsupportedProtocolException: java.lang.String getMessage()>();
-
-        $stack157 = virtualinvoke $stack155.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack156);
-
-        $stack158 = virtualinvoke $stack157.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u1.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack158, $stack150);
-
-        $r2 = (java.lang.Throwable) $u1;
-
-        throw $r2;
-
-     label04:
-        if downloadMonitor == null goto label05;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void addTransferListener(org.apache.maven.wagon.events.TransferListener)>(downloadMonitor);
-
-     label05:
-        $u3 = new java.io.File;
-
-        $u2 = new java.lang.StringBuilder;
-
-        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
-
-        $stack23 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(destination);
-
-        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".tmp");
-
-        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u3.<java.io.File: void <init>(java.lang.String)>($stack25);
-
-        virtualinvoke $u3.<java.io.File: void deleteOnExit()>();
-
-        downloaded = 0;
-
-     label06:
-        $r3 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r3.<org.apache.maven.repository.legacy.DefaultWagonManager: void connectWagon(org.apache.maven.wagon.Wagon,org.apache.maven.artifact.repository.ArtifactRepository)>(wagon, repository);
-
-        firstRun = 1;
-
-        retry = 1;
-
-     label07:
-        if firstRun != 0 goto label08;
-
-        if retry == 0 goto label32;
-
-     label08:
-        md5ChecksumObserver = null;
-
-        sha1ChecksumObserver = null;
-
-     label09:
-        $stack27 = <org.apache.maven.repository.legacy.DefaultWagonManager: java.lang.String[] CHECKSUM_ALGORITHMS>;
-
-        i#11 = 0 + 1;
-
-        $stack28 = $stack27[0];
-
-        $r4 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        md5ChecksumObserver = specialinvoke $r4.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.wagon.observers.ChecksumObserver addChecksumObserver(org.apache.maven.wagon.Wagon,java.lang.String)>(wagon, $stack28);
-
-        $stack31 = <org.apache.maven.repository.legacy.DefaultWagonManager: java.lang.String[] CHECKSUM_ALGORITHMS>;
-
-        $stack32 = $stack31[i#11];
-
-        $r5 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        sha1ChecksumObserver = specialinvoke $r5.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.wagon.observers.ChecksumObserver addChecksumObserver(org.apache.maven.wagon.Wagon,java.lang.String)>(wagon, $stack32);
-
-        retry = 0;
-
-        $stack34 = virtualinvoke destination.<java.io.File: boolean exists()>();
-
-        if $stack34 == 0 goto label13;
-
-        if force != 0 goto label13;
-
-     label10:
-        $stack52 = virtualinvoke destination.<java.io.File: long lastModified()>();
-
-        downloaded = interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: boolean getIfNewer(java.lang.String,java.io.File,long)>(remotePath, $u3, $stack52);
-
-        if downloaded != 0 goto label11;
-
-        $stack54 = staticinvoke <java.lang.System: long currentTimeMillis()>();
-
-        virtualinvoke destination.<java.io.File: boolean setLastModified(long)>($stack54);
-
-     label11:
-        goto label14;
-
-     label12:
-        $stack149 := @caughtexception;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void get(java.lang.String,java.io.File)>(remotePath, $u3);
-
-        downloaded = 1;
-
-        goto label14;
-
-     label13:
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void get(java.lang.String,java.io.File)>(remotePath, $u3);
-
-        downloaded = 1;
-
-     label14:
-        $r6 = (org.apache.maven.wagon.events.TransferListener) md5ChecksumObserver;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void removeTransferListener(org.apache.maven.wagon.events.TransferListener)>($r6);
-
-        $r7 = (org.apache.maven.wagon.events.TransferListener) sha1ChecksumObserver;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void removeTransferListener(org.apache.maven.wagon.events.TransferListener)>($r7);
-
-        goto label17;
-
-     label15:
-        $stack148 := @caughtexception;
-
-     label16:
-        $r8 = (org.apache.maven.wagon.events.TransferListener) md5ChecksumObserver;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void removeTransferListener(org.apache.maven.wagon.events.TransferListener)>($r8);
-
-        $r9 = (org.apache.maven.wagon.events.TransferListener) sha1ChecksumObserver;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void removeTransferListener(org.apache.maven.wagon.events.TransferListener)>($r9);
-
-        throw $stack148;
-
-     label17:
-        if downloaded == 0 goto label31;
-
-        if downloadMonitor == null goto label18;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void removeTransferListener(org.apache.maven.wagon.events.TransferListener)>(downloadMonitor);
-
-     label18:
-        $r10 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r10.<org.apache.maven.repository.legacy.DefaultWagonManager: void verifyChecksum(org.apache.maven.wagon.observers.ChecksumObserver,java.io.File,java.io.File,java.lang.String,java.lang.String,org.apache.maven.wagon.Wagon)>(sha1ChecksumObserver, destination, $u3, remotePath, ".sha1", wagon);
-
-     label19:
-        goto label30;
-
-     label20:
-        $stack138 := @caughtexception;
-
-        if firstRun == 0 goto label21;
-
-        $r11 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack142 = $r11.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u4 = new java.lang.StringBuilder;
-
-        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
-
-        $stack143 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("*** CHECKSUM FAILED - ");
-
-        $r12 = (org.apache.maven.repository.legacy.ChecksumFailedException) $stack138;
-
-        $stack144 = virtualinvoke $r12.<org.apache.maven.repository.legacy.ChecksumFailedException: java.lang.String getMessage()>();
-
-        $stack145 = virtualinvoke $stack143.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack144);
-
-        $stack146 = virtualinvoke $stack145.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" - RETRYING");
-
-        $stack147 = virtualinvoke $stack146.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack142.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack147);
-
-        retry = 1;
-
-        goto label22;
-
-     label21:
-        $r13 = (org.apache.maven.repository.legacy.ChecksumFailedException) $stack138;
-
-        $stack139 = virtualinvoke $r13.<org.apache.maven.repository.legacy.ChecksumFailedException: java.lang.String getMessage()>();
-
-        $r14 = (org.apache.maven.repository.legacy.ChecksumFailedException) $stack138;
-
-        $stack140 = virtualinvoke $r14.<org.apache.maven.repository.legacy.ChecksumFailedException: java.lang.Throwable getCause()>();
-
-        $r15 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r15.<org.apache.maven.repository.legacy.DefaultWagonManager: void handleChecksumFailure(java.lang.String,java.lang.String,java.lang.Throwable)>(checksumPolicy, $stack139, $stack140);
-
-     label22:
-        goto label30;
-
-     label23:
-        $stack131 := @caughtexception;
-
-        $r16 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack133 = $r16.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u5 = new java.lang.StringBuilder;
-
-        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
-
-        $stack134 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SHA1 not found, trying MD5: ");
-
-        $r17 = (org.apache.maven.wagon.ResourceDoesNotExistException) $stack131;
-
-        $stack135 = virtualinvoke $r17.<org.apache.maven.wagon.ResourceDoesNotExistException: java.lang.String getMessage()>();
-
-        $stack136 = virtualinvoke $stack134.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack135);
-
-        $stack137 = virtualinvoke $stack136.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack133.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack137);
-
-     label24:
-        $r18 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r18.<org.apache.maven.repository.legacy.DefaultWagonManager: void verifyChecksum(org.apache.maven.wagon.observers.ChecksumObserver,java.io.File,java.io.File,java.lang.String,java.lang.String,org.apache.maven.wagon.Wagon)>(md5ChecksumObserver, destination, $u3, remotePath, ".md5", wagon);
-
-     label25:
-        goto label30;
-
-     label26:
-        $stack128 := @caughtexception;
-
-        if firstRun == 0 goto label27;
-
-        retry = 1;
-
-        goto label28;
-
-     label27:
-        $r19 = (org.apache.maven.repository.legacy.ChecksumFailedException) $stack128;
-
-        $stack129 = virtualinvoke $r19.<org.apache.maven.repository.legacy.ChecksumFailedException: java.lang.String getMessage()>();
-
-        $r20 = (org.apache.maven.repository.legacy.ChecksumFailedException) $stack128;
-
-        $stack130 = virtualinvoke $r20.<org.apache.maven.repository.legacy.ChecksumFailedException: java.lang.Throwable getCause()>();
-
-        $r21 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r21.<org.apache.maven.repository.legacy.DefaultWagonManager: void handleChecksumFailure(java.lang.String,java.lang.String,java.lang.Throwable)>(checksumPolicy, $stack129, $stack130);
-
-     label28:
-        goto label30;
-
-     label29:
-        $stack122 := @caughtexception;
-
-        $u6 = new java.lang.StringBuilder;
-
-        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
-
-        $stack124 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error retrieving checksum file for ");
-
-        $stack125 = virtualinvoke $stack124.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(remotePath);
-
-        $stack126 = virtualinvoke $stack125.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        $r22 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r22.<org.apache.maven.repository.legacy.DefaultWagonManager: void handleChecksumFailure(java.lang.String,java.lang.String,java.lang.Throwable)>(checksumPolicy, $stack126, $stack122);
-
-     label30:
-        if downloadMonitor == null goto label31;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void addTransferListener(org.apache.maven.wagon.events.TransferListener)>(downloadMonitor);
-
-     label31:
-        firstRun = 0;
-
-        goto label07;
-
-     label32:
-        if downloadMonitor == null goto label33;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void removeTransferListener(org.apache.maven.wagon.events.TransferListener)>(downloadMonitor);
-
-     label33:
-        $r23 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r23.<org.apache.maven.repository.legacy.DefaultWagonManager: void disconnectWagon(org.apache.maven.wagon.Wagon)>(wagon);
-
-        $r24 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r24.<org.apache.maven.repository.legacy.DefaultWagonManager: void releaseWagon(java.lang.String,org.apache.maven.wagon.Wagon)>(protocol, wagon);
-
-        goto label40;
-
-     label34:
-        $stack115 := @caughtexception;
-
-        $u8 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u7 = new java.lang.StringBuilder;
-
-        specialinvoke $u7.<java.lang.StringBuilder: void <init>()>();
-
-        $stack118 = virtualinvoke $u7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Connection failed: ");
-
-        $r25 = (org.apache.maven.wagon.ConnectionException) $stack115;
-
-        $stack119 = virtualinvoke $r25.<org.apache.maven.wagon.ConnectionException: java.lang.String getMessage()>();
-
-        $stack120 = virtualinvoke $stack118.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack119);
-
-        $stack121 = virtualinvoke $stack120.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u8.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack121, $stack115);
-
-        $r26 = (java.lang.Throwable) $u8;
-
-        throw $r26;
-
-     label35:
-        $stack108 := @caughtexception;
-
-        $u10 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u9 = new java.lang.StringBuilder;
-
-        specialinvoke $u9.<java.lang.StringBuilder: void <init>()>();
-
-        $stack111 = virtualinvoke $u9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Authentication failed: ");
-
-        $r27 = (org.apache.maven.wagon.authentication.AuthenticationException) $stack108;
-
-        $stack112 = virtualinvoke $r27.<org.apache.maven.wagon.authentication.AuthenticationException: java.lang.String getMessage()>();
-
-        $stack113 = virtualinvoke $stack111.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack112);
-
-        $stack114 = virtualinvoke $stack113.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u10.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack114, $stack108);
-
-        $r28 = (java.lang.Throwable) $u10;
-
-        throw $r28;
-
-     label36:
-        $stack101 := @caughtexception;
-
-        $u12 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u11 = new java.lang.StringBuilder;
-
-        specialinvoke $u11.<java.lang.StringBuilder: void <init>()>();
-
-        $stack104 = virtualinvoke $u11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Authorization failed: ");
-
-        $r29 = (org.apache.maven.wagon.authorization.AuthorizationException) $stack101;
-
-        $stack105 = virtualinvoke $r29.<org.apache.maven.wagon.authorization.AuthorizationException: java.lang.String getMessage()>();
-
-        $stack106 = virtualinvoke $stack104.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack105);
-
-        $stack107 = virtualinvoke $stack106.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u12.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack107, $stack101);
-
-        $r30 = (java.lang.Throwable) $u12;
-
-        throw $r30;
-
-     label37:
-        $stack94 := @caughtexception;
-
-     label38:
-        if downloadMonitor == null goto label39;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void removeTransferListener(org.apache.maven.wagon.events.TransferListener)>(downloadMonitor);
-
-     label39:
-        $r31 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r31.<org.apache.maven.repository.legacy.DefaultWagonManager: void disconnectWagon(org.apache.maven.wagon.Wagon)>(wagon);
-
-        $r32 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r32.<org.apache.maven.repository.legacy.DefaultWagonManager: void releaseWagon(java.lang.String,org.apache.maven.wagon.Wagon)>(protocol, wagon);
-
-        throw $stack94;
-
-     label40:
-        if downloaded == 0 goto label45;
-
-        $stack56 = virtualinvoke $u3.<java.io.File: boolean exists()>();
-
-        if $stack56 != 0 goto label41;
-
-        $u14 = new org.apache.maven.wagon.ResourceDoesNotExistException;
-
-        $u13 = new java.lang.StringBuilder;
-
-        specialinvoke $u13.<java.lang.StringBuilder: void <init>()>();
-
-        $stack61 = virtualinvoke $u13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Downloaded file does not exist: ");
-
-        $stack62 = virtualinvoke $stack61.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($u3);
-
-        $stack63 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u14.<org.apache.maven.wagon.ResourceDoesNotExistException: void <init>(java.lang.String)>($stack63);
-
-        $r33 = (java.lang.Throwable) $u14;
-
-        throw $r33;
-
-     label41:
-        $stack57 = virtualinvoke $u3.<java.io.File: boolean renameTo(java.io.File)>(destination);
-
-        if $stack57 != 0 goto label45;
-
-     label42:
-        staticinvoke <org.codehaus.plexus.util.FileUtils: void copyFile(java.io.File,java.io.File)>($u3, destination);
-
-        $stack58 = virtualinvoke $u3.<java.io.File: boolean delete()>();
-
-        if $stack58 != 0 goto label43;
-
-        virtualinvoke $u3.<java.io.File: void deleteOnExit()>();
-
-     label43:
-        goto label45;
-
-     label44:
-        $stack87 := @caughtexception;
-
-        $u16 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u15 = new java.lang.StringBuilder;
-
-        specialinvoke $u15.<java.lang.StringBuilder: void <init>()>();
-
-        $stack90 = virtualinvoke $u15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error copying temporary file to the final destination: ");
-
-        $stack91 = virtualinvoke $stack87.<java.io.IOException: java.lang.String getMessage()>();
-
-        $stack92 = virtualinvoke $stack90.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack91);
-
-        $stack93 = virtualinvoke $stack92.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u16.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack93, $stack87);
-
-        $r34 = (java.lang.Throwable) $u16;
-
-        throw $r34;
-
-     label45:
-        return;
-
-        catch org.apache.maven.wagon.UnsupportedProtocolException from label01 to label02 with label03;
-        catch java.lang.UnsupportedOperationException from label10 to label11 with label12;
-        catch java.lang.Throwable from label09 to label14 with label15;
-        catch java.lang.Throwable from label15 to label16 with label15;
-        catch org.apache.maven.repository.legacy.ChecksumFailedException from label18 to label19 with label20;
-        catch org.apache.maven.wagon.ResourceDoesNotExistException from label18 to label19 with label23;
-        catch org.apache.maven.repository.legacy.ChecksumFailedException from label24 to label25 with label26;
-        catch org.apache.maven.wagon.ResourceDoesNotExistException from label24 to label25 with label29;
-        catch org.apache.maven.wagon.ConnectionException from label06 to label32 with label34;
-        catch org.apache.maven.wagon.authentication.AuthenticationException from label06 to label32 with label35;
-        catch org.apache.maven.wagon.authorization.AuthorizationException from label06 to label32 with label36;
-        catch java.lang.Throwable from label06 to label32 with label37;
-        catch java.lang.Throwable from label34 to label38 with label37;
-        catch java.io.IOException from label42 to label43 with label44;
-    }
-
-    public void putArtifact(java.io.File, org.apache.maven.artifact.Artifact, org.apache.maven.artifact.repository.ArtifactRepository, org.apache.maven.wagon.events.TransferListener) throws org.apache.maven.wagon.TransferFailedException
-    {
-        DefaultWagonManager this;
-        org.apache.maven.artifact.repository.ArtifactRepository deploymentRepository;
-        java.io.File source;
-        org.apache.maven.artifact.Artifact artifact;
-        java.lang.String $stack5;
-        org.apache.maven.wagon.events.TransferListener downloadMonitor;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0;
-
-        this := @this: DefaultWagonManager;
-
-        source := @parameter0: java.io.File;
-
-        artifact := @parameter1: org.apache.maven.artifact.Artifact;
-
-        deploymentRepository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
-
-        downloadMonitor := @parameter3: org.apache.maven.wagon.events.TransferListener;
-
-        $stack5 = interfaceinvoke deploymentRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
-
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: void putRemoteFile(org.apache.maven.artifact.repository.ArtifactRepository,java.io.File,java.lang.String,org.apache.maven.wagon.events.TransferListener)>(deploymentRepository, source, $stack5, downloadMonitor);
-
-        return;
-    }
-
-    public void putArtifactMetadata(java.io.File, org.apache.maven.artifact.metadata.ArtifactMetadata, org.apache.maven.artifact.repository.ArtifactRepository) throws org.apache.maven.wagon.TransferFailedException
-    {
-        DefaultWagonManager this;
-        org.codehaus.plexus.logging.Logger $stack5;
-        java.lang.StringBuilder $stack6, $stack7, $u0;
-        org.apache.maven.artifact.metadata.ArtifactMetadata artifactMetadata;
-        java.lang.String $stack8, $stack9;
-        org.apache.maven.artifact.repository.ArtifactRepository repository;
-        java.io.File source;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0, $r1;
-
-        this := @this: DefaultWagonManager;
-
-        source := @parameter0: java.io.File;
-
-        artifactMetadata := @parameter1: org.apache.maven.artifact.metadata.ArtifactMetadata;
-
-        repository := @parameter2: org.apache.maven.artifact.repository.ArtifactRepository;
-
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack5 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u0 = new java.lang.StringBuilder;
-
-        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
-
-        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Uploading ");
-
-        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(artifactMetadata);
-
-        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack5.<org.codehaus.plexus.logging.Logger: void info(java.lang.String)>($stack8);
-
-        $stack9 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfRemoteRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata)>(artifactMetadata);
-
-        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultWagonManager: void putRemoteFile(org.apache.maven.artifact.repository.ArtifactRepository,java.io.File,java.lang.String,org.apache.maven.wagon.events.TransferListener)>(repository, source, $stack9, null);
-
-        return;
-    }
-
-    public void putRemoteFile(org.apache.maven.artifact.repository.ArtifactRepository, java.io.File, java.lang.String, org.apache.maven.wagon.events.TransferListener) throws org.apache.maven.wagon.TransferFailedException
-    {
-        org.apache.maven.artifact.repository.ArtifactRepository repository;
-        java.lang.String protocol, remotePath, id, $stack39, $stack42, $stack48, $stack52, $stack58, $stack59, $stack74, $stack76, $stack81, $stack83, $stack88, $stack90, $stack95, $stack97, $stack102, $stack104, $stack113, $stack115, extension;
-        DefaultWagonManager this;
-        org.apache.maven.wagon.Wagon wagon;
-        org.apache.maven.wagon.events.TransferListener downloadMonitor, checksumListener;
-        java.io.File source, observer#21;
-        java.util.Set $stack28, $stack31;
-        boolean $stack33, $stack30;
-        java.lang.Object $stack34, $stack37, $stack41, $stack50, $stack51, $stack67;
-        java.lang.StringBuilder $stack45, $stack46, $stack47, $stack73, $stack75, $stack80, $stack82, $stack87, $stack89, $stack94, $stack96, $stack101, $stack103, $stack110, $stack111, $stack112, $stack114, $u0, $u5, $u6, $u8, $u10, $u12, $u14;
-        java.lang.String[] $stack56, $stack57, l16, $stack25, e#22;
-        org.apache.maven.wagon.observers.ChecksumObserver $stack60, observer;
-        java.lang.Throwable $stack66, $stack77, $stack84, $stack91, $stack98, $stack105, $stack107, $r2, $r9, $r11, $r13, $r15, $r16;
-        int l17, i, $stack26, extension#23, observer#24, l18;
-        java.io.IOException $stack70;
-        java.util.Iterator e#12;
-        org.apache.maven.wagon.TransferFailedException $u1, $u7, $u9, $u11, $u13, $u15;
-        java.util.HashMap $u2, $u3;
-        java.util.ArrayList $u4;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0, $r3, $r4, $r5, $r6, $r7, $r17, $r18, $r19;
-        org.apache.maven.wagon.UnsupportedProtocolException $r1;
-        org.apache.maven.wagon.ConnectionException $r8;
-        org.apache.maven.wagon.authentication.AuthenticationException $r10;
-        org.apache.maven.wagon.authorization.AuthorizationException $r12;
-        org.apache.maven.wagon.ResourceDoesNotExistException $r14;
-
-        this := @this: DefaultWagonManager;
-
-        repository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
-
-        source := @parameter1: java.io.File;
-
-        remotePath := @parameter2: java.lang.String;
-
-        downloadMonitor := @parameter3: org.apache.maven.wagon.events.TransferListener;
-
-        protocol = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getProtocol()>();
-
-     label01:
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        wagon = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.wagon.Wagon getWagon(java.lang.String)>(protocol);
-
-     label02:
-        goto label04;
-
-     label03:
-        $stack107 := @caughtexception;
-
-        $u1 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u0 = new java.lang.StringBuilder;
-
-        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
-
-        $stack110 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unsupported Protocol: \'");
-
-        $stack111 = virtualinvoke $stack110.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(protocol);
-
-        $stack112 = virtualinvoke $stack111.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\': ");
-
-        $r1 = (org.apache.maven.wagon.UnsupportedProtocolException) $stack107;
-
-        $stack113 = virtualinvoke $r1.<org.apache.maven.wagon.UnsupportedProtocolException: java.lang.String getMessage()>();
-
-        $stack114 = virtualinvoke $stack112.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack113);
-
-        $stack115 = virtualinvoke $stack114.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u1.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack115, $stack107);
-
-        $r2 = (java.lang.Throwable) $u1;
-
-        throw $r2;
-
-     label04:
-        if downloadMonitor == null goto label05;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void addTransferListener(org.apache.maven.wagon.events.TransferListener)>(downloadMonitor);
-
-     label05:
-        $u2 = new java.util.HashMap;
-
-        specialinvoke $u2.<java.util.HashMap: void <init>(int)>(2);
-
-        $u3 = new java.util.HashMap;
-
-        specialinvoke $u3.<java.util.HashMap: void <init>(int)>(2);
-
-        i = 0;
-
-     label06:
-        $stack25 = <org.apache.maven.repository.legacy.DefaultWagonManager: java.lang.String[] CHECKSUM_IDS>;
-
-        $stack26 = lengthof $stack25;
-
-        if i >= $stack26 goto label07;
-
-        $stack56 = <org.apache.maven.repository.legacy.DefaultWagonManager: java.lang.String[] CHECKSUM_IDS>;
-
-        $stack59 = $stack56[i];
-
-        $stack57 = <org.apache.maven.repository.legacy.DefaultWagonManager: java.lang.String[] CHECKSUM_ALGORITHMS>;
-
-        $stack58 = $stack57[i];
-
-        $r3 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack60 = specialinvoke $r3.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.wagon.observers.ChecksumObserver addChecksumObserver(org.apache.maven.wagon.Wagon,java.lang.String)>(wagon, $stack58);
-
-        interfaceinvoke $u2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack59, $stack60);
-
-        i = i + 1;
-
-        goto label06;
-
-     label07:
-        $u4 = new java.util.ArrayList;
-
-        specialinvoke $u4.<java.util.ArrayList: void <init>()>();
-
-     label08:
-        $r4 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r4.<org.apache.maven.repository.legacy.DefaultWagonManager: void connectWagon(org.apache.maven.wagon.Wagon,org.apache.maven.artifact.repository.ArtifactRepository)>(wagon, repository);
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void put(java.io.File,java.lang.String)>(source, remotePath);
-
-     label09:
-        if downloadMonitor == null goto label13;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void removeTransferListener(org.apache.maven.wagon.events.TransferListener)>(downloadMonitor);
-
-        goto label13;
-
-     label10:
-        $stack105 := @caughtexception;
-
-     label11:
-        if downloadMonitor == null goto label12;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void removeTransferListener(org.apache.maven.wagon.events.TransferListener)>(downloadMonitor);
-
-     label12:
-        throw $stack105;
-
-     label13:
-        $stack28 = interfaceinvoke $u2.<java.util.Map: java.util.Set keySet()>();
-
-        e#12 = interfaceinvoke $stack28.<java.util.Set: java.util.Iterator iterator()>();
-
-     label14:
-        $stack30 = interfaceinvoke e#12.<java.util.Iterator: boolean hasNext()>();
-
-        if $stack30 == 0 goto label15;
-
-        $stack50 = interfaceinvoke e#12.<java.util.Iterator: java.lang.Object next()>();
-
-        extension = (java.lang.String) $stack50;
-
-        $stack51 = interfaceinvoke $u2.<java.util.Map: java.lang.Object get(java.lang.Object)>(extension);
-
-        observer = (org.apache.maven.wagon.observers.ChecksumObserver) $stack51;
-
-        $stack52 = virtualinvoke observer.<org.apache.maven.wagon.observers.ChecksumObserver: java.lang.String getActualChecksum()>();
-
-        interfaceinvoke $u3.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(extension, $stack52);
-
-        goto label14;
-
-     label15:
-        $stack31 = interfaceinvoke $u2.<java.util.Map: java.util.Set keySet()>();
-
-        e#12 = interfaceinvoke $stack31.<java.util.Set: java.util.Iterator iterator()>();
-
-     label16:
-        $stack33 = interfaceinvoke e#12.<java.util.Iterator: boolean hasNext()>();
-
-        if $stack33 == 0 goto label17;
-
-        $stack37 = interfaceinvoke e#12.<java.util.Iterator: java.lang.Object next()>();
-
-        extension = (java.lang.String) $stack37;
-
-        observer#21 = staticinvoke <java.io.File: java.io.File createTempFile(java.lang.String,java.lang.String)>("maven-artifact", null);
-
-        virtualinvoke observer#21.<java.io.File: void deleteOnExit()>();
-
-        $stack39 = virtualinvoke observer#21.<java.io.File: java.lang.String getAbsolutePath()>();
-
-        $stack41 = interfaceinvoke $u3.<java.util.Map: java.lang.Object get(java.lang.Object)>(extension);
-
-        $stack42 = (java.lang.String) $stack41;
-
-        staticinvoke <org.codehaus.plexus.util.FileUtils: void fileWrite(java.lang.String,java.lang.String,java.lang.String)>($stack39, "UTF-8", $stack42);
-
-        interfaceinvoke $u4.<java.util.List: boolean add(java.lang.Object)>(observer#21);
-
-        $u5 = new java.lang.StringBuilder;
-
-        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
-
-        $stack45 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(remotePath);
-
-        $stack46 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
-
-        $stack47 = virtualinvoke $stack46.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(extension);
-
-        $stack48 = virtualinvoke $stack47.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void put(java.io.File,java.lang.String)>(observer#21, $stack48);
-
-        goto label16;
-
-     label17:
-        $r5 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r5.<org.apache.maven.repository.legacy.DefaultWagonManager: void cleanupTemporaryFiles(java.util.List)>($u4);
-
-        e#22 = <org.apache.maven.repository.legacy.DefaultWagonManager: java.lang.String[] CHECKSUM_IDS>;
-
-        extension#23 = lengthof e#22;
-
-        observer#24 = 0;
-
-     label18:
-        if observer#24 >= extension#23 goto label20;
-
-        id = e#22[observer#24];
-
-        $stack34 = interfaceinvoke $u2.<java.util.Map: java.lang.Object get(java.lang.Object)>(id);
-
-        checksumListener = (org.apache.maven.wagon.events.TransferListener) $stack34;
-
-        if checksumListener == null goto label19;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void removeTransferListener(org.apache.maven.wagon.events.TransferListener)>(checksumListener);
-
-     label19:
-        observer#24 = observer#24 + 1;
-
-        goto label18;
-
-     label20:
-        $r6 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r6.<org.apache.maven.repository.legacy.DefaultWagonManager: void disconnectWagon(org.apache.maven.wagon.Wagon)>(wagon);
-
-        $r7 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r7.<org.apache.maven.repository.legacy.DefaultWagonManager: void releaseWagon(java.lang.String,org.apache.maven.wagon.Wagon)>(protocol, wagon);
-
-        goto label31;
-
-     label21:
-        $stack98 := @caughtexception;
-
-        $u7 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u6 = new java.lang.StringBuilder;
-
-        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
-
-        $stack101 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Connection failed: ");
-
-        $r8 = (org.apache.maven.wagon.ConnectionException) $stack98;
-
-        $stack102 = virtualinvoke $r8.<org.apache.maven.wagon.ConnectionException: java.lang.String getMessage()>();
-
-        $stack103 = virtualinvoke $stack101.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack102);
-
-        $stack104 = virtualinvoke $stack103.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u7.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack104, $stack98);
-
-        $r9 = (java.lang.Throwable) $u7;
-
-        throw $r9;
-
-     label22:
-        $stack91 := @caughtexception;
-
-        $u9 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u8 = new java.lang.StringBuilder;
-
-        specialinvoke $u8.<java.lang.StringBuilder: void <init>()>();
-
-        $stack94 = virtualinvoke $u8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Authentication failed: ");
-
-        $r10 = (org.apache.maven.wagon.authentication.AuthenticationException) $stack91;
-
-        $stack95 = virtualinvoke $r10.<org.apache.maven.wagon.authentication.AuthenticationException: java.lang.String getMessage()>();
-
-        $stack96 = virtualinvoke $stack94.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack95);
-
-        $stack97 = virtualinvoke $stack96.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u9.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack97, $stack91);
-
-        $r11 = (java.lang.Throwable) $u9;
-
-        throw $r11;
-
-     label23:
-        $stack84 := @caughtexception;
-
-        $u11 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u10 = new java.lang.StringBuilder;
-
-        specialinvoke $u10.<java.lang.StringBuilder: void <init>()>();
-
-        $stack87 = virtualinvoke $u10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Authorization failed: ");
-
-        $r12 = (org.apache.maven.wagon.authorization.AuthorizationException) $stack84;
-
-        $stack88 = virtualinvoke $r12.<org.apache.maven.wagon.authorization.AuthorizationException: java.lang.String getMessage()>();
-
-        $stack89 = virtualinvoke $stack87.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack88);
-
-        $stack90 = virtualinvoke $stack89.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u11.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack90, $stack84);
-
-        $r13 = (java.lang.Throwable) $u11;
-
-        throw $r13;
-
-     label24:
-        $stack77 := @caughtexception;
-
-        $u13 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u12 = new java.lang.StringBuilder;
-
-        specialinvoke $u12.<java.lang.StringBuilder: void <init>()>();
-
-        $stack80 = virtualinvoke $u12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Resource to deploy not found: ");
-
-        $r14 = (org.apache.maven.wagon.ResourceDoesNotExistException) $stack77;
-
-        $stack81 = virtualinvoke $r14.<org.apache.maven.wagon.ResourceDoesNotExistException: java.lang.String getMessage()>();
-
-        $stack82 = virtualinvoke $stack80.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack81);
-
-        $stack83 = virtualinvoke $stack82.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u13.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack83, $stack77);
-
-        $r15 = (java.lang.Throwable) $u13;
-
-        throw $r15;
-
-     label25:
-        $stack70 := @caughtexception;
-
-        $u15 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u14 = new java.lang.StringBuilder;
-
-        specialinvoke $u14.<java.lang.StringBuilder: void <init>()>();
-
-        $stack73 = virtualinvoke $u14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error creating temporary file for deployment: ");
-
-        $stack74 = virtualinvoke $stack70.<java.io.IOException: java.lang.String getMessage()>();
-
-        $stack75 = virtualinvoke $stack73.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack74);
-
-        $stack76 = virtualinvoke $stack75.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u15.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack76, $stack70);
-
-        $r16 = (java.lang.Throwable) $u15;
-
-        throw $r16;
-
-     label26:
-        $stack66 := @caughtexception;
-
-     label27:
-        $r17 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r17.<org.apache.maven.repository.legacy.DefaultWagonManager: void cleanupTemporaryFiles(java.util.List)>($u4);
-
-        l16 = <org.apache.maven.repository.legacy.DefaultWagonManager: java.lang.String[] CHECKSUM_IDS>;
-
-        l17 = lengthof l16;
-
-        l18 = 0;
-
-     label28:
-        if l18 >= l17 goto label30;
-
-        id = l16[l18];
-
-        $stack67 = interfaceinvoke $u2.<java.util.Map: java.lang.Object get(java.lang.Object)>(id);
-
-        checksumListener = (org.apache.maven.wagon.events.TransferListener) $stack67;
-
-        if checksumListener == null goto label29;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void removeTransferListener(org.apache.maven.wagon.events.TransferListener)>(checksumListener);
-
-     label29:
-        l18 = l18 + 1;
-
-        goto label28;
-
-     label30:
-        $r18 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r18.<org.apache.maven.repository.legacy.DefaultWagonManager: void disconnectWagon(org.apache.maven.wagon.Wagon)>(wagon);
-
-        $r19 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        specialinvoke $r19.<org.apache.maven.repository.legacy.DefaultWagonManager: void releaseWagon(java.lang.String,org.apache.maven.wagon.Wagon)>(protocol, wagon);
-
-        throw $stack66;
-
-     label31:
-        return;
-
-        catch org.apache.maven.wagon.UnsupportedProtocolException from label01 to label02 with label03;
-        catch java.lang.Throwable from label08 to label09 with label10;
-        catch java.lang.Throwable from label10 to label11 with label10;
-        catch org.apache.maven.wagon.ConnectionException from label08 to label17 with label21;
-        catch org.apache.maven.wagon.authentication.AuthenticationException from label08 to label17 with label22;
-        catch org.apache.maven.wagon.authorization.AuthorizationException from label08 to label17 with label23;
-        catch org.apache.maven.wagon.ResourceDoesNotExistException from label08 to label17 with label24;
-        catch java.io.IOException from label08 to label17 with label25;
-        catch java.lang.Throwable from label08 to label17 with label26;
-        catch java.lang.Throwable from label21 to label27 with label26;
-    }
-
-    private void cleanupTemporaryFiles(java.util.List)
-    {
-        java.util.List files;
-        java.util.Iterator l2;
-        boolean $stack5, $stack7;
-        java.lang.Object $stack6;
-        java.io.File file;
-        DefaultWagonManager this;
-        org.codehaus.plexus.logging.Logger $stack10;
-        java.lang.StringBuilder $stack11, $stack13, $u0;
-        java.lang.String $stack12, $stack14;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0;
-
-        this := @this: DefaultWagonManager;
-
-        files := @parameter0: java.util.List;
-
-        l2 = interfaceinvoke files.<java.util.List: java.util.Iterator iterator()>();
+        id = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
 
      label1:
-        $stack5 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+        $r2 = (org.apache.maven.artifact.manager.DefaultWagonManager) this;
 
-        if $stack5 == 0 goto label3;
-
-        $stack6 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
-
-        file = (java.io.File) $stack6;
-
-        $stack7 = virtualinvoke file.<java.io.File: boolean delete()>();
-
-        if $stack7 != 0 goto label2;
-
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack10 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
+        $stack12 = $r2.<org.apache.maven.artifact.manager.DefaultWagonManager: org.codehaus.plexus.logging.Logger log>;
 
         $u0 = new java.lang.StringBuilder;
 
         specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
 
-        $stack11 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("skip failed to delete temporary file : ");
+        $stack13 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Using mirror: ");
 
-        $stack12 = virtualinvoke file.<java.io.File: java.lang.String getAbsolutePath()>();
+        $stack14 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getUrl()>();
 
-        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+        $stack15 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
 
-        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (id: ");
 
-        interfaceinvoke $stack10.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack14);
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(id);
 
-        virtualinvoke file.<java.io.File: void deleteOnExit()>();
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
 
-     label2:
-        goto label1;
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
 
-     label3:
-        return;
-    }
+        interfaceinvoke $stack12.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack19);
 
-    private org.apache.maven.wagon.observers.ChecksumObserver addChecksumObserver(org.apache.maven.wagon.Wagon, java.lang.String) throws org.apache.maven.wagon.TransferFailedException
-    {
-        java.lang.String algorithm, $stack10;
-        org.apache.maven.wagon.Wagon wagon;
-        java.security.NoSuchAlgorithmException $stack5;
-        java.lang.StringBuilder $stack8, $stack9, $u1;
-        DefaultWagonManager this;
-        org.apache.maven.wagon.observers.ChecksumObserver $u0;
-        org.apache.maven.wagon.TransferFailedException $u2;
-        org.apache.maven.wagon.events.TransferListener $r0;
-        java.lang.Throwable $r1;
+        $r3 = (org.apache.maven.artifact.manager.DefaultWagonManager) this;
 
-        this := @this: DefaultWagonManager;
+        $stack20 = $r3.<org.apache.maven.artifact.manager.DefaultWagonManager: org.apache.maven.artifact.repository.ArtifactRepositoryFactory artifactRepositoryFactory>;
 
-        wagon := @parameter0: org.apache.maven.wagon.Wagon;
+        $stack21 = virtualinvoke mirror.<org.apache.maven.settings.Mirror: java.lang.String getUrl()>();
 
-        algorithm := @parameter1: java.lang.String;
+        $stack22 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
 
-     label1:
-        $u0 = new org.apache.maven.wagon.observers.ChecksumObserver;
+        $stack23 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getSnapshots()>();
 
-        specialinvoke $u0.<org.apache.maven.wagon.observers.ChecksumObserver: void <init>(java.lang.String)>(algorithm);
+        $stack24 = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getReleases()>();
 
-        $r0 = (org.apache.maven.wagon.events.TransferListener) $u0;
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void addTransferListener(org.apache.maven.wagon.events.TransferListener)>($r0);
+        repository = interfaceinvoke $stack20.<org.apache.maven.artifact.repository.ArtifactRepositoryFactory: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>(id, $stack21, $stack22, $stack23, $stack24);
 
      label2:
-        return $u0;
-
-     label3:
-        $stack5 := @caughtexception;
-
-        $u2 = new org.apache.maven.wagon.TransferFailedException;
-
-        $u1 = new java.lang.StringBuilder;
-
-        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
-
-        $stack8 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to add checksum for unsupported algorithm ");
-
-        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(algorithm);
-
-        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u2.<org.apache.maven.wagon.TransferFailedException: void <init>(java.lang.String,java.lang.Throwable)>($stack10, $stack5);
-
-        $r1 = (java.lang.Throwable) $u2;
-
-        throw $r1;
-
-        catch java.security.NoSuchAlgorithmException from label1 to label2 with label3;
-    }
-
-    private void handleChecksumFailure(java.lang.String, java.lang.String, java.lang.Throwable) throws org.apache.maven.repository.legacy.ChecksumFailedException
-    {
-        java.lang.String checksumPolicy, $stack4, $stack6, message, $stack13;
-        boolean $stack5, $stack7;
-        DefaultWagonManager this;
-        org.codehaus.plexus.logging.Logger $stack9;
-        java.lang.StringBuilder $stack10, $stack11, $stack12, $u1;
-        java.lang.Throwable cause, $r0;
-        org.apache.maven.repository.legacy.ChecksumFailedException $u0;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r1;
-
-        this := @this: DefaultWagonManager;
-
-        checksumPolicy := @parameter0: java.lang.String;
-
-        message := @parameter1: java.lang.String;
-
-        cause := @parameter2: java.lang.Throwable;
-
-        $stack4 = "fail";
-
-        $stack5 = virtualinvoke $stack4.<java.lang.String: boolean equals(java.lang.Object)>(checksumPolicy);
-
-        if $stack5 == 0 goto label1;
-
-        $u0 = new org.apache.maven.repository.legacy.ChecksumFailedException;
-
-        specialinvoke $u0.<org.apache.maven.repository.legacy.ChecksumFailedException: void <init>(java.lang.String,java.lang.Throwable)>(message, cause);
-
-        $r0 = (java.lang.Throwable) $u0;
-
-        throw $r0;
-
-     label1:
-        $stack6 = "ignore";
-
-        $stack7 = virtualinvoke $stack6.<java.lang.String: boolean equals(java.lang.Object)>(checksumPolicy);
-
-        if $stack7 != 0 goto label2;
-
-        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack9 = $r1.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u1 = new java.lang.StringBuilder;
-
-        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
-
-        $stack10 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("*** CHECKSUM FAILED - ");
-
-        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(message);
-
-        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" - IGNORING");
-
-        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack9.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack13);
-
-     label2:
-        return;
-    }
-
-    private void verifyChecksum(org.apache.maven.wagon.observers.ChecksumObserver, java.io.File, java.io.File, java.lang.String, java.lang.String, org.apache.maven.wagon.Wagon) throws org.apache.maven.wagon.ResourceDoesNotExistException, org.apache.maven.wagon.TransferFailedException, org.apache.maven.wagon.authorization.AuthorizationException
-    {
-        org.apache.maven.wagon.observers.ChecksumObserver checksumObserver;
-        java.io.File tempDestination, destination, $u1, $u4;
-        java.lang.StringBuilder $stack14, $stack15, $stack16, $stack19, $stack20, $stack31, $stack32, $stack33, $stack34, $stack35, $stack39, $stack40, $u0, $u2, $u3, $u5;
-        java.lang.String checksumFileExtension, $stack17, remotePath, $stack21, $stack36, $stack41, actualChecksum, expectedChecksum;
-        org.apache.maven.wagon.Wagon wagon;
-        boolean $stack24, $stack42, $stack43, $stack48, $stack28;
-        int $stack26, lastSpacePos;
-        java.io.IOException $stack58;
-        DefaultWagonManager this;
-        org.apache.maven.repository.legacy.ChecksumFailedException $u6, $u7;
-        java.lang.Throwable $r0, $r1;
-
-        this := @this: DefaultWagonManager;
-
-        checksumObserver := @parameter0: org.apache.maven.wagon.observers.ChecksumObserver;
-
-        destination := @parameter1: java.io.File;
-
-        tempDestination := @parameter2: java.io.File;
-
-        remotePath := @parameter3: java.lang.String;
-
-        checksumFileExtension := @parameter4: java.lang.String;
-
-        wagon := @parameter5: org.apache.maven.wagon.Wagon;
-
-     label01:
-        actualChecksum = virtualinvoke checksumObserver.<org.apache.maven.wagon.observers.ChecksumObserver: java.lang.String getActualChecksum()>();
-
-        $u1 = new java.io.File;
-
-        $u0 = new java.lang.StringBuilder;
-
-        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
-
-        $stack14 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(tempDestination);
-
-        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(checksumFileExtension);
-
-        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".tmp");
-
-        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u1.<java.io.File: void <init>(java.lang.String)>($stack17);
-
-        virtualinvoke $u1.<java.io.File: void deleteOnExit()>();
-
-        $u2 = new java.lang.StringBuilder;
-
-        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
-
-        $stack19 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(remotePath);
-
-        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(checksumFileExtension);
-
-        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void get(java.lang.String,java.io.File)>($stack21, $u1);
-
-        expectedChecksum = staticinvoke <org.codehaus.plexus.util.FileUtils: java.lang.String fileRead(java.io.File,java.lang.String)>($u1, "UTF-8");
-
-        expectedChecksum = virtualinvoke expectedChecksum.<java.lang.String: java.lang.String trim()>();
-
-        $stack24 = virtualinvoke expectedChecksum.<java.lang.String: boolean regionMatches(boolean,int,java.lang.String,int,int)>(1, 0, "MD", 0, 2);
-
-        if $stack24 != 0 goto label02;
-
-        $stack48 = virtualinvoke expectedChecksum.<java.lang.String: boolean regionMatches(boolean,int,java.lang.String,int,int)>(1, 0, "SHA", 0, 3);
-
-        if $stack48 == 0 goto label03;
-
-     label02:
-        lastSpacePos = virtualinvoke expectedChecksum.<java.lang.String: int lastIndexOf(int)>(32);
-
-        $stack26 = lastSpacePos + 1;
-
-        expectedChecksum = virtualinvoke expectedChecksum.<java.lang.String: java.lang.String substring(int)>($stack26);
-
-        goto label04;
-
-     label03:
-        lastSpacePos = virtualinvoke expectedChecksum.<java.lang.String: int indexOf(int)>(32);
-
-        if lastSpacePos == -1 goto label04;
-
-        expectedChecksum = virtualinvoke expectedChecksum.<java.lang.String: java.lang.String substring(int,int)>(0, lastSpacePos);
-
-     label04:
-        $stack28 = virtualinvoke expectedChecksum.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(actualChecksum);
-
-        if $stack28 == 0 goto label07;
-
-        $u4 = new java.io.File;
-
-        $u3 = new java.lang.StringBuilder;
-
-        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
-
-        $stack39 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(destination);
-
-        $stack40 = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(checksumFileExtension);
-
-        $stack41 = virtualinvoke $stack40.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u4.<java.io.File: void <init>(java.lang.String)>($stack41);
-
-        $stack42 = virtualinvoke $u4.<java.io.File: boolean exists()>();
-
-        if $stack42 == 0 goto label05;
-
-        virtualinvoke $u4.<java.io.File: boolean delete()>();
-
-     label05:
-        staticinvoke <org.codehaus.plexus.util.FileUtils: void copyFile(java.io.File,java.io.File)>($u1, $u4);
-
-        $stack43 = virtualinvoke $u1.<java.io.File: boolean delete()>();
-
-        if $stack43 != 0 goto label06;
-
-        virtualinvoke $u1.<java.io.File: void deleteOnExit()>();
-
-     label06:
-        goto label08;
-
-     label07:
-        $u6 = new org.apache.maven.repository.legacy.ChecksumFailedException;
-
-        $u5 = new java.lang.StringBuilder;
-
-        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
-
-        $stack31 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Checksum failed on download: local = \'");
-
-        $stack32 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(actualChecksum);
-
-        $stack33 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'; remote = \'");
-
-        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(expectedChecksum);
-
-        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
-
-        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u6.<org.apache.maven.repository.legacy.ChecksumFailedException: void <init>(java.lang.String)>($stack36);
-
-        $r0 = (java.lang.Throwable) $u6;
-
-        throw $r0;
-
-     label08:
-        goto label10;
-
-     label09:
-        $stack58 := @caughtexception;
-
-        $u7 = new org.apache.maven.repository.legacy.ChecksumFailedException;
-
-        specialinvoke $u7.<org.apache.maven.repository.legacy.ChecksumFailedException: void <init>(java.lang.String,java.lang.Throwable)>("Invalid checksum file", $stack58);
-
-        $r1 = (java.lang.Throwable) $u7;
-
-        throw $r1;
-
-     label10:
-        return;
-
-        catch java.io.IOException from label01 to label08 with label09;
-    }
-
-    private void disconnectWagon(org.apache.maven.wagon.Wagon)
-    {
-        org.apache.maven.wagon.Wagon wagon;
-        java.lang.Throwable $stack3;
-        DefaultWagonManager this;
-        org.codehaus.plexus.logging.Logger $stack5;
-        java.lang.StringBuilder $stack6, $stack8, $u0;
-        java.lang.String $stack7, $stack9;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0;
-        org.apache.maven.wagon.ConnectionException $r1;
-
-        this := @this: DefaultWagonManager;
-
-        wagon := @parameter0: org.apache.maven.wagon.Wagon;
-
-     label1:
-        interfaceinvoke wagon.<org.apache.maven.wagon.Wagon: void disconnect()>();
-
-     label2:
-        goto label4;
-
-     label3:
-        $stack3 := @caughtexception;
-
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack5 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u0 = new java.lang.StringBuilder;
-
-        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
-
-        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Problem disconnecting from wagon - ignoring: ");
-
-        $r1 = (org.apache.maven.wagon.ConnectionException) $stack3;
-
-        $stack7 = virtualinvoke $r1.<org.apache.maven.wagon.ConnectionException: java.lang.String getMessage()>();
-
-        $stack8 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack7);
-
-        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack5.<org.codehaus.plexus.logging.Logger: void error(java.lang.String)>($stack9);
-
-     label4:
-        return;
-
-        catch org.apache.maven.wagon.ConnectionException from label1 to label2 with label3;
-    }
-
-    private void releaseWagon(java.lang.String, org.apache.maven.wagon.Wagon)
-    {
-        DefaultWagonManager this;
-        org.apache.maven.wagon.Wagon wagon;
-        org.codehaus.plexus.PlexusContainer $stack4;
-        java.lang.Throwable $stack5;
-        org.codehaus.plexus.logging.Logger $stack7, $stack12;
-        java.lang.StringBuilder $stack8, $stack10, $u0;
-        java.lang.String $stack9, $stack11, protocol;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0, $r1, $r3;
-        org.codehaus.plexus.component.repository.exception.ComponentLifecycleException $r2;
-
-        this := @this: DefaultWagonManager;
-
-        protocol := @parameter0: java.lang.String;
-
-        wagon := @parameter1: org.apache.maven.wagon.Wagon;
-
-     label1:
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack4 = $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.PlexusContainer container>;
-
-        interfaceinvoke $stack4.<org.codehaus.plexus.PlexusContainer: void release(java.lang.Object)>(wagon);
-
-     label2:
-        goto label4;
-
-     label3:
-        $stack5 := @caughtexception;
-
-        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack7 = $r1.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        $u0 = new java.lang.StringBuilder;
-
-        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
-
-        $stack8 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Problem releasing wagon - ignoring: ");
-
-        $r2 = (org.codehaus.plexus.component.repository.exception.ComponentLifecycleException) $stack5;
-
-        $stack9 = virtualinvoke $r2.<org.codehaus.plexus.component.repository.exception.ComponentLifecycleException: java.lang.String getMessage()>();
-
-        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
-
-        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        interfaceinvoke $stack7.<org.codehaus.plexus.logging.Logger: void error(java.lang.String)>($stack11);
-
-        $r3 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack12 = $r3.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.logging.Logger logger>;
-
-        interfaceinvoke $stack12.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String,java.lang.Throwable)>("", $stack5);
-
-     label4:
-        return;
-
-        catch org.codehaus.plexus.component.repository.exception.ComponentLifecycleException from label1 to label2 with label3;
-    }
-
-    public org.apache.maven.wagon.Wagon getWagon(org.apache.maven.wagon.repository.Repository) throws org.apache.maven.wagon.UnsupportedProtocolException
-    {
-        DefaultWagonManager this;
-        org.apache.maven.wagon.repository.Repository repository;
-        java.lang.String $stack2;
-        org.apache.maven.wagon.Wagon $stack3;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r0;
-
-        this := @this: DefaultWagonManager;
-
-        repository := @parameter0: org.apache.maven.wagon.repository.Repository;
-
-        $stack2 = virtualinvoke repository.<org.apache.maven.wagon.repository.Repository: java.lang.String getProtocol()>();
-
-        $r0 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack3 = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultWagonManager: org.apache.maven.wagon.Wagon getWagon(java.lang.String)>($stack2);
-
-        return $stack3;
-    }
-
-    public org.apache.maven.wagon.Wagon getWagon(java.lang.String) throws org.apache.maven.wagon.UnsupportedProtocolException
-    {
-        java.lang.String protocol, hint, $stack15;
-        java.util.Locale $stack5;
-        DefaultWagonManager this;
-        org.codehaus.plexus.PlexusContainer $stack7;
-        java.lang.Object $stack8;
-        org.apache.maven.wagon.Wagon wagon;
-        java.lang.Throwable $stack10, $r0, $r2;
-        java.lang.StringBuilder $stack13, $stack14, $u1;
-        org.apache.maven.wagon.UnsupportedProtocolException $u0, $u2;
-        org.apache.maven.repository.legacy.DefaultWagonManager $r1;
-
-        this := @this: DefaultWagonManager;
-
-        protocol := @parameter0: java.lang.String;
-
-        if protocol != null goto label1;
-
-        $u0 = new org.apache.maven.wagon.UnsupportedProtocolException;
-
-        specialinvoke $u0.<org.apache.maven.wagon.UnsupportedProtocolException: void <init>(java.lang.String)>("Unspecified protocol");
-
-        $r0 = (java.lang.Throwable) $u0;
-
-        throw $r0;
-
-     label1:
-        $stack5 = <java.util.Locale: java.util.Locale ENGLISH>;
-
-        hint = virtualinvoke protocol.<java.lang.String: java.lang.String toLowerCase(java.util.Locale)>($stack5);
-
-     label2:
-        $r1 = (org.apache.maven.repository.legacy.DefaultWagonManager) this;
-
-        $stack7 = $r1.<org.apache.maven.repository.legacy.DefaultWagonManager: org.codehaus.plexus.PlexusContainer container>;
-
-        $stack8 = interfaceinvoke $stack7.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class,java.lang.String)>(class "Lorg/apache/maven/wagon/Wagon;", hint);
-
-        wagon = (org.apache.maven.wagon.Wagon) $stack8;
-
-     label3:
-        goto label5;
-
-     label4:
-        $stack10 := @caughtexception;
-
-        $u2 = new org.apache.maven.wagon.UnsupportedProtocolException;
-
-        $u1 = new java.lang.StringBuilder;
-
-        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
-
-        $stack13 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot find wagon which supports the requested protocol: ");
-
-        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(protocol);
-
-        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
-
-        specialinvoke $u2.<org.apache.maven.wagon.UnsupportedProtocolException: void <init>(java.lang.String,java.lang.Throwable)>($stack15, $stack10);
-
-        $r2 = (java.lang.Throwable) $u2;
-
-        throw $r2;
-
-     label5:
-        return wagon;
-
-        catch org.codehaus.plexus.component.repository.exception.ComponentLookupException from label2 to label3 with label4;
-    }
-
-    static void <clinit>()
-    {
-        java.lang.String[] $stack0, $stack1;
-
-        $stack0 = newarray (java.lang.String)[2];
-
-        $stack0[0] = "md5";
-
-        $stack0[1] = "sha1";
-
-        <org.apache.maven.repository.legacy.DefaultWagonManager: java.lang.String[] CHECKSUM_IDS> = $stack0;
-
-        $stack1 = newarray (java.lang.String)[2];
-
-        $stack1[0] = "MD5";
-
-        $stack1[1] = "SHA-1";
-
-        <org.apache.maven.repository.legacy.DefaultWagonManager: java.lang.String[] CHECKSUM_ALGORITHMS> = $stack1;
-
-        return;
+        return repository;
     }
 }

@@ -1,0 +1,1293 @@
+public class OpenKinect2FrameGrabber extends org.bytedeco.javacv.FrameGrabber
+{
+    public static int DEFAULT_DEPTH_WIDTH;
+    public static int DEFAULT_DEPTH_HEIGHT;
+    public static int DEFAULT_COLOR_WIDTH;
+    public static int DEFAULT_COLOR_HEIGHT;
+    private java.nio.ByteOrder byteOrder;
+    private int depthImageWidth;
+    private int depthImageHeight;
+    private int depthFrameRate;
+    private int IRImageWidth;
+    private int IRImageHeight;
+    private int IRFrameRate;
+    private org.bytedeco.libfreenect2.SyncMultiFrameListener frameListener;
+    private static org.bytedeco.javacv.FrameGrabber$Exception loadingException;
+    private static org.bytedeco.libfreenect2.Freenect2 freenect2Context;
+    private boolean colorEnabled;
+    private boolean depthEnabled;
+    private boolean IREnabled;
+    private int deviceNumber;
+    private java.lang.String serial;
+    private org.bytedeco.libfreenect2.Freenect2Device device;
+    private int frameTypes;
+    private org.bytedeco.opencv.opencv_core.IplImage rawVideoImage;
+    private org.bytedeco.opencv.opencv_core.IplImage videoImageRGBA;
+    private boolean hasFirstGoodColorImage;
+    private org.bytedeco.javacpp.BytePointer videoBuffer;
+    private org.bytedeco.opencv.opencv_core.IplImage rawIRImage;
+    private org.bytedeco.opencv.opencv_core.IplImage rawDepthImage;
+    private org.bytedeco.libfreenect2.FrameMap frames;
+
+    public static java.lang.String[] getDeviceDescriptions() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.libfreenect2.Freenect2 $stack2, $stack5;
+        int $stack3, $stack4, i;
+        java.lang.String[] desc;
+        org.bytedeco.javacpp.BytePointer $stack6;
+        java.lang.String $stack7;
+
+        staticinvoke <org.bytedeco.javacv.OpenKinect2FrameGrabber: void tryLoad()>();
+
+        $stack2 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2 freenect2Context>;
+
+        $stack3 = virtualinvoke $stack2.<org.bytedeco.libfreenect2.Freenect2: int enumerateDevices()>();
+
+        desc = newarray (java.lang.String)[$stack3];
+
+        i = 0;
+
+     label1:
+        $stack4 = lengthof desc;
+
+        if i >= $stack4 goto label2;
+
+        $stack5 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2 freenect2Context>;
+
+        $stack6 = virtualinvoke $stack5.<org.bytedeco.libfreenect2.Freenect2: org.bytedeco.javacpp.BytePointer getDeviceSerialNumber(int)>(i);
+
+        $stack7 = virtualinvoke $stack6.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        desc[i] = $stack7;
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        return desc;
+    }
+
+    public java.nio.ByteOrder getByteOrder()
+    {
+        OpenKinect2FrameGrabber this;
+        java.nio.ByteOrder $stack1;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: java.nio.ByteOrder byteOrder>;
+
+        return $stack1;
+    }
+
+    public void setByteOrder(java.nio.ByteOrder)
+    {
+        OpenKinect2FrameGrabber this;
+        java.nio.ByteOrder byteOrder;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        byteOrder := @parameter0: java.nio.ByteOrder;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: java.nio.ByteOrder byteOrder> = byteOrder;
+
+        return;
+    }
+
+    public static org.bytedeco.javacv.OpenKinect2FrameGrabber createDefault(int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $stack1;
+        int deviceNumber;
+
+        deviceNumber := @parameter0: int;
+
+        $stack1 = new org.bytedeco.javacv.OpenKinect2FrameGrabber;
+
+        specialinvoke $stack1.<org.bytedeco.javacv.OpenKinect2FrameGrabber: void <init>(int)>(deviceNumber);
+
+        return $stack1;
+    }
+
+    public static org.bytedeco.javacv.OpenKinect2FrameGrabber createDefault(java.io.File) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        java.lang.StringBuilder $stack3, $stack4, $u0;
+        java.lang.String $stack5;
+        java.io.File deviceFile;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        java.lang.Throwable $r0;
+
+        deviceFile := @parameter0: java.io.File;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/OpenKinect2FrameGrabber;");
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not support File devices.");
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack5);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+    }
+
+    public static org.bytedeco.javacv.OpenKinect2FrameGrabber createDefault(java.lang.String) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        java.lang.StringBuilder $stack3, $stack4, $u0;
+        java.lang.String $stack5, devicePath;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        java.lang.Throwable $r0;
+
+        devicePath := @parameter0: java.lang.String;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/OpenKinect2FrameGrabber;");
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not support path.");
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack5);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+    }
+
+    public static void tryLoad() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.FrameGrabber$Exception $stack1, $stack5, $stack6, $u2;
+        org.bytedeco.libfreenect2.Freenect2 $stack2, $u0;
+        java.lang.Throwable $stack7, $r0, $r1;
+        java.lang.StringBuilder $stack10, $stack11, $u1;
+        java.lang.String $stack12;
+
+        $stack1 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        if $stack1 == null goto label1;
+
+        $stack5 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        virtualinvoke $stack5.<org.bytedeco.javacv.FrameGrabber$Exception: void printStackTrace()>();
+
+        $stack6 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        $r0 = (java.lang.Throwable) $stack6;
+
+        throw $r0;
+
+     label1:
+        $stack2 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2 freenect2Context>;
+
+        if $stack2 == null goto label3;
+
+     label2:
+        return;
+
+     label3:
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/libfreenect2/global/freenect2;");
+
+        $u0 = new org.bytedeco.libfreenect2.Freenect2;
+
+        specialinvoke $u0.<org.bytedeco.libfreenect2.Freenect2: void <init>()>();
+
+        <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2 freenect2Context> = $u0;
+
+     label4:
+        goto label6;
+
+     label5:
+        $stack7 := @caughtexception;
+
+        $u2 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack10 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to load ");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/OpenKinect2FrameGrabber;");
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String,java.lang.Throwable)>($stack12, $stack7);
+
+        <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = $u2;
+
+        $r1 = (java.lang.Throwable) $u2;
+
+        throw $r1;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+    }
+
+    public void <init>(int)
+    {
+        OpenKinect2FrameGrabber this;
+        java.nio.ByteOrder $stack2;
+        int $stack3, $stack4, $stack5, $stack6, deviceNumber;
+        org.bytedeco.libfreenect2.FrameMap $u0;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        deviceNumber := @parameter0: int;
+
+        specialinvoke this.<org.bytedeco.javacv.FrameGrabber: void <init>()>();
+
+        $stack2 = <java.nio.ByteOrder: java.nio.ByteOrder BIG_ENDIAN>;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: java.nio.ByteOrder byteOrder> = $stack2;
+
+        $stack3 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: int DEFAULT_DEPTH_WIDTH>;
+
+        $r1 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int depthImageWidth> = $stack3;
+
+        $stack4 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: int DEFAULT_DEPTH_HEIGHT>;
+
+        $r2 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int depthImageHeight> = $stack4;
+
+        $r3 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int depthFrameRate> = 60;
+
+        $stack5 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: int DEFAULT_DEPTH_WIDTH>;
+
+        $r4 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r4.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int IRImageWidth> = $stack5;
+
+        $stack6 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: int DEFAULT_DEPTH_HEIGHT>;
+
+        $r5 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r5.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int IRImageHeight> = $stack6;
+
+        $r6 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r6.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int IRFrameRate> = 60;
+
+        $r7 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r7.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean colorEnabled> = 0;
+
+        $r8 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r8.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean depthEnabled> = 0;
+
+        $r9 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r9.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean IREnabled> = 0;
+
+        $r10 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r10.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int deviceNumber> = 0;
+
+        $r11 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r11.<org.bytedeco.javacv.OpenKinect2FrameGrabber: java.lang.String serial> = null;
+
+        $r12 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r12.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2Device device> = null;
+
+        $r13 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r13.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int frameTypes> = 0;
+
+        $r14 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r14.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage> = null;
+
+        $r15 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r15.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage videoImageRGBA> = null;
+
+        $r16 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r16.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean hasFirstGoodColorImage> = 0;
+
+        $r17 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r17.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.javacpp.BytePointer videoBuffer> = null;
+
+        $r18 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r18.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage> = null;
+
+        $r19 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r19.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage> = null;
+
+        $u0 = new org.bytedeco.libfreenect2.FrameMap;
+
+        specialinvoke $u0.<org.bytedeco.libfreenect2.FrameMap: void <init>()>();
+
+        $r20 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r20.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.FrameMap frames> = $u0;
+
+        $r21 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r21.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int deviceNumber> = deviceNumber;
+
+        return;
+    }
+
+    public void enableColorStream()
+    {
+        OpenKinect2FrameGrabber this;
+        boolean $stack1;
+        int $stack2, $stack3;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0, $r1, $r2, $r3;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean colorEnabled>;
+
+        if $stack1 != 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int frameTypes>;
+
+        $stack3 = $stack2 | 1;
+
+        $r2 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int frameTypes> = $stack3;
+
+        $r3 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean colorEnabled> = 1;
+
+     label1:
+        return;
+    }
+
+    public void enableDepthStream()
+    {
+        OpenKinect2FrameGrabber this;
+        boolean $stack1;
+        int $stack2, $stack3;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0, $r1, $r2, $r3;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean depthEnabled>;
+
+        if $stack1 != 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int frameTypes>;
+
+        $stack3 = $stack2 | 4;
+
+        $r2 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int frameTypes> = $stack3;
+
+        $r3 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean depthEnabled> = 1;
+
+     label1:
+        return;
+    }
+
+    public void enableIRStream()
+    {
+        OpenKinect2FrameGrabber this;
+        boolean $stack1;
+        int $stack2, $stack3;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0, $r1, $r2, $r3;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean IREnabled>;
+
+        if $stack1 != 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int frameTypes>;
+
+        $stack3 = $stack2 | 2;
+
+        $r2 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int frameTypes> = $stack3;
+
+        $r3 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean IREnabled> = 1;
+
+     label1:
+        return;
+    }
+
+    public void release() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinect2FrameGrabber this;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        return;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        OpenKinect2FrameGrabber this;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: void release()>();
+
+        return;
+    }
+
+    public void start() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.libfreenect2.Freenect2 $stack2, $stack4, $stack8, $stack12, $stack3;
+        int $stack5, $stack7, $stack15;
+        OpenKinect2FrameGrabber this;
+        org.bytedeco.javacpp.BytePointer $stack9, $stack28, $stack36;
+        java.lang.String $stack10, $stack11, $stack64, $stack29, $stack31, $stack37, $stack39;
+        org.bytedeco.libfreenect2.Freenect2Device $stack13, $stack19, $stack55, $stack21, $stack27, $stack35;
+        boolean $stack16, $stack17, $stack40;
+        org.bytedeco.libfreenect2.SyncMultiFrameListener $stack18, $stack54, $u4;
+        java.lang.Throwable $stack59, $r1, $r2;
+        java.io.PrintStream $stack61, $stack23, $stack25, $stack33;
+        java.lang.StringBuilder $stack62, $stack63, $stack26, $stack30, $stack34, $stack38, $u0, $u5, $u6;
+        org.bytedeco.opencv.opencv_core.IplImage $stack20;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1, $u2, $r0;
+        org.bytedeco.libfreenect2.CpuPacketPipeline $u3;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r3, $r4, $r5, $r6, $r8, $r9, $r10, $r11, $r12, $r13, $r15, $r16, $r17, $r18, $r20, $r21, $r22, $r23;
+        org.bytedeco.libfreenect2.PacketPipeline $r7;
+        org.bytedeco.libfreenect2.FrameListener $r14, $r19;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $stack2 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2 freenect2Context>;
+
+        if $stack2 != null goto label4;
+
+     label1:
+        staticinvoke <org.bytedeco.javacv.OpenKinect2FrameGrabber: void tryLoad()>();
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack59 := @caughtexception;
+
+        $stack61 = <java.lang.System: java.io.PrintStream out>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack62 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Exception in the TryLoad !");
+
+        $stack63 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack59);
+
+        $stack64 = virtualinvoke $stack63.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack61.<java.io.PrintStream: void println(java.lang.String)>($stack64);
+
+        $r0 = (org.bytedeco.javacv.FrameGrabber$Exception) $stack59;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.FrameGrabber$Exception: void printStackTrace()>();
+
+     label4:
+        $stack3 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2 freenect2Context>;
+
+        if $stack3 != null goto label5;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("FATAL error: OpenKinect2 camera: driver could not load.");
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label5:
+        $stack4 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2 freenect2Context>;
+
+        $stack5 = virtualinvoke $stack4.<org.bytedeco.libfreenect2.Freenect2: int enumerateDevices()>();
+
+        if $stack5 != 0 goto label6;
+
+        $u2 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u2.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("FATAL error: OpenKinect2: no device connected!");
+
+        $r2 = (java.lang.Throwable) $u2;
+
+        throw $r2;
+
+     label6:
+        $r3 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2Device device> = null;
+
+        $u3 = new org.bytedeco.libfreenect2.CpuPacketPipeline;
+
+        specialinvoke $u3.<org.bytedeco.libfreenect2.CpuPacketPipeline: void <init>()>();
+
+        $stack8 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2 freenect2Context>;
+
+        $r4 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack7 = $r4.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int deviceNumber>;
+
+        $stack9 = virtualinvoke $stack8.<org.bytedeco.libfreenect2.Freenect2: org.bytedeco.javacpp.BytePointer getDeviceSerialNumber(int)>($stack7);
+
+        $stack10 = virtualinvoke $stack9.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $r5 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r5.<org.bytedeco.javacv.OpenKinect2FrameGrabber: java.lang.String serial> = $stack10;
+
+        $stack12 = <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2 freenect2Context>;
+
+        $r6 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack11 = $r6.<org.bytedeco.javacv.OpenKinect2FrameGrabber: java.lang.String serial>;
+
+        $r7 = (org.bytedeco.libfreenect2.PacketPipeline) $u3;
+
+        $stack13 = virtualinvoke $stack12.<org.bytedeco.libfreenect2.Freenect2: org.bytedeco.libfreenect2.Freenect2Device openDevice(java.lang.String,org.bytedeco.libfreenect2.PacketPipeline)>($stack11, $r7);
+
+        $r8 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r8.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2Device device> = $stack13;
+
+        $u4 = new org.bytedeco.libfreenect2.SyncMultiFrameListener;
+
+        $r9 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack15 = $r9.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int frameTypes>;
+
+        specialinvoke $u4.<org.bytedeco.libfreenect2.SyncMultiFrameListener: void <init>(int)>($stack15);
+
+        $r10 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r10.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.SyncMultiFrameListener frameListener> = $u4;
+
+        $r11 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack16 = $r11.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean colorEnabled>;
+
+        if $stack16 == 0 goto label7;
+
+        $r12 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack55 = $r12.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2Device device>;
+
+        $r13 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack54 = $r13.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.SyncMultiFrameListener frameListener>;
+
+        $r14 = (org.bytedeco.libfreenect2.FrameListener) $stack54;
+
+        virtualinvoke $stack55.<org.bytedeco.libfreenect2.Freenect2Device: void setColorFrameListener(org.bytedeco.libfreenect2.FrameListener)>($r14);
+
+     label7:
+        $r15 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack17 = $r15.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean depthEnabled>;
+
+        if $stack17 != 0 goto label8;
+
+        $r16 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack40 = $r16.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean IREnabled>;
+
+        if $stack40 == 0 goto label9;
+
+     label8:
+        $r17 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack19 = $r17.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2Device device>;
+
+        $r18 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack18 = $r18.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.SyncMultiFrameListener frameListener>;
+
+        $r19 = (org.bytedeco.libfreenect2.FrameListener) $stack18;
+
+        virtualinvoke $stack19.<org.bytedeco.libfreenect2.Freenect2Device: void setIrAndDepthFrameListener(org.bytedeco.libfreenect2.FrameListener)>($r19);
+
+     label9:
+        $stack20 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage createHeader(int,int,int,int)>(1920, 1080, 8, 4);
+
+        $r20 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r20.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage> = $stack20;
+
+        $r21 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack21 = $r21.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2Device device>;
+
+        virtualinvoke $stack21.<org.bytedeco.libfreenect2.Freenect2Device: boolean start()>();
+
+        $stack23 = <java.lang.System: java.io.PrintStream out>;
+
+        virtualinvoke $stack23.<java.io.PrintStream: void println(java.lang.String)>("OpenKinect2 device started.");
+
+        $stack25 = <java.lang.System: java.io.PrintStream out>;
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack26 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Serial: ");
+
+        $r22 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack27 = $r22.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2Device device>;
+
+        $stack28 = virtualinvoke $stack27.<org.bytedeco.libfreenect2.Freenect2Device: org.bytedeco.javacpp.BytePointer getSerialNumber()>();
+
+        $stack29 = virtualinvoke $stack28.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack30 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack29);
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack25.<java.io.PrintStream: void println(java.lang.String)>($stack31);
+
+        $stack33 = <java.lang.System: java.io.PrintStream out>;
+
+        $u6 = new java.lang.StringBuilder;
+
+        specialinvoke $u6.<java.lang.StringBuilder: void <init>()>();
+
+        $stack34 = virtualinvoke $u6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Firmware: ");
+
+        $r23 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack35 = $r23.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2Device device>;
+
+        $stack36 = virtualinvoke $stack35.<org.bytedeco.libfreenect2.Freenect2Device: org.bytedeco.javacpp.BytePointer getFirmwareVersion()>();
+
+        $stack37 = virtualinvoke $stack36.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        $stack38 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack37);
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack33.<java.io.PrintStream: void println(java.lang.String)>($stack39);
+
+        return;
+
+        catch org.bytedeco.javacv.FrameGrabber$Exception from label1 to label2 with label3;
+    }
+
+    public void stop() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinect2FrameGrabber this;
+        org.bytedeco.libfreenect2.Freenect2Device $stack1;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0, $r1;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2Device device>;
+
+        virtualinvoke $stack1.<org.bytedeco.libfreenect2.Freenect2Device: boolean stop()>();
+
+        $r1 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int frameNumber> = 0;
+
+        return;
+    }
+
+    protected void grabVideo()
+    {
+        OpenKinect2FrameGrabber this;
+        org.bytedeco.libfreenect2.FrameMap $stack7;
+        org.bytedeco.libfreenect2.Frame rgb;
+        long $stack9, $stack10, $stack11;
+        int channels, deviceWidth, deviceHeight, $stack14, $stack15, $stack16;
+        org.bytedeco.javacpp.BytePointer rawVideoImageData;
+        org.bytedeco.opencv.opencv_core.IplImage $stack13, $stack17, $stack18, $stack19, $stack20, $stack21, $stack22, $stack26;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0, $r1, $r2, $r3, $r6, $r7, $r8, $r9, $r10;
+        org.bytedeco.opencv.opencv_core.CvArr $r4, $r11, $r12;
+        org.bytedeco.javacpp.Pointer $r5;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack7 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.FrameMap frames>;
+
+        rgb = virtualinvoke $stack7.<org.bytedeco.libfreenect2.FrameMap: org.bytedeco.libfreenect2.Frame get(int)>(1);
+
+        $stack9 = virtualinvoke rgb.<org.bytedeco.libfreenect2.Frame: long bytes_per_pixel()>();
+
+        channels = (int) $stack9;
+
+        $stack10 = virtualinvoke rgb.<org.bytedeco.libfreenect2.Frame: long width()>();
+
+        deviceWidth = (int) $stack10;
+
+        $stack11 = virtualinvoke rgb.<org.bytedeco.libfreenect2.Frame: long height()>();
+
+        deviceHeight = (int) $stack11;
+
+        rawVideoImageData = virtualinvoke rgb.<org.bytedeco.libfreenect2.Frame: org.bytedeco.javacpp.BytePointer data()>();
+
+        $r1 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack13 = $r1.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        if $stack13 != null goto label1;
+
+        $stack26 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage createHeader(int,int,int,int)>(deviceWidth, deviceHeight, 8, channels);
+
+        $r2 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage> = $stack26;
+
+     label1:
+        $r3 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack17 = $r3.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        $stack14 = deviceWidth * channels;
+
+        $stack15 = $stack14 * 8;
+
+        $stack16 = $stack15 / 8;
+
+        $r4 = (org.bytedeco.opencv.opencv_core.CvArr) $stack17;
+
+        $r5 = (org.bytedeco.javacpp.Pointer) rawVideoImageData;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetData(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.javacpp.Pointer,int)>($r4, $r5, $stack16);
+
+        $r6 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack18 = $r6.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage videoImageRGBA>;
+
+        if $stack18 != null goto label2;
+
+        $r7 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack21 = $r7.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        $stack22 = virtualinvoke $stack21.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage clone()>();
+
+        $r8 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r8.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage videoImageRGBA> = $stack22;
+
+     label2:
+        $r9 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack20 = $r9.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawVideoImage>;
+
+        $r10 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack19 = $r10.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage videoImageRGBA>;
+
+        $r11 = (org.bytedeco.opencv.opencv_core.CvArr) $stack20;
+
+        $r12 = (org.bytedeco.opencv.opencv_core.CvArr) $stack19;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgproc: void cvCvtColor(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,int)>($r11, $r12, 5);
+
+        return;
+    }
+
+    protected void grabIR()
+    {
+        OpenKinect2FrameGrabber this;
+        org.bytedeco.libfreenect2.FrameMap $stack8;
+        org.bytedeco.libfreenect2.Frame IRImage;
+        long $stack11, $stack12;
+        int deviceWidth, deviceHeight, $stack15, $stack16, $stack17;
+        org.bytedeco.javacpp.BytePointer rawIRData;
+        org.bytedeco.opencv.opencv_core.IplImage $stack14, $stack18, $stack19;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0, $r1, $r2, $r3;
+        org.bytedeco.opencv.opencv_core.CvArr $r4;
+        org.bytedeco.javacpp.Pointer $r5;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack8 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.FrameMap frames>;
+
+        IRImage = virtualinvoke $stack8.<org.bytedeco.libfreenect2.FrameMap: org.bytedeco.libfreenect2.Frame get(int)>(2);
+
+        virtualinvoke IRImage.<org.bytedeco.libfreenect2.Frame: long bytes_per_pixel()>();
+
+        $stack11 = virtualinvoke IRImage.<org.bytedeco.libfreenect2.Frame: long width()>();
+
+        deviceWidth = (int) $stack11;
+
+        $stack12 = virtualinvoke IRImage.<org.bytedeco.libfreenect2.Frame: long height()>();
+
+        deviceHeight = (int) $stack12;
+
+        rawIRData = virtualinvoke IRImage.<org.bytedeco.libfreenect2.Frame: org.bytedeco.javacpp.BytePointer data()>();
+
+        $r1 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack14 = $r1.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage>;
+
+        if $stack14 != null goto label1;
+
+        $stack19 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage createHeader(int,int,int,int)>(deviceWidth, deviceHeight, 32, 1);
+
+        $r2 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage> = $stack19;
+
+     label1:
+        $r3 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack18 = $r3.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage>;
+
+        $stack15 = deviceWidth * 1;
+
+        $stack16 = $stack15 * 32;
+
+        $stack17 = $stack16 / 8;
+
+        $r4 = (org.bytedeco.opencv.opencv_core.CvArr) $stack18;
+
+        $r5 = (org.bytedeco.javacpp.Pointer) rawIRData;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetData(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.javacpp.Pointer,int)>($r4, $r5, $stack17);
+
+        return;
+    }
+
+    protected void grabDepth()
+    {
+        OpenKinect2FrameGrabber this;
+        org.bytedeco.libfreenect2.FrameMap $stack8;
+        org.bytedeco.libfreenect2.Frame depthImage;
+        long $stack11, $stack12;
+        int deviceWidth, deviceHeight, $stack15, $stack16, $stack17;
+        org.bytedeco.javacpp.BytePointer rawDepthData;
+        org.bytedeco.opencv.opencv_core.IplImage $stack14, $stack18, $stack19;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0, $r1, $r2, $r3;
+        org.bytedeco.opencv.opencv_core.CvArr $r4;
+        org.bytedeco.javacpp.Pointer $r5;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack8 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.FrameMap frames>;
+
+        depthImage = virtualinvoke $stack8.<org.bytedeco.libfreenect2.FrameMap: org.bytedeco.libfreenect2.Frame get(int)>(4);
+
+        virtualinvoke depthImage.<org.bytedeco.libfreenect2.Frame: long bytes_per_pixel()>();
+
+        $stack11 = virtualinvoke depthImage.<org.bytedeco.libfreenect2.Frame: long width()>();
+
+        deviceWidth = (int) $stack11;
+
+        $stack12 = virtualinvoke depthImage.<org.bytedeco.libfreenect2.Frame: long height()>();
+
+        deviceHeight = (int) $stack12;
+
+        rawDepthData = virtualinvoke depthImage.<org.bytedeco.libfreenect2.Frame: org.bytedeco.javacpp.BytePointer data()>();
+
+        $r1 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack14 = $r1.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage>;
+
+        if $stack14 != null goto label1;
+
+        $stack19 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage createHeader(int,int,int,int)>(deviceWidth, deviceHeight, 32, 1);
+
+        $r2 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage> = $stack19;
+
+     label1:
+        $r3 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack18 = $r3.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage>;
+
+        $stack15 = deviceWidth * 1;
+
+        $stack16 = $stack15 * 32;
+
+        $stack17 = $stack16 / 8;
+
+        $r4 = (org.bytedeco.opencv.opencv_core.CvArr) $stack18;
+
+        $r5 = (org.bytedeco.javacpp.Pointer) rawDepthData;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetData(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.javacpp.Pointer,int)>($r4, $r5, $stack17);
+
+        return;
+    }
+
+    public org.bytedeco.javacv.Frame grab() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinect2FrameGrabber this;
+        org.bytedeco.libfreenect2.FrameMap $stack1, $stack9;
+        org.bytedeco.libfreenect2.SyncMultiFrameListener $stack2, $stack10;
+        boolean $stack3, $stack6, $stack7, $stack8;
+        int $stack4, $stack5;
+        java.io.PrintStream $stack16;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.SyncMultiFrameListener frameListener>;
+
+        $r1 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r1.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.FrameMap frames>;
+
+        $stack3 = virtualinvoke $stack2.<org.bytedeco.libfreenect2.SyncMultiFrameListener: boolean waitForNewFrame(org.bytedeco.libfreenect2.FrameMap,int)>($stack1, 10000);
+
+        if $stack3 != 0 goto label1;
+
+        $stack16 = <java.lang.System: java.io.PrintStream out>;
+
+        virtualinvoke $stack16.<java.io.PrintStream: void println(java.lang.String)>("Openkinect2: timeout!");
+
+     label1:
+        $r2 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack4 = $r2.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int frameNumber>;
+
+        $stack5 = $stack4 + 1;
+
+        $r3 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int frameNumber> = $stack5;
+
+        $r4 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack6 = $r4.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean colorEnabled>;
+
+        if $stack6 == 0 goto label2;
+
+        $r5 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        virtualinvoke $r5.<org.bytedeco.javacv.OpenKinect2FrameGrabber: void grabVideo()>();
+
+     label2:
+        $r6 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack7 = $r6.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean IREnabled>;
+
+        if $stack7 == 0 goto label3;
+
+        $r7 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        virtualinvoke $r7.<org.bytedeco.javacv.OpenKinect2FrameGrabber: void grabIR()>();
+
+     label3:
+        $r8 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack8 = $r8.<org.bytedeco.javacv.OpenKinect2FrameGrabber: boolean depthEnabled>;
+
+        if $stack8 == 0 goto label4;
+
+        $r9 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        virtualinvoke $r9.<org.bytedeco.javacv.OpenKinect2FrameGrabber: void grabDepth()>();
+
+     label4:
+        $r10 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack10 = $r10.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.SyncMultiFrameListener frameListener>;
+
+        $r11 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack9 = $r11.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.FrameMap frames>;
+
+        virtualinvoke $stack10.<org.bytedeco.libfreenect2.SyncMultiFrameListener: void release(org.bytedeco.libfreenect2.FrameMap)>($stack9);
+
+        return null;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getVideoImage()
+    {
+        OpenKinect2FrameGrabber this;
+        org.bytedeco.opencv.opencv_core.IplImage $stack1;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage videoImageRGBA>;
+
+        return $stack1;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getIRImage()
+    {
+        OpenKinect2FrameGrabber this;
+        org.bytedeco.opencv.opencv_core.IplImage $stack1;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawIRImage>;
+
+        return $stack1;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getDepthImage()
+    {
+        OpenKinect2FrameGrabber this;
+        org.bytedeco.opencv.opencv_core.IplImage $stack1;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.opencv.opencv_core.IplImage rawDepthImage>;
+
+        return $stack1;
+    }
+
+    public void trigger() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        OpenKinect2FrameGrabber this;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        return;
+    }
+
+    public int getDepthImageWidth()
+    {
+        OpenKinect2FrameGrabber this;
+        int $stack1;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int depthImageWidth>;
+
+        return $stack1;
+    }
+
+    public void setDepthImageWidth(int)
+    {
+        OpenKinect2FrameGrabber this;
+        int depthImageWidth;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        depthImageWidth := @parameter0: int;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int depthImageWidth> = depthImageWidth;
+
+        return;
+    }
+
+    public int getDepthImageHeight()
+    {
+        OpenKinect2FrameGrabber this;
+        int $stack1;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int depthImageHeight>;
+
+        return $stack1;
+    }
+
+    public void setDepthImageHeight(int)
+    {
+        OpenKinect2FrameGrabber this;
+        int depthImageHeight;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        depthImageHeight := @parameter0: int;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int depthImageHeight> = depthImageHeight;
+
+        return;
+    }
+
+    public int getIRImageWidth()
+    {
+        OpenKinect2FrameGrabber this;
+        int $stack1;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int IRImageWidth>;
+
+        return $stack1;
+    }
+
+    public void setIRImageWidth(int)
+    {
+        OpenKinect2FrameGrabber this;
+        int IRImageWidth;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        IRImageWidth := @parameter0: int;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int IRImageWidth> = IRImageWidth;
+
+        return;
+    }
+
+    public int getIRImageHeight()
+    {
+        OpenKinect2FrameGrabber this;
+        int $stack1;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int IRImageHeight>;
+
+        return $stack1;
+    }
+
+    public void setIRImageHeight(int)
+    {
+        OpenKinect2FrameGrabber this;
+        int IRImageHeight;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        IRImageHeight := @parameter0: int;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int IRImageHeight> = IRImageHeight;
+
+        return;
+    }
+
+    public int getDepthFrameRate()
+    {
+        OpenKinect2FrameGrabber this;
+        int $stack1;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int depthFrameRate>;
+
+        return $stack1;
+    }
+
+    public void setDepthFrameRate(int)
+    {
+        OpenKinect2FrameGrabber this;
+        int frameRate;
+        org.bytedeco.javacv.OpenKinect2FrameGrabber $r0;
+
+        this := @this: OpenKinect2FrameGrabber;
+
+        frameRate := @parameter0: int;
+
+        $r0 = (org.bytedeco.javacv.OpenKinect2FrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.OpenKinect2FrameGrabber: int depthFrameRate> = frameRate;
+
+        return;
+    }
+
+    static void <clinit>()
+    {
+        <org.bytedeco.javacv.OpenKinect2FrameGrabber: int DEFAULT_DEPTH_WIDTH> = 640;
+
+        <org.bytedeco.javacv.OpenKinect2FrameGrabber: int DEFAULT_DEPTH_HEIGHT> = 480;
+
+        <org.bytedeco.javacv.OpenKinect2FrameGrabber: int DEFAULT_COLOR_WIDTH> = 640;
+
+        <org.bytedeco.javacv.OpenKinect2FrameGrabber: int DEFAULT_COLOR_HEIGHT> = 480;
+
+        <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = null;
+
+        <org.bytedeco.javacv.OpenKinect2FrameGrabber: org.bytedeco.libfreenect2.Freenect2 freenect2Context> = null;
+
+        return;
+    }
+}

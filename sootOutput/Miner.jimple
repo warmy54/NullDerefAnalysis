@@ -1,0 +1,73 @@
+public class Miner extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        Miner this;
+
+        this := @this: Miner;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void mine(java.lang.Class, org.ooc.middle.walkers.Opportunist, org.ooc.frontend.model.NodeList) throws java.io.IOException
+    {
+        org.ooc.frontend.model.NodeList $stack5, orig;
+        java.lang.Class clazz;
+        int $stack7, $stack9, index;
+        org.ooc.middle.walkers.Opportunist oppo;
+        org.ooc.frontend.model.Node $stack10;
+        java.lang.Object $stack11;
+        boolean $stack12;
+
+        clazz := @parameter0: java.lang.Class;
+
+        oppo := @parameter1: org.ooc.middle.walkers.Opportunist;
+
+        orig := @parameter2: org.ooc.frontend.model.NodeList;
+
+        $stack5 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $stack5.<org.ooc.frontend.model.NodeList: void <init>()>();
+
+        virtualinvoke $stack5.<org.ooc.frontend.model.NodeList: void setAll(org.ooc.frontend.model.NodeList)>(orig);
+
+        index = virtualinvoke orig.<org.ooc.frontend.model.NodeList: int size()>();
+
+     label1:
+        if index < 0 goto label4;
+
+        $stack7 = index - 1;
+
+        index = virtualinvoke orig.<org.ooc.frontend.model.NodeList: int find(java.lang.Class,int)>(clazz, $stack7);
+
+        if index != -1 goto label2;
+
+        return;
+
+     label2:
+        $stack9 = virtualinvoke $stack5.<org.ooc.frontend.model.NodeList: int size()>();
+
+        if $stack9 <= index goto label3;
+
+        virtualinvoke $stack5.<org.ooc.frontend.model.NodeList: void pop()>();
+
+        goto label2;
+
+     label3:
+        $stack10 = virtualinvoke orig.<org.ooc.frontend.model.NodeList: org.ooc.frontend.model.Node get(int)>(index);
+
+        $stack11 = virtualinvoke clazz.<java.lang.Class: java.lang.Object cast(java.lang.Object)>($stack10);
+
+        $stack12 = interfaceinvoke oppo.<org.ooc.middle.walkers.Opportunist: boolean take(java.lang.Object,org.ooc.frontend.model.NodeList)>($stack11, $stack5);
+
+        if $stack12 != 0 goto label1;
+
+        goto label4;
+
+     label4:
+        return;
+    }
+}

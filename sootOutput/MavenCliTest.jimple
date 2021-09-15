@@ -1,0 +1,1517 @@
+public class MavenCliTest extends java.lang.Object
+{
+    private org.apache.maven.cli.MavenCli cli;
+    private java.lang.String origBasedir;
+
+    public void <init>()
+    {
+        MavenCliTest this;
+
+        this := @this: MavenCliTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void setUp()
+    {
+        MavenCliTest this;
+        java.lang.String $stack2;
+        org.apache.maven.cli.MavenCli $u0;
+        org.apache.maven.cli.MavenCliTest $r0, $r1;
+
+        this := @this: MavenCliTest;
+
+        $u0 = new org.apache.maven.cli.MavenCli;
+
+        specialinvoke $u0.<org.apache.maven.cli.MavenCli: void <init>()>();
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli> = $u0;
+
+        $stack2 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("maven.multiModuleProjectDirectory");
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $r1.<org.apache.maven.cli.MavenCliTest: java.lang.String origBasedir> = $stack2;
+
+        return;
+    }
+
+    public void tearDown() throws java.lang.Exception
+    {
+        MavenCliTest this;
+        java.lang.String $stack1, $stack4;
+        java.util.Properties $stack2;
+        org.apache.maven.cli.MavenCliTest $r0, $r1;
+
+        this := @this: MavenCliTest;
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack1 = $r0.<org.apache.maven.cli.MavenCliTest: java.lang.String origBasedir>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack4 = $r1.<org.apache.maven.cli.MavenCliTest: java.lang.String origBasedir>;
+
+        staticinvoke <java.lang.System: java.lang.String setProperty(java.lang.String,java.lang.String)>("maven.multiModuleProjectDirectory", $stack4);
+
+        goto label2;
+
+     label1:
+        $stack2 = staticinvoke <java.lang.System: java.util.Properties getProperties()>();
+
+        virtualinvoke $stack2.<java.util.Properties: java.lang.Object remove(java.lang.Object)>("maven.multiModuleProjectDirectory");
+
+     label2:
+        return;
+    }
+
+    public void testPerformProfileActivation() throws org.apache.commons.cli.ParseException
+    {
+        java.lang.String $stack6;
+        org.apache.commons.cli.Option$Builder $stack7, $stack8;
+        org.apache.commons.cli.Option $stack9;
+        java.lang.String[] $stack12, $stack15, $stack18, $stack21, $stack24, $stack27, $stack30, $stack33, $stack36;
+        org.apache.commons.cli.CommandLine $stack13, $stack22, $stack31;
+        java.util.Set $stack14, $stack17, $stack23, $stack26, $stack32, $stack35;
+        org.hamcrest.Matcher $stack16, $stack19, $stack25, $stack28, $stack34, $stack37;
+        MavenCliTest this;
+        org.apache.commons.cli.GnuParser $u0;
+        org.apache.commons.cli.Options $u1;
+        org.apache.maven.execution.ProfileActivation $u2, $u3, $u4;
+        org.apache.commons.cli.Parser $r0, $r1, $r2;
+
+        this := @this: MavenCliTest;
+
+        $u0 = new org.apache.commons.cli.GnuParser;
+
+        specialinvoke $u0.<org.apache.commons.cli.GnuParser: void <init>()>();
+
+        $u1 = new org.apache.commons.cli.Options;
+
+        specialinvoke $u1.<org.apache.commons.cli.Options: void <init>()>();
+
+        $stack6 = staticinvoke <java.lang.Character: java.lang.String toString(char)>(80);
+
+        $stack7 = staticinvoke <org.apache.commons.cli.Option: org.apache.commons.cli.Option$Builder builder(java.lang.String)>($stack6);
+
+        $stack8 = virtualinvoke $stack7.<org.apache.commons.cli.Option$Builder: org.apache.commons.cli.Option$Builder hasArg()>();
+
+        $stack9 = virtualinvoke $stack8.<org.apache.commons.cli.Option$Builder: org.apache.commons.cli.Option build()>();
+
+        virtualinvoke $u1.<org.apache.commons.cli.Options: org.apache.commons.cli.Options addOption(org.apache.commons.cli.Option)>($stack9);
+
+        $u2 = new org.apache.maven.execution.ProfileActivation;
+
+        specialinvoke $u2.<org.apache.maven.execution.ProfileActivation: void <init>()>();
+
+        $stack12 = newarray (java.lang.String)[2];
+
+        $stack12[0] = "-P";
+
+        $stack12[1] = "test1,+test2,?test3,+?test4";
+
+        $r0 = (org.apache.commons.cli.Parser) $u0;
+
+        $stack13 = virtualinvoke $r0.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options,java.lang.String[])>($u1, $stack12);
+
+        staticinvoke <org.apache.maven.cli.MavenCli: void performProfileActivation(org.apache.commons.cli.CommandLine,org.apache.maven.execution.ProfileActivation)>($stack13, $u2);
+
+        $stack14 = virtualinvoke $u2.<org.apache.maven.execution.ProfileActivation: java.util.Set getRequiredActiveProfileIds()>();
+
+        $stack15 = newarray (java.lang.String)[2];
+
+        $stack15[0] = "test1";
+
+        $stack15[1] = "test2";
+
+        $stack16 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack15);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack14, $stack16);
+
+        $stack17 = virtualinvoke $u2.<org.apache.maven.execution.ProfileActivation: java.util.Set getOptionalActiveProfileIds()>();
+
+        $stack18 = newarray (java.lang.String)[2];
+
+        $stack18[0] = "test3";
+
+        $stack18[1] = "test4";
+
+        $stack19 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack18);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack17, $stack19);
+
+        $u3 = new org.apache.maven.execution.ProfileActivation;
+
+        specialinvoke $u3.<org.apache.maven.execution.ProfileActivation: void <init>()>();
+
+        $stack21 = newarray (java.lang.String)[2];
+
+        $stack21[0] = "-P";
+
+        $stack21[1] = "!test1,-test2,-?test3,!?test4";
+
+        $r1 = (org.apache.commons.cli.Parser) $u0;
+
+        $stack22 = virtualinvoke $r1.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options,java.lang.String[])>($u1, $stack21);
+
+        staticinvoke <org.apache.maven.cli.MavenCli: void performProfileActivation(org.apache.commons.cli.CommandLine,org.apache.maven.execution.ProfileActivation)>($stack22, $u3);
+
+        $stack23 = virtualinvoke $u3.<org.apache.maven.execution.ProfileActivation: java.util.Set getRequiredInactiveProfileIds()>();
+
+        $stack24 = newarray (java.lang.String)[2];
+
+        $stack24[0] = "test1";
+
+        $stack24[1] = "test2";
+
+        $stack25 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack24);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack23, $stack25);
+
+        $stack26 = virtualinvoke $u3.<org.apache.maven.execution.ProfileActivation: java.util.Set getOptionalInactiveProfileIds()>();
+
+        $stack27 = newarray (java.lang.String)[2];
+
+        $stack27[0] = "test3";
+
+        $stack27[1] = "test4";
+
+        $stack28 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack27);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack26, $stack28);
+
+        $u4 = new org.apache.maven.execution.ProfileActivation;
+
+        specialinvoke $u4.<org.apache.maven.execution.ProfileActivation: void <init>()>();
+
+        $stack30 = newarray (java.lang.String)[2];
+
+        $stack30[0] = "-P";
+
+        $stack30[1] = "-test1,+test2";
+
+        $r2 = (org.apache.commons.cli.Parser) $u0;
+
+        $stack31 = virtualinvoke $r2.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options,java.lang.String[])>($u1, $stack30);
+
+        staticinvoke <org.apache.maven.cli.MavenCli: void performProfileActivation(org.apache.commons.cli.CommandLine,org.apache.maven.execution.ProfileActivation)>($stack31, $u4);
+
+        $stack32 = virtualinvoke $u4.<org.apache.maven.execution.ProfileActivation: java.util.Set getRequiredActiveProfileIds()>();
+
+        $stack33 = newarray (java.lang.String)[1];
+
+        $stack33[0] = "test2";
+
+        $stack34 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack33);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack32, $stack34);
+
+        $stack35 = virtualinvoke $u4.<org.apache.maven.execution.ProfileActivation: java.util.Set getRequiredInactiveProfileIds()>();
+
+        $stack36 = newarray (java.lang.String)[1];
+
+        $stack36[0] = "test1";
+
+        $stack37 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack36);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack35, $stack37);
+
+        return;
+    }
+
+    public void testDetermineProjectActivation() throws org.apache.commons.cli.ParseException
+    {
+        org.apache.commons.cli.Option$Builder $stack6, $stack7;
+        org.apache.commons.cli.Option $stack8;
+        java.lang.String[] $stack11, $stack14, $stack17, $stack20, $stack23, $stack26, $stack29, $stack32, $stack35;
+        org.apache.commons.cli.CommandLine $stack12, $stack21, $stack30;
+        java.util.Set $stack13, $stack16, $stack22, $stack25, $stack31, $stack34;
+        org.hamcrest.Matcher $stack15, $stack18, $stack24, $stack27, $stack33, $stack36;
+        MavenCliTest this;
+        org.apache.commons.cli.GnuParser $u0;
+        org.apache.commons.cli.Options $u1;
+        org.apache.maven.execution.ProjectActivation $u2, $u3, $u4;
+        org.apache.commons.cli.Parser $r0, $r1, $r2;
+
+        this := @this: MavenCliTest;
+
+        $u0 = new org.apache.commons.cli.GnuParser;
+
+        specialinvoke $u0.<org.apache.commons.cli.GnuParser: void <init>()>();
+
+        $u1 = new org.apache.commons.cli.Options;
+
+        specialinvoke $u1.<org.apache.commons.cli.Options: void <init>()>();
+
+        $stack6 = staticinvoke <org.apache.commons.cli.Option: org.apache.commons.cli.Option$Builder builder(java.lang.String)>("pl");
+
+        $stack7 = virtualinvoke $stack6.<org.apache.commons.cli.Option$Builder: org.apache.commons.cli.Option$Builder hasArg()>();
+
+        $stack8 = virtualinvoke $stack7.<org.apache.commons.cli.Option$Builder: org.apache.commons.cli.Option build()>();
+
+        virtualinvoke $u1.<org.apache.commons.cli.Options: org.apache.commons.cli.Options addOption(org.apache.commons.cli.Option)>($stack8);
+
+        $u2 = new org.apache.maven.execution.ProjectActivation;
+
+        specialinvoke $u2.<org.apache.maven.execution.ProjectActivation: void <init>()>();
+
+        $stack11 = newarray (java.lang.String)[2];
+
+        $stack11[0] = "-pl";
+
+        $stack11[1] = "test1,+test2,?test3,+?test4";
+
+        $r0 = (org.apache.commons.cli.Parser) $u0;
+
+        $stack12 = virtualinvoke $r0.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options,java.lang.String[])>($u1, $stack11);
+
+        staticinvoke <org.apache.maven.cli.MavenCli: void performProjectActivation(org.apache.commons.cli.CommandLine,org.apache.maven.execution.ProjectActivation)>($stack12, $u2);
+
+        $stack13 = virtualinvoke $u2.<org.apache.maven.execution.ProjectActivation: java.util.Set getRequiredActiveProjectSelectors()>();
+
+        $stack14 = newarray (java.lang.String)[2];
+
+        $stack14[0] = "test1";
+
+        $stack14[1] = "test2";
+
+        $stack15 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack14);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack13, $stack15);
+
+        $stack16 = virtualinvoke $u2.<org.apache.maven.execution.ProjectActivation: java.util.Set getOptionalActiveProjectSelectors()>();
+
+        $stack17 = newarray (java.lang.String)[2];
+
+        $stack17[0] = "test3";
+
+        $stack17[1] = "test4";
+
+        $stack18 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack17);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack16, $stack18);
+
+        $u3 = new org.apache.maven.execution.ProjectActivation;
+
+        specialinvoke $u3.<org.apache.maven.execution.ProjectActivation: void <init>()>();
+
+        $stack20 = newarray (java.lang.String)[2];
+
+        $stack20[0] = "-pl";
+
+        $stack20[1] = "!test1,-test2,-?test3,!?test4";
+
+        $r1 = (org.apache.commons.cli.Parser) $u0;
+
+        $stack21 = virtualinvoke $r1.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options,java.lang.String[])>($u1, $stack20);
+
+        staticinvoke <org.apache.maven.cli.MavenCli: void performProjectActivation(org.apache.commons.cli.CommandLine,org.apache.maven.execution.ProjectActivation)>($stack21, $u3);
+
+        $stack22 = virtualinvoke $u3.<org.apache.maven.execution.ProjectActivation: java.util.Set getRequiredInactiveProjectSelectors()>();
+
+        $stack23 = newarray (java.lang.String)[2];
+
+        $stack23[0] = "test1";
+
+        $stack23[1] = "test2";
+
+        $stack24 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack23);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack22, $stack24);
+
+        $stack25 = virtualinvoke $u3.<org.apache.maven.execution.ProjectActivation: java.util.Set getOptionalInactiveProjectSelectors()>();
+
+        $stack26 = newarray (java.lang.String)[2];
+
+        $stack26[0] = "test3";
+
+        $stack26[1] = "test4";
+
+        $stack27 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack26);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack25, $stack27);
+
+        $u4 = new org.apache.maven.execution.ProjectActivation;
+
+        specialinvoke $u4.<org.apache.maven.execution.ProjectActivation: void <init>()>();
+
+        $stack29 = newarray (java.lang.String)[2];
+
+        $stack29[0] = "-pl";
+
+        $stack29[1] = "-test1,+test2";
+
+        $r2 = (org.apache.commons.cli.Parser) $u0;
+
+        $stack30 = virtualinvoke $r2.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options,java.lang.String[])>($u1, $stack29);
+
+        staticinvoke <org.apache.maven.cli.MavenCli: void performProjectActivation(org.apache.commons.cli.CommandLine,org.apache.maven.execution.ProjectActivation)>($stack30, $u4);
+
+        $stack31 = virtualinvoke $u4.<org.apache.maven.execution.ProjectActivation: java.util.Set getRequiredActiveProjectSelectors()>();
+
+        $stack32 = newarray (java.lang.String)[1];
+
+        $stack32[0] = "test2";
+
+        $stack33 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack32);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack31, $stack33);
+
+        $stack34 = virtualinvoke $u4.<org.apache.maven.execution.ProjectActivation: java.util.Set getRequiredInactiveProjectSelectors()>();
+
+        $stack35 = newarray (java.lang.String)[1];
+
+        $stack35[0] = "test1";
+
+        $stack36 = staticinvoke <org.hamcrest.collection.IsIterableContainingInAnyOrder: org.hamcrest.Matcher containsInAnyOrder(java.lang.Object[])>($stack35);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack34, $stack36);
+
+        return;
+    }
+
+    public void testCalculateDegreeOfConcurrencyWithCoreMultiplier()
+    {
+        java.lang.Runtime $stack2;
+        int cores, $stack7, $stack8, $stack12, $stack13;
+        double $stack4, $stack5, $stack9, $stack10;
+        MavenCliTest this;
+        org.apache.maven.cli.MavenCli $stack6, $stack11;
+        org.junit.jupiter.api.function.Executable $stack15;
+        org.apache.maven.cli.MavenCliTest $r0, $r1, $r2;
+
+        this := @this: MavenCliTest;
+
+        $stack2 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+
+        cores = virtualinvoke $stack2.<java.lang.Runtime: int availableProcessors()>();
+
+        $stack4 = (double) cores;
+
+        $stack5 = $stack4 * 2.2;
+
+        $stack7 = (int) $stack5;
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack6 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        $stack8 = virtualinvoke $stack6.<org.apache.maven.cli.MavenCli: int calculateDegreeOfConcurrencyWithCoreMultiplier(java.lang.String)>("C2.2");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>($stack7, $stack8);
+
+        $stack9 = (double) cores;
+
+        $stack10 = $stack9 * 2.2;
+
+        $stack12 = (int) $stack10;
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack11 = $r1.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        $stack13 = virtualinvoke $stack11.<org.apache.maven.cli.MavenCli: int calculateDegreeOfConcurrencyWithCoreMultiplier(java.lang.String)>("2.2C");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>($stack12, $stack13);
+
+        $r2 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack15 = staticinvoke <MavenCliTest$lambda_testCalculateDegreeOfConcurrencyWithCoreMultiplier_0__309: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.cli.MavenCliTest)>($r2);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Ljava/lang/NumberFormatException;", $stack15, "Should have failed with a NumberFormatException");
+
+        return;
+    }
+
+    public void testMavenConfig() throws java.lang.Exception
+    {
+        java.lang.String $stack4, $stack12, $stack15, $stack21;
+        java.lang.String[] $stack7, $stack17;
+        MavenCliTest this;
+        org.apache.maven.cli.MavenCli $stack8, $stack9, $stack18;
+        org.apache.commons.cli.CommandLine $stack10, $stack13, $stack19;
+        java.io.File $u0;
+        org.apache.maven.cli.CliRequest $u1, $u2;
+        org.apache.maven.cli.MavenCliTest $r0, $r1, $r2;
+
+        this := @this: MavenCliTest;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>("src/test/projects/config");
+
+        $stack4 = virtualinvoke $u0.<java.io.File: java.lang.String getCanonicalPath()>();
+
+        staticinvoke <java.lang.System: java.lang.String setProperty(java.lang.String,java.lang.String)>("maven.multiModuleProjectDirectory", $stack4);
+
+        $u1 = new org.apache.maven.cli.CliRequest;
+
+        $stack7 = newarray (java.lang.String)[0];
+
+        specialinvoke $u1.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack7, null);
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack8 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack8.<org.apache.maven.cli.MavenCli: void initialize(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack9 = $r1.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack9.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u1);
+
+        $stack10 = $u1.<org.apache.maven.cli.CliRequest: org.apache.commons.cli.CommandLine commandLine>;
+
+        $stack12 = virtualinvoke $stack10.<org.apache.commons.cli.CommandLine: java.lang.String getOptionValue(java.lang.String)>("b");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("multithreaded", $stack12);
+
+        $stack13 = $u1.<org.apache.maven.cli.CliRequest: org.apache.commons.cli.CommandLine commandLine>;
+
+        $stack15 = virtualinvoke $stack13.<org.apache.commons.cli.CommandLine: java.lang.String getOptionValue(java.lang.String)>("T");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("8", $stack15);
+
+        $u2 = new org.apache.maven.cli.CliRequest;
+
+        $stack17 = newarray (java.lang.String)[2];
+
+        $stack17[0] = "--builder";
+
+        $stack17[1] = "foobar";
+
+        specialinvoke $u2.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack17, null);
+
+        $r2 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack18 = $r2.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack18.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u2);
+
+        $stack19 = $u2.<org.apache.maven.cli.CliRequest: org.apache.commons.cli.CommandLine commandLine>;
+
+        $stack21 = virtualinvoke $stack19.<org.apache.commons.cli.CommandLine: java.lang.String getOptionValue(java.lang.String)>("builder");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("foobar", $stack21);
+
+        return;
+    }
+
+    public void testMavenConfigInvalid() throws java.lang.Exception
+    {
+        java.lang.String $stack4;
+        java.lang.String[] $stack7;
+        MavenCliTest this;
+        org.apache.maven.cli.MavenCli $stack8;
+        org.junit.jupiter.api.function.Executable $stack10;
+        java.io.File $u0;
+        org.apache.maven.cli.CliRequest $u1;
+        org.apache.maven.cli.MavenCliTest $r0, $r1;
+
+        this := @this: MavenCliTest;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>("src/test/projects/config-illegal");
+
+        $stack4 = virtualinvoke $u0.<java.io.File: java.lang.String getCanonicalPath()>();
+
+        staticinvoke <java.lang.System: java.lang.String setProperty(java.lang.String,java.lang.String)>("maven.multiModuleProjectDirectory", $stack4);
+
+        $u1 = new org.apache.maven.cli.CliRequest;
+
+        $stack7 = newarray (java.lang.String)[0];
+
+        specialinvoke $u1.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack7, null);
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack8 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack8.<org.apache.maven.cli.MavenCli: void initialize(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack10 = staticinvoke <MavenCliTest$lambda_testMavenConfigInvalid_1__310: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.cli.MavenCliTest,org.apache.maven.cli.CliRequest)>($r1, $u1);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lorg/apache/commons/cli/ParseException;", $stack10);
+
+        return;
+    }
+
+    public void testMVNConfigurationThreadCanBeOverwrittenViaCommandLine() throws java.lang.Exception
+    {
+        java.lang.String $stack4, $stack12;
+        java.lang.String[] $stack7;
+        MavenCliTest this;
+        org.apache.maven.cli.MavenCli $stack8, $stack9;
+        org.apache.commons.cli.CommandLine $stack10;
+        java.io.File $u0;
+        org.apache.maven.cli.CliRequest $u1;
+        org.apache.maven.cli.MavenCliTest $r0, $r1;
+
+        this := @this: MavenCliTest;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>("src/test/projects/mavenConfigProperties");
+
+        $stack4 = virtualinvoke $u0.<java.io.File: java.lang.String getCanonicalPath()>();
+
+        staticinvoke <java.lang.System: java.lang.String setProperty(java.lang.String,java.lang.String)>("maven.multiModuleProjectDirectory", $stack4);
+
+        $u1 = new org.apache.maven.cli.CliRequest;
+
+        $stack7 = newarray (java.lang.String)[2];
+
+        $stack7[0] = "-T";
+
+        $stack7[1] = "5";
+
+        specialinvoke $u1.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack7, null);
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack8 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack8.<org.apache.maven.cli.MavenCli: void initialize(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack9 = $r1.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack9.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u1);
+
+        $stack10 = $u1.<org.apache.maven.cli.CliRequest: org.apache.commons.cli.CommandLine commandLine>;
+
+        $stack12 = virtualinvoke $stack10.<org.apache.commons.cli.CommandLine: java.lang.String getOptionValue(java.lang.String)>("T");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("5", $stack12);
+
+        return;
+    }
+
+    public void testMVNConfigurationDefinedPropertiesCanBeOverwrittenViaCommandLine() throws java.lang.Exception
+    {
+        java.lang.String $stack5, revision;
+        java.lang.String[] $stack8;
+        MavenCliTest this;
+        org.apache.maven.cli.MavenCli $stack9, $stack10, $stack11;
+        java.io.File $u0;
+        org.apache.maven.cli.CliRequest $u1;
+        org.apache.maven.cli.MavenCliTest $r0, $r1, $r2;
+
+        this := @this: MavenCliTest;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>("src/test/projects/mavenConfigProperties");
+
+        $stack5 = virtualinvoke $u0.<java.io.File: java.lang.String getCanonicalPath()>();
+
+        staticinvoke <java.lang.System: java.lang.String setProperty(java.lang.String,java.lang.String)>("maven.multiModuleProjectDirectory", $stack5);
+
+        $u1 = new org.apache.maven.cli.CliRequest;
+
+        $stack8 = newarray (java.lang.String)[1];
+
+        $stack8[0] = "-Drevision=8.1.0";
+
+        specialinvoke $u1.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack8, null);
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack9 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack9.<org.apache.maven.cli.MavenCli: void initialize(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack10 = $r1.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack10.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r2 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack11 = $r2.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack11.<org.apache.maven.cli.MavenCli: void properties(org.apache.maven.cli.CliRequest)>($u1);
+
+        revision = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("revision");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("8.1.0", revision);
+
+        return;
+    }
+
+    public void testMVNConfigurationCLIRepeatedPropertiesLastWins() throws java.lang.Exception
+    {
+        java.lang.String $stack5, revision;
+        java.lang.String[] $stack8;
+        MavenCliTest this;
+        org.apache.maven.cli.MavenCli $stack9, $stack10, $stack11;
+        java.io.File $u0;
+        org.apache.maven.cli.CliRequest $u1;
+        org.apache.maven.cli.MavenCliTest $r0, $r1, $r2;
+
+        this := @this: MavenCliTest;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>("src/test/projects/mavenConfigProperties");
+
+        $stack5 = virtualinvoke $u0.<java.io.File: java.lang.String getCanonicalPath()>();
+
+        staticinvoke <java.lang.System: java.lang.String setProperty(java.lang.String,java.lang.String)>("maven.multiModuleProjectDirectory", $stack5);
+
+        $u1 = new org.apache.maven.cli.CliRequest;
+
+        $stack8 = newarray (java.lang.String)[2];
+
+        $stack8[0] = "-Drevision=8.1.0";
+
+        $stack8[1] = "-Drevision=8.2.0";
+
+        specialinvoke $u1.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack8, null);
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack9 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack9.<org.apache.maven.cli.MavenCli: void initialize(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack10 = $r1.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack10.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r2 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack11 = $r2.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack11.<org.apache.maven.cli.MavenCli: void properties(org.apache.maven.cli.CliRequest)>($u1);
+
+        revision = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("revision");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("8.2.0", revision);
+
+        return;
+    }
+
+    public void testMVNConfigurationFunkyArguments() throws java.lang.Exception
+    {
+        java.lang.String $stack5, $stack14, revision, $stack18, $stack21, $stack24, $stack27;
+        java.lang.String[] $stack8;
+        MavenCliTest this;
+        org.apache.maven.cli.MavenCli $stack9, $stack10, $stack11;
+        org.apache.commons.cli.CommandLine $stack12, $stack26;
+        java.util.Properties $stack17, $stack20, $stack23;
+        java.io.File $u0;
+        org.apache.maven.cli.CliRequest $u1;
+        org.apache.maven.cli.MavenCliTest $r0, $r1, $r2;
+
+        this := @this: MavenCliTest;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>("src/test/projects/mavenConfigProperties");
+
+        $stack5 = virtualinvoke $u0.<java.io.File: java.lang.String getCanonicalPath()>();
+
+        staticinvoke <java.lang.System: java.lang.String setProperty(java.lang.String,java.lang.String)>("maven.multiModuleProjectDirectory", $stack5);
+
+        $u1 = new org.apache.maven.cli.CliRequest;
+
+        $stack8 = newarray (java.lang.String)[5];
+
+        $stack8[0] = "-Drevision=8.1.0";
+
+        $stack8[1] = "--file=-Dpom.xml";
+
+        $stack8[2] = "\"-Dfoo=bar ";
+
+        $stack8[3] = "\"-Dfoo2=bar two\"";
+
+        $stack8[4] = "-Drevision=8.2.0";
+
+        specialinvoke $u1.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack8, null);
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack9 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack9.<org.apache.maven.cli.MavenCli: void initialize(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack10 = $r1.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack10.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r2 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack11 = $r2.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack11.<org.apache.maven.cli.MavenCli: void properties(org.apache.maven.cli.CliRequest)>($u1);
+
+        $stack12 = $u1.<org.apache.maven.cli.CliRequest: org.apache.commons.cli.CommandLine commandLine>;
+
+        $stack14 = virtualinvoke $stack12.<org.apache.commons.cli.CommandLine: java.lang.String getOptionValue(java.lang.String)>("T");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("3", $stack14);
+
+        revision = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("revision");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("8.2.0", revision);
+
+        $stack17 = virtualinvoke $u1.<org.apache.maven.cli.CliRequest: java.util.Properties getSystemProperties()>();
+
+        $stack18 = virtualinvoke $stack17.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("foo");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("bar ", $stack18);
+
+        $stack20 = virtualinvoke $u1.<org.apache.maven.cli.CliRequest: java.util.Properties getSystemProperties()>();
+
+        $stack21 = virtualinvoke $stack20.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("foo2");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("bar two", $stack21);
+
+        $stack23 = virtualinvoke $u1.<org.apache.maven.cli.CliRequest: java.util.Properties getSystemProperties()>();
+
+        $stack24 = virtualinvoke $stack23.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("label");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("Apache Maven", $stack24);
+
+        $stack26 = virtualinvoke $u1.<org.apache.maven.cli.CliRequest: org.apache.commons.cli.CommandLine getCommandLine()>();
+
+        $stack27 = virtualinvoke $stack26.<org.apache.commons.cli.CommandLine: java.lang.String getOptionValue(char)>(102);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("-Dpom.xml", $stack27);
+
+        return;
+    }
+
+    public void testStyleColors() throws java.lang.Exception
+    {
+        boolean $stack3, $stack9, $stack15, $stack21, $stack27, $stack33;
+        java.lang.String[] $stack5, $stack11, $stack17, $stack23, $stack29, $stack35;
+        MavenCliTest this;
+        org.apache.maven.cli.MavenCli $stack6, $stack7, $stack8, $stack12, $stack13, $stack14, $stack18, $stack19, $stack20, $stack24, $stack25, $stack26, $stack30, $stack31, $stack32, $stack36, $stack37;
+        org.junit.jupiter.api.function.Executable $stack39;
+        org.apache.maven.cli.CliRequest $u0, $u1, $u2, $u3, $u4, $u5;
+        org.apache.maven.cli.MavenCliTest $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17;
+
+        this := @this: MavenCliTest;
+
+        $stack3 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: boolean isColorEnabled()>();
+
+        staticinvoke <org.junit.jupiter.api.Assumptions: void assumeTrue(boolean,java.lang.String)>($stack3, "ANSI not supported");
+
+        staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: void setColorEnabled(boolean)>(1);
+
+        $u0 = new org.apache.maven.cli.CliRequest;
+
+        $stack5 = newarray (java.lang.String)[1];
+
+        $stack5[0] = "-B";
+
+        specialinvoke $u0.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack5, null);
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack6 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack6.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u0);
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack7 = $r1.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack7.<org.apache.maven.cli.MavenCli: void properties(org.apache.maven.cli.CliRequest)>($u0);
+
+        $r2 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack8 = $r2.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack8.<org.apache.maven.cli.MavenCli: void logging(org.apache.maven.cli.CliRequest)>($u0);
+
+        $stack9 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: boolean isColorEnabled()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack9);
+
+        staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: void setColorEnabled(boolean)>(1);
+
+        $u1 = new org.apache.maven.cli.CliRequest;
+
+        $stack11 = newarray (java.lang.String)[2];
+
+        $stack11[0] = "-l";
+
+        $stack11[1] = "target/temp/mvn.log";
+
+        specialinvoke $u1.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack11, null);
+
+        $u1.<org.apache.maven.cli.CliRequest: java.lang.String workingDirectory> = "target/temp";
+
+        $r3 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack12 = $r3.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack12.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r4 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack13 = $r4.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack13.<org.apache.maven.cli.MavenCli: void properties(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r5 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack14 = $r5.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack14.<org.apache.maven.cli.MavenCli: void logging(org.apache.maven.cli.CliRequest)>($u1);
+
+        $stack15 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: boolean isColorEnabled()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack15);
+
+        staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: void setColorEnabled(boolean)>(0);
+
+        $u2 = new org.apache.maven.cli.CliRequest;
+
+        $stack17 = newarray (java.lang.String)[1];
+
+        $stack17[0] = "-Dstyle.color=always";
+
+        specialinvoke $u2.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack17, null);
+
+        $r6 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack18 = $r6.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack18.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u2);
+
+        $r7 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack19 = $r7.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack19.<org.apache.maven.cli.MavenCli: void properties(org.apache.maven.cli.CliRequest)>($u2);
+
+        $r8 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack20 = $r8.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack20.<org.apache.maven.cli.MavenCli: void logging(org.apache.maven.cli.CliRequest)>($u2);
+
+        $stack21 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: boolean isColorEnabled()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack21);
+
+        staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: void setColorEnabled(boolean)>(1);
+
+        $u3 = new org.apache.maven.cli.CliRequest;
+
+        $stack23 = newarray (java.lang.String)[1];
+
+        $stack23[0] = "-Dstyle.color=never";
+
+        specialinvoke $u3.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack23, null);
+
+        $r9 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack24 = $r9.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack24.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u3);
+
+        $r10 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack25 = $r10.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack25.<org.apache.maven.cli.MavenCli: void properties(org.apache.maven.cli.CliRequest)>($u3);
+
+        $r11 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack26 = $r11.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack26.<org.apache.maven.cli.MavenCli: void logging(org.apache.maven.cli.CliRequest)>($u3);
+
+        $stack27 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: boolean isColorEnabled()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack27);
+
+        staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: void setColorEnabled(boolean)>(0);
+
+        $u4 = new org.apache.maven.cli.CliRequest;
+
+        $stack29 = newarray (java.lang.String)[4];
+
+        $stack29[0] = "-Dstyle.color=always";
+
+        $stack29[1] = "-B";
+
+        $stack29[2] = "-l";
+
+        $stack29[3] = "target/temp/mvn.log";
+
+        specialinvoke $u4.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack29, null);
+
+        $u4.<org.apache.maven.cli.CliRequest: java.lang.String workingDirectory> = "target/temp";
+
+        $r12 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack30 = $r12.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack30.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u4);
+
+        $r13 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack31 = $r13.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack31.<org.apache.maven.cli.MavenCli: void properties(org.apache.maven.cli.CliRequest)>($u4);
+
+        $r14 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack32 = $r14.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack32.<org.apache.maven.cli.MavenCli: void logging(org.apache.maven.cli.CliRequest)>($u4);
+
+        $stack33 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: boolean isColorEnabled()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack33);
+
+        staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: void setColorEnabled(boolean)>(0);
+
+        $u5 = new org.apache.maven.cli.CliRequest;
+
+        $stack35 = newarray (java.lang.String)[4];
+
+        $stack35[0] = "-Dstyle.color=maybe";
+
+        $stack35[1] = "-B";
+
+        $stack35[2] = "-l";
+
+        $stack35[3] = "target/temp/mvn.log";
+
+        specialinvoke $u5.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack35, null);
+
+        $u4.<org.apache.maven.cli.CliRequest: java.lang.String workingDirectory> = "target/temp";
+
+        $r15 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack36 = $r15.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack36.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u5);
+
+        $r16 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack37 = $r16.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack37.<org.apache.maven.cli.MavenCli: void properties(org.apache.maven.cli.CliRequest)>($u5);
+
+        $r17 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack39 = staticinvoke <MavenCliTest$lambda_testStyleColors_2__311: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.cli.MavenCliTest,org.apache.maven.cli.CliRequest)>($r17, $u5);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Ljava/lang/IllegalArgumentException;", $stack39, "maybe is not a valid option");
+
+        return;
+    }
+
+    public void testToolchainsBuildingEvents() throws java.lang.Exception
+    {
+        java.lang.Object $stack5, $stack13, $stack15, $stack17, $stack19;
+        org.apache.maven.eventspy.internal.EventSpyDispatcher eventSpyDispatcherMock, $stack14, $stack18;
+        MavenCliTest this;
+        java.lang.String[] $stack8;
+        java.lang.Object[] $stack10;
+        org.mockito.InOrder orderdEventSpyDispatcherMock;
+        org.mockito.verification.VerificationMode $stack12, $stack16;
+        org.apache.maven.cli.MavenCliTest$1 $u0;
+        org.apache.maven.cli.CliRequest $u1;
+        org.apache.maven.cli.MavenCliTest $r0;
+        org.apache.maven.cli.MavenCli $r1, $r2, $r3, $r4;
+
+        this := @this: MavenCliTest;
+
+        $stack5 = staticinvoke <org.mockito.Mockito: java.lang.Object mock(java.lang.Class)>(class "Lorg/apache/maven/eventspy/internal/EventSpyDispatcher;");
+
+        eventSpyDispatcherMock = (org.apache.maven.eventspy.internal.EventSpyDispatcher) $stack5;
+
+        $u0 = new org.apache.maven.cli.MavenCliTest$1;
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        specialinvoke $u0.<org.apache.maven.cli.MavenCliTest$1: void <init>(org.apache.maven.cli.MavenCliTest,org.apache.maven.eventspy.internal.EventSpyDispatcher)>($r0, eventSpyDispatcherMock);
+
+        $u1 = new org.apache.maven.cli.CliRequest;
+
+        $stack8 = newarray (java.lang.String)[0];
+
+        specialinvoke $u1.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack8, null);
+
+        $r1 = (org.apache.maven.cli.MavenCli) $u0;
+
+        virtualinvoke $r1.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r2 = (org.apache.maven.cli.MavenCli) $u0;
+
+        virtualinvoke $r2.<org.apache.maven.cli.MavenCli: void logging(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r3 = (org.apache.maven.cli.MavenCli) $u0;
+
+        virtualinvoke $r3.<org.apache.maven.cli.MavenCli: org.codehaus.plexus.PlexusContainer container(org.apache.maven.cli.CliRequest)>($u1);
+
+        $r4 = (org.apache.maven.cli.MavenCli) $u0;
+
+        virtualinvoke $r4.<org.apache.maven.cli.MavenCli: void toolchains(org.apache.maven.cli.CliRequest)>($u1);
+
+        $stack10 = newarray (java.lang.Object)[1];
+
+        $stack10[0] = eventSpyDispatcherMock;
+
+        orderdEventSpyDispatcherMock = staticinvoke <org.mockito.Mockito: org.mockito.InOrder inOrder(java.lang.Object[])>($stack10);
+
+        $stack12 = staticinvoke <org.mockito.Mockito: org.mockito.verification.VerificationMode times(int)>(1);
+
+        $stack13 = interfaceinvoke orderdEventSpyDispatcherMock.<org.mockito.InOrder: java.lang.Object verify(java.lang.Object,org.mockito.verification.VerificationMode)>(eventSpyDispatcherMock, $stack12);
+
+        $stack14 = (org.apache.maven.eventspy.internal.EventSpyDispatcher) $stack13;
+
+        $stack15 = staticinvoke <org.mockito.ArgumentMatchers: java.lang.Object any(java.lang.Class)>(class "Lorg/apache/maven/toolchain/building/ToolchainsBuildingRequest;");
+
+        virtualinvoke $stack14.<org.apache.maven.eventspy.internal.EventSpyDispatcher: void onEvent(java.lang.Object)>($stack15);
+
+        $stack16 = staticinvoke <org.mockito.Mockito: org.mockito.verification.VerificationMode times(int)>(1);
+
+        $stack17 = interfaceinvoke orderdEventSpyDispatcherMock.<org.mockito.InOrder: java.lang.Object verify(java.lang.Object,org.mockito.verification.VerificationMode)>(eventSpyDispatcherMock, $stack16);
+
+        $stack18 = (org.apache.maven.eventspy.internal.EventSpyDispatcher) $stack17;
+
+        $stack19 = staticinvoke <org.mockito.ArgumentMatchers: java.lang.Object any(java.lang.Class)>(class "Lorg/apache/maven/toolchain/building/ToolchainsBuildingResult;");
+
+        virtualinvoke $stack18.<org.apache.maven.eventspy.internal.EventSpyDispatcher: void onEvent(java.lang.Object)>($stack19);
+
+        return;
+    }
+
+    public void resumeFromSelectorIsSuggestedWithoutGroupId()
+    {
+        org.apache.maven.project.MavenProject[] $stack4;
+        MavenCliTest this;
+        org.apache.maven.project.MavenProject $stack6, $stack8, failedProject;
+        java.util.List allProjects;
+        java.lang.Object $stack10;
+        org.apache.maven.cli.MavenCli $stack11;
+        java.lang.String selector;
+        org.hamcrest.Matcher $stack13;
+        org.apache.maven.cli.MavenCliTest $r0, $r1, $r2;
+
+        this := @this: MavenCliTest;
+
+        $stack4 = newarray (org.apache.maven.project.MavenProject)[2];
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack6 = specialinvoke $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.project.MavenProject createMavenProject(java.lang.String,java.lang.String)>("group", "module-a");
+
+        $stack4[0] = $stack6;
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack8 = specialinvoke $r1.<org.apache.maven.cli.MavenCliTest: org.apache.maven.project.MavenProject createMavenProject(java.lang.String,java.lang.String)>("group", "module-b");
+
+        $stack4[1] = $stack8;
+
+        allProjects = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack4);
+
+        $stack10 = interfaceinvoke allProjects.<java.util.List: java.lang.Object get(int)>(0);
+
+        failedProject = (org.apache.maven.project.MavenProject) $stack10;
+
+        $r2 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack11 = $r2.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        selector = virtualinvoke $stack11.<org.apache.maven.cli.MavenCli: java.lang.String getResumeFromSelector(java.util.List,org.apache.maven.project.MavenProject)>(allProjects, failedProject);
+
+        $stack13 = staticinvoke <org.hamcrest.CoreMatchers: org.hamcrest.Matcher is(java.lang.Object)>(":module-a");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>(selector, $stack13);
+
+        return;
+    }
+
+    public void resumeFromSelectorContainsGroupIdWhenArtifactIdIsNotUnique()
+    {
+        org.apache.maven.project.MavenProject[] $stack4;
+        MavenCliTest this;
+        org.apache.maven.project.MavenProject $stack6, $stack8, failedProject;
+        java.util.List allProjects;
+        java.lang.Object $stack10;
+        org.apache.maven.cli.MavenCli $stack11;
+        java.lang.String selector;
+        org.hamcrest.Matcher $stack13;
+        org.apache.maven.cli.MavenCliTest $r0, $r1, $r2;
+
+        this := @this: MavenCliTest;
+
+        $stack4 = newarray (org.apache.maven.project.MavenProject)[2];
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack6 = specialinvoke $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.project.MavenProject createMavenProject(java.lang.String,java.lang.String)>("group-a", "module");
+
+        $stack4[0] = $stack6;
+
+        $r1 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack8 = specialinvoke $r1.<org.apache.maven.cli.MavenCliTest: org.apache.maven.project.MavenProject createMavenProject(java.lang.String,java.lang.String)>("group-b", "module");
+
+        $stack4[1] = $stack8;
+
+        allProjects = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack4);
+
+        $stack10 = interfaceinvoke allProjects.<java.util.List: java.lang.Object get(int)>(0);
+
+        failedProject = (org.apache.maven.project.MavenProject) $stack10;
+
+        $r2 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack11 = $r2.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        selector = virtualinvoke $stack11.<org.apache.maven.cli.MavenCli: java.lang.String getResumeFromSelector(java.util.List,org.apache.maven.project.MavenProject)>(allProjects, failedProject);
+
+        $stack13 = staticinvoke <org.hamcrest.CoreMatchers: org.hamcrest.Matcher is(java.lang.Object)>("group-a:module");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>(selector, $stack13);
+
+        return;
+    }
+
+    public void verifyLocalRepositoryPath()
+    {
+        org.apache.maven.cli.MavenCli $stack4;
+        org.apache.maven.cli.CliRequest $stack5;
+        java.lang.String[] $stack6;
+        org.apache.commons.cli.CommandLine$Builder $stack7;
+        org.apache.commons.cli.CommandLine $stack8;
+        java.io.File $stack10, $stack23, $stack26, $stack45, $stack48;
+        org.hamcrest.Matcher $stack11, $stack12, $stack24, $stack25, $stack34, $stack46, $stack47, $stack56;
+        java.util.Properties $stack13, $stack35;
+        java.lang.StringBuilder $stack14, $stack16, $stack18, $stack19, $stack28, $stack29, $stack31, $stack32, $stack36, $stack38, $stack40, $stack41, $stack50, $stack51, $stack53, $stack54;
+        char $stack17, $stack30, $stack39, $stack52;
+        java.lang.String $stack20, $stack27, $stack33, $stack42, $stack49, $stack55;
+        MavenCliTest this;
+        org.apache.maven.execution.MavenExecutionRequest executionRequest;
+
+        this := @this: MavenCliTest;
+
+        $stack4 = new org.apache.maven.cli.MavenCli;
+
+        specialinvoke $stack4.<org.apache.maven.cli.MavenCli: void <init>()>();
+
+        $stack5 = new org.apache.maven.cli.CliRequest;
+
+        $stack6 = newarray (java.lang.String)[0];
+
+        specialinvoke $stack5.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack6, null);
+
+        $stack7 = new org.apache.commons.cli.CommandLine$Builder;
+
+        specialinvoke $stack7.<org.apache.commons.cli.CommandLine$Builder: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<org.apache.commons.cli.CommandLine$Builder: org.apache.commons.cli.CommandLine build()>();
+
+        $stack5.<org.apache.maven.cli.CliRequest: org.apache.commons.cli.CommandLine commandLine> = $stack8;
+
+        executionRequest = virtualinvoke $stack4.<org.apache.maven.cli.MavenCli: org.apache.maven.execution.MavenExecutionRequest populateRequest(org.apache.maven.cli.CliRequest)>($stack5);
+
+        $stack10 = interfaceinvoke executionRequest.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getLocalRepositoryPath()>();
+
+        $stack11 = staticinvoke <org.hamcrest.CoreMatchers: org.hamcrest.Matcher nullValue()>();
+
+        $stack12 = staticinvoke <org.hamcrest.CoreMatchers: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack11);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack10, $stack12);
+
+        $stack13 = virtualinvoke $stack5.<org.apache.maven.cli.CliRequest: java.util.Properties getSystemProperties()>();
+
+        $stack14 = new java.lang.StringBuilder;
+
+        specialinvoke $stack14.<java.lang.StringBuilder: void <init>()>();
+
+        $stack16 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $stack17 = <java.io.File: char separatorChar>;
+
+        $stack18 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack17);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("custom1");
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack13.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("maven.repo.local", $stack20);
+
+        executionRequest = virtualinvoke $stack4.<org.apache.maven.cli.MavenCli: org.apache.maven.execution.MavenExecutionRequest populateRequest(org.apache.maven.cli.CliRequest)>($stack5);
+
+        $stack23 = interfaceinvoke executionRequest.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getLocalRepositoryPath()>();
+
+        $stack24 = staticinvoke <org.hamcrest.CoreMatchers: org.hamcrest.Matcher notNullValue()>();
+
+        $stack25 = staticinvoke <org.hamcrest.CoreMatchers: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack24);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack23, $stack25);
+
+        $stack26 = interfaceinvoke executionRequest.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getLocalRepositoryPath()>();
+
+        $stack27 = virtualinvoke $stack26.<java.io.File: java.lang.String toString()>();
+
+        $stack28 = new java.lang.StringBuilder;
+
+        specialinvoke $stack28.<java.lang.StringBuilder: void <init>()>();
+
+        $stack29 = virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $stack30 = <java.io.File: char separatorChar>;
+
+        $stack31 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack30);
+
+        $stack32 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("custom1");
+
+        $stack33 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack34 = staticinvoke <org.hamcrest.CoreMatchers: org.hamcrest.Matcher is(java.lang.Object)>($stack33);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack27, $stack34);
+
+        $stack35 = virtualinvoke $stack5.<org.apache.maven.cli.CliRequest: java.util.Properties getUserProperties()>();
+
+        $stack36 = new java.lang.StringBuilder;
+
+        specialinvoke $stack36.<java.lang.StringBuilder: void <init>()>();
+
+        $stack38 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $stack39 = <java.io.File: char separatorChar>;
+
+        $stack40 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack39);
+
+        $stack41 = virtualinvoke $stack40.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("custom2");
+
+        $stack42 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack35.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("maven.repo.local", $stack42);
+
+        executionRequest = virtualinvoke $stack4.<org.apache.maven.cli.MavenCli: org.apache.maven.execution.MavenExecutionRequest populateRequest(org.apache.maven.cli.CliRequest)>($stack5);
+
+        $stack45 = interfaceinvoke executionRequest.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getLocalRepositoryPath()>();
+
+        $stack46 = staticinvoke <org.hamcrest.CoreMatchers: org.hamcrest.Matcher notNullValue()>();
+
+        $stack47 = staticinvoke <org.hamcrest.CoreMatchers: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack46);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack45, $stack47);
+
+        $stack48 = interfaceinvoke executionRequest.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getLocalRepositoryPath()>();
+
+        $stack49 = virtualinvoke $stack48.<java.io.File: java.lang.String toString()>();
+
+        $stack50 = new java.lang.StringBuilder;
+
+        specialinvoke $stack50.<java.lang.StringBuilder: void <init>()>();
+
+        $stack51 = virtualinvoke $stack50.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $stack52 = <java.io.File: char separatorChar>;
+
+        $stack53 = virtualinvoke $stack51.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack52);
+
+        $stack54 = virtualinvoke $stack53.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("custom2");
+
+        $stack55 = virtualinvoke $stack54.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack56 = staticinvoke <org.hamcrest.CoreMatchers: org.hamcrest.Matcher is(java.lang.Object)>($stack55);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack49, $stack56);
+
+        return;
+    }
+
+    public void testVersionStringWithoutAnsi() throws java.lang.Exception
+    {
+        java.lang.String[] $stack7;
+        java.io.PrintStream oldOut, $u2;
+        MavenCliTest this;
+        org.apache.maven.cli.MavenCli $stack10;
+        byte[] $stack12;
+        java.nio.charset.Charset $stack13;
+        java.lang.String $stack14, $u3;
+        java.lang.Throwable $stack15, $stack16;
+        org.apache.maven.cli.CliRequest $u0;
+        java.io.ByteArrayOutputStream $u1;
+        org.apache.maven.cli.MavenCliTest $r0;
+
+        this := @this: MavenCliTest;
+
+        $u0 = new org.apache.maven.cli.CliRequest;
+
+        $stack7 = newarray (java.lang.String)[2];
+
+        $stack7[0] = "--version";
+
+        $stack7[1] = "--batch-mode";
+
+        specialinvoke $u0.<org.apache.maven.cli.CliRequest: void <init>(java.lang.String[],org.codehaus.plexus.classworlds.ClassWorld)>($stack7, null);
+
+        $u1 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $u1.<java.io.ByteArrayOutputStream: void <init>()>();
+
+        oldOut = <java.lang.System: java.io.PrintStream out>;
+
+        $u2 = new java.io.PrintStream;
+
+        specialinvoke $u2.<java.io.PrintStream: void <init>(java.io.OutputStream)>($u1);
+
+        staticinvoke <java.lang.System: void setOut(java.io.PrintStream)>($u2);
+
+     label1:
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack10 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack10.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>($u0);
+
+     label2:
+        staticinvoke <java.lang.System: void setOut(java.io.PrintStream)>(oldOut);
+
+        goto label7;
+
+     label3:
+        $stack16 := @caughtexception;
+
+     label4:
+        staticinvoke <java.lang.System: void setOut(java.io.PrintStream)>(oldOut);
+
+        goto label7;
+
+     label5:
+        $stack15 := @caughtexception;
+
+     label6:
+        staticinvoke <java.lang.System: void setOut(java.io.PrintStream)>(oldOut);
+
+        throw $stack15;
+
+     label7:
+        $u3 = new java.lang.String;
+
+        $stack12 = virtualinvoke $u1.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+
+        $stack13 = <java.nio.charset.StandardCharsets: java.nio.charset.Charset UTF_8>;
+
+        specialinvoke $u3.<java.lang.String: void <init>(byte[],java.nio.charset.Charset)>($stack12, $stack13);
+
+        $stack14 = staticinvoke <org.apache.maven.shared.utils.logging.MessageUtils: java.lang.String stripAnsiCodes(java.lang.String)>($u3);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack14, $u3);
+
+        return;
+
+        catch org.apache.maven.cli.MavenCli$ExitException from label1 to label2 with label3;
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    private org.apache.maven.project.MavenProject createMavenProject(java.lang.String, java.lang.String)
+    {
+        org.apache.maven.project.MavenProject $stack4;
+        java.lang.String groupId, artifactId;
+        MavenCliTest this;
+
+        this := @this: MavenCliTest;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        $stack4 = new org.apache.maven.project.MavenProject;
+
+        specialinvoke $stack4.<org.apache.maven.project.MavenProject: void <init>()>();
+
+        virtualinvoke $stack4.<org.apache.maven.project.MavenProject: void setGroupId(java.lang.String)>(groupId);
+
+        virtualinvoke $stack4.<org.apache.maven.project.MavenProject: void setArtifactId(java.lang.String)>(artifactId);
+
+        return $stack4;
+    }
+
+    private void lambda$testStyleColors$2(org.apache.maven.cli.CliRequest) throws java.lang.Throwable
+    {
+        MavenCliTest this;
+        org.apache.maven.cli.CliRequest maybeColorRequest;
+        org.apache.maven.cli.MavenCli $stack2;
+        org.apache.maven.cli.MavenCliTest $r0;
+
+        this := @this: MavenCliTest;
+
+        maybeColorRequest := @parameter0: org.apache.maven.cli.CliRequest;
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack2 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack2.<org.apache.maven.cli.MavenCli: void logging(org.apache.maven.cli.CliRequest)>(maybeColorRequest);
+
+        return;
+    }
+
+    private void lambda$testMavenConfigInvalid$1(org.apache.maven.cli.CliRequest) throws java.lang.Throwable
+    {
+        MavenCliTest this;
+        org.apache.maven.cli.CliRequest request;
+        org.apache.maven.cli.MavenCli $stack2;
+        org.apache.maven.cli.MavenCliTest $r0;
+
+        this := @this: MavenCliTest;
+
+        request := @parameter0: org.apache.maven.cli.CliRequest;
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack2 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack2.<org.apache.maven.cli.MavenCli: void cli(org.apache.maven.cli.CliRequest)>(request);
+
+        return;
+    }
+
+    private void lambda$testCalculateDegreeOfConcurrencyWithCoreMultiplier$0() throws java.lang.Throwable
+    {
+        MavenCliTest this;
+        org.apache.maven.cli.MavenCli $stack1;
+        org.apache.maven.cli.MavenCliTest $r0;
+
+        this := @this: MavenCliTest;
+
+        $r0 = (org.apache.maven.cli.MavenCliTest) this;
+
+        $stack1 = $r0.<org.apache.maven.cli.MavenCliTest: org.apache.maven.cli.MavenCli cli>;
+
+        virtualinvoke $stack1.<org.apache.maven.cli.MavenCli: int calculateDegreeOfConcurrencyWithCoreMultiplier(java.lang.String)>("CXXX");
+
+        return;
+    }
+}

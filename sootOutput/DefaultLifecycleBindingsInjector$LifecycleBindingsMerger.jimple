@@ -1,0 +1,274 @@
+public class DefaultLifecycleBindingsInjector$LifecycleBindingsMerger extends org.apache.maven.model.merge.MavenModelMerger
+{
+    private static final java.lang.String PLUGIN_MANAGEMENT;
+
+    protected void <init>()
+    {
+        DefaultLifecycleBindingsInjector$LifecycleBindingsMerger this;
+
+        this := @this: DefaultLifecycleBindingsInjector$LifecycleBindingsMerger;
+
+        specialinvoke this.<org.apache.maven.model.merge.MavenModelMerger: void <init>()>();
+
+        return;
+    }
+
+    public void merge(org.apache.maven.model.Model, org.apache.maven.model.Model)
+    {
+        org.apache.maven.model.Model target, source;
+        org.apache.maven.model.Build $stack4, $stack6, $stack9, $stack10, $u0;
+        org.apache.maven.model.PluginManagement $stack7;
+        java.util.Map context;
+        DefaultLifecycleBindingsInjector$LifecycleBindingsMerger this;
+        org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger $r0;
+        org.apache.maven.model.PluginContainer $r1, $r2;
+
+        this := @this: DefaultLifecycleBindingsInjector$LifecycleBindingsMerger;
+
+        target := @parameter0: org.apache.maven.model.Model;
+
+        source := @parameter1: org.apache.maven.model.Model;
+
+        $stack4 = virtualinvoke target.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        if $stack4 != null goto label1;
+
+        $u0 = new org.apache.maven.model.Build;
+
+        specialinvoke $u0.<org.apache.maven.model.Build: void <init>()>();
+
+        virtualinvoke target.<org.apache.maven.model.Model: void setBuild(org.apache.maven.model.Build)>($u0);
+
+     label1:
+        $stack6 = virtualinvoke target.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        $stack7 = virtualinvoke $stack6.<org.apache.maven.model.Build: org.apache.maven.model.PluginManagement getPluginManagement()>();
+
+        context = staticinvoke <java.util.Collections: java.util.Map singletonMap(java.lang.Object,java.lang.Object)>("plugin-management", $stack7);
+
+        $stack9 = virtualinvoke target.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        $stack10 = virtualinvoke source.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        $r0 = (org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger) this;
+
+        $r1 = (org.apache.maven.model.PluginContainer) $stack9;
+
+        $r2 = (org.apache.maven.model.PluginContainer) $stack10;
+
+        virtualinvoke $r0.<org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger: void mergePluginContainer_Plugins(org.apache.maven.model.PluginContainer,org.apache.maven.model.PluginContainer,boolean,java.util.Map)>($r1, $r2, 0, context);
+
+        return;
+    }
+
+    protected void mergePluginContainer_Plugins(org.apache.maven.model.PluginContainer, org.apache.maven.model.PluginContainer, boolean, java.util.Map)
+    {
+        org.apache.maven.model.PluginContainer source, target;
+        java.util.List src, tgt, $stack35;
+        boolean $stack16, $stack24, $stack27, $stack28, $stack37, sourceDominant;
+        int $stack19, $stack20, $stack21, $stack22;
+        java.util.Map context, $stack44;
+        java.lang.Object $stack31, $stack38, $stack41, $stack46, $stack49, $stack53, key, existing#12;
+        DefaultLifecycleBindingsInjector$LifecycleBindingsMerger this;
+        org.apache.maven.model.merge.ModelMerger$KeyComputer $stack39, $stack47, $stack54;
+        org.apache.maven.model.Plugin addedPlugin, plugin, element, key#6, existing;
+        java.util.Iterator added, element#5, key#10;
+        org.apache.maven.model.PluginManagement element#9;
+        java.util.Collection $stack30;
+        java.util.LinkedHashMap $u0, $u1;
+        java.util.ArrayList $u2;
+        org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DefaultLifecycleBindingsInjector$LifecycleBindingsMerger;
+
+        target := @parameter0: org.apache.maven.model.PluginContainer;
+
+        source := @parameter1: org.apache.maven.model.PluginContainer;
+
+        sourceDominant := @parameter2: boolean;
+
+        context := @parameter3: java.util.Map;
+
+        src = virtualinvoke source.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        $stack16 = interfaceinvoke src.<java.util.List: boolean isEmpty()>();
+
+        if $stack16 != 0 goto label10;
+
+        tgt = virtualinvoke target.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        $u0 = new java.util.LinkedHashMap;
+
+        $stack19 = interfaceinvoke src.<java.util.List: int size()>();
+
+        $stack20 = interfaceinvoke tgt.<java.util.List: int size()>();
+
+        $stack21 = $stack19 + $stack20;
+
+        $stack22 = $stack21 * 2;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>(int)>($stack22);
+
+        added = interfaceinvoke tgt.<java.util.List: java.util.Iterator iterator()>();
+
+     label01:
+        $stack24 = interfaceinvoke added.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack24 == 0 goto label02;
+
+        $stack53 = interfaceinvoke added.<java.util.Iterator: java.lang.Object next()>();
+
+        element = (org.apache.maven.model.Plugin) $stack53;
+
+        $r0 = (org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger) this;
+
+        $stack54 = virtualinvoke $r0.<org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger: org.apache.maven.model.merge.ModelMerger$KeyComputer getPluginKey()>();
+
+        key = interfaceinvoke $stack54.<org.apache.maven.model.merge.ModelMerger$KeyComputer: java.lang.Object apply(java.lang.Object)>(element);
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, element);
+
+        goto label01;
+
+     label02:
+        $u1 = new java.util.LinkedHashMap;
+
+        specialinvoke $u1.<java.util.LinkedHashMap: void <init>()>();
+
+        element#5 = interfaceinvoke src.<java.util.List: java.util.Iterator iterator()>();
+
+     label03:
+        $stack27 = interfaceinvoke element#5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack27 == 0 goto label06;
+
+        $stack46 = interfaceinvoke element#5.<java.util.Iterator: java.lang.Object next()>();
+
+        key#6 = (org.apache.maven.model.Plugin) $stack46;
+
+        $r1 = (org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger) this;
+
+        $stack47 = virtualinvoke $r1.<org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger: org.apache.maven.model.merge.ModelMerger$KeyComputer getPluginKey()>();
+
+        key = interfaceinvoke $stack47.<org.apache.maven.model.merge.ModelMerger$KeyComputer: java.lang.Object apply(java.lang.Object)>(key#6);
+
+        $stack49 = interfaceinvoke $u0.<java.util.Map: java.lang.Object get(java.lang.Object)>(key);
+
+        existing = (org.apache.maven.model.Plugin) $stack49;
+
+        if existing == null goto label04;
+
+        $r2 = (org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger) this;
+
+        virtualinvoke $r2.<org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger: void mergePlugin(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean,java.util.Map)>(existing, key#6, sourceDominant, context);
+
+        goto label05;
+
+     label04:
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, key#6);
+
+        interfaceinvoke $u1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, key#6);
+
+     label05:
+        goto label03;
+
+     label06:
+        $stack28 = interfaceinvoke $u1.<java.util.Map: boolean isEmpty()>();
+
+        if $stack28 != 0 goto label09;
+
+        $stack31 = interfaceinvoke context.<java.util.Map: java.lang.Object get(java.lang.Object)>("plugin-management");
+
+        element#9 = (org.apache.maven.model.PluginManagement) $stack31;
+
+        if element#9 == null goto label09;
+
+        $stack35 = virtualinvoke element#9.<org.apache.maven.model.PluginManagement: java.util.List getPlugins()>();
+
+        key#10 = interfaceinvoke $stack35.<java.util.List: java.util.Iterator iterator()>();
+
+     label07:
+        $stack37 = interfaceinvoke key#10.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack37 == 0 goto label09;
+
+        $stack38 = interfaceinvoke key#10.<java.util.Iterator: java.lang.Object next()>();
+
+        key#6 = (org.apache.maven.model.Plugin) $stack38;
+
+        $r3 = (org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger) this;
+
+        $stack39 = virtualinvoke $r3.<org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger: org.apache.maven.model.merge.ModelMerger$KeyComputer getPluginKey()>();
+
+        existing#12 = interfaceinvoke $stack39.<org.apache.maven.model.merge.ModelMerger$KeyComputer: java.lang.Object apply(java.lang.Object)>(key#6);
+
+        $stack41 = interfaceinvoke $u1.<java.util.Map: java.lang.Object get(java.lang.Object)>(existing#12);
+
+        addedPlugin = (org.apache.maven.model.Plugin) $stack41;
+
+        if addedPlugin == null goto label08;
+
+        plugin = virtualinvoke key#6.<org.apache.maven.model.Plugin: org.apache.maven.model.Plugin clone()>();
+
+        $stack44 = staticinvoke <java.util.Collections: java.util.Map emptyMap()>();
+
+        $r4 = (org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.plugin.DefaultLifecycleBindingsInjector$LifecycleBindingsMerger: void mergePlugin(org.apache.maven.model.Plugin,org.apache.maven.model.Plugin,boolean,java.util.Map)>(plugin, addedPlugin, sourceDominant, $stack44);
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(existing#12, plugin);
+
+     label08:
+        goto label07;
+
+     label09:
+        $u2 = new java.util.ArrayList;
+
+        $stack30 = interfaceinvoke $u0.<java.util.Map: java.util.Collection values()>();
+
+        specialinvoke $u2.<java.util.ArrayList: void <init>(java.util.Collection)>($stack30);
+
+        virtualinvoke target.<org.apache.maven.model.PluginContainer: void setPlugins(java.util.List)>($u2);
+
+     label10:
+        return;
+    }
+
+    protected void mergePluginExecution(org.apache.maven.model.PluginExecution, org.apache.maven.model.PluginExecution, boolean, java.util.Map)
+    {
+        DefaultLifecycleBindingsInjector$LifecycleBindingsMerger this;
+        org.apache.maven.model.PluginExecution target, source;
+        boolean sourceDominant;
+        java.util.Map context;
+        int $stack5, $stack6, $stack7;
+
+        this := @this: DefaultLifecycleBindingsInjector$LifecycleBindingsMerger;
+
+        target := @parameter0: org.apache.maven.model.PluginExecution;
+
+        source := @parameter1: org.apache.maven.model.PluginExecution;
+
+        sourceDominant := @parameter2: boolean;
+
+        context := @parameter3: java.util.Map;
+
+        specialinvoke this.<org.apache.maven.model.merge.MavenModelMerger: void mergePluginExecution(org.apache.maven.model.PluginExecution,org.apache.maven.model.PluginExecution,boolean,java.util.Map)>(target, source, sourceDominant, context);
+
+        $stack5 = virtualinvoke target.<org.apache.maven.model.PluginExecution: int getPriority()>();
+
+        $stack6 = virtualinvoke source.<org.apache.maven.model.PluginExecution: int getPriority()>();
+
+        $stack7 = staticinvoke <java.lang.Math: int min(int,int)>($stack5, $stack6);
+
+        virtualinvoke target.<org.apache.maven.model.PluginExecution: void setPriority(int)>($stack7);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <DefaultLifecycleBindingsInjector$LifecycleBindingsMerger: java.lang.String PLUGIN_MANAGEMENT> = "plugin-management";
+
+        return;
+    }
+}

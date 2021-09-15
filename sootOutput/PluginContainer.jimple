@@ -1,0 +1,560 @@
+public class PluginContainer extends java.lang.Object implements java.io.Serializable, java.lang.Cloneable, org.apache.maven.model.InputLocationTracker
+{
+    private java.util.List plugins;
+    private java.util.Map locations;
+    private org.apache.maven.model.InputLocation location;
+    private org.apache.maven.model.InputLocation pluginsLocation;
+    java.util.Map pluginMap;
+
+    public void <init>()
+    {
+        PluginContainer this;
+
+        this := @this: PluginContainer;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void addPlugin(org.apache.maven.model.Plugin)
+    {
+        PluginContainer this;
+        java.util.List $stack2;
+        org.apache.maven.model.Plugin plugin;
+        org.apache.maven.model.PluginContainer $r0;
+
+        this := @this: PluginContainer;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        interfaceinvoke $stack2.<java.util.List: boolean add(java.lang.Object)>(plugin);
+
+        return;
+    }
+
+    public org.apache.maven.model.PluginContainer clone()
+    {
+        PluginContainer this;
+        java.lang.Object $stack4, $stack15;
+        java.util.List $stack5, $stack11, $stack16;
+        java.util.Map $stack6, $stack8;
+        java.util.Iterator l2;
+        boolean $stack13;
+        org.apache.maven.model.Plugin item, $stack17;
+        java.lang.Exception $stack20;
+        java.lang.Class $stack23;
+        java.lang.String $stack24, $stack27;
+        java.lang.StringBuilder $stack25, $stack26, $u2;
+        java.lang.Throwable $stack28;
+        java.lang.RuntimeException $stack29;
+        org.apache.maven.model.PluginContainer copy, $r0, $r1;
+        java.util.ArrayList $u0;
+        java.util.LinkedHashMap $u1;
+        java.lang.UnsupportedOperationException $u3;
+
+        this := @this: PluginContainer;
+
+     label1:
+        $stack4 = specialinvoke this.<java.lang.Object: java.lang.Object clone()>();
+
+        copy = (org.apache.maven.model.PluginContainer) $stack4;
+
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack5 = $r0.<org.apache.maven.model.PluginContainer: java.util.List plugins>;
+
+        if $stack5 == null goto label3;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        copy.<org.apache.maven.model.PluginContainer: java.util.List plugins> = $u0;
+
+        $r1 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack11 = $r1.<org.apache.maven.model.PluginContainer: java.util.List plugins>;
+
+        l2 = interfaceinvoke $stack11.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack13 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label3;
+
+        $stack15 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        item = (org.apache.maven.model.Plugin) $stack15;
+
+        $stack16 = copy.<org.apache.maven.model.PluginContainer: java.util.List plugins>;
+
+        $stack17 = virtualinvoke item.<org.apache.maven.model.Plugin: org.apache.maven.model.Plugin clone()>();
+
+        interfaceinvoke $stack16.<java.util.List: boolean add(java.lang.Object)>($stack17);
+
+        goto label2;
+
+     label3:
+        $stack6 = copy.<org.apache.maven.model.PluginContainer: java.util.Map locations>;
+
+        if $stack6 == null goto label4;
+
+        $u1 = new java.util.LinkedHashMap;
+
+        $stack8 = copy.<org.apache.maven.model.PluginContainer: java.util.Map locations>;
+
+        specialinvoke $u1.<java.util.LinkedHashMap: void <init>(java.util.Map)>($stack8);
+
+        copy.<org.apache.maven.model.PluginContainer: java.util.Map locations> = $u1;
+
+     label4:
+        return copy;
+
+     label5:
+        $stack20 := @caughtexception;
+
+        $u3 = new java.lang.UnsupportedOperationException;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack23 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack24 = virtualinvoke $stack23.<java.lang.Class: java.lang.String getName()>();
+
+        $stack25 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack24);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not support clone()");
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u3.<java.lang.UnsupportedOperationException: void <init>(java.lang.String)>($stack27);
+
+        $stack28 = virtualinvoke $u3.<java.lang.UnsupportedOperationException: java.lang.Throwable initCause(java.lang.Throwable)>($stack20);
+
+        $stack29 = (java.lang.RuntimeException) $stack28;
+
+        throw $stack29;
+
+        catch java.lang.Exception from label1 to label4 with label5;
+    }
+
+    public org.apache.maven.model.InputLocation getLocation(java.lang.Object)
+    {
+        java.lang.Object key;
+        boolean $stack4, $stack7, $stack12;
+        PluginContainer this;
+        org.apache.maven.model.InputLocation $stack5, $stack8, $stack9, $stack10;
+        java.lang.String l2;
+        int $stack6;
+        byte l3;
+        org.apache.maven.model.PluginContainer $r0, $r1, $r2, $r3;
+
+        this := @this: PluginContainer;
+
+        key := @parameter0: java.lang.Object;
+
+        $stack4 = key instanceof java.lang.String;
+
+        if $stack4 == 0 goto label7;
+
+        l2 = (java.lang.String) key;
+
+        l3 = -1;
+
+        $stack6 = virtualinvoke l2.<java.lang.String: int hashCode()>();
+
+        lookupswitch($stack6)
+        {
+            case -475629664: goto label2;
+            case 0: goto label1;
+            default: goto label3;
+        };
+
+     label1:
+        $stack7 = virtualinvoke l2.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+        if $stack7 == 0 goto label3;
+
+        l3 = 0;
+
+        goto label3;
+
+     label2:
+        $stack12 = virtualinvoke l2.<java.lang.String: boolean equals(java.lang.Object)>("plugins");
+
+        if $stack12 == 0 goto label3;
+
+        l3 = 1;
+
+     label3:
+        lookupswitch(l3)
+        {
+            case 0: goto label4;
+            case 1: goto label5;
+            default: goto label6;
+        };
+
+     label4:
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack9 = $r0.<org.apache.maven.model.PluginContainer: org.apache.maven.model.InputLocation location>;
+
+        return $stack9;
+
+     label5:
+        $r1 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack8 = $r1.<org.apache.maven.model.PluginContainer: org.apache.maven.model.InputLocation pluginsLocation>;
+
+        return $stack8;
+
+     label6:
+        $r2 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack10 = specialinvoke $r2.<org.apache.maven.model.PluginContainer: org.apache.maven.model.InputLocation getOtherLocation(java.lang.Object)>(key);
+
+        return $stack10;
+
+     label7:
+        $r3 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack5 = specialinvoke $r3.<org.apache.maven.model.PluginContainer: org.apache.maven.model.InputLocation getOtherLocation(java.lang.Object)>(key);
+
+        return $stack5;
+    }
+
+    public void setLocation(java.lang.Object, org.apache.maven.model.InputLocation)
+    {
+        java.lang.Object key;
+        boolean $stack5, $stack7, $stack9;
+        PluginContainer this;
+        org.apache.maven.model.InputLocation location;
+        java.lang.String l3;
+        int $stack6;
+        byte l4;
+        org.apache.maven.model.PluginContainer $r0, $r1, $r2, $r3;
+
+        this := @this: PluginContainer;
+
+        key := @parameter0: java.lang.Object;
+
+        location := @parameter1: org.apache.maven.model.InputLocation;
+
+        $stack5 = key instanceof java.lang.String;
+
+        if $stack5 == 0 goto label7;
+
+        l3 = (java.lang.String) key;
+
+        l4 = -1;
+
+        $stack6 = virtualinvoke l3.<java.lang.String: int hashCode()>();
+
+        lookupswitch($stack6)
+        {
+            case -475629664: goto label2;
+            case 0: goto label1;
+            default: goto label3;
+        };
+
+     label1:
+        $stack7 = virtualinvoke l3.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+        if $stack7 == 0 goto label3;
+
+        l4 = 0;
+
+        goto label3;
+
+     label2:
+        $stack9 = virtualinvoke l3.<java.lang.String: boolean equals(java.lang.Object)>("plugins");
+
+        if $stack9 == 0 goto label3;
+
+        l4 = 1;
+
+     label3:
+        lookupswitch(l4)
+        {
+            case 0: goto label4;
+            case 1: goto label5;
+            default: goto label6;
+        };
+
+     label4:
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $r0.<org.apache.maven.model.PluginContainer: org.apache.maven.model.InputLocation location> = location;
+
+        return;
+
+     label5:
+        $r1 = (org.apache.maven.model.PluginContainer) this;
+
+        $r1.<org.apache.maven.model.PluginContainer: org.apache.maven.model.InputLocation pluginsLocation> = location;
+
+        return;
+
+     label6:
+        $r2 = (org.apache.maven.model.PluginContainer) this;
+
+        virtualinvoke $r2.<org.apache.maven.model.PluginContainer: void setOtherLocation(java.lang.Object,org.apache.maven.model.InputLocation)>(key, location);
+
+        return;
+
+     label7:
+        $r3 = (org.apache.maven.model.PluginContainer) this;
+
+        virtualinvoke $r3.<org.apache.maven.model.PluginContainer: void setOtherLocation(java.lang.Object,org.apache.maven.model.InputLocation)>(key, location);
+
+        return;
+    }
+
+    public void setOtherLocation(java.lang.Object, org.apache.maven.model.InputLocation)
+    {
+        org.apache.maven.model.InputLocation location;
+        PluginContainer this;
+        java.util.Map $stack3, $stack4;
+        java.lang.Object key;
+        java.util.LinkedHashMap $u0;
+        org.apache.maven.model.PluginContainer $r0, $r1, $r2;
+
+        this := @this: PluginContainer;
+
+        key := @parameter0: java.lang.Object;
+
+        location := @parameter1: org.apache.maven.model.InputLocation;
+
+        if location == null goto label2;
+
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack3 = $r0.<org.apache.maven.model.PluginContainer: java.util.Map locations>;
+
+        if $stack3 != null goto label1;
+
+        $u0 = new java.util.LinkedHashMap;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>()>();
+
+        $r1 = (org.apache.maven.model.PluginContainer) this;
+
+        $r1.<org.apache.maven.model.PluginContainer: java.util.Map locations> = $u0;
+
+     label1:
+        $r2 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack4 = $r2.<org.apache.maven.model.PluginContainer: java.util.Map locations>;
+
+        interfaceinvoke $stack4.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, location);
+
+     label2:
+        return;
+    }
+
+    private org.apache.maven.model.InputLocation getOtherLocation(java.lang.Object)
+    {
+        PluginContainer this;
+        java.util.Map $stack2, $stack3;
+        java.lang.Object key, $stack4;
+        org.apache.maven.model.InputLocation $stack5;
+        org.apache.maven.model.PluginContainer $r0, $r1;
+
+        this := @this: PluginContainer;
+
+        key := @parameter0: java.lang.Object;
+
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack2 = $r0.<org.apache.maven.model.PluginContainer: java.util.Map locations>;
+
+        if $stack2 == null goto label1;
+
+        $r1 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack3 = $r1.<org.apache.maven.model.PluginContainer: java.util.Map locations>;
+
+        $stack4 = interfaceinvoke $stack3.<java.util.Map: java.lang.Object get(java.lang.Object)>(key);
+
+        $stack5 = (org.apache.maven.model.InputLocation) $stack4;
+
+        goto label2;
+
+     label1:
+        $stack5 = null;
+
+     label2:
+        return $stack5;
+    }
+
+    public java.util.List getPlugins()
+    {
+        PluginContainer this;
+        java.util.List $stack1, $stack2;
+        java.util.ArrayList $u0;
+        org.apache.maven.model.PluginContainer $r0, $r1, $r2;
+
+        this := @this: PluginContainer;
+
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack1 = $r0.<org.apache.maven.model.PluginContainer: java.util.List plugins>;
+
+        if $stack1 != null goto label1;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r1 = (org.apache.maven.model.PluginContainer) this;
+
+        $r1.<org.apache.maven.model.PluginContainer: java.util.List plugins> = $u0;
+
+     label1:
+        $r2 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack2 = $r2.<org.apache.maven.model.PluginContainer: java.util.List plugins>;
+
+        return $stack2;
+    }
+
+    public void removePlugin(org.apache.maven.model.Plugin)
+    {
+        PluginContainer this;
+        java.util.List $stack2;
+        org.apache.maven.model.Plugin plugin;
+        org.apache.maven.model.PluginContainer $r0;
+
+        this := @this: PluginContainer;
+
+        plugin := @parameter0: org.apache.maven.model.Plugin;
+
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.model.PluginContainer: java.util.List getPlugins()>();
+
+        interfaceinvoke $stack2.<java.util.List: boolean remove(java.lang.Object)>(plugin);
+
+        return;
+    }
+
+    public void setPlugins(java.util.List)
+    {
+        PluginContainer this;
+        java.util.List plugins;
+        org.apache.maven.model.PluginContainer $r0;
+
+        this := @this: PluginContainer;
+
+        plugins := @parameter0: java.util.List;
+
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $r0.<org.apache.maven.model.PluginContainer: java.util.List plugins> = plugins;
+
+        return;
+    }
+
+    public synchronized void flushPluginMap()
+    {
+        PluginContainer this;
+        org.apache.maven.model.PluginContainer $r0;
+
+        this := @this: PluginContainer;
+
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $r0.<org.apache.maven.model.PluginContainer: java.util.Map pluginMap> = null;
+
+        return;
+    }
+
+    public synchronized java.util.Map getPluginsAsMap()
+    {
+        PluginContainer this;
+        java.util.Map $stack3, $stack12, $stack4;
+        java.util.List $stack6, $stack8;
+        java.util.Iterator it;
+        boolean $stack10;
+        java.lang.Object $stack11;
+        org.apache.maven.model.Plugin plugin;
+        java.lang.String $stack13;
+        java.util.LinkedHashMap $u0;
+        org.apache.maven.model.PluginContainer $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: PluginContainer;
+
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack3 = $r0.<org.apache.maven.model.PluginContainer: java.util.Map pluginMap>;
+
+        if $stack3 != null goto label2;
+
+        $u0 = new java.util.LinkedHashMap;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>()>();
+
+        $r1 = (org.apache.maven.model.PluginContainer) this;
+
+        $r1.<org.apache.maven.model.PluginContainer: java.util.Map pluginMap> = $u0;
+
+        $r2 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack6 = $r2.<org.apache.maven.model.PluginContainer: java.util.List plugins>;
+
+        if $stack6 == null goto label2;
+
+        $r3 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack8 = $r3.<org.apache.maven.model.PluginContainer: java.util.List plugins>;
+
+        it = interfaceinvoke $stack8.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label2;
+
+        $stack11 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+
+        plugin = (org.apache.maven.model.Plugin) $stack11;
+
+        $r4 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack12 = $r4.<org.apache.maven.model.PluginContainer: java.util.Map pluginMap>;
+
+        $stack13 = virtualinvoke plugin.<org.apache.maven.model.Plugin: java.lang.String getKey()>();
+
+        interfaceinvoke $stack12.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack13, plugin);
+
+        goto label1;
+
+     label2:
+        $r5 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack4 = $r5.<org.apache.maven.model.PluginContainer: java.util.Map pluginMap>;
+
+        return $stack4;
+    }
+
+    public volatile java.lang.Object clone() throws java.lang.CloneNotSupportedException
+    {
+        PluginContainer this;
+        org.apache.maven.model.PluginContainer $stack1, $r0;
+
+        this := @this: PluginContainer;
+
+        $r0 = (org.apache.maven.model.PluginContainer) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.model.PluginContainer: org.apache.maven.model.PluginContainer clone()>();
+
+        return $stack1;
+    }
+}

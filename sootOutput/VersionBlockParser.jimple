@@ -1,0 +1,610 @@
+public class VersionBlockParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        VersionBlockParser this;
+
+        this := @this: VersionBlockParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.ooc.frontend.model.VersionBlock parse(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        int mark;
+        java.lang.Object $stack8, $stack10, $stack14, $stack19, $stack23;
+        org.ooc.frontend.model.tokens.Token startToken, $stack11, $stack15;
+        byte $stack9, $stack12, $stack16;
+        org.ooc.frontend.model.Module module;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.VersionNodes$VersionNode node;
+        org.ubi.Locatable $stack20, $stack24;
+        org.ubi.FileLocation $stack21, $stack25;
+        org.ubi.CompilationFailedError $u0, $u1;
+        org.ooc.frontend.model.VersionBlock $u2;
+        java.lang.Throwable $r0, $r1;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        mark = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: int mark()>();
+
+        $stack8 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        startToken = (org.ooc.frontend.model.tokens.Token) $stack8;
+
+        $stack9 = startToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack9 == 33 goto label1;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void reset(int)>(mark);
+
+        return null;
+
+     label1:
+        $stack10 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        $stack11 = (org.ooc.frontend.model.tokens.Token) $stack10;
+
+        $stack12 = $stack11.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack12 == 82 goto label2;
+
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $stack23 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack24 = (org.ubi.Locatable) $stack23;
+
+        $stack25 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack24);
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack25, "Expected \'(\' after version keyword");
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label2:
+        node = staticinvoke <org.ooc.frontend.parser.VersionBlockParser: org.ooc.frontend.model.VersionNodes$VersionNode parseVersionNode(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        $stack14 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        $stack15 = (org.ooc.frontend.model.tokens.Token) $stack14;
+
+        $stack16 = $stack15.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack16 == 83 goto label3;
+
+        $u1 = new org.ubi.CompilationFailedError;
+
+        $stack19 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack20 = (org.ubi.Locatable) $stack19;
+
+        $stack21 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack20);
+
+        specialinvoke $u1.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack21, "Malformed version expression!");
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label3:
+        $u2 = new org.ooc.frontend.model.VersionBlock;
+
+        specialinvoke $u2.<org.ooc.frontend.model.VersionBlock: void <init>(org.ooc.frontend.model.VersionNodes$VersionNode,org.ooc.frontend.model.tokens.Token)>(node, startToken);
+
+        staticinvoke <org.ooc.frontend.parser.VersionBlockParser: void fill(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,org.ooc.frontend.model.VersionBlock)>(module, sReader, reader, $u2);
+
+        return $u2;
+    }
+
+    public static void fill(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader, org.ooc.frontend.model.VersionBlock)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        java.lang.Object $stack10, $stack14, $stack32, $stack44;
+        org.ooc.frontend.model.tokens.Token $stack11, $stack33;
+        byte $stack12, $stack34;
+        org.ubi.SourceReader sReader;
+        org.ubi.Locatable $stack15, $stack45;
+        org.ubi.FileLocation $stack16, $stack46;
+        org.ooc.frontend.model.VersionBlock block;
+        org.ooc.frontend.model.Node $stack20, $stack48, $r1, $r2;
+        org.ooc.frontend.model.Line line;
+        org.ooc.frontend.model.Statement stmt;
+        boolean $stack22, $stack25, $stack27, $stack38, $stack40, $stack42, $stack47, $stack17;
+        org.ooc.frontend.model.interfaces.Versioned vs;
+        org.ooc.frontend.model.Module module;
+        org.ooc.frontend.model.NodeList $stack39, $stack49, includes, include#9, $u1;
+        org.ooc.frontend.model.Include include;
+        int i, $stack19;
+        org.ubi.CompilationFailedError $u0, $u2;
+        java.lang.Throwable $r0, $r3;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        block := @parameter3: org.ooc.frontend.model.VersionBlock;
+
+        $stack10 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack11 = (org.ooc.frontend.model.tokens.Token) $stack10;
+
+        $stack12 = $stack11.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack12 != 84 goto label01;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        goto label02;
+
+     label01:
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $stack14 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack15 = (org.ubi.Locatable) $stack14;
+
+        $stack16 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack15);
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack16, "Expected opening brack after version(...)");
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label02:
+        includes = null;
+
+     label03:
+        $stack17 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean hasNext()>();
+
+        if $stack17 == 0 goto label08;
+
+        $stack32 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack33 = (org.ooc.frontend.model.tokens.Token) $stack32;
+
+        $stack34 = $stack33.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack34 == 85 goto label08;
+
+        $stack38 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        if $stack38 == 0 goto label04;
+
+        goto label03;
+
+     label04:
+        $stack39 = virtualinvoke block.<org.ooc.frontend.model.VersionBlock: org.ooc.frontend.model.NodeList getBody()>();
+
+        $stack40 = staticinvoke <org.ooc.frontend.parser.LineParser: boolean fill(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,org.ooc.frontend.model.NodeList)>(module, sReader, reader, $stack39);
+
+        if $stack40 != 0 goto label03;
+
+        if includes != null goto label05;
+
+        $u1 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u1.<org.ooc.frontend.model.NodeList: void <init>()>();
+
+        includes = $u1;
+
+     label05:
+        $stack42 = staticinvoke <org.ooc.frontend.parser.IncludeParser: boolean fill(org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,org.ooc.frontend.model.NodeList)>(sReader, reader, includes);
+
+        if $stack42 == 0 goto label07;
+
+     label06:
+        $stack47 = virtualinvoke includes.<org.ooc.frontend.model.NodeList: boolean isEmpty()>();
+
+        if $stack47 != 0 goto label03;
+
+        $stack48 = virtualinvoke includes.<org.ooc.frontend.model.NodeList: org.ooc.frontend.model.Node getLast()>();
+
+        include = (org.ooc.frontend.model.Include) $stack48;
+
+        virtualinvoke include.<org.ooc.frontend.model.Include: void setVersion(org.ooc.frontend.model.VersionBlock)>(block);
+
+        $stack49 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getIncludes()>();
+
+        $r1 = (org.ooc.frontend.model.Node) include;
+
+        virtualinvoke $stack49.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r1);
+
+        $r2 = (org.ooc.frontend.model.Node) include;
+
+        virtualinvoke includes.<org.ooc.frontend.model.NodeList: boolean remove(org.ooc.frontend.model.Node)>($r2);
+
+        goto label06;
+
+     label07:
+        $u2 = new org.ubi.CompilationFailedError;
+
+        $stack44 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack45 = (org.ubi.Locatable) $stack44;
+
+        $stack46 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack45);
+
+        specialinvoke $u2.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack46, "Expected line in code block");
+
+        $r3 = (java.lang.Throwable) $u2;
+
+        throw $r3;
+
+     label08:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        include#9 = virtualinvoke block.<org.ooc.frontend.model.VersionBlock: org.ooc.frontend.model.NodeList getBody()>();
+
+        i = 0;
+
+     label09:
+        $stack19 = virtualinvoke include#9.<org.ooc.frontend.model.NodeList: int size()>();
+
+        if i >= $stack19 goto label12;
+
+        $stack20 = virtualinvoke include#9.<org.ooc.frontend.model.NodeList: org.ooc.frontend.model.Node get(int)>(i);
+
+        line = (org.ooc.frontend.model.Line) $stack20;
+
+        stmt = virtualinvoke line.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+        $stack22 = stmt instanceof org.ooc.frontend.model.interfaces.Versioned;
+
+        if $stack22 == 0 goto label11;
+
+        vs = (org.ooc.frontend.model.interfaces.Versioned) stmt;
+
+        interfaceinvoke vs.<org.ooc.frontend.model.interfaces.Versioned: void setVersion(org.ooc.frontend.model.VersionBlock)>(block);
+
+        $stack25 = stmt instanceof org.ooc.frontend.model.FunctionDecl;
+
+        if $stack25 != 0 goto label10;
+
+        $stack27 = stmt instanceof org.ooc.frontend.model.TypeDecl;
+
+        if $stack27 == 0 goto label11;
+
+     label10:
+        virtualinvoke stmt.<org.ooc.frontend.model.Statement: void addToModule(org.ooc.frontend.model.Module)>(module);
+
+        virtualinvoke include#9.<org.ooc.frontend.model.NodeList: org.ooc.frontend.model.Node removeAt(int)>(i);
+
+        i = i + -1;
+
+     label11:
+        i = i + 1;
+
+        goto label09;
+
+     label12:
+        return;
+    }
+
+    public static org.ooc.frontend.model.VersionNodes$VersionNode parseVersionNode(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        java.lang.Object $stack7, $stack10, $stack13, $stack17, $stack36, $stack47, $stack50, $stack55, $stack61, node, tmp;
+        org.ooc.frontend.model.tokens.Token $stack8, $stack11, $stack37, $stack51, node#6;
+        byte $stack9, $stack12, $stack14, $stack20, $stack38;
+        org.ubi.SourceReader sReader;
+        java.lang.String $stack15, $stack52, $stack53, inner#5;
+        int $stack21;
+        org.ooc.frontend.model.Module module;
+        org.ooc.frontend.model.VersionNodes$VersionNode tmp, inner, $r1, $r4, $r5, $r6, $r7;
+        org.ubi.Locatable $stack48, $stack56, $stack62;
+        org.ubi.FileLocation $stack49, $stack57, $stack63;
+        org.ubi.CompilationFailedError $u0, $u2, $u3;
+        org.ooc.frontend.model.VersionNodes$VersionNegation $u1;
+        org.ooc.frontend.model.VersionNodes$VersionParen $u4;
+        org.ooc.frontend.model.VersionNodes$VersionName $u5;
+        java.lang.Throwable $r0, $r2, $r3;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        $stack7 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack8 = (org.ooc.frontend.model.tokens.Token) $stack7;
+
+        $stack9 = $stack8.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack9 != 61 goto label02;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        inner = staticinvoke <org.ooc.frontend.parser.VersionBlockParser: org.ooc.frontend.model.VersionNodes$VersionNode parseVersionNode(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if inner != null goto label01;
+
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $stack61 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack62 = (org.ubi.Locatable) $stack61;
+
+        $stack63 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack62);
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack63, "Expecting version expression after \'!\' in version block.");
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label01:
+        $u1 = new org.ooc.frontend.model.VersionNodes$VersionNegation;
+
+        specialinvoke $u1.<org.ooc.frontend.model.VersionNodes$VersionNegation: void <init>(org.ooc.frontend.model.VersionNodes$VersionNode)>(inner);
+
+        $r1 = (org.ooc.frontend.model.VersionNodes$VersionNode) $u1;
+
+        return $r1;
+
+     label02:
+        $stack10 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack11 = (org.ooc.frontend.model.tokens.Token) $stack10;
+
+        $stack12 = $stack11.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack12 != 82 goto label08;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        inner = staticinvoke <org.ooc.frontend.parser.VersionBlockParser: org.ooc.frontend.model.VersionNodes$VersionNode parseVersionNode(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if inner != null goto label03;
+
+        $u2 = new org.ubi.CompilationFailedError;
+
+        $stack55 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack56 = (org.ubi.Locatable) $stack55;
+
+        $stack57 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack56);
+
+        specialinvoke $u2.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack57, "Expecting version expression between \'()\' in version block.");
+
+        $r2 = (java.lang.Throwable) $u2;
+
+        throw $r2;
+
+     label03:
+        $stack36 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        $stack37 = (org.ooc.frontend.model.tokens.Token) $stack36;
+
+        $stack38 = $stack37.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack38 == 83 goto label04;
+
+        $u3 = new org.ubi.CompilationFailedError;
+
+        $stack47 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack48 = (org.ubi.Locatable) $stack47;
+
+        $stack49 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack48);
+
+        $stack50 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object prev()>();
+
+        $stack51 = (org.ooc.frontend.model.tokens.Token) $stack50;
+
+        $stack52 = virtualinvoke $stack51.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        $stack53 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack52) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Expecting \')\', got \'\u0001\'");
+
+        specialinvoke $u3.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack49, $stack53);
+
+        $r3 = (java.lang.Throwable) $u3;
+
+        throw $r3;
+
+     label04:
+        $u4 = new org.ooc.frontend.model.VersionNodes$VersionParen;
+
+        specialinvoke $u4.<org.ooc.frontend.model.VersionNodes$VersionParen: void <init>(org.ooc.frontend.model.VersionNodes$VersionNode)>(inner);
+
+        node = $u4;
+
+     label05:
+        $r4 = (org.ooc.frontend.model.VersionNodes$VersionNode) node;
+
+        tmp = staticinvoke <org.ooc.frontend.parser.VersionBlockParser: org.ooc.frontend.model.VersionNodes$VersionNode getRemain(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,org.ooc.frontend.model.VersionNodes$VersionNode)>(module, sReader, reader, $r4);
+
+        if tmp != null goto label06;
+
+        goto label07;
+
+     label06:
+        node = tmp;
+
+        goto label05;
+
+     label07:
+        $r5 = (org.ooc.frontend.model.VersionNodes$VersionNode) node;
+
+        return $r5;
+
+     label08:
+        inner#5 = "";
+
+        $stack13 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        node#6 = (org.ooc.frontend.model.tokens.Token) $stack13;
+
+     label09:
+        $stack14 = node#6.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack14 == 39 goto label10;
+
+        $stack20 = node#6.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack20 != 77 goto label11;
+
+     label10:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $stack15 = virtualinvoke node#6.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        inner#5 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>(inner#5, $stack15) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001\u0001");
+
+        $stack17 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        node#6 = (org.ooc.frontend.model.tokens.Token) $stack17;
+
+        goto label09;
+
+     label11:
+        $stack21 = virtualinvoke inner#5.<java.lang.String: int length()>();
+
+        if $stack21 <= 0 goto label15;
+
+        $u5 = new org.ooc.frontend.model.VersionNodes$VersionName;
+
+        specialinvoke $u5.<org.ooc.frontend.model.VersionNodes$VersionName: void <init>(java.lang.String)>(inner#5);
+
+        tmp = $u5;
+
+     label12:
+        $r6 = (org.ooc.frontend.model.VersionNodes$VersionNode) tmp;
+
+        tmp = staticinvoke <org.ooc.frontend.parser.VersionBlockParser: org.ooc.frontend.model.VersionNodes$VersionNode getRemain(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,org.ooc.frontend.model.VersionNodes$VersionNode)>(module, sReader, reader, $r6);
+
+        if tmp != null goto label13;
+
+        goto label14;
+
+     label13:
+        tmp = tmp;
+
+        goto label12;
+
+     label14:
+        $r7 = (org.ooc.frontend.model.VersionNodes$VersionNode) tmp;
+
+        return $r7;
+
+     label15:
+        return null;
+    }
+
+    private static org.ooc.frontend.model.VersionNodes$VersionNode getRemain(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader, org.ooc.frontend.model.VersionNodes$VersionNode) throws org.ubi.CompilationFailedError
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        org.ooc.frontend.model.tokens.Token tok;
+        byte $stack9, $stack8;
+        org.ooc.frontend.model.Module module;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.VersionNodes$VersionNode left, right, $r2;
+        java.lang.Object $stack17, $stack23, ver, $stack7;
+        org.ubi.Locatable $stack18, $stack24;
+        org.ubi.FileLocation $stack19, $stack25;
+        org.ubi.CompilationFailedError $u0, $u2;
+        org.ooc.frontend.model.VersionNodes$VersionAnd $u1;
+        org.ooc.frontend.model.VersionNodes$VersionOr $u3;
+        java.lang.Throwable $r0, $r1;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        left := @parameter3: org.ooc.frontend.model.VersionNodes$VersionNode;
+
+        ver = null;
+
+     label1:
+        $stack7 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        tok = (org.ooc.frontend.model.tokens.Token) $stack7;
+
+        $stack8 = tok.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack8 != 71 goto label3;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        right = staticinvoke <org.ooc.frontend.parser.VersionBlockParser: org.ooc.frontend.model.VersionNodes$VersionNode parseVersionNode(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if right != null goto label2;
+
+        $u0 = new org.ubi.CompilationFailedError;
+
+        $stack23 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack24 = (org.ubi.Locatable) $stack23;
+
+        $stack25 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack24);
+
+        specialinvoke $u0.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack25, "Expecting version expression after \'&&\' in version block.");
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+
+     label2:
+        $u1 = new org.ooc.frontend.model.VersionNodes$VersionAnd;
+
+        specialinvoke $u1.<org.ooc.frontend.model.VersionNodes$VersionAnd: void <init>(org.ooc.frontend.model.VersionNodes$VersionNode,org.ooc.frontend.model.VersionNodes$VersionNode)>(left, right);
+
+        ver = $u1;
+
+        goto label1;
+
+     label3:
+        $stack9 = tok.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack9 != 72 goto label5;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        right = staticinvoke <org.ooc.frontend.parser.VersionBlockParser: org.ooc.frontend.model.VersionNodes$VersionNode parseVersionNode(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if right != null goto label4;
+
+        $u2 = new org.ubi.CompilationFailedError;
+
+        $stack17 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack18 = (org.ubi.Locatable) $stack17;
+
+        $stack19 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($stack18);
+
+        specialinvoke $u2.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack19, "Expecting version expression after \'||\' in version block.");
+
+        $r1 = (java.lang.Throwable) $u2;
+
+        throw $r1;
+
+     label4:
+        $u3 = new org.ooc.frontend.model.VersionNodes$VersionOr;
+
+        specialinvoke $u3.<org.ooc.frontend.model.VersionNodes$VersionOr: void <init>(org.ooc.frontend.model.VersionNodes$VersionNode,org.ooc.frontend.model.VersionNodes$VersionNode)>(left, right);
+
+        ver = $u3;
+
+        goto label1;
+
+     label5:
+        $r2 = (org.ooc.frontend.model.VersionNodes$VersionNode) ver;
+
+        return $r2;
+    }
+}

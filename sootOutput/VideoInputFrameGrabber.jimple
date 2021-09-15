@@ -1,0 +1,1107 @@
+public class VideoInputFrameGrabber extends org.bytedeco.javacv.FrameGrabber
+{
+    private static org.bytedeco.javacv.FrameGrabber$Exception loadingException;
+    private int deviceNumber;
+    private org.bytedeco.videoinput.videoInput myVideoInput;
+    private org.bytedeco.opencv.opencv_core.IplImage bgrImage;
+    private org.bytedeco.opencv.opencv_core.IplImage grayImage;
+    private org.bytedeco.javacpp.BytePointer bgrImageData;
+    private org.bytedeco.javacv.FrameConverter converter;
+
+    public static java.lang.String[] getDeviceDescriptions() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        int count, $stack4, i;
+        java.lang.String[] descriptions;
+        org.bytedeco.javacpp.BytePointer $stack5;
+        java.lang.String $stack6;
+
+        staticinvoke <org.bytedeco.javacv.VideoInputFrameGrabber: void tryLoad()>();
+
+        count = staticinvoke <org.bytedeco.videoinput.videoInput: int listDevices()>();
+
+        descriptions = newarray (java.lang.String)[count];
+
+        i = 0;
+
+     label1:
+        $stack4 = lengthof descriptions;
+
+        if i >= $stack4 goto label2;
+
+        $stack5 = staticinvoke <org.bytedeco.videoinput.videoInput: org.bytedeco.javacpp.BytePointer getDeviceName(int)>(i);
+
+        $stack6 = virtualinvoke $stack5.<org.bytedeco.javacpp.BytePointer: java.lang.String getString()>();
+
+        descriptions[i] = $stack6;
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        return descriptions;
+    }
+
+    public static org.bytedeco.javacv.VideoInputFrameGrabber createDefault(java.io.File) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        java.lang.StringBuilder $stack3, $stack4, $u0;
+        java.lang.String $stack5;
+        java.io.File deviceFile;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        java.lang.Throwable $r0;
+
+        deviceFile := @parameter0: java.io.File;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/VideoInputFrameGrabber;");
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not support device files.");
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack5);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+    }
+
+    public static org.bytedeco.javacv.VideoInputFrameGrabber createDefault(java.lang.String) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        java.lang.StringBuilder $stack3, $stack4, $u0;
+        java.lang.String $stack5, devicePath;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        java.lang.Throwable $r0;
+
+        devicePath := @parameter0: java.lang.String;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/VideoInputFrameGrabber;");
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not support device paths.");
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack5);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+    }
+
+    public static org.bytedeco.javacv.VideoInputFrameGrabber createDefault(int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.VideoInputFrameGrabber $stack1;
+        int deviceNumber;
+
+        deviceNumber := @parameter0: int;
+
+        $stack1 = new org.bytedeco.javacv.VideoInputFrameGrabber;
+
+        specialinvoke $stack1.<org.bytedeco.javacv.VideoInputFrameGrabber: void <init>(int)>(deviceNumber);
+
+        return $stack1;
+    }
+
+    public static void tryLoad() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.FrameGrabber$Exception $stack1, $stack3, $u1;
+        java.lang.Throwable $stack4, $r0, $r1;
+        java.lang.StringBuilder $stack7, $stack8, $u0;
+        java.lang.String $stack9;
+
+        $stack1 = <org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        if $stack1 == null goto label1;
+
+        $stack3 = <org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        $r0 = (java.lang.Throwable) $stack3;
+
+        throw $r0;
+
+     label1:
+        staticinvoke <org.bytedeco.javacpp.Loader: java.lang.String load(java.lang.Class)>(class "Lorg/bytedeco/videoinput/global/videoInputLib;");
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to load ");
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/VideoInputFrameGrabber;");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String,java.lang.Throwable)>($stack9, $stack4);
+
+        <org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = $u1;
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label4:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void <init>(int)
+    {
+        VideoInputFrameGrabber this;
+        int deviceNumber;
+        org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage $u0;
+        org.bytedeco.javacv.VideoInputFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r7;
+        org.bytedeco.javacv.FrameConverter $r6;
+
+        this := @this: VideoInputFrameGrabber;
+
+        deviceNumber := @parameter0: int;
+
+        specialinvoke this.<org.bytedeco.javacv.FrameGrabber: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber> = 0;
+
+        $r1 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput> = null;
+
+        $r2 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage> = null;
+
+        $r3 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage grayImage> = null;
+
+        $r4 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r4.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacpp.BytePointer bgrImageData> = null;
+
+        $u0 = new org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage;
+
+        specialinvoke $u0.<org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage: void <init>()>();
+
+        $r5 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r6 = (org.bytedeco.javacv.FrameConverter) $u0;
+
+        $r5.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacv.FrameConverter converter> = $r6;
+
+        $r7 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r7.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber> = deviceNumber;
+
+        return;
+    }
+
+    public void release() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        VideoInputFrameGrabber this;
+        org.bytedeco.javacv.VideoInputFrameGrabber $r0;
+
+        this := @this: VideoInputFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.VideoInputFrameGrabber: void stop()>();
+
+        return;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        VideoInputFrameGrabber this;
+        org.bytedeco.javacv.VideoInputFrameGrabber $r0;
+
+        this := @this: VideoInputFrameGrabber;
+
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        $r0 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.VideoInputFrameGrabber: void release()>();
+
+        return;
+    }
+
+    public double getGamma()
+    {
+        VideoInputFrameGrabber this;
+        double $stack1, $stack3;
+        byte $stack2;
+        org.bytedeco.javacv.VideoInputFrameGrabber $r0, $r1;
+
+        this := @this: VideoInputFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.VideoInputFrameGrabber: double gamma>;
+
+        $stack2 = $stack1 cmpl 0.0;
+
+        if $stack2 != 0 goto label1;
+
+        return 2.2;
+
+     label1:
+        $r1 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.VideoInputFrameGrabber: double gamma>;
+
+        return $stack3;
+    }
+
+    public int getImageWidth()
+    {
+        VideoInputFrameGrabber this;
+        org.bytedeco.videoinput.videoInput $stack1, $stack3;
+        int $stack2, $stack4;
+        org.bytedeco.javacv.VideoInputFrameGrabber $r0, $r1, $r2;
+
+        this := @this: VideoInputFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        if $stack1 != null goto label1;
+
+        $stack4 = specialinvoke this.<org.bytedeco.javacv.FrameGrabber: int getImageWidth()>();
+
+        goto label2;
+
+     label1:
+        $r1 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r2 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack2 = $r2.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        $stack4 = virtualinvoke $stack3.<org.bytedeco.videoinput.videoInput: int getWidth(int)>($stack2);
+
+     label2:
+        return $stack4;
+    }
+
+    public int getImageHeight()
+    {
+        VideoInputFrameGrabber this;
+        org.bytedeco.videoinput.videoInput $stack1, $stack3;
+        int $stack2, $stack4;
+        org.bytedeco.javacv.VideoInputFrameGrabber $r0, $r1, $r2;
+
+        this := @this: VideoInputFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        if $stack1 != null goto label1;
+
+        $stack4 = specialinvoke this.<org.bytedeco.javacv.FrameGrabber: int getImageHeight()>();
+
+        goto label2;
+
+     label1:
+        $r1 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r2 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack2 = $r2.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        $stack4 = virtualinvoke $stack3.<org.bytedeco.videoinput.videoInput: int getHeight(int)>($stack2);
+
+     label2:
+        return $stack4;
+    }
+
+    public void start() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        VideoInputFrameGrabber this;
+        org.bytedeco.javacv.VideoInputFrameGrabber $r0;
+
+        this := @this: VideoInputFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.VideoInputFrameGrabber: void start(int)>(-1);
+
+        return;
+    }
+
+    public void start(int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        VideoInputFrameGrabber this;
+        double $stack4, $stack68;
+        byte $stack5, $stack60;
+        int $stack6, $stack7, connection, $stack13, $stack50, $stack69, $stack70, $stack8, $stack63, $stack64;
+        java.lang.String $stack11, $stack12, $stack14, $stack16, $stack18, $stack20, $stack22, $stack24, $stack26, $stack28, $stack30, $stack32, $stack34, $stack36, $stack38, $stack40, $stack42, $stack44, $stack46, $stack48, $stack56, $stack59;
+        boolean $stack15, $stack17, $stack19, $stack21, $stack23, $stack25, $stack27, $stack29, $stack31, $stack33, $stack35, $stack37, $stack39, $stack41, $stack43, $stack45, $stack47, $stack49, $stack52, $stack10;
+        org.bytedeco.videoinput.videoInput $stack51, $stack71, $stack9, $u0;
+        java.lang.StringBuilder $stack55, $stack57, $stack58, $u2;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1, $u3;
+        org.bytedeco.javacv.VideoInputFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r33, $r34, $r35;
+        java.lang.Throwable $r12, $r36;
+
+        this := @this: VideoInputFrameGrabber;
+
+        connection := @parameter0: int;
+
+        $u0 = new org.bytedeco.videoinput.videoInput;
+
+        specialinvoke $u0.<org.bytedeco.videoinput.videoInput: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput> = $u0;
+
+        $r1 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack4 = $r1.<org.bytedeco.javacv.VideoInputFrameGrabber: double frameRate>;
+
+        $stack5 = $stack4 cmpl 0.0;
+
+        if $stack5 <= 0 goto label01;
+
+        $r2 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack71 = $r2.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r3 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack70 = $r3.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        $r4 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack68 = $r4.<org.bytedeco.javacv.VideoInputFrameGrabber: double frameRate>;
+
+        $stack69 = (int) $stack68;
+
+        virtualinvoke $stack71.<org.bytedeco.videoinput.videoInput: void setIdealFramerate(int,int)>($stack70, $stack69);
+
+     label01:
+        $r5 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack9 = $r5.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r6 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack8 = $r6.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        $r7 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack6 = $r7.<org.bytedeco.javacv.VideoInputFrameGrabber: int imageWidth>;
+
+        if $stack6 <= 0 goto label02;
+
+        $r8 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack63 = $r8.<org.bytedeco.javacv.VideoInputFrameGrabber: int imageWidth>;
+
+        goto label03;
+
+     label02:
+        $stack63 = 640;
+
+     label03:
+        $r9 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack7 = $r9.<org.bytedeco.javacv.VideoInputFrameGrabber: int imageHeight>;
+
+        if $stack7 <= 0 goto label04;
+
+        $r10 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack64 = $r10.<org.bytedeco.javacv.VideoInputFrameGrabber: int imageHeight>;
+
+        goto label05;
+
+     label04:
+        $stack64 = 480;
+
+     label05:
+        $stack10 = virtualinvoke $stack9.<org.bytedeco.videoinput.videoInput: boolean setupDevice(int,int,int,int)>($stack8, $stack63, $stack64, connection);
+
+        if $stack10 != 0 goto label06;
+
+        $r11 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r11.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput> = null;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("videoInput.setupDevice() Error: Could not setup device.");
+
+        $r12 = (java.lang.Throwable) $u1;
+
+        throw $r12;
+
+     label06:
+        $r13 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack11 = $r13.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        if $stack11 == null goto label26;
+
+        $r14 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack12 = $r14.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack13 = virtualinvoke $stack12.<java.lang.String: int length()>();
+
+        if $stack13 <= 0 goto label26;
+
+        $r15 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack14 = $r15.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack15 = virtualinvoke $stack14.<java.lang.String: boolean equals(java.lang.Object)>("VI_NTSC_M");
+
+        if $stack15 == 0 goto label07;
+
+        $stack60 = 0;
+
+        goto label25;
+
+     label07:
+        $r16 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack16 = $r16.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack17 = virtualinvoke $stack16.<java.lang.String: boolean equals(java.lang.Object)>("VI_PAL_B");
+
+        if $stack17 == 0 goto label08;
+
+        $stack60 = 1;
+
+        goto label25;
+
+     label08:
+        $r17 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack18 = $r17.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack19 = virtualinvoke $stack18.<java.lang.String: boolean equals(java.lang.Object)>("VI_PAL_D");
+
+        if $stack19 == 0 goto label09;
+
+        $stack60 = 2;
+
+        goto label25;
+
+     label09:
+        $r18 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack20 = $r18.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack21 = virtualinvoke $stack20.<java.lang.String: boolean equals(java.lang.Object)>("VI_PAL_G");
+
+        if $stack21 == 0 goto label10;
+
+        $stack60 = 3;
+
+        goto label25;
+
+     label10:
+        $r19 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack22 = $r19.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack23 = virtualinvoke $stack22.<java.lang.String: boolean equals(java.lang.Object)>("VI_PAL_H");
+
+        if $stack23 == 0 goto label11;
+
+        $stack60 = 4;
+
+        goto label25;
+
+     label11:
+        $r20 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack24 = $r20.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack25 = virtualinvoke $stack24.<java.lang.String: boolean equals(java.lang.Object)>("VI_PAL_I");
+
+        if $stack25 == 0 goto label12;
+
+        $stack60 = 5;
+
+        goto label25;
+
+     label12:
+        $r21 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack26 = $r21.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack27 = virtualinvoke $stack26.<java.lang.String: boolean equals(java.lang.Object)>("VI_PAL_M");
+
+        if $stack27 == 0 goto label13;
+
+        $stack60 = 6;
+
+        goto label25;
+
+     label13:
+        $r22 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack28 = $r22.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack29 = virtualinvoke $stack28.<java.lang.String: boolean equals(java.lang.Object)>("VI_PAL_N");
+
+        if $stack29 == 0 goto label14;
+
+        $stack60 = 7;
+
+        goto label25;
+
+     label14:
+        $r23 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack30 = $r23.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack31 = virtualinvoke $stack30.<java.lang.String: boolean equals(java.lang.Object)>("VI_PAL_NC");
+
+        if $stack31 == 0 goto label15;
+
+        $stack60 = 8;
+
+        goto label25;
+
+     label15:
+        $r24 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack32 = $r24.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack33 = virtualinvoke $stack32.<java.lang.String: boolean equals(java.lang.Object)>("VI_SECAM_B");
+
+        if $stack33 == 0 goto label16;
+
+        $stack60 = 9;
+
+        goto label25;
+
+     label16:
+        $r25 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack34 = $r25.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack35 = virtualinvoke $stack34.<java.lang.String: boolean equals(java.lang.Object)>("VI_SECAM_D");
+
+        if $stack35 == 0 goto label17;
+
+        $stack60 = 10;
+
+        goto label25;
+
+     label17:
+        $r26 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack36 = $r26.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack37 = virtualinvoke $stack36.<java.lang.String: boolean equals(java.lang.Object)>("VI_SECAM_G");
+
+        if $stack37 == 0 goto label18;
+
+        $stack60 = 11;
+
+        goto label25;
+
+     label18:
+        $r27 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack38 = $r27.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack39 = virtualinvoke $stack38.<java.lang.String: boolean equals(java.lang.Object)>("VI_SECAM_H");
+
+        if $stack39 == 0 goto label19;
+
+        $stack60 = 12;
+
+        goto label25;
+
+     label19:
+        $r28 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack40 = $r28.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack41 = virtualinvoke $stack40.<java.lang.String: boolean equals(java.lang.Object)>("VI_SECAM_K");
+
+        if $stack41 == 0 goto label20;
+
+        $stack60 = 13;
+
+        goto label25;
+
+     label20:
+        $r29 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack42 = $r29.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack43 = virtualinvoke $stack42.<java.lang.String: boolean equals(java.lang.Object)>("VI_SECAM_K1");
+
+        if $stack43 == 0 goto label21;
+
+        $stack60 = 14;
+
+        goto label25;
+
+     label21:
+        $r30 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack44 = $r30.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack45 = virtualinvoke $stack44.<java.lang.String: boolean equals(java.lang.Object)>("VI_SECAM_L");
+
+        if $stack45 == 0 goto label22;
+
+        $stack60 = 15;
+
+        goto label25;
+
+     label22:
+        $r31 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack46 = $r31.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack47 = virtualinvoke $stack46.<java.lang.String: boolean equals(java.lang.Object)>("VI_NTSC_M_J");
+
+        if $stack47 == 0 goto label23;
+
+        $stack60 = 16;
+
+        goto label25;
+
+     label23:
+        $r32 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack48 = $r32.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack49 = virtualinvoke $stack48.<java.lang.String: boolean equals(java.lang.Object)>("VI_NTSC_433");
+
+        if $stack49 == 0 goto label24;
+
+        $stack60 = 17;
+
+        goto label25;
+
+     label24:
+        $stack60 = -1;
+
+     label25:
+        if $stack60 < 0 goto label26;
+
+        $r33 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack51 = $r33.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r34 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack50 = $r34.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        $stack52 = virtualinvoke $stack51.<org.bytedeco.videoinput.videoInput: boolean setFormat(int,int)>($stack50, $stack60);
+
+        if $stack52 != 0 goto label26;
+
+        $u3 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack55 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("videoInput.setFormat() Error: Could not set format ");
+
+        $r35 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack56 = $r35.<org.bytedeco.javacv.VideoInputFrameGrabber: java.lang.String format>;
+
+        $stack57 = virtualinvoke $stack55.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack56);
+
+        $stack58 = virtualinvoke $stack57.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $stack59 = virtualinvoke $stack58.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u3.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack59);
+
+        $r36 = (java.lang.Throwable) $u3;
+
+        throw $r36;
+
+     label26:
+        return;
+    }
+
+    public void stop() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        VideoInputFrameGrabber this;
+        org.bytedeco.videoinput.videoInput $stack1, $stack3;
+        int $stack2;
+        org.bytedeco.javacv.VideoInputFrameGrabber $r0, $r1, $r2, $r3;
+
+        this := @this: VideoInputFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r2 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack2 = $r2.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        virtualinvoke $stack3.<org.bytedeco.videoinput.videoInput: void stopDevice(int)>($stack2);
+
+        $r3 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput> = null;
+
+     label1:
+        return;
+    }
+
+    public void trigger() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        VideoInputFrameGrabber this;
+        org.bytedeco.videoinput.videoInput $stack4, $stack6, $stack9, $stack19;
+        int $stack5, w, $stack8, h, $stack18, $stack25, $stack35, i, $stack15, $stack16;
+        org.bytedeco.opencv.opencv_core.IplImage $stack11, $stack24, $stack34, $stack12, $stack13;
+        org.bytedeco.javacpp.BytePointer $stack17, $stack14;
+        org.bytedeco.javacv.FrameGrabber$Exception $u0;
+        org.bytedeco.javacv.VideoInputFrameGrabber $r0, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15;
+        java.lang.Throwable $r1;
+
+        this := @this: VideoInputFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        if $stack4 != null goto label1;
+
+        $u0 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u0.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("videoInput is null. (Has start() been called?)");
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack6 = $r2.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r3 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack5 = $r3.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        w = virtualinvoke $stack6.<org.bytedeco.videoinput.videoInput: int getWidth(int)>($stack5);
+
+        $r4 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack9 = $r4.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r5 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack8 = $r5.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        h = virtualinvoke $stack9.<org.bytedeco.videoinput.videoInput: int getHeight(int)>($stack8);
+
+        $r6 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack11 = $r6.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage>;
+
+        if $stack11 == null goto label2;
+
+        $r7 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack24 = $r7.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage>;
+
+        $stack25 = virtualinvoke $stack24.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        if $stack25 != w goto label2;
+
+        $r8 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack34 = $r8.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage>;
+
+        $stack35 = virtualinvoke $stack34.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        if $stack35 == h goto label3;
+
+     label2:
+        $stack12 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>(w, h, 8, 3);
+
+        $r9 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r9.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage> = $stack12;
+
+        $r10 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack13 = $r10.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage>;
+
+        $stack14 = virtualinvoke $stack13.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.javacpp.BytePointer imageData()>();
+
+        $r11 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r11.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacpp.BytePointer bgrImageData> = $stack14;
+
+     label3:
+        i = 0;
+
+     label4:
+        $r12 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack15 = $r12.<org.bytedeco.javacv.VideoInputFrameGrabber: int numBuffers>;
+
+        $stack16 = $stack15 + 1;
+
+        if i >= $stack16 goto label5;
+
+        $r13 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack19 = $r13.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r14 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack18 = $r14.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        $r15 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack17 = $r15.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacpp.BytePointer bgrImageData>;
+
+        virtualinvoke $stack19.<org.bytedeco.videoinput.videoInput: boolean getPixels(int,org.bytedeco.javacpp.BytePointer,boolean,boolean)>($stack18, $stack17, 0, 1);
+
+        i = i + 1;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    public org.bytedeco.javacv.Frame grab() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        VideoInputFrameGrabber this;
+        org.bytedeco.videoinput.videoInput $stack3, $stack5, $stack8, $stack16;
+        int $stack4, w, $stack7, h, $stack39, $stack53, $stack15;
+        org.bytedeco.opencv.opencv_core.IplImage $stack10, $stack22, $stack25, $stack26, $stack27, $stack28, $stack31, $stack38, $stack52, $stack11, $stack12;
+        long $stack18, $stack19;
+        org.bytedeco.javacv.FrameGrabber$ImageMode $stack20, $stack21;
+        org.bytedeco.javacv.FrameConverter $stack23, $stack29;
+        org.bytedeco.javacv.Frame $stack24, $stack30;
+        org.bytedeco.javacpp.BytePointer $stack13, $stack14;
+        boolean $stack17;
+        org.bytedeco.javacv.FrameGrabber$Exception $u0, $u1;
+        org.bytedeco.javacv.VideoInputFrameGrabber $r0, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r16, $r17, $r18, $r19, $r20, $r21, $r24, $r25, $r26, $r27;
+        java.lang.Throwable $r1, $r15;
+        org.bytedeco.opencv.opencv_core.CvArr $r22, $r23;
+
+        this := @this: VideoInputFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        if $stack3 != null goto label1;
+
+        $u0 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u0.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("videoInput is null. (Has start() been called?)");
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label1:
+        $r2 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack5 = $r2.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r3 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack4 = $r3.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        w = virtualinvoke $stack5.<org.bytedeco.videoinput.videoInput: int getWidth(int)>($stack4);
+
+        $r4 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack8 = $r4.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r5 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack7 = $r5.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        h = virtualinvoke $stack8.<org.bytedeco.videoinput.videoInput: int getHeight(int)>($stack7);
+
+        $r6 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack10 = $r6.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage>;
+
+        if $stack10 == null goto label2;
+
+        $r7 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack38 = $r7.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage>;
+
+        $stack39 = virtualinvoke $stack38.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        if $stack39 != w goto label2;
+
+        $r8 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack52 = $r8.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage>;
+
+        $stack53 = virtualinvoke $stack52.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        if $stack53 == h goto label3;
+
+     label2:
+        $stack11 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>(w, h, 8, 3);
+
+        $r9 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r9.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage> = $stack11;
+
+        $r10 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack12 = $r10.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage>;
+
+        $stack13 = virtualinvoke $stack12.<org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.javacpp.BytePointer imageData()>();
+
+        $r11 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r11.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacpp.BytePointer bgrImageData> = $stack13;
+
+     label3:
+        $r12 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack16 = $r12.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.videoinput.videoInput myVideoInput>;
+
+        $r13 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack15 = $r13.<org.bytedeco.javacv.VideoInputFrameGrabber: int deviceNumber>;
+
+        $r14 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack14 = $r14.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacpp.BytePointer bgrImageData>;
+
+        $stack17 = virtualinvoke $stack16.<org.bytedeco.videoinput.videoInput: boolean getPixels(int,org.bytedeco.javacpp.BytePointer,boolean,boolean)>($stack15, $stack14, 0, 1);
+
+        if $stack17 != 0 goto label4;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("videoInput.getPixels() Error: Could not get pixels.");
+
+        $r15 = (java.lang.Throwable) $u1;
+
+        throw $r15;
+
+     label4:
+        $stack18 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $stack19 = $stack18 / 1000L;
+
+        $r16 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r16.<org.bytedeco.javacv.VideoInputFrameGrabber: long timestamp> = $stack19;
+
+        $r17 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack21 = $r17.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack20 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode GRAY>;
+
+        if $stack21 != $stack20 goto label6;
+
+        $r18 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack25 = $r18.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage grayImage>;
+
+        if $stack25 != null goto label5;
+
+        $stack31 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>(w, h, 8, 1);
+
+        $r19 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $r19.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage grayImage> = $stack31;
+
+     label5:
+        $r20 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack27 = $r20.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage>;
+
+        $r21 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack26 = $r21.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage grayImage>;
+
+        $r22 = (org.bytedeco.opencv.opencv_core.CvArr) $stack27;
+
+        $r23 = (org.bytedeco.opencv.opencv_core.CvArr) $stack26;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgproc: void cvCvtColor(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,int)>($r22, $r23, 6);
+
+        $r24 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack29 = $r24.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacv.FrameConverter converter>;
+
+        $r25 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack28 = $r25.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage grayImage>;
+
+        $stack30 = virtualinvoke $stack29.<org.bytedeco.javacv.FrameConverter: org.bytedeco.javacv.Frame convert(java.lang.Object)>($stack28);
+
+        return $stack30;
+
+     label6:
+        $r26 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack23 = $r26.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacv.FrameConverter converter>;
+
+        $r27 = (org.bytedeco.javacv.VideoInputFrameGrabber) this;
+
+        $stack22 = $r27.<org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage bgrImage>;
+
+        $stack24 = virtualinvoke $stack23.<org.bytedeco.javacv.FrameConverter: org.bytedeco.javacv.Frame convert(java.lang.Object)>($stack22);
+
+        return $stack24;
+    }
+
+    static void <clinit>()
+    {
+        <org.bytedeco.javacv.VideoInputFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = null;
+
+        return;
+    }
+}

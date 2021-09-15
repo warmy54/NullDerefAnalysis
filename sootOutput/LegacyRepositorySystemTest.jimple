@@ -1,0 +1,113 @@
+public class LegacyRepositorySystemTest extends java.lang.Object
+{
+    private org.apache.maven.repository.RepositorySystem repositorySystem;
+
+    public void <init>()
+    {
+        LegacyRepositorySystemTest this;
+
+        this := @this: LegacyRepositorySystemTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void testThatLocalRepositoryWithSpacesIsProperlyHandled() throws java.lang.Exception
+    {
+        java.io.File basedir, $u0, $u1;
+        LegacyRepositorySystemTest this;
+        org.apache.maven.repository.RepositorySystem $stack5;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        java.lang.String $stack8;
+        org.apache.maven.repository.legacy.LegacyRepositorySystemTest $r0;
+
+        this := @this: LegacyRepositorySystemTest;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>("target/spacy path");
+
+        basedir = virtualinvoke $u0.<java.io.File: java.io.File getAbsoluteFile()>();
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystemTest) this;
+
+        $stack5 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystemTest: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        repo = interfaceinvoke $stack5.<org.apache.maven.repository.RepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createLocalRepository(java.io.File)>(basedir);
+
+        $u1 = new java.io.File;
+
+        $stack8 = interfaceinvoke repo.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String)>($stack8);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>(basedir, $u1);
+
+        return;
+    }
+
+    public void testAuthenticationHandling()
+    {
+        LegacyRepositorySystemTest this;
+        org.apache.maven.repository.RepositorySystem $stack5, $stack8;
+        org.apache.maven.artifact.repository.ArtifactRepository repository;
+        org.apache.maven.artifact.repository.ArtifactRepository[] $stack7;
+        java.util.List $stack9, $stack11;
+        org.apache.maven.settings.Server[] $stack10;
+        org.apache.maven.artifact.repository.Authentication authentication;
+        java.lang.String $stack14, $stack16;
+        org.apache.maven.settings.Server $u0;
+        org.apache.maven.repository.legacy.LegacyRepositorySystemTest $r0, $r1;
+
+        this := @this: LegacyRepositorySystemTest;
+
+        $u0 = new org.apache.maven.settings.Server;
+
+        specialinvoke $u0.<org.apache.maven.settings.Server: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.settings.Server: void setId(java.lang.String)>("repository");
+
+        virtualinvoke $u0.<org.apache.maven.settings.Server: void setUsername(java.lang.String)>("jason");
+
+        virtualinvoke $u0.<org.apache.maven.settings.Server: void setPassword(java.lang.String)>("abc123");
+
+        $r0 = (org.apache.maven.repository.legacy.LegacyRepositorySystemTest) this;
+
+        $stack5 = $r0.<org.apache.maven.repository.legacy.LegacyRepositorySystemTest: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        repository = interfaceinvoke $stack5.<org.apache.maven.repository.RepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createArtifactRepository(java.lang.String,java.lang.String,org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy,org.apache.maven.artifact.repository.ArtifactRepositoryPolicy)>("repository", "http://foo", null, null, null);
+
+        $r1 = (org.apache.maven.repository.legacy.LegacyRepositorySystemTest) this;
+
+        $stack8 = $r1.<org.apache.maven.repository.legacy.LegacyRepositorySystemTest: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        $stack7 = newarray (org.apache.maven.artifact.repository.ArtifactRepository)[1];
+
+        $stack7[0] = repository;
+
+        $stack9 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack7);
+
+        $stack10 = newarray (org.apache.maven.settings.Server)[1];
+
+        $stack10[0] = $u0;
+
+        $stack11 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack10);
+
+        interfaceinvoke $stack8.<org.apache.maven.repository.RepositorySystem: void injectAuthentication(java.util.List,java.util.List)>($stack9, $stack11);
+
+        authentication = interfaceinvoke repository.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.Authentication getAuthentication()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(authentication);
+
+        $stack14 = virtualinvoke authentication.<org.apache.maven.artifact.repository.Authentication: java.lang.String getUsername()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("jason", $stack14);
+
+        $stack16 = virtualinvoke authentication.<org.apache.maven.artifact.repository.Authentication: java.lang.String getPassword()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("abc123", $stack16);
+
+        return;
+    }
+}

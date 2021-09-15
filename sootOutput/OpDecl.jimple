@@ -1,0 +1,282 @@
+public class OpDecl extends org.ooc.frontend.model.Declaration
+{
+    protected org.ooc.frontend.model.OpDecl$OpType opType;
+    protected org.ooc.frontend.model.FunctionDecl func;
+
+    public void <init>(org.ooc.frontend.model.OpDecl$OpType, org.ooc.frontend.model.FunctionDecl, org.ooc.frontend.model.tokens.Token, org.ooc.frontend.model.Module)
+    {
+        OpDecl this;
+        org.ooc.frontend.model.OpDecl$OpType opType;
+        java.lang.String $stack7, $stack8, $stack16, $stack23, name;
+        org.ooc.frontend.model.tokens.Token startToken;
+        org.ooc.frontend.model.Module module;
+        org.ooc.frontend.model.FunctionDecl func;
+        org.ooc.frontend.model.NodeList $stack10;
+        java.util.Iterator iter;
+        boolean $stack12, $stack14;
+        org.ooc.frontend.model.Type $stack13, $stack15, $stack22;
+        java.lang.Object $stack20;
+        org.ooc.frontend.model.Argument $stack21;
+        org.ooc.frontend.model.OpDecl $r0, $r1;
+
+        this := @this: OpDecl;
+
+        opType := @parameter0: org.ooc.frontend.model.OpDecl$OpType;
+
+        func := @parameter1: org.ooc.frontend.model.FunctionDecl;
+
+        startToken := @parameter2: org.ooc.frontend.model.tokens.Token;
+
+        module := @parameter3: org.ooc.frontend.model.Module;
+
+        $stack7 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (org.ooc.frontend.model.OpDecl$OpType)>(opType) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Operator \u0001");
+
+        specialinvoke this.<org.ooc.frontend.model.Declaration: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>($stack7, startToken, module);
+
+        $r0 = (org.ooc.frontend.model.OpDecl) this;
+
+        $r0.<org.ooc.frontend.model.OpDecl: org.ooc.frontend.model.OpDecl$OpType opType> = opType;
+
+        $r1 = (org.ooc.frontend.model.OpDecl) this;
+
+        $r1.<org.ooc.frontend.model.OpDecl: org.ooc.frontend.model.FunctionDecl func> = func;
+
+        $stack8 = virtualinvoke opType.<org.ooc.frontend.model.OpDecl$OpType: java.lang.String toString()>();
+
+        name = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack8) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("__OP_\u0001");
+
+        $stack10 = virtualinvoke func.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.NodeList getArguments()>();
+
+        iter = virtualinvoke $stack10.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack12 = interfaceinvoke iter.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack12 == 0 goto label2;
+
+        $stack20 = interfaceinvoke iter.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack21 = (org.ooc.frontend.model.Argument) $stack20;
+
+        $stack22 = virtualinvoke $stack21.<org.ooc.frontend.model.Argument: org.ooc.frontend.model.Type getType()>();
+
+        $stack23 = virtualinvoke $stack22.<org.ooc.frontend.model.Type: java.lang.String getMangledName()>();
+
+        name = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>(name, $stack23) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001_\u0001");
+
+        goto label1;
+
+     label2:
+        $stack13 = virtualinvoke func.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.Type getReturnType()>();
+
+        $stack14 = virtualinvoke $stack13.<org.ooc.frontend.model.Type: boolean isVoid()>();
+
+        if $stack14 != 0 goto label3;
+
+        $stack15 = virtualinvoke func.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.Type getReturnType()>();
+
+        $stack16 = virtualinvoke $stack15.<org.ooc.frontend.model.Type: java.lang.String getMangledName()>();
+
+        name = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>(name, $stack16) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001__\u0001");
+
+     label3:
+        virtualinvoke func.<org.ooc.frontend.model.FunctionDecl: void setName(java.lang.String)>(name);
+
+        return;
+    }
+
+    public boolean replace(org.ooc.frontend.model.Node, org.ooc.frontend.model.Node)
+    {
+        org.ooc.frontend.model.Node oldie, kiddo;
+        OpDecl this;
+        org.ooc.frontend.model.FunctionDecl $stack3, $stack4;
+        org.ooc.frontend.model.OpDecl $r0, $r1;
+
+        this := @this: OpDecl;
+
+        oldie := @parameter0: org.ooc.frontend.model.Node;
+
+        kiddo := @parameter1: org.ooc.frontend.model.Node;
+
+        $r0 = (org.ooc.frontend.model.OpDecl) this;
+
+        $stack3 = $r0.<org.ooc.frontend.model.OpDecl: org.ooc.frontend.model.FunctionDecl func>;
+
+        if oldie != $stack3 goto label1;
+
+        $stack4 = (org.ooc.frontend.model.FunctionDecl) kiddo;
+
+        $r1 = (org.ooc.frontend.model.OpDecl) this;
+
+        $r1.<org.ooc.frontend.model.OpDecl: org.ooc.frontend.model.FunctionDecl func> = $stack4;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public org.ooc.frontend.model.Type getType()
+    {
+        org.ooc.frontend.model.Type $stack1;
+        org.ooc.frontend.model.tokens.Token $stack2;
+        OpDecl this;
+
+        this := @this: OpDecl;
+
+        $stack1 = new org.ooc.frontend.model.Type;
+
+        $stack2 = <org.ooc.frontend.model.tokens.Token: org.ooc.frontend.model.tokens.Token defaultToken>;
+
+        specialinvoke $stack1.<org.ooc.frontend.model.Type: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>("Operator", $stack2);
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.OpDecl$OpType getOpType()
+    {
+        OpDecl this;
+        org.ooc.frontend.model.OpDecl$OpType $stack1;
+        org.ooc.frontend.model.OpDecl $r0;
+
+        this := @this: OpDecl;
+
+        $r0 = (org.ooc.frontend.model.OpDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.OpDecl: org.ooc.frontend.model.OpDecl$OpType opType>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.FunctionDecl getFunc()
+    {
+        OpDecl this;
+        org.ooc.frontend.model.FunctionDecl $stack1;
+        org.ooc.frontend.model.OpDecl $r0;
+
+        this := @this: OpDecl;
+
+        $r0 = (org.ooc.frontend.model.OpDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.OpDecl: org.ooc.frontend.model.FunctionDecl func>;
+
+        return $stack1;
+    }
+
+    public void accept(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        org.ooc.frontend.Visitor visitor;
+        OpDecl this;
+        org.ooc.frontend.model.OpDecl $r0;
+
+        this := @this: OpDecl;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.OpDecl) this;
+
+        interfaceinvoke visitor.<org.ooc.frontend.Visitor: void visit(org.ooc.frontend.model.OpDecl)>($r0);
+
+        return;
+    }
+
+    public void acceptChildren(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        OpDecl this;
+        org.ooc.frontend.Visitor visitor;
+        org.ooc.frontend.model.FunctionDecl $stack2;
+        org.ooc.frontend.model.OpDecl $r0;
+
+        this := @this: OpDecl;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.OpDecl) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.OpDecl: org.ooc.frontend.model.FunctionDecl func>;
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.FunctionDecl: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        return;
+    }
+
+    public boolean hasChildren()
+    {
+        OpDecl this;
+
+        this := @this: OpDecl;
+
+        return 1;
+    }
+
+    public java.lang.String getOpString()
+    {
+        OpDecl this;
+        org.ooc.frontend.model.OpDecl$OpType $stack1;
+        java.lang.String $stack2;
+        org.ooc.frontend.model.OpDecl $r0;
+
+        this := @this: OpDecl;
+
+        $r0 = (org.ooc.frontend.model.OpDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.OpDecl: org.ooc.frontend.model.OpDecl$OpType opType>;
+
+        $stack2 = virtualinvoke $stack1.<org.ooc.frontend.model.OpDecl$OpType: java.lang.String toPrettyString()>();
+
+        return $stack2;
+    }
+
+    public java.lang.String toString()
+    {
+        OpDecl this;
+        java.lang.String $stack1, $stack3, $stack6;
+        org.ooc.frontend.model.FunctionDecl $stack2, $stack4;
+        org.ooc.frontend.model.Type $stack5;
+        org.ooc.frontend.model.OpDecl $r0, $r1, $r2;
+
+        this := @this: OpDecl;
+
+        $r0 = (org.ooc.frontend.model.OpDecl) this;
+
+        $stack1 = virtualinvoke $r0.<org.ooc.frontend.model.OpDecl: java.lang.String getOpString()>();
+
+        $r1 = (org.ooc.frontend.model.OpDecl) this;
+
+        $stack2 = $r1.<org.ooc.frontend.model.OpDecl: org.ooc.frontend.model.FunctionDecl func>;
+
+        $stack3 = virtualinvoke $stack2.<org.ooc.frontend.model.FunctionDecl: java.lang.String getArgsRepr()>();
+
+        $r2 = (org.ooc.frontend.model.OpDecl) this;
+
+        $stack4 = $r2.<org.ooc.frontend.model.OpDecl: org.ooc.frontend.model.FunctionDecl func>;
+
+        $stack5 = virtualinvoke $stack4.<org.ooc.frontend.model.FunctionDecl: org.ooc.frontend.model.Type getReturnType()>();
+
+        $stack6 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String,org.ooc.frontend.model.Type)>($stack1, $stack3, $stack5) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("operator \u0001 \u0001 -> \u0001");
+
+        return $stack6;
+    }
+
+    public org.ooc.frontend.model.TypeDecl getTypeDecl()
+    {
+        java.lang.Error $stack1;
+        OpDecl this;
+        java.lang.Class $stack2;
+        java.lang.String $stack3, $stack4;
+
+        this := @this: OpDecl;
+
+        $stack1 = new java.lang.Error;
+
+        $stack2 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack3 = virtualinvoke $stack2.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        $stack4 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack3) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("getting type decl of an \u0001, wtf?");
+
+        specialinvoke $stack1.<java.lang.Error: void <init>(java.lang.String)>($stack4);
+
+        throw $stack1;
+    }
+}

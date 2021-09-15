@@ -1,0 +1,553 @@
+public class DelegatingLocalArtifactRepository extends org.apache.maven.artifact.repository.MavenArtifactRepository
+{
+    private org.apache.maven.repository.LocalArtifactRepository buildReactor;
+    private org.apache.maven.repository.LocalArtifactRepository ideWorkspace;
+    private org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository;
+
+    public void <init>(org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.artifact.repository.ArtifactRepository artifactRepository;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        artifactRepository := @parameter0: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        specialinvoke this.<org.apache.maven.artifact.repository.MavenArtifactRepository: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository> = artifactRepository;
+
+        return;
+    }
+
+    public void setBuildReactor(org.apache.maven.repository.LocalArtifactRepository)
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.repository.LocalArtifactRepository localRepository;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        localRepository := @parameter0: org.apache.maven.repository.LocalArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository buildReactor> = localRepository;
+
+        return;
+    }
+
+    public void setIdeWorkspace(org.apache.maven.repository.LocalArtifactRepository)
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.repository.LocalArtifactRepository localRepository;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        localRepository := @parameter0: org.apache.maven.repository.LocalArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository ideWorkspace> = localRepository;
+
+        return;
+    }
+
+    public org.apache.maven.repository.LocalArtifactRepository getIdeWorspace()
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.repository.LocalArtifactRepository $stack1;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository ideWorkspace>;
+
+        return $stack1;
+    }
+
+    public org.apache.maven.repository.LocalArtifactRepository getIdeWorkspace()
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.repository.LocalArtifactRepository $stack1;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository getIdeWorspace()>();
+
+        return $stack1;
+    }
+
+    public org.apache.maven.artifact.Artifact find(org.apache.maven.artifact.Artifact)
+    {
+        boolean $stack2, $stack3, $stack4;
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack5;
+        org.apache.maven.repository.LocalArtifactRepository $stack8, $stack10, $stack12, $stack14;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $stack2 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: boolean isRelease()>();
+
+        if $stack2 != 0 goto label1;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack12 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository buildReactor>;
+
+        if $stack12 == null goto label1;
+
+        $r1 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack14 = $r1.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository buildReactor>;
+
+        artifact = virtualinvoke $stack14.<org.apache.maven.repository.LocalArtifactRepository: org.apache.maven.artifact.Artifact find(org.apache.maven.artifact.Artifact)>(artifact);
+
+     label1:
+        $stack3 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: boolean isResolved()>();
+
+        if $stack3 != 0 goto label2;
+
+        $r2 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack8 = $r2.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository ideWorkspace>;
+
+        if $stack8 == null goto label2;
+
+        $r3 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack10 = $r3.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository ideWorkspace>;
+
+        artifact = virtualinvoke $stack10.<org.apache.maven.repository.LocalArtifactRepository: org.apache.maven.artifact.Artifact find(org.apache.maven.artifact.Artifact)>(artifact);
+
+     label2:
+        $stack4 = interfaceinvoke artifact.<org.apache.maven.artifact.Artifact: boolean isResolved()>();
+
+        if $stack4 != 0 goto label3;
+
+        $r4 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack5 = $r4.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        artifact = interfaceinvoke $stack5.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.Artifact find(org.apache.maven.artifact.Artifact)>(artifact);
+
+     label3:
+        return artifact;
+    }
+
+    public java.util.List findVersions(org.apache.maven.artifact.Artifact)
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.repository.LocalArtifactRepository $stack4, $stack5, $stack11, $stack18;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack6;
+        java.util.List $stack7, $stack10, $stack12, $stack19;
+        java.util.LinkedHashSet $u0;
+        java.util.ArrayList $u1;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $u0 = new java.util.LinkedHashSet;
+
+        specialinvoke $u0.<java.util.LinkedHashSet: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack4 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository buildReactor>;
+
+        if $stack4 == null goto label1;
+
+        $r1 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack18 = $r1.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository buildReactor>;
+
+        $stack19 = virtualinvoke $stack18.<org.apache.maven.repository.LocalArtifactRepository: java.util.List findVersions(org.apache.maven.artifact.Artifact)>(artifact);
+
+        interfaceinvoke $u0.<java.util.Collection: boolean addAll(java.util.Collection)>($stack19);
+
+     label1:
+        $r2 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack5 = $r2.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository ideWorkspace>;
+
+        if $stack5 == null goto label2;
+
+        $r3 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack11 = $r3.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository ideWorkspace>;
+
+        $stack12 = virtualinvoke $stack11.<org.apache.maven.repository.LocalArtifactRepository: java.util.List findVersions(org.apache.maven.artifact.Artifact)>(artifact);
+
+        interfaceinvoke $u0.<java.util.Collection: boolean addAll(java.util.Collection)>($stack12);
+
+     label2:
+        $r4 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack6 = $r4.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack7 = interfaceinvoke $stack6.<org.apache.maven.artifact.repository.ArtifactRepository: java.util.List findVersions(org.apache.maven.artifact.Artifact)>(artifact);
+
+        interfaceinvoke $u0.<java.util.Collection: boolean addAll(java.util.Collection)>($stack7);
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>(java.util.Collection)>($u0);
+
+        $stack10 = staticinvoke <java.util.Collections: java.util.List unmodifiableList(java.util.List)>($u1);
+
+        return $stack10;
+    }
+
+    public java.lang.String pathOfLocalRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata, org.apache.maven.artifact.repository.ArtifactRepository)
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.artifact.metadata.ArtifactMetadata metadata;
+        org.apache.maven.artifact.repository.ArtifactRepository repository, $stack3;
+        java.lang.String $stack4;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        metadata := @parameter0: org.apache.maven.artifact.metadata.ArtifactMetadata;
+
+        repository := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack4 = interfaceinvoke $stack3.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfLocalRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository)>(metadata, repository);
+
+        return $stack4;
+    }
+
+    public java.lang.String getId()
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack1;
+        java.lang.String $stack2;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack2 = interfaceinvoke $stack1.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        return $stack2;
+    }
+
+    public java.lang.String pathOf(org.apache.maven.artifact.Artifact)
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack2;
+        java.lang.String $stack3;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        artifact := @parameter0: org.apache.maven.artifact.Artifact;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack2 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack3 = interfaceinvoke $stack2.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
+
+        return $stack3;
+    }
+
+    public java.lang.String getBasedir()
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack1, $stack2;
+        java.lang.String $stack3;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0, $r1;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack2 = $r1.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack3 = interfaceinvoke $stack2.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        goto label2;
+
+     label1:
+        $stack3 = null;
+
+     label2:
+        return $stack3;
+    }
+
+    public org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack1;
+        org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout $stack2;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack2 = interfaceinvoke $stack1.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout getLayout()>();
+
+        return $stack2;
+    }
+
+    public org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getReleases()
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack1;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy $stack2;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack2 = interfaceinvoke $stack1.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getReleases()>();
+
+        return $stack2;
+    }
+
+    public org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getSnapshots()
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack1;
+        org.apache.maven.artifact.repository.ArtifactRepositoryPolicy $stack2;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack2 = interfaceinvoke $stack1.<org.apache.maven.artifact.repository.ArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepositoryPolicy getSnapshots()>();
+
+        return $stack2;
+    }
+
+    public java.lang.String getKey()
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack1;
+        java.lang.String $stack2;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack2 = interfaceinvoke $stack1.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getKey()>();
+
+        return $stack2;
+    }
+
+    public java.lang.String getUrl()
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack1;
+        java.lang.String $stack2;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack2 = interfaceinvoke $stack1.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getUrl()>();
+
+        return $stack2;
+    }
+
+    public int hashCode()
+    {
+        DelegatingLocalArtifactRepository this;
+        org.apache.maven.repository.LocalArtifactRepository $stack2, $stack3, $stack6, $stack7;
+        int $stack4, $stack8, $stack12, $stack5, hash#3, $stack9, $stack13;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack10, $stack11;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        $stack4 = 17 * 31;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack2 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository buildReactor>;
+
+        if $stack2 != null goto label1;
+
+        $stack5 = 0;
+
+        goto label2;
+
+     label1:
+        $r1 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack3 = $r1.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository buildReactor>;
+
+        $stack5 = virtualinvoke $stack3.<org.apache.maven.repository.LocalArtifactRepository: int hashCode()>();
+
+     label2:
+        hash#3 = $stack4 + $stack5;
+
+        $stack8 = hash#3 * 31;
+
+        $r2 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack6 = $r2.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository ideWorkspace>;
+
+        if $stack6 != null goto label3;
+
+        $stack9 = 0;
+
+        goto label4;
+
+     label3:
+        $r3 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack7 = $r3.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository ideWorkspace>;
+
+        $stack9 = virtualinvoke $stack7.<org.apache.maven.repository.LocalArtifactRepository: int hashCode()>();
+
+     label4:
+        hash#3 = $stack8 + $stack9;
+
+        $stack12 = hash#3 * 31;
+
+        $r4 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack10 = $r4.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        if $stack10 != null goto label5;
+
+        $stack13 = 0;
+
+        goto label6;
+
+     label5:
+        $r5 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack11 = $r5.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack13 = virtualinvoke $stack11.<java.lang.Object: int hashCode()>();
+
+     label6:
+        hash#3 = $stack12 + $stack13;
+
+        return hash#3;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        DelegatingLocalArtifactRepository this;
+        java.lang.Object obj;
+        java.lang.Class $stack3, $stack4;
+        org.apache.maven.repository.DelegatingLocalArtifactRepository other, $r0, $r1, $r2;
+        org.apache.maven.repository.LocalArtifactRepository $stack5, $stack6, $stack8, $stack9;
+        boolean $stack7, $stack10, $stack14, $stack11;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack12, $stack13;
+
+        this := @this: DelegatingLocalArtifactRepository;
+
+        obj := @parameter0: java.lang.Object;
+
+        if this != obj goto label1;
+
+        return 1;
+
+     label1:
+        if obj != null goto label2;
+
+        return 0;
+
+     label2:
+        $stack3 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack4 = virtualinvoke obj.<java.lang.Object: java.lang.Class getClass()>();
+
+        if $stack3 == $stack4 goto label3;
+
+        return 0;
+
+     label3:
+        other = (org.apache.maven.repository.DelegatingLocalArtifactRepository) obj;
+
+        $r0 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack6 = $r0.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository buildReactor>;
+
+        $stack5 = other.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository buildReactor>;
+
+        $stack7 = staticinvoke <org.apache.maven.repository.DelegatingLocalArtifactRepository: boolean eq(java.lang.Object,java.lang.Object)>($stack6, $stack5);
+
+        if $stack7 == 0 goto label4;
+
+        $r1 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack9 = $r1.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository ideWorkspace>;
+
+        $stack8 = other.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.repository.LocalArtifactRepository ideWorkspace>;
+
+        $stack10 = staticinvoke <org.apache.maven.repository.DelegatingLocalArtifactRepository: boolean eq(java.lang.Object,java.lang.Object)>($stack9, $stack8);
+
+        if $stack10 == 0 goto label4;
+
+        $r2 = (org.apache.maven.repository.DelegatingLocalArtifactRepository) this;
+
+        $stack13 = $r2.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack12 = other.<org.apache.maven.repository.DelegatingLocalArtifactRepository: org.apache.maven.artifact.repository.ArtifactRepository userLocalArtifactRepository>;
+
+        $stack14 = staticinvoke <org.apache.maven.repository.DelegatingLocalArtifactRepository: boolean eq(java.lang.Object,java.lang.Object)>($stack13, $stack12);
+
+        if $stack14 == 0 goto label4;
+
+        $stack11 = 1;
+
+        goto label5;
+
+     label4:
+        $stack11 = 0;
+
+     label5:
+        return $stack11;
+    }
+}

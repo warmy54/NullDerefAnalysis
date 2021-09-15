@@ -1,0 +1,144 @@
+public class ToolchainsBuildingException extends java.lang.Exception
+{
+    private final java.util.List problems;
+
+    public void <init>(java.util.List)
+    {
+        ToolchainsBuildingException this;
+        java.util.List problems, $stack4;
+        java.lang.String $stack2;
+        java.util.ArrayList $u0;
+        org.apache.maven.toolchain.building.ToolchainsBuildingException $r0, $r1;
+
+        this := @this: ToolchainsBuildingException;
+
+        problems := @parameter0: java.util.List;
+
+        $stack2 = staticinvoke <org.apache.maven.toolchain.building.ToolchainsBuildingException: java.lang.String toMessage(java.util.List)>(problems);
+
+        specialinvoke this.<java.lang.Exception: void <init>(java.lang.String)>($stack2);
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (org.apache.maven.toolchain.building.ToolchainsBuildingException) this;
+
+        $r0.<org.apache.maven.toolchain.building.ToolchainsBuildingException: java.util.List problems> = $u0;
+
+        if problems == null goto label1;
+
+        $r1 = (org.apache.maven.toolchain.building.ToolchainsBuildingException) this;
+
+        $stack4 = $r1.<org.apache.maven.toolchain.building.ToolchainsBuildingException: java.util.List problems>;
+
+        interfaceinvoke $stack4.<java.util.List: boolean addAll(java.util.Collection)>(problems);
+
+     label1:
+        return;
+    }
+
+    public java.util.List getProblems()
+    {
+        ToolchainsBuildingException this;
+        java.util.List $stack1;
+        org.apache.maven.toolchain.building.ToolchainsBuildingException $r0;
+
+        this := @this: ToolchainsBuildingException;
+
+        $r0 = (org.apache.maven.toolchain.building.ToolchainsBuildingException) this;
+
+        $stack1 = $r0.<org.apache.maven.toolchain.building.ToolchainsBuildingException: java.util.List problems>;
+
+        return $stack1;
+    }
+
+    private static java.lang.String toMessage(java.util.List)
+    {
+        java.io.StringWriter $stack6;
+        java.io.PrintWriter $stack7;
+        java.util.List problems;
+        int $stack8, $stack9;
+        java.util.Iterator l3;
+        java.lang.String $stack12, $stack15, location, $stack20;
+        java.lang.Object $stack13;
+        org.apache.maven.building.Problem problem;
+        org.apache.maven.building.Problem$Severity $stack14;
+        boolean $stack17, $stack11;
+
+        problems := @parameter0: java.util.List;
+
+        $stack6 = new java.io.StringWriter;
+
+        specialinvoke $stack6.<java.io.StringWriter: void <init>(int)>(1024);
+
+        $stack7 = new java.io.PrintWriter;
+
+        specialinvoke $stack7.<java.io.PrintWriter: void <init>(java.io.Writer)>($stack6);
+
+        $stack8 = interfaceinvoke problems.<java.util.List: int size()>();
+
+        virtualinvoke $stack7.<java.io.PrintWriter: void print(int)>($stack8);
+
+        $stack9 = interfaceinvoke problems.<java.util.List: int size()>();
+
+        if $stack9 != 1 goto label1;
+
+        $stack20 = " problem was ";
+
+        goto label2;
+
+     label1:
+        $stack20 = " problems were ";
+
+     label2:
+        virtualinvoke $stack7.<java.io.PrintWriter: void print(java.lang.String)>($stack20);
+
+        virtualinvoke $stack7.<java.io.PrintWriter: void print(java.lang.String)>("encountered while building the effective toolchains");
+
+        virtualinvoke $stack7.<java.io.PrintWriter: void println()>();
+
+        l3 = interfaceinvoke problems.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack11 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label5;
+
+        $stack13 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        problem = (org.apache.maven.building.Problem) $stack13;
+
+        virtualinvoke $stack7.<java.io.PrintWriter: void print(java.lang.String)>("[");
+
+        $stack14 = interfaceinvoke problem.<org.apache.maven.building.Problem: org.apache.maven.building.Problem$Severity getSeverity()>();
+
+        virtualinvoke $stack7.<java.io.PrintWriter: void print(java.lang.Object)>($stack14);
+
+        virtualinvoke $stack7.<java.io.PrintWriter: void print(java.lang.String)>("] ");
+
+        $stack15 = interfaceinvoke problem.<org.apache.maven.building.Problem: java.lang.String getMessage()>();
+
+        virtualinvoke $stack7.<java.io.PrintWriter: void print(java.lang.String)>($stack15);
+
+        location = interfaceinvoke problem.<org.apache.maven.building.Problem: java.lang.String getLocation()>();
+
+        $stack17 = virtualinvoke location.<java.lang.String: boolean isEmpty()>();
+
+        if $stack17 != 0 goto label4;
+
+        virtualinvoke $stack7.<java.io.PrintWriter: void print(java.lang.String)>(" @ ");
+
+        virtualinvoke $stack7.<java.io.PrintWriter: void print(java.lang.String)>(location);
+
+     label4:
+        virtualinvoke $stack7.<java.io.PrintWriter: void println()>();
+
+        goto label3;
+
+     label5:
+        $stack12 = virtualinvoke $stack6.<java.io.StringWriter: java.lang.String toString()>();
+
+        return $stack12;
+    }
+}

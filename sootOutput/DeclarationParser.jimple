@@ -1,0 +1,85 @@
+public class DeclarationParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        DeclarationParser this;
+
+        this := @this: DeclarationParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.ooc.frontend.model.Declaration parse(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        int mark;
+        org.ooc.frontend.model.Module module;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.VariableDecl varDecl;
+        org.ooc.frontend.model.OpDecl opDecl;
+        org.ooc.frontend.model.FunctionDecl funcDecl;
+        org.ooc.frontend.model.ClassDecl classDecl;
+        org.ooc.frontend.model.CoverDecl coverDecl;
+        org.ooc.frontend.model.Declaration $r0, $r1, $r2, $r3, $r4;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        mark = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: int mark()>();
+
+        varDecl = staticinvoke <org.ooc.frontend.parser.VariableDeclParser: org.ooc.frontend.model.VariableDecl parseSingle(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if varDecl == null goto label1;
+
+        $r0 = (org.ooc.frontend.model.Declaration) varDecl;
+
+        return $r0;
+
+     label1:
+        opDecl = staticinvoke <org.ooc.frontend.parser.OpDeclParser: org.ooc.frontend.model.OpDecl parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if opDecl == null goto label2;
+
+        $r1 = (org.ooc.frontend.model.Declaration) opDecl;
+
+        return $r1;
+
+     label2:
+        funcDecl = staticinvoke <org.ooc.frontend.parser.FunctionDeclParser: org.ooc.frontend.model.FunctionDecl parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,boolean)>(module, sReader, reader, 0);
+
+        if funcDecl == null goto label3;
+
+        $r2 = (org.ooc.frontend.model.Declaration) funcDecl;
+
+        return $r2;
+
+     label3:
+        classDecl = staticinvoke <org.ooc.frontend.parser.ClassDeclParser: org.ooc.frontend.model.ClassDecl parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if classDecl == null goto label4;
+
+        $r3 = (org.ooc.frontend.model.Declaration) classDecl;
+
+        return $r3;
+
+     label4:
+        coverDecl = staticinvoke <org.ooc.frontend.parser.CoverDeclParser: org.ooc.frontend.model.CoverDecl parse(org.ooc.frontend.model.Module,org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader)>(module, sReader, reader);
+
+        if coverDecl == null goto label5;
+
+        $r4 = (org.ooc.frontend.model.Declaration) coverDecl;
+
+        return $r4;
+
+     label5:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void reset(int)>(mark);
+
+        return null;
+    }
+}

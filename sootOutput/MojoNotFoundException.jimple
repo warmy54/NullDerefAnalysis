@@ -1,0 +1,135 @@
+public class MojoNotFoundException extends java.lang.Exception
+{
+    private java.lang.String goal;
+    private org.apache.maven.plugin.descriptor.PluginDescriptor pluginDescriptor;
+
+    public void <init>(java.lang.String, org.apache.maven.plugin.descriptor.PluginDescriptor)
+    {
+        MojoNotFoundException this;
+        java.lang.String goal, $stack3;
+        org.apache.maven.plugin.descriptor.PluginDescriptor pluginDescriptor;
+        org.apache.maven.plugin.MojoNotFoundException $r0, $r1;
+
+        this := @this: MojoNotFoundException;
+
+        goal := @parameter0: java.lang.String;
+
+        pluginDescriptor := @parameter1: org.apache.maven.plugin.descriptor.PluginDescriptor;
+
+        $stack3 = staticinvoke <org.apache.maven.plugin.MojoNotFoundException: java.lang.String toMessage(java.lang.String,org.apache.maven.plugin.descriptor.PluginDescriptor)>(goal, pluginDescriptor);
+
+        specialinvoke this.<java.lang.Exception: void <init>(java.lang.String)>($stack3);
+
+        $r0 = (org.apache.maven.plugin.MojoNotFoundException) this;
+
+        $r0.<org.apache.maven.plugin.MojoNotFoundException: java.lang.String goal> = goal;
+
+        $r1 = (org.apache.maven.plugin.MojoNotFoundException) this;
+
+        $r1.<org.apache.maven.plugin.MojoNotFoundException: org.apache.maven.plugin.descriptor.PluginDescriptor pluginDescriptor> = pluginDescriptor;
+
+        return;
+    }
+
+    public java.lang.String getGoal()
+    {
+        MojoNotFoundException this;
+        java.lang.String $stack1;
+        org.apache.maven.plugin.MojoNotFoundException $r0;
+
+        this := @this: MojoNotFoundException;
+
+        $r0 = (org.apache.maven.plugin.MojoNotFoundException) this;
+
+        $stack1 = $r0.<org.apache.maven.plugin.MojoNotFoundException: java.lang.String goal>;
+
+        return $stack1;
+    }
+
+    public org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()
+    {
+        MojoNotFoundException this;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack1;
+        org.apache.maven.plugin.MojoNotFoundException $r0;
+
+        this := @this: MojoNotFoundException;
+
+        $r0 = (org.apache.maven.plugin.MojoNotFoundException) this;
+
+        $stack1 = $r0.<org.apache.maven.plugin.MojoNotFoundException: org.apache.maven.plugin.descriptor.PluginDescriptor pluginDescriptor>;
+
+        return $stack1;
+    }
+
+    private static java.lang.String toMessage(java.lang.String, org.apache.maven.plugin.descriptor.PluginDescriptor)
+    {
+        java.lang.StringBuilder $stack6, $stack7, $stack8, $stack11;
+        java.lang.String goal, $stack12, $stack23, $stack10;
+        org.apache.maven.plugin.descriptor.PluginDescriptor pluginDescriptor;
+        java.util.List mojos;
+        java.util.Iterator it;
+        boolean $stack18, $stack20;
+        java.lang.Object $stack19;
+        org.apache.maven.plugin.descriptor.MojoDescriptor mojo;
+
+        goal := @parameter0: java.lang.String;
+
+        pluginDescriptor := @parameter1: org.apache.maven.plugin.descriptor.PluginDescriptor;
+
+        $stack6 = new java.lang.StringBuilder;
+
+        specialinvoke $stack6.<java.lang.StringBuilder: void <init>(int)>(256);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not find goal \'");
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(goal);
+
+        virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(39);
+
+        if pluginDescriptor == null goto label4;
+
+        $stack11 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" in plugin ");
+
+        $stack12 = virtualinvoke pluginDescriptor.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getId()>();
+
+        virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" among available goals ");
+
+        mojos = virtualinvoke pluginDescriptor.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.util.List getMojos()>();
+
+        if mojos == null goto label4;
+
+        it = interfaceinvoke mojos.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack18 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack18 == 0 goto label4;
+
+        $stack19 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+
+        mojo = (org.apache.maven.plugin.descriptor.MojoDescriptor) $stack19;
+
+        if mojo == null goto label2;
+
+        $stack23 = virtualinvoke mojo.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getGoal()>();
+
+        virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+     label2:
+        $stack20 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack20 == 0 goto label3;
+
+        virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+     label3:
+        goto label1;
+
+     label4:
+        $stack10 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack10;
+    }
+}

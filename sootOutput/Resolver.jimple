@@ -1,0 +1,210 @@
+public class Resolver extends java.lang.Object implements org.ooc.middle.Hobgoblin
+{
+    protected static final int MAX;
+    protected static final int SAFE_MAX;
+    boolean running;
+    boolean restarted;
+    public boolean fatal;
+    static int restartCount;
+    public org.ooc.frontend.BuildParams params;
+    public org.ooc.frontend.model.Module module;
+    private int ghostingCount;
+
+    public void <init>()
+    {
+        Resolver this;
+        org.ooc.middle.hobgoblins.Resolver $r0, $r1, $r2, $r3;
+
+        this := @this: Resolver;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $r0.<org.ooc.middle.hobgoblins.Resolver: boolean running> = 0;
+
+        $r1 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $r1.<org.ooc.middle.hobgoblins.Resolver: boolean restarted> = 0;
+
+        $r2 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $r2.<org.ooc.middle.hobgoblins.Resolver: boolean fatal> = 0;
+
+        $r3 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $r3.<org.ooc.middle.hobgoblins.Resolver: int ghostingCount> = 1;
+
+        return;
+    }
+
+    public boolean process(org.ooc.frontend.model.Module, org.ooc.frontend.BuildParams) throws java.io.IOException
+    {
+        Resolver this;
+        org.ooc.frontend.model.Module module;
+        org.ooc.frontend.BuildParams params;
+        int $stack6, $stack7;
+        org.ooc.middle.walkers.SketchyNosy $stack13, stack#4;
+        boolean $stack14, $stack15, $stack30;
+        org.ooc.frontend.model.tokens.Token $stack26;
+        org.ooc.middle.structs.MultiMap $stack27;
+        java.util.List $stack28;
+        java.lang.Object $stack31;
+        java.util.Iterator count;
+        org.ooc.frontend.model.TypeDecl typeDecl;
+        org.ooc.frontend.model.NodeList $u0;
+        org.ooc.middle.hobgoblins.Resolver$1 $u1;
+        org.ooc.middle.hobgoblins.Resolver $r0, $r1, $r2, $r3, $r5, $r6, $r8, $r12, $r13, $r14, $r15;
+        org.ooc.frontend.model.Node $r4;
+        org.ooc.middle.walkers.Opportunist $r7;
+
+        this := @this: Resolver;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        params := @parameter1: org.ooc.frontend.BuildParams;
+
+        $r0 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $r0.<org.ooc.middle.hobgoblins.Resolver: org.ooc.frontend.model.Module module> = module;
+
+        $r1 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $r1.<org.ooc.middle.hobgoblins.Resolver: org.ooc.frontend.BuildParams params> = params;
+
+        $r2 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $stack6 = $r2.<org.ooc.middle.hobgoblins.Resolver: int ghostingCount>;
+
+        $stack7 = $stack6 - 1;
+
+        $r3 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $r3.<org.ooc.middle.hobgoblins.Resolver: int ghostingCount> = $stack7;
+
+        if $stack6 <= 0 goto label3;
+
+        $u0 = new org.ooc.frontend.model.NodeList;
+
+        $stack26 = <org.ooc.frontend.model.tokens.Token: org.ooc.frontend.model.tokens.Token defaultToken>;
+
+        specialinvoke $u0.<org.ooc.frontend.model.NodeList: void <init>(org.ooc.frontend.model.tokens.Token)>($stack26);
+
+        $r4 = (org.ooc.frontend.model.Node) module;
+
+        virtualinvoke $u0.<org.ooc.frontend.model.NodeList: void push(org.ooc.frontend.model.Node)>($r4);
+
+        $stack27 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap getTypes()>();
+
+        $stack28 = virtualinvoke $stack27.<org.ooc.middle.structs.MultiMap: java.util.List values()>();
+
+        count = interfaceinvoke $stack28.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack30 = interfaceinvoke count.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack30 == 0 goto label2;
+
+        $stack31 = interfaceinvoke count.<java.util.Iterator: java.lang.Object next()>();
+
+        typeDecl = (org.ooc.frontend.model.TypeDecl) $stack31;
+
+        $r5 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        virtualinvoke typeDecl.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.interfaces.MustBeResolved$Response resolve(org.ooc.frontend.model.NodeList,org.ooc.middle.hobgoblins.Resolver,boolean)>($u0, $r5, 0);
+
+        goto label1;
+
+     label2:
+        return 1;
+
+     label3:
+        $u1 = new org.ooc.middle.hobgoblins.Resolver$1;
+
+        $r6 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        specialinvoke $u1.<org.ooc.middle.hobgoblins.Resolver$1: void <init>(org.ooc.middle.hobgoblins.Resolver,org.ooc.frontend.BuildParams)>($r6, params);
+
+        $r7 = (org.ooc.middle.walkers.Opportunist) $u1;
+
+        stack#4 = staticinvoke <org.ooc.middle.walkers.SketchyNosy: org.ooc.middle.walkers.SketchyNosy get(org.ooc.middle.walkers.Opportunist)>($r7);
+
+        $r8 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $r8.<org.ooc.middle.hobgoblins.Resolver: boolean running> = 1;
+
+        goto label4;
+
+     label4:
+        $r12 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $r12.<org.ooc.middle.hobgoblins.Resolver: boolean running> = 0;
+
+        $stack13 = virtualinvoke stack#4.<org.ooc.middle.walkers.SketchyNosy: org.ooc.middle.walkers.SketchyNosy start()>();
+
+        virtualinvoke $stack13.<org.ooc.middle.walkers.SketchyNosy: void visit(org.ooc.frontend.model.Module)>(module);
+
+        $r13 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $stack14 = $r13.<org.ooc.middle.hobgoblins.Resolver: boolean restarted>;
+
+        if $stack14 == 0 goto label5;
+
+        $r14 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $r14.<org.ooc.middle.hobgoblins.Resolver: boolean restarted> = 0;
+
+        goto label5;
+
+     label5:
+        $r15 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $stack15 = $r15.<org.ooc.middle.hobgoblins.Resolver: boolean running>;
+
+        return $stack15;
+    }
+
+    public java.lang.String toString()
+    {
+        Resolver this;
+        org.ooc.frontend.model.Module $stack1;
+        java.lang.String $stack2;
+        org.ooc.middle.hobgoblins.Resolver $r0;
+
+        this := @this: Resolver;
+
+        $r0 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $stack1 = $r0.<org.ooc.middle.hobgoblins.Resolver: org.ooc.frontend.model.Module module>;
+
+        $stack2 = virtualinvoke $stack1.<org.ooc.frontend.model.Module: java.lang.String getFullName()>();
+
+        return $stack2;
+    }
+
+    public boolean isFatal()
+    {
+        Resolver this;
+        boolean $stack1;
+        org.ooc.middle.hobgoblins.Resolver $r0;
+
+        this := @this: Resolver;
+
+        $r0 = (org.ooc.middle.hobgoblins.Resolver) this;
+
+        $stack1 = $r0.<org.ooc.middle.hobgoblins.Resolver: boolean fatal>;
+
+        return $stack1;
+    }
+
+    static void <clinit>()
+    {
+        <Resolver: int SAFE_MAX> = 1024;
+
+        <Resolver: int MAX> = 4;
+
+        <org.ooc.middle.hobgoblins.Resolver: int restartCount> = 0;
+
+        return;
+    }
+}

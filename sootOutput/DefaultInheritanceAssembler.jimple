@@ -1,0 +1,191 @@
+public class DefaultInheritanceAssembler extends java.lang.Object implements org.apache.maven.model.inheritance.InheritanceAssembler
+{
+    private org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger merger;
+    private static final java.lang.String CHILD_DIRECTORY;
+    private static final java.lang.String CHILD_DIRECTORY_PROPERTY;
+
+    public void <init>()
+    {
+        DefaultInheritanceAssembler this;
+        org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger $u0;
+        org.apache.maven.model.inheritance.DefaultInheritanceAssembler $r0;
+
+        this := @this: DefaultInheritanceAssembler;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger;
+
+        specialinvoke $u0.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void <init>()>();
+
+        $r0 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler) this;
+
+        $r0.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler: org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger merger> = $u0;
+
+        return;
+    }
+
+    public void assembleModelInheritance(org.apache.maven.model.Model, org.apache.maven.model.Model, org.apache.maven.model.building.ModelBuildingRequest, org.apache.maven.model.building.ModelProblemCollector)
+    {
+        org.apache.maven.model.Model child, parent;
+        java.util.Properties $stack8;
+        java.lang.String $stack10, childPath, $stack14;
+        DefaultInheritanceAssembler this;
+        org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger $stack16;
+        org.apache.maven.model.building.ModelBuildingRequest request;
+        org.apache.maven.model.building.ModelProblemCollector problems;
+        java.util.HashMap $u0;
+        org.apache.maven.model.inheritance.DefaultInheritanceAssembler $r0, $r1;
+
+        this := @this: DefaultInheritanceAssembler;
+
+        child := @parameter0: org.apache.maven.model.Model;
+
+        parent := @parameter1: org.apache.maven.model.Model;
+
+        request := @parameter2: org.apache.maven.model.building.ModelBuildingRequest;
+
+        problems := @parameter3: org.apache.maven.model.building.ModelProblemCollector;
+
+        $u0 = new java.util.HashMap;
+
+        specialinvoke $u0.<java.util.HashMap: void <init>()>();
+
+        $stack8 = virtualinvoke child.<org.apache.maven.model.Model: java.util.Properties getProperties()>();
+
+        $stack10 = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getArtifactId()>();
+
+        childPath = virtualinvoke $stack8.<java.util.Properties: java.lang.String getProperty(java.lang.String,java.lang.String)>("project.directory", $stack10);
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("child-directory", childPath);
+
+        $r0 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler) this;
+
+        $stack14 = specialinvoke $r0.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler: java.lang.String getChildPathAdjustment(org.apache.maven.model.Model,org.apache.maven.model.Model,java.lang.String)>(child, parent, childPath);
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("child-path-adjustment", $stack14);
+
+        $r1 = (org.apache.maven.model.inheritance.DefaultInheritanceAssembler) this;
+
+        $stack16 = $r1.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler: org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger merger>;
+
+        virtualinvoke $stack16.<org.apache.maven.model.inheritance.DefaultInheritanceAssembler$InheritanceModelMerger: void merge(org.apache.maven.model.Model,org.apache.maven.model.Model,boolean,java.util.Map)>(child, parent, 0, $u0);
+
+        return;
+    }
+
+    private java.lang.String getChildPathAdjustment(org.apache.maven.model.Model, org.apache.maven.model.Model, java.lang.String)
+    {
+        org.apache.maven.model.Model parent, child;
+        java.io.File $stack11, $stack49;
+        java.util.List $stack12;
+        java.util.Iterator l6;
+        java.lang.Object $stack16;
+        int $stack19, $stack20, lastSlash, $stack24, $stack32, $stack33, $stack43, $stack44;
+        boolean $stack21, $stack22, $stack26, $stack29, $stack14;
+        java.lang.String childDirectory, adjustment, childName, module, moduleName;
+        DefaultInheritanceAssembler this;
+
+        this := @this: DefaultInheritanceAssembler;
+
+        child := @parameter0: org.apache.maven.model.Model;
+
+        parent := @parameter1: org.apache.maven.model.Model;
+
+        childDirectory := @parameter2: java.lang.String;
+
+        adjustment = "";
+
+        if parent == null goto label7;
+
+        childName = virtualinvoke child.<org.apache.maven.model.Model: java.lang.String getArtifactId()>();
+
+        $stack11 = virtualinvoke child.<org.apache.maven.model.Model: java.io.File getProjectDirectory()>();
+
+        if $stack11 == null goto label1;
+
+        $stack49 = virtualinvoke child.<org.apache.maven.model.Model: java.io.File getProjectDirectory()>();
+
+        childName = virtualinvoke $stack49.<java.io.File: java.lang.String getName()>();
+
+     label1:
+        $stack12 = virtualinvoke parent.<org.apache.maven.model.Model: java.util.List getModules()>();
+
+        l6 = interfaceinvoke $stack12.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack14 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label7;
+
+        $stack16 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        module = (java.lang.String) $stack16;
+
+        module = virtualinvoke module.<java.lang.String: java.lang.String replace(char,char)>(92, 47);
+
+        $stack19 = virtualinvoke module.<java.lang.String: int length()>();
+
+        $stack20 = $stack19 - 4;
+
+        $stack21 = virtualinvoke module.<java.lang.String: boolean regionMatches(boolean,int,java.lang.String,int,int)>(1, $stack20, ".xml", 0, 4);
+
+        if $stack21 == 0 goto label3;
+
+        $stack43 = virtualinvoke module.<java.lang.String: int lastIndexOf(int)>(47);
+
+        $stack44 = $stack43 + 1;
+
+        module = virtualinvoke module.<java.lang.String: java.lang.String substring(int,int)>(0, $stack44);
+
+     label3:
+        moduleName = module;
+
+        $stack22 = virtualinvoke module.<java.lang.String: boolean endsWith(java.lang.String)>("/");
+
+        if $stack22 == 0 goto label4;
+
+        $stack32 = virtualinvoke module.<java.lang.String: int length()>();
+
+        $stack33 = $stack32 - 1;
+
+        moduleName = virtualinvoke module.<java.lang.String: java.lang.String substring(int,int)>(0, $stack33);
+
+     label4:
+        lastSlash = virtualinvoke moduleName.<java.lang.String: int lastIndexOf(int)>(47);
+
+        $stack24 = lastSlash + 1;
+
+        moduleName = virtualinvoke moduleName.<java.lang.String: java.lang.String substring(int)>($stack24);
+
+        $stack26 = virtualinvoke moduleName.<java.lang.String: boolean equals(java.lang.Object)>(childName);
+
+        if $stack26 != 0 goto label5;
+
+        $stack29 = virtualinvoke moduleName.<java.lang.String: boolean equals(java.lang.Object)>(childDirectory);
+
+        if $stack29 == 0 goto label6;
+
+     label5:
+        if lastSlash < 0 goto label6;
+
+        adjustment = virtualinvoke module.<java.lang.String: java.lang.String substring(int,int)>(0, lastSlash);
+
+        goto label7;
+
+     label6:
+        goto label2;
+
+     label7:
+        return adjustment;
+    }
+
+    public static void <clinit>()
+    {
+        <DefaultInheritanceAssembler: java.lang.String CHILD_DIRECTORY_PROPERTY> = "project.directory";
+
+        <DefaultInheritanceAssembler: java.lang.String CHILD_DIRECTORY> = "child-directory";
+
+        return;
+    }
+}

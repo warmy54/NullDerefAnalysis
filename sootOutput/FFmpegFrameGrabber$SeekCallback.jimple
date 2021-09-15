@@ -1,0 +1,188 @@
+class FFmpegFrameGrabber$SeekCallback extends org.bytedeco.ffmpeg.avformat.Seek_Pointer_long_int
+{
+
+    void <init>()
+    {
+        FFmpegFrameGrabber$SeekCallback this;
+
+        this := @this: FFmpegFrameGrabber$SeekCallback;
+
+        specialinvoke this.<org.bytedeco.ffmpeg.avformat.Seek_Pointer_long_int: void <init>()>();
+
+        return;
+    }
+
+    public long call(org.bytedeco.javacpp.Pointer, long, int)
+    {
+        org.bytedeco.javacpp.Pointer opaque;
+        java.util.Map $stack12;
+        java.lang.Object $stack13;
+        int whence;
+        byte $stack15, $stack21, $stack29, $stack35, $stack26;
+        java.lang.Throwable $stack41;
+        java.lang.StringBuilder $stack42, $stack44, $stack45;
+        java.io.PrintStream $stack43;
+        java.lang.String $stack46;
+        FFmpegFrameGrabber$SeekCallback this;
+        long offset, size, n, n#6, $stack27;
+        java.io.InputStream is;
+
+        this := @this: FFmpegFrameGrabber$SeekCallback;
+
+        opaque := @parameter0: org.bytedeco.javacpp.Pointer;
+
+        offset := @parameter1: long;
+
+        whence := @parameter2: int;
+
+     label01:
+        $stack12 = <org.bytedeco.javacv.FFmpegFrameGrabber: java.util.Map inputStreams>;
+
+        $stack13 = interfaceinvoke $stack12.<java.util.Map: java.lang.Object get(java.lang.Object)>(opaque);
+
+        is = (java.io.InputStream) $stack13;
+
+        size = 0L;
+
+        lookupswitch(whence)
+        {
+            case 0: goto label02;
+            case 1: goto label03;
+            case 2: goto label04;
+            case 65536: goto label08;
+            default: goto label15;
+        };
+
+     label02:
+        virtualinvoke is.<java.io.InputStream: void reset()>();
+
+        goto label16;
+
+     label03:
+        goto label16;
+
+     label04:
+        virtualinvoke is.<java.io.InputStream: void reset()>();
+
+     label05:
+        n = virtualinvoke is.<java.io.InputStream: long skip(long)>(9223372036854775807L);
+
+        $stack35 = n cmp 0L;
+
+        if $stack35 != 0 goto label06;
+
+        goto label07;
+
+     label06:
+        size = size + n;
+
+        goto label05;
+
+     label07:
+        offset = offset + size;
+
+        virtualinvoke is.<java.io.InputStream: void reset()>();
+
+        goto label16;
+
+     label08:
+        n = 0L;
+
+     label09:
+        n#6 = virtualinvoke is.<java.io.InputStream: long skip(long)>(9223372036854775807L);
+
+        $stack15 = n#6 cmp 0L;
+
+        if $stack15 != 0 goto label10;
+
+        goto label11;
+
+     label10:
+        n = n + n#6;
+
+        goto label09;
+
+     label11:
+        virtualinvoke is.<java.io.InputStream: void reset()>();
+
+     label12:
+        n#6 = virtualinvoke is.<java.io.InputStream: long skip(long)>(9223372036854775807L);
+
+        $stack21 = n#6 cmp 0L;
+
+        if $stack21 != 0 goto label13;
+
+        goto label14;
+
+     label13:
+        size = size + n#6;
+
+        goto label12;
+
+     label14:
+        offset = size - n;
+
+        virtualinvoke is.<java.io.InputStream: void reset()>();
+
+        goto label16;
+
+     label15:
+        return -1L;
+
+     label16:
+        n#6 = offset;
+
+     label17:
+        $stack26 = n#6 cmp 0L;
+
+        if $stack26 <= 0 goto label19;
+
+        n = virtualinvoke is.<java.io.InputStream: long skip(long)>(n#6);
+
+        $stack29 = n cmp 0L;
+
+        if $stack29 != 0 goto label18;
+
+        goto label19;
+
+     label18:
+        n#6 = n#6 - n;
+
+        goto label17;
+
+     label19:
+        if whence != 65536 goto label20;
+
+        $stack27 = size;
+
+        goto label21;
+
+     label20:
+        $stack27 = 0L;
+
+     label21:
+        return $stack27;
+
+     label22:
+        $stack41 := @caughtexception;
+
+        $stack43 = <java.lang.System: java.io.PrintStream err>;
+
+        $stack42 = new java.lang.StringBuilder;
+
+        specialinvoke $stack42.<java.lang.StringBuilder: void <init>()>();
+
+        $stack44 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error on InputStream.reset() or skip(): ");
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack41);
+
+        $stack46 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack43.<java.io.PrintStream: void println(java.lang.String)>($stack46);
+
+        return -1L;
+
+        catch java.lang.Throwable from label01 to label15 with label22;
+        catch java.lang.Throwable from label16 to label21 with label22;
+    }
+}

@@ -1,0 +1,944 @@
+abstract class AbstractEventXMLFilter extends org.apache.maven.model.transform.sax.AbstractSAXFilter
+{
+    private java.util.Queue saxEvents;
+    private org.apache.maven.model.transform.sax.SAXEventFactory eventFactory;
+    private java.util.List charactersSegments;
+    private boolean lockCharacters;
+
+    protected abstract boolean isParsing();
+
+    protected abstract java.lang.String getState();
+
+    protected boolean acceptEvent(java.lang.String)
+    {
+        AbstractEventXMLFilter this;
+        java.lang.String state;
+
+        this := @this: AbstractEventXMLFilter;
+
+        state := @parameter0: java.lang.String;
+
+        return 1;
+    }
+
+    void <init>()
+    {
+        AbstractEventXMLFilter this;
+        java.util.ArrayDeque $u0;
+        java.util.ArrayList $u1;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1, $r2;
+
+        this := @this: AbstractEventXMLFilter;
+
+        specialinvoke this.<org.apache.maven.model.transform.sax.AbstractSAXFilter: void <init>()>();
+
+        $u0 = new java.util.ArrayDeque;
+
+        specialinvoke $u0.<java.util.ArrayDeque: void <init>()>();
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.Queue saxEvents> = $u0;
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.List charactersSegments> = $u1;
+
+        $r2 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $r2.<org.apache.maven.model.transform.AbstractEventXMLFilter: boolean lockCharacters> = 0;
+
+        return;
+    }
+
+    void <init>(org.apache.maven.model.transform.sax.AbstractSAXFilter)
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.AbstractSAXFilter parent;
+        java.util.ArrayDeque $u0;
+        java.util.ArrayList $u1;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1, $r2;
+
+        this := @this: AbstractEventXMLFilter;
+
+        parent := @parameter0: org.apache.maven.model.transform.sax.AbstractSAXFilter;
+
+        specialinvoke this.<org.apache.maven.model.transform.sax.AbstractSAXFilter: void <init>(org.apache.maven.model.transform.sax.AbstractSAXFilter)>(parent);
+
+        $u0 = new java.util.ArrayDeque;
+
+        specialinvoke $u0.<java.util.ArrayDeque: void <init>()>();
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.Queue saxEvents> = $u0;
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.List charactersSegments> = $u1;
+
+        $r2 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $r2.<org.apache.maven.model.transform.AbstractEventXMLFilter: boolean lockCharacters> = 0;
+
+        return;
+    }
+
+    private org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack1, $stack2, $stack5;
+        org.xml.sax.ContentHandler $stack3;
+        org.xml.sax.ext.LexicalHandler $stack4;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: AbstractEventXMLFilter;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack1 = $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory eventFactory>;
+
+        if $stack1 != null goto label1;
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack3 = virtualinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.xml.sax.ContentHandler getContentHandler()>();
+
+        $r2 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack4 = virtualinvoke $r2.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.xml.sax.ext.LexicalHandler getLexicalHandler()>();
+
+        $stack5 = staticinvoke <org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEventFactory newInstance(org.xml.sax.ContentHandler,org.xml.sax.ext.LexicalHandler)>($stack3, $stack4);
+
+        $r3 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $r3.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory eventFactory> = $stack5;
+
+     label1:
+        $r4 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack2 = $r4.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory eventFactory>;
+
+        return $stack2;
+    }
+
+    private void processEvent(org.apache.maven.model.transform.sax.SAXEvent) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        boolean $stack3, $stack5;
+        org.apache.maven.model.transform.sax.SAXEvent event, $stack7;
+        java.lang.String eventState;
+        java.util.Queue $stack6;
+        java.util.List $stack9, $stack12;
+        java.util.stream.Stream $stack10;
+        java.util.function.Consumer $stack11;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7;
+
+        this := @this: AbstractEventXMLFilter;
+
+        event := @parameter0: org.apache.maven.model.transform.sax.SAXEvent;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack3 = virtualinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: boolean isParsing()>();
+
+        if $stack3 == 0 goto label2;
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        eventState = virtualinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.lang.String getState()>();
+
+        $r2 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack5 = $r2.<org.apache.maven.model.transform.AbstractEventXMLFilter: boolean lockCharacters>;
+
+        if $stack5 != 0 goto label1;
+
+        $r3 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack9 = $r3.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.List charactersSegments>;
+
+        $stack10 = interfaceinvoke $stack9.<java.util.List: java.util.stream.Stream stream()>();
+
+        $r4 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack11 = staticinvoke <AbstractEventXMLFilter$lambda_processEvent_1__314: java.util.function.Consumer bootstrap$(org.apache.maven.model.transform.AbstractEventXMLFilter,java.lang.String)>($r4, eventState);
+
+        interfaceinvoke $stack10.<java.util.stream.Stream: void forEach(java.util.function.Consumer)>($stack11);
+
+        $r5 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack12 = $r5.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.List charactersSegments>;
+
+        interfaceinvoke $stack12.<java.util.List: void clear()>();
+
+     label1:
+        $r6 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack6 = $r6.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.Queue saxEvents>;
+
+        $r7 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack7 = staticinvoke <AbstractEventXMLFilter$lambda_processEvent_2__309: org.apache.maven.model.transform.sax.SAXEvent bootstrap$(org.apache.maven.model.transform.AbstractEventXMLFilter,java.lang.String,org.apache.maven.model.transform.sax.SAXEvent)>($r7, eventState, event);
+
+        interfaceinvoke $stack6.<java.util.Queue: boolean add(java.lang.Object)>($stack7);
+
+        goto label3;
+
+     label2:
+        interfaceinvoke event.<org.apache.maven.model.transform.sax.SAXEvent: void execute()>();
+
+     label3:
+        return;
+    }
+
+    protected org.apache.maven.model.transform.AbstractEventXMLFilter$Includer include()
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.AbstractEventXMLFilter$Includer $stack1;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: boolean lockCharacters> = 1;
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack1 = staticinvoke <AbstractEventXMLFilter$lambda_include_3__310: org.apache.maven.model.transform.AbstractEventXMLFilter$Includer bootstrap$(org.apache.maven.model.transform.AbstractEventXMLFilter)>($r1);
+
+        return $stack1;
+    }
+
+    protected final void executeEvents() throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        java.lang.String eventState;
+        java.util.List $stack3, $stack6;
+        java.util.stream.Stream $stack4;
+        java.util.function.Consumer $stack5;
+        java.util.Queue $stack7, $stack9;
+        boolean $stack8;
+        java.lang.Object $stack10;
+        org.apache.maven.model.transform.sax.SAXEvent $stack11;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: AbstractEventXMLFilter;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        eventState = virtualinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.lang.String getState()>();
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack3 = $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.List charactersSegments>;
+
+        $stack4 = interfaceinvoke $stack3.<java.util.List: java.util.stream.Stream stream()>();
+
+        $r2 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack5 = staticinvoke <AbstractEventXMLFilter$lambda_executeEvents_5__311: java.util.function.Consumer bootstrap$(org.apache.maven.model.transform.AbstractEventXMLFilter,java.lang.String)>($r2, eventState);
+
+        interfaceinvoke $stack4.<java.util.stream.Stream: void forEach(java.util.function.Consumer)>($stack5);
+
+        $r3 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack6 = $r3.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.List charactersSegments>;
+
+        interfaceinvoke $stack6.<java.util.List: void clear()>();
+
+     label1:
+        $r4 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack7 = $r4.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.Queue saxEvents>;
+
+        $stack8 = interfaceinvoke $stack7.<java.util.Queue: boolean isEmpty()>();
+
+        if $stack8 != 0 goto label2;
+
+        $r5 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack9 = $r5.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.Queue saxEvents>;
+
+        $stack10 = interfaceinvoke $stack9.<java.util.Queue: java.lang.Object poll()>();
+
+        $stack11 = (org.apache.maven.model.transform.sax.SAXEvent) $stack10;
+
+        interfaceinvoke $stack11.<org.apache.maven.model.transform.sax.SAXEvent: void execute()>();
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void setDocumentLocator(org.xml.sax.Locator)
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack3;
+        org.xml.sax.Locator locator;
+        org.apache.maven.model.transform.sax.SAXEvent $stack4;
+        org.xml.sax.SAXException $stack5;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        locator := @parameter0: org.xml.sax.Locator;
+
+     label1:
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack3 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack4 = virtualinvoke $stack3.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent setDocumentLocator(org.xml.sax.Locator)>(locator);
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack4);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack5 := @caughtexception;
+
+     label4:
+        return;
+
+        catch org.xml.sax.SAXException from label1 to label2 with label3;
+    }
+
+    public void startDocument() throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack1;
+        org.apache.maven.model.transform.sax.SAXEvent $stack2;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack1 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent startDocument()>();
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack2);
+
+        return;
+    }
+
+    public void endDocument() throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack1;
+        org.apache.maven.model.transform.sax.SAXEvent $stack2;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack1 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent endDocument()>();
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack2);
+
+        return;
+    }
+
+    public void startPrefixMapping(java.lang.String, java.lang.String) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack3;
+        java.lang.String prefix, uri;
+        org.apache.maven.model.transform.sax.SAXEvent $stack4;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        prefix := @parameter0: java.lang.String;
+
+        uri := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack3 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack4 = virtualinvoke $stack3.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent startPrefixMapping(java.lang.String,java.lang.String)>(prefix, uri);
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack4);
+
+        return;
+    }
+
+    public void endPrefixMapping(java.lang.String) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack2;
+        java.lang.String prefix;
+        org.apache.maven.model.transform.sax.SAXEvent $stack3;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        prefix := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack3 = virtualinvoke $stack2.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent endPrefixMapping(java.lang.String)>(prefix);
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack3);
+
+        return;
+    }
+
+    public void startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack5;
+        java.lang.String uri, localName, qName;
+        org.xml.sax.Attributes atts;
+        org.apache.maven.model.transform.sax.SAXEvent $stack6;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        uri := @parameter0: java.lang.String;
+
+        localName := @parameter1: java.lang.String;
+
+        qName := @parameter2: java.lang.String;
+
+        atts := @parameter3: org.xml.sax.Attributes;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack5 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack6 = virtualinvoke $stack5.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent startElement(java.lang.String,java.lang.String,java.lang.String,org.xml.sax.Attributes)>(uri, localName, qName, atts);
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack6);
+
+        return;
+    }
+
+    public void endElement(java.lang.String, java.lang.String, java.lang.String) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack4;
+        java.lang.String uri, localName, qName;
+        org.apache.maven.model.transform.sax.SAXEvent $stack5;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        uri := @parameter0: java.lang.String;
+
+        localName := @parameter1: java.lang.String;
+
+        qName := @parameter2: java.lang.String;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack5 = virtualinvoke $stack4.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent endElement(java.lang.String,java.lang.String,java.lang.String)>(uri, localName, qName);
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack5);
+
+        return;
+    }
+
+    public void characters(char[], int, int) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        boolean $stack4, $stack5;
+        char[] ch;
+        int start, length;
+        java.util.List $stack6;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack7, $stack10;
+        org.apache.maven.model.transform.sax.SAXEvent $stack8, $stack11;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: AbstractEventXMLFilter;
+
+        ch := @parameter0: char[];
+
+        start := @parameter1: int;
+
+        length := @parameter2: int;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack4 = $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: boolean lockCharacters>;
+
+        if $stack4 == 0 goto label1;
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack10 = specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack11 = virtualinvoke $stack10.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent characters(char[],int,int)>(ch, start, length);
+
+        $r2 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r2.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack11);
+
+        goto label3;
+
+     label1:
+        $r3 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack5 = virtualinvoke $r3.<org.apache.maven.model.transform.AbstractEventXMLFilter: boolean isParsing()>();
+
+        if $stack5 == 0 goto label2;
+
+        $r4 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack6 = $r4.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.List charactersSegments>;
+
+        $r5 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack7 = specialinvoke $r5.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack8 = virtualinvoke $stack7.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent characters(char[],int,int)>(ch, start, length);
+
+        interfaceinvoke $stack6.<java.util.List: boolean add(java.lang.Object)>($stack8);
+
+        goto label3;
+
+     label2:
+        specialinvoke this.<org.apache.maven.model.transform.sax.AbstractSAXFilter: void characters(char[],int,int)>(ch, start, length);
+
+     label3:
+        return;
+    }
+
+    public void ignorableWhitespace(char[], int, int) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack4;
+        char[] ch;
+        int start, length;
+        org.apache.maven.model.transform.sax.SAXEvent $stack5;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        ch := @parameter0: char[];
+
+        start := @parameter1: int;
+
+        length := @parameter2: int;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack5 = virtualinvoke $stack4.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent ignorableWhitespace(char[],int,int)>(ch, start, length);
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack5);
+
+        return;
+    }
+
+    public void processingInstruction(java.lang.String, java.lang.String) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack3;
+        java.lang.String target, data;
+        org.apache.maven.model.transform.sax.SAXEvent $stack4;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        target := @parameter0: java.lang.String;
+
+        data := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack3 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack4 = virtualinvoke $stack3.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent processingInstruction(java.lang.String,java.lang.String)>(target, data);
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack4);
+
+        return;
+    }
+
+    public void skippedEntity(java.lang.String) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack2;
+        java.lang.String name;
+        org.apache.maven.model.transform.sax.SAXEvent $stack3;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack3 = virtualinvoke $stack2.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent skippedEntity(java.lang.String)>(name);
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack3);
+
+        return;
+    }
+
+    public void startDTD(java.lang.String, java.lang.String, java.lang.String) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack4;
+        org.apache.maven.model.transform.sax.SAXEvent $stack5;
+        java.lang.String name, publicId, systemId;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        name := @parameter0: java.lang.String;
+
+        publicId := @parameter1: java.lang.String;
+
+        systemId := @parameter2: java.lang.String;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack5 = virtualinvoke $stack4.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent startCDATA()>();
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack5);
+
+        return;
+    }
+
+    public void endDTD() throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack1;
+        org.apache.maven.model.transform.sax.SAXEvent $stack2;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack1 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent endDTD()>();
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack2);
+
+        return;
+    }
+
+    public void startEntity(java.lang.String) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack2;
+        java.lang.String name;
+        org.apache.maven.model.transform.sax.SAXEvent $stack3;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack3 = virtualinvoke $stack2.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent startEntity(java.lang.String)>(name);
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack3);
+
+        return;
+    }
+
+    public void endEntity(java.lang.String) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack2;
+        java.lang.String name;
+        org.apache.maven.model.transform.sax.SAXEvent $stack3;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack3 = virtualinvoke $stack2.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent endEntity(java.lang.String)>(name);
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack3);
+
+        return;
+    }
+
+    public void startCDATA() throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack1;
+        org.apache.maven.model.transform.sax.SAXEvent $stack2;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack1 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent startCDATA()>();
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack2);
+
+        return;
+    }
+
+    public void endCDATA() throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack1;
+        org.apache.maven.model.transform.sax.SAXEvent $stack2;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack1 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack2 = virtualinvoke $stack1.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent endCDATA()>();
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack2);
+
+        return;
+    }
+
+    public void comment(char[], int, int) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.sax.SAXEventFactory $stack4;
+        char[] ch;
+        int start, length;
+        org.apache.maven.model.transform.sax.SAXEvent $stack5;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        ch := @parameter0: char[];
+
+        start := @parameter1: int;
+
+        length := @parameter2: int;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack4 = specialinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: org.apache.maven.model.transform.sax.SAXEventFactory getEventFactory()>();
+
+        $stack5 = virtualinvoke $stack4.<org.apache.maven.model.transform.sax.SAXEventFactory: org.apache.maven.model.transform.sax.SAXEvent comment(char[],int,int)>(ch, start, length);
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        specialinvoke $r1.<org.apache.maven.model.transform.AbstractEventXMLFilter: void processEvent(org.apache.maven.model.transform.sax.SAXEvent)>($stack5);
+
+        return;
+    }
+
+    private void lambda$executeEvents$5(java.lang.String, org.apache.maven.model.transform.sax.SAXEvent)
+    {
+        AbstractEventXMLFilter this;
+        java.lang.String eventState;
+        org.apache.maven.model.transform.sax.SAXEvent e, $stack4;
+        java.util.Queue $stack3;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        eventState := @parameter0: java.lang.String;
+
+        e := @parameter1: org.apache.maven.model.transform.sax.SAXEvent;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack3 = $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.Queue saxEvents>;
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack4 = staticinvoke <AbstractEventXMLFilter$lambda_executeEvents_4__312: org.apache.maven.model.transform.sax.SAXEvent bootstrap$(org.apache.maven.model.transform.AbstractEventXMLFilter,java.lang.String,org.apache.maven.model.transform.sax.SAXEvent)>($r1, eventState, e);
+
+        interfaceinvoke $stack3.<java.util.Queue: boolean add(java.lang.Object)>($stack4);
+
+        return;
+    }
+
+    private void lambda$executeEvents$4(java.lang.String, org.apache.maven.model.transform.sax.SAXEvent) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        java.lang.String eventState;
+        boolean $stack3;
+        org.apache.maven.model.transform.sax.SAXEvent e;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0;
+
+        this := @this: AbstractEventXMLFilter;
+
+        eventState := @parameter0: java.lang.String;
+
+        e := @parameter1: org.apache.maven.model.transform.sax.SAXEvent;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack3 = virtualinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: boolean acceptEvent(java.lang.String)>(eventState);
+
+        if $stack3 == 0 goto label1;
+
+        interfaceinvoke e.<org.apache.maven.model.transform.sax.SAXEvent: void execute()>();
+
+     label1:
+        return;
+    }
+
+    private void lambda$include$3()
+    {
+        AbstractEventXMLFilter this;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0;
+
+        this := @this: AbstractEventXMLFilter;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: boolean lockCharacters> = 0;
+
+        return;
+    }
+
+    private void lambda$processEvent$2(java.lang.String, org.apache.maven.model.transform.sax.SAXEvent) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        java.lang.String eventState;
+        boolean $stack3;
+        org.apache.maven.model.transform.sax.SAXEvent event;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0;
+
+        this := @this: AbstractEventXMLFilter;
+
+        eventState := @parameter0: java.lang.String;
+
+        event := @parameter1: org.apache.maven.model.transform.sax.SAXEvent;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack3 = virtualinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: boolean acceptEvent(java.lang.String)>(eventState);
+
+        if $stack3 == 0 goto label1;
+
+        interfaceinvoke event.<org.apache.maven.model.transform.sax.SAXEvent: void execute()>();
+
+     label1:
+        return;
+    }
+
+    private void lambda$processEvent$1(java.lang.String, org.apache.maven.model.transform.sax.SAXEvent)
+    {
+        AbstractEventXMLFilter this;
+        java.lang.String eventState;
+        org.apache.maven.model.transform.sax.SAXEvent e, $stack4;
+        java.util.Queue $stack3;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0, $r1;
+
+        this := @this: AbstractEventXMLFilter;
+
+        eventState := @parameter0: java.lang.String;
+
+        e := @parameter1: org.apache.maven.model.transform.sax.SAXEvent;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack3 = $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: java.util.Queue saxEvents>;
+
+        $r1 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack4 = staticinvoke <AbstractEventXMLFilter$lambda_processEvent_0__313: org.apache.maven.model.transform.sax.SAXEvent bootstrap$(org.apache.maven.model.transform.AbstractEventXMLFilter,java.lang.String,org.apache.maven.model.transform.sax.SAXEvent)>($r1, eventState, e);
+
+        interfaceinvoke $stack3.<java.util.Queue: boolean add(java.lang.Object)>($stack4);
+
+        return;
+    }
+
+    private void lambda$processEvent$0(java.lang.String, org.apache.maven.model.transform.sax.SAXEvent) throws org.xml.sax.SAXException
+    {
+        AbstractEventXMLFilter this;
+        java.lang.String eventState;
+        boolean $stack3;
+        org.apache.maven.model.transform.sax.SAXEvent e;
+        org.apache.maven.model.transform.AbstractEventXMLFilter $r0;
+
+        this := @this: AbstractEventXMLFilter;
+
+        eventState := @parameter0: java.lang.String;
+
+        e := @parameter1: org.apache.maven.model.transform.sax.SAXEvent;
+
+        $r0 = (org.apache.maven.model.transform.AbstractEventXMLFilter) this;
+
+        $stack3 = virtualinvoke $r0.<org.apache.maven.model.transform.AbstractEventXMLFilter: boolean acceptEvent(java.lang.String)>(eventState);
+
+        if $stack3 == 0 goto label1;
+
+        interfaceinvoke e.<org.apache.maven.model.transform.sax.SAXEvent: void execute()>();
+
+     label1:
+        return;
+    }
+}

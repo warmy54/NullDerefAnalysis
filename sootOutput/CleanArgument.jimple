@@ -1,0 +1,155 @@
+public class CleanArgument extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        CleanArgument this;
+
+        this := @this: CleanArgument;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String[] cleanArgs(java.lang.String[])
+    {
+        java.util.ArrayList $stack9;
+        java.lang.String[] args, $stack11, cleanArgs#10;
+        java.lang.Object[] $stack12;
+        java.lang.String $stack14, arg, cleanArgPart, $stack33, $stack42, $stack44;
+        boolean $stack18, $stack24, addedToBuffer;
+        java.lang.StringBuilder $stack22, $stack31, $stack41, currentArg;
+        int $stack27, $stack28, $stack37, $stack38, cleanArgs, l5, cleanedSz#9;
+
+        args := @parameter0: java.lang.String[];
+
+        $stack9 = new java.util.ArrayList;
+
+        specialinvoke $stack9.<java.util.ArrayList: void <init>()>();
+
+        currentArg = null;
+
+        cleanArgs = lengthof args;
+
+        l5 = 0;
+
+     label01:
+        if l5 >= cleanArgs goto label11;
+
+        arg = args[l5];
+
+        addedToBuffer = 0;
+
+        $stack18 = virtualinvoke arg.<java.lang.String: boolean startsWith(java.lang.String)>("\"");
+
+        if $stack18 == 0 goto label03;
+
+        if currentArg == null goto label02;
+
+        $stack44 = virtualinvoke currentArg.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack9.<java.util.List: boolean add(java.lang.Object)>($stack44);
+
+     label02:
+        $stack41 = new java.lang.StringBuilder;
+
+        $stack42 = virtualinvoke arg.<java.lang.String: java.lang.String substring(int)>(1);
+
+        specialinvoke $stack41.<java.lang.StringBuilder: void <init>(java.lang.String)>($stack42);
+
+        currentArg = $stack41;
+
+        addedToBuffer = 1;
+
+     label03:
+        if addedToBuffer == 0 goto label08;
+
+        $stack24 = virtualinvoke arg.<java.lang.String: boolean endsWith(java.lang.String)>("\"");
+
+        if $stack24 == 0 goto label08;
+
+        $stack27 = virtualinvoke arg.<java.lang.String: int length()>();
+
+        $stack28 = $stack27 - 1;
+
+        cleanArgPart = virtualinvoke arg.<java.lang.String: java.lang.String substring(int,int)>(0, $stack28);
+
+        if currentArg == null goto label06;
+
+        if addedToBuffer == 0 goto label04;
+
+        $stack37 = virtualinvoke currentArg.<java.lang.StringBuilder: int length()>();
+
+        $stack38 = $stack37 - 1;
+
+        virtualinvoke currentArg.<java.lang.StringBuilder: void setLength(int)>($stack38);
+
+        goto label05;
+
+     label04:
+        $stack31 = virtualinvoke currentArg.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(cleanArgPart);
+
+     label05:
+        $stack33 = virtualinvoke currentArg.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack9.<java.util.List: boolean add(java.lang.Object)>($stack33);
+
+        goto label07;
+
+     label06:
+        interfaceinvoke $stack9.<java.util.List: boolean add(java.lang.Object)>(cleanArgPart);
+
+     label07:
+        currentArg = null;
+
+        goto label10;
+
+     label08:
+        if addedToBuffer != 0 goto label10;
+
+        if currentArg == null goto label09;
+
+        $stack22 = virtualinvoke currentArg.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(arg);
+
+        goto label10;
+
+     label09:
+        interfaceinvoke $stack9.<java.util.List: boolean add(java.lang.Object)>(arg);
+
+     label10:
+        l5 = l5 + 1;
+
+        goto label01;
+
+     label11:
+        if currentArg == null goto label12;
+
+        $stack14 = virtualinvoke currentArg.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack9.<java.util.List: boolean add(java.lang.Object)>($stack14);
+
+     label12:
+        cleanedSz#9 = interfaceinvoke $stack9.<java.util.List: int size()>();
+
+        if cleanedSz#9 != 0 goto label13;
+
+        cleanArgs#10 = args;
+
+        goto label14;
+
+     label13:
+        $stack11 = newarray (java.lang.String)[0];
+
+        $stack12 = interfaceinvoke $stack9.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($stack11);
+
+        cleanArgs#10 = (java.lang.String[]) $stack12;
+
+     label14:
+        return cleanArgs#10;
+    }
+}

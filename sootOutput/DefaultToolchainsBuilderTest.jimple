@@ -1,0 +1,1108 @@
+public class DefaultToolchainsBuilderTest extends java.lang.Object
+{
+    private static final java.lang.String LS;
+    private org.apache.maven.toolchain.io.DefaultToolchainsReader toolchainsReader;
+    private org.apache.maven.toolchain.io.DefaultToolchainsWriter toolchainsWriter;
+    private org.apache.maven.toolchain.building.DefaultToolchainsBuilder toolchainBuilder;
+
+    public void <init>()
+    {
+        DefaultToolchainsBuilderTest this;
+
+        this := @this: DefaultToolchainsBuilderTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onSetup()
+    {
+        DefaultToolchainsBuilderTest this;
+        java.util.HashMap $u0;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest$TestEnvVarSource $u1;
+        org.codehaus.plexus.interpolation.os.OperatingSystemUtils$EnvVarSource $r0;
+
+        this := @this: DefaultToolchainsBuilderTest;
+
+        staticinvoke <org.mockito.MockitoAnnotations: void initMocks(java.lang.Object)>(this);
+
+        $u0 = new java.util.HashMap;
+
+        specialinvoke $u0.<java.util.HashMap: void <init>()>();
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("testKey", "testValue");
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("testSpecialCharactersKey", "<test&Value>");
+
+        $u1 = new org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest$TestEnvVarSource;
+
+        specialinvoke $u1.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest$TestEnvVarSource: void <init>(java.util.Map)>($u0);
+
+        $r0 = (org.codehaus.plexus.interpolation.os.OperatingSystemUtils$EnvVarSource) $u1;
+
+        staticinvoke <org.codehaus.plexus.interpolation.os.OperatingSystemUtils: void setEnvVarSource(org.codehaus.plexus.interpolation.os.OperatingSystemUtils$EnvVarSource)>($r0);
+
+        return;
+    }
+
+    public void testBuildEmptyRequest() throws java.lang.Exception
+    {
+        DefaultToolchainsBuilderTest this;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilder $stack4;
+        org.apache.maven.toolchain.building.ToolchainsBuildingResult result;
+        org.apache.maven.toolchain.model.PersistedToolchains $stack6;
+        java.util.List $stack7, $stack9;
+        int $stack10;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest $u0;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest $r0;
+        org.apache.maven.toolchain.building.ToolchainsBuildingRequest $r1;
+
+        this := @this: DefaultToolchainsBuilderTest;
+
+        $u0 = new org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest: void <init>()>();
+
+        $r0 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack4 = $r0.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.building.DefaultToolchainsBuilder toolchainBuilder>;
+
+        $r1 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        result = virtualinvoke $stack4.<org.apache.maven.toolchain.building.DefaultToolchainsBuilder: org.apache.maven.toolchain.building.ToolchainsBuildingResult build(org.apache.maven.toolchain.building.ToolchainsBuildingRequest)>($r1);
+
+        $stack6 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack6);
+
+        $stack7 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack7);
+
+        $stack9 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        $stack10 = interfaceinvoke $stack9.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack10);
+
+        return;
+    }
+
+    public void testBuildRequestWithUserToolchains() throws java.lang.Exception
+    {
+        org.mockito.stubbing.Stubber $stack10;
+        DefaultToolchainsBuilderTest this;
+        org.apache.maven.toolchain.io.DefaultToolchainsReader $stack11, $stack13;
+        java.lang.Object $stack12, $stack14, $stack28, $stack34;
+        java.io.InputStream $stack15;
+        java.util.Map $stack16;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilder $stack18;
+        org.apache.maven.toolchain.building.ToolchainsBuildingResult result;
+        org.apache.maven.toolchain.model.PersistedToolchains $stack20, $stack22, $stack26, $stack32, $u2;
+        java.util.List $stack23, $stack27, $stack33, $stack38, $stack40;
+        int $stack24, $stack41;
+        org.apache.maven.toolchain.model.ToolchainModel $stack29, $stack35, $u3;
+        java.lang.String $stack30, $stack37;
+        java.util.Properties $stack36;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest $u0;
+        org.apache.maven.building.StringSource $u1;
+        org.apache.maven.toolchain.building.ToolchainsBuildingRequest $r0, $r4;
+        org.apache.maven.building.Source $r1;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest $r2, $r3;
+
+        this := @this: DefaultToolchainsBuilderTest;
+
+        $u0 = new org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest: void <init>()>();
+
+        $u1 = new org.apache.maven.building.StringSource;
+
+        specialinvoke $u1.<org.apache.maven.building.StringSource: void <init>(java.lang.CharSequence)>("");
+
+        $r0 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        $r1 = (org.apache.maven.building.Source) $u1;
+
+        interfaceinvoke $r0.<org.apache.maven.toolchain.building.ToolchainsBuildingRequest: org.apache.maven.toolchain.building.ToolchainsBuildingRequest setUserToolchainsSource(org.apache.maven.building.Source)>($r1);
+
+        $u2 = new org.apache.maven.toolchain.model.PersistedToolchains;
+
+        specialinvoke $u2.<org.apache.maven.toolchain.model.PersistedToolchains: void <init>()>();
+
+        $u3 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void setType(java.lang.String)>("TYPE");
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void addProvide(java.lang.String,java.lang.String)>("key", "user_value");
+
+        virtualinvoke $u2.<org.apache.maven.toolchain.model.PersistedToolchains: void addToolchain(org.apache.maven.toolchain.model.ToolchainModel)>($u3);
+
+        $stack10 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.Stubber doReturn(java.lang.Object)>($u2);
+
+        $r2 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack11 = $r2.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.io.DefaultToolchainsReader toolchainsReader>;
+
+        $stack12 = interfaceinvoke $stack10.<org.mockito.stubbing.Stubber: java.lang.Object when(java.lang.Object)>($stack11);
+
+        $stack13 = (org.apache.maven.toolchain.io.DefaultToolchainsReader) $stack12;
+
+        $stack14 = staticinvoke <org.mockito.ArgumentMatchers: java.lang.Object any(java.lang.Class)>(class "Ljava/io/InputStream;");
+
+        $stack15 = (java.io.InputStream) $stack14;
+
+        $stack16 = staticinvoke <org.mockito.ArgumentMatchers: java.util.Map anyMap()>();
+
+        virtualinvoke $stack13.<org.apache.maven.toolchain.io.DefaultToolchainsReader: org.apache.maven.toolchain.model.PersistedToolchains read(java.io.InputStream,java.util.Map)>($stack15, $stack16);
+
+        $r3 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack18 = $r3.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.building.DefaultToolchainsBuilder toolchainBuilder>;
+
+        $r4 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        result = virtualinvoke $stack18.<org.apache.maven.toolchain.building.DefaultToolchainsBuilder: org.apache.maven.toolchain.building.ToolchainsBuildingResult build(org.apache.maven.toolchain.building.ToolchainsBuildingRequest)>($r4);
+
+        $stack20 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack20);
+
+        $stack22 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack23 = virtualinvoke $stack22.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack24 = interfaceinvoke $stack23.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack24);
+
+        $stack26 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack27 = virtualinvoke $stack26.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack28 = interfaceinvoke $stack27.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack29 = (org.apache.maven.toolchain.model.ToolchainModel) $stack28;
+
+        $stack30 = virtualinvoke $stack29.<org.apache.maven.toolchain.model.ToolchainModel: java.lang.String getType()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("TYPE", $stack30);
+
+        $stack32 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack33 = virtualinvoke $stack32.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack34 = interfaceinvoke $stack33.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack35 = (org.apache.maven.toolchain.model.ToolchainModel) $stack34;
+
+        $stack36 = virtualinvoke $stack35.<org.apache.maven.toolchain.model.ToolchainModel: java.util.Properties getProvides()>();
+
+        $stack37 = virtualinvoke $stack36.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("key");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("user_value", $stack37);
+
+        $stack38 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack38);
+
+        $stack40 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        $stack41 = interfaceinvoke $stack40.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack41);
+
+        return;
+    }
+
+    public void testBuildRequestWithGlobalToolchains() throws java.lang.Exception
+    {
+        org.mockito.stubbing.Stubber $stack10;
+        DefaultToolchainsBuilderTest this;
+        org.apache.maven.toolchain.io.DefaultToolchainsReader $stack11, $stack13;
+        java.lang.Object $stack12, $stack14, $stack28, $stack34;
+        java.io.InputStream $stack15;
+        java.util.Map $stack16;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilder $stack18;
+        org.apache.maven.toolchain.building.ToolchainsBuildingResult result;
+        org.apache.maven.toolchain.model.PersistedToolchains $stack20, $stack22, $stack26, $stack32, $u2;
+        java.util.List $stack23, $stack27, $stack33, $stack38, $stack40;
+        int $stack24, $stack41;
+        org.apache.maven.toolchain.model.ToolchainModel $stack29, $stack35, $u3;
+        java.lang.String $stack30, $stack37;
+        java.util.Properties $stack36;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest $u0;
+        org.apache.maven.building.StringSource $u1;
+        org.apache.maven.toolchain.building.ToolchainsBuildingRequest $r0, $r4;
+        org.apache.maven.building.Source $r1;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest $r2, $r3;
+
+        this := @this: DefaultToolchainsBuilderTest;
+
+        $u0 = new org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest: void <init>()>();
+
+        $u1 = new org.apache.maven.building.StringSource;
+
+        specialinvoke $u1.<org.apache.maven.building.StringSource: void <init>(java.lang.CharSequence)>("");
+
+        $r0 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        $r1 = (org.apache.maven.building.Source) $u1;
+
+        interfaceinvoke $r0.<org.apache.maven.toolchain.building.ToolchainsBuildingRequest: org.apache.maven.toolchain.building.ToolchainsBuildingRequest setGlobalToolchainsSource(org.apache.maven.building.Source)>($r1);
+
+        $u2 = new org.apache.maven.toolchain.model.PersistedToolchains;
+
+        specialinvoke $u2.<org.apache.maven.toolchain.model.PersistedToolchains: void <init>()>();
+
+        $u3 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void setType(java.lang.String)>("TYPE");
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void addProvide(java.lang.String,java.lang.String)>("key", "global_value");
+
+        virtualinvoke $u2.<org.apache.maven.toolchain.model.PersistedToolchains: void addToolchain(org.apache.maven.toolchain.model.ToolchainModel)>($u3);
+
+        $stack10 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.Stubber doReturn(java.lang.Object)>($u2);
+
+        $r2 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack11 = $r2.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.io.DefaultToolchainsReader toolchainsReader>;
+
+        $stack12 = interfaceinvoke $stack10.<org.mockito.stubbing.Stubber: java.lang.Object when(java.lang.Object)>($stack11);
+
+        $stack13 = (org.apache.maven.toolchain.io.DefaultToolchainsReader) $stack12;
+
+        $stack14 = staticinvoke <org.mockito.ArgumentMatchers: java.lang.Object any(java.lang.Class)>(class "Ljava/io/InputStream;");
+
+        $stack15 = (java.io.InputStream) $stack14;
+
+        $stack16 = staticinvoke <org.mockito.ArgumentMatchers: java.util.Map anyMap()>();
+
+        virtualinvoke $stack13.<org.apache.maven.toolchain.io.DefaultToolchainsReader: org.apache.maven.toolchain.model.PersistedToolchains read(java.io.InputStream,java.util.Map)>($stack15, $stack16);
+
+        $r3 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack18 = $r3.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.building.DefaultToolchainsBuilder toolchainBuilder>;
+
+        $r4 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        result = virtualinvoke $stack18.<org.apache.maven.toolchain.building.DefaultToolchainsBuilder: org.apache.maven.toolchain.building.ToolchainsBuildingResult build(org.apache.maven.toolchain.building.ToolchainsBuildingRequest)>($r4);
+
+        $stack20 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack20);
+
+        $stack22 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack23 = virtualinvoke $stack22.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack24 = interfaceinvoke $stack23.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack24);
+
+        $stack26 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack27 = virtualinvoke $stack26.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack28 = interfaceinvoke $stack27.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack29 = (org.apache.maven.toolchain.model.ToolchainModel) $stack28;
+
+        $stack30 = virtualinvoke $stack29.<org.apache.maven.toolchain.model.ToolchainModel: java.lang.String getType()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("TYPE", $stack30);
+
+        $stack32 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack33 = virtualinvoke $stack32.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack34 = interfaceinvoke $stack33.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack35 = (org.apache.maven.toolchain.model.ToolchainModel) $stack34;
+
+        $stack36 = virtualinvoke $stack35.<org.apache.maven.toolchain.model.ToolchainModel: java.util.Properties getProvides()>();
+
+        $stack37 = virtualinvoke $stack36.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("key");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("global_value", $stack37);
+
+        $stack38 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack38);
+
+        $stack40 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        $stack41 = interfaceinvoke $stack40.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack41);
+
+        return;
+    }
+
+    public void testBuildRequestWithBothToolchains() throws java.lang.Exception
+    {
+        org.mockito.stubbing.Stubber $stack16, $stack17;
+        DefaultToolchainsBuilderTest this;
+        org.apache.maven.toolchain.io.DefaultToolchainsReader $stack18, $stack20;
+        java.lang.Object $stack19, $stack21, $stack35, $stack41, $stack48, $stack54;
+        java.io.InputStream $stack22;
+        java.util.Map $stack23;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilder $stack25;
+        org.apache.maven.toolchain.building.ToolchainsBuildingResult result;
+        org.apache.maven.toolchain.model.PersistedToolchains $stack27, $stack29, $stack33, $stack39, $stack46, $stack52, $u3, $u5;
+        java.util.List $stack30, $stack34, $stack40, $stack47, $stack53, $stack58, $stack60;
+        int $stack31, $stack61;
+        org.apache.maven.toolchain.model.ToolchainModel $stack36, $stack42, $stack49, $stack55, $u4, $u6;
+        java.lang.String $stack37, $stack44, $stack50, $stack57;
+        java.util.Properties $stack43, $stack56;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest $u0;
+        org.apache.maven.building.StringSource $u1, $u2;
+        org.apache.maven.toolchain.building.ToolchainsBuildingRequest $r0, $r2, $r6;
+        org.apache.maven.building.Source $r1, $r3;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest $r4, $r5;
+
+        this := @this: DefaultToolchainsBuilderTest;
+
+        $u0 = new org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest: void <init>()>();
+
+        $u1 = new org.apache.maven.building.StringSource;
+
+        specialinvoke $u1.<org.apache.maven.building.StringSource: void <init>(java.lang.CharSequence)>("");
+
+        $r0 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        $r1 = (org.apache.maven.building.Source) $u1;
+
+        interfaceinvoke $r0.<org.apache.maven.toolchain.building.ToolchainsBuildingRequest: org.apache.maven.toolchain.building.ToolchainsBuildingRequest setGlobalToolchainsSource(org.apache.maven.building.Source)>($r1);
+
+        $u2 = new org.apache.maven.building.StringSource;
+
+        specialinvoke $u2.<org.apache.maven.building.StringSource: void <init>(java.lang.CharSequence)>("");
+
+        $r2 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        $r3 = (org.apache.maven.building.Source) $u2;
+
+        interfaceinvoke $r2.<org.apache.maven.toolchain.building.ToolchainsBuildingRequest: org.apache.maven.toolchain.building.ToolchainsBuildingRequest setUserToolchainsSource(org.apache.maven.building.Source)>($r3);
+
+        $u3 = new org.apache.maven.toolchain.model.PersistedToolchains;
+
+        specialinvoke $u3.<org.apache.maven.toolchain.model.PersistedToolchains: void <init>()>();
+
+        $u4 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u4.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        virtualinvoke $u4.<org.apache.maven.toolchain.model.ToolchainModel: void setType(java.lang.String)>("TYPE");
+
+        virtualinvoke $u4.<org.apache.maven.toolchain.model.ToolchainModel: void addProvide(java.lang.String,java.lang.String)>("key", "user_value");
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.PersistedToolchains: void addToolchain(org.apache.maven.toolchain.model.ToolchainModel)>($u4);
+
+        $u5 = new org.apache.maven.toolchain.model.PersistedToolchains;
+
+        specialinvoke $u5.<org.apache.maven.toolchain.model.PersistedToolchains: void <init>()>();
+
+        $u6 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u6.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        virtualinvoke $u6.<org.apache.maven.toolchain.model.ToolchainModel: void setType(java.lang.String)>("TYPE");
+
+        virtualinvoke $u6.<org.apache.maven.toolchain.model.ToolchainModel: void addProvide(java.lang.String,java.lang.String)>("key", "global_value");
+
+        virtualinvoke $u5.<org.apache.maven.toolchain.model.PersistedToolchains: void addToolchain(org.apache.maven.toolchain.model.ToolchainModel)>($u6);
+
+        $stack16 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.Stubber doReturn(java.lang.Object)>($u5);
+
+        $stack17 = interfaceinvoke $stack16.<org.mockito.stubbing.Stubber: org.mockito.stubbing.Stubber doReturn(java.lang.Object)>($u3);
+
+        $r4 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack18 = $r4.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.io.DefaultToolchainsReader toolchainsReader>;
+
+        $stack19 = interfaceinvoke $stack17.<org.mockito.stubbing.Stubber: java.lang.Object when(java.lang.Object)>($stack18);
+
+        $stack20 = (org.apache.maven.toolchain.io.DefaultToolchainsReader) $stack19;
+
+        $stack21 = staticinvoke <org.mockito.ArgumentMatchers: java.lang.Object any(java.lang.Class)>(class "Ljava/io/InputStream;");
+
+        $stack22 = (java.io.InputStream) $stack21;
+
+        $stack23 = staticinvoke <org.mockito.ArgumentMatchers: java.util.Map anyMap()>();
+
+        virtualinvoke $stack20.<org.apache.maven.toolchain.io.DefaultToolchainsReader: org.apache.maven.toolchain.model.PersistedToolchains read(java.io.InputStream,java.util.Map)>($stack22, $stack23);
+
+        $r5 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack25 = $r5.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.building.DefaultToolchainsBuilder toolchainBuilder>;
+
+        $r6 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        result = virtualinvoke $stack25.<org.apache.maven.toolchain.building.DefaultToolchainsBuilder: org.apache.maven.toolchain.building.ToolchainsBuildingResult build(org.apache.maven.toolchain.building.ToolchainsBuildingRequest)>($r6);
+
+        $stack27 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack27);
+
+        $stack29 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack30 = virtualinvoke $stack29.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack31 = interfaceinvoke $stack30.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(2, $stack31);
+
+        $stack33 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack34 = virtualinvoke $stack33.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack35 = interfaceinvoke $stack34.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack36 = (org.apache.maven.toolchain.model.ToolchainModel) $stack35;
+
+        $stack37 = virtualinvoke $stack36.<org.apache.maven.toolchain.model.ToolchainModel: java.lang.String getType()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("TYPE", $stack37);
+
+        $stack39 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack40 = virtualinvoke $stack39.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack41 = interfaceinvoke $stack40.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack42 = (org.apache.maven.toolchain.model.ToolchainModel) $stack41;
+
+        $stack43 = virtualinvoke $stack42.<org.apache.maven.toolchain.model.ToolchainModel: java.util.Properties getProvides()>();
+
+        $stack44 = virtualinvoke $stack43.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("key");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("user_value", $stack44);
+
+        $stack46 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack47 = virtualinvoke $stack46.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack48 = interfaceinvoke $stack47.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack49 = (org.apache.maven.toolchain.model.ToolchainModel) $stack48;
+
+        $stack50 = virtualinvoke $stack49.<org.apache.maven.toolchain.model.ToolchainModel: java.lang.String getType()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("TYPE", $stack50);
+
+        $stack52 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack53 = virtualinvoke $stack52.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack54 = interfaceinvoke $stack53.<java.util.List: java.lang.Object get(int)>(1);
+
+        $stack55 = (org.apache.maven.toolchain.model.ToolchainModel) $stack54;
+
+        $stack56 = virtualinvoke $stack55.<org.apache.maven.toolchain.model.ToolchainModel: java.util.Properties getProvides()>();
+
+        $stack57 = virtualinvoke $stack56.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("key");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("global_value", $stack57);
+
+        $stack58 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack58);
+
+        $stack60 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        $stack61 = interfaceinvoke $stack60.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack61);
+
+        return;
+    }
+
+    public void testStrictToolchainsParseException() throws java.lang.Exception
+    {
+        java.lang.Object[] $stack8;
+        org.mockito.stubbing.Stubber $stack9;
+        DefaultToolchainsBuilderTest this;
+        org.apache.maven.toolchain.io.DefaultToolchainsReader $stack10, $stack12;
+        java.lang.Object $stack11, $stack13;
+        java.io.InputStream $stack14;
+        java.util.Map $stack15;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilder $stack17;
+        java.lang.Throwable $stack19;
+        java.lang.StringBuilder $stack21, $stack23, $stack24, $stack26, $u3;
+        java.lang.String $stack22, $stack25, $stack27, $stack28;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest $u0;
+        org.apache.maven.building.StringSource $u1;
+        org.apache.maven.toolchain.io.ToolchainsParseException $u2;
+        org.apache.maven.toolchain.building.ToolchainsBuildingRequest $r0, $r5;
+        org.apache.maven.building.Source $r1;
+        java.lang.Throwable[] $r2;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest $r3, $r4;
+        org.apache.maven.toolchain.building.ToolchainsBuildingException $r6;
+
+        this := @this: DefaultToolchainsBuilderTest;
+
+        $u0 = new org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest: void <init>()>();
+
+        $u1 = new org.apache.maven.building.StringSource;
+
+        specialinvoke $u1.<org.apache.maven.building.StringSource: void <init>(java.lang.CharSequence)>("");
+
+        $r0 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        $r1 = (org.apache.maven.building.Source) $u1;
+
+        interfaceinvoke $r0.<org.apache.maven.toolchain.building.ToolchainsBuildingRequest: org.apache.maven.toolchain.building.ToolchainsBuildingRequest setGlobalToolchainsSource(org.apache.maven.building.Source)>($r1);
+
+        $u2 = new org.apache.maven.toolchain.io.ToolchainsParseException;
+
+        specialinvoke $u2.<org.apache.maven.toolchain.io.ToolchainsParseException: void <init>(java.lang.String,int,int)>("MESSAGE", 4, 2);
+
+        $stack8 = newarray (java.lang.Throwable)[1];
+
+        $stack8[0] = $u2;
+
+        $r2 = (java.lang.Throwable[]) $stack8;
+
+        $stack9 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.Stubber doThrow(java.lang.Throwable[])>($r2);
+
+        $r3 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack10 = $r3.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.io.DefaultToolchainsReader toolchainsReader>;
+
+        $stack11 = interfaceinvoke $stack9.<org.mockito.stubbing.Stubber: java.lang.Object when(java.lang.Object)>($stack10);
+
+        $stack12 = (org.apache.maven.toolchain.io.DefaultToolchainsReader) $stack11;
+
+        $stack13 = staticinvoke <org.mockito.ArgumentMatchers: java.lang.Object any(java.lang.Class)>(class "Ljava/io/InputStream;");
+
+        $stack14 = (java.io.InputStream) $stack13;
+
+        $stack15 = staticinvoke <org.mockito.ArgumentMatchers: java.util.Map anyMap()>();
+
+        virtualinvoke $stack12.<org.apache.maven.toolchain.io.DefaultToolchainsReader: org.apache.maven.toolchain.model.PersistedToolchains read(java.io.InputStream,java.util.Map)>($stack14, $stack15);
+
+     label1:
+        $r4 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack17 = $r4.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.building.DefaultToolchainsBuilder toolchainBuilder>;
+
+        $r5 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        virtualinvoke $stack17.<org.apache.maven.toolchain.building.DefaultToolchainsBuilder: org.apache.maven.toolchain.building.ToolchainsBuildingResult build(org.apache.maven.toolchain.building.ToolchainsBuildingRequest)>($r5);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack19 := @caughtexception;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack21 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("1 problem was encountered while building the effective toolchains");
+
+        $stack22 = <org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: java.lang.String LS>;
+
+        $stack23 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack22);
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[FATAL] Non-parseable toolchains (memory): MESSAGE @ line 4, column 2");
+
+        $stack25 = <org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: java.lang.String LS>;
+
+        $stack26 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack25);
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r6 = (org.apache.maven.toolchain.building.ToolchainsBuildingException) $stack19;
+
+        $stack28 = virtualinvoke $r6.<org.apache.maven.toolchain.building.ToolchainsBuildingException: java.lang.String getMessage()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack27, $stack28);
+
+     label4:
+        return;
+
+        catch org.apache.maven.toolchain.building.ToolchainsBuildingException from label1 to label2 with label3;
+    }
+
+    public void testIOException() throws java.lang.Exception
+    {
+        java.lang.Throwable[] $stack8;
+        org.mockito.stubbing.Stubber $stack9;
+        DefaultToolchainsBuilderTest this;
+        org.apache.maven.toolchain.io.DefaultToolchainsReader $stack10, $stack12;
+        java.lang.Object $stack11, $stack13;
+        java.io.InputStream $stack14;
+        java.util.Map $stack15;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilder $stack17;
+        java.lang.Throwable $stack19;
+        java.lang.StringBuilder $stack21, $stack23, $stack24, $stack26, $u3;
+        java.lang.String $stack22, $stack25, $stack27, $stack28;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest $u0;
+        org.apache.maven.building.StringSource $u1;
+        java.io.IOException $u2;
+        org.apache.maven.toolchain.building.ToolchainsBuildingRequest $r0, $r4;
+        org.apache.maven.building.Source $r1;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest $r2, $r3;
+        org.apache.maven.toolchain.building.ToolchainsBuildingException $r5;
+
+        this := @this: DefaultToolchainsBuilderTest;
+
+        $u0 = new org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest: void <init>()>();
+
+        $u1 = new org.apache.maven.building.StringSource;
+
+        specialinvoke $u1.<org.apache.maven.building.StringSource: void <init>(java.lang.CharSequence,java.lang.String)>("", "LOCATION");
+
+        $r0 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        $r1 = (org.apache.maven.building.Source) $u1;
+
+        interfaceinvoke $r0.<org.apache.maven.toolchain.building.ToolchainsBuildingRequest: org.apache.maven.toolchain.building.ToolchainsBuildingRequest setGlobalToolchainsSource(org.apache.maven.building.Source)>($r1);
+
+        $u2 = new java.io.IOException;
+
+        specialinvoke $u2.<java.io.IOException: void <init>(java.lang.String)>("MESSAGE");
+
+        $stack8 = newarray (java.lang.Throwable)[1];
+
+        $stack8[0] = $u2;
+
+        $stack9 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.Stubber doThrow(java.lang.Throwable[])>($stack8);
+
+        $r2 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack10 = $r2.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.io.DefaultToolchainsReader toolchainsReader>;
+
+        $stack11 = interfaceinvoke $stack9.<org.mockito.stubbing.Stubber: java.lang.Object when(java.lang.Object)>($stack10);
+
+        $stack12 = (org.apache.maven.toolchain.io.DefaultToolchainsReader) $stack11;
+
+        $stack13 = staticinvoke <org.mockito.ArgumentMatchers: java.lang.Object any(java.lang.Class)>(class "Ljava/io/InputStream;");
+
+        $stack14 = (java.io.InputStream) $stack13;
+
+        $stack15 = staticinvoke <org.mockito.ArgumentMatchers: java.util.Map anyMap()>();
+
+        virtualinvoke $stack12.<org.apache.maven.toolchain.io.DefaultToolchainsReader: org.apache.maven.toolchain.model.PersistedToolchains read(java.io.InputStream,java.util.Map)>($stack14, $stack15);
+
+     label1:
+        $r3 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack17 = $r3.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.building.DefaultToolchainsBuilder toolchainBuilder>;
+
+        $r4 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        virtualinvoke $stack17.<org.apache.maven.toolchain.building.DefaultToolchainsBuilder: org.apache.maven.toolchain.building.ToolchainsBuildingResult build(org.apache.maven.toolchain.building.ToolchainsBuildingRequest)>($r4);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack19 := @caughtexception;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack21 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("1 problem was encountered while building the effective toolchains");
+
+        $stack22 = <org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: java.lang.String LS>;
+
+        $stack23 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack22);
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[FATAL] Non-readable toolchains LOCATION: MESSAGE");
+
+        $stack25 = <org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: java.lang.String LS>;
+
+        $stack26 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack25);
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = (org.apache.maven.toolchain.building.ToolchainsBuildingException) $stack19;
+
+        $stack28 = virtualinvoke $r5.<org.apache.maven.toolchain.building.ToolchainsBuildingException: java.lang.String getMessage()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack27, $stack28);
+
+     label4:
+        return;
+
+        catch org.apache.maven.toolchain.building.ToolchainsBuildingException from label1 to label2 with label3;
+    }
+
+    public void testEnvironmentVariablesAreInterpolated() throws java.lang.Exception
+    {
+        org.mockito.stubbing.Stubber $stack16;
+        DefaultToolchainsBuilderTest this;
+        org.apache.maven.toolchain.io.DefaultToolchainsReader $stack17, $stack19;
+        java.lang.Object $stack18, $stack20, $stack28, $stack34, $stack36;
+        java.io.InputStream $stack21;
+        java.util.Map $stack22;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilder $stack24;
+        org.apache.maven.toolchain.building.ToolchainsBuildingResult result;
+        org.apache.maven.toolchain.model.PersistedToolchains $stack26, $stack32, $u2;
+        java.util.List $stack27, $stack33, $stack39, $stack41;
+        org.apache.maven.toolchain.model.ToolchainModel $stack29, $stack35, $u3;
+        java.util.Properties $stack30;
+        java.lang.String $stack31, $stack38;
+        org.codehaus.plexus.util.xml.Xpp3Dom toolchainConfiguration, $stack37, $u4, $u5;
+        int $stack42;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest $u0;
+        org.apache.maven.building.StringSource $u1;
+        org.apache.maven.toolchain.building.ToolchainsBuildingRequest $r0, $r4;
+        org.apache.maven.building.Source $r1;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest $r2, $r3;
+
+        this := @this: DefaultToolchainsBuilderTest;
+
+        $u0 = new org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest: void <init>()>();
+
+        $u1 = new org.apache.maven.building.StringSource;
+
+        specialinvoke $u1.<org.apache.maven.building.StringSource: void <init>(java.lang.CharSequence)>("");
+
+        $r0 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        $r1 = (org.apache.maven.building.Source) $u1;
+
+        interfaceinvoke $r0.<org.apache.maven.toolchain.building.ToolchainsBuildingRequest: org.apache.maven.toolchain.building.ToolchainsBuildingRequest setUserToolchainsSource(org.apache.maven.building.Source)>($r1);
+
+        $u2 = new org.apache.maven.toolchain.model.PersistedToolchains;
+
+        specialinvoke $u2.<org.apache.maven.toolchain.model.PersistedToolchains: void <init>()>();
+
+        $u3 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void setType(java.lang.String)>("TYPE");
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void addProvide(java.lang.String,java.lang.String)>("key", "${env.testKey}");
+
+        $u4 = new org.codehaus.plexus.util.xml.Xpp3Dom;
+
+        specialinvoke $u4.<org.codehaus.plexus.util.xml.Xpp3Dom: void <init>(java.lang.String)>("jdkHome");
+
+        virtualinvoke $u4.<org.codehaus.plexus.util.xml.Xpp3Dom: void setValue(java.lang.String)>("${env.testKey}");
+
+        $u5 = new org.codehaus.plexus.util.xml.Xpp3Dom;
+
+        specialinvoke $u5.<org.codehaus.plexus.util.xml.Xpp3Dom: void <init>(java.lang.String)>("configuration");
+
+        virtualinvoke $u5.<org.codehaus.plexus.util.xml.Xpp3Dom: void addChild(org.codehaus.plexus.util.xml.Xpp3Dom)>($u4);
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void setConfiguration(java.lang.Object)>($u5);
+
+        virtualinvoke $u2.<org.apache.maven.toolchain.model.PersistedToolchains: void addToolchain(org.apache.maven.toolchain.model.ToolchainModel)>($u3);
+
+        $stack16 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.Stubber doReturn(java.lang.Object)>($u2);
+
+        $r2 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack17 = $r2.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.io.DefaultToolchainsReader toolchainsReader>;
+
+        $stack18 = interfaceinvoke $stack16.<org.mockito.stubbing.Stubber: java.lang.Object when(java.lang.Object)>($stack17);
+
+        $stack19 = (org.apache.maven.toolchain.io.DefaultToolchainsReader) $stack18;
+
+        $stack20 = staticinvoke <org.mockito.ArgumentMatchers: java.lang.Object any(java.lang.Class)>(class "Ljava/io/InputStream;");
+
+        $stack21 = (java.io.InputStream) $stack20;
+
+        $stack22 = staticinvoke <org.mockito.ArgumentMatchers: java.util.Map anyMap()>();
+
+        virtualinvoke $stack19.<org.apache.maven.toolchain.io.DefaultToolchainsReader: org.apache.maven.toolchain.model.PersistedToolchains read(java.io.InputStream,java.util.Map)>($stack21, $stack22);
+
+        $r3 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack24 = $r3.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.building.DefaultToolchainsBuilder toolchainBuilder>;
+
+        $r4 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        result = virtualinvoke $stack24.<org.apache.maven.toolchain.building.DefaultToolchainsBuilder: org.apache.maven.toolchain.building.ToolchainsBuildingResult build(org.apache.maven.toolchain.building.ToolchainsBuildingRequest)>($r4);
+
+        $stack26 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack27 = virtualinvoke $stack26.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack28 = interfaceinvoke $stack27.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack29 = (org.apache.maven.toolchain.model.ToolchainModel) $stack28;
+
+        $stack30 = virtualinvoke $stack29.<org.apache.maven.toolchain.model.ToolchainModel: java.util.Properties getProvides()>();
+
+        $stack31 = virtualinvoke $stack30.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("key");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("testValue", $stack31);
+
+        $stack32 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack33 = virtualinvoke $stack32.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack34 = interfaceinvoke $stack33.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack35 = (org.apache.maven.toolchain.model.ToolchainModel) $stack34;
+
+        $stack36 = virtualinvoke $stack35.<org.apache.maven.toolchain.model.ToolchainModel: java.lang.Object getConfiguration()>();
+
+        toolchainConfiguration = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack36;
+
+        $stack37 = virtualinvoke toolchainConfiguration.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom getChild(java.lang.String)>("jdkHome");
+
+        $stack38 = virtualinvoke $stack37.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getValue()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("testValue", $stack38);
+
+        $stack39 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack39);
+
+        $stack41 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        $stack42 = interfaceinvoke $stack41.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack42);
+
+        return;
+    }
+
+    public void testNonExistingEnvironmentVariablesAreNotInterpolated() throws java.lang.Exception
+    {
+        org.mockito.stubbing.Stubber $stack10;
+        DefaultToolchainsBuilderTest this;
+        org.apache.maven.toolchain.io.DefaultToolchainsReader $stack11, $stack13;
+        java.lang.Object $stack12, $stack14, $stack23;
+        java.io.InputStream $stack15;
+        java.util.Map $stack16;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilder $stack18;
+        org.apache.maven.toolchain.building.ToolchainsBuildingResult result;
+        org.apache.maven.toolchain.model.PersistedToolchains $stack21, $u2;
+        java.util.List $stack22, $stack27, $stack29;
+        org.apache.maven.toolchain.model.ToolchainModel $stack24, $u3;
+        java.util.Properties $stack25;
+        java.lang.String $stack26;
+        int $stack30;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest $u0;
+        org.apache.maven.building.StringSource $u1;
+        org.apache.maven.toolchain.building.ToolchainsBuildingRequest $r0, $r4;
+        org.apache.maven.building.Source $r1;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest $r2, $r3;
+
+        this := @this: DefaultToolchainsBuilderTest;
+
+        $u0 = new org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest: void <init>()>();
+
+        $u1 = new org.apache.maven.building.StringSource;
+
+        specialinvoke $u1.<org.apache.maven.building.StringSource: void <init>(java.lang.CharSequence)>("");
+
+        $r0 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        $r1 = (org.apache.maven.building.Source) $u1;
+
+        interfaceinvoke $r0.<org.apache.maven.toolchain.building.ToolchainsBuildingRequest: org.apache.maven.toolchain.building.ToolchainsBuildingRequest setUserToolchainsSource(org.apache.maven.building.Source)>($r1);
+
+        $u2 = new org.apache.maven.toolchain.model.PersistedToolchains;
+
+        specialinvoke $u2.<org.apache.maven.toolchain.model.PersistedToolchains: void <init>()>();
+
+        $u3 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void setType(java.lang.String)>("TYPE");
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void addProvide(java.lang.String,java.lang.String)>("key", "${env.testNonExistingKey}");
+
+        virtualinvoke $u2.<org.apache.maven.toolchain.model.PersistedToolchains: void addToolchain(org.apache.maven.toolchain.model.ToolchainModel)>($u3);
+
+        $stack10 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.Stubber doReturn(java.lang.Object)>($u2);
+
+        $r2 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack11 = $r2.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.io.DefaultToolchainsReader toolchainsReader>;
+
+        $stack12 = interfaceinvoke $stack10.<org.mockito.stubbing.Stubber: java.lang.Object when(java.lang.Object)>($stack11);
+
+        $stack13 = (org.apache.maven.toolchain.io.DefaultToolchainsReader) $stack12;
+
+        $stack14 = staticinvoke <org.mockito.ArgumentMatchers: java.lang.Object any(java.lang.Class)>(class "Ljava/io/InputStream;");
+
+        $stack15 = (java.io.InputStream) $stack14;
+
+        $stack16 = staticinvoke <org.mockito.ArgumentMatchers: java.util.Map anyMap()>();
+
+        virtualinvoke $stack13.<org.apache.maven.toolchain.io.DefaultToolchainsReader: org.apache.maven.toolchain.model.PersistedToolchains read(java.io.InputStream,java.util.Map)>($stack15, $stack16);
+
+        $r3 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack18 = $r3.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.building.DefaultToolchainsBuilder toolchainBuilder>;
+
+        $r4 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        result = virtualinvoke $stack18.<org.apache.maven.toolchain.building.DefaultToolchainsBuilder: org.apache.maven.toolchain.building.ToolchainsBuildingResult build(org.apache.maven.toolchain.building.ToolchainsBuildingRequest)>($r4);
+
+        $stack21 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack22 = virtualinvoke $stack21.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack23 = interfaceinvoke $stack22.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack24 = (org.apache.maven.toolchain.model.ToolchainModel) $stack23;
+
+        $stack25 = virtualinvoke $stack24.<org.apache.maven.toolchain.model.ToolchainModel: java.util.Properties getProvides()>();
+
+        $stack26 = virtualinvoke $stack25.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("key");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("${env.testNonExistingKey}", $stack26);
+
+        $stack27 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack27);
+
+        $stack29 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        $stack30 = interfaceinvoke $stack29.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack30);
+
+        return;
+    }
+
+    public void testEnvironmentVariablesWithSpecialCharactersAreInterpolated() throws java.lang.Exception
+    {
+        org.mockito.stubbing.Stubber $stack11;
+        DefaultToolchainsBuilderTest this;
+        org.apache.maven.toolchain.io.DefaultToolchainsReader $stack12, $stack14;
+        java.lang.Object $stack13, $stack15, $stack23;
+        java.io.InputStream $stack16;
+        java.util.Map $stack17;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilder $stack19;
+        org.apache.maven.toolchain.building.ToolchainsBuildingResult result;
+        org.apache.maven.toolchain.model.PersistedToolchains $stack21, $u2;
+        java.util.List $stack22, $stack27, $stack29;
+        org.apache.maven.toolchain.model.ToolchainModel $stack24, $u3;
+        java.util.Properties $stack25;
+        java.lang.String $stack26;
+        int $stack30;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest $u0;
+        org.apache.maven.building.StringSource $u1;
+        org.apache.maven.toolchain.building.ToolchainsBuildingRequest $r0, $r4;
+        org.apache.maven.building.Source $r1;
+        org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest $r2, $r3;
+
+        this := @this: DefaultToolchainsBuilderTest;
+
+        $u0 = new org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.building.DefaultToolchainsBuildingRequest: void <init>()>();
+
+        $u1 = new org.apache.maven.building.StringSource;
+
+        specialinvoke $u1.<org.apache.maven.building.StringSource: void <init>(java.lang.CharSequence)>("");
+
+        $r0 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        $r1 = (org.apache.maven.building.Source) $u1;
+
+        interfaceinvoke $r0.<org.apache.maven.toolchain.building.ToolchainsBuildingRequest: org.apache.maven.toolchain.building.ToolchainsBuildingRequest setUserToolchainsSource(org.apache.maven.building.Source)>($r1);
+
+        $u2 = new org.apache.maven.toolchain.model.PersistedToolchains;
+
+        specialinvoke $u2.<org.apache.maven.toolchain.model.PersistedToolchains: void <init>()>();
+
+        $u3 = new org.apache.maven.toolchain.model.ToolchainModel;
+
+        specialinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void setType(java.lang.String)>("TYPE");
+
+        virtualinvoke $u3.<org.apache.maven.toolchain.model.ToolchainModel: void addProvide(java.lang.String,java.lang.String)>("key", "${env.testSpecialCharactersKey}");
+
+        virtualinvoke $u2.<org.apache.maven.toolchain.model.PersistedToolchains: void addToolchain(org.apache.maven.toolchain.model.ToolchainModel)>($u3);
+
+        $stack11 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.Stubber doReturn(java.lang.Object)>($u2);
+
+        $r2 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack12 = $r2.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.io.DefaultToolchainsReader toolchainsReader>;
+
+        $stack13 = interfaceinvoke $stack11.<org.mockito.stubbing.Stubber: java.lang.Object when(java.lang.Object)>($stack12);
+
+        $stack14 = (org.apache.maven.toolchain.io.DefaultToolchainsReader) $stack13;
+
+        $stack15 = staticinvoke <org.mockito.ArgumentMatchers: java.lang.Object any(java.lang.Class)>(class "Ljava/io/InputStream;");
+
+        $stack16 = (java.io.InputStream) $stack15;
+
+        $stack17 = staticinvoke <org.mockito.ArgumentMatchers: java.util.Map anyMap()>();
+
+        virtualinvoke $stack14.<org.apache.maven.toolchain.io.DefaultToolchainsReader: org.apache.maven.toolchain.model.PersistedToolchains read(java.io.InputStream,java.util.Map)>($stack16, $stack17);
+
+        $r3 = (org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest) this;
+
+        $stack19 = $r3.<org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: org.apache.maven.toolchain.building.DefaultToolchainsBuilder toolchainBuilder>;
+
+        $r4 = (org.apache.maven.toolchain.building.ToolchainsBuildingRequest) $u0;
+
+        result = virtualinvoke $stack19.<org.apache.maven.toolchain.building.DefaultToolchainsBuilder: org.apache.maven.toolchain.building.ToolchainsBuildingResult build(org.apache.maven.toolchain.building.ToolchainsBuildingRequest)>($r4);
+
+        $stack21 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: org.apache.maven.toolchain.model.PersistedToolchains getEffectiveToolchains()>();
+
+        $stack22 = virtualinvoke $stack21.<org.apache.maven.toolchain.model.PersistedToolchains: java.util.List getToolchains()>();
+
+        $stack23 = interfaceinvoke $stack22.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack24 = (org.apache.maven.toolchain.model.ToolchainModel) $stack23;
+
+        $stack25 = virtualinvoke $stack24.<org.apache.maven.toolchain.model.ToolchainModel: java.util.Properties getProvides()>();
+
+        $stack26 = virtualinvoke $stack25.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("key");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("<test&Value>", $stack26);
+
+        $stack27 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack27);
+
+        $stack29 = interfaceinvoke result.<org.apache.maven.toolchain.building.ToolchainsBuildingResult: java.util.List getProblems()>();
+
+        $stack30 = interfaceinvoke $stack29.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(0, $stack30);
+
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String $stack0;
+
+        $stack0 = staticinvoke <java.lang.System: java.lang.String lineSeparator()>();
+
+        <org.apache.maven.toolchain.building.DefaultToolchainsBuilderTest: java.lang.String LS> = $stack0;
+
+        return;
+    }
+}

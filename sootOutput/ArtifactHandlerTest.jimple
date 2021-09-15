@@ -1,0 +1,337 @@
+public class ArtifactHandlerTest extends java.lang.Object
+{
+    org.codehaus.plexus.PlexusContainer container;
+
+    public void <init>()
+    {
+        ArtifactHandlerTest this;
+
+        this := @this: ArtifactHandlerTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void testAptConsistency() throws java.lang.Exception
+    {
+        java.io.File apt;
+        java.util.List lines;
+        java.util.Iterator l3;
+        boolean $stack17, $stack19, $stack20, $stack59, $stack65;
+        java.lang.Object $stack18, $stack38;
+        java.lang.String line, $stack23, $stack25, $stack27, $stack29, $stack31, $stack33, $stack35, includesDependencies, $stack39, $stack43, $stack44, $stack48, $stack49, $stack53, $stack54, $stack58, $stack64, $stack70, $stack83, $stack84, col, expected#9, i#10, extension#11, packaging#12, language#13, $stack61, $stack67;
+        ArtifactHandlerTest this;
+        org.codehaus.plexus.PlexusContainer $stack37;
+        org.apache.maven.artifact.handler.ArtifactHandler handler;
+        java.lang.StringBuilder $stack41, $stack42, $stack46, $stack47, $stack51, $stack52, $stack56, $stack57, $stack62, $stack63, $stack68, $stack69, $u0, $u1, $u2, $u3, $u4, $u5;
+        java.lang.String[] $stack81, cols, extension;
+        int $stack82, i, packaging, language;
+        org.apache.maven.artifact.handler.ArtifactHandlerTest $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7;
+
+        this := @this: ArtifactHandlerTest;
+
+        apt = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/site/apt/artifact-handlers.apt");
+
+        lines = staticinvoke <org.codehaus.plexus.util.FileUtils: java.util.List loadFile(java.io.File)>(apt);
+
+        l3 = interfaceinvoke lines.<java.util.List: java.util.Iterator iterator()>();
+
+     label01:
+        $stack17 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack17 == 0 goto label10;
+
+        $stack18 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        line = (java.lang.String) $stack18;
+
+        $stack19 = virtualinvoke line.<java.lang.String: boolean startsWith(java.lang.String)>("||");
+
+        if $stack19 == 0 goto label04;
+
+        cols = virtualinvoke line.<java.lang.String: java.lang.String[] split(java.lang.String)>("\\|\\|");
+
+        $stack81 = newarray (java.lang.String)[9];
+
+        $stack81[0] = "";
+
+        $stack81[1] = "type";
+
+        $stack81[2] = "classifier";
+
+        $stack81[3] = "extension";
+
+        $stack81[4] = "packaging";
+
+        $stack81[5] = "language";
+
+        $stack81[6] = "added to classpath";
+
+        $stack81[7] = "includesDependencies";
+
+        $stack81[8] = "";
+
+        i = 0;
+
+        extension = cols;
+
+        packaging = lengthof cols;
+
+        language = 0;
+
+     label02:
+        if language >= packaging goto label03;
+
+        col = extension[language];
+
+        $stack82 = i;
+
+        i = i + 1;
+
+        $stack83 = $stack81[$stack82];
+
+        $stack84 = virtualinvoke col.<java.lang.String: java.lang.String trim()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object,java.lang.String)>($stack83, $stack84, "Wrong column header");
+
+        language = language + 1;
+
+        goto label02;
+
+     label03:
+        goto label09;
+
+     label04:
+        $stack20 = virtualinvoke line.<java.lang.String: boolean startsWith(java.lang.String)>("|");
+
+        if $stack20 == 0 goto label09;
+
+        cols = virtualinvoke line.<java.lang.String: java.lang.String[] split(java.lang.String)>("\\|");
+
+        $stack23 = cols[1];
+
+        $r0 = (org.apache.maven.artifact.handler.ArtifactHandlerTest) this;
+
+        expected#9 = specialinvoke $r0.<org.apache.maven.artifact.handler.ArtifactHandlerTest: java.lang.String trimApt(java.lang.String)>($stack23);
+
+        $stack25 = cols[2];
+
+        $r1 = (org.apache.maven.artifact.handler.ArtifactHandlerTest) this;
+
+        i#10 = specialinvoke $r1.<org.apache.maven.artifact.handler.ArtifactHandlerTest: java.lang.String trimApt(java.lang.String)>($stack25);
+
+        $stack27 = cols[3];
+
+        $r2 = (org.apache.maven.artifact.handler.ArtifactHandlerTest) this;
+
+        extension#11 = specialinvoke $r2.<org.apache.maven.artifact.handler.ArtifactHandlerTest: java.lang.String trimApt(java.lang.String,java.lang.String)>($stack27, expected#9);
+
+        $stack29 = cols[4];
+
+        $r3 = (org.apache.maven.artifact.handler.ArtifactHandlerTest) this;
+
+        packaging#12 = specialinvoke $r3.<org.apache.maven.artifact.handler.ArtifactHandlerTest: java.lang.String trimApt(java.lang.String,java.lang.String)>($stack29, expected#9);
+
+        $stack31 = cols[5];
+
+        $r4 = (org.apache.maven.artifact.handler.ArtifactHandlerTest) this;
+
+        language#13 = specialinvoke $r4.<org.apache.maven.artifact.handler.ArtifactHandlerTest: java.lang.String trimApt(java.lang.String)>($stack31);
+
+        $stack33 = cols[6];
+
+        $r5 = (org.apache.maven.artifact.handler.ArtifactHandlerTest) this;
+
+        col = specialinvoke $r5.<org.apache.maven.artifact.handler.ArtifactHandlerTest: java.lang.String trimApt(java.lang.String)>($stack33);
+
+        $stack35 = cols[7];
+
+        $r6 = (org.apache.maven.artifact.handler.ArtifactHandlerTest) this;
+
+        includesDependencies = specialinvoke $r6.<org.apache.maven.artifact.handler.ArtifactHandlerTest: java.lang.String trimApt(java.lang.String)>($stack35);
+
+        $r7 = (org.apache.maven.artifact.handler.ArtifactHandlerTest) this;
+
+        $stack37 = $r7.<org.apache.maven.artifact.handler.ArtifactHandlerTest: org.codehaus.plexus.PlexusContainer container>;
+
+        $stack38 = interfaceinvoke $stack37.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class,java.lang.String)>(class "Lorg/apache/maven/artifact/handler/ArtifactHandler;", expected#9);
+
+        handler = (org.apache.maven.artifact.handler.ArtifactHandler) $stack38;
+
+        $stack39 = interfaceinvoke handler.<org.apache.maven.artifact.handler.ArtifactHandler: java.lang.String getExtension()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack41 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(expected#9);
+
+        $stack42 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" extension");
+
+        $stack43 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object,java.lang.String)>($stack39, extension#11, $stack43);
+
+        $stack44 = interfaceinvoke handler.<org.apache.maven.artifact.handler.ArtifactHandler: java.lang.String getPackaging()>();
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack46 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(expected#9);
+
+        $stack47 = virtualinvoke $stack46.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" packaging");
+
+        $stack48 = virtualinvoke $stack47.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object,java.lang.String)>($stack44, packaging#12, $stack48);
+
+        $stack49 = interfaceinvoke handler.<org.apache.maven.artifact.handler.ArtifactHandler: java.lang.String getClassifier()>();
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack51 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(expected#9);
+
+        $stack52 = virtualinvoke $stack51.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" classifier");
+
+        $stack53 = virtualinvoke $stack52.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object,java.lang.String)>($stack49, i#10, $stack53);
+
+        $stack54 = interfaceinvoke handler.<org.apache.maven.artifact.handler.ArtifactHandler: java.lang.String getLanguage()>();
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack56 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(expected#9);
+
+        $stack57 = virtualinvoke $stack56.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" language");
+
+        $stack58 = virtualinvoke $stack57.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object,java.lang.String)>($stack54, language#13, $stack58);
+
+        $stack59 = interfaceinvoke handler.<org.apache.maven.artifact.handler.ArtifactHandler: boolean isAddedToClasspath()>();
+
+        if $stack59 == 0 goto label05;
+
+        $stack61 = "true";
+
+        goto label06;
+
+     label05:
+        $stack61 = null;
+
+     label06:
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack62 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(expected#9);
+
+        $stack63 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" addedToClasspath");
+
+        $stack64 = virtualinvoke $stack63.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object,java.lang.String)>($stack61, col, $stack64);
+
+        $stack65 = interfaceinvoke handler.<org.apache.maven.artifact.handler.ArtifactHandler: boolean isIncludesDependencies()>();
+
+        if $stack65 == 0 goto label07;
+
+        $stack67 = "true";
+
+        goto label08;
+
+     label07:
+        $stack67 = null;
+
+     label08:
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack68 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(expected#9);
+
+        $stack69 = virtualinvoke $stack68.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" includesDependencies");
+
+        $stack70 = virtualinvoke $stack69.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object,java.lang.String)>($stack67, includesDependencies, $stack70);
+
+     label09:
+        goto label01;
+
+     label10:
+        return;
+    }
+
+    private java.lang.String trimApt(java.lang.String, java.lang.String)
+    {
+        ArtifactHandlerTest this;
+        java.lang.String content, value, $stack5, type, $stack7;
+        boolean $stack6;
+        org.apache.maven.artifact.handler.ArtifactHandlerTest $r0;
+
+        this := @this: ArtifactHandlerTest;
+
+        content := @parameter0: java.lang.String;
+
+        type := @parameter1: java.lang.String;
+
+        $r0 = (org.apache.maven.artifact.handler.ArtifactHandlerTest) this;
+
+        value = specialinvoke $r0.<org.apache.maven.artifact.handler.ArtifactHandlerTest: java.lang.String trimApt(java.lang.String)>(content);
+
+        $stack5 = "= type";
+
+        $stack6 = virtualinvoke $stack5.<java.lang.String: boolean equals(java.lang.Object)>(value);
+
+        if $stack6 == 0 goto label1;
+
+        $stack7 = type;
+
+        goto label2;
+
+     label1:
+        $stack7 = value;
+
+     label2:
+        return $stack7;
+    }
+
+    private java.lang.String trimApt(java.lang.String)
+    {
+        java.lang.String $stack2, $stack3, content, content#2, $stack6;
+        int $stack5;
+        ArtifactHandlerTest this;
+
+        this := @this: ArtifactHandlerTest;
+
+        content := @parameter0: java.lang.String;
+
+        $stack2 = virtualinvoke content.<java.lang.String: java.lang.String replace(char,char)>(60, 32);
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: java.lang.String replace(char,char)>(62, 32);
+
+        content#2 = virtualinvoke $stack3.<java.lang.String: java.lang.String trim()>();
+
+        $stack5 = virtualinvoke content#2.<java.lang.String: int length()>();
+
+        if $stack5 != 0 goto label1;
+
+        $stack6 = null;
+
+        goto label2;
+
+     label1:
+        $stack6 = content#2;
+
+     label2:
+        return $stack6;
+    }
+}

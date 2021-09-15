@@ -1,0 +1,718 @@
+public class ArtifactTransferEvent extends java.util.EventObject
+{
+    public static final int TRANSFER_INITIATED;
+    public static final int TRANSFER_STARTED;
+    public static final int TRANSFER_COMPLETED;
+    public static final int TRANSFER_PROGRESS;
+    public static final int TRANSFER_ERROR;
+    public static final int REQUEST_GET;
+    public static final int REQUEST_PUT;
+    private int eventType;
+    private int requestType;
+    private java.lang.Exception exception;
+    private java.io.File localFile;
+    private org.apache.maven.repository.ArtifactTransferResource artifact;
+    private long transferredBytes;
+    private byte[] dataBuffer;
+    private int dataOffset;
+    private int dataLength;
+
+    public void <init>(java.lang.String, int, int, org.apache.maven.repository.ArtifactTransferResource)
+    {
+        ArtifactTransferEvent this;
+        java.lang.String wagon;
+        int eventType, requestType;
+        org.apache.maven.repository.ArtifactTransferResource artifact;
+        org.apache.maven.repository.ArtifactTransferEvent $r0, $r1, $r2;
+
+        this := @this: ArtifactTransferEvent;
+
+        wagon := @parameter0: java.lang.String;
+
+        eventType := @parameter1: int;
+
+        requestType := @parameter2: int;
+
+        artifact := @parameter3: org.apache.maven.repository.ArtifactTransferResource;
+
+        specialinvoke this.<java.util.EventObject: void <init>(java.lang.Object)>(wagon);
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        virtualinvoke $r0.<org.apache.maven.repository.ArtifactTransferEvent: void setEventType(int)>(eventType);
+
+        $r1 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        virtualinvoke $r1.<org.apache.maven.repository.ArtifactTransferEvent: void setRequestType(int)>(requestType);
+
+        $r2 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $r2.<org.apache.maven.repository.ArtifactTransferEvent: org.apache.maven.repository.ArtifactTransferResource artifact> = artifact;
+
+        return;
+    }
+
+    public void <init>(java.lang.String, java.lang.Exception, int, org.apache.maven.repository.ArtifactTransferResource)
+    {
+        ArtifactTransferEvent this;
+        java.lang.String wagon;
+        int requestType;
+        org.apache.maven.repository.ArtifactTransferResource artifact;
+        java.lang.Exception exception;
+        org.apache.maven.repository.ArtifactTransferEvent $r0, $r1;
+
+        this := @this: ArtifactTransferEvent;
+
+        wagon := @parameter0: java.lang.String;
+
+        exception := @parameter1: java.lang.Exception;
+
+        requestType := @parameter2: int;
+
+        artifact := @parameter3: org.apache.maven.repository.ArtifactTransferResource;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.ArtifactTransferEvent: void <init>(java.lang.String,int,int,org.apache.maven.repository.ArtifactTransferResource)>(wagon, 4, requestType, artifact);
+
+        $r1 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $r1.<org.apache.maven.repository.ArtifactTransferEvent: java.lang.Exception exception> = exception;
+
+        return;
+    }
+
+    public org.apache.maven.repository.ArtifactTransferResource getResource()
+    {
+        ArtifactTransferEvent this;
+        org.apache.maven.repository.ArtifactTransferResource $stack1;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.ArtifactTransferEvent: org.apache.maven.repository.ArtifactTransferResource artifact>;
+
+        return $stack1;
+    }
+
+    public java.lang.Exception getException()
+    {
+        ArtifactTransferEvent this;
+        java.lang.Exception $stack1;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.ArtifactTransferEvent: java.lang.Exception exception>;
+
+        return $stack1;
+    }
+
+    public int getRequestType()
+    {
+        ArtifactTransferEvent this;
+        int $stack1;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.ArtifactTransferEvent: int requestType>;
+
+        return $stack1;
+    }
+
+    public void setRequestType(int)
+    {
+        int requestType;
+        ArtifactTransferEvent this;
+        java.lang.StringBuilder $stack6, $stack7, $u0;
+        java.lang.String $stack8;
+        java.lang.IllegalArgumentException $u1;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        requestType := @parameter0: int;
+
+        lookupswitch(requestType)
+        {
+            case 5: goto label2;
+            case 6: goto label1;
+            default: goto label3;
+        };
+
+     label1:
+        goto label4;
+
+     label2:
+        goto label4;
+
+     label3:
+        $u1 = new java.lang.IllegalArgumentException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal request type: ");
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(requestType);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($stack8);
+
+        throw $u1;
+
+     label4:
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $r0.<org.apache.maven.repository.ArtifactTransferEvent: int requestType> = requestType;
+
+        return;
+    }
+
+    public int getEventType()
+    {
+        ArtifactTransferEvent this;
+        int $stack1;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.ArtifactTransferEvent: int eventType>;
+
+        return $stack1;
+    }
+
+    public void setEventType(int)
+    {
+        int eventType;
+        ArtifactTransferEvent this;
+        java.lang.StringBuilder $stack6, $stack7, $u0;
+        java.lang.String $stack8;
+        java.lang.IllegalArgumentException $u1;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        eventType := @parameter0: int;
+
+        tableswitch(eventType)
+        {
+            case 0: goto label1;
+            case 1: goto label2;
+            case 2: goto label3;
+            case 3: goto label4;
+            case 4: goto label5;
+            default: goto label6;
+        };
+
+     label1:
+        goto label7;
+
+     label2:
+        goto label7;
+
+     label3:
+        goto label7;
+
+     label4:
+        goto label7;
+
+     label5:
+        goto label7;
+
+     label6:
+        $u1 = new java.lang.IllegalArgumentException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal event type: ");
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(eventType);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($stack8);
+
+        throw $u1;
+
+     label7:
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $r0.<org.apache.maven.repository.ArtifactTransferEvent: int eventType> = eventType;
+
+        return;
+    }
+
+    public java.io.File getLocalFile()
+    {
+        ArtifactTransferEvent this;
+        java.io.File $stack1;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.ArtifactTransferEvent: java.io.File localFile>;
+
+        return $stack1;
+    }
+
+    public void setLocalFile(java.io.File)
+    {
+        ArtifactTransferEvent this;
+        java.io.File localFile;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        localFile := @parameter0: java.io.File;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $r0.<org.apache.maven.repository.ArtifactTransferEvent: java.io.File localFile> = localFile;
+
+        return;
+    }
+
+    public long getTransferredBytes()
+    {
+        ArtifactTransferEvent this;
+        long $stack1;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.ArtifactTransferEvent: long transferredBytes>;
+
+        return $stack1;
+    }
+
+    public void setTransferredBytes(long)
+    {
+        ArtifactTransferEvent this;
+        long transferredBytes;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        transferredBytes := @parameter0: long;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $r0.<org.apache.maven.repository.ArtifactTransferEvent: long transferredBytes> = transferredBytes;
+
+        return;
+    }
+
+    public byte[] getDataBuffer()
+    {
+        ArtifactTransferEvent this;
+        byte[] $stack1;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.ArtifactTransferEvent: byte[] dataBuffer>;
+
+        return $stack1;
+    }
+
+    public void setDataBuffer(byte[])
+    {
+        ArtifactTransferEvent this;
+        byte[] dataBuffer;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        dataBuffer := @parameter0: byte[];
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $r0.<org.apache.maven.repository.ArtifactTransferEvent: byte[] dataBuffer> = dataBuffer;
+
+        return;
+    }
+
+    public int getDataOffset()
+    {
+        ArtifactTransferEvent this;
+        int $stack1;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.ArtifactTransferEvent: int dataOffset>;
+
+        return $stack1;
+    }
+
+    public void setDataOffset(int)
+    {
+        ArtifactTransferEvent this;
+        int dataOffset;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        dataOffset := @parameter0: int;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $r0.<org.apache.maven.repository.ArtifactTransferEvent: int dataOffset> = dataOffset;
+
+        return;
+    }
+
+    public int getDataLength()
+    {
+        ArtifactTransferEvent this;
+        int $stack1;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack1 = $r0.<org.apache.maven.repository.ArtifactTransferEvent: int dataLength>;
+
+        return $stack1;
+    }
+
+    public void setDataLength(int)
+    {
+        ArtifactTransferEvent this;
+        int dataLength;
+        org.apache.maven.repository.ArtifactTransferEvent $r0;
+
+        this := @this: ArtifactTransferEvent;
+
+        dataLength := @parameter0: int;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $r0.<org.apache.maven.repository.ArtifactTransferEvent: int dataLength> = dataLength;
+
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        ArtifactTransferEvent this;
+        int $stack4, $stack27, $stack33, $stack7;
+        java.io.File $stack10;
+        java.lang.StringBuilder $stack11, $u0;
+        java.lang.String $stack14;
+        org.apache.maven.repository.ArtifactTransferEvent $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: ArtifactTransferEvent;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(int)>(64);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("TransferEvent[");
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack4 = virtualinvoke $r0.<org.apache.maven.repository.ArtifactTransferEvent: int getRequestType()>();
+
+        lookupswitch($stack4)
+        {
+            case 5: goto label01;
+            case 6: goto label02;
+            default: goto label03;
+        };
+
+     label01:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("GET");
+
+        goto label04;
+
+     label02:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("PUT");
+
+        goto label04;
+
+     label03:
+        $r1 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack33 = virtualinvoke $r1.<org.apache.maven.repository.ArtifactTransferEvent: int getRequestType()>();
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack33);
+
+     label04:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(124);
+
+        $r2 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack7 = virtualinvoke $r2.<org.apache.maven.repository.ArtifactTransferEvent: int getEventType()>();
+
+        tableswitch($stack7)
+        {
+            case 0: goto label07;
+            case 1: goto label09;
+            case 2: goto label05;
+            case 3: goto label08;
+            case 4: goto label06;
+            default: goto label10;
+        };
+
+     label05:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("COMPLETED");
+
+        goto label11;
+
+     label06:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ERROR");
+
+        goto label11;
+
+     label07:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("INITIATED");
+
+        goto label11;
+
+     label08:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("PROGRESS");
+
+        goto label11;
+
+     label09:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("STARTED");
+
+        goto label11;
+
+     label10:
+        $r3 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack27 = virtualinvoke $r3.<org.apache.maven.repository.ArtifactTransferEvent: int getEventType()>();
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack27);
+
+     label11:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(124);
+
+        $r4 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack10 = virtualinvoke $r4.<org.apache.maven.repository.ArtifactTransferEvent: java.io.File getLocalFile()>();
+
+        $stack11 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack10);
+
+        virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(124);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(93);
+
+        $stack14 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack14;
+    }
+
+    public int hashCode()
+    {
+        ArtifactTransferEvent this;
+        int $stack3, $stack4, $stack7, $stack11, $stack13, $stack14, result#2, $stack8, $stack12;
+        java.lang.Exception $stack5, $stack6;
+        java.io.File $stack9, $stack10;
+        org.apache.maven.repository.ArtifactTransferEvent $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: ArtifactTransferEvent;
+
+        $stack4 = 31 * 1;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.ArtifactTransferEvent: int eventType>;
+
+        result#2 = $stack4 + $stack3;
+
+        $stack7 = 31 * result#2;
+
+        $r1 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack5 = $r1.<org.apache.maven.repository.ArtifactTransferEvent: java.lang.Exception exception>;
+
+        if $stack5 != null goto label1;
+
+        $stack8 = 0;
+
+        goto label2;
+
+     label1:
+        $r2 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack6 = $r2.<org.apache.maven.repository.ArtifactTransferEvent: java.lang.Exception exception>;
+
+        $stack8 = virtualinvoke $stack6.<java.lang.Object: int hashCode()>();
+
+     label2:
+        result#2 = $stack7 + $stack8;
+
+        $stack11 = 31 * result#2;
+
+        $r3 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack9 = $r3.<org.apache.maven.repository.ArtifactTransferEvent: java.io.File localFile>;
+
+        if $stack9 != null goto label3;
+
+        $stack12 = 0;
+
+        goto label4;
+
+     label3:
+        $r4 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack10 = $r4.<org.apache.maven.repository.ArtifactTransferEvent: java.io.File localFile>;
+
+        $stack12 = virtualinvoke $stack10.<java.io.File: int hashCode()>();
+
+     label4:
+        result#2 = $stack11 + $stack12;
+
+        $stack14 = 31 * result#2;
+
+        $r5 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack13 = $r5.<org.apache.maven.repository.ArtifactTransferEvent: int requestType>;
+
+        result#2 = $stack14 + $stack13;
+
+        return result#2;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        ArtifactTransferEvent this;
+        java.lang.Object obj, $stack15, $stack16;
+        java.lang.Class $stack3, $stack4, $stack9, $stack11;
+        org.apache.maven.repository.ArtifactTransferEvent other, $r0, $r1, $r2, $r3, $r4;
+        int $stack5, $stack6, $stack13, $stack14;
+        java.lang.Exception $stack7, $stack8, $stack10, $stack18;
+        boolean $stack12, $stack17;
+
+        this := @this: ArtifactTransferEvent;
+
+        obj := @parameter0: java.lang.Object;
+
+        if this != obj goto label1;
+
+        return 1;
+
+     label1:
+        if obj == null goto label2;
+
+        $stack3 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack4 = virtualinvoke obj.<java.lang.Object: java.lang.Class getClass()>();
+
+        if $stack3 == $stack4 goto label3;
+
+     label2:
+        return 0;
+
+     label3:
+        other = (org.apache.maven.repository.ArtifactTransferEvent) obj;
+
+        $r0 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack6 = $r0.<org.apache.maven.repository.ArtifactTransferEvent: int eventType>;
+
+        $stack5 = other.<org.apache.maven.repository.ArtifactTransferEvent: int eventType>;
+
+        if $stack6 == $stack5 goto label4;
+
+        return 0;
+
+     label4:
+        $r1 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack7 = $r1.<org.apache.maven.repository.ArtifactTransferEvent: java.lang.Exception exception>;
+
+        if $stack7 != null goto label5;
+
+        $stack18 = other.<org.apache.maven.repository.ArtifactTransferEvent: java.lang.Exception exception>;
+
+        if $stack18 == null goto label6;
+
+        return 0;
+
+     label5:
+        $r2 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack8 = $r2.<org.apache.maven.repository.ArtifactTransferEvent: java.lang.Exception exception>;
+
+        $stack9 = virtualinvoke $stack8.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack10 = other.<org.apache.maven.repository.ArtifactTransferEvent: java.lang.Exception exception>;
+
+        $stack11 = virtualinvoke $stack10.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack12 = virtualinvoke $stack9.<java.lang.Object: boolean equals(java.lang.Object)>($stack11);
+
+        if $stack12 != 0 goto label6;
+
+        return 0;
+
+     label6:
+        $r3 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack14 = $r3.<org.apache.maven.repository.ArtifactTransferEvent: int requestType>;
+
+        $stack13 = other.<org.apache.maven.repository.ArtifactTransferEvent: int requestType>;
+
+        if $stack14 == $stack13 goto label7;
+
+        return 0;
+
+     label7:
+        $r4 = (org.apache.maven.repository.ArtifactTransferEvent) this;
+
+        $stack16 = $r4.<org.apache.maven.repository.ArtifactTransferEvent: java.lang.Object source>;
+
+        $stack15 = other.<org.apache.maven.repository.ArtifactTransferEvent: java.lang.Object source>;
+
+        $stack17 = virtualinvoke $stack16.<java.lang.Object: boolean equals(java.lang.Object)>($stack15);
+
+        return $stack17;
+    }
+
+    public static void <clinit>()
+    {
+        <ArtifactTransferEvent: int REQUEST_PUT> = 6;
+
+        <ArtifactTransferEvent: int REQUEST_GET> = 5;
+
+        <ArtifactTransferEvent: int TRANSFER_ERROR> = 4;
+
+        <ArtifactTransferEvent: int TRANSFER_PROGRESS> = 3;
+
+        <ArtifactTransferEvent: int TRANSFER_COMPLETED> = 2;
+
+        <ArtifactTransferEvent: int TRANSFER_STARTED> = 1;
+
+        <ArtifactTransferEvent: int TRANSFER_INITIATED> = 0;
+
+        return;
+    }
+}

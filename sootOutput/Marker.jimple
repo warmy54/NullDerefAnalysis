@@ -1,0 +1,1135 @@
+public class Marker extends java.lang.Object implements java.lang.Cloneable
+{
+    public int id;
+    public double[] corners;
+    public double confidence;
+    private static org.bytedeco.opencv.opencv_core.IplImage[] imageCache;
+    private static final double[] src;
+    private static java.lang.ThreadLocal H3x3;
+    private static java.lang.ThreadLocal srcPts4x1;
+    private static java.lang.ThreadLocal dstPts4x1;
+
+    public void <init>(int, double[], double)
+    {
+        Marker this;
+        int id;
+        double[] corners;
+        double confidence;
+        org.bytedeco.javacv.Marker $r0, $r1, $r2;
+
+        this := @this: Marker;
+
+        id := @parameter0: int;
+
+        corners := @parameter1: double[];
+
+        confidence := @parameter2: double;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        $r0.<org.bytedeco.javacv.Marker: int id> = id;
+
+        $r1 = (org.bytedeco.javacv.Marker) this;
+
+        $r1.<org.bytedeco.javacv.Marker: double[] corners> = corners;
+
+        $r2 = (org.bytedeco.javacv.Marker) this;
+
+        $r2.<org.bytedeco.javacv.Marker: double confidence> = confidence;
+
+        return;
+    }
+
+    public transient void <init>(int, double[])
+    {
+        Marker this;
+        int id;
+        double[] corners;
+        org.bytedeco.javacv.Marker $r0;
+
+        this := @this: Marker;
+
+        id := @parameter0: int;
+
+        corners := @parameter1: double[];
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.Marker: void <init>(int,double[],double)>(id, corners, 1.0);
+
+        return;
+    }
+
+    public org.bytedeco.javacv.Marker clone()
+    {
+        Marker this;
+        double[] $stack2, $stack6;
+        int $stack3;
+        java.lang.Object $stack4;
+        double $stack5;
+        org.bytedeco.javacv.Marker $u0, $r0, $r1, $r2;
+
+        this := @this: Marker;
+
+        $u0 = new org.bytedeco.javacv.Marker;
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.Marker: int id>;
+
+        $r1 = (org.bytedeco.javacv.Marker) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack4 = virtualinvoke $stack2.<java.lang.Object: java.lang.Object clone()>();
+
+        $stack6 = (double[]) $stack4;
+
+        $r2 = (org.bytedeco.javacv.Marker) this;
+
+        $stack5 = $r2.<org.bytedeco.javacv.Marker: double confidence>;
+
+        specialinvoke $u0.<org.bytedeco.javacv.Marker: void <init>(int,double[],double)>($stack3, $stack6, $stack5);
+
+        return $u0;
+    }
+
+    public int hashCode()
+    {
+        Marker this;
+        int $stack2, $stack3, $stack5, hash#2, $stack7;
+        double[] $stack4, $stack6;
+        org.bytedeco.javacv.Marker $r0, $r1, $r2;
+
+        this := @this: Marker;
+
+        $stack3 = 37 * 7;
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.Marker: int id>;
+
+        hash#2 = $stack3 + $stack2;
+
+        $stack5 = 37 * hash#2;
+
+        $r1 = (org.bytedeco.javacv.Marker) this;
+
+        $stack4 = $r1.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        if $stack4 == null goto label1;
+
+        $r2 = (org.bytedeco.javacv.Marker) this;
+
+        $stack6 = $r2.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack7 = virtualinvoke $stack6.<java.lang.Object: int hashCode()>();
+
+        goto label2;
+
+     label1:
+        $stack7 = 0;
+
+     label2:
+        hash#2 = $stack5 + $stack7;
+
+        return hash#2;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        java.lang.Object o;
+        boolean $stack3, $stack8, $stack9;
+        org.bytedeco.javacv.Marker m, $r0, $r1;
+        Marker this;
+        int $stack4, $stack5;
+        double[] $stack6, $stack7;
+
+        this := @this: Marker;
+
+        o := @parameter0: java.lang.Object;
+
+        $stack3 = o instanceof org.bytedeco.javacv.Marker;
+
+        if $stack3 == 0 goto label3;
+
+        m = (org.bytedeco.javacv.Marker) o;
+
+        $stack5 = m.<org.bytedeco.javacv.Marker: int id>;
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.Marker: int id>;
+
+        if $stack5 != $stack4 goto label1;
+
+        $stack7 = m.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $r1 = (org.bytedeco.javacv.Marker) this;
+
+        $stack6 = $r1.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack8 = staticinvoke <java.util.Arrays: boolean equals(double[],double[])>($stack7, $stack6);
+
+        if $stack8 == 0 goto label1;
+
+        $stack9 = 1;
+
+        goto label2;
+
+     label1:
+        $stack9 = 0;
+
+     label2:
+        return $stack9;
+
+     label3:
+        return 0;
+    }
+
+    public double[] getCenter()
+    {
+        double[] $stack6, $stack8, $stack12;
+        Marker this;
+        int $stack7, $stack10, $stack11, i;
+        double $stack9, $stack13, x, y;
+        org.bytedeco.javacv.Marker $r0, $r1;
+
+        this := @this: Marker;
+
+        x = 0.0;
+
+        y = 0.0;
+
+        i = 0;
+
+     label1:
+        if i >= 4 goto label2;
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        $stack8 = $r0.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack7 = 2 * i;
+
+        $stack9 = $stack8[$stack7];
+
+        x = x + $stack9;
+
+        $r1 = (org.bytedeco.javacv.Marker) this;
+
+        $stack12 = $r1.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack10 = 2 * i;
+
+        $stack11 = $stack10 + 1;
+
+        $stack13 = $stack12[$stack11];
+
+        y = y + $stack13;
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        x = x / 4.0;
+
+        y = y / 4.0;
+
+        $stack6 = newarray (double)[2];
+
+        $stack6[0] = x;
+
+        $stack6[1] = y;
+
+        return $stack6;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getImage()
+    {
+        Marker this;
+        int $stack1;
+        org.bytedeco.opencv.opencv_core.IplImage $stack2;
+        org.bytedeco.javacv.Marker $r0;
+
+        this := @this: Marker;
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.Marker: int id>;
+
+        $stack2 = staticinvoke <org.bytedeco.javacv.Marker: org.bytedeco.opencv.opencv_core.IplImage getImage(int)>($stack1);
+
+        return $stack2;
+    }
+
+    public static org.bytedeco.opencv.opencv_core.IplImage getImage(int)
+    {
+        int id;
+        org.bytedeco.opencv.opencv_core.IplImage[] $stack1, $stack3, $stack5, $stack7;
+        org.bytedeco.opencv.opencv_core.IplImage $stack2, $stack4, $stack6, $stack8;
+        java.nio.ByteBuffer $stack9;
+
+        id := @parameter0: int;
+
+        $stack1 = <org.bytedeco.javacv.Marker: org.bytedeco.opencv.opencv_core.IplImage[] imageCache>;
+
+        $stack2 = $stack1[id];
+
+        if $stack2 != null goto label1;
+
+        $stack5 = <org.bytedeco.javacv.Marker: org.bytedeco.opencv.opencv_core.IplImage[] imageCache>;
+
+        $stack6 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>(8, 8, 8, 1);
+
+        $stack5[id] = $stack6;
+
+        $stack7 = <org.bytedeco.javacv.Marker: org.bytedeco.opencv.opencv_core.IplImage[] imageCache>;
+
+        $stack8 = $stack7[id];
+
+        $stack9 = virtualinvoke $stack8.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.ByteBuffer getByteBuffer()>();
+
+        staticinvoke <org.bytedeco.artoolkitplus.global.ARToolKitPlus: void createImagePatternBCH(int,java.nio.ByteBuffer)>(id, $stack9);
+
+     label1:
+        $stack3 = <org.bytedeco.javacv.Marker: org.bytedeco.opencv.opencv_core.IplImage[] imageCache>;
+
+        $stack4 = $stack3[id];
+
+        return $stack4;
+    }
+
+    public void draw(org.bytedeco.opencv.opencv_core.IplImage)
+    {
+        Marker this;
+        org.bytedeco.opencv.opencv_core.IplImage image;
+        org.bytedeco.opencv.opencv_core.CvScalar $stack2;
+        org.bytedeco.javacv.Marker $r0;
+
+        this := @this: Marker;
+
+        image := @parameter0: org.bytedeco.opencv.opencv_core.IplImage;
+
+        $stack2 = <org.bytedeco.opencv.opencv_core.CvScalar: org.bytedeco.opencv.opencv_core.CvScalar BLACK>;
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.Marker: void draw(org.bytedeco.opencv.opencv_core.IplImage,org.bytedeco.opencv.opencv_core.CvScalar,double,org.bytedeco.opencv.opencv_core.CvMat)>(image, $stack2, 1.0, null);
+
+        return;
+    }
+
+    public void draw(org.bytedeco.opencv.opencv_core.IplImage, org.bytedeco.opencv.opencv_core.CvScalar, double, org.bytedeco.opencv.opencv_core.CvMat)
+    {
+        Marker this;
+        org.bytedeco.opencv.opencv_core.IplImage image;
+        org.bytedeco.opencv.opencv_core.CvScalar color;
+        double scale;
+        org.bytedeco.opencv.opencv_core.CvMat prewarp;
+        org.bytedeco.javacv.Marker $r0;
+
+        this := @this: Marker;
+
+        image := @parameter0: org.bytedeco.opencv.opencv_core.IplImage;
+
+        color := @parameter1: org.bytedeco.opencv.opencv_core.CvScalar;
+
+        scale := @parameter2: double;
+
+        prewarp := @parameter3: org.bytedeco.opencv.opencv_core.CvMat;
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.Marker: void draw(org.bytedeco.opencv.opencv_core.IplImage,org.bytedeco.opencv.opencv_core.CvScalar,double,double,org.bytedeco.opencv.opencv_core.CvMat)>(image, color, scale, scale, prewarp);
+
+        return;
+    }
+
+    public void draw(org.bytedeco.opencv.opencv_core.IplImage, org.bytedeco.opencv.opencv_core.CvScalar, double, double, org.bytedeco.opencv.opencv_core.CvMat)
+    {
+        java.lang.ThreadLocal $stack31, $stack38, $stack40;
+        java.lang.Object $stack32, $stack39, $stack41;
+        org.bytedeco.opencv.opencv_core.CvMat H, prewarp, srcPts, dstPts;
+        Marker this;
+        double[] $stack33, $stack34, $stack52;
+        org.bytedeco.opencv.opencv_core.IplImage marker, image;
+        java.nio.ByteBuffer mbuf;
+        int h, w, $stack47, $stack48, $stack55, $stack58, $stack60, $stack63, $stack67, $stack69, $stack70, $stack80, $stack88, $stack108, $stack110, $stack111, y, x, i;
+        byte $stack49, $stack72, $stack73;
+        double $stack53, $stack54, $stack56, $stack57, $stack59, $stack61, $stack62, $stack64, a, b, scaleX, $stack76, $stack77, $stack78, scaleY, $stack84, $stack85, $stack86, $stack109, $stack112, centerx, centery, dx, dy, $stack105, $stack92;
+        org.bytedeco.opencv.opencv_core.CvPoint $stack66, $stack75, $stack83, $u0;
+        org.bytedeco.opencv.opencv_core.CvScalar color;
+        long $stack74, $stack79, $stack82, $stack87;
+        org.bytedeco.javacv.Marker $r0, $r4;
+        org.bytedeco.opencv.opencv_core.CvArr $r1, $r2, $r3, $r5, $r6, $r7;
+
+        this := @this: Marker;
+
+        image := @parameter0: org.bytedeco.opencv.opencv_core.IplImage;
+
+        color := @parameter1: org.bytedeco.opencv.opencv_core.CvScalar;
+
+        scaleX := @parameter2: double;
+
+        scaleY := @parameter3: double;
+
+        prewarp := @parameter4: org.bytedeco.opencv.opencv_core.CvMat;
+
+        $stack31 = <org.bytedeco.javacv.Marker: java.lang.ThreadLocal H3x3>;
+
+        $stack32 = virtualinvoke $stack31.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        H = (org.bytedeco.opencv.opencv_core.CvMat) $stack32;
+
+        $stack34 = <org.bytedeco.javacv.Marker: double[] src>;
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        $stack33 = $r0.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        staticinvoke <org.bytedeco.javacv.JavaCV: org.bytedeco.opencv.opencv_core.CvMat getPerspectiveTransform(double[],double[],org.bytedeco.opencv.opencv_core.CvMat)>($stack34, $stack33, H);
+
+        if prewarp == null goto label01;
+
+        $r1 = (org.bytedeco.opencv.opencv_core.CvArr) prewarp;
+
+        $r2 = (org.bytedeco.opencv.opencv_core.CvArr) H;
+
+        $r3 = (org.bytedeco.opencv.opencv_core.CvArr) H;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvGEMM(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,double,org.bytedeco.opencv.opencv_core.CvArr,double,org.bytedeco.opencv.opencv_core.CvArr,int)>($r1, $r2, 1.0, null, 0.0, $r3, 0);
+
+     label01:
+        $r4 = (org.bytedeco.javacv.Marker) this;
+
+        marker = virtualinvoke $r4.<org.bytedeco.javacv.Marker: org.bytedeco.opencv.opencv_core.IplImage getImage()>();
+
+        mbuf = virtualinvoke marker.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.ByteBuffer getByteBuffer()>();
+
+        $stack38 = <org.bytedeco.javacv.Marker: java.lang.ThreadLocal srcPts4x1>;
+
+        $stack39 = virtualinvoke $stack38.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        srcPts = (org.bytedeco.opencv.opencv_core.CvMat) $stack39;
+
+        $stack40 = <org.bytedeco.javacv.Marker: java.lang.ThreadLocal dstPts4x1>;
+
+        $stack41 = virtualinvoke $stack40.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        dstPts = (org.bytedeco.opencv.opencv_core.CvMat) $stack41;
+
+        $u0 = new org.bytedeco.opencv.opencv_core.CvPoint;
+
+        specialinvoke $u0.<org.bytedeco.opencv.opencv_core.CvPoint: void <init>(long)>(4L);
+
+        h = virtualinvoke marker.<org.bytedeco.opencv.opencv_core.IplImage: int height()>();
+
+        w = virtualinvoke marker.<org.bytedeco.opencv.opencv_core.IplImage: int width()>();
+
+        y = 0;
+
+     label02:
+        if y >= h goto label14;
+
+        x = 0;
+
+     label03:
+        if x >= w goto label13;
+
+        $stack47 = y * w;
+
+        $stack48 = $stack47 + x;
+
+        $stack49 = virtualinvoke mbuf.<java.nio.ByteBuffer: byte get(int)>($stack48);
+
+        if $stack49 != 0 goto label12;
+
+        $stack52 = newarray (double)[8];
+
+        $stack53 = (double) x;
+
+        $stack52[0] = $stack53;
+
+        $stack54 = (double) y;
+
+        $stack52[1] = $stack54;
+
+        $stack55 = x + 1;
+
+        $stack56 = (double) $stack55;
+
+        $stack52[2] = $stack56;
+
+        $stack57 = (double) y;
+
+        $stack52[3] = $stack57;
+
+        $stack58 = x + 1;
+
+        $stack59 = (double) $stack58;
+
+        $stack52[4] = $stack59;
+
+        $stack60 = y + 1;
+
+        $stack61 = (double) $stack60;
+
+        $stack52[5] = $stack61;
+
+        $stack62 = (double) x;
+
+        $stack52[6] = $stack62;
+
+        $stack63 = y + 1;
+
+        $stack64 = (double) $stack63;
+
+        $stack52[7] = $stack64;
+
+        virtualinvoke srcPts.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(double[])>($stack52);
+
+        $r5 = (org.bytedeco.opencv.opencv_core.CvArr) srcPts;
+
+        $r6 = (org.bytedeco.opencv.opencv_core.CvArr) dstPts;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvPerspectiveTransform(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvMat)>($r5, $r6, H);
+
+        centerx = 0.0;
+
+        centery = 0.0;
+
+        i = 0;
+
+     label04:
+        if i >= 4 goto label05;
+
+        $stack108 = i * 2;
+
+        $stack109 = virtualinvoke dstPts.<org.bytedeco.opencv.opencv_core.CvMat: double get(int)>($stack108);
+
+        centerx = centerx + $stack109;
+
+        $stack110 = i * 2;
+
+        $stack111 = $stack110 + 1;
+
+        $stack112 = virtualinvoke dstPts.<org.bytedeco.opencv.opencv_core.CvMat: double get(int)>($stack111);
+
+        centery = centery + $stack112;
+
+        i = i + 1;
+
+        goto label04;
+
+     label05:
+        centerx = centerx / 4.0;
+
+        centery = centery / 4.0;
+
+        i = 0;
+
+     label06:
+        if i >= 4 goto label11;
+
+        $stack67 = i * 2;
+
+        a = virtualinvoke dstPts.<org.bytedeco.opencv.opencv_core.CvMat: double get(int)>($stack67);
+
+        $stack69 = i * 2;
+
+        $stack70 = $stack69 + 1;
+
+        b = virtualinvoke dstPts.<org.bytedeco.opencv.opencv_core.CvMat: double get(int)>($stack70);
+
+        dx = centerx - a;
+
+        dy = centery - b;
+
+        $stack72 = dx cmpg 0.0;
+
+        if $stack72 >= 0 goto label07;
+
+        $stack105 = -1.0;
+
+        goto label08;
+
+     label07:
+        $stack105 = 0.0;
+
+     label08:
+        dx = $stack105;
+
+        $stack73 = dy cmpg 0.0;
+
+        if $stack73 >= 0 goto label09;
+
+        $stack92 = -1.0;
+
+        goto label10;
+
+     label09:
+        $stack92 = 0.0;
+
+     label10:
+        $stack74 = (long) i;
+
+        $stack75 = virtualinvoke $u0.<org.bytedeco.opencv.opencv_core.CvPoint: org.bytedeco.opencv.opencv_core.CvPoint position(long)>($stack74);
+
+        $stack76 = a * scaleX;
+
+        $stack77 = $stack76 + dx;
+
+        $stack78 = $stack77 * 65536.0;
+
+        $stack79 = staticinvoke <java.lang.Math: long round(double)>($stack78);
+
+        $stack80 = (int) $stack79;
+
+        virtualinvoke $stack75.<org.bytedeco.opencv.opencv_core.CvPoint: org.bytedeco.opencv.opencv_core.CvPoint x(int)>($stack80);
+
+        $stack82 = (long) i;
+
+        $stack83 = virtualinvoke $u0.<org.bytedeco.opencv.opencv_core.CvPoint: org.bytedeco.opencv.opencv_core.CvPoint position(long)>($stack82);
+
+        $stack84 = b * scaleY;
+
+        $stack85 = $stack84 + $stack92;
+
+        $stack86 = $stack85 * 65536.0;
+
+        $stack87 = staticinvoke <java.lang.Math: long round(double)>($stack86);
+
+        $stack88 = (int) $stack87;
+
+        virtualinvoke $stack83.<org.bytedeco.opencv.opencv_core.CvPoint: org.bytedeco.opencv.opencv_core.CvPoint y(int)>($stack88);
+
+        i = i + 1;
+
+        goto label06;
+
+     label11:
+        $stack66 = virtualinvoke $u0.<org.bytedeco.opencv.opencv_core.CvPoint: org.bytedeco.opencv.opencv_core.CvPoint position(long)>(0L);
+
+        $r7 = (org.bytedeco.opencv.opencv_core.CvArr) image;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgproc: void cvFillConvexPoly(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvPoint,int,org.bytedeco.opencv.opencv_core.CvScalar,int,int)>($r7, $stack66, 4, color, 8, 16);
+
+     label12:
+        x = x + 1;
+
+        goto label03;
+
+     label13:
+        y = y + 1;
+
+        goto label02;
+
+     label14:
+        return;
+    }
+
+    public static org.bytedeco.javacv.Marker[][] createArray(org.bytedeco.javacv.Marker$ArraySettings)
+    {
+        org.bytedeco.javacv.Marker$ArraySettings settings;
+        org.bytedeco.javacv.Marker[][] $stack1;
+
+        settings := @parameter0: org.bytedeco.javacv.Marker$ArraySettings;
+
+        $stack1 = staticinvoke <org.bytedeco.javacv.Marker: org.bytedeco.javacv.Marker[][] createArray(org.bytedeco.javacv.Marker$ArraySettings,double,double)>(settings, 0.0, 0.0);
+
+        return $stack1;
+    }
+
+    public static org.bytedeco.javacv.Marker[][] createArray(org.bytedeco.javacv.Marker$ArraySettings, double, double)
+    {
+        org.bytedeco.javacv.Marker$ArraySettings settings;
+        int $stack17, $stack18, $stack19, $stack20, $stack22, $stack23, $stack24, $stack25, $stack26, $stack28, x, $stack29, $stack30, $stack31, $stack34, $stack38, $stack44, id, y, sx#8, sy#9, $stack32;
+        org.bytedeco.javacv.Marker[] markers, y#6, x;
+        boolean $stack21;
+        org.bytedeco.javacv.Marker[][] $stack27, $stack43;
+        org.bytedeco.javacv.Marker $stack33, $stack37, $stack57;
+        double $stack47, $stack48, $stack49, $stack50, $stack51, marginx, $stack52, cx, $stack53, $stack54, $stack55, marginy, $stack56, cy, $stack59, $stack60, $stack61, $stack62, $stack63, $stack64, $stack65, $stack66, sx, sy;
+        double[] $stack58;
+        byte $stack40, $stack39;
+
+        settings := @parameter0: org.bytedeco.javacv.Marker$ArraySettings;
+
+        marginx := @parameter1: double;
+
+        marginy := @parameter2: double;
+
+        $stack18 = settings.<org.bytedeco.javacv.Marker$ArraySettings: int rows>;
+
+        $stack17 = settings.<org.bytedeco.javacv.Marker$ArraySettings: int columns>;
+
+        $stack19 = $stack18 * $stack17;
+
+        markers = newarray (org.bytedeco.javacv.Marker)[$stack19];
+
+        id = 0;
+
+        y = 0;
+
+     label01:
+        $stack20 = settings.<org.bytedeco.javacv.Marker$ArraySettings: int rows>;
+
+        if y >= $stack20 goto label04;
+
+        x = 0;
+
+     label02:
+        $stack44 = settings.<org.bytedeco.javacv.Marker$ArraySettings: int columns>;
+
+        if x >= $stack44 goto label03;
+
+        $stack47 = settings.<org.bytedeco.javacv.Marker$ArraySettings: double sizeX>;
+
+        sx = $stack47 / 2.0;
+
+        $stack48 = settings.<org.bytedeco.javacv.Marker$ArraySettings: double sizeY>;
+
+        sy = $stack48 / 2.0;
+
+        $stack50 = (double) x;
+
+        $stack49 = settings.<org.bytedeco.javacv.Marker$ArraySettings: double spacingX>;
+
+        $stack51 = $stack50 * $stack49;
+
+        $stack52 = $stack51 + sx;
+
+        cx = $stack52 + marginx;
+
+        $stack54 = (double) y;
+
+        $stack53 = settings.<org.bytedeco.javacv.Marker$ArraySettings: double spacingY>;
+
+        $stack55 = $stack54 * $stack53;
+
+        $stack56 = $stack55 + sy;
+
+        cy = $stack56 + marginy;
+
+        $stack57 = new org.bytedeco.javacv.Marker;
+
+        $stack58 = newarray (double)[8];
+
+        $stack59 = cx - sx;
+
+        $stack58[0] = $stack59;
+
+        $stack60 = cy - sy;
+
+        $stack58[1] = $stack60;
+
+        $stack61 = cx + sx;
+
+        $stack58[2] = $stack61;
+
+        $stack62 = cy - sy;
+
+        $stack58[3] = $stack62;
+
+        $stack63 = cx + sx;
+
+        $stack58[4] = $stack63;
+
+        $stack64 = cy + sy;
+
+        $stack58[5] = $stack64;
+
+        $stack65 = cx - sx;
+
+        $stack58[6] = $stack65;
+
+        $stack66 = cy + sy;
+
+        $stack58[7] = $stack66;
+
+        specialinvoke $stack57.<org.bytedeco.javacv.Marker: void <init>(int,double[],double)>(id, $stack58, 1.0);
+
+        markers[id] = $stack57;
+
+        id = id + 1;
+
+        x = x + 1;
+
+        goto label02;
+
+     label03:
+        y = y + 1;
+
+        goto label01;
+
+     label04:
+        $stack21 = settings.<org.bytedeco.javacv.Marker$ArraySettings: boolean checkered>;
+
+        if $stack21 != 0 goto label05;
+
+        $stack43 = newarray (org.bytedeco.javacv.Marker[])[1];
+
+        $stack43[0] = markers;
+
+        return $stack43;
+
+     label05:
+        $stack22 = lengthof markers;
+
+        $stack23 = $stack22 / 2;
+
+        y#6 = newarray (org.bytedeco.javacv.Marker)[$stack23];
+
+        $stack24 = lengthof markers;
+
+        $stack25 = $stack24 / 2;
+
+        x = newarray (org.bytedeco.javacv.Marker)[$stack25];
+
+        sx#8 = 0;
+
+     label06:
+        $stack26 = lengthof markers;
+
+        if sx#8 >= $stack26 goto label13;
+
+        $stack28 = settings.<org.bytedeco.javacv.Marker$ArraySettings: int columns>;
+
+        x = sx#8 % $stack28;
+
+        $stack29 = settings.<org.bytedeco.javacv.Marker$ArraySettings: int columns>;
+
+        sy#9 = sx#8 / $stack29;
+
+        $stack30 = x % 2;
+
+        if $stack30 != 0 goto label07;
+
+        $stack40 = 1;
+
+        goto label08;
+
+     label07:
+        $stack40 = 0;
+
+     label08:
+        $stack31 = sy#9 % 2;
+
+        if $stack31 != 0 goto label09;
+
+        $stack39 = 1;
+
+        goto label10;
+
+     label09:
+        $stack39 = 0;
+
+     label10:
+        $stack32 = $stack40 ^ $stack39;
+
+        if $stack32 == 0 goto label11;
+
+        $stack38 = sx#8 / 2;
+
+        $stack37 = markers[sx#8];
+
+        x[$stack38] = $stack37;
+
+        goto label12;
+
+     label11:
+        $stack34 = sx#8 / 2;
+
+        $stack33 = markers[sx#8];
+
+        y#6[$stack34] = $stack33;
+
+     label12:
+        sx#8 = sx#8 + 1;
+
+        goto label06;
+
+     label13:
+        $stack27 = newarray (org.bytedeco.javacv.Marker[])[2];
+
+        $stack27[0] = x;
+
+        $stack27[1] = y#6;
+
+        return $stack27;
+    }
+
+    public static org.bytedeco.javacv.Marker[][] createArray(int, int, double, double, double, double, boolean, double, double)
+    {
+        org.bytedeco.javacv.Marker$ArraySettings $stack16;
+        int rows, columns;
+        double sizeX, sizeY, spacingX, spacingY, marginx, marginy;
+        boolean checkered;
+        org.bytedeco.javacv.Marker[][] $stack17;
+
+        rows := @parameter0: int;
+
+        columns := @parameter1: int;
+
+        sizeX := @parameter2: double;
+
+        sizeY := @parameter3: double;
+
+        spacingX := @parameter4: double;
+
+        spacingY := @parameter5: double;
+
+        checkered := @parameter6: boolean;
+
+        marginx := @parameter7: double;
+
+        marginy := @parameter8: double;
+
+        $stack16 = new org.bytedeco.javacv.Marker$ArraySettings;
+
+        specialinvoke $stack16.<org.bytedeco.javacv.Marker$ArraySettings: void <init>()>();
+
+        $stack16.<org.bytedeco.javacv.Marker$ArraySettings: int rows> = rows;
+
+        $stack16.<org.bytedeco.javacv.Marker$ArraySettings: int columns> = columns;
+
+        $stack16.<org.bytedeco.javacv.Marker$ArraySettings: double sizeX> = sizeX;
+
+        $stack16.<org.bytedeco.javacv.Marker$ArraySettings: double sizeY> = sizeY;
+
+        $stack16.<org.bytedeco.javacv.Marker$ArraySettings: double spacingX> = spacingX;
+
+        $stack16.<org.bytedeco.javacv.Marker$ArraySettings: double spacingY> = spacingY;
+
+        $stack16.<org.bytedeco.javacv.Marker$ArraySettings: boolean checkered> = checkered;
+
+        $stack17 = staticinvoke <org.bytedeco.javacv.Marker: org.bytedeco.javacv.Marker[][] createArray(org.bytedeco.javacv.Marker$ArraySettings,double,double)>($stack16, marginx, marginy);
+
+        return $stack17;
+    }
+
+    public static void applyWarp(org.bytedeco.javacv.Marker[], org.bytedeco.opencv.opencv_core.CvMat)
+    {
+        java.lang.ThreadLocal $stack7;
+        java.lang.Object $stack8;
+        org.bytedeco.opencv.opencv_core.CvMat pts, $stack10, warp;
+        org.bytedeco.javacv.Marker[] markers;
+        int l4, l5;
+        org.bytedeco.javacv.Marker m;
+        double[] $stack9, $stack11;
+        org.bytedeco.opencv.opencv_core.CvArr $r0, $r1;
+
+        markers := @parameter0: org.bytedeco.javacv.Marker[];
+
+        warp := @parameter1: org.bytedeco.opencv.opencv_core.CvMat;
+
+        $stack7 = <org.bytedeco.javacv.Marker: java.lang.ThreadLocal srcPts4x1>;
+
+        $stack8 = virtualinvoke $stack7.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        pts = (org.bytedeco.opencv.opencv_core.CvMat) $stack8;
+
+        l4 = lengthof markers;
+
+        l5 = 0;
+
+     label1:
+        if l5 >= l4 goto label2;
+
+        m = markers[l5];
+
+        $stack9 = m.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack10 = virtualinvoke pts.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(double[])>($stack9);
+
+        $r0 = (org.bytedeco.opencv.opencv_core.CvArr) $stack10;
+
+        $r1 = (org.bytedeco.opencv.opencv_core.CvArr) pts;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvPerspectiveTransform(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvMat)>($r0, $r1, warp);
+
+        $stack11 = m.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        virtualinvoke pts.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat get(double[])>($stack11);
+
+        l5 = l5 + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        java.lang.StringBuilder $stack3, $stack5, $stack6, $stack9, $stack10, $stack13, $stack14, $stack17, $stack18, $stack21, $stack22, $stack25, $stack26, $stack29, $stack30, $stack33, $stack34, $stack37, $stack38, $u0;
+        Marker this;
+        int $stack4;
+        double[] $stack7, $stack11, $stack15, $stack19, $stack23, $stack27, $stack31, $stack35;
+        double $stack8, $stack12, $stack16, $stack20, $stack24, $stack28, $stack32, $stack36;
+        java.lang.String s;
+        org.bytedeco.javacv.Marker $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: Marker;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[");
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.Marker: int id>;
+
+        $stack5 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack4);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": (");
+
+        $r1 = (org.bytedeco.javacv.Marker) this;
+
+        $stack7 = $r1.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack8 = $stack7[0];
+
+        $stack9 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(double)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        $r2 = (org.bytedeco.javacv.Marker) this;
+
+        $stack11 = $r2.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack12 = $stack11[1];
+
+        $stack13 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(double)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") (");
+
+        $r3 = (org.bytedeco.javacv.Marker) this;
+
+        $stack15 = $r3.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack16 = $stack15[2];
+
+        $stack17 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(double)>($stack16);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        $r4 = (org.bytedeco.javacv.Marker) this;
+
+        $stack19 = $r4.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack20 = $stack19[3];
+
+        $stack21 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(double)>($stack20);
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") (");
+
+        $r5 = (org.bytedeco.javacv.Marker) this;
+
+        $stack23 = $r5.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack24 = $stack23[4];
+
+        $stack25 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(double)>($stack24);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        $r6 = (org.bytedeco.javacv.Marker) this;
+
+        $stack27 = $r6.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack28 = $stack27[5];
+
+        $stack29 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(double)>($stack28);
+
+        $stack30 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") (");
+
+        $r7 = (org.bytedeco.javacv.Marker) this;
+
+        $stack31 = $r7.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack32 = $stack31[6];
+
+        $stack33 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(double)>($stack32);
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        $r8 = (org.bytedeco.javacv.Marker) this;
+
+        $stack35 = $r8.<org.bytedeco.javacv.Marker: double[] corners>;
+
+        $stack36 = $stack35[7];
+
+        $stack37 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(double)>($stack36);
+
+        $stack38 = virtualinvoke $stack37.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")]");
+
+        s = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return s;
+    }
+
+    public volatile java.lang.Object clone() throws java.lang.CloneNotSupportedException
+    {
+        Marker this;
+        org.bytedeco.javacv.Marker $stack1, $r0;
+
+        this := @this: Marker;
+
+        $r0 = (org.bytedeco.javacv.Marker) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.Marker: org.bytedeco.javacv.Marker clone()>();
+
+        return $stack1;
+    }
+
+    static void <clinit>()
+    {
+        org.bytedeco.opencv.opencv_core.IplImage[] $stack0;
+        double[] $stack1;
+        java.lang.ThreadLocal $stack2, $stack3, $stack4;
+
+        $stack0 = newarray (org.bytedeco.opencv.opencv_core.IplImage)[4096];
+
+        <org.bytedeco.javacv.Marker: org.bytedeco.opencv.opencv_core.IplImage[] imageCache> = $stack0;
+
+        $stack1 = newarray (double)[8];
+
+        $stack1[0] = 0.0;
+
+        $stack1[1] = 0.0;
+
+        $stack1[2] = 8.0;
+
+        $stack1[3] = 0.0;
+
+        $stack1[4] = 8.0;
+
+        $stack1[5] = 8.0;
+
+        $stack1[6] = 0.0;
+
+        $stack1[7] = 8.0;
+
+        <org.bytedeco.javacv.Marker: double[] src> = $stack1;
+
+        $stack2 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: java.lang.ThreadLocal createThreadLocal(int,int)>(3, 3);
+
+        <org.bytedeco.javacv.Marker: java.lang.ThreadLocal H3x3> = $stack2;
+
+        $stack3 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: java.lang.ThreadLocal createThreadLocal(int,int,int,int)>(4, 1, 6, 2);
+
+        <org.bytedeco.javacv.Marker: java.lang.ThreadLocal srcPts4x1> = $stack3;
+
+        $stack4 = staticinvoke <org.bytedeco.opencv.opencv_core.CvMat: java.lang.ThreadLocal createThreadLocal(int,int,int,int)>(4, 1, 6, 2);
+
+        <org.bytedeco.javacv.Marker: java.lang.ThreadLocal dstPts4x1> = $stack4;
+
+        return;
+    }
+}

@@ -1,0 +1,96 @@
+public class MavenLifecycleParticipantTest$InjectReactorDependency extends org.apache.maven.AbstractMavenLifecycleParticipant
+{
+
+    public void <init>()
+    {
+        MavenLifecycleParticipantTest$InjectReactorDependency this;
+
+        this := @this: MavenLifecycleParticipantTest$InjectReactorDependency;
+
+        specialinvoke this.<org.apache.maven.AbstractMavenLifecycleParticipant: void <init>()>();
+
+        return;
+    }
+
+    public void afterProjectsRead(org.apache.maven.execution.MavenSession)
+    {
+        MavenLifecycleParticipantTest$InjectReactorDependency this;
+        org.apache.maven.execution.MavenSession session;
+        java.util.List $stack2;
+        org.apache.maven.MavenLifecycleParticipantTest$InjectReactorDependency $r0;
+
+        this := @this: MavenLifecycleParticipantTest$InjectReactorDependency;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $stack2 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $r0 = (org.apache.maven.MavenLifecycleParticipantTest$InjectReactorDependency) this;
+
+        specialinvoke $r0.<org.apache.maven.MavenLifecycleParticipantTest$InjectReactorDependency: void injectReactorDependency(java.util.List,java.lang.String,java.lang.String)>($stack2, "module-a", "module-b");
+
+        return;
+    }
+
+    private void injectReactorDependency(java.util.List, java.lang.String, java.lang.String)
+    {
+        java.util.List projects;
+        java.util.Iterator l4;
+        boolean $stack8, $stack11;
+        java.lang.Object $stack9;
+        org.apache.maven.project.MavenProject project;
+        java.lang.String moduleFrom, $stack10, moduleTo, $stack14, $stack15;
+        org.apache.maven.model.Dependency $stack13;
+        org.apache.maven.model.Model $stack16;
+        MavenLifecycleParticipantTest$InjectReactorDependency this;
+
+        this := @this: MavenLifecycleParticipantTest$InjectReactorDependency;
+
+        projects := @parameter0: java.util.List;
+
+        moduleFrom := @parameter1: java.lang.String;
+
+        moduleTo := @parameter2: java.lang.String;
+
+        l4 = interfaceinvoke projects.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label3;
+
+        $stack9 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        project = (org.apache.maven.project.MavenProject) $stack9;
+
+        $stack10 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        $stack11 = virtualinvoke moduleFrom.<java.lang.String: boolean equals(java.lang.Object)>($stack10);
+
+        if $stack11 == 0 goto label2;
+
+        $stack13 = new org.apache.maven.model.Dependency;
+
+        specialinvoke $stack13.<org.apache.maven.model.Dependency: void <init>()>();
+
+        virtualinvoke $stack13.<org.apache.maven.model.Dependency: void setArtifactId(java.lang.String)>(moduleTo);
+
+        $stack14 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        virtualinvoke $stack13.<org.apache.maven.model.Dependency: void setGroupId(java.lang.String)>($stack14);
+
+        $stack15 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        virtualinvoke $stack13.<org.apache.maven.model.Dependency: void setVersion(java.lang.String)>($stack15);
+
+        $stack16 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.model.Model getModel()>();
+
+        virtualinvoke $stack16.<org.apache.maven.model.Model: void addDependency(org.apache.maven.model.Dependency)>($stack13);
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+}

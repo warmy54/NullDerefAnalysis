@@ -1,0 +1,81 @@
+final class DefaultArtifactResolver$DaemonThreadCreator extends java.lang.Object implements java.util.concurrent.ThreadFactory
+{
+    static final java.lang.String THREADGROUP_NAME;
+    static final java.lang.ThreadGroup GROUP;
+    static final java.util.concurrent.atomic.AtomicInteger THREAD_NUMBER;
+
+    void <init>()
+    {
+        DefaultArtifactResolver$DaemonThreadCreator this;
+
+        this := @this: DefaultArtifactResolver$DaemonThreadCreator;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public java.lang.Thread newThread(java.lang.Runnable)
+    {
+        java.lang.Thread $stack3;
+        java.lang.Runnable r;
+        java.lang.StringBuilder $stack4, $stack6, $stack9;
+        java.lang.ThreadGroup $stack5;
+        java.util.concurrent.atomic.AtomicInteger $stack7;
+        int $stack8;
+        java.lang.String $stack10;
+        DefaultArtifactResolver$DaemonThreadCreator this;
+
+        this := @this: DefaultArtifactResolver$DaemonThreadCreator;
+
+        r := @parameter0: java.lang.Runnable;
+
+        $stack3 = new java.lang.Thread;
+
+        $stack5 = <org.apache.maven.artifact.resolver.DefaultArtifactResolver$DaemonThreadCreator: java.lang.ThreadGroup GROUP>;
+
+        $stack4 = new java.lang.StringBuilder;
+
+        specialinvoke $stack4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("resolver-");
+
+        $stack7 = <org.apache.maven.artifact.resolver.DefaultArtifactResolver$DaemonThreadCreator: java.util.concurrent.atomic.AtomicInteger THREAD_NUMBER>;
+
+        $stack8 = virtualinvoke $stack7.<java.util.concurrent.atomic.AtomicInteger: int getAndIncrement()>();
+
+        $stack9 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack3.<java.lang.Thread: void <init>(java.lang.ThreadGroup,java.lang.Runnable,java.lang.String)>($stack5, r, $stack10);
+
+        virtualinvoke $stack3.<java.lang.Thread: void setDaemon(boolean)>(1);
+
+        virtualinvoke $stack3.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(null);
+
+        return $stack3;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.ThreadGroup $stack0;
+        java.util.concurrent.atomic.AtomicInteger $stack1;
+
+        <DefaultArtifactResolver$DaemonThreadCreator: java.lang.String THREADGROUP_NAME> = "org.apache.maven.artifact.resolver.DefaultArtifactResolver";
+
+        $stack0 = new java.lang.ThreadGroup;
+
+        specialinvoke $stack0.<java.lang.ThreadGroup: void <init>(java.lang.String)>("org.apache.maven.artifact.resolver.DefaultArtifactResolver");
+
+        <org.apache.maven.artifact.resolver.DefaultArtifactResolver$DaemonThreadCreator: java.lang.ThreadGroup GROUP> = $stack0;
+
+        $stack1 = new java.util.concurrent.atomic.AtomicInteger;
+
+        specialinvoke $stack1.<java.util.concurrent.atomic.AtomicInteger: void <init>(int)>(1);
+
+        <org.apache.maven.artifact.resolver.DefaultArtifactResolver$DaemonThreadCreator: java.util.concurrent.atomic.AtomicInteger THREAD_NUMBER> = $stack1;
+
+        return;
+    }
+}

@@ -1,0 +1,82 @@
+class FFmpegFrameGrabber$ReadCallback extends org.bytedeco.ffmpeg.avformat.Read_packet_Pointer_BytePointer_int
+{
+
+    void <init>()
+    {
+        FFmpegFrameGrabber$ReadCallback this;
+
+        this := @this: FFmpegFrameGrabber$ReadCallback;
+
+        specialinvoke this.<org.bytedeco.ffmpeg.avformat.Read_packet_Pointer_BytePointer_int: void <init>()>();
+
+        return;
+    }
+
+    public int call(org.bytedeco.javacpp.Pointer, org.bytedeco.javacpp.BytePointer, int)
+    {
+        int buf_size, size;
+        org.bytedeco.javacpp.Pointer opaque;
+        java.util.Map $stack7;
+        java.lang.Object $stack8;
+        java.io.InputStream is;
+        org.bytedeco.javacpp.BytePointer buf;
+        java.lang.Throwable $stack11;
+        java.lang.StringBuilder $stack12, $stack14, $stack15;
+        java.io.PrintStream $stack13;
+        java.lang.String $stack16;
+        FFmpegFrameGrabber$ReadCallback this;
+        byte[] b;
+
+        this := @this: FFmpegFrameGrabber$ReadCallback;
+
+        opaque := @parameter0: org.bytedeco.javacpp.Pointer;
+
+        buf := @parameter1: org.bytedeco.javacpp.BytePointer;
+
+        buf_size := @parameter2: int;
+
+     label1:
+        b = newarray (byte)[buf_size];
+
+        $stack7 = <org.bytedeco.javacv.FFmpegFrameGrabber: java.util.Map inputStreams>;
+
+        $stack8 = interfaceinvoke $stack7.<java.util.Map: java.lang.Object get(java.lang.Object)>(opaque);
+
+        is = (java.io.InputStream) $stack8;
+
+        size = virtualinvoke is.<java.io.InputStream: int read(byte[],int,int)>(b, 0, buf_size);
+
+        if size >= 0 goto label3;
+
+     label2:
+        return 0;
+
+     label3:
+        virtualinvoke buf.<org.bytedeco.javacpp.BytePointer: org.bytedeco.javacpp.BytePointer put(byte[],int,int)>(b, 0, size);
+
+     label4:
+        return size;
+
+     label5:
+        $stack11 := @caughtexception;
+
+        $stack13 = <java.lang.System: java.io.PrintStream err>;
+
+        $stack12 = new java.lang.StringBuilder;
+
+        specialinvoke $stack12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack14 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error on InputStream.read(): ");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack11);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack13.<java.io.PrintStream: void println(java.lang.String)>($stack16);
+
+        return -1;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+    }
+}

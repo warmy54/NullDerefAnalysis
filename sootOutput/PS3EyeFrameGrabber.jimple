@@ -1,0 +1,1203 @@
+public class PS3EyeFrameGrabber extends org.bytedeco.javacv.FrameGrabber
+{
+    private static org.bytedeco.javacv.FrameGrabber$Exception loadingException;
+    cl.eye.CLCamera camera;
+    int cameraIndex;
+    int[] ps3_frame;
+    byte[] ipl_frame;
+    org.bytedeco.opencv.opencv_core.IplImage image_4ch;
+    org.bytedeco.opencv.opencv_core.IplImage image_1ch;
+    org.bytedeco.javacv.FrameConverter converter;
+    java.lang.String stat;
+    java.lang.String uuid;
+    protected org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered triggered;
+
+    public static java.lang.String[] getDeviceDescriptions() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        int $stack2, $stack3, i;
+        java.lang.String[] descriptions;
+        java.lang.String $stack4;
+
+        staticinvoke <org.bytedeco.javacv.PS3EyeFrameGrabber: void tryLoad()>();
+
+        $stack2 = staticinvoke <cl.eye.CLCamera: int cameraCount()>();
+
+        descriptions = newarray (java.lang.String)[$stack2];
+
+        i = 0;
+
+     label1:
+        $stack3 = lengthof descriptions;
+
+        if i >= $stack3 goto label2;
+
+        $stack4 = staticinvoke <cl.eye.CLCamera: java.lang.String cameraUUID(int)>(i);
+
+        descriptions[i] = $stack4;
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        return descriptions;
+    }
+
+    public static org.bytedeco.javacv.PS3EyeFrameGrabber createDefault(java.io.File) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        java.lang.StringBuilder $stack3, $stack4, $u0;
+        java.lang.String $stack5;
+        java.io.File deviceFile;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        java.lang.Throwable $r0;
+
+        deviceFile := @parameter0: java.io.File;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/PS3EyeFrameGrabber;");
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not support device files.");
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack5);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+    }
+
+    public static org.bytedeco.javacv.PS3EyeFrameGrabber createDefault(java.lang.String) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        java.lang.StringBuilder $stack3, $stack4, $u0;
+        java.lang.String $stack5, devicePath;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1;
+        java.lang.Throwable $r0;
+
+        devicePath := @parameter0: java.lang.String;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/PS3EyeFrameGrabber;");
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not support device paths.");
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>($stack5);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+    }
+
+    public static org.bytedeco.javacv.PS3EyeFrameGrabber createDefault(int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.PS3EyeFrameGrabber $stack1;
+        int deviceNumber;
+
+        deviceNumber := @parameter0: int;
+
+        $stack1 = new org.bytedeco.javacv.PS3EyeFrameGrabber;
+
+        specialinvoke $stack1.<org.bytedeco.javacv.PS3EyeFrameGrabber: void <init>(int)>(deviceNumber);
+
+        return $stack1;
+    }
+
+    public static void tryLoad() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        org.bytedeco.javacv.FrameGrabber$Exception $stack1, $stack3, $u1;
+        java.lang.Throwable $stack4, $r0, $r1;
+        java.lang.StringBuilder $stack7, $stack8, $u0;
+        java.lang.String $stack9;
+
+        $stack1 = <org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        if $stack1 == null goto label1;
+
+        $stack3 = <org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException>;
+
+        $r0 = (java.lang.Throwable) $stack3;
+
+        throw $r0;
+
+     label1:
+        staticinvoke <cl.eye.CLCamera: boolean IsLibraryLoaded()>();
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to load ");
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(class "Lorg/bytedeco/javacv/PS3EyeFrameGrabber;");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String,java.lang.Throwable)>($stack9, $stack4);
+
+        <org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = $u1;
+
+        $r1 = (java.lang.Throwable) $u1;
+
+        throw $r1;
+
+     label4:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void <init>() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        PS3EyeFrameGrabber this;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: void <init>(int)>(0);
+
+        return;
+    }
+
+    public void <init>(int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        PS3EyeFrameGrabber this;
+        int cameraIndex;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        cameraIndex := @parameter0: int;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: void <init>(int,int,int,int)>(cameraIndex, 640, 480, 60);
+
+        return;
+    }
+
+    public void <init>(int, int, int, int) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        PS3EyeFrameGrabber this;
+        int cameraIndex, imageWidth, imageHeight, framerate;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        cameraIndex := @parameter0: int;
+
+        imageWidth := @parameter1: int;
+
+        imageHeight := @parameter2: int;
+
+        framerate := @parameter3: int;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: void <init>(int,int,int,int,java.lang.Object)>(cameraIndex, 640, 480, 60, null);
+
+        return;
+    }
+
+    public void <init>(int, int, int, int, java.lang.Object) throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        PS3EyeFrameGrabber this;
+        org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered $stack7;
+        boolean $stack8;
+        int cameraIndex, imageWidth, imageHeight, framerate, $stack15, $stack16;
+        java.lang.String $stack10;
+        org.bytedeco.javacv.FrameGrabber$ImageMode $stack13;
+        double $stack14;
+        java.lang.Object applet;
+        org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage $u0;
+        org.bytedeco.javacv.FrameGrabber$Exception $u1, $u3;
+        cl.eye.CLCamera $u2;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r7, $r8, $r10, $r11, $r12, $r13, $r14, $r15, $r17, $r18, $r19, $r20, $r21, $r22;
+        org.bytedeco.javacv.FrameConverter $r6;
+        java.lang.Throwable $r9, $r16;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        cameraIndex := @parameter0: int;
+
+        imageWidth := @parameter1: int;
+
+        imageHeight := @parameter2: int;
+
+        framerate := @parameter3: int;
+
+        applet := @parameter4: java.lang.Object;
+
+        specialinvoke this.<org.bytedeco.javacv.FrameGrabber: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: int cameraIndex> = 0;
+
+        $r1 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame> = null;
+
+        $r2 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.PS3EyeFrameGrabber: byte[] ipl_frame> = null;
+
+        $r3 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_4ch> = null;
+
+        $r4 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r4.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_1ch> = null;
+
+        $u0 = new org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage;
+
+        specialinvoke $u0.<org.bytedeco.javacv.OpenCVFrameConverter$ToIplImage: void <init>()>();
+
+        $r5 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r6 = (org.bytedeco.javacv.FrameConverter) $u0;
+
+        $r5.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.FrameConverter converter> = $r6;
+
+        $stack7 = <org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered: org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered NO_TRIGGER>;
+
+        $r7 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r7.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered triggered> = $stack7;
+
+        $r8 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r8.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera> = null;
+
+        $stack8 = staticinvoke <cl.eye.CLCamera: boolean IsLibraryLoaded()>();
+
+        if $stack8 != 0 goto label1;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("CLEye multicam dll not loaded");
+
+        $r9 = (java.lang.Throwable) $u1;
+
+        throw $r9;
+
+     label1:
+        $u2 = new cl.eye.CLCamera;
+
+        specialinvoke $u2.<cl.eye.CLCamera: void <init>()>();
+
+        $r10 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r10.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera> = $u2;
+
+        $r11 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r11.<org.bytedeco.javacv.PS3EyeFrameGrabber: int cameraIndex> = cameraIndex;
+
+        $r12 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r12.<org.bytedeco.javacv.PS3EyeFrameGrabber: java.lang.String stat> = "created";
+
+        $stack10 = staticinvoke <cl.eye.CLCamera: java.lang.String cameraUUID(int)>(cameraIndex);
+
+        $r13 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r13.<org.bytedeco.javacv.PS3EyeFrameGrabber: java.lang.String uuid> = $stack10;
+
+        if imageWidth != 640 goto label2;
+
+        if imageHeight == 480 goto label3;
+
+     label2:
+        if imageWidth != 320 goto label4;
+
+        if imageHeight != 240 goto label4;
+
+     label3:
+        $r14 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        virtualinvoke $r14.<org.bytedeco.javacv.PS3EyeFrameGrabber: void setImageWidth(int)>(imageWidth);
+
+        $r15 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        virtualinvoke $r15.<org.bytedeco.javacv.PS3EyeFrameGrabber: void setImageHeight(int)>(imageHeight);
+
+        goto label5;
+
+     label4:
+        $u3 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u3.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("Only 640x480 or 320x240 images supported");
+
+        $r16 = (java.lang.Throwable) $u3;
+
+        throw $r16;
+
+     label5:
+        $stack13 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode COLOR>;
+
+        $r17 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        virtualinvoke $r17.<org.bytedeco.javacv.PS3EyeFrameGrabber: void setImageMode(org.bytedeco.javacv.FrameGrabber$ImageMode)>($stack13);
+
+        $stack14 = (double) framerate;
+
+        $r18 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        virtualinvoke $r18.<org.bytedeco.javacv.PS3EyeFrameGrabber: void setFrameRate(double)>($stack14);
+
+        $stack15 = 1000 / framerate;
+
+        $stack16 = 1 + $stack15;
+
+        $r19 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        virtualinvoke $r19.<org.bytedeco.javacv.PS3EyeFrameGrabber: void setTimeout(int)>($stack16);
+
+        $r20 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        virtualinvoke $r20.<org.bytedeco.javacv.PS3EyeFrameGrabber: void setBitsPerPixel(int)>(8);
+
+        $r21 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        virtualinvoke $r21.<org.bytedeco.javacv.PS3EyeFrameGrabber: void setTriggerMode(boolean)>(0);
+
+        $r22 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        virtualinvoke $r22.<org.bytedeco.javacv.PS3EyeFrameGrabber: void setNumBuffers(int)>(4);
+
+        return;
+    }
+
+    public static int getCameraCount()
+    {
+        int $stack0;
+
+        $stack0 = staticinvoke <cl.eye.CLCamera: int cameraCount()>();
+
+        return $stack0;
+    }
+
+    public static java.lang.String[] listPS3Cameras()
+    {
+        java.lang.String[] uuids;
+        java.lang.String $stack3;
+        int no;
+
+        no = staticinvoke <org.bytedeco.javacv.PS3EyeFrameGrabber: int getCameraCount()>();
+
+        if no <= 0 goto label3;
+
+        uuids = newarray (java.lang.String)[no];
+
+        no = no + -1;
+
+     label1:
+        if no < 0 goto label2;
+
+        $stack3 = staticinvoke <cl.eye.CLCamera: java.lang.String cameraUUID(int)>(no);
+
+        uuids[no] = $stack3;
+
+        no = no + -1;
+
+        goto label1;
+
+     label2:
+        return uuids;
+
+     label3:
+        return null;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage makeImage(int[])
+    {
+        PS3EyeFrameGrabber this;
+        org.bytedeco.opencv.opencv_core.IplImage $stack2, $stack6;
+        java.nio.IntBuffer $stack3;
+        int[] $stack4, frame;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0, $r1, $r2;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        frame := @parameter0: int[];
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_4ch>;
+
+        $stack3 = virtualinvoke $stack2.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.IntBuffer getIntBuffer()>();
+
+        $r1 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack4 = $r1.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame>;
+
+        virtualinvoke $stack3.<java.nio.IntBuffer: java.nio.IntBuffer put(int[])>($stack4);
+
+        $r2 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack6 = $r2.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_4ch>;
+
+        return $stack6;
+    }
+
+    public int[] grab_raw()
+    {
+        PS3EyeFrameGrabber this;
+        int $stack1;
+        int[] $stack2, $stack5;
+        cl.eye.CLCamera $stack3;
+        boolean $stack4;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0, $r1, $r2, $r3;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera>;
+
+        $r1 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame>;
+
+        $r2 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack1 = $r2.<org.bytedeco.javacv.PS3EyeFrameGrabber: int timeout>;
+
+        $stack4 = virtualinvoke $stack3.<cl.eye.CLCamera: boolean getCameraFrame(int[],int)>($stack2, $stack1);
+
+        if $stack4 == 0 goto label1;
+
+        $r3 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack5 = $r3.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame>;
+
+        return $stack5;
+
+     label1:
+        return null;
+    }
+
+    public void trigger() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        PS3EyeFrameGrabber this;
+        int $stack2, $stack3, i;
+        int[] $stack4;
+        org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered $stack5, $stack6;
+        long $stack7, $stack8;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        i = 0;
+
+     label1:
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: int numBuffers>;
+
+        $stack3 = $stack2 + 1;
+
+        if i >= $stack3 goto label2;
+
+        $r1 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        virtualinvoke $r1.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] grab_raw()>();
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        $r2 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack4 = virtualinvoke $r2.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] grab_raw()>();
+
+        $r3 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame> = $stack4;
+
+        if $stack4 == null goto label3;
+
+        $stack6 = <org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered: org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered HAS_FRAME>;
+
+        $r4 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r4.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered triggered> = $stack6;
+
+        $stack7 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $stack8 = $stack7 / 1000L;
+
+        $r5 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r5.<org.bytedeco.javacv.PS3EyeFrameGrabber: long timestamp> = $stack8;
+
+        goto label4;
+
+     label3:
+        $stack5 = <org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered: org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered NO_FRAME>;
+
+        $r6 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r6.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered triggered> = $stack5;
+
+     label4:
+        return;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage grab_RGB4()
+    {
+        PS3EyeFrameGrabber this;
+        int $stack1;
+        int[] $stack2, $stack9;
+        cl.eye.CLCamera $stack3;
+        boolean $stack4;
+        long $stack5, $stack6;
+        org.bytedeco.opencv.opencv_core.IplImage $stack7, $stack11;
+        java.nio.IntBuffer $stack8;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera>;
+
+        $r1 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame>;
+
+        $r2 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack1 = $r2.<org.bytedeco.javacv.PS3EyeFrameGrabber: int timeout>;
+
+        $stack4 = virtualinvoke $stack3.<cl.eye.CLCamera: boolean getCameraFrame(int[],int)>($stack2, $stack1);
+
+        if $stack4 == 0 goto label1;
+
+        $stack5 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $stack6 = $stack5 / 1000L;
+
+        $r3 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.PS3EyeFrameGrabber: long timestamp> = $stack6;
+
+        $r4 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack7 = $r4.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_4ch>;
+
+        $stack8 = virtualinvoke $stack7.<org.bytedeco.opencv.opencv_core.IplImage: java.nio.IntBuffer getIntBuffer()>();
+
+        $r5 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack9 = $r5.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame>;
+
+        virtualinvoke $stack8.<java.nio.IntBuffer: java.nio.IntBuffer put(int[])>($stack9);
+
+        $r6 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack11 = $r6.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_4ch>;
+
+        return $stack11;
+
+     label1:
+        return null;
+    }
+
+    public org.bytedeco.javacv.Frame grab() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        PS3EyeFrameGrabber this;
+        org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered $stack2, $stack6, $stack7;
+        int[] $stack3, $stack8;
+        int $stack4, $stack5;
+        org.bytedeco.javacv.FrameGrabber$ImageMode $stack12, $stack13;
+        org.bytedeco.opencv.opencv_core.IplImage $stack16, img#2;
+        org.bytedeco.javacv.FrameConverter $stack10;
+        org.bytedeco.javacv.Frame $stack11;
+        org.bytedeco.javacv.FrameGrabber$Exception $u0;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r7, $r8, $r11, $r12;
+        java.lang.Throwable $r6;
+        org.bytedeco.opencv.opencv_core.CvArr $r9, $r10;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        $stack3 = <org.bytedeco.javacv.PS3EyeFrameGrabber$1: int[] $SwitchMap$org$bytedeco$javacv$PS3EyeFrameGrabber$Triggered>;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered triggered>;
+
+        $stack4 = virtualinvoke $stack2.<org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered: int ordinal()>();
+
+        $stack5 = $stack3[$stack4];
+
+        tableswitch($stack5)
+        {
+            case 1: goto label1;
+            case 2: goto label2;
+            case 3: goto label3;
+            default: goto label4;
+        };
+
+     label1:
+        $r1 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        img#2 = virtualinvoke $r1.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage grab_RGB4()>();
+
+        goto label5;
+
+     label2:
+        $stack7 = <org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered: org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered NO_TRIGGER>;
+
+        $r2 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered triggered> = $stack7;
+
+        $r3 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack8 = $r3.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame>;
+
+        $r4 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        img#2 = virtualinvoke $r4.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage makeImage(int[])>($stack8);
+
+        goto label5;
+
+     label3:
+        $stack6 = <org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered: org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered NO_TRIGGER>;
+
+        $r5 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r5.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.PS3EyeFrameGrabber$Triggered triggered> = $stack6;
+
+        return null;
+
+     label4:
+        $u0 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u0.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("Int. error - unknown triggering state");
+
+        $r6 = (java.lang.Throwable) $u0;
+
+        throw $r6;
+
+     label5:
+        if img#2 == null goto label6;
+
+        $r7 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack13 = $r7.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack12 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode GRAY>;
+
+        if $stack13 != $stack12 goto label6;
+
+        $r8 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack16 = $r8.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_1ch>;
+
+        $r9 = (org.bytedeco.opencv.opencv_core.CvArr) img#2;
+
+        $r10 = (org.bytedeco.opencv.opencv_core.CvArr) $stack16;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_imgproc: void cvCvtColor(org.bytedeco.opencv.opencv_core.CvArr,org.bytedeco.opencv.opencv_core.CvArr,int)>($r9, $r10, 7);
+
+        $r11 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        img#2 = $r11.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_1ch>;
+
+     label6:
+        $r12 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack10 = $r12.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.FrameConverter converter>;
+
+        $stack11 = virtualinvoke $stack10.<org.bytedeco.javacv.FrameConverter: org.bytedeco.javacv.Frame convert(java.lang.Object)>(img#2);
+
+        return $stack11;
+    }
+
+    public void start() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        PS3EyeFrameGrabber this;
+        int[] $stack2, $stack27;
+        org.bytedeco.javacv.FrameGrabber$ImageMode $stack3, $stack4;
+        int $stack5, $stack17, $stack24, $stack25, $stack26, $stack28, $stack29, $stack31, $stack32, $stack10, $stack9, $stack8, $stack7;
+        cl.eye.CLCamera $stack13, $stack11;
+        org.bytedeco.opencv.opencv_core.IplImage $stack30, $stack33;
+        double $stack6;
+        boolean b;
+        org.bytedeco.javacv.FrameGrabber$Exception $u0, $u1;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r17, $r19;
+        java.lang.Throwable $r16, $r18;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame>;
+
+        if $stack2 != null goto label1;
+
+        $r1 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack25 = $r1.<org.bytedeco.javacv.PS3EyeFrameGrabber: int imageWidth>;
+
+        $r2 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack24 = $r2.<org.bytedeco.javacv.PS3EyeFrameGrabber: int imageHeight>;
+
+        $stack26 = $stack25 * $stack24;
+
+        $stack27 = newarray (int)[$stack26];
+
+        $r3 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r3.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame> = $stack27;
+
+        $r4 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack29 = $r4.<org.bytedeco.javacv.PS3EyeFrameGrabber: int imageWidth>;
+
+        $r5 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack28 = $r5.<org.bytedeco.javacv.PS3EyeFrameGrabber: int imageHeight>;
+
+        $stack30 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>($stack29, $stack28, 8, 4);
+
+        $r6 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r6.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_4ch> = $stack30;
+
+        $r7 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack32 = $r7.<org.bytedeco.javacv.PS3EyeFrameGrabber: int imageWidth>;
+
+        $r8 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack31 = $r8.<org.bytedeco.javacv.PS3EyeFrameGrabber: int imageHeight>;
+
+        $stack33 = staticinvoke <org.bytedeco.opencv.opencv_core.IplImage: org.bytedeco.opencv.opencv_core.IplImage create(int,int,int,int)>($stack32, $stack31, 8, 1);
+
+        $r9 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r9.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_1ch> = $stack33;
+
+     label1:
+        $r10 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack11 = $r10.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera>;
+
+        $r11 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack10 = $r11.<org.bytedeco.javacv.PS3EyeFrameGrabber: int cameraIndex>;
+
+        $r12 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack4 = $r12.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.FrameGrabber$ImageMode imageMode>;
+
+        $stack3 = <org.bytedeco.javacv.FrameGrabber$ImageMode: org.bytedeco.javacv.FrameGrabber$ImageMode GRAY>;
+
+        if $stack4 != $stack3 goto label2;
+
+        $stack9 = <cl.eye.CLCamera: int CLEYE_MONO_PROCESSED>;
+
+        goto label3;
+
+     label2:
+        $stack9 = <cl.eye.CLCamera: int CLEYE_COLOR_PROCESSED>;
+
+     label3:
+        $r13 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack5 = $r13.<org.bytedeco.javacv.PS3EyeFrameGrabber: int imageWidth>;
+
+        if $stack5 != 320 goto label4;
+
+        $r14 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack17 = $r14.<org.bytedeco.javacv.PS3EyeFrameGrabber: int imageHeight>;
+
+        if $stack17 != 240 goto label4;
+
+        $stack8 = <cl.eye.CLCamera: int CLEYE_QVGA>;
+
+        goto label5;
+
+     label4:
+        $stack8 = <cl.eye.CLCamera: int CLEYE_VGA>;
+
+     label5:
+        $r15 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack6 = $r15.<org.bytedeco.javacv.PS3EyeFrameGrabber: double frameRate>;
+
+        $stack7 = (int) $stack6;
+
+        b = virtualinvoke $stack11.<cl.eye.CLCamera: boolean createCamera(int,int,int,int)>($stack10, $stack9, $stack8, $stack7);
+
+        if b != 0 goto label6;
+
+        $u0 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u0.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("Low level createCamera() failed");
+
+        $r16 = (java.lang.Throwable) $u0;
+
+        throw $r16;
+
+     label6:
+        $r17 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack13 = $r17.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera>;
+
+        b = virtualinvoke $stack13.<cl.eye.CLCamera: boolean startCamera()>();
+
+        if b != 0 goto label7;
+
+        $u1 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u1.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("Camera start() failed");
+
+        $r18 = (java.lang.Throwable) $u1;
+
+        throw $r18;
+
+     label7:
+        $r19 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r19.<org.bytedeco.javacv.PS3EyeFrameGrabber: java.lang.String stat> = "started";
+
+        return;
+    }
+
+    public void stop() throws org.bytedeco.javacv.FrameGrabber$Exception
+    {
+        PS3EyeFrameGrabber this;
+        cl.eye.CLCamera $stack2;
+        boolean b;
+        org.bytedeco.javacv.FrameGrabber$Exception $u0;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0, $r1;
+        java.lang.Throwable $r2;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera>;
+
+        b = virtualinvoke $stack2.<cl.eye.CLCamera: boolean stopCamera()>();
+
+        if b == 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r1.<org.bytedeco.javacv.PS3EyeFrameGrabber: java.lang.String stat> = "stopped";
+
+        goto label2;
+
+     label1:
+        $u0 = new org.bytedeco.javacv.FrameGrabber$Exception;
+
+        specialinvoke $u0.<org.bytedeco.javacv.FrameGrabber$Exception: void <init>(java.lang.String)>("Camera stop() failed");
+
+        $r2 = (java.lang.Throwable) $u0;
+
+        throw $r2;
+
+     label2:
+        return;
+    }
+
+    public void release()
+    {
+        PS3EyeFrameGrabber this;
+        cl.eye.CLCamera $stack1, $stack13;
+        org.bytedeco.opencv.opencv_core.IplImage $stack2, $stack3, $stack9, $stack11;
+        byte[] $stack4;
+        int[] $stack5;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack13 = $r1.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera>;
+
+        virtualinvoke $stack13.<cl.eye.CLCamera: void dispose()>();
+
+        $r2 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r2.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera> = null;
+
+     label1:
+        $r3 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack2 = $r3.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_4ch>;
+
+        if $stack2 == null goto label2;
+
+        $r4 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack11 = $r4.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_4ch>;
+
+        virtualinvoke $stack11.<org.bytedeco.opencv.opencv_core.IplImage: void release()>();
+
+        $r5 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r5.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_4ch> = null;
+
+     label2:
+        $r6 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack3 = $r6.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_1ch>;
+
+        if $stack3 == null goto label3;
+
+        $r7 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack9 = $r7.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_1ch>;
+
+        virtualinvoke $stack9.<org.bytedeco.opencv.opencv_core.IplImage: void release()>();
+
+        $r8 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r8.<org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.opencv.opencv_core.IplImage image_1ch> = null;
+
+     label3:
+        $r9 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack4 = $r9.<org.bytedeco.javacv.PS3EyeFrameGrabber: byte[] ipl_frame>;
+
+        if $stack4 == null goto label4;
+
+        $r10 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r10.<org.bytedeco.javacv.PS3EyeFrameGrabber: byte[] ipl_frame> = null;
+
+     label4:
+        $r11 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack5 = $r11.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame>;
+
+        if $stack5 == null goto label5;
+
+        $r12 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r12.<org.bytedeco.javacv.PS3EyeFrameGrabber: int[] ps3_frame> = null;
+
+     label5:
+        $r13 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $r13.<org.bytedeco.javacv.PS3EyeFrameGrabber: java.lang.String stat> = "released";
+
+        return;
+    }
+
+    public void dispose()
+    {
+        PS3EyeFrameGrabber this;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: void release()>();
+
+        return;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        PS3EyeFrameGrabber this;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: void release()>();
+
+        return;
+    }
+
+    public cl.eye.CLCamera getCamera()
+    {
+        PS3EyeFrameGrabber this;
+        cl.eye.CLCamera $stack1;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getUUID()
+    {
+        PS3EyeFrameGrabber this;
+        java.lang.String $stack1;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: java.lang.String uuid>;
+
+        return $stack1;
+    }
+
+    public java.lang.String toString()
+    {
+        java.lang.StringBuilder $stack2, $stack4, $stack5, $stack7, $stack8, $stack10, $stack11, $stack13, $u0;
+        PS3EyeFrameGrabber this;
+        java.lang.String $stack3, $stack6, $stack14, $stack16;
+        int $stack9;
+        cl.eye.CLCamera $stack12, $stack15;
+        org.bytedeco.javacv.PS3EyeFrameGrabber $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: PS3EyeFrameGrabber;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack2 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("UUID=");
+
+        $r0 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.PS3EyeFrameGrabber: java.lang.String uuid>;
+
+        $stack4 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack3);
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; status=");
+
+        $r1 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack6 = $r1.<org.bytedeco.javacv.PS3EyeFrameGrabber: java.lang.String stat>;
+
+        $stack7 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack6);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; timeout=");
+
+        $r2 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack9 = $r2.<org.bytedeco.javacv.PS3EyeFrameGrabber: int timeout>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; ");
+
+        $r3 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack12 = $r3.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera>;
+
+        if $stack12 == null goto label1;
+
+        $r4 = (org.bytedeco.javacv.PS3EyeFrameGrabber) this;
+
+        $stack15 = $r4.<org.bytedeco.javacv.PS3EyeFrameGrabber: cl.eye.CLCamera camera>;
+
+        $stack16 = virtualinvoke $stack15.<java.lang.Object: java.lang.String toString()>();
+
+        goto label2;
+
+     label1:
+        $stack16 = "<no camera>";
+
+     label2:
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack16);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack14;
+    }
+
+    public static void main(java.lang.String[])
+    {
+        java.lang.String[] uuids, argv;
+        int $stack4, i;
+        java.lang.StringBuilder $stack5, $stack7, $stack8, $stack10;
+        java.io.PrintStream $stack6;
+        java.lang.String $stack9, $stack11;
+
+        argv := @parameter0: java.lang.String[];
+
+        uuids = staticinvoke <org.bytedeco.javacv.PS3EyeFrameGrabber: java.lang.String[] listPS3Cameras()>();
+
+        i = 0;
+
+     label1:
+        $stack4 = lengthof uuids;
+
+        if i >= $stack4 goto label2;
+
+        $stack6 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack5 = new java.lang.StringBuilder;
+
+        specialinvoke $stack5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack7 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $stack9 = uuids[i];
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack6.<java.io.PrintStream: void println(java.lang.String)>($stack11);
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    static void <clinit>()
+    {
+        <org.bytedeco.javacv.PS3EyeFrameGrabber: org.bytedeco.javacv.FrameGrabber$Exception loadingException> = null;
+
+        return;
+    }
+}

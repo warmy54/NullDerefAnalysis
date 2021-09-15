@@ -1,0 +1,1507 @@
+public class Frame extends java.lang.Object implements java.lang.AutoCloseable, org.bytedeco.javacpp.indexer.Indexable
+{
+    public boolean keyFrame;
+    public static final int DEPTH_BYTE;
+    public static final int DEPTH_UBYTE;
+    public static final int DEPTH_SHORT;
+    public static final int DEPTH_USHORT;
+    public static final int DEPTH_INT;
+    public static final int DEPTH_LONG;
+    public static final int DEPTH_FLOAT;
+    public static final int DEPTH_DOUBLE;
+    public int imageWidth;
+    public int imageHeight;
+    public int imageDepth;
+    public int imageChannels;
+    public int imageStride;
+    public java.nio.Buffer[] image;
+    public int sampleRate;
+    public int audioChannels;
+    public java.nio.Buffer[] samples;
+    public java.nio.ByteBuffer data;
+    public int streamIndex;
+    public java.lang.Object opaque;
+    public long timestamp;
+    static final boolean $assertionsDisabled;
+
+    public static int pixelSize(int)
+    {
+        int depth, $stack1, $stack2;
+
+        depth := @parameter0: int;
+
+        $stack1 = staticinvoke <java.lang.Math: int abs(int)>(depth);
+
+        $stack2 = $stack1 / 8;
+
+        return $stack2;
+    }
+
+    public void <init>()
+    {
+        Frame this;
+
+        this := @this: Frame;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(int, int, int, int)
+    {
+        Frame this;
+        int width, height, depth, channels, $stack5, $stack6, $stack7, $stack8, $stack9, $stack10, $stack11;
+        org.bytedeco.javacv.Frame $r0;
+
+        this := @this: Frame;
+
+        width := @parameter0: int;
+
+        height := @parameter1: int;
+
+        depth := @parameter2: int;
+
+        channels := @parameter3: int;
+
+        $stack5 = width * channels;
+
+        $stack6 = staticinvoke <org.bytedeco.javacv.Frame: int pixelSize(int)>(depth);
+
+        $stack7 = $stack5 * $stack6;
+
+        $stack8 = $stack7 + 7;
+
+        $stack9 = $stack8 & -8;
+
+        $stack10 = staticinvoke <org.bytedeco.javacv.Frame: int pixelSize(int)>(depth);
+
+        $stack11 = $stack9 / $stack10;
+
+        $r0 = (org.bytedeco.javacv.Frame) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.Frame: void <init>(int,int,int,int,int)>(width, height, depth, channels, $stack11);
+
+        return;
+    }
+
+    public void <init>(int, int, int, int, int)
+    {
+        Frame this;
+        int width, height, depth, channels, imageStride, $stack10, $stack11, $stack12, $stack13, $stack16, $stack42;
+        java.nio.Buffer[] $stack8, $stack17, $stack23, $stack29, $stack30, $stack33, $stack36;
+        long $stack14;
+        java.nio.ByteBuffer buffer;
+        java.nio.DoubleBuffer $stack19;
+        java.nio.FloatBuffer $stack25;
+        java.nio.ShortBuffer $stack32;
+        java.nio.IntBuffer $stack35;
+        java.nio.LongBuffer $stack38;
+        java.lang.StringBuilder $stack41, $stack43, $u1;
+        java.lang.String $stack44;
+        org.bytedeco.javacpp.Pointer[] $stack20;
+        org.bytedeco.javacpp.Pointer $stack22, $r9, $r18;
+        org.bytedeco.javacpp.BytePointer $u0;
+        java.lang.UnsupportedOperationException $u2;
+        org.bytedeco.javacv.Frame $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r19;
+
+        this := @this: Frame;
+
+        width := @parameter0: int;
+
+        height := @parameter1: int;
+
+        depth := @parameter2: int;
+
+        channels := @parameter3: int;
+
+        imageStride := @parameter4: int;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.Frame) this;
+
+        $r0.<org.bytedeco.javacv.Frame: int imageWidth> = width;
+
+        $r1 = (org.bytedeco.javacv.Frame) this;
+
+        $r1.<org.bytedeco.javacv.Frame: int imageHeight> = height;
+
+        $r2 = (org.bytedeco.javacv.Frame) this;
+
+        $r2.<org.bytedeco.javacv.Frame: int imageDepth> = depth;
+
+        $r3 = (org.bytedeco.javacv.Frame) this;
+
+        $r3.<org.bytedeco.javacv.Frame: int imageChannels> = channels;
+
+        $r4 = (org.bytedeco.javacv.Frame) this;
+
+        $r4.<org.bytedeco.javacv.Frame: int imageStride> = imageStride;
+
+        $stack8 = newarray (java.nio.Buffer)[1];
+
+        $r5 = (org.bytedeco.javacv.Frame) this;
+
+        $r5.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image> = $stack8;
+
+        $r6 = (org.bytedeco.javacv.Frame) this;
+
+        $r6.<org.bytedeco.javacv.Frame: java.nio.ByteBuffer data> = null;
+
+        $r7 = (org.bytedeco.javacv.Frame) this;
+
+        $r7.<org.bytedeco.javacv.Frame: int streamIndex> = -1;
+
+        $u0 = new org.bytedeco.javacpp.BytePointer;
+
+        $r8 = (org.bytedeco.javacv.Frame) this;
+
+        $stack10 = $r8.<org.bytedeco.javacv.Frame: int imageHeight>;
+
+        $stack11 = $stack10 * imageStride;
+
+        $stack12 = staticinvoke <org.bytedeco.javacv.Frame: int pixelSize(int)>(depth);
+
+        $stack13 = $stack11 * $stack12;
+
+        $stack14 = (long) $stack13;
+
+        specialinvoke $u0.<org.bytedeco.javacpp.BytePointer: void <init>(long)>($stack14);
+
+        $r9 = (org.bytedeco.javacpp.Pointer) $u0;
+
+        buffer = virtualinvoke $r9.<org.bytedeco.javacpp.Pointer: java.nio.ByteBuffer asByteBuffer()>();
+
+        $r10 = (org.bytedeco.javacv.Frame) this;
+
+        $stack16 = $r10.<org.bytedeco.javacv.Frame: int imageDepth>;
+
+        lookupswitch($stack16)
+        {
+            case -64: goto label4;
+            case -32: goto label3;
+            case -16: goto label2;
+            case -8: goto label1;
+            case 8: goto label1;
+            case 16: goto label2;
+            case 32: goto label5;
+            case 64: goto label6;
+            default: goto label7;
+        };
+
+     label1:
+        $r11 = (org.bytedeco.javacv.Frame) this;
+
+        $stack29 = $r11.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $stack29[0] = buffer;
+
+        goto label8;
+
+     label2:
+        $r12 = (org.bytedeco.javacv.Frame) this;
+
+        $stack30 = $r12.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $stack32 = virtualinvoke buffer.<java.nio.ByteBuffer: java.nio.ShortBuffer asShortBuffer()>();
+
+        $stack30[0] = $stack32;
+
+        goto label8;
+
+     label3:
+        $r13 = (org.bytedeco.javacv.Frame) this;
+
+        $stack33 = $r13.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $stack35 = virtualinvoke buffer.<java.nio.ByteBuffer: java.nio.IntBuffer asIntBuffer()>();
+
+        $stack33[0] = $stack35;
+
+        goto label8;
+
+     label4:
+        $r14 = (org.bytedeco.javacv.Frame) this;
+
+        $stack36 = $r14.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $stack38 = virtualinvoke buffer.<java.nio.ByteBuffer: java.nio.LongBuffer asLongBuffer()>();
+
+        $stack36[0] = $stack38;
+
+        goto label8;
+
+     label5:
+        $r15 = (org.bytedeco.javacv.Frame) this;
+
+        $stack23 = $r15.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $stack25 = virtualinvoke buffer.<java.nio.ByteBuffer: java.nio.FloatBuffer asFloatBuffer()>();
+
+        $stack23[0] = $stack25;
+
+        goto label8;
+
+     label6:
+        $r16 = (org.bytedeco.javacv.Frame) this;
+
+        $stack17 = $r16.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $stack19 = virtualinvoke buffer.<java.nio.ByteBuffer: java.nio.DoubleBuffer asDoubleBuffer()>();
+
+        $stack17[0] = $stack19;
+
+        goto label8;
+
+     label7:
+        $u2 = new java.lang.UnsupportedOperationException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack41 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unsupported depth value: ");
+
+        $r17 = (org.bytedeco.javacv.Frame) this;
+
+        $stack42 = $r17.<org.bytedeco.javacv.Frame: int imageDepth>;
+
+        $stack43 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack42);
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<java.lang.UnsupportedOperationException: void <init>(java.lang.String)>($stack44);
+
+        throw $u2;
+
+     label8:
+        $stack20 = newarray (org.bytedeco.javacpp.Pointer)[1];
+
+        $r18 = (org.bytedeco.javacpp.Pointer) $u0;
+
+        $stack22 = virtualinvoke $r18.<org.bytedeco.javacpp.Pointer: org.bytedeco.javacpp.Pointer retainReference()>();
+
+        $stack20[0] = $stack22;
+
+        $r19 = (org.bytedeco.javacv.Frame) this;
+
+        $r19.<org.bytedeco.javacv.Frame: java.lang.Object opaque> = $stack20;
+
+        return;
+    }
+
+    public org.bytedeco.javacpp.indexer.Indexer createIndexer()
+    {
+        Frame this;
+        org.bytedeco.javacpp.indexer.Indexer $stack1;
+        org.bytedeco.javacv.Frame $r0;
+
+        this := @this: Frame;
+
+        $r0 = (org.bytedeco.javacv.Frame) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.Frame: org.bytedeco.javacpp.indexer.Indexer createIndexer(boolean,int)>(1, 0);
+
+        return $stack1;
+    }
+
+    public org.bytedeco.javacpp.indexer.Indexer createIndexer(boolean)
+    {
+        Frame this;
+        boolean direct;
+        org.bytedeco.javacpp.indexer.Indexer $stack2;
+        org.bytedeco.javacv.Frame $r0;
+
+        this := @this: Frame;
+
+        direct := @parameter0: boolean;
+
+        $r0 = (org.bytedeco.javacv.Frame) this;
+
+        $stack2 = virtualinvoke $r0.<org.bytedeco.javacv.Frame: org.bytedeco.javacpp.indexer.Indexer createIndexer(boolean,int)>(direct, 0);
+
+        return $stack2;
+    }
+
+    public org.bytedeco.javacpp.indexer.Indexer createIndexer(boolean, int)
+    {
+        long[] $stack7, $stack14, $stack99;
+        Frame this;
+        int $stack8, $stack10, $stack12, $stack15, $stack17, i, $stack21;
+        long $stack9, $stack11, $stack13, $stack16, $stack18;
+        java.nio.Buffer[] $stack19;
+        java.nio.Buffer buffer;
+        boolean $stack20, direct, $stack102;
+        java.nio.DoubleBuffer $stack23, $stack26;
+        org.bytedeco.javacpp.indexer.DoubleIndexer $stack24, $stack27, $stack30;
+        double[] $stack29;
+        java.nio.FloatBuffer $stack33, $stack36;
+        org.bytedeco.javacpp.indexer.FloatIndexer $stack34, $stack37, $stack40;
+        float[] $stack39;
+        java.nio.ShortBuffer $stack43, $stack46, $stack73, $stack76;
+        org.bytedeco.javacpp.indexer.UShortIndexer $stack44, $stack47, $stack50;
+        short[] $stack49, $stack79;
+        java.nio.ByteBuffer $stack53, $stack56, $stack63, $stack66;
+        org.bytedeco.javacpp.indexer.UByteIndexer $stack54, $stack57, $stack60;
+        byte[] $stack59, $stack69;
+        org.bytedeco.javacpp.indexer.ByteIndexer $stack64, $stack67, $stack70;
+        org.bytedeco.javacpp.indexer.ShortIndexer $stack74, $stack77, $stack80;
+        java.nio.IntBuffer $stack83, $stack86;
+        org.bytedeco.javacpp.indexer.IntIndexer $stack84, $stack87, $stack90;
+        int[] $stack89;
+        java.nio.LongBuffer $stack93, $stack96;
+        org.bytedeco.javacpp.indexer.LongIndexer $stack94, $stack97, $stack100;
+        java.lang.Object $stack104;
+        org.bytedeco.javacpp.indexer.Indexer $stack55, $stack65, $stack45, $stack75, $stack85, $stack95, $stack35, $stack25;
+        org.bytedeco.javacpp.BytePointer $u0, $u1;
+        org.bytedeco.javacpp.ShortPointer $u2, $u3;
+        org.bytedeco.javacpp.IntPointer $u4;
+        org.bytedeco.javacpp.LongPointer $u5;
+        org.bytedeco.javacpp.FloatPointer $u6;
+        org.bytedeco.javacpp.DoublePointer $u7;
+        java.lang.AssertionError $u8;
+        org.bytedeco.javacv.Frame $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: Frame;
+
+        direct := @parameter0: boolean;
+
+        i := @parameter1: int;
+
+        $stack7 = newarray (long)[3];
+
+        $r0 = (org.bytedeco.javacv.Frame) this;
+
+        $stack8 = $r0.<org.bytedeco.javacv.Frame: int imageHeight>;
+
+        $stack9 = (long) $stack8;
+
+        $stack7[0] = $stack9;
+
+        $r1 = (org.bytedeco.javacv.Frame) this;
+
+        $stack10 = $r1.<org.bytedeco.javacv.Frame: int imageWidth>;
+
+        $stack11 = (long) $stack10;
+
+        $stack7[1] = $stack11;
+
+        $r2 = (org.bytedeco.javacv.Frame) this;
+
+        $stack12 = $r2.<org.bytedeco.javacv.Frame: int imageChannels>;
+
+        $stack13 = (long) $stack12;
+
+        $stack7[2] = $stack13;
+
+        $stack14 = newarray (long)[3];
+
+        $r3 = (org.bytedeco.javacv.Frame) this;
+
+        $stack15 = $r3.<org.bytedeco.javacv.Frame: int imageStride>;
+
+        $stack16 = (long) $stack15;
+
+        $stack14[0] = $stack16;
+
+        $r4 = (org.bytedeco.javacv.Frame) this;
+
+        $stack17 = $r4.<org.bytedeco.javacv.Frame: int imageChannels>;
+
+        $stack18 = (long) $stack17;
+
+        $stack14[1] = $stack18;
+
+        $stack14[2] = 1L;
+
+        $r5 = (org.bytedeco.javacv.Frame) this;
+
+        $stack19 = $r5.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        buffer = $stack19[i];
+
+        $stack20 = virtualinvoke buffer.<java.nio.Buffer: boolean hasArray()>();
+
+        if $stack20 == 0 goto label01;
+
+        $stack104 = virtualinvoke buffer.<java.nio.Buffer: java.lang.Object array()>();
+
+        goto label02;
+
+     label01:
+        $stack104 = null;
+
+     label02:
+        $r6 = (org.bytedeco.javacv.Frame) this;
+
+        $stack21 = $r6.<org.bytedeco.javacv.Frame: int imageDepth>;
+
+        lookupswitch($stack21)
+        {
+            case -64: goto label23;
+            case -32: goto label19;
+            case -16: goto label15;
+            case -8: goto label07;
+            case 8: goto label03;
+            case 16: goto label11;
+            case 32: goto label27;
+            case 64: goto label31;
+            default: goto label35;
+        };
+
+     label03:
+        if $stack104 == null goto label04;
+
+        $stack59 = (byte[]) $stack104;
+
+        $stack60 = staticinvoke <org.bytedeco.javacpp.indexer.UByteIndexer: org.bytedeco.javacpp.indexer.UByteIndexer create(byte[],long[],long[])>($stack59, $stack7, $stack14);
+
+        $stack55 = virtualinvoke $stack60.<org.bytedeco.javacpp.indexer.UByteIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label06;
+
+     label04:
+        if direct == 0 goto label05;
+
+        $stack56 = (java.nio.ByteBuffer) buffer;
+
+        $stack57 = staticinvoke <org.bytedeco.javacpp.indexer.UByteIndexer: org.bytedeco.javacpp.indexer.UByteIndexer create(java.nio.ByteBuffer,long[],long[])>($stack56, $stack7, $stack14);
+
+        $stack55 = virtualinvoke $stack57.<org.bytedeco.javacpp.indexer.UByteIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label06;
+
+     label05:
+        $u0 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack53 = (java.nio.ByteBuffer) buffer;
+
+        specialinvoke $u0.<org.bytedeco.javacpp.BytePointer: void <init>(java.nio.ByteBuffer)>($stack53);
+
+        $stack54 = staticinvoke <org.bytedeco.javacpp.indexer.UByteIndexer: org.bytedeco.javacpp.indexer.UByteIndexer create(org.bytedeco.javacpp.BytePointer,long[],long[],boolean)>($u0, $stack7, $stack14, 0);
+
+        $stack55 = virtualinvoke $stack54.<org.bytedeco.javacpp.indexer.UByteIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+     label06:
+        return $stack55;
+
+     label07:
+        if $stack104 == null goto label08;
+
+        $stack69 = (byte[]) $stack104;
+
+        $stack70 = staticinvoke <org.bytedeco.javacpp.indexer.ByteIndexer: org.bytedeco.javacpp.indexer.ByteIndexer create(byte[],long[],long[])>($stack69, $stack7, $stack14);
+
+        $stack65 = virtualinvoke $stack70.<org.bytedeco.javacpp.indexer.ByteIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label10;
+
+     label08:
+        if direct == 0 goto label09;
+
+        $stack66 = (java.nio.ByteBuffer) buffer;
+
+        $stack67 = staticinvoke <org.bytedeco.javacpp.indexer.ByteIndexer: org.bytedeco.javacpp.indexer.ByteIndexer create(java.nio.ByteBuffer,long[],long[])>($stack66, $stack7, $stack14);
+
+        $stack65 = virtualinvoke $stack67.<org.bytedeco.javacpp.indexer.ByteIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label10;
+
+     label09:
+        $u1 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack63 = (java.nio.ByteBuffer) buffer;
+
+        specialinvoke $u1.<org.bytedeco.javacpp.BytePointer: void <init>(java.nio.ByteBuffer)>($stack63);
+
+        $stack64 = staticinvoke <org.bytedeco.javacpp.indexer.ByteIndexer: org.bytedeco.javacpp.indexer.ByteIndexer create(org.bytedeco.javacpp.BytePointer,long[],long[],boolean)>($u1, $stack7, $stack14, 0);
+
+        $stack65 = virtualinvoke $stack64.<org.bytedeco.javacpp.indexer.ByteIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+     label10:
+        return $stack65;
+
+     label11:
+        if $stack104 == null goto label12;
+
+        $stack49 = (short[]) $stack104;
+
+        $stack50 = staticinvoke <org.bytedeco.javacpp.indexer.UShortIndexer: org.bytedeco.javacpp.indexer.UShortIndexer create(short[],long[],long[])>($stack49, $stack7, $stack14);
+
+        $stack45 = virtualinvoke $stack50.<org.bytedeco.javacpp.indexer.UShortIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label14;
+
+     label12:
+        if direct == 0 goto label13;
+
+        $stack46 = (java.nio.ShortBuffer) buffer;
+
+        $stack47 = staticinvoke <org.bytedeco.javacpp.indexer.UShortIndexer: org.bytedeco.javacpp.indexer.UShortIndexer create(java.nio.ShortBuffer,long[],long[])>($stack46, $stack7, $stack14);
+
+        $stack45 = virtualinvoke $stack47.<org.bytedeco.javacpp.indexer.UShortIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label14;
+
+     label13:
+        $u2 = new org.bytedeco.javacpp.ShortPointer;
+
+        $stack43 = (java.nio.ShortBuffer) buffer;
+
+        specialinvoke $u2.<org.bytedeco.javacpp.ShortPointer: void <init>(java.nio.ShortBuffer)>($stack43);
+
+        $stack44 = staticinvoke <org.bytedeco.javacpp.indexer.UShortIndexer: org.bytedeco.javacpp.indexer.UShortIndexer create(org.bytedeco.javacpp.ShortPointer,long[],long[],boolean)>($u2, $stack7, $stack14, 0);
+
+        $stack45 = virtualinvoke $stack44.<org.bytedeco.javacpp.indexer.UShortIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+     label14:
+        return $stack45;
+
+     label15:
+        if $stack104 == null goto label16;
+
+        $stack79 = (short[]) $stack104;
+
+        $stack80 = staticinvoke <org.bytedeco.javacpp.indexer.ShortIndexer: org.bytedeco.javacpp.indexer.ShortIndexer create(short[],long[],long[])>($stack79, $stack7, $stack14);
+
+        $stack75 = virtualinvoke $stack80.<org.bytedeco.javacpp.indexer.ShortIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label18;
+
+     label16:
+        if direct == 0 goto label17;
+
+        $stack76 = (java.nio.ShortBuffer) buffer;
+
+        $stack77 = staticinvoke <org.bytedeco.javacpp.indexer.ShortIndexer: org.bytedeco.javacpp.indexer.ShortIndexer create(java.nio.ShortBuffer,long[],long[])>($stack76, $stack7, $stack14);
+
+        $stack75 = virtualinvoke $stack77.<org.bytedeco.javacpp.indexer.ShortIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label18;
+
+     label17:
+        $u3 = new org.bytedeco.javacpp.ShortPointer;
+
+        $stack73 = (java.nio.ShortBuffer) buffer;
+
+        specialinvoke $u3.<org.bytedeco.javacpp.ShortPointer: void <init>(java.nio.ShortBuffer)>($stack73);
+
+        $stack74 = staticinvoke <org.bytedeco.javacpp.indexer.ShortIndexer: org.bytedeco.javacpp.indexer.ShortIndexer create(org.bytedeco.javacpp.ShortPointer,long[],long[],boolean)>($u3, $stack7, $stack14, 0);
+
+        $stack75 = virtualinvoke $stack74.<org.bytedeco.javacpp.indexer.ShortIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+     label18:
+        return $stack75;
+
+     label19:
+        if $stack104 == null goto label20;
+
+        $stack89 = (int[]) $stack104;
+
+        $stack90 = staticinvoke <org.bytedeco.javacpp.indexer.IntIndexer: org.bytedeco.javacpp.indexer.IntIndexer create(int[],long[],long[])>($stack89, $stack7, $stack14);
+
+        $stack85 = virtualinvoke $stack90.<org.bytedeco.javacpp.indexer.IntIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label22;
+
+     label20:
+        if direct == 0 goto label21;
+
+        $stack86 = (java.nio.IntBuffer) buffer;
+
+        $stack87 = staticinvoke <org.bytedeco.javacpp.indexer.IntIndexer: org.bytedeco.javacpp.indexer.IntIndexer create(java.nio.IntBuffer,long[],long[])>($stack86, $stack7, $stack14);
+
+        $stack85 = virtualinvoke $stack87.<org.bytedeco.javacpp.indexer.IntIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label22;
+
+     label21:
+        $u4 = new org.bytedeco.javacpp.IntPointer;
+
+        $stack83 = (java.nio.IntBuffer) buffer;
+
+        specialinvoke $u4.<org.bytedeco.javacpp.IntPointer: void <init>(java.nio.IntBuffer)>($stack83);
+
+        $stack84 = staticinvoke <org.bytedeco.javacpp.indexer.IntIndexer: org.bytedeco.javacpp.indexer.IntIndexer create(org.bytedeco.javacpp.IntPointer,long[],long[],boolean)>($u4, $stack7, $stack14, 0);
+
+        $stack85 = virtualinvoke $stack84.<org.bytedeco.javacpp.indexer.IntIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+     label22:
+        return $stack85;
+
+     label23:
+        if $stack104 == null goto label24;
+
+        $stack99 = (long[]) $stack104;
+
+        $stack100 = staticinvoke <org.bytedeco.javacpp.indexer.LongIndexer: org.bytedeco.javacpp.indexer.LongIndexer create(long[],long[],long[])>($stack99, $stack7, $stack14);
+
+        $stack95 = virtualinvoke $stack100.<org.bytedeco.javacpp.indexer.LongIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label26;
+
+     label24:
+        if direct == 0 goto label25;
+
+        $stack96 = (java.nio.LongBuffer) buffer;
+
+        $stack97 = staticinvoke <org.bytedeco.javacpp.indexer.LongIndexer: org.bytedeco.javacpp.indexer.LongIndexer create(java.nio.LongBuffer,long[],long[])>($stack96, $stack7, $stack14);
+
+        $stack95 = virtualinvoke $stack97.<org.bytedeco.javacpp.indexer.LongIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label26;
+
+     label25:
+        $u5 = new org.bytedeco.javacpp.LongPointer;
+
+        $stack93 = (java.nio.LongBuffer) buffer;
+
+        specialinvoke $u5.<org.bytedeco.javacpp.LongPointer: void <init>(java.nio.LongBuffer)>($stack93);
+
+        $stack94 = staticinvoke <org.bytedeco.javacpp.indexer.LongIndexer: org.bytedeco.javacpp.indexer.LongIndexer create(org.bytedeco.javacpp.LongPointer,long[],long[],boolean)>($u5, $stack7, $stack14, 0);
+
+        $stack95 = virtualinvoke $stack94.<org.bytedeco.javacpp.indexer.LongIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+     label26:
+        return $stack95;
+
+     label27:
+        if $stack104 == null goto label28;
+
+        $stack39 = (float[]) $stack104;
+
+        $stack40 = staticinvoke <org.bytedeco.javacpp.indexer.FloatIndexer: org.bytedeco.javacpp.indexer.FloatIndexer create(float[],long[],long[])>($stack39, $stack7, $stack14);
+
+        $stack35 = virtualinvoke $stack40.<org.bytedeco.javacpp.indexer.FloatIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label30;
+
+     label28:
+        if direct == 0 goto label29;
+
+        $stack36 = (java.nio.FloatBuffer) buffer;
+
+        $stack37 = staticinvoke <org.bytedeco.javacpp.indexer.FloatIndexer: org.bytedeco.javacpp.indexer.FloatIndexer create(java.nio.FloatBuffer,long[],long[])>($stack36, $stack7, $stack14);
+
+        $stack35 = virtualinvoke $stack37.<org.bytedeco.javacpp.indexer.FloatIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label30;
+
+     label29:
+        $u6 = new org.bytedeco.javacpp.FloatPointer;
+
+        $stack33 = (java.nio.FloatBuffer) buffer;
+
+        specialinvoke $u6.<org.bytedeco.javacpp.FloatPointer: void <init>(java.nio.FloatBuffer)>($stack33);
+
+        $stack34 = staticinvoke <org.bytedeco.javacpp.indexer.FloatIndexer: org.bytedeco.javacpp.indexer.FloatIndexer create(org.bytedeco.javacpp.FloatPointer,long[],long[],boolean)>($u6, $stack7, $stack14, 0);
+
+        $stack35 = virtualinvoke $stack34.<org.bytedeco.javacpp.indexer.FloatIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+     label30:
+        return $stack35;
+
+     label31:
+        if $stack104 == null goto label32;
+
+        $stack29 = (double[]) $stack104;
+
+        $stack30 = staticinvoke <org.bytedeco.javacpp.indexer.DoubleIndexer: org.bytedeco.javacpp.indexer.DoubleIndexer create(double[],long[],long[])>($stack29, $stack7, $stack14);
+
+        $stack25 = virtualinvoke $stack30.<org.bytedeco.javacpp.indexer.DoubleIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label34;
+
+     label32:
+        if direct == 0 goto label33;
+
+        $stack26 = (java.nio.DoubleBuffer) buffer;
+
+        $stack27 = staticinvoke <org.bytedeco.javacpp.indexer.DoubleIndexer: org.bytedeco.javacpp.indexer.DoubleIndexer create(java.nio.DoubleBuffer,long[],long[])>($stack26, $stack7, $stack14);
+
+        $stack25 = virtualinvoke $stack27.<org.bytedeco.javacpp.indexer.DoubleIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+        goto label34;
+
+     label33:
+        $u7 = new org.bytedeco.javacpp.DoublePointer;
+
+        $stack23 = (java.nio.DoubleBuffer) buffer;
+
+        specialinvoke $u7.<org.bytedeco.javacpp.DoublePointer: void <init>(java.nio.DoubleBuffer)>($stack23);
+
+        $stack24 = staticinvoke <org.bytedeco.javacpp.indexer.DoubleIndexer: org.bytedeco.javacpp.indexer.DoubleIndexer create(org.bytedeco.javacpp.DoublePointer,long[],long[],boolean)>($u7, $stack7, $stack14, 0);
+
+        $stack25 = virtualinvoke $stack24.<org.bytedeco.javacpp.indexer.DoubleIndexer: org.bytedeco.javacpp.indexer.Indexer indexable(org.bytedeco.javacpp.indexer.Indexable)>(this);
+
+     label34:
+        return $stack25;
+
+     label35:
+        $stack102 = <org.bytedeco.javacv.Frame: boolean $assertionsDisabled>;
+
+        if $stack102 != 0 goto label36;
+
+        $u8 = new java.lang.AssertionError;
+
+        specialinvoke $u8.<java.lang.AssertionError: void <init>()>();
+
+        throw $u8;
+
+     label36:
+        return null;
+    }
+
+    public org.bytedeco.javacv.Frame clone()
+    {
+        Frame this;
+        int $stack4, $stack5, $stack6, $stack7, $stack8, $stack10, $stack13, $stack14, $stack29, $stack39;
+        boolean $stack9;
+        org.bytedeco.javacpp.Pointer[] $stack11, $stack21, $stack34, $stack44;
+        java.nio.Buffer[] $stack12, $stack15, $stack28, $stack30, $stack32, $stack33, $stack38, $stack40, $stack42, $stack43;
+        java.nio.ByteBuffer $stack16, $stack20, $stack24;
+        long $stack17;
+        java.nio.ByteBuffer[] dst, $stack19;
+        java.lang.Object $stack18, $stack31, $stack41;
+        org.bytedeco.javacpp.Pointer $stack23, $stack36, $stack46;
+        org.bytedeco.javacv.Frame $u0, $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17;
+
+        this := @this: Frame;
+
+        $u0 = new org.bytedeco.javacv.Frame;
+
+        specialinvoke $u0.<org.bytedeco.javacv.Frame: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.Frame) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.Frame: int imageWidth>;
+
+        $u0.<org.bytedeco.javacv.Frame: int imageWidth> = $stack4;
+
+        $r1 = (org.bytedeco.javacv.Frame) this;
+
+        $stack5 = $r1.<org.bytedeco.javacv.Frame: int imageHeight>;
+
+        $u0.<org.bytedeco.javacv.Frame: int imageHeight> = $stack5;
+
+        $r2 = (org.bytedeco.javacv.Frame) this;
+
+        $stack6 = $r2.<org.bytedeco.javacv.Frame: int imageDepth>;
+
+        $u0.<org.bytedeco.javacv.Frame: int imageDepth> = $stack6;
+
+        $r3 = (org.bytedeco.javacv.Frame) this;
+
+        $stack7 = $r3.<org.bytedeco.javacv.Frame: int imageChannels>;
+
+        $u0.<org.bytedeco.javacv.Frame: int imageChannels> = $stack7;
+
+        $r4 = (org.bytedeco.javacv.Frame) this;
+
+        $stack8 = $r4.<org.bytedeco.javacv.Frame: int imageStride>;
+
+        $u0.<org.bytedeco.javacv.Frame: int imageStride> = $stack8;
+
+        $r5 = (org.bytedeco.javacv.Frame) this;
+
+        $stack9 = $r5.<org.bytedeco.javacv.Frame: boolean keyFrame>;
+
+        $u0.<org.bytedeco.javacv.Frame: boolean keyFrame> = $stack9;
+
+        $r6 = (org.bytedeco.javacv.Frame) this;
+
+        $stack10 = $r6.<org.bytedeco.javacv.Frame: int streamIndex>;
+
+        $u0.<org.bytedeco.javacv.Frame: int streamIndex> = $stack10;
+
+        $stack11 = newarray (org.bytedeco.javacpp.Pointer)[3];
+
+        $u0.<org.bytedeco.javacv.Frame: java.lang.Object opaque> = $stack11;
+
+        $r7 = (org.bytedeco.javacv.Frame) this;
+
+        $stack12 = $r7.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        if $stack12 == null goto label1;
+
+        $r8 = (org.bytedeco.javacv.Frame) this;
+
+        $stack38 = $r8.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $stack39 = lengthof $stack38;
+
+        $stack40 = newarray (java.nio.Buffer)[$stack39];
+
+        $u0.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image> = $stack40;
+
+        $stack41 = $u0.<org.bytedeco.javacv.Frame: java.lang.Object opaque>;
+
+        $stack44 = (org.bytedeco.javacpp.Pointer[]) $stack41;
+
+        $r9 = (org.bytedeco.javacv.Frame) this;
+
+        $stack43 = $r9.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $stack42 = $u0.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        $stack46 = staticinvoke <org.bytedeco.javacv.Frame: org.bytedeco.javacpp.Pointer cloneBufferArray(java.nio.Buffer[],java.nio.Buffer[])>($stack43, $stack42);
+
+        $stack44[0] = $stack46;
+
+     label1:
+        $r10 = (org.bytedeco.javacv.Frame) this;
+
+        $stack13 = $r10.<org.bytedeco.javacv.Frame: int audioChannels>;
+
+        $u0.<org.bytedeco.javacv.Frame: int audioChannels> = $stack13;
+
+        $r11 = (org.bytedeco.javacv.Frame) this;
+
+        $stack14 = $r11.<org.bytedeco.javacv.Frame: int sampleRate>;
+
+        $u0.<org.bytedeco.javacv.Frame: int sampleRate> = $stack14;
+
+        $r12 = (org.bytedeco.javacv.Frame) this;
+
+        $stack15 = $r12.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples>;
+
+        if $stack15 == null goto label2;
+
+        $r13 = (org.bytedeco.javacv.Frame) this;
+
+        $stack28 = $r13.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples>;
+
+        $stack29 = lengthof $stack28;
+
+        $stack30 = newarray (java.nio.Buffer)[$stack29];
+
+        $u0.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples> = $stack30;
+
+        $stack31 = $u0.<org.bytedeco.javacv.Frame: java.lang.Object opaque>;
+
+        $stack34 = (org.bytedeco.javacpp.Pointer[]) $stack31;
+
+        $r14 = (org.bytedeco.javacv.Frame) this;
+
+        $stack33 = $r14.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples>;
+
+        $stack32 = $u0.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples>;
+
+        $stack36 = staticinvoke <org.bytedeco.javacv.Frame: org.bytedeco.javacpp.Pointer cloneBufferArray(java.nio.Buffer[],java.nio.Buffer[])>($stack33, $stack32);
+
+        $stack34[1] = $stack36;
+
+     label2:
+        $r15 = (org.bytedeco.javacv.Frame) this;
+
+        $stack16 = $r15.<org.bytedeco.javacv.Frame: java.nio.ByteBuffer data>;
+
+        if $stack16 == null goto label3;
+
+        dst = newarray (java.nio.ByteBuffer)[1];
+
+        $stack18 = $u0.<org.bytedeco.javacv.Frame: java.lang.Object opaque>;
+
+        $stack21 = (org.bytedeco.javacpp.Pointer[]) $stack18;
+
+        $stack19 = newarray (java.nio.ByteBuffer)[1];
+
+        $r16 = (org.bytedeco.javacv.Frame) this;
+
+        $stack20 = $r16.<org.bytedeco.javacv.Frame: java.nio.ByteBuffer data>;
+
+        $stack19[0] = $stack20;
+
+        $stack23 = staticinvoke <org.bytedeco.javacv.Frame: org.bytedeco.javacpp.Pointer cloneBufferArray(java.nio.Buffer[],java.nio.Buffer[])>($stack19, dst);
+
+        $stack21[2] = $stack23;
+
+        $stack24 = dst[0];
+
+        $u0.<org.bytedeco.javacv.Frame: java.nio.ByteBuffer data> = $stack24;
+
+     label3:
+        $r17 = (org.bytedeco.javacv.Frame) this;
+
+        $stack17 = $r17.<org.bytedeco.javacv.Frame: long timestamp>;
+
+        $u0.<org.bytedeco.javacv.Frame: long timestamp> = $stack17;
+
+        return $u0;
+    }
+
+    private static org.bytedeco.javacpp.Pointer cloneBufferArray(java.nio.Buffer[], java.nio.Buffer[])
+    {
+        java.nio.Buffer[] srcBuffers, clonedBuffers;
+        int $stack8, $stack10, $stack32, $stack36, $stack50, $stack53, $stack67, $stack70, $stack84, $stack87, $stack101, $stack104, $stack118, $stack121, $stack136, totalCapacity, i, $stack23;
+        java.nio.Buffer $stack11, $stack13, $stack15, $stack17, $stack19, $stack21, $stack24, $stack26, $stack35, $stack41, $stack52, $stack58, $stack69, $stack75, $stack86, $stack92, $stack103, $stack109, $stack120, $stack126, $stack133, $stack135;
+        boolean $stack12, $stack14, $stack16, $stack18, $stack20, $stack22;
+        long $stack31, $stack34, $stack37, $stack38, $stack44, $stack49, $stack51, $stack54, $stack55, $stack61, $stack66, $stack68, $stack71, $stack72, $stack78, $stack83, $stack85, $stack88, $stack89, $stack95, $stack100, $stack102, $stack105, $stack106, $stack112, $stack117, $stack119, $stack122, $stack123, $stack129;
+        org.bytedeco.javacpp.DoublePointer $stack39, $u5;
+        java.nio.DoubleBuffer $stack40, $stack42, $stack43;
+        org.bytedeco.javacpp.FloatPointer $stack56, $u4;
+        java.nio.FloatBuffer $stack57, $stack59, $stack60;
+        org.bytedeco.javacpp.LongPointer $stack73, $u3;
+        java.nio.LongBuffer $stack74, $stack76, $stack77;
+        org.bytedeco.javacpp.IntPointer $stack90, $u2;
+        java.nio.IntBuffer $stack91, $stack93, $stack94;
+        org.bytedeco.javacpp.ShortPointer $stack107, $u1;
+        java.nio.ShortBuffer $stack108, $stack110, $stack111;
+        org.bytedeco.javacpp.BytePointer $stack124, $u0;
+        java.nio.ByteBuffer $stack125, $stack127, $stack128;
+        java.lang.Object opaque;
+        org.bytedeco.javacpp.Pointer $r0, $r1;
+
+        srcBuffers := @parameter0: java.nio.Buffer[];
+
+        clonedBuffers := @parameter1: java.nio.Buffer[];
+
+        opaque = null;
+
+        if srcBuffers == null goto label22;
+
+        $stack8 = lengthof srcBuffers;
+
+        if $stack8 <= 0 goto label22;
+
+        totalCapacity = 0;
+
+        i = 0;
+
+     label01:
+        $stack10 = lengthof srcBuffers;
+
+        if i >= $stack10 goto label02;
+
+        $stack133 = srcBuffers[i];
+
+        virtualinvoke $stack133.<java.nio.Buffer: java.nio.Buffer rewind()>();
+
+        $stack135 = srcBuffers[i];
+
+        $stack136 = virtualinvoke $stack135.<java.nio.Buffer: int capacity()>();
+
+        totalCapacity = totalCapacity + $stack136;
+
+        i = i + 1;
+
+        goto label01;
+
+     label02:
+        $stack11 = srcBuffers[0];
+
+        $stack12 = $stack11 instanceof java.nio.ByteBuffer;
+
+        if $stack12 == 0 goto label05;
+
+        $u0 = new org.bytedeco.javacpp.BytePointer;
+
+        $stack117 = (long) totalCapacity;
+
+        specialinvoke $u0.<org.bytedeco.javacpp.BytePointer: void <init>(long)>($stack117);
+
+        i = 0;
+
+     label03:
+        $stack118 = lengthof srcBuffers;
+
+        if i >= $stack118 goto label04;
+
+        $stack119 = virtualinvoke $u0.<org.bytedeco.javacpp.BytePointer: long position()>();
+
+        $stack120 = srcBuffers[i];
+
+        $stack121 = virtualinvoke $stack120.<java.nio.Buffer: int limit()>();
+
+        $stack122 = (long) $stack121;
+
+        $stack123 = $stack119 + $stack122;
+
+        $stack124 = virtualinvoke $u0.<org.bytedeco.javacpp.BytePointer: org.bytedeco.javacpp.BytePointer limit(long)>($stack123);
+
+        $stack125 = virtualinvoke $stack124.<org.bytedeco.javacpp.BytePointer: java.nio.ByteBuffer asBuffer()>();
+
+        $stack126 = srcBuffers[i];
+
+        $stack127 = (java.nio.ByteBuffer) $stack126;
+
+        $stack128 = virtualinvoke $stack125.<java.nio.ByteBuffer: java.nio.ByteBuffer put(java.nio.ByteBuffer)>($stack127);
+
+        clonedBuffers[i] = $stack128;
+
+        $stack129 = virtualinvoke $u0.<org.bytedeco.javacpp.BytePointer: long limit()>();
+
+        virtualinvoke $u0.<org.bytedeco.javacpp.BytePointer: org.bytedeco.javacpp.BytePointer position(long)>($stack129);
+
+        i = i + 1;
+
+        goto label03;
+
+     label04:
+        opaque = $u0;
+
+        goto label20;
+
+     label05:
+        $stack13 = srcBuffers[0];
+
+        $stack14 = $stack13 instanceof java.nio.ShortBuffer;
+
+        if $stack14 == 0 goto label08;
+
+        $u1 = new org.bytedeco.javacpp.ShortPointer;
+
+        $stack100 = (long) totalCapacity;
+
+        specialinvoke $u1.<org.bytedeco.javacpp.ShortPointer: void <init>(long)>($stack100);
+
+        i = 0;
+
+     label06:
+        $stack101 = lengthof srcBuffers;
+
+        if i >= $stack101 goto label07;
+
+        $stack102 = virtualinvoke $u1.<org.bytedeco.javacpp.ShortPointer: long position()>();
+
+        $stack103 = srcBuffers[i];
+
+        $stack104 = virtualinvoke $stack103.<java.nio.Buffer: int limit()>();
+
+        $stack105 = (long) $stack104;
+
+        $stack106 = $stack102 + $stack105;
+
+        $stack107 = virtualinvoke $u1.<org.bytedeco.javacpp.ShortPointer: org.bytedeco.javacpp.ShortPointer limit(long)>($stack106);
+
+        $stack108 = virtualinvoke $stack107.<org.bytedeco.javacpp.ShortPointer: java.nio.ShortBuffer asBuffer()>();
+
+        $stack109 = srcBuffers[i];
+
+        $stack110 = (java.nio.ShortBuffer) $stack109;
+
+        $stack111 = virtualinvoke $stack108.<java.nio.ShortBuffer: java.nio.ShortBuffer put(java.nio.ShortBuffer)>($stack110);
+
+        clonedBuffers[i] = $stack111;
+
+        $stack112 = virtualinvoke $u1.<org.bytedeco.javacpp.ShortPointer: long limit()>();
+
+        virtualinvoke $u1.<org.bytedeco.javacpp.ShortPointer: org.bytedeco.javacpp.ShortPointer position(long)>($stack112);
+
+        i = i + 1;
+
+        goto label06;
+
+     label07:
+        opaque = $u1;
+
+        goto label20;
+
+     label08:
+        $stack15 = srcBuffers[0];
+
+        $stack16 = $stack15 instanceof java.nio.IntBuffer;
+
+        if $stack16 == 0 goto label11;
+
+        $u2 = new org.bytedeco.javacpp.IntPointer;
+
+        $stack83 = (long) totalCapacity;
+
+        specialinvoke $u2.<org.bytedeco.javacpp.IntPointer: void <init>(long)>($stack83);
+
+        i = 0;
+
+     label09:
+        $stack84 = lengthof srcBuffers;
+
+        if i >= $stack84 goto label10;
+
+        $stack85 = virtualinvoke $u2.<org.bytedeco.javacpp.IntPointer: long position()>();
+
+        $stack86 = srcBuffers[i];
+
+        $stack87 = virtualinvoke $stack86.<java.nio.Buffer: int limit()>();
+
+        $stack88 = (long) $stack87;
+
+        $stack89 = $stack85 + $stack88;
+
+        $stack90 = virtualinvoke $u2.<org.bytedeco.javacpp.IntPointer: org.bytedeco.javacpp.IntPointer limit(long)>($stack89);
+
+        $stack91 = virtualinvoke $stack90.<org.bytedeco.javacpp.IntPointer: java.nio.IntBuffer asBuffer()>();
+
+        $stack92 = srcBuffers[i];
+
+        $stack93 = (java.nio.IntBuffer) $stack92;
+
+        $stack94 = virtualinvoke $stack91.<java.nio.IntBuffer: java.nio.IntBuffer put(java.nio.IntBuffer)>($stack93);
+
+        clonedBuffers[i] = $stack94;
+
+        $stack95 = virtualinvoke $u2.<org.bytedeco.javacpp.IntPointer: long limit()>();
+
+        virtualinvoke $u2.<org.bytedeco.javacpp.IntPointer: org.bytedeco.javacpp.IntPointer position(long)>($stack95);
+
+        i = i + 1;
+
+        goto label09;
+
+     label10:
+        opaque = $u2;
+
+        goto label20;
+
+     label11:
+        $stack17 = srcBuffers[0];
+
+        $stack18 = $stack17 instanceof java.nio.LongBuffer;
+
+        if $stack18 == 0 goto label14;
+
+        $u3 = new org.bytedeco.javacpp.LongPointer;
+
+        $stack66 = (long) totalCapacity;
+
+        specialinvoke $u3.<org.bytedeco.javacpp.LongPointer: void <init>(long)>($stack66);
+
+        i = 0;
+
+     label12:
+        $stack67 = lengthof srcBuffers;
+
+        if i >= $stack67 goto label13;
+
+        $stack68 = virtualinvoke $u3.<org.bytedeco.javacpp.LongPointer: long position()>();
+
+        $stack69 = srcBuffers[i];
+
+        $stack70 = virtualinvoke $stack69.<java.nio.Buffer: int limit()>();
+
+        $stack71 = (long) $stack70;
+
+        $stack72 = $stack68 + $stack71;
+
+        $stack73 = virtualinvoke $u3.<org.bytedeco.javacpp.LongPointer: org.bytedeco.javacpp.LongPointer limit(long)>($stack72);
+
+        $stack74 = virtualinvoke $stack73.<org.bytedeco.javacpp.LongPointer: java.nio.LongBuffer asBuffer()>();
+
+        $stack75 = srcBuffers[i];
+
+        $stack76 = (java.nio.LongBuffer) $stack75;
+
+        $stack77 = virtualinvoke $stack74.<java.nio.LongBuffer: java.nio.LongBuffer put(java.nio.LongBuffer)>($stack76);
+
+        clonedBuffers[i] = $stack77;
+
+        $stack78 = virtualinvoke $u3.<org.bytedeco.javacpp.LongPointer: long limit()>();
+
+        virtualinvoke $u3.<org.bytedeco.javacpp.LongPointer: org.bytedeco.javacpp.LongPointer position(long)>($stack78);
+
+        i = i + 1;
+
+        goto label12;
+
+     label13:
+        opaque = $u3;
+
+        goto label20;
+
+     label14:
+        $stack19 = srcBuffers[0];
+
+        $stack20 = $stack19 instanceof java.nio.FloatBuffer;
+
+        if $stack20 == 0 goto label17;
+
+        $u4 = new org.bytedeco.javacpp.FloatPointer;
+
+        $stack49 = (long) totalCapacity;
+
+        specialinvoke $u4.<org.bytedeco.javacpp.FloatPointer: void <init>(long)>($stack49);
+
+        i = 0;
+
+     label15:
+        $stack50 = lengthof srcBuffers;
+
+        if i >= $stack50 goto label16;
+
+        $stack51 = virtualinvoke $u4.<org.bytedeco.javacpp.FloatPointer: long position()>();
+
+        $stack52 = srcBuffers[i];
+
+        $stack53 = virtualinvoke $stack52.<java.nio.Buffer: int limit()>();
+
+        $stack54 = (long) $stack53;
+
+        $stack55 = $stack51 + $stack54;
+
+        $stack56 = virtualinvoke $u4.<org.bytedeco.javacpp.FloatPointer: org.bytedeco.javacpp.FloatPointer limit(long)>($stack55);
+
+        $stack57 = virtualinvoke $stack56.<org.bytedeco.javacpp.FloatPointer: java.nio.FloatBuffer asBuffer()>();
+
+        $stack58 = srcBuffers[i];
+
+        $stack59 = (java.nio.FloatBuffer) $stack58;
+
+        $stack60 = virtualinvoke $stack57.<java.nio.FloatBuffer: java.nio.FloatBuffer put(java.nio.FloatBuffer)>($stack59);
+
+        clonedBuffers[i] = $stack60;
+
+        $stack61 = virtualinvoke $u4.<org.bytedeco.javacpp.FloatPointer: long limit()>();
+
+        virtualinvoke $u4.<org.bytedeco.javacpp.FloatPointer: org.bytedeco.javacpp.FloatPointer position(long)>($stack61);
+
+        i = i + 1;
+
+        goto label15;
+
+     label16:
+        opaque = $u4;
+
+        goto label20;
+
+     label17:
+        $stack21 = srcBuffers[0];
+
+        $stack22 = $stack21 instanceof java.nio.DoubleBuffer;
+
+        if $stack22 == 0 goto label20;
+
+        $u5 = new org.bytedeco.javacpp.DoublePointer;
+
+        $stack31 = (long) totalCapacity;
+
+        specialinvoke $u5.<org.bytedeco.javacpp.DoublePointer: void <init>(long)>($stack31);
+
+        i = 0;
+
+     label18:
+        $stack32 = lengthof srcBuffers;
+
+        if i >= $stack32 goto label19;
+
+        $stack34 = virtualinvoke $u5.<org.bytedeco.javacpp.DoublePointer: long position()>();
+
+        $stack35 = srcBuffers[i];
+
+        $stack36 = virtualinvoke $stack35.<java.nio.Buffer: int limit()>();
+
+        $stack37 = (long) $stack36;
+
+        $stack38 = $stack34 + $stack37;
+
+        $stack39 = virtualinvoke $u5.<org.bytedeco.javacpp.DoublePointer: org.bytedeco.javacpp.DoublePointer limit(long)>($stack38);
+
+        $stack40 = virtualinvoke $stack39.<org.bytedeco.javacpp.DoublePointer: java.nio.DoubleBuffer asBuffer()>();
+
+        $stack41 = srcBuffers[i];
+
+        $stack42 = (java.nio.DoubleBuffer) $stack41;
+
+        $stack43 = virtualinvoke $stack40.<java.nio.DoubleBuffer: java.nio.DoubleBuffer put(java.nio.DoubleBuffer)>($stack42);
+
+        clonedBuffers[i] = $stack43;
+
+        $stack44 = virtualinvoke $u5.<org.bytedeco.javacpp.DoublePointer: long limit()>();
+
+        virtualinvoke $u5.<org.bytedeco.javacpp.DoublePointer: org.bytedeco.javacpp.DoublePointer position(long)>($stack44);
+
+        i = i + 1;
+
+        goto label18;
+
+     label19:
+        opaque = $u5;
+
+     label20:
+        i = 0;
+
+     label21:
+        $stack23 = lengthof srcBuffers;
+
+        if i >= $stack23 goto label22;
+
+        $stack24 = srcBuffers[i];
+
+        virtualinvoke $stack24.<java.nio.Buffer: java.nio.Buffer rewind()>();
+
+        $stack26 = clonedBuffers[i];
+
+        virtualinvoke $stack26.<java.nio.Buffer: java.nio.Buffer rewind()>();
+
+        i = i + 1;
+
+        goto label21;
+
+     label22:
+        if opaque == null goto label23;
+
+        $r0 = (org.bytedeco.javacpp.Pointer) opaque;
+
+        virtualinvoke $r0.<org.bytedeco.javacpp.Pointer: org.bytedeco.javacpp.Pointer retainReference()>();
+
+     label23:
+        $r1 = (org.bytedeco.javacpp.Pointer) opaque;
+
+        return $r1;
+    }
+
+    public java.util.EnumSet getTypes()
+    {
+        java.util.EnumSet type;
+        Frame this;
+        java.nio.Buffer[] $stack3, $stack4;
+        java.nio.ByteBuffer $stack5;
+        org.bytedeco.javacv.Frame$Type $stack6, $stack9, $stack12;
+        org.bytedeco.javacv.Frame $r0, $r1, $r2;
+
+        this := @this: Frame;
+
+        type = staticinvoke <java.util.EnumSet: java.util.EnumSet noneOf(java.lang.Class)>(class "Lorg/bytedeco/javacv/Frame$Type;");
+
+        $r0 = (org.bytedeco.javacv.Frame) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.Frame: java.nio.Buffer[] image>;
+
+        if $stack3 == null goto label1;
+
+        $stack12 = <org.bytedeco.javacv.Frame$Type: org.bytedeco.javacv.Frame$Type VIDEO>;
+
+        virtualinvoke type.<java.util.EnumSet: boolean add(java.lang.Object)>($stack12);
+
+     label1:
+        $r1 = (org.bytedeco.javacv.Frame) this;
+
+        $stack4 = $r1.<org.bytedeco.javacv.Frame: java.nio.Buffer[] samples>;
+
+        if $stack4 == null goto label2;
+
+        $stack9 = <org.bytedeco.javacv.Frame$Type: org.bytedeco.javacv.Frame$Type AUDIO>;
+
+        virtualinvoke type.<java.util.EnumSet: boolean add(java.lang.Object)>($stack9);
+
+     label2:
+        $r2 = (org.bytedeco.javacv.Frame) this;
+
+        $stack5 = $r2.<org.bytedeco.javacv.Frame: java.nio.ByteBuffer data>;
+
+        if $stack5 == null goto label3;
+
+        $stack6 = <org.bytedeco.javacv.Frame$Type: org.bytedeco.javacv.Frame$Type DATA>;
+
+        virtualinvoke type.<java.util.EnumSet: boolean add(java.lang.Object)>($stack6);
+
+     label3:
+        return type;
+    }
+
+    public void close()
+    {
+        Frame this;
+        java.lang.Object $stack5, $stack7;
+        boolean $stack6;
+        org.bytedeco.javacpp.Pointer[] l1;
+        int l2, l3;
+        org.bytedeco.javacpp.Pointer p;
+        org.bytedeco.javacv.Frame $r0, $r1, $r2;
+
+        this := @this: Frame;
+
+        $r0 = (org.bytedeco.javacv.Frame) this;
+
+        $stack5 = $r0.<org.bytedeco.javacv.Frame: java.lang.Object opaque>;
+
+        $stack6 = $stack5 instanceof org.bytedeco.javacpp.Pointer[];
+
+        if $stack6 == 0 goto label4;
+
+        $r1 = (org.bytedeco.javacv.Frame) this;
+
+        $stack7 = $r1.<org.bytedeco.javacv.Frame: java.lang.Object opaque>;
+
+        l1 = (org.bytedeco.javacpp.Pointer[]) $stack7;
+
+        l2 = lengthof l1;
+
+        l3 = 0;
+
+     label1:
+        if l3 >= l2 goto label3;
+
+        p = l1[l3];
+
+        if p == null goto label2;
+
+        virtualinvoke p.<org.bytedeco.javacpp.Pointer: boolean releaseReference()>();
+
+     label2:
+        l3 = l3 + 1;
+
+        goto label1;
+
+     label3:
+        $r2 = (org.bytedeco.javacv.Frame) this;
+
+        $r2.<org.bytedeco.javacv.Frame: java.lang.Object opaque> = null;
+
+     label4:
+        return;
+    }
+
+    public volatile java.lang.Object clone() throws java.lang.CloneNotSupportedException
+    {
+        Frame this;
+        org.bytedeco.javacv.Frame $stack1, $r0;
+
+        this := @this: Frame;
+
+        $r0 = (org.bytedeco.javacv.Frame) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.Frame: org.bytedeco.javacv.Frame clone()>();
+
+        return $stack1;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $stack0;
+        boolean $stack1, $stack2;
+
+        <Frame: int DEPTH_DOUBLE> = 64;
+
+        <Frame: int DEPTH_FLOAT> = 32;
+
+        <Frame: int DEPTH_LONG> = -64;
+
+        <Frame: int DEPTH_INT> = -32;
+
+        <Frame: int DEPTH_USHORT> = 16;
+
+        <Frame: int DEPTH_SHORT> = -16;
+
+        <Frame: int DEPTH_UBYTE> = 8;
+
+        <Frame: int DEPTH_BYTE> = -8;
+
+        $stack0 = class "Lorg/bytedeco/javacv/Frame;";
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Class: boolean desiredAssertionStatus()>();
+
+        if $stack1 != 0 goto label1;
+
+        $stack2 = 1;
+
+        goto label2;
+
+     label1:
+        $stack2 = 0;
+
+     label2:
+        <org.bytedeco.javacv.Frame: boolean $assertionsDisabled> = $stack2;
+
+        return;
+    }
+}

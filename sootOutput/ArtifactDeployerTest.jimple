@@ -1,0 +1,98 @@
+public class ArtifactDeployerTest extends org.apache.maven.artifact.AbstractArtifactComponentTestCase
+{
+    private org.apache.maven.artifact.deployer.ArtifactDeployer artifactDeployer;
+
+    public void <init>()
+    {
+        ArtifactDeployerTest this;
+
+        this := @this: ArtifactDeployerTest;
+
+        specialinvoke this.<org.apache.maven.artifact.AbstractArtifactComponentTestCase: void <init>()>();
+
+        return;
+    }
+
+    protected java.lang.String component()
+    {
+        ArtifactDeployerTest this;
+
+        this := @this: ArtifactDeployerTest;
+
+        return "deployer";
+    }
+
+    public void testArtifactInstallation() throws java.lang.Exception
+    {
+        java.lang.String $stack7, artifactBasedir, $stack12, $stack13, $stack19, $stack20, $stack23, $stack24;
+        ArtifactDeployerTest this;
+        org.apache.maven.artifact.Artifact artifact;
+        org.apache.maven.artifact.deployer.ArtifactDeployer $stack14;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack15, $stack16, remoteRepository;
+        boolean $stack21;
+        java.io.File $u0, $u1, $u2;
+        org.apache.maven.artifact.deployer.ArtifactDeployerTest $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: ArtifactDeployerTest;
+
+        $u0 = new java.io.File;
+
+        $stack7 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.lang.String getBasedir()>();
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack7, "src/test/resources/artifact-install");
+
+        artifactBasedir = virtualinvoke $u0.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $r0 = (org.apache.maven.artifact.deployer.ArtifactDeployerTest) this;
+
+        artifact = virtualinvoke $r0.<org.apache.maven.artifact.deployer.ArtifactDeployerTest: org.apache.maven.artifact.Artifact createArtifact(java.lang.String,java.lang.String)>("artifact", "1.0");
+
+        $u1 = new java.io.File;
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String,java.lang.String)>(artifactBasedir, "artifact-1.0.jar");
+
+        $stack12 = staticinvoke <org.codehaus.plexus.util.FileUtils: java.lang.String fileRead(java.io.File,java.lang.String)>($u1, "UTF-8");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.String: java.lang.String trim()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("dummy", $stack13);
+
+        $r1 = (org.apache.maven.artifact.deployer.ArtifactDeployerTest) this;
+
+        $stack14 = $r1.<org.apache.maven.artifact.deployer.ArtifactDeployerTest: org.apache.maven.artifact.deployer.ArtifactDeployer artifactDeployer>;
+
+        $r2 = (org.apache.maven.artifact.deployer.ArtifactDeployerTest) this;
+
+        $stack15 = virtualinvoke $r2.<org.apache.maven.artifact.deployer.ArtifactDeployerTest: org.apache.maven.artifact.repository.ArtifactRepository remoteRepository()>();
+
+        $r3 = (org.apache.maven.artifact.deployer.ArtifactDeployerTest) this;
+
+        $stack16 = virtualinvoke $r3.<org.apache.maven.artifact.deployer.ArtifactDeployerTest: org.apache.maven.artifact.repository.ArtifactRepository localRepository()>();
+
+        interfaceinvoke $stack14.<org.apache.maven.artifact.deployer.ArtifactDeployer: void deploy(java.io.File,org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.repository.ArtifactRepository)>($u1, artifact, $stack15, $stack16);
+
+        $r4 = (org.apache.maven.artifact.deployer.ArtifactDeployerTest) this;
+
+        remoteRepository = virtualinvoke $r4.<org.apache.maven.artifact.deployer.ArtifactDeployerTest: org.apache.maven.artifact.repository.ArtifactRepository remoteRepository()>();
+
+        $u2 = new java.io.File;
+
+        $stack19 = interfaceinvoke remoteRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $stack20 = interfaceinvoke remoteRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(artifact);
+
+        specialinvoke $u2.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack19, $stack20);
+
+        $stack21 = virtualinvoke $u2.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack21);
+
+        $stack23 = staticinvoke <org.codehaus.plexus.util.FileUtils: java.lang.String fileRead(java.io.File,java.lang.String)>($u2, "UTF-8");
+
+        $stack24 = virtualinvoke $stack23.<java.lang.String: java.lang.String trim()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("dummy", $stack24);
+
+        return;
+    }
+}

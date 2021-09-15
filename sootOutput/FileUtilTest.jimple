@@ -1,0 +1,219 @@
+class FileUtilTest extends java.lang.Object
+{
+
+    void <init>()
+    {
+        FileUtilTest this;
+
+        this := @this: FileUtilTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    void defaultSortOrderFromFileShouldWork() throws java.lang.Exception
+    {
+        FileUtilTest this;
+        sortpom.util.FileUtil fileUtil;
+        java.lang.String defaultSortOrderXml;
+        org.hamcrest.Matcher $stack5;
+        sortpom.util.FileUtilTest $r0;
+
+        this := @this: FileUtilTest;
+
+        $r0 = (sortpom.util.FileUtilTest) this;
+
+        fileUtil = specialinvoke $r0.<sortpom.util.FileUtilTest: sortpom.util.FileUtil createFileUtil(java.lang.String)>("Attribute_expected.xml");
+
+        defaultSortOrderXml = virtualinvoke fileUtil.<sortpom.util.FileUtil: java.lang.String getDefaultSortOrderXml()>();
+
+        $stack5 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher startsWith(java.lang.String)>("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<projec");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>(defaultSortOrderXml, $stack5);
+
+        return;
+    }
+
+    void defaultSortOrderFromNonExistingShouldThrowException()
+    {
+        FileUtilTest this;
+        sortpom.util.FileUtil fileUtil;
+        org.junit.jupiter.api.function.Executable $stack6;
+        java.lang.Throwable $stack7;
+        java.io.IOException thrown;
+        java.lang.String $stack8, $stack10;
+        org.hamcrest.Matcher $stack9, $stack11;
+        sortpom.util.FileUtilTest $r0;
+
+        this := @this: FileUtilTest;
+
+        $r0 = (sortpom.util.FileUtilTest) this;
+
+        fileUtil = specialinvoke $r0.<sortpom.util.FileUtilTest: sortpom.util.FileUtil createFileUtil(java.lang.String)>("zzz_Attribute_expected.xml");
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(fileUtil);
+
+        $stack6 = staticinvoke <FileUtilTest$getDefaultSortOrderXml__309: org.junit.jupiter.api.function.Executable bootstrap$(sortpom.util.FileUtil)>(fileUtil);
+
+        $stack7 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Ljava/io/IOException;", $stack6);
+
+        thrown = (java.io.IOException) $stack7;
+
+        $stack8 = virtualinvoke thrown.<java.io.IOException: java.lang.String getMessage()>();
+
+        $stack9 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher startsWith(java.lang.String)>("Could not find");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack8, $stack9);
+
+        $stack10 = virtualinvoke thrown.<java.io.IOException: java.lang.String getMessage()>();
+
+        $stack11 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher endsWith(java.lang.String)>("or zzz_Attribute_expected.xml in classpath");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack10, $stack11);
+
+        return;
+    }
+
+    void defaultSortOrderFromUrlShouldWork() throws java.io.IOException
+    {
+        FileUtilTest this;
+        sortpom.util.FileUtil fileUtil;
+        org.hamcrest.Matcher $stack5;
+        java.net.UnknownHostException $stack6;
+        java.lang.String defaultSortOrderXml;
+        sortpom.util.FileUtilTest $r0;
+
+        this := @this: FileUtilTest;
+
+        $r0 = (sortpom.util.FileUtilTest) this;
+
+        fileUtil = specialinvoke $r0.<sortpom.util.FileUtilTest: sortpom.util.FileUtil createFileUtil(java.lang.String)>("https://en.wikipedia.org/wiki/Sweden");
+
+     label1:
+        defaultSortOrderXml = virtualinvoke fileUtil.<sortpom.util.FileUtil: java.lang.String getDefaultSortOrderXml()>();
+
+        $stack5 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher containsString(java.lang.String)>("Sverige");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>(defaultSortOrderXml, $stack5);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack6 := @caughtexception;
+
+     label4:
+        return;
+
+        catch java.net.UnknownHostException from label1 to label2 with label3;
+    }
+
+    void defaultSortOrderFromNonExistingHostShouldThrowException()
+    {
+        FileUtilTest this;
+        sortpom.util.FileUtil fileUtil;
+        org.junit.jupiter.api.function.Executable $stack6;
+        java.lang.Throwable $stack7;
+        java.net.UnknownHostException thrown;
+        java.lang.String $stack8;
+        org.hamcrest.Matcher $stack9;
+        sortpom.util.FileUtilTest $r0;
+
+        this := @this: FileUtilTest;
+
+        $r0 = (sortpom.util.FileUtilTest) this;
+
+        fileUtil = specialinvoke $r0.<sortpom.util.FileUtilTest: sortpom.util.FileUtil createFileUtil(java.lang.String)>("http://jgerwzuujy.fjrmzaxklj.zfgmqavbhp/licenses/BSD-3-Clause");
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(fileUtil);
+
+        $stack6 = staticinvoke <FileUtilTest$getDefaultSortOrderXml__310: org.junit.jupiter.api.function.Executable bootstrap$(sortpom.util.FileUtil)>(fileUtil);
+
+        $stack7 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Ljava/net/UnknownHostException;", $stack6);
+
+        thrown = (java.net.UnknownHostException) $stack7;
+
+        $stack8 = virtualinvoke thrown.<java.net.UnknownHostException: java.lang.String getMessage()>();
+
+        $stack9 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>("jgerwzuujy.fjrmzaxklj.zfgmqavbhp");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack8, $stack9);
+
+        return;
+    }
+
+    void defaultSortOrderFromNonExistingPageShouldThrowException() throws java.io.IOException
+    {
+        FileUtilTest this;
+        sortpom.util.FileUtil fileUtil;
+        java.io.FileNotFoundException $stack6;
+        java.lang.String $stack7;
+        org.hamcrest.Matcher $stack8;
+        java.net.UnknownHostException $stack9;
+        sortpom.util.FileUtilTest $r0;
+
+        this := @this: FileUtilTest;
+
+        $r0 = (sortpom.util.FileUtilTest) this;
+
+        fileUtil = specialinvoke $r0.<sortpom.util.FileUtilTest: sortpom.util.FileUtil createFileUtil(java.lang.String)>("https://github.com/Ekryd/sortpom/where_are_the_donations");
+
+     label1:
+        virtualinvoke fileUtil.<sortpom.util.FileUtil: java.lang.String getDefaultSortOrderXml()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Object fail()>();
+
+     label2:
+        goto label5;
+
+     label3:
+        $stack9 := @caughtexception;
+
+        goto label5;
+
+     label4:
+        $stack6 := @caughtexception;
+
+        $stack7 = virtualinvoke $stack6.<java.io.FileNotFoundException: java.lang.String getMessage()>();
+
+        $stack8 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>("https://github.com/Ekryd/sortpom/where_are_the_donations");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack7, $stack8);
+
+     label5:
+        return;
+
+        catch java.net.UnknownHostException from label1 to label2 with label3;
+        catch java.io.FileNotFoundException from label1 to label2 with label4;
+    }
+
+    private sortpom.util.FileUtil createFileUtil(java.lang.String)
+    {
+        sortpom.util.FileUtil $stack4;
+        sortpom.parameter.PluginParameters$Builder $stack5, $stack6, $stack7;
+        java.lang.String customSortOrderFile;
+        sortpom.parameter.PluginParameters pluginParameters;
+        FileUtilTest this;
+
+        this := @this: FileUtilTest;
+
+        customSortOrderFile := @parameter0: java.lang.String;
+
+        $stack4 = new sortpom.util.FileUtil;
+
+        specialinvoke $stack4.<sortpom.util.FileUtil: void <init>()>();
+
+        $stack5 = staticinvoke <sortpom.parameter.PluginParameters: sortpom.parameter.PluginParameters$Builder builder()>();
+
+        $stack6 = virtualinvoke $stack5.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setSortOrder(java.lang.String,java.lang.String)>(customSortOrderFile, null);
+
+        $stack7 = virtualinvoke $stack6.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setEncoding(java.lang.String)>("UTF-8");
+
+        pluginParameters = virtualinvoke $stack7.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters build()>();
+
+        virtualinvoke $stack4.<sortpom.util.FileUtil: void setup(sortpom.parameter.PluginParameters)>(pluginParameters);
+
+        return $stack4;
+    }
+}

@@ -1,0 +1,73 @@
+public class TypeParamParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        TypeParamParser this;
+
+        this := @this: TypeParamParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void parse(org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader, java.util.List)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        java.lang.Object $stack4, $stack7, $stack11;
+        org.ooc.frontend.model.tokens.Token $stack5, nameTok, $stack12;
+        byte $stack6, $stack13;
+        java.util.List typeParams;
+        org.ooc.frontend.model.TypeParam $stack8;
+        org.ubi.SourceReader sReader;
+        java.lang.String $stack9;
+
+        sReader := @parameter0: org.ubi.SourceReader;
+
+        reader := @parameter1: org.ooc.frontend.model.tokens.TokenReader;
+
+        typeParams := @parameter2: java.util.List;
+
+     label1:
+        $stack4 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack5 = (org.ooc.frontend.model.tokens.Token) $stack4;
+
+        $stack6 = $stack5.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack6 == 64 goto label3;
+
+        $stack7 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        nameTok = (org.ooc.frontend.model.tokens.Token) $stack7;
+
+        $stack8 = new org.ooc.frontend.model.TypeParam;
+
+        $stack9 = virtualinvoke nameTok.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        specialinvoke $stack8.<org.ooc.frontend.model.TypeParam: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack9, nameTok);
+
+        interfaceinvoke typeParams.<java.util.List: boolean add(java.lang.Object)>($stack8);
+
+        $stack11 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack12 = (org.ooc.frontend.model.tokens.Token) $stack11;
+
+        $stack13 = $stack12.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack13 == 45 goto label2;
+
+        goto label3;
+
+     label2:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        goto label1;
+
+     label3:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        return;
+    }
+}

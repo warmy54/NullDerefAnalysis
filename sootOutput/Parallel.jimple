@@ -1,0 +1,297 @@
+public class Parallel extends java.lang.Object
+{
+    private static final java.util.concurrent.ExecutorService threadPool;
+    public static final java.lang.String NUM_THREADS;
+
+    public void <init>()
+    {
+        Parallel this;
+
+        this := @this: Parallel;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static int getNumThreads()
+    {
+        int $stack2, $stack4;
+        java.lang.Integer $stack3;
+        java.lang.NumberFormatException $stack5;
+        java.lang.RuntimeException $stack6;
+        java.lang.String s;
+
+     label1:
+        s = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("org.bytedeco.javacv.numthreads");
+
+        if s == null goto label3;
+
+        $stack3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(java.lang.String)>(s);
+
+        $stack4 = virtualinvoke $stack3.<java.lang.Integer: int intValue()>();
+
+     label2:
+        return $stack4;
+
+     label3:
+        goto label5;
+
+     label4:
+        $stack5 := @caughtexception;
+
+        $stack6 = new java.lang.RuntimeException;
+
+        specialinvoke $stack6.<java.lang.RuntimeException: void <init>(java.lang.Throwable)>($stack5);
+
+        throw $stack6;
+
+     label5:
+        $stack2 = staticinvoke <org.bytedeco.javacv.Parallel: int getNumCores()>();
+
+        return $stack2;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label4;
+    }
+
+    public static void setNumThreads(int)
+    {
+        int numThreads;
+        java.lang.String $stack2;
+
+        numThreads := @parameter0: int;
+
+        $stack2 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>(numThreads);
+
+        staticinvoke <java.lang.System: java.lang.String setProperty(java.lang.String,java.lang.String)>("org.bytedeco.javacv.numthreads", $stack2);
+
+        return;
+    }
+
+    public static int getNumCores()
+    {
+        java.lang.Runtime $stack0;
+        int $stack1;
+
+        $stack0 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Runtime: int availableProcessors()>();
+
+        return $stack1;
+    }
+
+    public static transient void run(java.lang.Runnable[])
+    {
+        java.lang.Runnable[] runnables;
+        int $stack7, $stack8, $stack9, i, l4, l5;
+        java.util.concurrent.Future[] futures;
+        java.lang.RuntimeException $stack10;
+        boolean $stack14;
+        java.lang.Runnable $stack18, $stack23;
+        java.util.concurrent.ExecutorService $stack19;
+        java.util.concurrent.Future $stack20, f;
+        java.lang.Throwable $stack24, i#2;
+
+        runnables := @parameter0: java.lang.Runnable[];
+
+        $stack7 = lengthof runnables;
+
+        if $stack7 != 1 goto label01;
+
+        $stack23 = runnables[0];
+
+        interfaceinvoke $stack23.<java.lang.Runnable: void run()>();
+
+        return;
+
+     label01:
+        $stack8 = lengthof runnables;
+
+        futures = newarray (java.util.concurrent.Future)[$stack8];
+
+        i = 0;
+
+     label02:
+        $stack9 = lengthof runnables;
+
+        if i >= $stack9 goto label03;
+
+        $stack19 = <org.bytedeco.javacv.Parallel: java.util.concurrent.ExecutorService threadPool>;
+
+        $stack18 = runnables[i];
+
+        $stack20 = interfaceinvoke $stack19.<java.util.concurrent.ExecutorService: java.util.concurrent.Future submit(java.lang.Runnable)>($stack18);
+
+        futures[i] = $stack20;
+
+        i = i + 1;
+
+        goto label02;
+
+     label03:
+        i#2 = null;
+
+     label04:
+        l4 = lengthof futures;
+
+        l5 = 0;
+
+     label05:
+        if l5 >= l4 goto label07;
+
+        f = futures[l5];
+
+        $stack14 = interfaceinvoke f.<java.util.concurrent.Future: boolean isDone()>();
+
+        if $stack14 != 0 goto label06;
+
+        interfaceinvoke f.<java.util.concurrent.Future: java.lang.Object get()>();
+
+     label06:
+        l5 = l5 + 1;
+
+        goto label05;
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack24 := @caughtexception;
+
+        i#2 = $stack24;
+
+     label09:
+        if i#2 == null goto label12;
+
+        l4 = lengthof futures;
+
+        l5 = 0;
+
+     label10:
+        if l5 >= l4 goto label11;
+
+        f = futures[l5];
+
+        interfaceinvoke f.<java.util.concurrent.Future: boolean cancel(boolean)>(1);
+
+        l5 = l5 + 1;
+
+        goto label10;
+
+     label11:
+        $stack10 = new java.lang.RuntimeException;
+
+        specialinvoke $stack10.<java.lang.RuntimeException: void <init>(java.lang.Throwable)>(i#2);
+
+        throw $stack10;
+
+     label12:
+        return;
+
+        catch java.lang.Throwable from label04 to label07 with label08;
+    }
+
+    public static void loop(int, int, org.bytedeco.javacv.Parallel$Looper)
+    {
+        int 'from', 'to', $stack3;
+        org.bytedeco.javacv.Parallel$Looper looper;
+
+        'from' := @parameter0: int;
+
+        'to' := @parameter1: int;
+
+        looper := @parameter2: org.bytedeco.javacv.Parallel$Looper;
+
+        $stack3 = staticinvoke <org.bytedeco.javacv.Parallel: int getNumThreads()>();
+
+        staticinvoke <org.bytedeco.javacv.Parallel: void loop(int,int,int,org.bytedeco.javacv.Parallel$Looper)>('from', 'to', $stack3, looper);
+
+        return;
+    }
+
+    public static void loop(int, int, int, org.bytedeco.javacv.Parallel$Looper)
+    {
+        int 'to', 'from', numThreads, $stack10, numLoopers, $stack13, $stack14, $stack15, subFrom, $stack16, $stack17, $stack18, $stack19, subTo, $stack11, i;
+        java.lang.Object[] runnables;
+        org.bytedeco.javacv.Parallel$Looper looper;
+        org.bytedeco.javacv.Parallel$1 $u0;
+        java.lang.Runnable[] $r0;
+
+        'from' := @parameter0: int;
+
+        'to' := @parameter1: int;
+
+        numThreads := @parameter2: int;
+
+        looper := @parameter3: org.bytedeco.javacv.Parallel$Looper;
+
+        $stack10 = 'to' - 'from';
+
+        if numThreads <= 0 goto label1;
+
+        $stack11 = numThreads;
+
+        goto label2;
+
+     label1:
+        $stack11 = staticinvoke <org.bytedeco.javacv.Parallel: int getNumCores()>();
+
+     label2:
+        numLoopers = staticinvoke <java.lang.Math: int min(int,int)>($stack10, $stack11);
+
+        runnables = newarray (java.lang.Runnable)[numLoopers];
+
+        i = 0;
+
+     label3:
+        if i >= numLoopers goto label4;
+
+        $stack13 = 'to' - 'from';
+
+        $stack14 = $stack13 * i;
+
+        $stack15 = $stack14 / numLoopers;
+
+        subFrom = $stack15 + 'from';
+
+        $stack17 = 'to' - 'from';
+
+        $stack16 = i + 1;
+
+        $stack18 = $stack17 * $stack16;
+
+        $stack19 = $stack18 / numLoopers;
+
+        subTo = $stack19 + 'from';
+
+        $u0 = new org.bytedeco.javacv.Parallel$1;
+
+        specialinvoke $u0.<org.bytedeco.javacv.Parallel$1: void <init>(org.bytedeco.javacv.Parallel$Looper,int,int,int)>(looper, subFrom, subTo, i);
+
+        runnables[i] = $u0;
+
+        i = i + 1;
+
+        goto label3;
+
+     label4:
+        $r0 = (java.lang.Runnable[]) runnables;
+
+        staticinvoke <org.bytedeco.javacv.Parallel: void run(java.lang.Runnable[])>($r0);
+
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.util.concurrent.ExecutorService $stack0;
+
+        <Parallel: java.lang.String NUM_THREADS> = "org.bytedeco.javacv.numthreads";
+
+        $stack0 = staticinvoke <java.util.concurrent.Executors: java.util.concurrent.ExecutorService newCachedThreadPool()>();
+
+        <org.bytedeco.javacv.Parallel: java.util.concurrent.ExecutorService threadPool> = $stack0;
+
+        return;
+    }
+}

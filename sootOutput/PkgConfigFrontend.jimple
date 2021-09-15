@@ -1,0 +1,116 @@
+public class PkgConfigFrontend extends java.lang.Object
+{
+    protected static java.util.Map cache;
+
+    public void <init>()
+    {
+        PkgConfigFrontend this;
+
+        this := @this: PkgConfigFrontend;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.ooc.frontend.pkgconfig.PkgInfo getInfo(java.lang.String)
+    {
+        java.lang.String pkgName, $stack11, libs, $stack15, cflags, $stack22, $stack24, $stack25;
+        java.util.Map $stack6, $stack18;
+        java.lang.Object $stack7;
+        org.ooc.frontend.pkgconfig.PkgInfo cached, $u2;
+        java.io.File path;
+        java.lang.String[] $stack9, $stack13;
+        java.lang.Error $u0;
+        org.ubi.CompilationFailedError $u1;
+        java.lang.Throwable $r0;
+
+        pkgName := @parameter0: java.lang.String;
+
+        $stack6 = <org.ooc.frontend.pkgconfig.PkgConfigFrontend: java.util.Map cache>;
+
+        $stack7 = interfaceinvoke $stack6.<java.util.Map: java.lang.Object get(java.lang.Object)>(pkgName);
+
+        cached = (org.ooc.frontend.pkgconfig.PkgInfo) $stack7;
+
+        if cached == null goto label1;
+
+        return cached;
+
+     label1:
+        path = staticinvoke <org.ooc.utils.ShellUtils: java.io.File findExecutable(java.lang.String)>("pkg-config");
+
+        if path != null goto label2;
+
+        $u0 = new java.lang.Error;
+
+        $stack24 = staticinvoke <java.lang.System: java.lang.String getenv(java.lang.String)>("PATH");
+
+        $stack25 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>(pkgName, $stack24) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Error! the \'pkg-config\' tool, necessary to resolve package \'\u0001\' couldn\'t be find in the $PATH, which is \u0001");
+
+        specialinvoke $u0.<java.lang.Error: void <init>(java.lang.String)>($stack25);
+
+        throw $u0;
+
+     label2:
+        $stack9 = newarray (java.lang.String)[3];
+
+        $stack11 = virtualinvoke path.<java.io.File: java.lang.String getPath()>();
+
+        $stack9[0] = $stack11;
+
+        $stack9[1] = "--libs";
+
+        $stack9[2] = pkgName;
+
+        libs = staticinvoke <org.ooc.utils.ShellUtils: java.lang.String getOutput(java.lang.String[])>($stack9);
+
+        $stack13 = newarray (java.lang.String)[3];
+
+        $stack15 = virtualinvoke path.<java.io.File: java.lang.String getPath()>();
+
+        $stack13[0] = $stack15;
+
+        $stack13[1] = "--cflags";
+
+        $stack13[2] = pkgName;
+
+        cflags = staticinvoke <org.ooc.utils.ShellUtils: java.lang.String getOutput(java.lang.String[])>($stack13);
+
+        if libs != null goto label3;
+
+        $u1 = new org.ubi.CompilationFailedError;
+
+        $stack22 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(pkgName) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Can\'t find package \'\u0001\' in PKG_CONFIG_PATH. Have you configured pkg-config correctly?");
+
+        specialinvoke $u1.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>(null, $stack22);
+
+        $r0 = (java.lang.Throwable) $u1;
+
+        throw $r0;
+
+     label3:
+        $u2 = new org.ooc.frontend.pkgconfig.PkgInfo;
+
+        specialinvoke $u2.<org.ooc.frontend.pkgconfig.PkgInfo: void <init>(java.lang.String,java.lang.String,java.lang.String)>(pkgName, libs, cflags);
+
+        $stack18 = <org.ooc.frontend.pkgconfig.PkgConfigFrontend: java.util.Map cache>;
+
+        interfaceinvoke $stack18.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(pkgName, $u2);
+
+        return $u2;
+    }
+
+    static void <clinit>()
+    {
+        java.util.HashMap $stack0;
+
+        $stack0 = new java.util.HashMap;
+
+        specialinvoke $stack0.<java.util.HashMap: void <init>()>();
+
+        <org.ooc.frontend.pkgconfig.PkgConfigFrontend: java.util.Map cache> = $stack0;
+
+        return;
+    }
+}

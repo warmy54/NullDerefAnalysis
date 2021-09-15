@@ -1,0 +1,498 @@
+public class DefaultProjectArtifactsCache$CacheKey extends java.lang.Object implements org.apache.maven.project.artifact.ProjectArtifactsCache$Key
+{
+    private final java.lang.String groupId;
+    private final java.lang.String artifactId;
+    private final java.lang.String version;
+    private final java.util.Set dependencyArtifacts;
+    private final org.eclipse.aether.repository.WorkspaceRepository workspace;
+    private final org.eclipse.aether.repository.LocalRepository localRepo;
+    private final java.util.List repositories;
+    private final java.util.Set collect;
+    private final java.util.Set resolve;
+    private boolean aggregating;
+    private final int hashCode;
+
+    public void <init>(org.apache.maven.project.MavenProject, java.util.List, java.util.Collection, java.util.Collection, boolean, org.eclipse.aether.RepositorySystemSession)
+    {
+        DefaultProjectArtifactsCache$CacheKey this;
+        org.apache.maven.project.MavenProject project;
+        java.lang.String $stack10, $stack11, $stack12, $stack26, $stack29, $stack32, $stack126;
+        java.util.Set $stack14, $stack15, $stack35, $stack46, $stack49, $stack113, $stack23, $stack25;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.repository.WorkspaceRepository $stack16, $stack38;
+        org.eclipse.aether.repository.LocalRepository $stack17, $stack41;
+        java.util.List repositories, $stack107, $stack110, $stack111;
+        int $stack19, $stack27, $stack28, $stack30, $stack31, $stack33, $stack34, $stack36, $stack37, $stack39, $stack40, $stack42, $stack43, $stack44, $stack45, $stack47, $stack48, $stack50, $stack51, $stack52, $stack54, hash#12;
+        java.util.Collection scopesToCollect, scopesToResolve;
+        boolean aggregating, $stack106, $stack115, $stack21;
+        java.lang.Boolean $stack53;
+        java.lang.Object $stack105, $stack125;
+        java.util.Iterator hash;
+        org.apache.maven.artifact.Artifact dep;
+        org.eclipse.aether.repository.RemoteRepository dep#8;
+        java.util.LinkedHashSet $u0;
+        java.util.ArrayList $u1;
+        java.util.HashSet $u2, $u3;
+        org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20;
+
+        this := @this: DefaultProjectArtifactsCache$CacheKey;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        repositories := @parameter1: java.util.List;
+
+        scopesToCollect := @parameter2: java.util.Collection;
+
+        scopesToResolve := @parameter3: java.util.Collection;
+
+        aggregating := @parameter4: boolean;
+
+        session := @parameter5: org.eclipse.aether.RepositorySystemSession;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $stack10 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        $r0 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $r0.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String groupId> = $stack10;
+
+        $stack11 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        $r1 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $r1.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String artifactId> = $stack11;
+
+        $stack12 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        $r2 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $r2.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String version> = $stack12;
+
+        $u0 = new java.util.LinkedHashSet;
+
+        specialinvoke $u0.<java.util.LinkedHashSet: void <init>()>();
+
+        $stack14 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.Set getDependencyArtifacts()>();
+
+        if $stack14 == null goto label02;
+
+        $stack113 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.Set getDependencyArtifacts()>();
+
+        hash = interfaceinvoke $stack113.<java.util.Set: java.util.Iterator iterator()>();
+
+     label01:
+        $stack115 = interfaceinvoke hash.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack115 == 0 goto label02;
+
+        $stack125 = interfaceinvoke hash.<java.util.Iterator: java.lang.Object next()>();
+
+        dep = (org.apache.maven.artifact.Artifact) $stack125;
+
+        $stack126 = virtualinvoke dep.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke $u0.<java.util.Set: boolean add(java.lang.Object)>($stack126);
+
+        goto label01;
+
+     label02:
+        $stack15 = staticinvoke <java.util.Collections: java.util.Set unmodifiableSet(java.util.Set)>($u0);
+
+        $r3 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $r3.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set dependencyArtifacts> = $stack15;
+
+        $stack16 = staticinvoke <org.apache.maven.RepositoryUtils: org.eclipse.aether.repository.WorkspaceRepository getWorkspace(org.eclipse.aether.RepositorySystemSession)>(session);
+
+        $r4 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $r4.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: org.eclipse.aether.repository.WorkspaceRepository workspace> = $stack16;
+
+        $stack17 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.LocalRepository getLocalRepository()>();
+
+        $r5 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $r5.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: org.eclipse.aether.repository.LocalRepository localRepo> = $stack17;
+
+        $u1 = new java.util.ArrayList;
+
+        $stack19 = interfaceinvoke repositories.<java.util.List: int size()>();
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>(int)>($stack19);
+
+        $r6 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $r6.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.List repositories> = $u1;
+
+        hash = interfaceinvoke repositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label03:
+        $stack21 = interfaceinvoke hash.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack21 == 0 goto label06;
+
+        $stack105 = interfaceinvoke hash.<java.util.Iterator: java.lang.Object next()>();
+
+        dep#8 = (org.eclipse.aether.repository.RemoteRepository) $stack105;
+
+        $stack106 = virtualinvoke dep#8.<org.eclipse.aether.repository.RemoteRepository: boolean isRepositoryManager()>();
+
+        if $stack106 == 0 goto label04;
+
+        $r7 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack110 = $r7.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.List repositories>;
+
+        $stack111 = virtualinvoke dep#8.<org.eclipse.aether.repository.RemoteRepository: java.util.List getMirroredRepositories()>();
+
+        interfaceinvoke $stack110.<java.util.List: boolean addAll(java.util.Collection)>($stack111);
+
+        goto label05;
+
+     label04:
+        $r8 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack107 = $r8.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.List repositories>;
+
+        interfaceinvoke $stack107.<java.util.List: boolean add(java.lang.Object)>(dep#8);
+
+     label05:
+        goto label03;
+
+     label06:
+        if scopesToCollect != null goto label07;
+
+        $stack23 = staticinvoke <java.util.Collections: java.util.Set emptySet()>();
+
+        goto label08;
+
+     label07:
+        $u2 = new java.util.HashSet;
+
+        specialinvoke $u2.<java.util.HashSet: void <init>(java.util.Collection)>(scopesToCollect);
+
+        $stack23 = staticinvoke <java.util.Collections: java.util.Set unmodifiableSet(java.util.Set)>($u2);
+
+     label08:
+        $r9 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $r9.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set collect> = $stack23;
+
+        if scopesToResolve != null goto label09;
+
+        $stack25 = staticinvoke <java.util.Collections: java.util.Set emptySet()>();
+
+        goto label10;
+
+     label09:
+        $u3 = new java.util.HashSet;
+
+        specialinvoke $u3.<java.util.HashSet: void <init>(java.util.Collection)>(scopesToResolve);
+
+        $stack25 = staticinvoke <java.util.Collections: java.util.Set unmodifiableSet(java.util.Set)>($u3);
+
+     label10:
+        $r10 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $r10.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set resolve> = $stack25;
+
+        $r11 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $r11.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: boolean aggregating> = aggregating;
+
+        $stack27 = 17 * 31;
+
+        $r12 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack26 = $r12.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String groupId>;
+
+        $stack28 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack26);
+
+        hash#12 = $stack27 + $stack28;
+
+        $stack30 = hash#12 * 31;
+
+        $r13 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack29 = $r13.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String artifactId>;
+
+        $stack31 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack29);
+
+        hash#12 = $stack30 + $stack31;
+
+        $stack33 = hash#12 * 31;
+
+        $r14 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack32 = $r14.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String version>;
+
+        $stack34 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack32);
+
+        hash#12 = $stack33 + $stack34;
+
+        $stack36 = hash#12 * 31;
+
+        $r15 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack35 = $r15.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set dependencyArtifacts>;
+
+        $stack37 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack35);
+
+        hash#12 = $stack36 + $stack37;
+
+        $stack39 = hash#12 * 31;
+
+        $r16 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack38 = $r16.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: org.eclipse.aether.repository.WorkspaceRepository workspace>;
+
+        $stack40 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack38);
+
+        hash#12 = $stack39 + $stack40;
+
+        $stack42 = hash#12 * 31;
+
+        $r17 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack41 = $r17.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: org.eclipse.aether.repository.LocalRepository localRepo>;
+
+        $stack43 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack41);
+
+        hash#12 = $stack42 + $stack43;
+
+        $stack44 = hash#12 * 31;
+
+        $stack45 = staticinvoke <org.apache.maven.RepositoryUtils: int repositoriesHashCode(java.util.List)>(repositories);
+
+        hash#12 = $stack44 + $stack45;
+
+        $stack47 = hash#12 * 31;
+
+        $r18 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack46 = $r18.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set collect>;
+
+        $stack48 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack46);
+
+        hash#12 = $stack47 + $stack48;
+
+        $stack50 = hash#12 * 31;
+
+        $r19 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack49 = $r19.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set resolve>;
+
+        $stack51 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack49);
+
+        hash#12 = $stack50 + $stack51;
+
+        $stack52 = hash#12 * 31;
+
+        $stack53 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(aggregating);
+
+        $stack54 = staticinvoke <java.util.Objects: int hashCode(java.lang.Object)>($stack53);
+
+        hash#12 = $stack52 + $stack54;
+
+        $r20 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $r20.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: int hashCode> = hash#12;
+
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        DefaultProjectArtifactsCache$CacheKey this;
+        java.lang.String $stack2, $stack5, $stack8, $stack10;
+        java.lang.StringBuilder $stack3, $stack4, $stack6, $stack7, $stack9, $u0;
+        org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey $r0, $r1, $r2;
+
+        this := @this: DefaultProjectArtifactsCache$CacheKey;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack2 = $r0.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String groupId>;
+
+        $stack3 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack2);
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $r1 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack5 = $r1.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String artifactId>;
+
+        $stack6 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $r2 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack8 = $r2.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String version>;
+
+        $stack9 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack10;
+    }
+
+    public int hashCode()
+    {
+        DefaultProjectArtifactsCache$CacheKey this;
+        int $stack1;
+        org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey $r0;
+
+        this := @this: DefaultProjectArtifactsCache$CacheKey;
+
+        $r0 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack1 = $r0.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: int hashCode>;
+
+        return $stack1;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        java.lang.Object o;
+        DefaultProjectArtifactsCache$CacheKey this;
+        boolean $stack3, $stack6, $stack9, $stack13, $stack16, $stack19, $stack22, $stack25, $stack28, $stack31, $stack32, $stack33, $stack10;
+        org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey that, $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9;
+        java.lang.String $stack4, $stack5, $stack7, $stack8, $stack11, $stack12;
+        java.util.Set $stack14, $stack15, $stack26, $stack27, $stack29, $stack30;
+        org.eclipse.aether.repository.WorkspaceRepository $stack17, $stack18;
+        org.eclipse.aether.repository.LocalRepository $stack20, $stack21;
+        java.util.List $stack23, $stack24;
+
+        this := @this: DefaultProjectArtifactsCache$CacheKey;
+
+        o := @parameter0: java.lang.Object;
+
+        if o != this goto label1;
+
+        return 1;
+
+     label1:
+        $stack3 = o instanceof org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey;
+
+        if $stack3 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        that = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) o;
+
+        $r0 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack5 = $r0.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String groupId>;
+
+        $stack4 = that.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String groupId>;
+
+        $stack6 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack5, $stack4);
+
+        if $stack6 == 0 goto label3;
+
+        $r1 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack8 = $r1.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String artifactId>;
+
+        $stack7 = that.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String artifactId>;
+
+        $stack9 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack8, $stack7);
+
+        if $stack9 == 0 goto label3;
+
+        $r2 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack12 = $r2.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String version>;
+
+        $stack11 = that.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.lang.String version>;
+
+        $stack13 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack12, $stack11);
+
+        if $stack13 == 0 goto label3;
+
+        $r3 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack15 = $r3.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set dependencyArtifacts>;
+
+        $stack14 = that.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set dependencyArtifacts>;
+
+        $stack16 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack15, $stack14);
+
+        if $stack16 == 0 goto label3;
+
+        $r4 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack18 = $r4.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: org.eclipse.aether.repository.WorkspaceRepository workspace>;
+
+        $stack17 = that.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: org.eclipse.aether.repository.WorkspaceRepository workspace>;
+
+        $stack19 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack18, $stack17);
+
+        if $stack19 == 0 goto label3;
+
+        $r5 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack21 = $r5.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: org.eclipse.aether.repository.LocalRepository localRepo>;
+
+        $stack20 = that.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: org.eclipse.aether.repository.LocalRepository localRepo>;
+
+        $stack22 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack21, $stack20);
+
+        if $stack22 == 0 goto label3;
+
+        $r6 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack24 = $r6.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.List repositories>;
+
+        $stack23 = that.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.List repositories>;
+
+        $stack25 = staticinvoke <org.apache.maven.RepositoryUtils: boolean repositoriesEquals(java.util.List,java.util.List)>($stack24, $stack23);
+
+        if $stack25 == 0 goto label3;
+
+        $r7 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack27 = $r7.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set collect>;
+
+        $stack26 = that.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set collect>;
+
+        $stack28 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack27, $stack26);
+
+        if $stack28 == 0 goto label3;
+
+        $r8 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack30 = $r8.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set resolve>;
+
+        $stack29 = that.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: java.util.Set resolve>;
+
+        $stack31 = staticinvoke <java.util.Objects: boolean equals(java.lang.Object,java.lang.Object)>($stack30, $stack29);
+
+        if $stack31 == 0 goto label3;
+
+        $r9 = (org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey) this;
+
+        $stack33 = $r9.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: boolean aggregating>;
+
+        $stack32 = that.<org.apache.maven.project.artifact.DefaultProjectArtifactsCache$CacheKey: boolean aggregating>;
+
+        if $stack33 != $stack32 goto label3;
+
+        $stack10 = 1;
+
+        goto label4;
+
+     label3:
+        $stack10 = 0;
+
+     label4:
+        return $stack10;
+    }
+}

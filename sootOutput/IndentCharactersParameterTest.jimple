@@ -1,0 +1,194 @@
+class IndentCharactersParameterTest extends java.lang.Object
+{
+
+    void <init>()
+    {
+        IndentCharactersParameterTest this;
+
+        this := @this: IndentCharactersParameterTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    void zeroIndentCharactersShouldResultInEmptyIndentString()
+    {
+        sortpom.parameter.PluginParameters$Builder $stack2, $stack3;
+        sortpom.parameter.PluginParameters pluginParameters;
+        java.lang.String $stack5;
+        IndentCharactersParameterTest this;
+
+        this := @this: IndentCharactersParameterTest;
+
+        $stack2 = staticinvoke <sortpom.parameter.PluginParameters: sortpom.parameter.PluginParameters$Builder builder()>();
+
+        $stack3 = virtualinvoke $stack2.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setIndent(int,boolean,boolean)>(0, 1, 0);
+
+        pluginParameters = virtualinvoke $stack3.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters build()>();
+
+        $stack5 = pluginParameters.<sortpom.parameter.PluginParameters: java.lang.String indentCharacters>;
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("", $stack5);
+
+        return;
+    }
+
+    void oneIndentCharacterShouldResultInOneSpace()
+    {
+        sortpom.parameter.PluginParameters$Builder $stack2, $stack3;
+        sortpom.parameter.PluginParameters pluginParameters;
+        java.lang.String $stack5;
+        IndentCharactersParameterTest this;
+
+        this := @this: IndentCharactersParameterTest;
+
+        $stack2 = staticinvoke <sortpom.parameter.PluginParameters: sortpom.parameter.PluginParameters$Builder builder()>();
+
+        $stack3 = virtualinvoke $stack2.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setIndent(int,boolean,boolean)>(1, 1, 0);
+
+        pluginParameters = virtualinvoke $stack3.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters build()>();
+
+        $stack5 = pluginParameters.<sortpom.parameter.PluginParameters: java.lang.String indentCharacters>;
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>(" ", $stack5);
+
+        return;
+    }
+
+    void test255IndentCharacterShouldResultIn255Space()
+    {
+        sortpom.parameter.PluginParameters$Builder $stack2, $stack3;
+        sortpom.parameter.PluginParameters pluginParameters;
+        java.lang.String $stack5, $stack7;
+        boolean $stack6;
+        int $stack9;
+        IndentCharactersParameterTest this;
+
+        this := @this: IndentCharactersParameterTest;
+
+        $stack2 = staticinvoke <sortpom.parameter.PluginParameters: sortpom.parameter.PluginParameters$Builder builder()>();
+
+        $stack3 = virtualinvoke $stack2.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setIndent(int,boolean,boolean)>(255, 1, 0);
+
+        pluginParameters = virtualinvoke $stack3.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters build()>();
+
+        $stack5 = pluginParameters.<sortpom.parameter.PluginParameters: java.lang.String indentCharacters>;
+
+        $stack6 = virtualinvoke $stack5.<java.lang.String: boolean matches(java.lang.String)>("^ *$");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack6);
+
+        $stack7 = pluginParameters.<sortpom.parameter.PluginParameters: java.lang.String indentCharacters>;
+
+        $stack9 = virtualinvoke $stack7.<java.lang.String: int length()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(255, $stack9);
+
+        return;
+    }
+
+    void minusOneIndentCharacterShouldResultInOneTab()
+    {
+        sortpom.parameter.PluginParameters$Builder $stack2, $stack3;
+        sortpom.parameter.PluginParameters pluginParameters;
+        java.lang.String $stack5;
+        IndentCharactersParameterTest this;
+
+        this := @this: IndentCharactersParameterTest;
+
+        $stack2 = staticinvoke <sortpom.parameter.PluginParameters: sortpom.parameter.PluginParameters$Builder builder()>();
+
+        $stack3 = virtualinvoke $stack2.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setIndent(int,boolean,boolean)>(-1, 1, 0);
+
+        pluginParameters = virtualinvoke $stack3.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters build()>();
+
+        $stack5 = pluginParameters.<sortpom.parameter.PluginParameters: java.lang.String indentCharacters>;
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("\t", $stack5);
+
+        return;
+    }
+
+    void minusTwoShouldFail()
+    {
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack4;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack5;
+        org.hamcrest.Matcher $stack6, $stack7;
+        IndentCharactersParameterTest this;
+
+        this := @this: IndentCharactersParameterTest;
+
+        testMethod = staticinvoke <IndentCharactersParameterTest$lambda_minusTwoShouldFail_0__309: org.junit.jupiter.api.function.Executable bootstrap$()>();
+
+        $stack4 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack4;
+
+        $stack5 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $stack6 = staticinvoke <org.hamcrest.core.IsEqual: org.hamcrest.Matcher equalTo(java.lang.Object)>("nrOfIndentSpace cannot be below -1 or above 255, was: -2");
+
+        $stack7 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack6);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack5, $stack7);
+
+        return;
+    }
+
+    void moreThan255ShouldFail()
+    {
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack4;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack5;
+        org.hamcrest.Matcher $stack6, $stack7;
+        IndentCharactersParameterTest this;
+
+        this := @this: IndentCharactersParameterTest;
+
+        testMethod = staticinvoke <IndentCharactersParameterTest$lambda_moreThan255ShouldFail_1__310: org.junit.jupiter.api.function.Executable bootstrap$()>();
+
+        $stack4 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack4;
+
+        $stack5 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $stack6 = staticinvoke <org.hamcrest.core.IsEqual: org.hamcrest.Matcher equalTo(java.lang.Object)>("nrOfIndentSpace cannot be below -1 or above 255, was: 256");
+
+        $stack7 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack6);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack5, $stack7);
+
+        return;
+    }
+
+    private static void lambda$moreThan255ShouldFail$1() throws java.lang.Throwable
+    {
+        sortpom.parameter.PluginParameters$Builder $stack0, $stack1;
+
+        $stack0 = staticinvoke <sortpom.parameter.PluginParameters: sortpom.parameter.PluginParameters$Builder builder()>();
+
+        $stack1 = virtualinvoke $stack0.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setIndent(int,boolean,boolean)>(256, 1, 0);
+
+        virtualinvoke $stack1.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters build()>();
+
+        return;
+    }
+
+    private static void lambda$minusTwoShouldFail$0() throws java.lang.Throwable
+    {
+        sortpom.parameter.PluginParameters$Builder $stack0, $stack1;
+
+        $stack0 = staticinvoke <sortpom.parameter.PluginParameters: sortpom.parameter.PluginParameters$Builder builder()>();
+
+        $stack1 = virtualinvoke $stack0.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters$Builder setIndent(int,boolean,boolean)>(-2, 1, 0);
+
+        virtualinvoke $stack1.<sortpom.parameter.PluginParameters$Builder: sortpom.parameter.PluginParameters build()>();
+
+        return;
+    }
+}

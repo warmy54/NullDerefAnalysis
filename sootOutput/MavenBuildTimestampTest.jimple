@@ -1,0 +1,48 @@
+public class MavenBuildTimestampTest extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        MavenBuildTimestampTest this;
+
+        this := @this: MavenBuildTimestampTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void testMavenBuildTimestampUsesUTC()
+    {
+        java.util.Properties $stack4;
+        org.apache.maven.model.interpolation.MavenBuildTimestamp $stack6;
+        java.util.Date $stack7;
+        java.lang.String formattedTimestamp;
+        boolean $stack9;
+        MavenBuildTimestampTest this;
+
+        this := @this: MavenBuildTimestampTest;
+
+        $stack4 = new java.util.Properties;
+
+        specialinvoke $stack4.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $stack4.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("maven.build.timestamp.format", "yyyyMMdd\'T\'HHmm\'Z\'");
+
+        $stack6 = new org.apache.maven.model.interpolation.MavenBuildTimestamp;
+
+        $stack7 = new java.util.Date;
+
+        specialinvoke $stack7.<java.util.Date: void <init>()>();
+
+        specialinvoke $stack6.<org.apache.maven.model.interpolation.MavenBuildTimestamp: void <init>(java.util.Date,java.util.Properties)>($stack7, $stack4);
+
+        formattedTimestamp = virtualinvoke $stack6.<org.apache.maven.model.interpolation.MavenBuildTimestamp: java.lang.String formattedTimestamp()>();
+
+        $stack9 = virtualinvoke formattedTimestamp.<java.lang.String: boolean endsWith(java.lang.String)>("Z");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean,java.lang.String)>($stack9, "We expect the UTC marker at the end of the timestamp.");
+
+        return;
+    }
+}

@@ -1,0 +1,212 @@
+public class JavaToolchainFactory extends java.lang.Object implements org.apache.maven.toolchain.ToolchainFactory
+{
+    private org.codehaus.plexus.logging.Logger logger;
+
+    public void <init>()
+    {
+        JavaToolchainFactory this;
+
+        this := @this: JavaToolchainFactory;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.toolchain.ToolchainPrivate createToolchain(org.apache.maven.toolchain.model.ToolchainModel) throws org.apache.maven.toolchain.MisconfiguredToolchainException
+    {
+        org.apache.maven.toolchain.model.ToolchainModel model;
+        JavaToolchainFactory this;
+        org.codehaus.plexus.logging.Logger $stack10;
+        java.util.Properties provides;
+        java.util.Set $stack12;
+        boolean $stack14, $stack20, $stack34;
+        java.lang.Object $stack15, $stack30, $stack31, $stack32;
+        java.lang.String $stack18, $stack19, $stack24, $stack26, $stack27, $stack28, value, $stack33, $stack46, key;
+        java.lang.StringBuilder $stack23, $stack25, $stack43, $stack44, $stack45, $u1, $u5;
+        java.util.Iterator dom;
+        java.util.Map$Entry provide;
+        org.apache.maven.toolchain.RequirementMatcher matcher;
+        org.codehaus.plexus.util.xml.Xpp3Dom dom#5, provide#6;
+        org.apache.maven.toolchain.java.DefaultJavaToolChain $u0;
+        org.apache.maven.toolchain.MisconfiguredToolchainException $u2, $u3, $u6;
+        java.io.File $u4;
+        org.apache.maven.toolchain.java.JavaToolchainFactory $r0;
+        java.lang.Throwable $r1, $r3, $r5;
+        org.apache.maven.toolchain.java.JavaToolchainImpl $r2, $r4;
+        org.apache.maven.toolchain.ToolchainPrivate $r6;
+
+        this := @this: JavaToolchainFactory;
+
+        model := @parameter0: org.apache.maven.toolchain.model.ToolchainModel;
+
+        if model != null goto label1;
+
+        return null;
+
+     label1:
+        $u0 = new org.apache.maven.toolchain.java.DefaultJavaToolChain;
+
+        $r0 = (org.apache.maven.toolchain.java.JavaToolchainFactory) this;
+
+        $stack10 = $r0.<org.apache.maven.toolchain.java.JavaToolchainFactory: org.codehaus.plexus.logging.Logger logger>;
+
+        specialinvoke $u0.<org.apache.maven.toolchain.java.DefaultJavaToolChain: void <init>(org.apache.maven.toolchain.model.ToolchainModel,org.codehaus.plexus.logging.Logger)>(model, $stack10);
+
+        provides = virtualinvoke model.<org.apache.maven.toolchain.model.ToolchainModel: java.util.Properties getProvides()>();
+
+        $stack12 = virtualinvoke provides.<java.util.Properties: java.util.Set entrySet()>();
+
+        dom = interfaceinvoke $stack12.<java.util.Set: java.util.Iterator iterator()>();
+
+     label2:
+        $stack14 = interfaceinvoke dom.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label6;
+
+        $stack30 = interfaceinvoke dom.<java.util.Iterator: java.lang.Object next()>();
+
+        provide = (java.util.Map$Entry) $stack30;
+
+        $stack31 = interfaceinvoke provide.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        key = (java.lang.String) $stack31;
+
+        $stack32 = interfaceinvoke provide.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        value = (java.lang.String) $stack32;
+
+        if value != null goto label3;
+
+        $u2 = new org.apache.maven.toolchain.MisconfiguredToolchainException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack43 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Provides token \'");
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(key);
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' doesn\'t have any value configured.");
+
+        $stack46 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.apache.maven.toolchain.MisconfiguredToolchainException: void <init>(java.lang.String)>($stack46);
+
+        $r1 = (java.lang.Throwable) $u2;
+
+        throw $r1;
+
+     label3:
+        $stack33 = "version";
+
+        $stack34 = virtualinvoke $stack33.<java.lang.String: boolean equals(java.lang.Object)>(key);
+
+        if $stack34 == 0 goto label4;
+
+        matcher = staticinvoke <org.apache.maven.toolchain.RequirementMatcherFactory: org.apache.maven.toolchain.RequirementMatcher createVersionMatcher(java.lang.String)>(value);
+
+        goto label5;
+
+     label4:
+        matcher = staticinvoke <org.apache.maven.toolchain.RequirementMatcherFactory: org.apache.maven.toolchain.RequirementMatcher createExactMatcher(java.lang.String)>(value);
+
+     label5:
+        $r2 = (org.apache.maven.toolchain.java.JavaToolchainImpl) $u0;
+
+        virtualinvoke $r2.<org.apache.maven.toolchain.java.JavaToolchainImpl: void addProvideToken(java.lang.String,org.apache.maven.toolchain.RequirementMatcher)>(key, matcher);
+
+        goto label2;
+
+     label6:
+        $stack15 = virtualinvoke model.<org.apache.maven.toolchain.model.ToolchainModel: java.lang.Object getConfiguration()>();
+
+        dom#5 = (org.codehaus.plexus.util.xml.Xpp3Dom) $stack15;
+
+        provide#6 = virtualinvoke dom#5.<org.codehaus.plexus.util.xml.Xpp3Dom: org.codehaus.plexus.util.xml.Xpp3Dom getChild(java.lang.String)>("jdkHome");
+
+        if provide#6 != null goto label7;
+
+        $u3 = new org.apache.maven.toolchain.MisconfiguredToolchainException;
+
+        specialinvoke $u3.<org.apache.maven.toolchain.MisconfiguredToolchainException: void <init>(java.lang.String)>("Java toolchain without the jdkHome configuration element.");
+
+        $r3 = (java.lang.Throwable) $u3;
+
+        throw $r3;
+
+     label7:
+        $u4 = new java.io.File;
+
+        $stack18 = virtualinvoke provide#6.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getValue()>();
+
+        $stack19 = staticinvoke <org.codehaus.plexus.util.FileUtils: java.lang.String normalize(java.lang.String)>($stack18);
+
+        specialinvoke $u4.<java.io.File: void <init>(java.lang.String)>($stack19);
+
+        $stack20 = virtualinvoke $u4.<java.io.File: boolean exists()>();
+
+        if $stack20 == 0 goto label8;
+
+        $stack27 = virtualinvoke provide#6.<org.codehaus.plexus.util.xml.Xpp3Dom: java.lang.String getValue()>();
+
+        $stack28 = staticinvoke <org.codehaus.plexus.util.FileUtils: java.lang.String normalize(java.lang.String)>($stack27);
+
+        $r4 = (org.apache.maven.toolchain.java.JavaToolchainImpl) $u0;
+
+        virtualinvoke $r4.<org.apache.maven.toolchain.java.JavaToolchainImpl: void setJavaHome(java.lang.String)>($stack28);
+
+        goto label9;
+
+     label8:
+        $u6 = new org.apache.maven.toolchain.MisconfiguredToolchainException;
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack23 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Non-existing JDK home configuration at ");
+
+        $stack24 = virtualinvoke $u4.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack25 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack24);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u6.<org.apache.maven.toolchain.MisconfiguredToolchainException: void <init>(java.lang.String)>($stack26);
+
+        $r5 = (java.lang.Throwable) $u6;
+
+        throw $r5;
+
+     label9:
+        $r6 = (org.apache.maven.toolchain.ToolchainPrivate) $u0;
+
+        return $r6;
+    }
+
+    public org.apache.maven.toolchain.ToolchainPrivate createDefaultToolchain()
+    {
+        JavaToolchainFactory this;
+
+        this := @this: JavaToolchainFactory;
+
+        return null;
+    }
+
+    protected org.codehaus.plexus.logging.Logger getLogger()
+    {
+        JavaToolchainFactory this;
+        org.codehaus.plexus.logging.Logger $stack1;
+        org.apache.maven.toolchain.java.JavaToolchainFactory $r0;
+
+        this := @this: JavaToolchainFactory;
+
+        $r0 = (org.apache.maven.toolchain.java.JavaToolchainFactory) this;
+
+        $stack1 = $r0.<org.apache.maven.toolchain.java.JavaToolchainFactory: org.codehaus.plexus.logging.Logger logger>;
+
+        return $stack1;
+    }
+}

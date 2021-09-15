@@ -1,0 +1,330 @@
+class HierarchyWrapper extends java.lang.Object
+{
+    private sortpom.wrapper.content.Wrapper elementContent;
+    private final java.util.List otherContentList;
+    private final java.util.List children;
+
+    void <init>(sortpom.wrapper.content.Wrapper)
+    {
+        HierarchyWrapper this;
+        sortpom.wrapper.content.Wrapper wrapper;
+        java.util.ArrayList $u0, $u1;
+        sortpom.wrapper.operation.HierarchyWrapper $r0, $r1, $r2;
+
+        this := @this: HierarchyWrapper;
+
+        wrapper := @parameter0: sortpom.wrapper.content.Wrapper;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $r0.<sortpom.wrapper.operation.HierarchyWrapper: java.util.List otherContentList> = $u0;
+
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        $r1 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $r1.<sortpom.wrapper.operation.HierarchyWrapper: java.util.List children> = $u1;
+
+        $r2 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        specialinvoke $r2.<sortpom.wrapper.operation.HierarchyWrapper: void addContent(sortpom.wrapper.content.Wrapper)>(wrapper);
+
+        return;
+    }
+
+    private void addContent(sortpom.wrapper.content.Wrapper)
+    {
+        sortpom.wrapper.content.Wrapper wrapper;
+        boolean $stack2;
+        HierarchyWrapper this;
+        java.util.List $stack3;
+        sortpom.wrapper.operation.HierarchyWrapper $r0, $r1;
+
+        this := @this: HierarchyWrapper;
+
+        wrapper := @parameter0: sortpom.wrapper.content.Wrapper;
+
+        $stack2 = interfaceinvoke wrapper.<sortpom.wrapper.content.Wrapper: boolean isContentElement()>();
+
+        if $stack2 == 0 goto label1;
+
+        $r0 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $r0.<sortpom.wrapper.operation.HierarchyWrapper: sortpom.wrapper.content.Wrapper elementContent> = wrapper;
+
+        goto label2;
+
+     label1:
+        $r1 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack3 = $r1.<sortpom.wrapper.operation.HierarchyWrapper: java.util.List otherContentList>;
+
+        interfaceinvoke $stack3.<java.util.List: boolean add(java.lang.Object)>(wrapper);
+
+     label2:
+        return;
+    }
+
+    void createWrappedStructure(sortpom.wrapper.operation.WrapperFactory)
+    {
+        HierarchyWrapper this;
+        sortpom.wrapper.content.Wrapper $stack6, wrapper;
+        java.util.List $stack7, $stack16;
+        java.util.Iterator l3;
+        java.lang.Object $stack10;
+        org.jdom.Content child;
+        sortpom.wrapper.operation.WrapperFactory factory;
+        boolean $stack12, $stack13, $stack9;
+        sortpom.wrapper.operation.HierarchyWrapper currentWrapper, $u0, $r0, $r1, $r2;
+
+        this := @this: HierarchyWrapper;
+
+        factory := @parameter0: sortpom.wrapper.operation.WrapperFactory;
+
+        currentWrapper = null;
+
+        $r0 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack6 = $r0.<sortpom.wrapper.operation.HierarchyWrapper: sortpom.wrapper.content.Wrapper elementContent>;
+
+        $r1 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack7 = specialinvoke $r1.<sortpom.wrapper.operation.HierarchyWrapper: java.util.List castToContentList(sortpom.wrapper.content.Wrapper)>($stack6);
+
+        l3 = interfaceinvoke $stack7.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack9 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label6;
+
+        $stack10 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        child = (org.jdom.Content) $stack10;
+
+        wrapper = interfaceinvoke factory.<sortpom.wrapper.operation.WrapperFactory: sortpom.wrapper.content.Wrapper create(org.jdom.Content)>(child);
+
+        $stack12 = wrapper instanceof sortpom.wrapper.content.SingleNewlineInTextWrapper;
+
+        if $stack12 == 0 goto label2;
+
+        goto label1;
+
+     label2:
+        if currentWrapper != null goto label3;
+
+        $u0 = new sortpom.wrapper.operation.HierarchyWrapper;
+
+        specialinvoke $u0.<sortpom.wrapper.operation.HierarchyWrapper: void <init>(sortpom.wrapper.content.Wrapper)>(wrapper);
+
+        currentWrapper = $u0;
+
+        $r2 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack16 = $r2.<sortpom.wrapper.operation.HierarchyWrapper: java.util.List children>;
+
+        interfaceinvoke $stack16.<java.util.List: boolean add(java.lang.Object)>($u0);
+
+        goto label4;
+
+     label3:
+        specialinvoke currentWrapper.<sortpom.wrapper.operation.HierarchyWrapper: void addContent(sortpom.wrapper.content.Wrapper)>(wrapper);
+
+     label4:
+        $stack13 = specialinvoke currentWrapper.<sortpom.wrapper.operation.HierarchyWrapper: boolean containsElement()>();
+
+        if $stack13 == 0 goto label5;
+
+        virtualinvoke currentWrapper.<sortpom.wrapper.operation.HierarchyWrapper: void createWrappedStructure(sortpom.wrapper.operation.WrapperFactory)>(factory);
+
+        currentWrapper = null;
+
+     label5:
+        goto label1;
+
+     label6:
+        return;
+    }
+
+    private java.util.List castToContentList(sortpom.wrapper.content.Wrapper)
+    {
+        java.util.ArrayList $stack2;
+        sortpom.wrapper.content.Wrapper elementContent;
+        org.jdom.Content $stack3;
+        org.jdom.Element $stack4;
+        java.util.List $stack5;
+        HierarchyWrapper this;
+
+        this := @this: HierarchyWrapper;
+
+        elementContent := @parameter0: sortpom.wrapper.content.Wrapper;
+
+        $stack2 = new java.util.ArrayList;
+
+        $stack3 = interfaceinvoke elementContent.<sortpom.wrapper.content.Wrapper: org.jdom.Content getContent()>();
+
+        $stack4 = (org.jdom.Element) $stack3;
+
+        $stack5 = virtualinvoke $stack4.<org.jdom.Element: java.util.List getContent()>();
+
+        specialinvoke $stack2.<java.util.ArrayList: void <init>(java.util.Collection)>($stack5);
+
+        return $stack2;
+    }
+
+    private boolean containsElement()
+    {
+        HierarchyWrapper this;
+        sortpom.wrapper.content.Wrapper $stack1;
+        boolean $stack2;
+        sortpom.wrapper.operation.HierarchyWrapper $r0;
+
+        this := @this: HierarchyWrapper;
+
+        $r0 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack1 = $r0.<sortpom.wrapper.operation.HierarchyWrapper: sortpom.wrapper.content.Wrapper elementContent>;
+
+        if $stack1 == null goto label1;
+
+        $stack2 = 1;
+
+        goto label2;
+
+     label1:
+        $stack2 = 0;
+
+     label2:
+        return $stack2;
+    }
+
+    sortpom.wrapper.content.Wrapper getElementContent()
+    {
+        HierarchyWrapper this;
+        sortpom.wrapper.content.Wrapper $stack1;
+        sortpom.wrapper.operation.HierarchyWrapper $r0;
+
+        this := @this: HierarchyWrapper;
+
+        $r0 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack1 = $r0.<sortpom.wrapper.operation.HierarchyWrapper: sortpom.wrapper.content.Wrapper elementContent>;
+
+        return $stack1;
+    }
+
+    void processOperation(sortpom.wrapper.operation.HierarchyWrapperOperation)
+    {
+        sortpom.wrapper.operation.HierarchyWrapperOperation operation, subOperation;
+        HierarchyWrapper this;
+        java.util.List $stack5, $stack9, $stack11;
+        java.util.function.Consumer $stack7;
+        sortpom.wrapper.content.Wrapper $stack8, $stack16, $stack22;
+        java.util.Iterator l3;
+        java.lang.Object $stack14;
+        sortpom.wrapper.operation.HierarchyWrapper child, $r0, $r1, $r2, $r3, $r4, $r5;
+        boolean $stack17, $stack13;
+
+        this := @this: HierarchyWrapper;
+
+        operation := @parameter0: sortpom.wrapper.operation.HierarchyWrapperOperation;
+
+        interfaceinvoke operation.<sortpom.wrapper.operation.HierarchyWrapperOperation: void startOfProcess()>();
+
+        $r0 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack5 = $r0.<sortpom.wrapper.operation.HierarchyWrapper: java.util.List otherContentList>;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(operation);
+
+        $stack7 = staticinvoke <HierarchyWrapper$processOtherContent__309: java.util.function.Consumer bootstrap$(sortpom.wrapper.operation.HierarchyWrapperOperation)>(operation);
+
+        interfaceinvoke $stack5.<java.util.List: void forEach(java.util.function.Consumer)>($stack7);
+
+        $r1 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack8 = $r1.<sortpom.wrapper.operation.HierarchyWrapper: sortpom.wrapper.content.Wrapper elementContent>;
+
+        if $stack8 == null goto label1;
+
+        $r2 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack16 = $r2.<sortpom.wrapper.operation.HierarchyWrapper: sortpom.wrapper.content.Wrapper elementContent>;
+
+        $stack17 = interfaceinvoke $stack16.<sortpom.wrapper.content.Wrapper: boolean isContentElement()>();
+
+        if $stack17 == 0 goto label1;
+
+        $r3 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack22 = $r3.<sortpom.wrapper.operation.HierarchyWrapper: sortpom.wrapper.content.Wrapper elementContent>;
+
+        interfaceinvoke operation.<sortpom.wrapper.operation.HierarchyWrapperOperation: void processElement(sortpom.wrapper.content.Wrapper)>($stack22);
+
+     label1:
+        $r4 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack9 = $r4.<sortpom.wrapper.operation.HierarchyWrapper: java.util.List children>;
+
+        interfaceinvoke operation.<sortpom.wrapper.operation.HierarchyWrapperOperation: void manipulateChildElements(java.util.List)>($stack9);
+
+        subOperation = interfaceinvoke operation.<sortpom.wrapper.operation.HierarchyWrapperOperation: sortpom.wrapper.operation.HierarchyWrapperOperation createSubOperation()>();
+
+        $r5 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $stack11 = $r5.<sortpom.wrapper.operation.HierarchyWrapper: java.util.List children>;
+
+        l3 = interfaceinvoke $stack11.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack13 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label3;
+
+        $stack14 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        child = (sortpom.wrapper.operation.HierarchyWrapper) $stack14;
+
+        virtualinvoke child.<sortpom.wrapper.operation.HierarchyWrapper: void processOperation(sortpom.wrapper.operation.HierarchyWrapperOperation)>(subOperation);
+
+        goto label2;
+
+     label3:
+        interfaceinvoke operation.<sortpom.wrapper.operation.HierarchyWrapperOperation: void endOfProcess()>();
+
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        HierarchyWrapper this;
+        java.lang.String $stack3;
+        sortpom.wrapper.operation.ToStringOperation $u0;
+        sortpom.wrapper.operation.HierarchyWrapper $r0;
+        sortpom.wrapper.operation.HierarchyWrapperOperation $r1;
+
+        this := @this: HierarchyWrapper;
+
+        $u0 = new sortpom.wrapper.operation.ToStringOperation;
+
+        specialinvoke $u0.<sortpom.wrapper.operation.ToStringOperation: void <init>()>();
+
+        $r0 = (sortpom.wrapper.operation.HierarchyWrapper) this;
+
+        $r1 = (sortpom.wrapper.operation.HierarchyWrapperOperation) $u0;
+
+        virtualinvoke $r0.<sortpom.wrapper.operation.HierarchyWrapper: void processOperation(sortpom.wrapper.operation.HierarchyWrapperOperation)>($r1);
+
+        $stack3 = virtualinvoke $u0.<sortpom.wrapper.operation.ToStringOperation: java.lang.String toString()>();
+
+        return $stack3;
+    }
+}

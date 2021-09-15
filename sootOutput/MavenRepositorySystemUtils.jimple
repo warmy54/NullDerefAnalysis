@@ -1,0 +1,323 @@
+public final class MavenRepositorySystemUtils extends java.lang.Object
+{
+
+    private void <init>()
+    {
+        MavenRepositorySystemUtils this;
+
+        this := @this: MavenRepositorySystemUtils;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.eclipse.aether.impl.DefaultServiceLocator newServiceLocator()
+    {
+        org.eclipse.aether.impl.DefaultServiceLocator $stack1;
+
+        $stack1 = new org.eclipse.aether.impl.DefaultServiceLocator;
+
+        specialinvoke $stack1.<org.eclipse.aether.impl.DefaultServiceLocator: void <init>()>();
+
+        virtualinvoke $stack1.<org.eclipse.aether.impl.DefaultServiceLocator: org.eclipse.aether.impl.DefaultServiceLocator addService(java.lang.Class,java.lang.Class)>(class "Lorg/eclipse/aether/impl/ArtifactDescriptorReader;", class "Lorg/apache/maven/repository/internal/DefaultArtifactDescriptorReader;");
+
+        virtualinvoke $stack1.<org.eclipse.aether.impl.DefaultServiceLocator: org.eclipse.aether.impl.DefaultServiceLocator addService(java.lang.Class,java.lang.Class)>(class "Lorg/eclipse/aether/impl/VersionResolver;", class "Lorg/apache/maven/repository/internal/DefaultVersionResolver;");
+
+        virtualinvoke $stack1.<org.eclipse.aether.impl.DefaultServiceLocator: org.eclipse.aether.impl.DefaultServiceLocator addService(java.lang.Class,java.lang.Class)>(class "Lorg/eclipse/aether/impl/VersionRangeResolver;", class "Lorg/apache/maven/repository/internal/DefaultVersionRangeResolver;");
+
+        virtualinvoke $stack1.<org.eclipse.aether.impl.DefaultServiceLocator: org.eclipse.aether.impl.DefaultServiceLocator addService(java.lang.Class,java.lang.Class)>(class "Lorg/eclipse/aether/impl/MetadataGeneratorFactory;", class "Lorg/apache/maven/repository/internal/SnapshotMetadataGeneratorFactory;");
+
+        virtualinvoke $stack1.<org.eclipse.aether.impl.DefaultServiceLocator: org.eclipse.aether.impl.DefaultServiceLocator addService(java.lang.Class,java.lang.Class)>(class "Lorg/eclipse/aether/impl/MetadataGeneratorFactory;", class "Lorg/apache/maven/repository/internal/VersionsMetadataGeneratorFactory;");
+
+        return $stack1;
+    }
+
+    public static org.eclipse.aether.DefaultRepositorySystemSession newSession()
+    {
+        java.lang.Object[] $stack16, $stack31;
+        java.lang.String[] $stack18;
+        java.util.Properties sysProp, $u28;
+        java.lang.Throwable $stack69;
+        org.eclipse.aether.DefaultRepositorySystemSession $u0;
+        org.eclipse.aether.util.graph.traverser.FatArtifactTraverser $u1;
+        org.eclipse.aether.util.graph.manager.ClassicDependencyManager $u2;
+        org.eclipse.aether.util.graph.selector.ScopeDependencySelector $u3;
+        org.eclipse.aether.util.graph.selector.OptionalDependencySelector $u4;
+        org.eclipse.aether.util.graph.selector.ExclusionDependencySelector $u5;
+        org.eclipse.aether.util.graph.selector.AndDependencySelector $u6;
+        org.eclipse.aether.util.graph.transformer.NearestVersionSelector $u7;
+        org.eclipse.aether.util.graph.transformer.JavaScopeSelector $u8;
+        org.eclipse.aether.util.graph.transformer.SimpleOptionalitySelector $u9;
+        org.eclipse.aether.util.graph.transformer.JavaScopeDeriver $u10;
+        org.eclipse.aether.util.graph.transformer.ConflictResolver $u11;
+        org.eclipse.aether.util.graph.transformer.JavaDependencyContextRefiner $u12;
+        org.eclipse.aether.util.graph.transformer.ChainedDependencyGraphTransformer $u13;
+        org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry $u14;
+        org.eclipse.aether.artifact.DefaultArtifactType $u15, $u16, $u17, $u18, $u19, $u20, $u21, $u22, $u23, $u24, $u25, $u26;
+        org.eclipse.aether.util.repository.SimpleArtifactDescriptorPolicy $u27;
+        org.eclipse.aether.collection.DependencyTraverser $r0;
+        org.eclipse.aether.collection.DependencyManager $r1;
+        org.eclipse.aether.collection.DependencySelector[] $r2;
+        org.eclipse.aether.collection.DependencySelector $r3;
+        org.eclipse.aether.util.graph.transformer.ConflictResolver$VersionSelector $r4;
+        org.eclipse.aether.util.graph.transformer.ConflictResolver$ScopeSelector $r5;
+        org.eclipse.aether.util.graph.transformer.ConflictResolver$OptionalitySelector $r6;
+        org.eclipse.aether.util.graph.transformer.ConflictResolver$ScopeDeriver $r7;
+        org.eclipse.aether.collection.DependencyGraphTransformer[] $r8;
+        org.eclipse.aether.collection.DependencyGraphTransformer $r9;
+        org.eclipse.aether.artifact.ArtifactType $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21;
+        org.eclipse.aether.artifact.ArtifactTypeRegistry $r22;
+        org.eclipse.aether.resolution.ArtifactDescriptorPolicy $r23;
+
+        $u0 = new org.eclipse.aether.DefaultRepositorySystemSession;
+
+        specialinvoke $u0.<org.eclipse.aether.DefaultRepositorySystemSession: void <init>()>();
+
+        $u1 = new org.eclipse.aether.util.graph.traverser.FatArtifactTraverser;
+
+        specialinvoke $u1.<org.eclipse.aether.util.graph.traverser.FatArtifactTraverser: void <init>()>();
+
+        $r0 = (org.eclipse.aether.collection.DependencyTraverser) $u1;
+
+        virtualinvoke $u0.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setDependencyTraverser(org.eclipse.aether.collection.DependencyTraverser)>($r0);
+
+        $u2 = new org.eclipse.aether.util.graph.manager.ClassicDependencyManager;
+
+        specialinvoke $u2.<org.eclipse.aether.util.graph.manager.ClassicDependencyManager: void <init>()>();
+
+        $r1 = (org.eclipse.aether.collection.DependencyManager) $u2;
+
+        virtualinvoke $u0.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setDependencyManager(org.eclipse.aether.collection.DependencyManager)>($r1);
+
+        $u6 = new org.eclipse.aether.util.graph.selector.AndDependencySelector;
+
+        $stack16 = newarray (org.eclipse.aether.collection.DependencySelector)[3];
+
+        $u3 = new org.eclipse.aether.util.graph.selector.ScopeDependencySelector;
+
+        $stack18 = newarray (java.lang.String)[2];
+
+        $stack18[0] = "test";
+
+        $stack18[1] = "provided";
+
+        specialinvoke $u3.<org.eclipse.aether.util.graph.selector.ScopeDependencySelector: void <init>(java.lang.String[])>($stack18);
+
+        $stack16[0] = $u3;
+
+        $u4 = new org.eclipse.aether.util.graph.selector.OptionalDependencySelector;
+
+        specialinvoke $u4.<org.eclipse.aether.util.graph.selector.OptionalDependencySelector: void <init>()>();
+
+        $stack16[1] = $u4;
+
+        $u5 = new org.eclipse.aether.util.graph.selector.ExclusionDependencySelector;
+
+        specialinvoke $u5.<org.eclipse.aether.util.graph.selector.ExclusionDependencySelector: void <init>()>();
+
+        $stack16[2] = $u5;
+
+        $r2 = (org.eclipse.aether.collection.DependencySelector[]) $stack16;
+
+        specialinvoke $u6.<org.eclipse.aether.util.graph.selector.AndDependencySelector: void <init>(org.eclipse.aether.collection.DependencySelector[])>($r2);
+
+        $r3 = (org.eclipse.aether.collection.DependencySelector) $u6;
+
+        virtualinvoke $u0.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setDependencySelector(org.eclipse.aether.collection.DependencySelector)>($r3);
+
+        $u11 = new org.eclipse.aether.util.graph.transformer.ConflictResolver;
+
+        $u7 = new org.eclipse.aether.util.graph.transformer.NearestVersionSelector;
+
+        specialinvoke $u7.<org.eclipse.aether.util.graph.transformer.NearestVersionSelector: void <init>()>();
+
+        $u8 = new org.eclipse.aether.util.graph.transformer.JavaScopeSelector;
+
+        specialinvoke $u8.<org.eclipse.aether.util.graph.transformer.JavaScopeSelector: void <init>()>();
+
+        $u9 = new org.eclipse.aether.util.graph.transformer.SimpleOptionalitySelector;
+
+        specialinvoke $u9.<org.eclipse.aether.util.graph.transformer.SimpleOptionalitySelector: void <init>()>();
+
+        $u10 = new org.eclipse.aether.util.graph.transformer.JavaScopeDeriver;
+
+        specialinvoke $u10.<org.eclipse.aether.util.graph.transformer.JavaScopeDeriver: void <init>()>();
+
+        $r4 = (org.eclipse.aether.util.graph.transformer.ConflictResolver$VersionSelector) $u7;
+
+        $r5 = (org.eclipse.aether.util.graph.transformer.ConflictResolver$ScopeSelector) $u8;
+
+        $r6 = (org.eclipse.aether.util.graph.transformer.ConflictResolver$OptionalitySelector) $u9;
+
+        $r7 = (org.eclipse.aether.util.graph.transformer.ConflictResolver$ScopeDeriver) $u10;
+
+        specialinvoke $u11.<org.eclipse.aether.util.graph.transformer.ConflictResolver: void <init>(org.eclipse.aether.util.graph.transformer.ConflictResolver$VersionSelector,org.eclipse.aether.util.graph.transformer.ConflictResolver$ScopeSelector,org.eclipse.aether.util.graph.transformer.ConflictResolver$OptionalitySelector,org.eclipse.aether.util.graph.transformer.ConflictResolver$ScopeDeriver)>($r4, $r5, $r6, $r7);
+
+        $u13 = new org.eclipse.aether.util.graph.transformer.ChainedDependencyGraphTransformer;
+
+        $stack31 = newarray (org.eclipse.aether.collection.DependencyGraphTransformer)[2];
+
+        $stack31[0] = $u11;
+
+        $u12 = new org.eclipse.aether.util.graph.transformer.JavaDependencyContextRefiner;
+
+        specialinvoke $u12.<org.eclipse.aether.util.graph.transformer.JavaDependencyContextRefiner: void <init>()>();
+
+        $stack31[1] = $u12;
+
+        $r8 = (org.eclipse.aether.collection.DependencyGraphTransformer[]) $stack31;
+
+        specialinvoke $u13.<org.eclipse.aether.util.graph.transformer.ChainedDependencyGraphTransformer: void <init>(org.eclipse.aether.collection.DependencyGraphTransformer[])>($r8);
+
+        $r9 = (org.eclipse.aether.collection.DependencyGraphTransformer) $u13;
+
+        virtualinvoke $u0.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setDependencyGraphTransformer(org.eclipse.aether.collection.DependencyGraphTransformer)>($r9);
+
+        $u14 = new org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry;
+
+        specialinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: void <init>()>();
+
+        $u15 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u15.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String)>("pom");
+
+        $r10 = (org.eclipse.aether.artifact.ArtifactType) $u15;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r10);
+
+        $u16 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u16.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>("maven-plugin", "jar", "", "java");
+
+        $r11 = (org.eclipse.aether.artifact.ArtifactType) $u16;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r11);
+
+        $u17 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u17.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>("jar", "jar", "", "java");
+
+        $r12 = (org.eclipse.aether.artifact.ArtifactType) $u17;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r12);
+
+        $u18 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u18.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>("ejb", "jar", "", "java");
+
+        $r13 = (org.eclipse.aether.artifact.ArtifactType) $u18;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r13);
+
+        $u19 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u19.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>("ejb-client", "jar", "client", "java");
+
+        $r14 = (org.eclipse.aether.artifact.ArtifactType) $u19;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r14);
+
+        $u20 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u20.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>("test-jar", "jar", "tests", "java");
+
+        $r15 = (org.eclipse.aether.artifact.ArtifactType) $u20;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r15);
+
+        $u21 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u21.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>("javadoc", "jar", "javadoc", "java");
+
+        $r16 = (org.eclipse.aether.artifact.ArtifactType) $u21;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r16);
+
+        $u22 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u22.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean)>("java-source", "jar", "sources", "java", 0, 0);
+
+        $r17 = (org.eclipse.aether.artifact.ArtifactType) $u22;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r17);
+
+        $u23 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u23.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean)>("war", "war", "", "java", 0, 1);
+
+        $r18 = (org.eclipse.aether.artifact.ArtifactType) $u23;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r18);
+
+        $u24 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u24.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean)>("ear", "ear", "", "java", 0, 1);
+
+        $r19 = (org.eclipse.aether.artifact.ArtifactType) $u24;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r19);
+
+        $u25 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u25.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean)>("rar", "rar", "", "java", 0, 1);
+
+        $r20 = (org.eclipse.aether.artifact.ArtifactType) $u25;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r20);
+
+        $u26 = new org.eclipse.aether.artifact.DefaultArtifactType;
+
+        specialinvoke $u26.<org.eclipse.aether.artifact.DefaultArtifactType: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean)>("par", "par", "", "java", 0, 1);
+
+        $r21 = (org.eclipse.aether.artifact.ArtifactType) $u26;
+
+        virtualinvoke $u14.<org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry: org.eclipse.aether.util.artifact.DefaultArtifactTypeRegistry add(org.eclipse.aether.artifact.ArtifactType)>($r21);
+
+        $r22 = (org.eclipse.aether.artifact.ArtifactTypeRegistry) $u14;
+
+        virtualinvoke $u0.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setArtifactTypeRegistry(org.eclipse.aether.artifact.ArtifactTypeRegistry)>($r22);
+
+        $u27 = new org.eclipse.aether.util.repository.SimpleArtifactDescriptorPolicy;
+
+        specialinvoke $u27.<org.eclipse.aether.util.repository.SimpleArtifactDescriptorPolicy: void <init>(boolean,boolean)>(1, 1);
+
+        $r23 = (org.eclipse.aether.resolution.ArtifactDescriptorPolicy) $u27;
+
+        virtualinvoke $u0.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setArtifactDescriptorPolicy(org.eclipse.aether.resolution.ArtifactDescriptorPolicy)>($r23);
+
+        $u28 = new java.util.Properties;
+
+        specialinvoke $u28.<java.util.Properties: void <init>()>();
+
+        sysProp = staticinvoke <java.lang.System: java.util.Properties getProperties()>();
+
+        entermonitor sysProp;
+
+     label1:
+        virtualinvoke $u28.<java.util.Properties: void putAll(java.util.Map)>(sysProp);
+
+        exitmonitor sysProp;
+
+     label2:
+        goto label5;
+
+     label3:
+        $stack69 := @caughtexception;
+
+        exitmonitor sysProp;
+
+     label4:
+        throw $stack69;
+
+     label5:
+        virtualinvoke $u0.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setSystemProperties(java.util.Map)>($u28);
+
+        virtualinvoke $u0.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setConfigProperties(java.util.Map)>($u28);
+
+        return $u0;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+}

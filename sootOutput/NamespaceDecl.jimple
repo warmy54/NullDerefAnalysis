@@ -1,0 +1,203 @@
+public class NamespaceDecl extends org.ooc.frontend.model.Declaration
+{
+    private org.ooc.frontend.model.NodeList imports;
+
+    public void <init>(java.lang.String, org.ooc.frontend.model.tokens.Token, org.ooc.frontend.model.Module)
+    {
+        NamespaceDecl this;
+        java.lang.String name;
+        org.ooc.frontend.model.tokens.Token startToken;
+        org.ooc.frontend.model.Module module;
+        org.ooc.frontend.model.NodeList $u0;
+        org.ooc.frontend.model.NamespaceDecl $r0;
+
+        this := @this: NamespaceDecl;
+
+        name := @parameter0: java.lang.String;
+
+        startToken := @parameter1: org.ooc.frontend.model.tokens.Token;
+
+        module := @parameter2: org.ooc.frontend.model.Module;
+
+        specialinvoke this.<org.ooc.frontend.model.Declaration: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>(name, startToken, module);
+
+        $u0 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u0.<org.ooc.frontend.model.NodeList: void <init>(org.ooc.frontend.model.tokens.Token)>(startToken);
+
+        $r0 = (org.ooc.frontend.model.NamespaceDecl) this;
+
+        $r0.<org.ooc.frontend.model.NamespaceDecl: org.ooc.frontend.model.NodeList imports> = $u0;
+
+        return;
+    }
+
+    public void addImport(org.ooc.frontend.model.Import)
+    {
+        NamespaceDecl this;
+        org.ooc.frontend.model.Import import_;
+        org.ooc.frontend.model.NodeList $stack2;
+        org.ooc.frontend.model.NamespaceDecl $r0;
+        org.ooc.frontend.model.Node $r1;
+
+        this := @this: NamespaceDecl;
+
+        import_ := @parameter0: org.ooc.frontend.model.Import;
+
+        $r0 = (org.ooc.frontend.model.NamespaceDecl) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.NamespaceDecl: org.ooc.frontend.model.NodeList imports>;
+
+        $r1 = (org.ooc.frontend.model.Node) import_;
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r1);
+
+        return;
+    }
+
+    public org.ooc.frontend.model.NodeList getImports()
+    {
+        NamespaceDecl this;
+        org.ooc.frontend.model.NodeList $stack1;
+        org.ooc.frontend.model.NamespaceDecl $r0;
+
+        this := @this: NamespaceDecl;
+
+        $r0 = (org.ooc.frontend.model.NamespaceDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.NamespaceDecl: org.ooc.frontend.model.NodeList imports>;
+
+        return $stack1;
+    }
+
+    public void acceptChildren(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        NamespaceDecl this;
+        org.ooc.frontend.Visitor visitor;
+
+        this := @this: NamespaceDecl;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        return;
+    }
+
+    public void accept(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        NamespaceDecl this;
+        org.ooc.frontend.Visitor visitor;
+
+        this := @this: NamespaceDecl;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        return;
+    }
+
+    public org.ooc.frontend.model.TypeDecl resolveType(java.lang.String)
+    {
+        NamespaceDecl this;
+        org.ooc.frontend.model.NodeList $stack5;
+        java.util.Iterator l2;
+        boolean $stack7;
+        java.lang.Object $stack8;
+        org.ooc.frontend.model.Import imp;
+        org.ooc.frontend.model.Module $stack9;
+        java.lang.String name;
+        org.ooc.frontend.model.TypeDecl type;
+        org.ooc.frontend.model.NamespaceDecl $r0;
+
+        this := @this: NamespaceDecl;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.model.NamespaceDecl) this;
+
+        $stack5 = $r0.<org.ooc.frontend.model.NamespaceDecl: org.ooc.frontend.model.NodeList imports>;
+
+        l2 = virtualinvoke $stack5.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label3;
+
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        imp = (org.ooc.frontend.model.Import) $stack8;
+
+        $stack9 = virtualinvoke imp.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        type = virtualinvoke $stack9.<org.ooc.frontend.model.Module: org.ooc.frontend.model.TypeDecl getType(java.lang.String)>(name);
+
+        if type == null goto label2;
+
+        return type;
+
+     label2:
+        goto label1;
+
+     label3:
+        return null;
+    }
+
+    public org.ooc.frontend.model.Type getType()
+    {
+        NamespaceDecl this;
+
+        this := @this: NamespaceDecl;
+
+        return null;
+    }
+
+    public boolean hasChildren()
+    {
+        NamespaceDecl this;
+        org.ooc.frontend.model.NodeList $stack1;
+        boolean $stack2, $stack3;
+        org.ooc.frontend.model.NamespaceDecl $r0;
+
+        this := @this: NamespaceDecl;
+
+        $r0 = (org.ooc.frontend.model.NamespaceDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.NamespaceDecl: org.ooc.frontend.model.NodeList imports>;
+
+        $stack2 = virtualinvoke $stack1.<org.ooc.frontend.model.NodeList: boolean isEmpty()>();
+
+        if $stack2 != 0 goto label1;
+
+        $stack3 = 1;
+
+        goto label2;
+
+     label1:
+        $stack3 = 0;
+
+     label2:
+        return $stack3;
+    }
+
+    public org.ooc.frontend.model.TypeDecl getTypeDecl()
+    {
+        NamespaceDecl this;
+
+        this := @this: NamespaceDecl;
+
+        return null;
+    }
+
+    public boolean replace(org.ooc.frontend.model.Node, org.ooc.frontend.model.Node)
+    {
+        NamespaceDecl this;
+        org.ooc.frontend.model.Node oldie, kiddo;
+
+        this := @this: NamespaceDecl;
+
+        oldie := @parameter0: org.ooc.frontend.model.Node;
+
+        kiddo := @parameter1: org.ooc.frontend.model.Node;
+
+        return 0;
+    }
+}

@@ -1,0 +1,168 @@
+public class XmlProcessor extends java.lang.Object
+{
+    private final sortpom.wrapper.operation.WrapperFactory factory;
+    private org.jdom.Document originalDocument;
+    private org.jdom.Document newDocument;
+
+    public void <init>(sortpom.wrapper.operation.WrapperFactory)
+    {
+        XmlProcessor this;
+        sortpom.wrapper.operation.WrapperFactory factory;
+        sortpom.XmlProcessor $r0;
+
+        this := @this: XmlProcessor;
+
+        factory := @parameter0: sortpom.wrapper.operation.WrapperFactory;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (sortpom.XmlProcessor) this;
+
+        $r0.<sortpom.XmlProcessor: sortpom.wrapper.operation.WrapperFactory factory> = factory;
+
+        return;
+    }
+
+    public void setOriginalXml(java.io.InputStream) throws org.jdom.JDOMException, java.io.IOException
+    {
+        XmlProcessor this;
+        java.io.InputStream originalXml;
+        org.jdom.Document $stack4;
+        org.jdom.input.SAXBuilder $u0;
+        sortpom.XmlProcessor $r0;
+
+        this := @this: XmlProcessor;
+
+        originalXml := @parameter0: java.io.InputStream;
+
+        $u0 = new org.jdom.input.SAXBuilder;
+
+        specialinvoke $u0.<org.jdom.input.SAXBuilder: void <init>()>();
+
+        $stack4 = virtualinvoke $u0.<org.jdom.input.SAXBuilder: org.jdom.Document build(java.io.InputStream)>(originalXml);
+
+        $r0 = (sortpom.XmlProcessor) this;
+
+        $r0.<sortpom.XmlProcessor: org.jdom.Document originalDocument> = $stack4;
+
+        return;
+    }
+
+    public void sortXml()
+    {
+        XmlProcessor this;
+        org.jdom.Document $stack3, $stack5, $stack6, $stack12;
+        java.lang.Object $stack4, $stack8;
+        org.jdom.Element $stack7, rootElement, $stack15;
+        sortpom.wrapper.operation.WrapperFactory $stack9, $stack11;
+        sortpom.wrapper.operation.HierarchyRootWrapper rootWrapper;
+        sortpom.wrapper.content.Wrapper $stack13;
+        org.jdom.Content $stack14;
+        sortpom.XmlProcessor $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: XmlProcessor;
+
+        $r0 = (sortpom.XmlProcessor) this;
+
+        $stack3 = $r0.<sortpom.XmlProcessor: org.jdom.Document originalDocument>;
+
+        $stack4 = virtualinvoke $stack3.<org.jdom.Document: java.lang.Object clone()>();
+
+        $stack5 = (org.jdom.Document) $stack4;
+
+        $r1 = (sortpom.XmlProcessor) this;
+
+        $r1.<sortpom.XmlProcessor: org.jdom.Document newDocument> = $stack5;
+
+        $r2 = (sortpom.XmlProcessor) this;
+
+        $stack6 = $r2.<sortpom.XmlProcessor: org.jdom.Document originalDocument>;
+
+        $stack7 = virtualinvoke $stack6.<org.jdom.Document: org.jdom.Element getRootElement()>();
+
+        $stack8 = virtualinvoke $stack7.<org.jdom.Element: java.lang.Object clone()>();
+
+        rootElement = (org.jdom.Element) $stack8;
+
+        $r3 = (sortpom.XmlProcessor) this;
+
+        $stack9 = $r3.<sortpom.XmlProcessor: sortpom.wrapper.operation.WrapperFactory factory>;
+
+        rootWrapper = interfaceinvoke $stack9.<sortpom.wrapper.operation.WrapperFactory: sortpom.wrapper.operation.HierarchyRootWrapper createFromRootElement(org.jdom.Element)>(rootElement);
+
+        $r4 = (sortpom.XmlProcessor) this;
+
+        $stack11 = $r4.<sortpom.XmlProcessor: sortpom.wrapper.operation.WrapperFactory factory>;
+
+        virtualinvoke rootWrapper.<sortpom.wrapper.operation.HierarchyRootWrapper: void createWrappedStructure(sortpom.wrapper.operation.WrapperFactory)>($stack11);
+
+        virtualinvoke rootWrapper.<sortpom.wrapper.operation.HierarchyRootWrapper: void detachStructure()>();
+
+        virtualinvoke rootWrapper.<sortpom.wrapper.operation.HierarchyRootWrapper: void sortStructureAttributes()>();
+
+        virtualinvoke rootWrapper.<sortpom.wrapper.operation.HierarchyRootWrapper: void sortStructureElements()>();
+
+        virtualinvoke rootWrapper.<sortpom.wrapper.operation.HierarchyRootWrapper: void connectXmlStructure()>();
+
+        $r5 = (sortpom.XmlProcessor) this;
+
+        $stack12 = $r5.<sortpom.XmlProcessor: org.jdom.Document newDocument>;
+
+        $stack13 = virtualinvoke rootWrapper.<sortpom.wrapper.operation.HierarchyRootWrapper: sortpom.wrapper.content.Wrapper getElementContent()>();
+
+        $stack14 = interfaceinvoke $stack13.<sortpom.wrapper.content.Wrapper: org.jdom.Content getContent()>();
+
+        $stack15 = (org.jdom.Element) $stack14;
+
+        virtualinvoke $stack12.<org.jdom.Document: org.jdom.Document setRootElement(org.jdom.Element)>($stack15);
+
+        return;
+    }
+
+    public org.jdom.Document getNewDocument()
+    {
+        XmlProcessor this;
+        org.jdom.Document $stack1;
+        sortpom.XmlProcessor $r0;
+
+        this := @this: XmlProcessor;
+
+        $r0 = (sortpom.XmlProcessor) this;
+
+        $stack1 = $r0.<sortpom.XmlProcessor: org.jdom.Document newDocument>;
+
+        return $stack1;
+    }
+
+    public sortpom.util.XmlOrderedResult isXmlOrdered()
+    {
+        XmlProcessor this;
+        org.jdom.Document $stack3, $stack5;
+        org.jdom.Element $stack4, $stack6;
+        sortpom.util.XmlOrderedResult $stack7;
+        sortpom.verify.ElementComparator $u0;
+        sortpom.XmlProcessor $r0, $r1;
+
+        this := @this: XmlProcessor;
+
+        $u0 = new sortpom.verify.ElementComparator;
+
+        $r0 = (sortpom.XmlProcessor) this;
+
+        $stack3 = $r0.<sortpom.XmlProcessor: org.jdom.Document originalDocument>;
+
+        $stack4 = virtualinvoke $stack3.<org.jdom.Document: org.jdom.Element getRootElement()>();
+
+        $r1 = (sortpom.XmlProcessor) this;
+
+        $stack5 = $r1.<sortpom.XmlProcessor: org.jdom.Document newDocument>;
+
+        $stack6 = virtualinvoke $stack5.<org.jdom.Document: org.jdom.Element getRootElement()>();
+
+        specialinvoke $u0.<sortpom.verify.ElementComparator: void <init>(org.jdom.Element,org.jdom.Element)>($stack4, $stack6);
+
+        $stack7 = virtualinvoke $u0.<sortpom.verify.ElementComparator: sortpom.util.XmlOrderedResult isElementOrdered()>();
+
+        return $stack7;
+    }
+}

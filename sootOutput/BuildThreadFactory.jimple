@@ -1,0 +1,72 @@
+public class BuildThreadFactory extends java.lang.Object implements java.util.concurrent.ThreadFactory
+{
+    private final java.util.concurrent.atomic.AtomicInteger id;
+    private static final java.lang.String PREFIX;
+
+    public void <init>()
+    {
+        BuildThreadFactory this;
+        java.util.concurrent.atomic.AtomicInteger $u0;
+        org.apache.maven.lifecycle.internal.BuildThreadFactory $r0;
+
+        this := @this: BuildThreadFactory;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.concurrent.atomic.AtomicInteger;
+
+        specialinvoke $u0.<java.util.concurrent.atomic.AtomicInteger: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.BuildThreadFactory) this;
+
+        $r0.<org.apache.maven.lifecycle.internal.BuildThreadFactory: java.util.concurrent.atomic.AtomicInteger id> = $u0;
+
+        return;
+    }
+
+    public java.lang.Thread newThread(java.lang.Runnable)
+    {
+        java.lang.Runnable r;
+        java.lang.Object[] $stack3;
+        BuildThreadFactory this;
+        java.util.concurrent.atomic.AtomicInteger $stack4;
+        int $stack7;
+        java.lang.Integer $stack8;
+        java.lang.String $stack9;
+        java.lang.Thread $u0;
+        org.apache.maven.lifecycle.internal.BuildThreadFactory $r0;
+
+        this := @this: BuildThreadFactory;
+
+        r := @parameter0: java.lang.Runnable;
+
+        $u0 = new java.lang.Thread;
+
+        $stack3 = newarray (java.lang.Object)[2];
+
+        $stack3[0] = "BuilderThread";
+
+        $r0 = (org.apache.maven.lifecycle.internal.BuildThreadFactory) this;
+
+        $stack4 = $r0.<org.apache.maven.lifecycle.internal.BuildThreadFactory: java.util.concurrent.atomic.AtomicInteger id>;
+
+        $stack7 = virtualinvoke $stack4.<java.util.concurrent.atomic.AtomicInteger: int getAndIncrement()>();
+
+        $stack8 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($stack7);
+
+        $stack3[1] = $stack8;
+
+        $stack9 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s-%d", $stack3);
+
+        specialinvoke $u0.<java.lang.Thread: void <init>(java.lang.Runnable,java.lang.String)>(r, $stack9);
+
+        return $u0;
+    }
+
+    public static void <clinit>()
+    {
+        <BuildThreadFactory: java.lang.String PREFIX> = "BuilderThread";
+
+        return;
+    }
+}

@@ -1,0 +1,312 @@
+public final enum class Target extends java.lang.Enum
+{
+    public static final enum org.ooc.frontend.Target LINUX;
+    public static final enum org.ooc.frontend.Target WIN;
+    public static final enum org.ooc.frontend.Target SOLARIS;
+    public static final enum org.ooc.frontend.Target HAIKU;
+    public static final enum org.ooc.frontend.Target OSX;
+    static org.ooc.frontend.Target instance;
+    private static final org.ooc.frontend.Target[] $VALUES;
+
+    public static org.ooc.frontend.Target[] values()
+    {
+        org.ooc.frontend.Target[] $stack0, $stack2;
+        java.lang.Object $stack1;
+
+        $stack0 = <org.ooc.frontend.Target: org.ooc.frontend.Target[] $VALUES>;
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Object: java.lang.Object clone()>();
+
+        $stack2 = (org.ooc.frontend.Target[]) $stack1;
+
+        return $stack2;
+    }
+
+    public static org.ooc.frontend.Target valueOf(java.lang.String)
+    {
+        java.lang.String name;
+        java.lang.Enum $stack1;
+        org.ooc.frontend.Target $stack2;
+
+        name := @parameter0: java.lang.String;
+
+        $stack1 = staticinvoke <java.lang.Enum: java.lang.Enum valueOf(java.lang.Class,java.lang.String)>(class "Lorg/ooc/frontend/Target;", name);
+
+        $stack2 = (org.ooc.frontend.Target) $stack1;
+
+        return $stack2;
+    }
+
+    private void <init>(java.lang.String, int)
+    {
+        Target this;
+        java.lang.String l1;
+        int l2;
+
+        this := @this: Target;
+
+        l1 := @parameter0: java.lang.String;
+
+        l2 := @parameter1: int;
+
+        specialinvoke this.<java.lang.Enum: void <init>(java.lang.String,int)>(l1, l2);
+
+        return;
+    }
+
+    public static org.ooc.frontend.Target guessHost()
+    {
+        org.ooc.frontend.Target $stack1, $stack11, $stack12, $stack13, $stack14, $stack15, $stack2;
+        java.lang.String $stack3, os, $stack10;
+        boolean $stack5, $stack6, $stack7, $stack8;
+        java.io.PrintStream $stack9;
+
+        $stack1 = <org.ooc.frontend.Target: org.ooc.frontend.Target instance>;
+
+        if $stack1 != null goto label5;
+
+        $stack3 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("os.name");
+
+        os = virtualinvoke $stack3.<java.lang.String: java.lang.String toLowerCase()>();
+
+        $stack5 = virtualinvoke os.<java.lang.String: boolean contains(java.lang.CharSequence)>("windows");
+
+        if $stack5 == 0 goto label1;
+
+        $stack15 = <org.ooc.frontend.Target: org.ooc.frontend.Target WIN>;
+
+        <org.ooc.frontend.Target: org.ooc.frontend.Target instance> = $stack15;
+
+        goto label5;
+
+     label1:
+        $stack6 = virtualinvoke os.<java.lang.String: boolean contains(java.lang.CharSequence)>("linux");
+
+        if $stack6 == 0 goto label2;
+
+        $stack14 = <org.ooc.frontend.Target: org.ooc.frontend.Target LINUX>;
+
+        <org.ooc.frontend.Target: org.ooc.frontend.Target instance> = $stack14;
+
+        goto label5;
+
+     label2:
+        $stack7 = virtualinvoke os.<java.lang.String: boolean contains(java.lang.CharSequence)>("sunos");
+
+        if $stack7 == 0 goto label3;
+
+        $stack13 = <org.ooc.frontend.Target: org.ooc.frontend.Target SOLARIS>;
+
+        <org.ooc.frontend.Target: org.ooc.frontend.Target instance> = $stack13;
+
+        goto label5;
+
+     label3:
+        $stack8 = virtualinvoke os.<java.lang.String: boolean startsWith(java.lang.String)>("mac os x");
+
+        if $stack8 == 0 goto label4;
+
+        $stack12 = <org.ooc.frontend.Target: org.ooc.frontend.Target OSX>;
+
+        <org.ooc.frontend.Target: org.ooc.frontend.Target instance> = $stack12;
+
+        goto label5;
+
+     label4:
+        $stack9 = <java.lang.System: java.io.PrintStream err>;
+
+        $stack10 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(os) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Unknown operating system: \'\u0001\', assuming Linux..");
+
+        virtualinvoke $stack9.<java.io.PrintStream: void println(java.lang.String)>($stack10);
+
+        $stack11 = <org.ooc.frontend.Target: org.ooc.frontend.Target LINUX>;
+
+        <org.ooc.frontend.Target: org.ooc.frontend.Target instance> = $stack11;
+
+     label5:
+        $stack2 = <org.ooc.frontend.Target: org.ooc.frontend.Target instance>;
+
+        return $stack2;
+    }
+
+    public static boolean is64()
+    {
+        java.lang.String $stack0;
+        int $stack1;
+        boolean $stack2;
+
+        $stack0 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("os.arch");
+
+        $stack1 = virtualinvoke $stack0.<java.lang.String: int indexOf(java.lang.String)>("64");
+
+        if $stack1 == -1 goto label1;
+
+        $stack2 = 1;
+
+        goto label2;
+
+     label1:
+        $stack2 = 0;
+
+     label2:
+        return $stack2;
+    }
+
+    public static java.lang.String getArch()
+    {
+        boolean $stack0;
+        java.lang.String $stack1;
+
+        $stack0 = staticinvoke <org.ooc.frontend.Target: boolean is64()>();
+
+        if $stack0 == 0 goto label1;
+
+        $stack1 = "64";
+
+        goto label2;
+
+     label1:
+        $stack1 = "32";
+
+     label2:
+        return $stack1;
+    }
+
+    public java.lang.String toString()
+    {
+        Target this;
+        java.lang.String $stack1, $stack2;
+        org.ooc.frontend.Target $r0;
+
+        this := @this: Target;
+
+        $stack1 = staticinvoke <org.ooc.frontend.Target: java.lang.String getArch()>();
+
+        $r0 = (org.ooc.frontend.Target) this;
+
+        $stack2 = virtualinvoke $r0.<org.ooc.frontend.Target: java.lang.String toString(java.lang.String)>($stack1);
+
+        return $stack2;
+    }
+
+    public java.lang.String toString(java.lang.String)
+    {
+        Target this;
+        int[] $stack2;
+        int $stack3, $stack4;
+        java.lang.String arch, $stack5, $stack6, $stack7, $stack8, $stack9;
+        org.ooc.frontend.Target $r0;
+
+        this := @this: Target;
+
+        arch := @parameter0: java.lang.String;
+
+        $stack2 = <org.ooc.frontend.Target$1: int[] $SwitchMap$org$ooc$frontend$Target>;
+
+        $r0 = (org.ooc.frontend.Target) this;
+
+        $stack3 = virtualinvoke $r0.<org.ooc.frontend.Target: int ordinal()>();
+
+        $stack4 = $stack2[$stack3];
+
+        tableswitch($stack4)
+        {
+            case 1: goto label1;
+            case 2: goto label2;
+            case 3: goto label3;
+            case 4: goto label4;
+            case 5: goto label5;
+            default: goto label6;
+        };
+
+     label1:
+        $stack8 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(arch) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("win\u0001");
+
+        return $stack8;
+
+     label2:
+        $stack7 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(arch) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("linux\u0001");
+
+        return $stack7;
+
+     label3:
+        $stack6 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(arch) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("solaris\u0001");
+
+        return $stack6;
+
+     label4:
+        $stack5 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>(arch) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("haiku\u0001");
+
+        return $stack5;
+
+     label5:
+        return "osx";
+
+     label6:
+        $stack9 = specialinvoke this.<java.lang.Enum: java.lang.String toString()>();
+
+        return $stack9;
+    }
+
+    static void <clinit>()
+    {
+        org.ooc.frontend.Target $stack0, $stack1, $stack2, $stack3, $stack4, $stack6, $stack7, $stack8, $stack9, $stack10;
+        org.ooc.frontend.Target[] $stack5;
+
+        $stack0 = new org.ooc.frontend.Target;
+
+        specialinvoke $stack0.<org.ooc.frontend.Target: void <init>(java.lang.String,int)>("LINUX", 0);
+
+        <org.ooc.frontend.Target: org.ooc.frontend.Target LINUX> = $stack0;
+
+        $stack1 = new org.ooc.frontend.Target;
+
+        specialinvoke $stack1.<org.ooc.frontend.Target: void <init>(java.lang.String,int)>("WIN", 1);
+
+        <org.ooc.frontend.Target: org.ooc.frontend.Target WIN> = $stack1;
+
+        $stack2 = new org.ooc.frontend.Target;
+
+        specialinvoke $stack2.<org.ooc.frontend.Target: void <init>(java.lang.String,int)>("SOLARIS", 2);
+
+        <org.ooc.frontend.Target: org.ooc.frontend.Target SOLARIS> = $stack2;
+
+        $stack3 = new org.ooc.frontend.Target;
+
+        specialinvoke $stack3.<org.ooc.frontend.Target: void <init>(java.lang.String,int)>("HAIKU", 3);
+
+        <org.ooc.frontend.Target: org.ooc.frontend.Target HAIKU> = $stack3;
+
+        $stack4 = new org.ooc.frontend.Target;
+
+        specialinvoke $stack4.<org.ooc.frontend.Target: void <init>(java.lang.String,int)>("OSX", 4);
+
+        <org.ooc.frontend.Target: org.ooc.frontend.Target OSX> = $stack4;
+
+        $stack5 = newarray (org.ooc.frontend.Target)[5];
+
+        $stack6 = <org.ooc.frontend.Target: org.ooc.frontend.Target LINUX>;
+
+        $stack5[0] = $stack6;
+
+        $stack7 = <org.ooc.frontend.Target: org.ooc.frontend.Target WIN>;
+
+        $stack5[1] = $stack7;
+
+        $stack8 = <org.ooc.frontend.Target: org.ooc.frontend.Target SOLARIS>;
+
+        $stack5[2] = $stack8;
+
+        $stack9 = <org.ooc.frontend.Target: org.ooc.frontend.Target HAIKU>;
+
+        $stack5[3] = $stack9;
+
+        $stack10 = <org.ooc.frontend.Target: org.ooc.frontend.Target OSX>;
+
+        $stack5[4] = $stack10;
+
+        <org.ooc.frontend.Target: org.ooc.frontend.Target[] $VALUES> = $stack5;
+
+        return;
+    }
+}

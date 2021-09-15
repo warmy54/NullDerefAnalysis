@@ -1,0 +1,1311 @@
+public class Module extends org.ooc.frontend.model.Node implements org.ooc.frontend.model.Scope
+{
+    protected java.lang.String underName;
+    protected java.lang.String fullName;
+    protected java.lang.String name;
+    protected java.lang.String memberPrefix;
+    protected org.ooc.frontend.model.NodeList includes;
+    protected org.ooc.frontend.model.NodeList globalImports;
+    protected org.ooc.frontend.model.NodeList namespaces;
+    protected org.ooc.frontend.model.NodeList uses;
+    protected org.ooc.middle.structs.MultiMap types;
+    protected org.ooc.frontend.model.NodeList ops;
+    protected org.ooc.frontend.model.NodeList body;
+    protected java.lang.String fileName;
+    protected org.ooc.frontend.model.FunctionDecl loadFunc;
+    private boolean isMain;
+    private final transient org.ubi.SourceReader reader;
+    public org.ooc.frontend.model.NodeList parseStack;
+    public long lastModified;
+    private java.lang.String packageName;
+    private java.lang.String pathElement;
+
+    public void <init>(java.lang.String, java.io.File, org.ubi.SourceReader)
+    {
+        Module this;
+        org.ooc.frontend.model.tokens.Token $stack5, $stack24, $stack26, $stack28, $stack30, $stack32, $stack38;
+        org.ubi.SourceReader reader;
+        java.io.File element, $stack7;
+        java.lang.String $stack8, $stack9, fullName, $stack11, $stack14, $stack15, $stack16, $stack17, $stack18, $stack19, $stack20, $stack21, $stack36, $stack37, $stack39, $stack40, $stack72, $stack73;
+        char $stack10;
+        int $stack13, e#2;
+        boolean $stack22;
+        java.io.IOException $stack71;
+        org.ooc.frontend.model.NodeList $u0, $u1, $u2, $u3, $u4, $u5, $u6;
+        org.ooc.middle.structs.MultiMap $u7;
+        org.ooc.frontend.model.FunctionDecl $u8;
+        org.ooc.frontend.model.Module $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29;
+
+        this := @this: Module;
+
+        fullName := @parameter0: java.lang.String;
+
+        element := @parameter1: java.io.File;
+
+        reader := @parameter2: org.ubi.SourceReader;
+
+        $stack5 = <org.ooc.frontend.model.tokens.Token: org.ooc.frontend.model.tokens.Token defaultToken>;
+
+        specialinvoke this.<org.ooc.frontend.model.Node: void <init>(org.ooc.frontend.model.tokens.Token)>($stack5);
+
+        $u0 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u0.<org.ooc.frontend.model.NodeList: void <init>()>();
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList parseStack> = $u0;
+
+        $r1 = (org.ooc.frontend.model.Module) this;
+
+        $r1.<org.ooc.frontend.model.Module: org.ubi.SourceReader reader> = reader;
+
+     label1:
+        $stack7 = virtualinvoke element.<java.io.File: java.io.File getCanonicalFile()>();
+
+        $stack8 = virtualinvoke $stack7.<java.io.File: java.lang.String getName()>();
+
+        $stack9 = virtualinvoke $stack8.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>(".", "_");
+
+        $r2 = (org.ooc.frontend.model.Module) this;
+
+        $r2.<org.ooc.frontend.model.Module: java.lang.String pathElement> = $stack9;
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack71 := @caughtexception;
+
+        $stack72 = virtualinvoke element.<java.io.File: java.lang.String getName()>();
+
+        $stack73 = virtualinvoke $stack72.<java.lang.String: java.lang.String replaceAll(java.lang.String,java.lang.String)>(".", "_");
+
+        $r3 = (org.ooc.frontend.model.Module) this;
+
+        $r3.<org.ooc.frontend.model.Module: java.lang.String pathElement> = $stack73;
+
+     label4:
+        $r4 = (org.ooc.frontend.model.Module) this;
+
+        $r4.<org.ooc.frontend.model.Module: java.lang.String fullName> = fullName;
+
+        $stack10 = <java.io.File: char separatorChar>;
+
+        $stack11 = virtualinvoke fullName.<java.lang.String: java.lang.String replace(char,char)>(46, $stack10);
+
+        $r5 = (org.ooc.frontend.model.Module) this;
+
+        $r5.<org.ooc.frontend.model.Module: java.lang.String fileName> = $stack11;
+
+        e#2 = virtualinvoke fullName.<java.lang.String: int lastIndexOf(int)>(46);
+
+        if e#2 != -1 goto label5;
+
+        $r6 = (org.ooc.frontend.model.Module) this;
+
+        $r6.<org.ooc.frontend.model.Module: java.lang.String name> = fullName;
+
+        $r7 = (org.ooc.frontend.model.Module) this;
+
+        $r7.<org.ooc.frontend.model.Module: java.lang.String packageName> = "";
+
+        goto label6;
+
+     label5:
+        $stack13 = e#2 + 1;
+
+        $stack14 = virtualinvoke fullName.<java.lang.String: java.lang.String substring(int)>($stack13);
+
+        $r8 = (org.ooc.frontend.model.Module) this;
+
+        $r8.<org.ooc.frontend.model.Module: java.lang.String name> = $stack14;
+
+        $stack15 = virtualinvoke fullName.<java.lang.String: java.lang.String substring(int,int)>(0, e#2);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.String: java.lang.String replaceAll(java.lang.String,java.lang.String)>("[^a-zA-Z0-9_]", "_");
+
+        $r9 = (org.ooc.frontend.model.Module) this;
+
+        $r9.<org.ooc.frontend.model.Module: java.lang.String packageName> = $stack16;
+
+     label6:
+        $stack17 = virtualinvoke fullName.<java.lang.String: java.lang.String replaceAll(java.lang.String,java.lang.String)>("[^a-zA-Z0-9_]", "_");
+
+        $stack18 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack17) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("_\u0001");
+
+        $r10 = (org.ooc.frontend.model.Module) this;
+
+        $r10.<org.ooc.frontend.model.Module: java.lang.String underName> = $stack18;
+
+        $stack19 = virtualinvoke fullName.<java.lang.String: java.lang.String replaceAll(java.lang.String,java.lang.String)>("[^a-zA-Z0-9_]", "_");
+
+        $stack20 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack19) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001__");
+
+        $r11 = (org.ooc.frontend.model.Module) this;
+
+        $r11.<org.ooc.frontend.model.Module: java.lang.String memberPrefix> = $stack20;
+
+        $r12 = (org.ooc.frontend.model.Module) this;
+
+        $stack21 = $r12.<org.ooc.frontend.model.Module: java.lang.String memberPrefix>;
+
+        $stack22 = virtualinvoke $stack21.<java.lang.String: boolean matches(java.lang.String)>("^[a-zA-Z_].*$");
+
+        if $stack22 != 0 goto label7;
+
+        $r13 = (org.ooc.frontend.model.Module) this;
+
+        $stack39 = $r13.<org.ooc.frontend.model.Module: java.lang.String memberPrefix>;
+
+        $stack40 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack39) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("_\u0001");
+
+        $r14 = (org.ooc.frontend.model.Module) this;
+
+        $r14.<org.ooc.frontend.model.Module: java.lang.String memberPrefix> = $stack40;
+
+     label7:
+        $u1 = new org.ooc.frontend.model.NodeList;
+
+        $r15 = (org.ooc.frontend.model.Module) this;
+
+        $stack24 = $r15.<org.ooc.frontend.model.Module: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u1.<org.ooc.frontend.model.NodeList: void <init>(org.ooc.frontend.model.tokens.Token)>($stack24);
+
+        $r16 = (org.ooc.frontend.model.Module) this;
+
+        $r16.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList includes> = $u1;
+
+        $u2 = new org.ooc.frontend.model.NodeList;
+
+        $r17 = (org.ooc.frontend.model.Module) this;
+
+        $stack26 = $r17.<org.ooc.frontend.model.Module: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u2.<org.ooc.frontend.model.NodeList: void <init>(org.ooc.frontend.model.tokens.Token)>($stack26);
+
+        $r18 = (org.ooc.frontend.model.Module) this;
+
+        $r18.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList globalImports> = $u2;
+
+        $u3 = new org.ooc.frontend.model.NodeList;
+
+        $r19 = (org.ooc.frontend.model.Module) this;
+
+        $stack28 = $r19.<org.ooc.frontend.model.Module: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u3.<org.ooc.frontend.model.NodeList: void <init>(org.ooc.frontend.model.tokens.Token)>($stack28);
+
+        $r20 = (org.ooc.frontend.model.Module) this;
+
+        $r20.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList namespaces> = $u3;
+
+        $u4 = new org.ooc.frontend.model.NodeList;
+
+        $r21 = (org.ooc.frontend.model.Module) this;
+
+        $stack30 = $r21.<org.ooc.frontend.model.Module: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u4.<org.ooc.frontend.model.NodeList: void <init>(org.ooc.frontend.model.tokens.Token)>($stack30);
+
+        $r22 = (org.ooc.frontend.model.Module) this;
+
+        $r22.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList uses> = $u4;
+
+        $u5 = new org.ooc.frontend.model.NodeList;
+
+        $r23 = (org.ooc.frontend.model.Module) this;
+
+        $stack32 = $r23.<org.ooc.frontend.model.Module: org.ooc.frontend.model.tokens.Token startToken>;
+
+        specialinvoke $u5.<org.ooc.frontend.model.NodeList: void <init>(org.ooc.frontend.model.tokens.Token)>($stack32);
+
+        $r24 = (org.ooc.frontend.model.Module) this;
+
+        $r24.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList body> = $u5;
+
+        $u6 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u6.<org.ooc.frontend.model.NodeList: void <init>()>();
+
+        $r25 = (org.ooc.frontend.model.Module) this;
+
+        $r25.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList ops> = $u6;
+
+        $u7 = new org.ooc.middle.structs.MultiMap;
+
+        specialinvoke $u7.<org.ooc.middle.structs.MultiMap: void <init>()>();
+
+        $r26 = (org.ooc.frontend.model.Module) this;
+
+        $r26.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap types> = $u7;
+
+        $u8 = new org.ooc.frontend.model.FunctionDecl;
+
+        $r27 = (org.ooc.frontend.model.Module) this;
+
+        $stack36 = $r27.<org.ooc.frontend.model.Module: java.lang.String underName>;
+
+        $stack37 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack36) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001_load");
+
+        $stack38 = <org.ooc.frontend.model.tokens.Token: org.ooc.frontend.model.tokens.Token defaultToken>;
+
+        $r28 = (org.ooc.frontend.model.Module) this;
+
+        specialinvoke $u8.<org.ooc.frontend.model.FunctionDecl: void <init>(java.lang.String,java.lang.String,boolean,boolean,boolean,boolean,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>($stack37, "", 0, 0, 0, 1, $stack38, $r28);
+
+        $r29 = (org.ooc.frontend.model.Module) this;
+
+        $r29.<org.ooc.frontend.model.Module: org.ooc.frontend.model.FunctionDecl loadFunc> = $u8;
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    public void addNamespace(org.ooc.frontend.model.NamespaceDecl)
+    {
+        Module this;
+        org.ooc.frontend.model.NamespaceDecl decl;
+        org.ooc.frontend.model.NodeList $stack2;
+        org.ooc.frontend.model.Module $r0;
+        org.ooc.frontend.model.Node $r1;
+
+        this := @this: Module;
+
+        decl := @parameter0: org.ooc.frontend.model.NamespaceDecl;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList namespaces>;
+
+        $r1 = (org.ooc.frontend.model.Node) decl;
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r1);
+
+        return;
+    }
+
+    public org.ooc.frontend.model.NamespaceDecl getNamespace(java.lang.String)
+    {
+        Module this;
+        org.ooc.frontend.model.NodeList $stack4;
+        java.util.Iterator l2;
+        boolean $stack6, $stack9;
+        java.lang.Object $stack7;
+        org.ooc.frontend.model.NamespaceDecl decl;
+        java.lang.String $stack8, name;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack4 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList namespaces>;
+
+        l2 = virtualinvoke $stack4.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label3;
+
+        $stack7 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        decl = (org.ooc.frontend.model.NamespaceDecl) $stack7;
+
+        $stack8 = virtualinvoke decl.<org.ooc.frontend.model.NamespaceDecl: java.lang.String getName()>();
+
+        $stack9 = virtualinvoke $stack8.<java.lang.String: boolean equals(java.lang.Object)>(name);
+
+        if $stack9 == 0 goto label2;
+
+        return decl;
+
+     label2:
+        goto label1;
+
+     label3:
+        return null;
+    }
+
+    public java.lang.String getMemberPrefix()
+    {
+        Module this;
+        java.lang.String $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: java.lang.String memberPrefix>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getSimpleName()
+    {
+        Module this;
+        java.lang.String $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: java.lang.String name>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getFullName()
+    {
+        Module this;
+        java.lang.String $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: java.lang.String fullName>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getFileName()
+    {
+        Module this;
+        java.lang.String $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: java.lang.String fileName>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getParentPath()
+    {
+        Module this;
+        java.lang.String $stack2, $stack3;
+        java.io.File $u0;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $u0 = new java.io.File;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack2 = virtualinvoke $r0.<org.ooc.frontend.model.Module: java.lang.String getFileName()>();
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>($stack2);
+
+        $stack3 = virtualinvoke $u0.<java.io.File: java.lang.String getParent()>();
+
+        return $stack3;
+    }
+
+    public java.lang.String getPath()
+    {
+        Module this;
+        java.lang.String $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = virtualinvoke $r0.<org.ooc.frontend.model.Module: java.lang.String getPath(java.lang.String)>(".ooc");
+
+        return $stack1;
+    }
+
+    public java.lang.String getPath(java.lang.String)
+    {
+        Module this;
+        java.lang.String $stack2, extension, $stack3;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        extension := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack2 = virtualinvoke $r0.<org.ooc.frontend.model.Module: java.lang.String getOutPath()>();
+
+        $stack3 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>($stack2, extension) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001\u0001");
+
+        return $stack3;
+    }
+
+    public java.lang.String getOutPath()
+    {
+        Module this;
+        char $stack1;
+        java.lang.String $stack2;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $stack1 = <java.io.File: char separatorChar>;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack2 = virtualinvoke $r0.<org.ooc.frontend.model.Module: java.lang.String getOutPath(char)>($stack1);
+
+        return $stack2;
+    }
+
+    public java.lang.String getOutPath(char)
+    {
+        Module this;
+        char separatorChar;
+        java.lang.String $stack3, $stack4, $stack5, outPath;
+        org.ooc.frontend.model.Module $r0, $r1;
+
+        this := @this: Module;
+
+        separatorChar := @parameter0: char;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack4 = $r0.<org.ooc.frontend.model.Module: java.lang.String pathElement>;
+
+        $r1 = (org.ooc.frontend.model.Module) this;
+
+        $stack3 = $r1.<org.ooc.frontend.model.Module: java.lang.String fullName>;
+
+        $stack5 = virtualinvoke $stack3.<java.lang.String: java.lang.String replace(char,char)>(46, separatorChar);
+
+        outPath = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>($stack4, $stack5) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001/\u0001");
+
+        return outPath;
+    }
+
+    public java.lang.String getPrefixLessPath()
+    {
+        Module this;
+        java.lang.String $stack1, $stack2, $stack3, $stack4;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.Module: java.lang.String fullName>;
+
+        $stack1 = <java.io.File: java.lang.String separator>;
+
+        $stack3 = virtualinvoke $stack2.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>(".", $stack1);
+
+        $stack4 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack3) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001.ooc");
+
+        return $stack4;
+    }
+
+    public org.ooc.frontend.model.NodeList getIncludes()
+    {
+        Module this;
+        org.ooc.frontend.model.NodeList $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList includes>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.NodeList getGlobalImports()
+    {
+        Module this;
+        org.ooc.frontend.model.NodeList $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList globalImports>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.NodeList getAllImports()
+    {
+        Module this;
+        org.ooc.frontend.model.NodeList $stack4, $stack7, $stack8, $stack12, $stack14, $u0;
+        boolean $stack5, $stack10;
+        java.util.Iterator l2;
+        java.lang.Object $stack11;
+        org.ooc.frontend.model.NamespaceDecl ns;
+        org.ooc.frontend.model.Module $r0, $r1, $r2, $r3;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack4 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList namespaces>;
+
+        $stack5 = virtualinvoke $stack4.<org.ooc.frontend.model.NodeList: boolean isEmpty()>();
+
+        if $stack5 == 0 goto label1;
+
+        $r1 = (org.ooc.frontend.model.Module) this;
+
+        $stack14 = $r1.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList globalImports>;
+
+        return $stack14;
+
+     label1:
+        $u0 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u0.<org.ooc.frontend.model.NodeList: void <init>()>();
+
+        $r2 = (org.ooc.frontend.model.Module) this;
+
+        $stack7 = virtualinvoke $r2.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getGlobalImports()>();
+
+        virtualinvoke $u0.<org.ooc.frontend.model.NodeList: void addAll(org.ooc.frontend.model.NodeList)>($stack7);
+
+        $r3 = (org.ooc.frontend.model.Module) this;
+
+        $stack8 = $r3.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList namespaces>;
+
+        l2 = virtualinvoke $stack8.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label2:
+        $stack10 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label3;
+
+        $stack11 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        ns = (org.ooc.frontend.model.NamespaceDecl) $stack11;
+
+        $stack12 = virtualinvoke ns.<org.ooc.frontend.model.NamespaceDecl: org.ooc.frontend.model.NodeList getImports()>();
+
+        virtualinvoke $u0.<org.ooc.frontend.model.NodeList: void addAll(org.ooc.frontend.model.NodeList)>($stack12);
+
+        goto label2;
+
+     label3:
+        return $u0;
+    }
+
+    public org.ooc.frontend.model.NodeList getUses()
+    {
+        Module this;
+        org.ooc.frontend.model.NodeList $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList uses>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.NodeList getBody()
+    {
+        Module this;
+        org.ooc.frontend.model.NodeList $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList body>;
+
+        return $stack1;
+    }
+
+    public void accept(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        org.ooc.frontend.Visitor visitor;
+        Module this;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        interfaceinvoke visitor.<org.ooc.frontend.Visitor: void visit(org.ooc.frontend.model.Module)>($r0);
+
+        return;
+    }
+
+    public boolean hasChildren()
+    {
+        Module this;
+
+        this := @this: Module;
+
+        return 1;
+    }
+
+    public void acceptChildren(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        Module this;
+        org.ooc.frontend.Visitor visitor;
+        org.ooc.frontend.model.NodeList $stack2, $stack3, $stack4, $stack5, $stack7;
+        org.ooc.middle.structs.MultiMap $stack6;
+        org.ooc.frontend.model.FunctionDecl $stack8;
+        org.ooc.frontend.model.Module $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: Module;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList includes>;
+
+        virtualinvoke $stack2.<org.ooc.frontend.model.NodeList: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        $r1 = (org.ooc.frontend.model.Module) this;
+
+        $stack3 = $r1.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList globalImports>;
+
+        virtualinvoke $stack3.<org.ooc.frontend.model.NodeList: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        $r2 = (org.ooc.frontend.model.Module) this;
+
+        $stack4 = $r2.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList uses>;
+
+        virtualinvoke $stack4.<org.ooc.frontend.model.NodeList: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        $r3 = (org.ooc.frontend.model.Module) this;
+
+        $stack5 = $r3.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList body>;
+
+        virtualinvoke $stack5.<org.ooc.frontend.model.NodeList: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        $r4 = (org.ooc.frontend.model.Module) this;
+
+        $stack6 = $r4.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap types>;
+
+        virtualinvoke $stack6.<org.ooc.middle.structs.MultiMap: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        $r5 = (org.ooc.frontend.model.Module) this;
+
+        $stack7 = $r5.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList ops>;
+
+        virtualinvoke $stack7.<org.ooc.frontend.model.NodeList: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        $r6 = (org.ooc.frontend.model.Module) this;
+
+        $stack8 = $r6.<org.ooc.frontend.model.Module: org.ooc.frontend.model.FunctionDecl loadFunc>;
+
+        virtualinvoke $stack8.<org.ooc.frontend.model.FunctionDecl: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+        return;
+    }
+
+    public boolean replace(org.ooc.frontend.model.Node, org.ooc.frontend.model.Node)
+    {
+        Module this;
+        org.ooc.frontend.model.Node oldie, kiddo;
+
+        this := @this: Module;
+
+        oldie := @parameter0: org.ooc.frontend.model.Node;
+
+        kiddo := @parameter1: org.ooc.frontend.model.Node;
+
+        return 0;
+    }
+
+    public java.lang.String toString()
+    {
+        Module this;
+        java.lang.String $stack1, $stack2, $stack3;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $stack1 = specialinvoke this.<org.ooc.frontend.model.Node: java.lang.String toString()>();
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.Module: java.lang.String name>;
+
+        $stack3 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>($stack1, $stack2) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001 : \u0001");
+
+        return $stack3;
+    }
+
+    public java.lang.String getUnderName()
+    {
+        Module this;
+        java.lang.String $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: java.lang.String underName>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.FunctionDecl getLoadFunc()
+    {
+        Module this;
+        org.ooc.frontend.model.FunctionDecl $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.FunctionDecl loadFunc>;
+
+        return $stack1;
+    }
+
+    public boolean isMain()
+    {
+        Module this;
+        boolean $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: boolean isMain>;
+
+        return $stack1;
+    }
+
+    public void setMain(boolean)
+    {
+        Module this;
+        boolean isMain;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        isMain := @parameter0: boolean;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $r0.<org.ooc.frontend.model.Module: boolean isMain> = isMain;
+
+        return;
+    }
+
+    public org.ubi.SourceReader getReader()
+    {
+        Module this;
+        org.ubi.SourceReader $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: org.ubi.SourceReader reader>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.VariableDecl getVariable(java.lang.String)
+    {
+        Module this;
+        java.lang.String name;
+        org.ooc.frontend.model.NodeList $stack5, $stack7, $stack12;
+        java.util.Iterator l3;
+        boolean $stack9;
+        java.lang.Object $stack10;
+        org.ooc.frontend.model.Import imp;
+        org.ooc.frontend.model.Module $stack11, $r0, $r1, $r2, $r3;
+        org.ooc.frontend.model.VariableDecl varDecl;
+
+        this := @this: Module;
+
+        name := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack5 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList body>;
+
+        $r1 = (org.ooc.frontend.model.Module) this;
+
+        varDecl = virtualinvoke $r1.<org.ooc.frontend.model.Module: org.ooc.frontend.model.VariableDecl getVariableInBody(java.lang.String,org.ooc.frontend.model.NodeList)>(name, $stack5);
+
+        if varDecl == null goto label1;
+
+        return varDecl;
+
+     label1:
+        $r2 = (org.ooc.frontend.model.Module) this;
+
+        $stack7 = $r2.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList globalImports>;
+
+        l3 = virtualinvoke $stack7.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label2:
+        $stack9 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label4;
+
+        $stack10 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        imp = (org.ooc.frontend.model.Import) $stack10;
+
+        $stack11 = virtualinvoke imp.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        $stack12 = $stack11.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList body>;
+
+        $r3 = (org.ooc.frontend.model.Module) this;
+
+        varDecl = virtualinvoke $r3.<org.ooc.frontend.model.Module: org.ooc.frontend.model.VariableDecl getVariableInBody(java.lang.String,org.ooc.frontend.model.NodeList)>(name, $stack12);
+
+        if varDecl == null goto label3;
+
+        return varDecl;
+
+     label3:
+        goto label2;
+
+     label4:
+        return null;
+    }
+
+    private org.ooc.frontend.model.VariableDecl getVariableInBody(java.lang.String, org.ooc.frontend.model.NodeList)
+    {
+        org.ooc.frontend.model.NodeList list;
+        java.util.Iterator l3;
+        boolean $stack7, $stack9, $stack10, $stack13;
+        java.lang.Object $stack8, node;
+        org.ooc.frontend.model.VariableDecl varDecl;
+        java.lang.String $stack12, name;
+        org.ooc.frontend.model.Line $stack14;
+        Module this;
+
+        this := @this: Module;
+
+        name := @parameter0: java.lang.String;
+
+        list := @parameter1: org.ooc.frontend.model.NodeList;
+
+        l3 = virtualinvoke list.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label4;
+
+        $stack8 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        node = (org.ooc.frontend.model.Node) $stack8;
+
+        $stack9 = node instanceof org.ooc.frontend.model.Line;
+
+        if $stack9 == 0 goto label2;
+
+        $stack14 = (org.ooc.frontend.model.Line) node;
+
+        node = virtualinvoke $stack14.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement getStatement()>();
+
+     label2:
+        $stack10 = node instanceof org.ooc.frontend.model.VariableDecl;
+
+        if $stack10 == 0 goto label3;
+
+        varDecl = (org.ooc.frontend.model.VariableDecl) node;
+
+        $stack12 = virtualinvoke varDecl.<org.ooc.frontend.model.VariableDecl: java.lang.String getName()>();
+
+        $stack13 = virtualinvoke $stack12.<java.lang.String: boolean equals(java.lang.Object)>(name);
+
+        if $stack13 == 0 goto label3;
+
+        return varDecl;
+
+     label3:
+        goto label1;
+
+     label4:
+        return null;
+    }
+
+    public void getVariables(org.ooc.frontend.model.NodeList)
+    {
+        Module this;
+        org.ooc.frontend.model.NodeList $stack4, variables;
+        java.util.Iterator l2;
+        boolean $stack6, $stack8, $stack9, $stack13;
+        java.lang.Object $stack7;
+        org.ooc.frontend.model.Node node, $r1, $r2;
+        org.ooc.frontend.model.Line $stack11, $stack14;
+        org.ooc.frontend.model.Statement $stack12, $stack15;
+        org.ooc.frontend.model.VariableDecl $stack16, $stack18;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        variables := @parameter0: org.ooc.frontend.model.NodeList;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack4 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList body>;
+
+        l2 = virtualinvoke $stack4.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label4;
+
+        $stack7 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        node = (org.ooc.frontend.model.Node) $stack7;
+
+        $stack8 = node instanceof org.ooc.frontend.model.VariableDecl;
+
+        if $stack8 == 0 goto label2;
+
+        $stack18 = (org.ooc.frontend.model.VariableDecl) node;
+
+        $r1 = (org.ooc.frontend.model.Node) $stack18;
+
+        virtualinvoke variables.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r1);
+
+        goto label3;
+
+     label2:
+        $stack9 = node instanceof org.ooc.frontend.model.Line;
+
+        if $stack9 == 0 goto label3;
+
+        $stack11 = (org.ooc.frontend.model.Line) node;
+
+        $stack12 = $stack11.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement statement>;
+
+        $stack13 = $stack12 instanceof org.ooc.frontend.model.VariableDecl;
+
+        if $stack13 == 0 goto label3;
+
+        $stack14 = (org.ooc.frontend.model.Line) node;
+
+        $stack15 = $stack14.<org.ooc.frontend.model.Line: org.ooc.frontend.model.Statement statement>;
+
+        $stack16 = (org.ooc.frontend.model.VariableDecl) $stack15;
+
+        $r2 = (org.ooc.frontend.model.Node) $stack16;
+
+        virtualinvoke variables.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r2);
+
+     label3:
+        goto label1;
+
+     label4:
+        return;
+    }
+
+    public org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String, java.lang.String, org.ooc.frontend.model.FunctionCall)
+    {
+        Module this;
+        java.lang.String name, suffix;
+        org.ooc.frontend.model.FunctionCall call;
+        org.ooc.frontend.model.FunctionDecl $stack4;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        name := @parameter0: java.lang.String;
+
+        suffix := @parameter1: java.lang.String;
+
+        call := @parameter2: org.ooc.frontend.model.FunctionCall;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack4 = virtualinvoke $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall,int,org.ooc.frontend.model.FunctionDecl)>(name, suffix, call, 0, null);
+
+        return $stack4;
+    }
+
+    public org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String, java.lang.String, org.ooc.frontend.model.FunctionCall, int, org.ooc.frontend.model.FunctionDecl)
+    {
+        int bestScoreParam, score, bestScore;
+        org.ooc.frontend.model.FunctionDecl bestMatchParam, function, bestMatch;
+        Module this;
+        org.ooc.frontend.model.NodeList $stack12;
+        java.util.Iterator l8;
+        boolean $stack14, $stack16, $stack18;
+        java.lang.Object $stack15;
+        org.ooc.frontend.model.Node node;
+        java.lang.String name, suffix;
+        org.ooc.frontend.model.FunctionCall call;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        name := @parameter0: java.lang.String;
+
+        suffix := @parameter1: java.lang.String;
+
+        call := @parameter2: org.ooc.frontend.model.FunctionCall;
+
+        bestScoreParam := @parameter3: int;
+
+        bestMatchParam := @parameter4: org.ooc.frontend.model.FunctionDecl;
+
+        bestScore = bestScoreParam;
+
+        bestMatch = bestMatchParam;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack12 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList body>;
+
+        l8 = virtualinvoke $stack12.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack14 = interfaceinvoke l8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label4;
+
+        $stack15 = interfaceinvoke l8.<java.util.Iterator: java.lang.Object next()>();
+
+        node = (org.ooc.frontend.model.Node) $stack15;
+
+        $stack16 = node instanceof org.ooc.frontend.model.FunctionDecl;
+
+        if $stack16 == 0 goto label3;
+
+        function = (org.ooc.frontend.model.FunctionDecl) node;
+
+        $stack18 = virtualinvoke function.<org.ooc.frontend.model.FunctionDecl: boolean isNamed(java.lang.String,java.lang.String)>(name, suffix);
+
+        if $stack18 == 0 goto label3;
+
+        if call != null goto label2;
+
+        return function;
+
+     label2:
+        score = virtualinvoke call.<org.ooc.frontend.model.FunctionCall: int getScore(org.ooc.frontend.model.FunctionDecl)>(function);
+
+        if score <= bestScore goto label3;
+
+        bestScore = score;
+
+        bestMatch = function;
+
+     label3:
+        goto label1;
+
+     label4:
+        return bestMatch;
+    }
+
+    public void getFunctions(org.ooc.frontend.model.NodeList)
+    {
+        Module this;
+        org.ooc.frontend.model.NodeList $stack4, functions;
+        java.util.Iterator l2;
+        boolean $stack6, $stack8;
+        java.lang.Object $stack7;
+        org.ooc.frontend.model.Node node, $r1;
+        org.ooc.frontend.model.FunctionDecl $stack10;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        functions := @parameter0: org.ooc.frontend.model.NodeList;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack4 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList body>;
+
+        l2 = virtualinvoke $stack4.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label3;
+
+        $stack7 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        node = (org.ooc.frontend.model.Node) $stack7;
+
+        $stack8 = node instanceof org.ooc.frontend.model.FunctionDecl;
+
+        if $stack8 == 0 goto label2;
+
+        $stack10 = (org.ooc.frontend.model.FunctionDecl) node;
+
+        $r1 = (org.ooc.frontend.model.Node) $stack10;
+
+        virtualinvoke functions.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r1);
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public org.ooc.middle.structs.MultiMap getTypes()
+    {
+        Module this;
+        org.ooc.middle.structs.MultiMap $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap types>;
+
+        return $stack1;
+    }
+
+    public void addType(org.ooc.frontend.model.TypeDecl)
+    {
+        org.ooc.frontend.model.TypeDecl tDecl;
+        org.ooc.frontend.model.VersionBlock $stack2;
+        Module this;
+        org.ooc.middle.structs.MultiMap $stack3;
+        java.lang.String $stack4;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        tDecl := @parameter0: org.ooc.frontend.model.TypeDecl;
+
+        $stack2 = virtualinvoke tDecl.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.VersionBlock getVersion()>();
+
+        if $stack2 == null goto label1;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack3 = $r0.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap types>;
+
+        $stack4 = virtualinvoke tDecl.<org.ooc.frontend.model.TypeDecl: java.lang.String getName()>();
+
+        virtualinvoke $stack3.<org.ooc.middle.structs.MultiMap: void put(java.lang.Object,java.lang.Object)>($stack4, tDecl);
+
+     label1:
+        return;
+    }
+
+    public org.ooc.frontend.model.NodeList getOps()
+    {
+        Module this;
+        org.ooc.frontend.model.NodeList $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList ops>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.TypeDecl getType(java.lang.String)
+    {
+        Module this;
+        org.ooc.middle.structs.MultiMap $stack6, $stack14;
+        java.lang.String typeName;
+        java.lang.Object $stack7, $stack11, $stack15;
+        org.ooc.frontend.model.NodeList $stack8;
+        java.util.Iterator l3;
+        boolean $stack10;
+        org.ooc.frontend.model.Import imp;
+        org.ooc.frontend.model.Module module, $r0, $r1;
+        org.ooc.frontend.model.TypeDecl typeDecl;
+
+        this := @this: Module;
+
+        typeName := @parameter0: java.lang.String;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack6 = virtualinvoke $r0.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap getTypes()>();
+
+        $stack7 = virtualinvoke $stack6.<org.ooc.middle.structs.MultiMap: java.lang.Object get(java.lang.Object)>(typeName);
+
+        typeDecl = (org.ooc.frontend.model.TypeDecl) $stack7;
+
+        if typeDecl == null goto label1;
+
+        return typeDecl;
+
+     label1:
+        $r1 = (org.ooc.frontend.model.Module) this;
+
+        $stack8 = $r1.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList globalImports>;
+
+        l3 = virtualinvoke $stack8.<org.ooc.frontend.model.NodeList: java.util.Iterator iterator()>();
+
+     label2:
+        $stack10 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label4;
+
+        $stack11 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        imp = (org.ooc.frontend.model.Import) $stack11;
+
+        module = virtualinvoke imp.<org.ooc.frontend.model.Import: org.ooc.frontend.model.Module getModule()>();
+
+        if module == null goto label3;
+
+        $stack14 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.middle.structs.MultiMap getTypes()>();
+
+        $stack15 = virtualinvoke $stack14.<org.ooc.middle.structs.MultiMap: java.lang.Object get(java.lang.Object)>(typeName);
+
+        typeDecl = (org.ooc.frontend.model.TypeDecl) $stack15;
+
+        if typeDecl == null goto label3;
+
+        return typeDecl;
+
+     label3:
+        goto label2;
+
+     label4:
+        return null;
+    }
+
+    public java.lang.String getPackageName()
+    {
+        Module this;
+        java.lang.String $stack1;
+        org.ooc.frontend.model.Module $r0;
+
+        this := @this: Module;
+
+        $r0 = (org.ooc.frontend.model.Module) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.Module: java.lang.String packageName>;
+
+        return $stack1;
+    }
+}

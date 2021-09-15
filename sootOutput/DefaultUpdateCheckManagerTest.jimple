@@ -1,0 +1,712 @@
+public class DefaultUpdateCheckManagerTest extends org.apache.maven.artifact.AbstractArtifactComponentTestCase
+{
+    private org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
+    org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager;
+
+    public void <init>()
+    {
+        DefaultUpdateCheckManagerTest this;
+
+        this := @this: DefaultUpdateCheckManagerTest;
+
+        specialinvoke this.<org.apache.maven.artifact.AbstractArtifactComponentTestCase: void <init>()>();
+
+        return;
+    }
+
+    protected java.lang.String component()
+    {
+        DefaultUpdateCheckManagerTest this;
+
+        this := @this: DefaultUpdateCheckManagerTest;
+
+        return "updateCheckManager";
+    }
+
+    public void setUp() throws java.lang.Exception
+    {
+        DefaultUpdateCheckManagerTest this;
+        org.codehaus.plexus.logging.console.ConsoleLogger $u0;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $u1;
+        org.codehaus.plexus.logging.Logger $r0;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest $r1;
+
+        this := @this: DefaultUpdateCheckManagerTest;
+
+        specialinvoke this.<org.apache.maven.artifact.AbstractArtifactComponentTestCase: void setUp()>();
+
+        $u1 = new org.apache.maven.repository.legacy.DefaultUpdateCheckManager;
+
+        $u0 = new org.codehaus.plexus.logging.console.ConsoleLogger;
+
+        specialinvoke $u0.<org.codehaus.plexus.logging.console.ConsoleLogger: void <init>(int,java.lang.String)>(0, "test");
+
+        $r0 = (org.codehaus.plexus.logging.Logger) $u0;
+
+        specialinvoke $u1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: void <init>(org.codehaus.plexus.logging.Logger)>($r0);
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager> = $u1;
+
+        return;
+    }
+
+    public void testArtifact() throws java.lang.Exception
+    {
+        DefaultUpdateCheckManagerTest this;
+        org.apache.maven.artifact.repository.ArtifactRepository remoteRepository, localRepository;
+        org.apache.maven.artifact.Artifact a;
+        java.lang.String $stack10, $stack11, $stack26;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $stack13, $stack16, $stack21, $stack22, $stack24, $stack25, $stack28;
+        java.io.File touchFile, $stack18, $stack29, $u0;
+        boolean $stack17, $stack23, $stack30;
+        java.util.Date $stack27;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9;
+
+        this := @this: DefaultUpdateCheckManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        remoteRepository = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository remoteRepository()>();
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        localRepository = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository localRepository()>();
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        a = virtualinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.Artifact createArtifact(java.lang.String,java.lang.String)>("a", "0.0.1-SNAPSHOT");
+
+        $u0 = new java.io.File;
+
+        $stack10 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $stack11 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(a);
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack10, $stack11);
+
+        virtualinvoke $u0.<java.io.File: boolean delete()>();
+
+        interfaceinvoke a.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($u0);
+
+        $r3 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack13 = $r3.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        touchFile = virtualinvoke $stack13.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.Artifact)>(a);
+
+        virtualinvoke touchFile.<java.io.File: boolean delete()>();
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack16 = $r4.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack17 = virtualinvoke $stack16.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>(a, remoteRepository);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack17);
+
+        $stack18 = virtualinvoke $u0.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $stack18.<java.io.File: boolean mkdirs()>();
+
+        virtualinvoke $u0.<java.io.File: boolean createNewFile()>();
+
+        $r5 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack21 = $r5.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        virtualinvoke $stack21.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: void touch(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,java.lang.String)>(a, remoteRepository, null);
+
+        $r6 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack22 = $r6.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack23 = virtualinvoke $stack22.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>(a, remoteRepository);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack23);
+
+        $r7 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack25 = $r7.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r8 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack24 = $r8.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack26 = virtualinvoke $stack24.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getRepositoryKey(org.apache.maven.artifact.repository.ArtifactRepository)>(remoteRepository);
+
+        $stack27 = virtualinvoke $stack25.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.util.Date readLastUpdated(java.io.File,java.lang.String)>(touchFile, $stack26);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNull(java.lang.Object)>($stack27);
+
+        $r9 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack28 = $r9.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack29 = virtualinvoke $stack28.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.Artifact)>(a);
+
+        $stack30 = virtualinvoke $stack29.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack30);
+
+        return;
+    }
+
+    public void testMissingArtifact() throws java.lang.Exception
+    {
+        DefaultUpdateCheckManagerTest this;
+        org.apache.maven.artifact.repository.ArtifactRepository remoteRepository, localRepository;
+        org.apache.maven.artifact.Artifact a;
+        java.lang.String $stack10, $stack11, $stack24;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $stack13, $stack16, $stack18, $stack19, $stack22, $stack23;
+        java.io.File touchFile, $u0;
+        boolean $stack17, $stack20, $stack21;
+        java.util.Date $stack25;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: DefaultUpdateCheckManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        remoteRepository = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository remoteRepository()>();
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        localRepository = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository localRepository()>();
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        a = virtualinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.Artifact createArtifact(java.lang.String,java.lang.String)>("a", "0.0.1-SNAPSHOT");
+
+        $u0 = new java.io.File;
+
+        $stack10 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $stack11 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(a);
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack10, $stack11);
+
+        virtualinvoke $u0.<java.io.File: boolean delete()>();
+
+        interfaceinvoke a.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($u0);
+
+        $r3 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack13 = $r3.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        touchFile = virtualinvoke $stack13.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.Artifact)>(a);
+
+        virtualinvoke touchFile.<java.io.File: boolean delete()>();
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack16 = $r4.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack17 = virtualinvoke $stack16.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>(a, remoteRepository);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack17);
+
+        $r5 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack18 = $r5.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        virtualinvoke $stack18.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: void touch(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,java.lang.String)>(a, remoteRepository, null);
+
+        $r6 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack19 = $r6.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack20 = virtualinvoke $stack19.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>(a, remoteRepository);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack20);
+
+        $stack21 = virtualinvoke $u0.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack21);
+
+        $r7 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack23 = $r7.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r8 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack22 = $r8.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack24 = virtualinvoke $stack22.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getRepositoryKey(org.apache.maven.artifact.repository.ArtifactRepository)>(remoteRepository);
+
+        $stack25 = virtualinvoke $stack23.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.util.Date readLastUpdated(java.io.File,java.lang.String)>(touchFile, $stack24);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack25);
+
+        return;
+    }
+
+    public void testPom() throws java.lang.Exception
+    {
+        DefaultUpdateCheckManagerTest this;
+        org.apache.maven.artifact.repository.ArtifactRepository remoteRepository, localRepository;
+        org.apache.maven.artifact.Artifact a;
+        java.lang.String $stack10, $stack11, $stack26;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $stack13, $stack16, $stack21, $stack22, $stack24, $stack25, $stack28;
+        java.io.File touchFile, $stack18, $stack29, $u0;
+        boolean $stack17, $stack23, $stack30;
+        java.util.Date $stack27;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9;
+
+        this := @this: DefaultUpdateCheckManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        remoteRepository = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository remoteRepository()>();
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        localRepository = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository localRepository()>();
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        a = virtualinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.Artifact createArtifact(java.lang.String,java.lang.String,java.lang.String)>("a", "0.0.1", "pom");
+
+        $u0 = new java.io.File;
+
+        $stack10 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $stack11 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(a);
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack10, $stack11);
+
+        virtualinvoke $u0.<java.io.File: boolean delete()>();
+
+        interfaceinvoke a.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($u0);
+
+        $r3 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack13 = $r3.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        touchFile = virtualinvoke $stack13.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.Artifact)>(a);
+
+        virtualinvoke touchFile.<java.io.File: boolean delete()>();
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack16 = $r4.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack17 = virtualinvoke $stack16.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>(a, remoteRepository);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack17);
+
+        $stack18 = virtualinvoke $u0.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $stack18.<java.io.File: boolean mkdirs()>();
+
+        virtualinvoke $u0.<java.io.File: boolean createNewFile()>();
+
+        $r5 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack21 = $r5.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        virtualinvoke $stack21.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: void touch(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,java.lang.String)>(a, remoteRepository, null);
+
+        $r6 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack22 = $r6.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack23 = virtualinvoke $stack22.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>(a, remoteRepository);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack23);
+
+        $r7 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack25 = $r7.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r8 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack24 = $r8.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack26 = virtualinvoke $stack24.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getRepositoryKey(org.apache.maven.artifact.repository.ArtifactRepository)>(remoteRepository);
+
+        $stack27 = virtualinvoke $stack25.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.util.Date readLastUpdated(java.io.File,java.lang.String)>(touchFile, $stack26);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNull(java.lang.Object)>($stack27);
+
+        $r9 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack28 = $r9.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack29 = virtualinvoke $stack28.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.Artifact)>(a);
+
+        $stack30 = virtualinvoke $stack29.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack30);
+
+        return;
+    }
+
+    public void testMissingPom() throws java.lang.Exception
+    {
+        DefaultUpdateCheckManagerTest this;
+        org.apache.maven.artifact.repository.ArtifactRepository remoteRepository, localRepository;
+        org.apache.maven.artifact.Artifact a;
+        java.lang.String $stack10, $stack11, $stack24;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $stack13, $stack16, $stack18, $stack19, $stack22, $stack23;
+        java.io.File touchFile, $u0;
+        boolean $stack17, $stack20, $stack21;
+        java.util.Date $stack25;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+
+        this := @this: DefaultUpdateCheckManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        remoteRepository = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository remoteRepository()>();
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        localRepository = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository localRepository()>();
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        a = virtualinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.Artifact createArtifact(java.lang.String,java.lang.String,java.lang.String)>("a", "0.0.1", "pom");
+
+        $u0 = new java.io.File;
+
+        $stack10 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $stack11 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(a);
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack10, $stack11);
+
+        virtualinvoke $u0.<java.io.File: boolean delete()>();
+
+        interfaceinvoke a.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($u0);
+
+        $r3 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack13 = $r3.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        touchFile = virtualinvoke $stack13.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.Artifact)>(a);
+
+        virtualinvoke touchFile.<java.io.File: boolean delete()>();
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack16 = $r4.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack17 = virtualinvoke $stack16.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>(a, remoteRepository);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack17);
+
+        $r5 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack18 = $r5.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        virtualinvoke $stack18.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: void touch(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository,java.lang.String)>(a, remoteRepository, null);
+
+        $r6 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack19 = $r6.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack20 = virtualinvoke $stack19.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.Artifact,org.apache.maven.artifact.repository.ArtifactRepository)>(a, remoteRepository);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack20);
+
+        $stack21 = virtualinvoke $u0.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack21);
+
+        $r7 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack23 = $r7.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r8 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack22 = $r8.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack24 = virtualinvoke $stack22.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getRepositoryKey(org.apache.maven.artifact.repository.ArtifactRepository)>(remoteRepository);
+
+        $stack25 = virtualinvoke $stack23.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.util.Date readLastUpdated(java.io.File,java.lang.String)>(touchFile, $stack24);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack25);
+
+        return;
+    }
+
+    public void testMetadata() throws java.lang.Exception
+    {
+        DefaultUpdateCheckManagerTest this;
+        org.apache.maven.artifact.repository.ArtifactRepository remoteRepository, localRepository;
+        org.apache.maven.artifact.Artifact a;
+        java.lang.String $stack12, $stack13, $stack28;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $stack15, $stack18, $stack23, $stack24, $stack26, $stack27;
+        java.io.File touchFile, $stack20, $u1;
+        boolean $stack19, $stack25;
+        java.util.Date $stack29;
+        org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata $u0;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest $r0, $r1, $r2, $r4, $r6, $r8, $r10, $r12, $r13;
+        org.apache.maven.artifact.metadata.ArtifactMetadata $r3;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata $r5, $r7, $r9, $r11;
+
+        this := @this: DefaultUpdateCheckManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        remoteRepository = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository remoteRepository()>();
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        localRepository = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository localRepository()>();
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        a = virtualinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.Artifact createRemoteArtifact(java.lang.String,java.lang.String)>("a", "0.0.1-SNAPSHOT");
+
+        $u0 = new org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata: void <init>(org.apache.maven.artifact.Artifact)>(a);
+
+        $u1 = new java.io.File;
+
+        $stack12 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $r3 = (org.apache.maven.artifact.metadata.ArtifactMetadata) $u0;
+
+        $stack13 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfLocalRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository)>($r3, localRepository);
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack12, $stack13);
+
+        virtualinvoke $u1.<java.io.File: boolean delete()>();
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack15 = $r4.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r5 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        touchFile = virtualinvoke $stack15.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,java.io.File)>($r5, $u1);
+
+        virtualinvoke touchFile.<java.io.File: boolean delete()>();
+
+        $r6 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack18 = $r6.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r7 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        $stack19 = virtualinvoke $stack18.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>($r7, remoteRepository, $u1);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack19);
+
+        $stack20 = virtualinvoke $u1.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $stack20.<java.io.File: boolean mkdirs()>();
+
+        virtualinvoke $u1.<java.io.File: boolean createNewFile()>();
+
+        $r8 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack23 = $r8.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r9 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        virtualinvoke $stack23.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: void touch(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>($r9, remoteRepository, $u1);
+
+        $r10 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack24 = $r10.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r11 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        $stack25 = virtualinvoke $stack24.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>($r11, remoteRepository, $u1);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack25);
+
+        $r12 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack27 = $r12.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r13 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack26 = $r13.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack28 = virtualinvoke $stack26.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getMetadataKey(org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>(remoteRepository, $u1);
+
+        $stack29 = virtualinvoke $stack27.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.util.Date readLastUpdated(java.io.File,java.lang.String)>(touchFile, $stack28);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack29);
+
+        return;
+    }
+
+    public void testMissingMetadata() throws java.lang.Exception
+    {
+        DefaultUpdateCheckManagerTest this;
+        org.apache.maven.artifact.repository.ArtifactRepository remoteRepository, localRepository;
+        org.apache.maven.artifact.Artifact a;
+        java.lang.String $stack12, $stack13, $stack25;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $stack15, $stack18, $stack20, $stack21, $stack23, $stack24;
+        java.io.File touchFile, $u1;
+        boolean $stack19, $stack22;
+        java.util.Date $stack26;
+        org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata $u0;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest $r0, $r1, $r2, $r4, $r6, $r8, $r10, $r12, $r13;
+        org.apache.maven.artifact.metadata.ArtifactMetadata $r3;
+        org.apache.maven.artifact.repository.metadata.RepositoryMetadata $r5, $r7, $r9, $r11;
+
+        this := @this: DefaultUpdateCheckManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        remoteRepository = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository remoteRepository()>();
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        localRepository = virtualinvoke $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository localRepository()>();
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        a = virtualinvoke $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.Artifact createRemoteArtifact(java.lang.String,java.lang.String)>("a", "0.0.1-SNAPSHOT");
+
+        $u0 = new org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.ArtifactRepositoryMetadata: void <init>(org.apache.maven.artifact.Artifact)>(a);
+
+        $u1 = new java.io.File;
+
+        $stack12 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $r3 = (org.apache.maven.artifact.metadata.ArtifactMetadata) $u0;
+
+        $stack13 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOfLocalRepositoryMetadata(org.apache.maven.artifact.metadata.ArtifactMetadata,org.apache.maven.artifact.repository.ArtifactRepository)>($r3, localRepository);
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack12, $stack13);
+
+        virtualinvoke $u1.<java.io.File: boolean delete()>();
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack15 = $r4.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r5 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        touchFile = virtualinvoke $stack15.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,java.io.File)>($r5, $u1);
+
+        virtualinvoke touchFile.<java.io.File: boolean delete()>();
+
+        $r6 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack18 = $r6.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r7 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        $stack19 = virtualinvoke $stack18.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>($r7, remoteRepository, $u1);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack19);
+
+        $r8 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack20 = $r8.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r9 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        virtualinvoke $stack20.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: void touch(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>($r9, remoteRepository, $u1);
+
+        $r10 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack21 = $r10.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r11 = (org.apache.maven.artifact.repository.metadata.RepositoryMetadata) $u0;
+
+        $stack22 = virtualinvoke $stack21.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: boolean isUpdateRequired(org.apache.maven.artifact.repository.metadata.RepositoryMetadata,org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>($r11, remoteRepository, $u1);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack22);
+
+        $r12 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack24 = $r12.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $r13 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack23 = $r13.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack25 = virtualinvoke $stack23.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.lang.String getMetadataKey(org.apache.maven.artifact.repository.ArtifactRepository,java.io.File)>(remoteRepository, $u1);
+
+        $stack26 = virtualinvoke $stack24.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.util.Date readLastUpdated(java.io.File,java.lang.String)>(touchFile, $stack25);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack26);
+
+        return;
+    }
+
+    public void testArtifactTouchFileName() throws java.lang.Exception
+    {
+        DefaultUpdateCheckManagerTest this;
+        org.apache.maven.artifact.repository.ArtifactRepository localRepository;
+        org.apache.maven.artifact.factory.ArtifactFactory $stack5, $stack14;
+        java.lang.String $stack8, $stack9, $stack13, $stack17, $stack18, $stack22;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManager $stack10, $stack19;
+        java.io.File $stack12, $stack21, $u0, $u1;
+        org.apache.maven.artifact.Artifact a;
+        org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DefaultUpdateCheckManagerTest;
+
+        $r0 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        localRepository = virtualinvoke $r0.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.repository.ArtifactRepository localRepository()>();
+
+        $r1 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack5 = $r1.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        a = interfaceinvoke $stack5.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createArtifactWithClassifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)>("groupdId", "a", "0.0.1-SNAPSHOT", "jar", null);
+
+        $u0 = new java.io.File;
+
+        $stack8 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $stack9 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(a);
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack8, $stack9);
+
+        interfaceinvoke a.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($u0);
+
+        $r2 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack10 = $r2.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack12 = virtualinvoke $stack10.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.Artifact)>(a);
+
+        $stack13 = virtualinvoke $stack12.<java.io.File: java.lang.String getName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("a-0.0.1-SNAPSHOT.jar.lastUpdated", $stack13);
+
+        $r3 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack14 = $r3.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.artifact.factory.ArtifactFactory artifactFactory>;
+
+        a = interfaceinvoke $stack14.<org.apache.maven.artifact.factory.ArtifactFactory: org.apache.maven.artifact.Artifact createArtifactWithClassifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)>("groupdId", "a", "0.0.1-SNAPSHOT", "jar", "classifier");
+
+        $u1 = new java.io.File;
+
+        $stack17 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getBasedir()>();
+
+        $stack18 = interfaceinvoke localRepository.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String pathOf(org.apache.maven.artifact.Artifact)>(a);
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack17, $stack18);
+
+        interfaceinvoke a.<org.apache.maven.artifact.Artifact: void setFile(java.io.File)>($u1);
+
+        $r4 = (org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest) this;
+
+        $stack19 = $r4.<org.apache.maven.repository.legacy.DefaultUpdateCheckManagerTest: org.apache.maven.repository.legacy.DefaultUpdateCheckManager updateCheckManager>;
+
+        $stack21 = virtualinvoke $stack19.<org.apache.maven.repository.legacy.DefaultUpdateCheckManager: java.io.File getTouchfile(org.apache.maven.artifact.Artifact)>(a);
+
+        $stack22 = virtualinvoke $stack21.<java.io.File: java.lang.String getName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("a-0.0.1-SNAPSHOT-classifier.jar.lastUpdated", $stack22);
+
+        return;
+    }
+}

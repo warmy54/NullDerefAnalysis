@@ -1,0 +1,152 @@
+class FFmpegLockCallback$1 extends org.bytedeco.ffmpeg.avcodec.Cb_PointerPointer_int
+{
+
+    void <init>()
+    {
+        FFmpegLockCallback$1 this;
+
+        this := @this: FFmpegLockCallback$1;
+
+        specialinvoke this.<org.bytedeco.ffmpeg.avcodec.Cb_PointerPointer_int: void <init>()>();
+
+        return;
+    }
+
+    public int call(org.bytedeco.javacpp.PointerPointer, int)
+    {
+        int op, number;
+        org.bytedeco.javacpp.PointerPointer mutex;
+        java.util.HashMap $stack7, $stack13, $stack19, $stack27;
+        java.lang.Integer $stack8, $stack14, $stack20, $stack28;
+        java.lang.Object $stack15, $stack21;
+        java.io.PrintStream $stack16, $stack22;
+        java.util.concurrent.atomic.AtomicInteger $stack23;
+        FFmpegLockCallback$1 this;
+        java.util.concurrent.locks.Lock l;
+        org.bytedeco.javacpp.IntPointer $u0, $u2, $u3, $u4;
+        java.util.concurrent.locks.ReentrantLock $u1;
+        org.bytedeco.javacpp.Pointer $r0, $r1, $r2, $r3;
+
+        this := @this: FFmpegLockCallback$1;
+
+        mutex := @parameter0: org.bytedeco.javacpp.PointerPointer;
+
+        op := @parameter1: int;
+
+        tableswitch(op)
+        {
+            case 0: goto label1;
+            case 1: goto label2;
+            case 2: goto label4;
+            case 3: goto label6;
+            default: goto label7;
+        };
+
+     label1:
+        $stack23 = staticinvoke <org.bytedeco.javacv.FFmpegLockCallback: java.util.concurrent.atomic.AtomicInteger access$000()>();
+
+        number = virtualinvoke $stack23.<java.util.concurrent.atomic.AtomicInteger: int incrementAndGet()>();
+
+        $u0 = new org.bytedeco.javacpp.IntPointer;
+
+        $r0 = (org.bytedeco.javacpp.Pointer) mutex;
+
+        specialinvoke $u0.<org.bytedeco.javacpp.IntPointer: void <init>(org.bytedeco.javacpp.Pointer)>($r0);
+
+        virtualinvoke $u0.<org.bytedeco.javacpp.IntPointer: org.bytedeco.javacpp.IntPointer put(long,int)>(0L, number);
+
+        $stack27 = staticinvoke <org.bytedeco.javacv.FFmpegLockCallback: java.util.HashMap access$100()>();
+
+        $stack28 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(number);
+
+        $u1 = new java.util.concurrent.locks.ReentrantLock;
+
+        specialinvoke $u1.<java.util.concurrent.locks.ReentrantLock: void <init>()>();
+
+        virtualinvoke $stack27.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack28, $u1);
+
+        return 0;
+
+     label2:
+        $u2 = new org.bytedeco.javacpp.IntPointer;
+
+        $r1 = (org.bytedeco.javacpp.Pointer) mutex;
+
+        specialinvoke $u2.<org.bytedeco.javacpp.IntPointer: void <init>(org.bytedeco.javacpp.Pointer)>($r1);
+
+        number = virtualinvoke $u2.<org.bytedeco.javacpp.IntPointer: int get(long)>(0L);
+
+        $stack19 = staticinvoke <org.bytedeco.javacv.FFmpegLockCallback: java.util.HashMap access$100()>();
+
+        $stack20 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(number);
+
+        $stack21 = virtualinvoke $stack19.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($stack20);
+
+        l = (java.util.concurrent.locks.Lock) $stack21;
+
+        if l != null goto label3;
+
+        $stack22 = <java.lang.System: java.io.PrintStream err>;
+
+        virtualinvoke $stack22.<java.io.PrintStream: void println(java.lang.String)>("Lock not found!");
+
+        return -1;
+
+     label3:
+        interfaceinvoke l.<java.util.concurrent.locks.Lock: void lock()>();
+
+        return 0;
+
+     label4:
+        $u3 = new org.bytedeco.javacpp.IntPointer;
+
+        $r2 = (org.bytedeco.javacpp.Pointer) mutex;
+
+        specialinvoke $u3.<org.bytedeco.javacpp.IntPointer: void <init>(org.bytedeco.javacpp.Pointer)>($r2);
+
+        number = virtualinvoke $u3.<org.bytedeco.javacpp.IntPointer: int get(long)>(0L);
+
+        $stack13 = staticinvoke <org.bytedeco.javacv.FFmpegLockCallback: java.util.HashMap access$100()>();
+
+        $stack14 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(number);
+
+        $stack15 = virtualinvoke $stack13.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($stack14);
+
+        l = (java.util.concurrent.locks.Lock) $stack15;
+
+        if l != null goto label5;
+
+        $stack16 = <java.lang.System: java.io.PrintStream err>;
+
+        virtualinvoke $stack16.<java.io.PrintStream: void println(java.lang.String)>("Lock not found!");
+
+        return -1;
+
+     label5:
+        interfaceinvoke l.<java.util.concurrent.locks.Lock: void unlock()>();
+
+        return 0;
+
+     label6:
+        $u4 = new org.bytedeco.javacpp.IntPointer;
+
+        $r3 = (org.bytedeco.javacpp.Pointer) mutex;
+
+        specialinvoke $u4.<org.bytedeco.javacpp.IntPointer: void <init>(org.bytedeco.javacpp.Pointer)>($r3);
+
+        number = virtualinvoke $u4.<org.bytedeco.javacpp.IntPointer: int get(long)>(0L);
+
+        $stack7 = staticinvoke <org.bytedeco.javacv.FFmpegLockCallback: java.util.HashMap access$100()>();
+
+        $stack8 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(number);
+
+        virtualinvoke $stack7.<java.util.HashMap: java.lang.Object remove(java.lang.Object)>($stack8);
+
+        virtualinvoke mutex.<org.bytedeco.javacpp.PointerPointer: org.bytedeco.javacpp.PointerPointer put(long,org.bytedeco.javacpp.Pointer)>(0L, null);
+
+        return 0;
+
+     label7:
+        return -1;
+    }
+}

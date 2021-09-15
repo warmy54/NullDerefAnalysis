@@ -1,0 +1,252 @@
+public class DefaultModelCache extends java.lang.Object implements org.apache.maven.model.building.ModelCache
+{
+    private static final java.lang.String KEY;
+    private final java.util.Map cache;
+
+    public static org.apache.maven.model.building.ModelCache newInstance(org.eclipse.aether.RepositorySystemSession)
+    {
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.RepositoryCache $stack2, $stack3, $stack8;
+        java.lang.String $stack4, $stack9;
+        java.lang.Object $stack5;
+        java.util.Map cache;
+        java.util.concurrent.ConcurrentHashMap $u0, $u1;
+        org.apache.maven.repository.internal.DefaultModelCache $u2;
+        org.apache.maven.model.building.ModelCache $r0;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        $stack2 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.RepositoryCache getCache()>();
+
+        if $stack2 != null goto label1;
+
+        $u0 = new java.util.concurrent.ConcurrentHashMap;
+
+        specialinvoke $u0.<java.util.concurrent.ConcurrentHashMap: void <init>()>();
+
+        cache = $u0;
+
+        goto label2;
+
+     label1:
+        $stack3 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.RepositoryCache getCache()>();
+
+        $stack4 = <org.apache.maven.repository.internal.DefaultModelCache: java.lang.String KEY>;
+
+        $stack5 = interfaceinvoke $stack3.<org.eclipse.aether.RepositoryCache: java.lang.Object get(org.eclipse.aether.RepositorySystemSession,java.lang.Object)>(session, $stack4);
+
+        cache = (java.util.Map) $stack5;
+
+        if cache != null goto label2;
+
+        $u1 = new java.util.concurrent.ConcurrentHashMap;
+
+        specialinvoke $u1.<java.util.concurrent.ConcurrentHashMap: void <init>()>();
+
+        cache = $u1;
+
+        $stack8 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.RepositoryCache getCache()>();
+
+        $stack9 = <org.apache.maven.repository.internal.DefaultModelCache: java.lang.String KEY>;
+
+        interfaceinvoke $stack8.<org.eclipse.aether.RepositoryCache: void put(org.eclipse.aether.RepositorySystemSession,java.lang.Object,java.lang.Object)>(session, $stack9, $u1);
+
+     label2:
+        $u2 = new org.apache.maven.repository.internal.DefaultModelCache;
+
+        specialinvoke $u2.<org.apache.maven.repository.internal.DefaultModelCache: void <init>(java.util.Map)>(cache);
+
+        $r0 = (org.apache.maven.model.building.ModelCache) $u2;
+
+        return $r0;
+    }
+
+    private void <init>(java.util.Map)
+    {
+        DefaultModelCache this;
+        java.util.Map cache;
+        org.apache.maven.repository.internal.DefaultModelCache $r0;
+
+        this := @this: DefaultModelCache;
+
+        cache := @parameter0: java.util.Map;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.internal.DefaultModelCache) this;
+
+        $r0.<org.apache.maven.repository.internal.DefaultModelCache: java.util.Map cache> = cache;
+
+        return;
+    }
+
+    public java.lang.Object get(org.apache.maven.building.Source, java.lang.String)
+    {
+        DefaultModelCache this;
+        org.apache.maven.building.Source path;
+        java.lang.String tag;
+        java.lang.Object $stack4;
+        org.apache.maven.repository.internal.DefaultModelCache$SourceCacheKey $u0;
+        org.apache.maven.repository.internal.DefaultModelCache $r0;
+
+        this := @this: DefaultModelCache;
+
+        path := @parameter0: org.apache.maven.building.Source;
+
+        tag := @parameter1: java.lang.String;
+
+        $u0 = new org.apache.maven.repository.internal.DefaultModelCache$SourceCacheKey;
+
+        specialinvoke $u0.<org.apache.maven.repository.internal.DefaultModelCache$SourceCacheKey: void <init>(org.apache.maven.building.Source,java.lang.String)>(path, tag);
+
+        $r0 = (org.apache.maven.repository.internal.DefaultModelCache) this;
+
+        $stack4 = virtualinvoke $r0.<org.apache.maven.repository.internal.DefaultModelCache: java.lang.Object get(java.lang.Object)>($u0);
+
+        return $stack4;
+    }
+
+    public void put(org.apache.maven.building.Source, java.lang.String, java.lang.Object)
+    {
+        DefaultModelCache this;
+        org.apache.maven.building.Source path;
+        java.lang.String tag;
+        java.lang.Object data;
+        org.apache.maven.repository.internal.DefaultModelCache$SourceCacheKey $u0;
+        org.apache.maven.repository.internal.DefaultModelCache $r0;
+
+        this := @this: DefaultModelCache;
+
+        path := @parameter0: org.apache.maven.building.Source;
+
+        tag := @parameter1: java.lang.String;
+
+        data := @parameter2: java.lang.Object;
+
+        $u0 = new org.apache.maven.repository.internal.DefaultModelCache$SourceCacheKey;
+
+        specialinvoke $u0.<org.apache.maven.repository.internal.DefaultModelCache$SourceCacheKey: void <init>(org.apache.maven.building.Source,java.lang.String)>(path, tag);
+
+        $r0 = (org.apache.maven.repository.internal.DefaultModelCache) this;
+
+        virtualinvoke $r0.<org.apache.maven.repository.internal.DefaultModelCache: void put(java.lang.Object,java.lang.Object)>($u0, data);
+
+        return;
+    }
+
+    public java.lang.Object get(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    {
+        DefaultModelCache this;
+        java.lang.String groupId, artifactId, version, tag;
+        java.lang.Object $stack6;
+        org.apache.maven.repository.internal.DefaultModelCache$GavCacheKey $u0;
+        org.apache.maven.repository.internal.DefaultModelCache $r0;
+
+        this := @this: DefaultModelCache;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        version := @parameter2: java.lang.String;
+
+        tag := @parameter3: java.lang.String;
+
+        $u0 = new org.apache.maven.repository.internal.DefaultModelCache$GavCacheKey;
+
+        specialinvoke $u0.<org.apache.maven.repository.internal.DefaultModelCache$GavCacheKey: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>(groupId, artifactId, version, tag);
+
+        $r0 = (org.apache.maven.repository.internal.DefaultModelCache) this;
+
+        $stack6 = virtualinvoke $r0.<org.apache.maven.repository.internal.DefaultModelCache: java.lang.Object get(java.lang.Object)>($u0);
+
+        return $stack6;
+    }
+
+    public void put(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Object)
+    {
+        DefaultModelCache this;
+        java.lang.String groupId, artifactId, version, tag;
+        java.lang.Object data;
+        org.apache.maven.repository.internal.DefaultModelCache$GavCacheKey $u0;
+        org.apache.maven.repository.internal.DefaultModelCache $r0;
+
+        this := @this: DefaultModelCache;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        version := @parameter2: java.lang.String;
+
+        tag := @parameter3: java.lang.String;
+
+        data := @parameter4: java.lang.Object;
+
+        $u0 = new org.apache.maven.repository.internal.DefaultModelCache$GavCacheKey;
+
+        specialinvoke $u0.<org.apache.maven.repository.internal.DefaultModelCache$GavCacheKey: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>(groupId, artifactId, version, tag);
+
+        $r0 = (org.apache.maven.repository.internal.DefaultModelCache) this;
+
+        virtualinvoke $r0.<org.apache.maven.repository.internal.DefaultModelCache: void put(java.lang.Object,java.lang.Object)>($u0, data);
+
+        return;
+    }
+
+    protected java.lang.Object get(java.lang.Object)
+    {
+        DefaultModelCache this;
+        java.lang.Object key, $stack3;
+        java.util.Map $stack2;
+        org.apache.maven.repository.internal.DefaultModelCache $r0;
+
+        this := @this: DefaultModelCache;
+
+        key := @parameter0: java.lang.Object;
+
+        $r0 = (org.apache.maven.repository.internal.DefaultModelCache) this;
+
+        $stack2 = $r0.<org.apache.maven.repository.internal.DefaultModelCache: java.util.Map cache>;
+
+        $stack3 = interfaceinvoke $stack2.<java.util.Map: java.lang.Object get(java.lang.Object)>(key);
+
+        return $stack3;
+    }
+
+    protected void put(java.lang.Object, java.lang.Object)
+    {
+        DefaultModelCache this;
+        java.lang.Object key, data;
+        java.util.Map $stack3;
+        org.apache.maven.repository.internal.DefaultModelCache $r0;
+
+        this := @this: DefaultModelCache;
+
+        key := @parameter0: java.lang.Object;
+
+        data := @parameter1: java.lang.Object;
+
+        $r0 = (org.apache.maven.repository.internal.DefaultModelCache) this;
+
+        $stack3 = $r0.<org.apache.maven.repository.internal.DefaultModelCache: java.util.Map cache>;
+
+        interfaceinvoke $stack3.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, data);
+
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $stack0;
+        java.lang.String $stack1;
+
+        $stack0 = class "Lorg/apache/maven/repository/internal/DefaultModelCache;";
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Class: java.lang.String getName()>();
+
+        <org.apache.maven.repository.internal.DefaultModelCache: java.lang.String KEY> = $stack1;
+
+        return;
+    }
+}

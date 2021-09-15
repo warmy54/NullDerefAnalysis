@@ -1,0 +1,579 @@
+class FileUtilExceptionsTest extends java.lang.Object
+{
+    private java.io.File backupFileTemp;
+    private java.io.File pomFileTemp;
+
+    void <init>()
+    {
+        FileUtilExceptionsTest this;
+
+        this := @this: FileUtilExceptionsTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    void setup() throws java.io.IOException
+    {
+        FileUtilExceptionsTest this;
+        java.io.File $stack4, $stack5, $stack9, $stack10, $u0, $u1;
+        sortpom.util.FileUtilExceptionsTest $r0, $r1, $r2, $r3;
+
+        this := @this: FileUtilExceptionsTest;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>("target");
+
+        $stack4 = staticinvoke <java.io.File: java.io.File createTempFile(java.lang.String,java.lang.String,java.io.File)>("pom", ".xml", $u0);
+
+        $r0 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $r0.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp> = $stack4;
+
+        $r1 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack5 = $r1.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        virtualinvoke $stack5.<java.io.File: void deleteOnExit()>();
+
+        $u1 = new java.io.File;
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String)>("target");
+
+        $stack9 = staticinvoke <java.io.File: java.io.File createTempFile(java.lang.String,java.lang.String,java.io.File)>("backupFile", ".xml", $u1);
+
+        $r2 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $r2.<sortpom.util.FileUtilExceptionsTest: java.io.File backupFileTemp> = $stack9;
+
+        $r3 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack10 = $r3.<sortpom.util.FileUtilExceptionsTest: java.io.File backupFileTemp>;
+
+        virtualinvoke $stack10.<java.io.File: void deleteOnExit()>();
+
+        return;
+    }
+
+    void whenOldBackupFileCannotBeDeletedAnExceptionShouldBeThrown()
+    {
+        FileUtilExceptionsTest this;
+        sortpom.util.FileUtil fileUtil;
+        java.io.File $stack6, $stack8;
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack11;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack13;
+        org.hamcrest.Matcher $stack14, $stack15;
+        refutils.ReflectionHelper $u0;
+        sortpom.util.FileUtilExceptionsTest $r0, $r1, $r2;
+
+        this := @this: FileUtilExceptionsTest;
+
+        $r0 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        fileUtil = specialinvoke $r0.<sortpom.util.FileUtilExceptionsTest: sortpom.util.FileUtil createFileUtil()>();
+
+        $r1 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        specialinvoke $r1.<sortpom.util.FileUtilExceptionsTest: void doNotAccessRealBackupFile(sortpom.util.FileUtil)>(fileUtil);
+
+        $u0 = new refutils.ReflectionHelper;
+
+        specialinvoke $u0.<refutils.ReflectionHelper: void <init>(java.lang.Object)>(fileUtil);
+
+        $r2 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack6 = $r2.<sortpom.util.FileUtilExceptionsTest: java.io.File backupFileTemp>;
+
+        $stack8 = virtualinvoke $stack6.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $u0.<refutils.ReflectionHelper: void setField(java.lang.String,java.lang.Object)>("backupFile", $stack8);
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(fileUtil);
+
+        testMethod = staticinvoke <FileUtilExceptionsTest$backupFile__309: org.junit.jupiter.api.function.Executable bootstrap$(sortpom.util.FileUtil)>(fileUtil);
+
+        $stack11 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack11;
+
+        $stack13 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $stack14 = staticinvoke <org.hamcrest.core.IsEqual: org.hamcrest.Matcher equalTo(java.lang.Object)>("Could not remove old backup file, filename: backupFileName");
+
+        $stack15 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack14);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.String,java.lang.Object,org.hamcrest.Matcher)>("Unexpected message", $stack13, $stack15);
+
+        return;
+    }
+
+    private void doNotAccessRealBackupFile(sortpom.util.FileUtil)
+    {
+        org.mockito.stubbing.Stubber $stack2;
+        sortpom.util.FileUtil fileUtil, $stack4;
+        java.lang.Object $stack3;
+        FileUtilExceptionsTest this;
+
+        this := @this: FileUtilExceptionsTest;
+
+        fileUtil := @parameter0: sortpom.util.FileUtil;
+
+        $stack2 = staticinvoke <org.mockito.Mockito: org.mockito.stubbing.Stubber doNothing()>();
+
+        $stack3 = interfaceinvoke $stack2.<org.mockito.stubbing.Stubber: java.lang.Object when(java.lang.Object)>(fileUtil);
+
+        $stack4 = (sortpom.util.FileUtil) $stack3;
+
+        virtualinvoke $stack4.<sortpom.util.FileUtil: void createFileHandle()>();
+
+        return;
+    }
+
+    void whenSourceFileCannotBeCopiedAnExceptionShouldBeThrown()
+    {
+        FileUtilExceptionsTest this;
+        java.io.File $stack4, $stack14;
+        boolean $stack5;
+        sortpom.util.FileUtil fileUtil;
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack9;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack11, $stack15, $stack18;
+        java.lang.StringBuilder $stack13, $stack16, $stack17, $u0;
+        org.hamcrest.Matcher $stack19, $stack20;
+        sortpom.util.FileUtilExceptionsTest $r0, $r1, $r2;
+
+        this := @this: FileUtilExceptionsTest;
+
+        $r0 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack4 = $r0.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        $stack5 = virtualinvoke $stack4.<java.io.File: boolean delete()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack5);
+
+        $r1 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        fileUtil = specialinvoke $r1.<sortpom.util.FileUtilExceptionsTest: sortpom.util.FileUtil createFileUtil()>();
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(fileUtil);
+
+        testMethod = staticinvoke <FileUtilExceptionsTest$backupFile__312: org.junit.jupiter.api.function.Executable bootstrap$(sortpom.util.FileUtil)>(fileUtil);
+
+        $stack9 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack9;
+
+        $stack11 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not create backup file to filename: ");
+
+        $r2 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack14 = $r2.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        $stack15 = virtualinvoke $stack14.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack16 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack15);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".bak");
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack19 = staticinvoke <org.hamcrest.core.IsEqual: org.hamcrest.Matcher equalTo(java.lang.Object)>($stack18);
+
+        $stack20 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack19);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.String,java.lang.Object,org.hamcrest.Matcher)>("Unexpected message", $stack11, $stack20);
+
+        return;
+    }
+
+    void whenPomFileCannotBeReadAnExceptionShouldBeThrown()
+    {
+        FileUtilExceptionsTest this;
+        java.io.File $stack4, $stack8, $stack16;
+        boolean $stack5;
+        sortpom.util.FileUtil fileUtil;
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack11;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack13, $stack17, $stack19;
+        java.lang.StringBuilder $stack15, $stack18, $u1;
+        org.hamcrest.Matcher $stack20, $stack21;
+        refutils.ReflectionHelper $u0;
+        sortpom.util.FileUtilExceptionsTest $r0, $r1, $r2, $r3;
+
+        this := @this: FileUtilExceptionsTest;
+
+        $r0 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack4 = $r0.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        $stack5 = virtualinvoke $stack4.<java.io.File: boolean delete()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack5);
+
+        $r1 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        fileUtil = specialinvoke $r1.<sortpom.util.FileUtilExceptionsTest: sortpom.util.FileUtil createFileUtil()>();
+
+        $u0 = new refutils.ReflectionHelper;
+
+        specialinvoke $u0.<refutils.ReflectionHelper: void <init>(java.lang.Object)>(fileUtil);
+
+        $r2 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack8 = $r2.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        virtualinvoke $u0.<refutils.ReflectionHelper: void setField(java.lang.String,java.lang.Object)>("pomFile", $stack8);
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(fileUtil);
+
+        testMethod = staticinvoke <FileUtilExceptionsTest$getPomFileContent__310: org.junit.jupiter.api.function.Executable bootstrap$(sortpom.util.FileUtil)>(fileUtil);
+
+        $stack11 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack11;
+
+        $stack13 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack15 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not read pom file: ");
+
+        $r3 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack16 = $r3.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        $stack17 = virtualinvoke $stack16.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack18 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack17);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack20 = staticinvoke <org.hamcrest.core.IsEqual: org.hamcrest.Matcher equalTo(java.lang.Object)>($stack19);
+
+        $stack21 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack20);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.String,java.lang.Object,org.hamcrest.Matcher)>("Unexpected message", $stack13, $stack21);
+
+        return;
+    }
+
+    void whenPomFileHasWrongEncodingAnExceptionShouldBeThrown()
+    {
+        FileUtilExceptionsTest this;
+        sortpom.util.FileUtil fileUtil;
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack8;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack10;
+        org.hamcrest.Matcher $stack11, $stack12;
+        refutils.ReflectionHelper $u0;
+        sortpom.util.FileUtilExceptionsTest $r0;
+
+        this := @this: FileUtilExceptionsTest;
+
+        $r0 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        fileUtil = specialinvoke $r0.<sortpom.util.FileUtilExceptionsTest: sortpom.util.FileUtil createFileUtil()>();
+
+        $u0 = new refutils.ReflectionHelper;
+
+        specialinvoke $u0.<refutils.ReflectionHelper: void <init>(java.lang.Object)>(fileUtil);
+
+        virtualinvoke $u0.<refutils.ReflectionHelper: void setField(java.lang.String,java.lang.Object)>("encoding", "gurka-2000");
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(fileUtil);
+
+        testMethod = staticinvoke <FileUtilExceptionsTest$getPomFileContent__311: org.junit.jupiter.api.function.Executable bootstrap$(sortpom.util.FileUtil)>(fileUtil);
+
+        $stack8 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack8;
+
+        $stack10 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $stack11 = staticinvoke <org.hamcrest.core.IsEqual: org.hamcrest.Matcher equalTo(java.lang.Object)>("Could not handle encoding: gurka-2000");
+
+        $stack12 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack11);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.String,java.lang.Object,org.hamcrest.Matcher)>("Unexpected message", $stack10, $stack12);
+
+        return;
+    }
+
+    void whenPomFileCannotBeSavedAnExceptionShouldBeThrown()
+    {
+        FileUtilExceptionsTest this;
+        java.io.File $stack4, $stack13, $stack19;
+        boolean $stack5, $stack20;
+        sortpom.util.FileUtil fileUtil;
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack8;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack10, $stack14, $stack16;
+        java.lang.StringBuilder $stack12, $stack15, $u0;
+        org.hamcrest.Matcher $stack17, $stack18;
+        sortpom.util.FileUtilExceptionsTest $r0, $r1, $r2, $r3;
+
+        this := @this: FileUtilExceptionsTest;
+
+        $r0 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack4 = $r0.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        $stack5 = virtualinvoke $stack4.<java.io.File: boolean setReadOnly()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack5);
+
+        $r1 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        fileUtil = specialinvoke $r1.<sortpom.util.FileUtilExceptionsTest: sortpom.util.FileUtil createFileUtil()>();
+
+        testMethod = staticinvoke <FileUtilExceptionsTest$lambda_whenPomFileCannotBeSavedAnExceptionShouldBeThrown_0__313: org.junit.jupiter.api.function.Executable bootstrap$(sortpom.util.FileUtil)>(fileUtil);
+
+        $stack8 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack8;
+
+        $stack10 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not save sorted pom file: ");
+
+        $r2 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack13 = $r2.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        $stack14 = virtualinvoke $stack13.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack15 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack17 = staticinvoke <org.hamcrest.core.IsEqual: org.hamcrest.Matcher equalTo(java.lang.Object)>($stack16);
+
+        $stack18 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack17);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.String,java.lang.Object,org.hamcrest.Matcher)>("Unexpected message", $stack10, $stack18);
+
+        $r3 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack19 = $r3.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        $stack20 = virtualinvoke $stack19.<java.io.File: boolean setReadable(boolean)>(1);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack20);
+
+        return;
+    }
+
+    void whenPomFileTimestampCannotBeRetrievedAnExceptionShouldBeThrown()
+    {
+        FileUtilExceptionsTest this;
+        sortpom.util.FileUtil fileUtil;
+        java.lang.Boolean $stack7;
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack10;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack12, $stack16, $stack18;
+        java.lang.StringBuilder $stack14, $stack17, $u1;
+        java.io.File $stack15;
+        org.hamcrest.Matcher $stack19, $stack20;
+        refutils.ReflectionHelper $u0;
+        sortpom.util.FileUtilExceptionsTest $r0, $r1;
+
+        this := @this: FileUtilExceptionsTest;
+
+        $r0 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        fileUtil = specialinvoke $r0.<sortpom.util.FileUtilExceptionsTest: sortpom.util.FileUtil createFileUtil()>();
+
+        $u0 = new refutils.ReflectionHelper;
+
+        specialinvoke $u0.<refutils.ReflectionHelper: void <init>(java.lang.Object)>(fileUtil);
+
+        $stack7 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        virtualinvoke $u0.<refutils.ReflectionHelper: void setField(java.lang.String,java.lang.Object)>("keepTimestamp", $stack7);
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(fileUtil);
+
+        testMethod = staticinvoke <FileUtilExceptionsTest$getPomFileContent__314: org.junit.jupiter.api.function.Executable bootstrap$(sortpom.util.FileUtil)>(fileUtil);
+
+        $stack10 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack10;
+
+        $stack12 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack14 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not retrieve the timestamp of the pom file: ");
+
+        $r1 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack15 = $r1.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        $stack16 = virtualinvoke $stack15.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack17 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack16);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack19 = staticinvoke <org.hamcrest.core.IsEqual: org.hamcrest.Matcher equalTo(java.lang.Object)>($stack18);
+
+        $stack20 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack19);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.String,java.lang.Object,org.hamcrest.Matcher)>("Unexpected message", $stack12, $stack20);
+
+        return;
+    }
+
+    void whenPomFileTimestampCannotBeSetAnExceptionShouldBeThrown()
+    {
+        FileUtilExceptionsTest this;
+        sortpom.util.FileUtil fileUtil;
+        java.lang.Boolean $stack7;
+        org.junit.jupiter.api.function.Executable testMethod;
+        java.lang.Throwable $stack9;
+        sortpom.exception.FailureException thrown;
+        java.lang.String $stack11, $stack15, $stack17;
+        java.lang.StringBuilder $stack13, $stack16, $u1;
+        java.io.File $stack14;
+        org.hamcrest.Matcher $stack18, $stack19;
+        refutils.ReflectionHelper $u0;
+        sortpom.util.FileUtilExceptionsTest $r0, $r1;
+
+        this := @this: FileUtilExceptionsTest;
+
+        $r0 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        fileUtil = specialinvoke $r0.<sortpom.util.FileUtilExceptionsTest: sortpom.util.FileUtil createFileUtil()>();
+
+        $u0 = new refutils.ReflectionHelper;
+
+        specialinvoke $u0.<refutils.ReflectionHelper: void <init>(java.lang.Object)>(fileUtil);
+
+        $stack7 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        virtualinvoke $u0.<refutils.ReflectionHelper: void setField(java.lang.String,java.lang.Object)>("keepTimestamp", $stack7);
+
+        testMethod = staticinvoke <FileUtilExceptionsTest$lambda_whenPomFileTimestampCannotBeSetAnExceptionShouldBeThrown_1__315: org.junit.jupiter.api.function.Executable bootstrap$(sortpom.util.FileUtil)>(fileUtil);
+
+        $stack9 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable)>(class "Lsortpom/exception/FailureException;", testMethod);
+
+        thrown = (sortpom.exception.FailureException) $stack9;
+
+        $stack11 = virtualinvoke thrown.<sortpom.exception.FailureException: java.lang.String getMessage()>();
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not change timestamp of new pom file: ");
+
+        $r1 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack14 = $r1.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        $stack15 = virtualinvoke $stack14.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack16 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack15);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack18 = staticinvoke <org.hamcrest.core.IsEqual: org.hamcrest.Matcher equalTo(java.lang.Object)>($stack17);
+
+        $stack19 = staticinvoke <org.hamcrest.core.Is: org.hamcrest.Matcher is(org.hamcrest.Matcher)>($stack18);
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.String,java.lang.Object,org.hamcrest.Matcher)>("Unexpected message", $stack11, $stack19);
+
+        return;
+    }
+
+    private sortpom.util.FileUtil createFileUtil()
+    {
+        FileUtilExceptionsTest this;
+        java.io.File $stack5;
+        java.lang.Object $stack7;
+        sortpom.util.FileUtil $stack8, $u0;
+        refutils.ReflectionHelper $u1;
+        sortpom.util.FileUtilExceptionsTest$FileAttributeUtilStub $u2;
+        sortpom.util.FileUtilExceptionsTest $r0;
+
+        this := @this: FileUtilExceptionsTest;
+
+        $u0 = new sortpom.util.FileUtil;
+
+        specialinvoke $u0.<sortpom.util.FileUtil: void <init>()>();
+
+        $u1 = new refutils.ReflectionHelper;
+
+        specialinvoke $u1.<refutils.ReflectionHelper: void <init>(java.lang.Object)>($u0);
+
+        $r0 = (sortpom.util.FileUtilExceptionsTest) this;
+
+        $stack5 = $r0.<sortpom.util.FileUtilExceptionsTest: java.io.File pomFileTemp>;
+
+        virtualinvoke $u1.<refutils.ReflectionHelper: void setField(java.lang.String,java.lang.Object)>("pomFile", $stack5);
+
+        virtualinvoke $u1.<refutils.ReflectionHelper: void setField(java.lang.String,java.lang.Object)>("newName", "backupFileName");
+
+        virtualinvoke $u1.<refutils.ReflectionHelper: void setField(java.lang.String,java.lang.Object)>("backupFileExtension", ".bak");
+
+        virtualinvoke $u1.<refutils.ReflectionHelper: void setField(java.lang.String,java.lang.Object)>("encoding", "UTF-8");
+
+        $u2 = new sortpom.util.FileUtilExceptionsTest$FileAttributeUtilStub;
+
+        specialinvoke $u2.<sortpom.util.FileUtilExceptionsTest$FileAttributeUtilStub: void <init>(sortpom.util.FileUtilExceptionsTest$1)>(null);
+
+        virtualinvoke $u1.<refutils.ReflectionHelper: void setField(java.lang.Object)>($u2);
+
+        $stack7 = staticinvoke <org.mockito.Mockito: java.lang.Object spy(java.lang.Object)>($u0);
+
+        $stack8 = (sortpom.util.FileUtil) $stack7;
+
+        return $stack8;
+    }
+
+    private static void lambda$whenPomFileTimestampCannotBeSetAnExceptionShouldBeThrown$1(sortpom.util.FileUtil) throws java.lang.Throwable
+    {
+        sortpom.util.FileUtil fileUtil;
+
+        fileUtil := @parameter0: sortpom.util.FileUtil;
+
+        virtualinvoke fileUtil.<sortpom.util.FileUtil: void savePomFile(java.lang.String)>("Whatever");
+
+        return;
+    }
+
+    private static void lambda$whenPomFileCannotBeSavedAnExceptionShouldBeThrown$0(sortpom.util.FileUtil) throws java.lang.Throwable
+    {
+        sortpom.util.FileUtil fileUtil;
+
+        fileUtil := @parameter0: sortpom.util.FileUtil;
+
+        virtualinvoke fileUtil.<sortpom.util.FileUtil: void savePomFile(java.lang.String)>("Whatever");
+
+        return;
+    }
+}

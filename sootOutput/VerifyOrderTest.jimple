@@ -1,0 +1,150 @@
+class VerifyOrderTest extends java.lang.Object
+{
+
+    void <init>()
+    {
+        VerifyOrderTest this;
+
+        this := @this: VerifyOrderTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    final void sortedButUnformattedSortOrderShouldPass() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2;
+        VerifyOrderTest this;
+
+        this := @this: VerifyOrderTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil predefinedSortOrder(java.lang.String)>("recommended_2008_06");
+
+        virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: void testVerifyXmlIsOrdered(java.lang.String)>("/Real2_input.xml");
+
+        return;
+    }
+
+    final void wrongSortedShouldNotPass() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2;
+        VerifyOrderTest this;
+
+        this := @this: VerifyOrderTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil predefinedSortOrder(java.lang.String)>("custom_1");
+
+        virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: void testVerifyXmlIsNotOrdered(java.lang.String,java.lang.CharSequence)>("/Real2_input.xml", "The xml element <properties> should be placed before <inceptionYear>");
+
+        return;
+    }
+
+    final void wrongSortedWithStrictVerifyShouldNotPass() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2, $stack3;
+        VerifyOrderTest this;
+
+        this := @this: VerifyOrderTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil verifyFailOn(java.lang.String)>("strict");
+
+        $stack3 = virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil predefinedSortOrder(java.lang.String)>("custom_1");
+
+        virtualinvoke $stack3.<sortpom.util.SortPomImplUtil: void testVerifyXmlIsNotOrdered(java.lang.String,java.lang.CharSequence)>("/Real2_input.xml", "The line 2 is not considered sorted, should be \'<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\'");
+
+        return;
+    }
+
+    void unsortedDefaultVerifyShouldPerformSort() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2;
+        VerifyOrderTest this;
+
+        this := @this: VerifyOrderTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil noKeepBlankLines()>();
+
+        virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: void testVerifySort(java.lang.String,java.lang.String,java.lang.String,boolean)>("/Real1_input.xml", "/Real1_expected.xml", "[INFO] The xml element <version> should be placed before <name>", 0);
+
+        return;
+    }
+
+    void unsortedDefaultStrictVerifyShouldPerformSort() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2, $stack3, $stack4;
+        VerifyOrderTest this;
+
+        this := @this: VerifyOrderTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil verifyFailOn(java.lang.String)>("STRICT");
+
+        $stack3 = virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil noKeepBlankLines()>();
+
+        $stack4 = virtualinvoke $stack3.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil createBackupFile(boolean)>(0);
+
+        virtualinvoke $stack4.<sortpom.util.SortPomImplUtil: void testVerifySort(java.lang.String,java.lang.String,java.lang.String,boolean)>("/Real1_input.xml", "/Real1_expected.xml", "[INFO] The line 1 is not considered sorted, should be \'<?xml version=\"1.0\" encoding=\"UTF-8\"?>\'", 0);
+
+        return;
+    }
+
+    void unsortedSortVerifyShouldPerformSort() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2, $stack3;
+        VerifyOrderTest this;
+
+        this := @this: VerifyOrderTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil noKeepBlankLines()>();
+
+        $stack3 = virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil verifyFail(java.lang.String)>("SORT");
+
+        virtualinvoke $stack3.<sortpom.util.SortPomImplUtil: void testVerifySort(java.lang.String,java.lang.String,java.lang.String,boolean)>("/Real1_input.xml", "/Real1_expected.xml", "[INFO] The xml element <version> should be placed before <name>", 0);
+
+        return;
+    }
+
+    void unsortedStopVerifyShouldPerformSort()
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2;
+        VerifyOrderTest this;
+
+        this := @this: VerifyOrderTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil verifyFail(java.lang.String)>("STOP");
+
+        virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: void testVerifyFail(java.lang.String,java.lang.Class,java.lang.String,boolean)>("/Real1_input.xml", class "Lsortpom/exception/FailureException;", "[ERROR] The xml element <version> should be placed before <name>", 0);
+
+        return;
+    }
+
+    void unsortedWarnVerifyShouldPerformSort() throws java.lang.Exception
+    {
+        sortpom.util.SortPomImplUtil $stack1, $stack2;
+        VerifyOrderTest this;
+
+        this := @this: VerifyOrderTest;
+
+        $stack1 = staticinvoke <sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil create()>();
+
+        $stack2 = virtualinvoke $stack1.<sortpom.util.SortPomImplUtil: sortpom.util.SortPomImplUtil verifyFail(java.lang.String)>("WARN");
+
+        virtualinvoke $stack2.<sortpom.util.SortPomImplUtil: void testVerifyWarn(java.lang.String,java.lang.String,boolean)>("/Real1_input.xml", "[WARNING] The xml element <version> should be placed before <name>", 0);
+
+        return;
+    }
+}

@@ -1,0 +1,196 @@
+public class Tinkerer extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        Tinkerer this;
+
+        this := @this: Tinkerer;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void process(java.util.List, org.ooc.frontend.BuildParams) throws java.io.IOException
+    {
+        java.util.List modules;
+        boolean $stack9, $stack12, $stack14, $stack24, $stack31, $stack32, $stack16;
+        int $stack13, $stack17, $stack18, $stack45, module#7;
+        org.ooc.frontend.BuildParams params;
+        java.lang.String $stack22, $stack39, $stack40, $stack46;
+        java.lang.Object $stack27, $stack29, $stack48, $stack52;
+        org.ooc.middle.hobgoblins.Resolver resolver, $u2;
+        org.ooc.frontend.model.Module $stack30, $stack34, $stack37, module;
+        java.io.PrintStream $stack38, $stack44;
+        Tinkerer this;
+        java.util.Iterator resolvers, module#4, resolver;
+        org.ooc.middle.hobgoblins.Unwrapper $u0;
+        java.util.ArrayList $u1;
+        org.ooc.middle.hobgoblins.Checker $u3;
+        org.ubi.CompilationFailedError $u4;
+        java.lang.Throwable $r0;
+
+        this := @this: Tinkerer;
+
+        modules := @parameter0: java.util.List;
+
+        params := @parameter1: org.ooc.frontend.BuildParams;
+
+        resolvers = interfaceinvoke modules.<java.util.List: java.util.Iterator iterator()>();
+
+     label01:
+        $stack9 = interfaceinvoke resolvers.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack9 == 0 goto label02;
+
+        $stack52 = interfaceinvoke resolvers.<java.util.Iterator: java.lang.Object next()>();
+
+        module = (org.ooc.frontend.model.Module) $stack52;
+
+        $u0 = new org.ooc.middle.hobgoblins.Unwrapper;
+
+        specialinvoke $u0.<org.ooc.middle.hobgoblins.Unwrapper: void <init>()>();
+
+        virtualinvoke $u0.<org.ooc.middle.hobgoblins.Unwrapper: boolean process(org.ooc.frontend.model.Module,org.ooc.frontend.BuildParams)>(module, params);
+
+        goto label01;
+
+     label02:
+        $u1 = new java.util.ArrayList;
+
+        specialinvoke $u1.<java.util.ArrayList: void <init>()>();
+
+        module#4 = interfaceinvoke modules.<java.util.List: java.util.Iterator iterator()>();
+
+     label03:
+        $stack12 = interfaceinvoke module#4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack12 == 0 goto label04;
+
+        $stack48 = interfaceinvoke module#4.<java.util.Iterator: java.lang.Object next()>();
+
+        module = (org.ooc.frontend.model.Module) $stack48;
+
+        $u2 = new org.ooc.middle.hobgoblins.Resolver;
+
+        specialinvoke $u2.<org.ooc.middle.hobgoblins.Resolver: void <init>()>();
+
+        $u2.<org.ooc.middle.hobgoblins.Resolver: org.ooc.frontend.model.Module module> = module;
+
+        interfaceinvoke $u1.<java.util.List: boolean add(java.lang.Object)>($u2);
+
+        goto label03;
+
+     label04:
+        module#7 = 0;
+
+     label05:
+        $stack13 = interfaceinvoke $u1.<java.util.List: int size()>();
+
+        if $stack13 <= 0 goto label14;
+
+        module#7 = module#7 + 1;
+
+        $stack14 = params.<org.ooc.frontend.BuildParams: boolean veryVerbose>;
+
+        if $stack14 == 0 goto label06;
+
+        $stack44 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack45 = interfaceinvoke $u1.<java.util.List: int size()>();
+
+        $stack46 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (int,int,java.util.List)>(module#7, $stack45, $u1) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\n=======================================\n\nTinkerer, round \u0001, \u0001 left (\u0001)");
+
+        virtualinvoke $stack44.<java.io.PrintStream: void println(java.lang.String)>($stack46);
+
+     label06:
+        module#4 = interfaceinvoke $u1.<java.util.List: java.util.Iterator iterator()>();
+
+     label07:
+        $stack16 = interfaceinvoke module#4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack16 == 0 goto label10;
+
+        $stack29 = interfaceinvoke module#4.<java.util.Iterator: java.lang.Object next()>();
+
+        resolver = (org.ooc.middle.hobgoblins.Resolver) $stack29;
+
+        $stack30 = resolver.<org.ooc.middle.hobgoblins.Resolver: org.ooc.frontend.model.Module module>;
+
+        $stack31 = virtualinvoke resolver.<org.ooc.middle.hobgoblins.Resolver: boolean process(org.ooc.frontend.model.Module,org.ooc.frontend.BuildParams)>($stack30, params);
+
+        if $stack31 == 0 goto label08;
+
+        goto label07;
+
+     label08:
+        $stack32 = params.<org.ooc.frontend.BuildParams: boolean veryVerbose>;
+
+        if $stack32 == 0 goto label09;
+
+        $stack38 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack37 = resolver.<org.ooc.middle.hobgoblins.Resolver: org.ooc.frontend.model.Module module>;
+
+        $stack39 = virtualinvoke $stack37.<org.ooc.frontend.model.Module: java.lang.String getFullName()>();
+
+        $stack40 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String)>($stack39) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Module \u0001 finished resolving.");
+
+        virtualinvoke $stack38.<java.io.PrintStream: void println(java.lang.String)>($stack40);
+
+     label09:
+        $u3 = new org.ooc.middle.hobgoblins.Checker;
+
+        specialinvoke $u3.<org.ooc.middle.hobgoblins.Checker: void <init>()>();
+
+        $stack34 = resolver.<org.ooc.middle.hobgoblins.Resolver: org.ooc.frontend.model.Module module>;
+
+        virtualinvoke $u3.<org.ooc.middle.hobgoblins.Checker: boolean process(org.ooc.frontend.model.Module,org.ooc.frontend.BuildParams)>($stack34, params);
+
+        interfaceinvoke module#4.<java.util.Iterator: void remove()>();
+
+        goto label07;
+
+     label10:
+        $stack17 = params.<org.ooc.frontend.BuildParams: int blowup>;
+
+        if module#7 != $stack17 goto label12;
+
+        resolver = interfaceinvoke $u1.<java.util.List: java.util.Iterator iterator()>();
+
+     label11:
+        $stack24 = interfaceinvoke resolver.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack24 == 0 goto label12;
+
+        $stack27 = interfaceinvoke resolver.<java.util.Iterator: java.lang.Object next()>();
+
+        resolver = (org.ooc.middle.hobgoblins.Resolver) $stack27;
+
+        resolver.<org.ooc.middle.hobgoblins.Resolver: boolean fatal> = 1;
+
+        goto label11;
+
+     label12:
+        $stack18 = params.<org.ooc.frontend.BuildParams: int blowup>;
+
+        if module#7 <= $stack18 goto label13;
+
+        $u4 = new org.ubi.CompilationFailedError;
+
+        $stack22 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.util.List)>($u1) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Tinkerer going round in circles. Remaining modules = \u0001");
+
+        specialinvoke $u4.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>(null, $stack22);
+
+        $r0 = (java.lang.Throwable) $u4;
+
+        throw $r0;
+
+     label13:
+        goto label05;
+
+     label14:
+        return;
+    }
+}

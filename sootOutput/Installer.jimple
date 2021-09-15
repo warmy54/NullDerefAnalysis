@@ -1,0 +1,687 @@
+public class Installer extends java.lang.Object
+{
+    public static final java.lang.String DEFAULT_DISTRIBUTION_PATH;
+    private final org.apache.maven.wrapper.Downloader download;
+    private final org.apache.maven.wrapper.PathAssembler pathAssembler;
+
+    public void <init>(org.apache.maven.wrapper.Downloader, org.apache.maven.wrapper.PathAssembler)
+    {
+        Installer this;
+        org.apache.maven.wrapper.Downloader download;
+        org.apache.maven.wrapper.PathAssembler pathAssembler;
+        org.apache.maven.wrapper.Installer $r0, $r1;
+
+        this := @this: Installer;
+
+        download := @parameter0: org.apache.maven.wrapper.Downloader;
+
+        pathAssembler := @parameter1: org.apache.maven.wrapper.PathAssembler;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.wrapper.Installer) this;
+
+        $r0.<org.apache.maven.wrapper.Installer: org.apache.maven.wrapper.Downloader download> = download;
+
+        $r1 = (org.apache.maven.wrapper.Installer) this;
+
+        $r1.<org.apache.maven.wrapper.Installer: org.apache.maven.wrapper.PathAssembler pathAssembler> = pathAssembler;
+
+        return;
+    }
+
+    public java.nio.file.Path createDist(org.apache.maven.wrapper.WrapperConfiguration) throws java.io.IOException, java.net.URISyntaxException
+    {
+        java.lang.String mvnwRepoUrl, $stack26, $stack32, $stack58, $stack61, $stack112, $stack114, $stack118, $stack16, $stack48;
+        org.apache.maven.wrapper.WrapperConfiguration configuration;
+        boolean alwaysDownload, alwaysUnpack, $stack75, $stack79, $stack97, downloaded, $stack50;
+        Installer this;
+        org.apache.maven.wrapper.PathAssembler$LocalDistribution localDistribution;
+        java.nio.file.Path localZipFile, $stack23, $stack52, $stack55, tmpZipFile, $stack38, $stack43, $stack46;
+        java.lang.StringBuilder $stack24, $stack25, $stack30, $stack31, $stack110, $stack111, $stack113, $stack116, $stack117, $stack14, $stack15, $stack42, $stack44, $stack45, $stack47, $u0, $u2, $u3, $u4, $u5, $u7;
+        org.apache.maven.wrapper.Downloader $stack33;
+        java.nio.file.CopyOption[] $stack34;
+        java.lang.Object $stack51, $stack54;
+        int $stack53;
+        java.lang.Object[] $stack57, $stack60;
+        java.nio.file.LinkOption[] $stack78;
+        java.net.URI distributionUrl, $u1;
+        org.apache.maven.wrapper.PathAssembler $stack19;
+        java.util.List dirs;
+        org.apache.maven.wrapper.Installer$1 $u6;
+        java.lang.RuntimeException $u8;
+        java.lang.IllegalStateException $u9;
+        org.apache.maven.wrapper.Installer $r0, $r1, $r2, $r3, $r5, $r6, $r7;
+        java.nio.file.FileVisitor $r4;
+
+        this := @this: Installer;
+
+        configuration := @parameter0: org.apache.maven.wrapper.WrapperConfiguration;
+
+        mvnwRepoUrl = staticinvoke <java.lang.System: java.lang.String getenv(java.lang.String)>("MVNW_REPOURL");
+
+        if mvnwRepoUrl == null goto label1;
+
+        $stack97 = virtualinvoke mvnwRepoUrl.<java.lang.String: boolean isEmpty()>();
+
+        if $stack97 != 0 goto label1;
+
+        $u1 = new java.net.URI;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack110 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(mvnwRepoUrl);
+
+        $stack111 = virtualinvoke $stack110.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        $stack112 = <org.apache.maven.wrapper.MavenWrapperMain: java.lang.String MVN_PATH>;
+
+        $stack113 = virtualinvoke $stack111.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack112);
+
+        $stack114 = virtualinvoke $stack113.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<java.net.URI: void <init>(java.lang.String)>($stack114);
+
+        distributionUrl = $u1;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack116 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Detected MVNW_REPOURL environment variable ");
+
+        $stack117 = virtualinvoke $stack116.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(mvnwRepoUrl);
+
+        $stack118 = virtualinvoke $stack117.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.apache.maven.wrapper.Logger: void info(java.lang.String)>($stack118);
+
+        goto label2;
+
+     label1:
+        distributionUrl = virtualinvoke configuration.<org.apache.maven.wrapper.WrapperConfiguration: java.net.URI getDistribution()>();
+
+     label2:
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack14 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Downloading Maven binary from ");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(distributionUrl);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.apache.maven.wrapper.Logger: void info(java.lang.String)>($stack16);
+
+        alwaysDownload = virtualinvoke configuration.<org.apache.maven.wrapper.WrapperConfiguration: boolean isAlwaysDownload()>();
+
+        alwaysUnpack = virtualinvoke configuration.<org.apache.maven.wrapper.WrapperConfiguration: boolean isAlwaysUnpack()>();
+
+        $r0 = (org.apache.maven.wrapper.Installer) this;
+
+        $stack19 = $r0.<org.apache.maven.wrapper.Installer: org.apache.maven.wrapper.PathAssembler pathAssembler>;
+
+        localDistribution = virtualinvoke $stack19.<org.apache.maven.wrapper.PathAssembler: org.apache.maven.wrapper.PathAssembler$LocalDistribution getDistribution(org.apache.maven.wrapper.WrapperConfiguration)>(configuration);
+
+        localZipFile = virtualinvoke localDistribution.<org.apache.maven.wrapper.PathAssembler$LocalDistribution: java.nio.file.Path getZipFile()>();
+
+        downloaded = 0;
+
+        if alwaysDownload != 0 goto label3;
+
+        $stack78 = newarray (java.nio.file.LinkOption)[0];
+
+        $stack79 = staticinvoke <java.nio.file.Files: boolean exists(java.nio.file.Path,java.nio.file.LinkOption[])>(localZipFile, $stack78);
+
+        if $stack79 != 0 goto label4;
+
+     label3:
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack23 = interfaceinvoke localZipFile.<java.nio.file.Path: java.nio.file.Path getFileName()>();
+
+        $stack24 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack23);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".part");
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        tmpZipFile = interfaceinvoke localZipFile.<java.nio.file.Path: java.nio.file.Path resolveSibling(java.lang.String)>($stack26);
+
+        staticinvoke <java.nio.file.Files: boolean deleteIfExists(java.nio.file.Path)>(tmpZipFile);
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack30 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Downloading ");
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(distributionUrl);
+
+        $stack32 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.apache.maven.wrapper.Logger: void info(java.lang.String)>($stack32);
+
+        $r1 = (org.apache.maven.wrapper.Installer) this;
+
+        $stack33 = $r1.<org.apache.maven.wrapper.Installer: org.apache.maven.wrapper.Downloader download>;
+
+        interfaceinvoke $stack33.<org.apache.maven.wrapper.Downloader: void download(java.net.URI,java.nio.file.Path)>(distributionUrl, tmpZipFile);
+
+        $stack34 = newarray (java.nio.file.CopyOption)[0];
+
+        staticinvoke <java.nio.file.Files: java.nio.file.Path move(java.nio.file.Path,java.nio.file.Path,java.nio.file.CopyOption[])>(tmpZipFile, localZipFile, $stack34);
+
+        downloaded = 1;
+
+     label4:
+        tmpZipFile = virtualinvoke localDistribution.<org.apache.maven.wrapper.PathAssembler$LocalDistribution: java.nio.file.Path getDistributionDir()>();
+
+        $r2 = (org.apache.maven.wrapper.Installer) this;
+
+        dirs = specialinvoke $r2.<org.apache.maven.wrapper.Installer: java.util.List listDirs(java.nio.file.Path)>(tmpZipFile);
+
+        if downloaded != 0 goto label5;
+
+        if alwaysUnpack != 0 goto label5;
+
+        $stack75 = interfaceinvoke dirs.<java.util.List: boolean isEmpty()>();
+
+        if $stack75 == 0 goto label7;
+
+     label5:
+        $stack38 = interfaceinvoke tmpZipFile.<java.nio.file.Path: java.nio.file.Path toAbsolutePath()>();
+
+        $u6 = new org.apache.maven.wrapper.Installer$1;
+
+        $r3 = (org.apache.maven.wrapper.Installer) this;
+
+        specialinvoke $u6.<org.apache.maven.wrapper.Installer$1: void <init>(org.apache.maven.wrapper.Installer,java.nio.file.Path)>($r3, tmpZipFile);
+
+        $r4 = (java.nio.file.FileVisitor) $u6;
+
+        staticinvoke <java.nio.file.Files: java.nio.file.Path walkFileTree(java.nio.file.Path,java.nio.file.FileVisitor)>($stack38, $r4);
+
+        $u7 = new java.lang.StringBuilder;
+
+        specialinvoke $u7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack42 = virtualinvoke $u7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unzipping ");
+
+        $stack43 = interfaceinvoke localZipFile.<java.nio.file.Path: java.nio.file.Path toAbsolutePath()>();
+
+        $stack44 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack43);
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to ");
+
+        $stack46 = interfaceinvoke tmpZipFile.<java.nio.file.Path: java.nio.file.Path toAbsolutePath()>();
+
+        $stack47 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack46);
+
+        $stack48 = virtualinvoke $stack47.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.apache.maven.wrapper.Logger: void info(java.lang.String)>($stack48);
+
+        $r5 = (org.apache.maven.wrapper.Installer) this;
+
+        specialinvoke $r5.<org.apache.maven.wrapper.Installer: void unzip(java.nio.file.Path,java.nio.file.Path)>(localZipFile, tmpZipFile);
+
+        $r6 = (org.apache.maven.wrapper.Installer) this;
+
+        dirs = specialinvoke $r6.<org.apache.maven.wrapper.Installer: java.util.List listDirs(java.nio.file.Path)>(tmpZipFile);
+
+        $stack50 = interfaceinvoke dirs.<java.util.List: boolean isEmpty()>();
+
+        if $stack50 == 0 goto label6;
+
+        $u8 = new java.lang.RuntimeException;
+
+        $stack60 = newarray (java.lang.Object)[1];
+
+        $stack60[0] = distributionUrl;
+
+        $stack61 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Maven distribution \'%s\' does not contain any directories. Expected to find exactly 1 directory.", $stack60);
+
+        specialinvoke $u8.<java.lang.RuntimeException: void <init>(java.lang.String)>($stack61);
+
+        throw $u8;
+
+     label6:
+        $stack51 = interfaceinvoke dirs.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack52 = (java.nio.file.Path) $stack51;
+
+        $r7 = (org.apache.maven.wrapper.Installer) this;
+
+        specialinvoke $r7.<org.apache.maven.wrapper.Installer: void setExecutablePermissions(java.nio.file.Path)>($stack52);
+
+     label7:
+        $stack53 = interfaceinvoke dirs.<java.util.List: int size()>();
+
+        if $stack53 == 1 goto label8;
+
+        $u9 = new java.lang.IllegalStateException;
+
+        $stack57 = newarray (java.lang.Object)[1];
+
+        $stack57[0] = distributionUrl;
+
+        $stack58 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Maven distribution \'%s\' contains too many directories. Expected to find exactly 1 directory.", $stack57);
+
+        specialinvoke $u9.<java.lang.IllegalStateException: void <init>(java.lang.String)>($stack58);
+
+        throw $u9;
+
+     label8:
+        $stack54 = interfaceinvoke dirs.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack55 = (java.nio.file.Path) $stack54;
+
+        return $stack55;
+    }
+
+    private java.util.List listDirs(java.nio.file.Path) throws java.io.IOException
+    {
+        java.nio.file.Path distDir;
+        java.nio.file.FileVisitOption[] $stack2;
+        java.util.stream.Stream $stack3, $stack5, $stack7;
+        java.util.function.Predicate $stack4, $stack6;
+        java.util.stream.Collector $stack8;
+        java.lang.Object $stack9;
+        java.util.List $stack10;
+        Installer this;
+
+        this := @this: Installer;
+
+        distDir := @parameter0: java.nio.file.Path;
+
+        $stack2 = newarray (java.nio.file.FileVisitOption)[0];
+
+        $stack3 = staticinvoke <java.nio.file.Files: java.util.stream.Stream walk(java.nio.file.Path,int,java.nio.file.FileVisitOption[])>(distDir, 1, $stack2);
+
+        $stack4 = staticinvoke <Installer$lambda_listDirs_0__309: java.util.function.Predicate bootstrap$(java.nio.file.Path)>(distDir);
+
+        $stack5 = interfaceinvoke $stack3.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack4);
+
+        $stack6 = staticinvoke <Installer$lambda_listDirs_1__310: java.util.function.Predicate bootstrap$()>();
+
+        $stack7 = interfaceinvoke $stack5.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack6);
+
+        $stack8 = staticinvoke <java.util.stream.Collectors: java.util.stream.Collector toList()>();
+
+        $stack9 = interfaceinvoke $stack7.<java.util.stream.Stream: java.lang.Object collect(java.util.stream.Collector)>($stack8);
+
+        $stack10 = (java.util.List) $stack9;
+
+        return $stack10;
+    }
+
+    private void setExecutablePermissions(java.nio.file.Path)
+    {
+        Installer this;
+        boolean $stack10;
+        java.nio.file.Path mavenHome, mavenCommand;
+        java.lang.String[] $stack13;
+        java.lang.String $stack15, $stack22, $stack27, $stack33, $stack35, errorMessage;
+        java.lang.Process p;
+        int $stack17;
+        java.io.InputStream $stack20;
+        java.lang.StringBuilder $stack25, $stack26, $stack32, $stack34, $u1, $u5;
+        java.lang.Object[] $stack28;
+        java.lang.Exception $stack36;
+        java.lang.Throwable $stack39, $stack40, $stack42, $stack43;
+        java.lang.ProcessBuilder $u0;
+        java.io.InputStreamReader $u2;
+        java.io.BufferedReader $u3;
+        java.util.Formatter $u4;
+        org.apache.maven.wrapper.Installer $r0;
+
+        this := @this: Installer;
+
+        mavenHome := @parameter0: java.nio.file.Path;
+
+        $r0 = (org.apache.maven.wrapper.Installer) this;
+
+        $stack10 = specialinvoke $r0.<org.apache.maven.wrapper.Installer: boolean isWindows()>();
+
+        if $stack10 == 0 goto label01;
+
+        return;
+
+     label01:
+        mavenCommand = interfaceinvoke mavenHome.<java.nio.file.Path: java.nio.file.Path resolve(java.lang.String)>("bin/mvn");
+
+        errorMessage = null;
+
+     label02:
+        $u0 = new java.lang.ProcessBuilder;
+
+        $stack13 = newarray (java.lang.String)[3];
+
+        $stack13[0] = "chmod";
+
+        $stack13[1] = "755";
+
+        $stack15 = interfaceinvoke mavenCommand.<java.nio.file.Path: java.lang.String toString()>();
+
+        $stack13[2] = $stack15;
+
+        specialinvoke $u0.<java.lang.ProcessBuilder: void <init>(java.lang.String[])>($stack13);
+
+        p = virtualinvoke $u0.<java.lang.ProcessBuilder: java.lang.Process start()>();
+
+        $stack17 = virtualinvoke p.<java.lang.Process: int waitFor()>();
+
+        if $stack17 != 0 goto label03;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack32 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Set executable permissions for: ");
+
+        $stack33 = interfaceinvoke mavenCommand.<java.nio.file.Path: java.lang.String toString()>();
+
+        $stack34 = virtualinvoke $stack32.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack33);
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.apache.maven.wrapper.Logger: void info(java.lang.String)>($stack35);
+
+        goto label19;
+
+     label03:
+        $u3 = new java.io.BufferedReader;
+
+        $u2 = new java.io.InputStreamReader;
+
+        $stack20 = virtualinvoke p.<java.lang.Process: java.io.InputStream getInputStream()>();
+
+        specialinvoke $u2.<java.io.InputStreamReader: void <init>(java.io.InputStream)>($stack20);
+
+        specialinvoke $u3.<java.io.BufferedReader: void <init>(java.io.Reader)>($u2);
+
+     label04:
+        $u4 = new java.util.Formatter;
+
+        specialinvoke $u4.<java.util.Formatter: void <init>()>();
+
+     label05:
+        $stack22 = virtualinvoke $u3.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        if $stack22 == null goto label06;
+
+        $stack28 = newarray (java.lang.Object)[1];
+
+        $stack28[0] = $stack22;
+
+        virtualinvoke $u4.<java.util.Formatter: java.util.Formatter format(java.lang.String,java.lang.Object[])>("%s%n", $stack28);
+
+        goto label05;
+
+     label06:
+        errorMessage = virtualinvoke $u4.<java.util.Formatter: java.lang.String toString()>();
+
+     label07:
+        virtualinvoke $u4.<java.util.Formatter: void close()>();
+
+        goto label13;
+
+     label08:
+        $stack43 := @caughtexception;
+
+     label09:
+        virtualinvoke $u4.<java.util.Formatter: void close()>();
+
+     label10:
+        goto label12;
+
+     label11:
+        $stack42 := @caughtexception;
+
+        virtualinvoke $stack43.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack42);
+
+     label12:
+        throw $stack43;
+
+     label13:
+        virtualinvoke $u3.<java.io.BufferedReader: void close()>();
+
+        goto label19;
+
+     label14:
+        $stack40 := @caughtexception;
+
+     label15:
+        virtualinvoke $u3.<java.io.BufferedReader: void close()>();
+
+     label16:
+        goto label18;
+
+     label17:
+        $stack39 := @caughtexception;
+
+        virtualinvoke $stack40.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack39);
+
+     label18:
+        throw $stack40;
+
+     label19:
+        goto label21;
+
+     label20:
+        $stack36 := @caughtexception;
+
+        errorMessage = virtualinvoke $stack36.<java.lang.Exception: java.lang.String getMessage()>();
+
+     label21:
+        if errorMessage == null goto label22;
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack25 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not set executable permissions for: ");
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(mavenCommand);
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.apache.maven.wrapper.Logger: void warn(java.lang.String)>($stack27);
+
+        staticinvoke <org.apache.maven.wrapper.Logger: void warn(java.lang.String)>("Please do this manually if you want to use maven.");
+
+     label22:
+        return;
+
+        catch java.lang.Throwable from label05 to label07 with label08;
+        catch java.lang.Throwable from label09 to label10 with label11;
+        catch java.lang.Throwable from label04 to label13 with label14;
+        catch java.lang.Throwable from label15 to label16 with label17;
+        catch java.io.IOException from label02 to label19 with label20;
+        catch java.lang.InterruptedException from label02 to label19 with label20;
+    }
+
+    private boolean isWindows()
+    {
+        java.lang.String $stack2, osName;
+        java.util.Locale $stack3;
+        int $stack5;
+        Installer this;
+        boolean $stack6;
+
+        this := @this: Installer;
+
+        $stack2 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("os.name");
+
+        $stack3 = <java.util.Locale: java.util.Locale US>;
+
+        osName = virtualinvoke $stack2.<java.lang.String: java.lang.String toLowerCase(java.util.Locale)>($stack3);
+
+        $stack5 = virtualinvoke osName.<java.lang.String: int indexOf(java.lang.String)>("windows");
+
+        if $stack5 <= -1 goto label1;
+
+        $stack6 = 1;
+
+        goto label2;
+
+     label1:
+        $stack6 = 0;
+
+     label2:
+        return $stack6;
+    }
+
+    private void unzip(java.nio.file.Path, java.nio.file.Path) throws java.io.IOException
+    {
+        java.util.zip.ZipFile $stack7;
+        java.nio.file.Path zip, dest, $stack14, targetFile, $stack18;
+        java.io.File $stack8;
+        java.lang.Object $stack11;
+        boolean $stack12, $stack16, $stack10;
+        java.lang.String $stack13;
+        java.nio.file.attribute.FileAttribute[] $stack19;
+        java.io.InputStream $stack21;
+        java.nio.file.CopyOption[] $stack22;
+        java.lang.Throwable $stack24, $stack25;
+        Installer this;
+        java.util.Enumeration entries;
+        java.util.zip.ZipEntry entry;
+
+        this := @this: Installer;
+
+        zip := @parameter0: java.nio.file.Path;
+
+        dest := @parameter1: java.nio.file.Path;
+
+        $stack7 = new java.util.zip.ZipFile;
+
+        $stack8 = interfaceinvoke zip.<java.nio.file.Path: java.io.File toFile()>();
+
+        specialinvoke $stack7.<java.util.zip.ZipFile: void <init>(java.io.File)>($stack8);
+
+     label01:
+        entries = virtualinvoke $stack7.<java.util.zip.ZipFile: java.util.Enumeration entries()>();
+
+     label02:
+        $stack10 = interfaceinvoke entries.<java.util.Enumeration: boolean hasMoreElements()>();
+
+        if $stack10 == 0 goto label05;
+
+        $stack11 = interfaceinvoke entries.<java.util.Enumeration: java.lang.Object nextElement()>();
+
+        entry = (java.util.zip.ZipEntry) $stack11;
+
+        $stack12 = virtualinvoke entry.<java.util.zip.ZipEntry: boolean isDirectory()>();
+
+        if $stack12 == 0 goto label03;
+
+        goto label02;
+
+     label03:
+        $stack13 = virtualinvoke entry.<java.util.zip.ZipEntry: java.lang.String getName()>();
+
+        $stack14 = interfaceinvoke dest.<java.nio.file.Path: java.nio.file.Path resolve(java.lang.String)>($stack13);
+
+        targetFile = interfaceinvoke $stack14.<java.nio.file.Path: java.nio.file.Path normalize()>();
+
+        $stack16 = interfaceinvoke targetFile.<java.nio.file.Path: boolean startsWith(java.nio.file.Path)>(dest);
+
+        if $stack16 == 0 goto label04;
+
+        $stack18 = interfaceinvoke targetFile.<java.nio.file.Path: java.nio.file.Path getParent()>();
+
+        $stack19 = newarray (java.nio.file.attribute.FileAttribute)[0];
+
+        staticinvoke <java.nio.file.Files: java.nio.file.Path createDirectories(java.nio.file.Path,java.nio.file.attribute.FileAttribute[])>($stack18, $stack19);
+
+        $stack21 = virtualinvoke $stack7.<java.util.zip.ZipFile: java.io.InputStream getInputStream(java.util.zip.ZipEntry)>(entry);
+
+        $stack22 = newarray (java.nio.file.CopyOption)[0];
+
+        staticinvoke <java.nio.file.Files: long copy(java.io.InputStream,java.nio.file.Path,java.nio.file.CopyOption[])>($stack21, targetFile, $stack22);
+
+     label04:
+        goto label02;
+
+     label05:
+        virtualinvoke $stack7.<java.util.zip.ZipFile: void close()>();
+
+        goto label11;
+
+     label06:
+        $stack25 := @caughtexception;
+
+     label07:
+        virtualinvoke $stack7.<java.util.zip.ZipFile: void close()>();
+
+     label08:
+        goto label10;
+
+     label09:
+        $stack24 := @caughtexception;
+
+        virtualinvoke $stack25.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack24);
+
+     label10:
+        throw $stack25;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label01 to label05 with label06;
+        catch java.lang.Throwable from label07 to label08 with label09;
+    }
+
+    private static boolean lambda$listDirs$1(java.nio.file.Path)
+    {
+        java.nio.file.Path x$0;
+        java.nio.file.LinkOption[] $stack1;
+        boolean $stack2;
+
+        x$0 := @parameter0: java.nio.file.Path;
+
+        $stack1 = newarray (java.nio.file.LinkOption)[0];
+
+        $stack2 = staticinvoke <java.nio.file.Files: boolean isDirectory(java.nio.file.Path,java.nio.file.LinkOption[])>(x$0, $stack1);
+
+        return $stack2;
+    }
+
+    private static boolean lambda$listDirs$0(java.nio.file.Path, java.nio.file.Path)
+    {
+        java.nio.file.Path distDir, p;
+        boolean $stack2, $stack3;
+
+        distDir := @parameter0: java.nio.file.Path;
+
+        p := @parameter1: java.nio.file.Path;
+
+        $stack2 = interfaceinvoke distDir.<java.nio.file.Path: boolean equals(java.lang.Object)>(p);
+
+        if $stack2 != 0 goto label1;
+
+        $stack3 = 1;
+
+        goto label2;
+
+     label1:
+        $stack3 = 0;
+
+     label2:
+        return $stack3;
+    }
+
+    public static void <clinit>()
+    {
+        <Installer: java.lang.String DEFAULT_DISTRIBUTION_PATH> = "wrapper/dists";
+
+        return;
+    }
+}

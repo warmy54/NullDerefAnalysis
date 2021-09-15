@@ -1,0 +1,76 @@
+public class PomlessCollectionStrategy extends java.lang.Object implements org.apache.maven.project.collector.ProjectCollectionStrategy
+{
+    private final org.apache.maven.project.ProjectBuilder projectBuilder;
+
+    public void <init>(org.apache.maven.project.ProjectBuilder)
+    {
+        PomlessCollectionStrategy this;
+        org.apache.maven.project.ProjectBuilder projectBuilder;
+        org.apache.maven.project.collector.PomlessCollectionStrategy $r0;
+
+        this := @this: PomlessCollectionStrategy;
+
+        projectBuilder := @parameter0: org.apache.maven.project.ProjectBuilder;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.project.collector.PomlessCollectionStrategy) this;
+
+        $r0.<org.apache.maven.project.collector.PomlessCollectionStrategy: org.apache.maven.project.ProjectBuilder projectBuilder> = projectBuilder;
+
+        return;
+    }
+
+    public java.util.List collectProjects(org.apache.maven.execution.MavenExecutionRequest) throws org.apache.maven.project.ProjectBuildingException
+    {
+        org.apache.maven.execution.MavenExecutionRequest request;
+        org.apache.maven.project.ProjectBuildingRequest buildingRequest;
+        java.lang.Class $stack7;
+        java.net.URL $stack8;
+        PomlessCollectionStrategy this;
+        org.apache.maven.project.ProjectBuilder $stack9;
+        org.apache.maven.project.ProjectBuildingResult $stack10;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.project.MavenProject[] $stack13;
+        java.util.List $stack14;
+        org.apache.maven.model.building.UrlModelSource $u0;
+        org.apache.maven.project.collector.PomlessCollectionStrategy $r0;
+        org.apache.maven.model.building.ModelSource $r1;
+
+        this := @this: PomlessCollectionStrategy;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        buildingRequest = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.project.ProjectBuildingRequest getProjectBuildingRequest()>();
+
+        $u0 = new org.apache.maven.model.building.UrlModelSource;
+
+        $stack7 = class "Lorg/apache/maven/DefaultMaven;";
+
+        $stack8 = virtualinvoke $stack7.<java.lang.Class: java.net.URL getResource(java.lang.String)>("project/standalone.xml");
+
+        specialinvoke $u0.<org.apache.maven.model.building.UrlModelSource: void <init>(java.net.URL)>($stack8);
+
+        $r0 = (org.apache.maven.project.collector.PomlessCollectionStrategy) this;
+
+        $stack9 = $r0.<org.apache.maven.project.collector.PomlessCollectionStrategy: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        $r1 = (org.apache.maven.model.building.ModelSource) $u0;
+
+        $stack10 = interfaceinvoke $stack9.<org.apache.maven.project.ProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(org.apache.maven.model.building.ModelSource,org.apache.maven.project.ProjectBuildingRequest)>($r1, buildingRequest);
+
+        project = interfaceinvoke $stack10.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+        virtualinvoke project.<org.apache.maven.project.MavenProject: void setExecutionRoot(boolean)>(1);
+
+        interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setProjectPresent(boolean)>(0);
+
+        $stack13 = newarray (org.apache.maven.project.MavenProject)[1];
+
+        $stack13[0] = project;
+
+        $stack14 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack13);
+
+        return $stack14;
+    }
+}

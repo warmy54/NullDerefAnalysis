@@ -1,0 +1,111 @@
+class SortChildrenOperation extends java.lang.Object implements sortpom.wrapper.operation.HierarchyWrapperOperation
+{
+
+    void <init>()
+    {
+        SortChildrenOperation this;
+
+        this := @this: SortChildrenOperation;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void manipulateChildElements(java.util.List)
+    {
+        java.util.List children;
+        int $stack5, i;
+        java.lang.Object $stack6;
+        sortpom.wrapper.operation.HierarchyWrapper wrapperImpl;
+        sortpom.wrapper.content.Wrapper wrapper;
+        boolean $stack10;
+        SortChildrenOperation this;
+        sortpom.wrapper.operation.SortChildrenOperation $r0;
+
+        this := @this: SortChildrenOperation;
+
+        children := @parameter0: java.util.List;
+
+        i = 0;
+
+     label1:
+        $stack5 = interfaceinvoke children.<java.util.List: int size()>();
+
+        if i >= $stack5 goto label3;
+
+        $stack6 = interfaceinvoke children.<java.util.List: java.lang.Object get(int)>(i);
+
+        wrapperImpl = (sortpom.wrapper.operation.HierarchyWrapper) $stack6;
+
+        wrapper = virtualinvoke wrapperImpl.<sortpom.wrapper.operation.HierarchyWrapper: sortpom.wrapper.content.Wrapper getElementContent()>();
+
+        if wrapper == null goto label2;
+
+        $stack10 = interfaceinvoke wrapper.<sortpom.wrapper.content.Wrapper: boolean isSortable()>();
+
+        if $stack10 == 0 goto label2;
+
+        $r0 = (sortpom.wrapper.operation.SortChildrenOperation) this;
+
+        specialinvoke $r0.<sortpom.wrapper.operation.SortChildrenOperation: void insertChildInSortedOrder(java.util.List,int,sortpom.wrapper.operation.HierarchyWrapper,sortpom.wrapper.content.Wrapper)>(children, i, wrapperImpl, wrapper);
+
+     label2:
+        i = i + 1;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    private void insertChildInSortedOrder(java.util.List, int, sortpom.wrapper.operation.HierarchyWrapper, sortpom.wrapper.content.Wrapper)
+    {
+        int indexOfChild, j;
+        sortpom.wrapper.content.Wrapper wrapper, $stack8;
+        java.util.List children;
+        java.lang.Object $stack6;
+        sortpom.wrapper.operation.HierarchyWrapper $stack7, wrapperImpl;
+        boolean $stack9;
+        SortChildrenOperation this;
+
+        this := @this: SortChildrenOperation;
+
+        children := @parameter0: java.util.List;
+
+        indexOfChild := @parameter1: int;
+
+        wrapperImpl := @parameter2: sortpom.wrapper.operation.HierarchyWrapper;
+
+        wrapper := @parameter3: sortpom.wrapper.content.Wrapper;
+
+        j = 0;
+
+     label1:
+        if j >= indexOfChild goto label3;
+
+        $stack6 = interfaceinvoke children.<java.util.List: java.lang.Object get(int)>(j);
+
+        $stack7 = (sortpom.wrapper.operation.HierarchyWrapper) $stack6;
+
+        $stack8 = virtualinvoke $stack7.<sortpom.wrapper.operation.HierarchyWrapper: sortpom.wrapper.content.Wrapper getElementContent()>();
+
+        $stack9 = interfaceinvoke wrapper.<sortpom.wrapper.content.Wrapper: boolean isBefore(sortpom.wrapper.content.Wrapper)>($stack8);
+
+        if $stack9 == 0 goto label2;
+
+        interfaceinvoke children.<java.util.List: java.lang.Object remove(int)>(indexOfChild);
+
+        interfaceinvoke children.<java.util.List: void add(int,java.lang.Object)>(j, wrapperImpl);
+
+        return;
+
+     label2:
+        j = j + 1;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+}

@@ -1,0 +1,90 @@
+public class BasedirBeanConfigurationPathTranslator extends java.lang.Object implements org.apache.maven.configuration.BeanConfigurationPathTranslator
+{
+    private final java.io.File basedir;
+
+    public void <init>(java.io.File)
+    {
+        BasedirBeanConfigurationPathTranslator this;
+        java.io.File basedir;
+        org.apache.maven.configuration.BasedirBeanConfigurationPathTranslator $r0;
+
+        this := @this: BasedirBeanConfigurationPathTranslator;
+
+        basedir := @parameter0: java.io.File;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.configuration.BasedirBeanConfigurationPathTranslator) this;
+
+        $r0.<org.apache.maven.configuration.BasedirBeanConfigurationPathTranslator: java.io.File basedir> = basedir;
+
+        return;
+    }
+
+    public java.io.File translatePath(java.io.File)
+    {
+        java.io.File path, $stack3, $stack11, result, $u0, $u1;
+        BasedirBeanConfigurationPathTranslator this;
+        boolean $stack5, $stack8;
+        java.lang.String $stack6, $stack7, $stack12;
+        java.net.URI $stack13, $stack14;
+        org.apache.maven.configuration.BasedirBeanConfigurationPathTranslator $r0, $r1;
+
+        this := @this: BasedirBeanConfigurationPathTranslator;
+
+        path := @parameter0: java.io.File;
+
+        result = path;
+
+        if path == null goto label3;
+
+        $r0 = (org.apache.maven.configuration.BasedirBeanConfigurationPathTranslator) this;
+
+        $stack3 = $r0.<org.apache.maven.configuration.BasedirBeanConfigurationPathTranslator: java.io.File basedir>;
+
+        if $stack3 == null goto label3;
+
+        $stack5 = virtualinvoke path.<java.io.File: boolean isAbsolute()>();
+
+        if $stack5 == 0 goto label1;
+
+        goto label3;
+
+     label1:
+        $stack6 = virtualinvoke path.<java.io.File: java.lang.String getPath()>();
+
+        $stack7 = <java.io.File: java.lang.String separator>;
+
+        $stack8 = virtualinvoke $stack6.<java.lang.String: boolean startsWith(java.lang.String)>($stack7);
+
+        if $stack8 == 0 goto label2;
+
+        result = virtualinvoke path.<java.io.File: java.io.File getAbsoluteFile()>();
+
+        goto label3;
+
+     label2:
+        $u1 = new java.io.File;
+
+        $u0 = new java.io.File;
+
+        $r1 = (org.apache.maven.configuration.BasedirBeanConfigurationPathTranslator) this;
+
+        $stack11 = $r1.<org.apache.maven.configuration.BasedirBeanConfigurationPathTranslator: java.io.File basedir>;
+
+        $stack12 = virtualinvoke path.<java.io.File: java.lang.String getPath()>();
+
+        specialinvoke $u0.<java.io.File: void <init>(java.io.File,java.lang.String)>($stack11, $stack12);
+
+        $stack13 = virtualinvoke $u0.<java.io.File: java.net.URI toURI()>();
+
+        $stack14 = virtualinvoke $stack13.<java.net.URI: java.net.URI normalize()>();
+
+        specialinvoke $u1.<java.io.File: void <init>(java.net.URI)>($stack14);
+
+        result = virtualinvoke $u1.<java.io.File: java.io.File getAbsoluteFile()>();
+
+     label3:
+        return result;
+    }
+}

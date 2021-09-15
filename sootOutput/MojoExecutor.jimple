@@ -1,0 +1,977 @@
+public class MojoExecutor extends java.lang.Object
+{
+    private org.apache.maven.plugin.BuildPluginManager pluginManager;
+    private org.apache.maven.plugin.MavenPluginManager mavenPluginManager;
+    private org.apache.maven.lifecycle.internal.LifecycleDependencyResolver lifeCycleDependencyResolver;
+    private org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult;
+
+    public void <init>()
+    {
+        MojoExecutor this;
+
+        this := @this: MojoExecutor;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.lifecycle.internal.DependencyContext newDependencyContext(org.apache.maven.execution.MavenSession, java.util.List)
+    {
+        MojoExecutor this;
+        java.util.List mojoExecutions;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject $stack8;
+        java.util.TreeSet $u0, $u1;
+        org.apache.maven.lifecycle.internal.DependencyContext $u2;
+        org.apache.maven.lifecycle.internal.MojoExecutor $r0;
+
+        this := @this: MojoExecutor;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        mojoExecutions := @parameter1: java.util.List;
+
+        $u0 = new java.util.TreeSet;
+
+        specialinvoke $u0.<java.util.TreeSet: void <init>()>();
+
+        $u1 = new java.util.TreeSet;
+
+        specialinvoke $u1.<java.util.TreeSet: void <init>()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        specialinvoke $r0.<org.apache.maven.lifecycle.internal.MojoExecutor: void collectDependencyRequirements(java.util.Set,java.util.Set,java.util.Collection)>($u1, $u0, mojoExecutions);
+
+        $u2 = new org.apache.maven.lifecycle.internal.DependencyContext;
+
+        $stack8 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        specialinvoke $u2.<org.apache.maven.lifecycle.internal.DependencyContext: void <init>(org.apache.maven.project.MavenProject,java.util.Collection,java.util.Collection)>($stack8, $u0, $u1);
+
+        return $u2;
+    }
+
+    private void collectDependencyRequirements(java.util.Set, java.util.Set, java.util.Collection)
+    {
+        java.util.Collection mojoExecutions, $stack12, $stack15;
+        java.util.Iterator l4;
+        boolean $stack8;
+        java.lang.Object $stack9;
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        org.apache.maven.plugin.descriptor.MojoDescriptor mojoDescriptor;
+        java.util.Set scopesToResolve, scopesToCollect;
+        MojoExecutor this;
+        java.lang.String $stack11, $stack14;
+        org.apache.maven.lifecycle.internal.MojoExecutor $r0, $r1;
+
+        this := @this: MojoExecutor;
+
+        scopesToResolve := @parameter0: java.util.Set;
+
+        scopesToCollect := @parameter1: java.util.Set;
+
+        mojoExecutions := @parameter2: java.util.Collection;
+
+        l4 = interfaceinvoke mojoExecutions.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label2;
+
+        $stack9 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        mojoExecution = (org.apache.maven.plugin.MojoExecution) $stack9;
+
+        mojoDescriptor = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack11 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getDependencyResolutionRequired()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack12 = specialinvoke $r0.<org.apache.maven.lifecycle.internal.MojoExecutor: java.util.Collection toScopes(java.lang.String)>($stack11);
+
+        interfaceinvoke scopesToResolve.<java.util.Set: boolean addAll(java.util.Collection)>($stack12);
+
+        $stack14 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getDependencyCollectionRequired()>();
+
+        $r1 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack15 = specialinvoke $r1.<org.apache.maven.lifecycle.internal.MojoExecutor: java.util.Collection toScopes(java.lang.String)>($stack14);
+
+        interfaceinvoke scopesToCollect.<java.util.Set: boolean addAll(java.util.Collection)>($stack15);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    private java.util.Collection toScopes(java.lang.String)
+    {
+        java.lang.String classpath, $stack6, $stack8, $stack10, $stack12, $stack14;
+        boolean $stack4, $stack7, $stack9, $stack11, $stack13, $stack15;
+        java.lang.String[] $stack17, $stack19, $stack21, $stack23, $stack25;
+        MojoExecutor this;
+        java.util.List scopes;
+        java.util.Collection $stack5;
+
+        this := @this: MojoExecutor;
+
+        classpath := @parameter0: java.lang.String;
+
+        scopes = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        $stack4 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>(classpath);
+
+        if $stack4 == 0 goto label5;
+
+        $stack6 = "compile";
+
+        $stack7 = virtualinvoke $stack6.<java.lang.String: boolean equals(java.lang.Object)>(classpath);
+
+        if $stack7 == 0 goto label1;
+
+        $stack25 = newarray (java.lang.String)[3];
+
+        $stack25[0] = "compile";
+
+        $stack25[1] = "system";
+
+        $stack25[2] = "provided";
+
+        scopes = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack25);
+
+        goto label5;
+
+     label1:
+        $stack8 = "runtime";
+
+        $stack9 = virtualinvoke $stack8.<java.lang.String: boolean equals(java.lang.Object)>(classpath);
+
+        if $stack9 == 0 goto label2;
+
+        $stack23 = newarray (java.lang.String)[2];
+
+        $stack23[0] = "compile";
+
+        $stack23[1] = "runtime";
+
+        scopes = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack23);
+
+        goto label5;
+
+     label2:
+        $stack10 = "compile+runtime";
+
+        $stack11 = virtualinvoke $stack10.<java.lang.String: boolean equals(java.lang.Object)>(classpath);
+
+        if $stack11 == 0 goto label3;
+
+        $stack21 = newarray (java.lang.String)[4];
+
+        $stack21[0] = "compile";
+
+        $stack21[1] = "system";
+
+        $stack21[2] = "provided";
+
+        $stack21[3] = "runtime";
+
+        scopes = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack21);
+
+        goto label5;
+
+     label3:
+        $stack12 = "runtime+system";
+
+        $stack13 = virtualinvoke $stack12.<java.lang.String: boolean equals(java.lang.Object)>(classpath);
+
+        if $stack13 == 0 goto label4;
+
+        $stack19 = newarray (java.lang.String)[3];
+
+        $stack19[0] = "compile";
+
+        $stack19[1] = "system";
+
+        $stack19[2] = "runtime";
+
+        scopes = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack19);
+
+        goto label5;
+
+     label4:
+        $stack14 = "test";
+
+        $stack15 = virtualinvoke $stack14.<java.lang.String: boolean equals(java.lang.Object)>(classpath);
+
+        if $stack15 == 0 goto label5;
+
+        $stack17 = newarray (java.lang.String)[5];
+
+        $stack17[0] = "compile";
+
+        $stack17[1] = "system";
+
+        $stack17[2] = "provided";
+
+        $stack17[3] = "runtime";
+
+        $stack17[4] = "test";
+
+        scopes = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack17);
+
+     label5:
+        $stack5 = staticinvoke <java.util.Collections: java.util.Collection unmodifiableCollection(java.util.Collection)>(scopes);
+
+        return $stack5;
+    }
+
+    public void execute(org.apache.maven.execution.MavenSession, java.util.List, org.apache.maven.lifecycle.internal.ProjectIndex) throws org.apache.maven.lifecycle.LifecycleExecutionException
+    {
+        MojoExecutor this;
+        org.apache.maven.execution.MavenSession session;
+        java.util.List mojoExecutions;
+        org.apache.maven.lifecycle.internal.DependencyContext dependencyContext;
+        org.apache.maven.project.MavenProject $stack10;
+        java.util.Iterator l6;
+        boolean $stack12;
+        java.lang.Object $stack13;
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        org.apache.maven.lifecycle.internal.ProjectIndex projectIndex;
+        org.apache.maven.lifecycle.internal.PhaseRecorder $u0;
+        org.apache.maven.lifecycle.internal.MojoExecutor $r0, $r1;
+
+        this := @this: MojoExecutor;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        mojoExecutions := @parameter1: java.util.List;
+
+        projectIndex := @parameter2: org.apache.maven.lifecycle.internal.ProjectIndex;
+
+        $r0 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        dependencyContext = virtualinvoke $r0.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.DependencyContext newDependencyContext(org.apache.maven.execution.MavenSession,java.util.List)>(session, mojoExecutions);
+
+        $u0 = new org.apache.maven.lifecycle.internal.PhaseRecorder;
+
+        $stack10 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        specialinvoke $u0.<org.apache.maven.lifecycle.internal.PhaseRecorder: void <init>(org.apache.maven.project.MavenProject)>($stack10);
+
+        l6 = interfaceinvoke mojoExecutions.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack12 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack12 == 0 goto label2;
+
+        $stack13 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        mojoExecution = (org.apache.maven.plugin.MojoExecution) $stack13;
+
+        $r1 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        virtualinvoke $r1.<org.apache.maven.lifecycle.internal.MojoExecutor: void execute(org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution,org.apache.maven.lifecycle.internal.ProjectIndex,org.apache.maven.lifecycle.internal.DependencyContext,org.apache.maven.lifecycle.internal.PhaseRecorder)>(session, mojoExecution, projectIndex, dependencyContext, $u0);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void execute(org.apache.maven.execution.MavenSession, org.apache.maven.plugin.MojoExecution, org.apache.maven.lifecycle.internal.ProjectIndex, org.apache.maven.lifecycle.internal.DependencyContext, org.apache.maven.lifecycle.internal.PhaseRecorder) throws org.apache.maven.lifecycle.LifecycleExecutionException
+    {
+        MojoExecutor this;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        org.apache.maven.lifecycle.internal.ProjectIndex projectIndex;
+        org.apache.maven.lifecycle.internal.DependencyContext dependencyContext;
+        org.apache.maven.lifecycle.internal.PhaseRecorder phaseRecorder;
+        org.apache.maven.lifecycle.internal.MojoExecutor $r0;
+
+        this := @this: MojoExecutor;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        mojoExecution := @parameter1: org.apache.maven.plugin.MojoExecution;
+
+        projectIndex := @parameter2: org.apache.maven.lifecycle.internal.ProjectIndex;
+
+        dependencyContext := @parameter3: org.apache.maven.lifecycle.internal.DependencyContext;
+
+        phaseRecorder := @parameter4: org.apache.maven.lifecycle.internal.PhaseRecorder;
+
+        $r0 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        specialinvoke $r0.<org.apache.maven.lifecycle.internal.MojoExecutor: void execute(org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution,org.apache.maven.lifecycle.internal.ProjectIndex,org.apache.maven.lifecycle.internal.DependencyContext)>(session, mojoExecution, projectIndex, dependencyContext);
+
+        virtualinvoke phaseRecorder.<org.apache.maven.lifecycle.internal.PhaseRecorder: void observeExecution(org.apache.maven.plugin.MojoExecution)>(mojoExecution);
+
+        return;
+    }
+
+    private void execute(org.apache.maven.execution.MavenSession, org.apache.maven.plugin.MojoExecution, org.apache.maven.lifecycle.internal.ProjectIndex, org.apache.maven.lifecycle.internal.DependencyContext) throws org.apache.maven.lifecycle.LifecycleExecutionException
+    {
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        org.apache.maven.plugin.descriptor.MojoDescriptor mojoDescriptor;
+        MojoExecutor this;
+        org.apache.maven.plugin.MavenPluginManager $stack13;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack14;
+        boolean $stack15, $stack16, $stack24, $stack27, $stack44, $stack51, $stack63;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.lifecycle.internal.ProjectIndex projectIndex;
+        org.apache.maven.lifecycle.internal.DependencyContext dependencyContext;
+        org.apache.maven.execution.ExecutionEvent$Type $stack18, $stack21, $stack45, $stack67;
+        org.apache.maven.lifecycle.internal.ExecutionEventCatapult $stack19, $stack22, $stack46, $stack68;
+        org.apache.maven.plugin.BuildPluginManager $stack20;
+        java.lang.Object $stack25, $stack64;
+        org.apache.maven.project.MavenProject forkedProject, $stack49, $stack71, $stack74;
+        org.apache.maven.plugin.MojoExecution$Source $stack42, $stack43;
+        org.apache.maven.execution.MavenExecutionRequest $stack50;
+        java.lang.StringBuilder $stack55, $stack57, $stack58, $u1;
+        java.lang.String $stack56, $stack59;
+        java.lang.Throwable $stack61, $stack66, $stack69, $stack72, $r1, $r2, $r3, $r4, $r10;
+        java.util.Iterator l10, e#6;
+        java.util.List e#4;
+        org.apache.maven.lifecycle.LifecycleExecutionException $u0, $u3, $u5, $u6;
+        org.apache.maven.lifecycle.MissingProjectException $u2;
+        java.lang.IllegalStateException $u4;
+        org.apache.maven.lifecycle.internal.MojoExecutor $r0, $r5, $r6, $r7, $r8, $r9, $r11, $r12;
+        java.lang.Exception $r13;
+
+        this := @this: MojoExecutor;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        mojoExecution := @parameter1: org.apache.maven.plugin.MojoExecution;
+
+        projectIndex := @parameter2: org.apache.maven.lifecycle.internal.ProjectIndex;
+
+        dependencyContext := @parameter3: org.apache.maven.lifecycle.internal.DependencyContext;
+
+        mojoDescriptor = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+     label01:
+        $r0 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack13 = $r0.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.plugin.MavenPluginManager mavenPluginManager>;
+
+        $stack14 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        interfaceinvoke $stack13.<org.apache.maven.plugin.MavenPluginManager: void checkRequiredMavenVersion(org.apache.maven.plugin.descriptor.PluginDescriptor)>($stack14);
+
+     label02:
+        goto label04;
+
+     label03:
+        $stack72 := @caughtexception;
+
+        $u0 = new org.apache.maven.lifecycle.LifecycleExecutionException;
+
+        $stack74 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        specialinvoke $u0.<org.apache.maven.lifecycle.LifecycleExecutionException: void <init>(org.apache.maven.plugin.MojoExecution,org.apache.maven.project.MavenProject,java.lang.Throwable)>(mojoExecution, $stack74, $stack72);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label04:
+        $stack15 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: boolean isProjectRequired()>();
+
+        if $stack15 == 0 goto label05;
+
+        $stack50 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack51 = interfaceinvoke $stack50.<org.apache.maven.execution.MavenExecutionRequest: boolean isProjectPresent()>();
+
+        if $stack51 != 0 goto label05;
+
+        $u2 = new org.apache.maven.lifecycle.MissingProjectException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack55 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Goal requires a project to execute but there is no POM in this directory (");
+
+        $stack56 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.lang.String getExecutionRootDirectory()>();
+
+        $stack57 = virtualinvoke $stack55.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack56);
+
+        $stack58 = virtualinvoke $stack57.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("). Please verify you invoked Maven from the correct directory.");
+
+        $stack59 = virtualinvoke $stack58.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.apache.maven.lifecycle.MissingProjectException: void <init>(java.lang.String)>($stack59);
+
+        $u3 = new org.apache.maven.lifecycle.LifecycleExecutionException;
+
+        $r2 = (java.lang.Throwable) $u2;
+
+        specialinvoke $u3.<org.apache.maven.lifecycle.LifecycleExecutionException: void <init>(org.apache.maven.plugin.MojoExecution,org.apache.maven.project.MavenProject,java.lang.Throwable)>(mojoExecution, null, $r2);
+
+        $r3 = (java.lang.Throwable) $u3;
+
+        throw $r3;
+
+     label05:
+        $stack16 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: boolean isOnlineRequired()>();
+
+        if $stack16 == 0 goto label07;
+
+        $stack27 = virtualinvoke session.<org.apache.maven.execution.MavenSession: boolean isOffline()>();
+
+        if $stack27 == 0 goto label07;
+
+        $stack42 = <org.apache.maven.plugin.MojoExecution$Source: org.apache.maven.plugin.MojoExecution$Source CLI>;
+
+        $stack43 = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.MojoExecution$Source getSource()>();
+
+        $stack44 = virtualinvoke $stack42.<org.apache.maven.plugin.MojoExecution$Source: boolean equals(java.lang.Object)>($stack43);
+
+        if $stack44 == 0 goto label06;
+
+        $u4 = new java.lang.IllegalStateException;
+
+        specialinvoke $u4.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Goal requires online mode for execution but Maven is currently offline.");
+
+        $u5 = new org.apache.maven.lifecycle.LifecycleExecutionException;
+
+        $stack49 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        specialinvoke $u5.<org.apache.maven.lifecycle.LifecycleExecutionException: void <init>(org.apache.maven.plugin.MojoExecution,org.apache.maven.project.MavenProject,java.lang.Throwable)>(mojoExecution, $stack49, $u4);
+
+        $r4 = (java.lang.Throwable) $u5;
+
+        throw $r4;
+
+     label06:
+        $r5 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack46 = $r5.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack45 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type MojoSkipped>;
+
+        interfaceinvoke $stack46.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack45, session, mojoExecution);
+
+        return;
+
+     label07:
+        $r6 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        e#4 = virtualinvoke $r6.<org.apache.maven.lifecycle.internal.MojoExecutor: java.util.List executeForkedExecutions(org.apache.maven.plugin.MojoExecution,org.apache.maven.execution.MavenSession,org.apache.maven.lifecycle.internal.ProjectIndex)>(mojoExecution, session, projectIndex);
+
+        $r7 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        virtualinvoke $r7.<org.apache.maven.lifecycle.internal.MojoExecutor: void ensureDependenciesAreResolved(org.apache.maven.plugin.descriptor.MojoDescriptor,org.apache.maven.execution.MavenSession,org.apache.maven.lifecycle.internal.DependencyContext)>(mojoDescriptor, session, dependencyContext);
+
+        $r8 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack19 = $r8.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack18 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type MojoStarted>;
+
+        interfaceinvoke $stack19.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack18, session, mojoExecution);
+
+     label08:
+        $r9 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack20 = $r9.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.plugin.BuildPluginManager pluginManager>;
+
+        interfaceinvoke $stack20.<org.apache.maven.plugin.BuildPluginManager: void executeMojo(org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>(session, mojoExecution);
+
+     label09:
+        goto label11;
+
+     label10:
+        $stack69 := @caughtexception;
+
+        $u6 = new org.apache.maven.lifecycle.LifecycleExecutionException;
+
+        $stack71 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        specialinvoke $u6.<org.apache.maven.lifecycle.LifecycleExecutionException: void <init>(org.apache.maven.plugin.MojoExecution,org.apache.maven.project.MavenProject,java.lang.Throwable)>(mojoExecution, $stack71, $stack69);
+
+        $r10 = (java.lang.Throwable) $u6;
+
+        throw $r10;
+
+     label11:
+        $r11 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack22 = $r11.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack21 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type MojoSucceeded>;
+
+        interfaceinvoke $stack22.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack21, session, mojoExecution);
+
+     label12:
+        e#6 = interfaceinvoke e#4.<java.util.List: java.util.Iterator iterator()>();
+
+     label13:
+        $stack24 = interfaceinvoke e#6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack24 == 0 goto label14;
+
+        $stack25 = interfaceinvoke e#6.<java.util.Iterator: java.lang.Object next()>();
+
+        forkedProject = (org.apache.maven.project.MavenProject) $stack25;
+
+        virtualinvoke forkedProject.<org.apache.maven.project.MavenProject: void setExecutionProject(org.apache.maven.project.MavenProject)>(null);
+
+        goto label13;
+
+     label14:
+        goto label20;
+
+     label15:
+        $stack66 := @caughtexception;
+
+        $r12 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack68 = $r12.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack67 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type MojoFailed>;
+
+        $r13 = (java.lang.Exception) $stack66;
+
+        interfaceinvoke $stack68.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution,java.lang.Exception)>($stack67, session, mojoExecution, $r13);
+
+        throw $stack66;
+
+     label16:
+        $stack61 := @caughtexception;
+
+     label17:
+        l10 = interfaceinvoke e#4.<java.util.List: java.util.Iterator iterator()>();
+
+     label18:
+        $stack63 = interfaceinvoke l10.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack63 == 0 goto label19;
+
+        $stack64 = interfaceinvoke l10.<java.util.Iterator: java.lang.Object next()>();
+
+        forkedProject = (org.apache.maven.project.MavenProject) $stack64;
+
+        virtualinvoke forkedProject.<org.apache.maven.project.MavenProject: void setExecutionProject(org.apache.maven.project.MavenProject)>(null);
+
+        goto label18;
+
+     label19:
+        throw $stack61;
+
+     label20:
+        return;
+
+        catch org.apache.maven.plugin.PluginIncompatibleException from label01 to label02 with label03;
+        catch org.apache.maven.plugin.MojoFailureException from label08 to label09 with label10;
+        catch org.apache.maven.plugin.PluginManagerException from label08 to label09 with label10;
+        catch org.apache.maven.plugin.PluginConfigurationException from label08 to label09 with label10;
+        catch org.apache.maven.plugin.MojoExecutionException from label08 to label09 with label10;
+        catch org.apache.maven.lifecycle.LifecycleExecutionException from label08 to label12 with label15;
+        catch java.lang.Throwable from label08 to label12 with label16;
+        catch java.lang.Throwable from label15 to label17 with label16;
+    }
+
+    public void ensureDependenciesAreResolved(org.apache.maven.plugin.descriptor.MojoDescriptor, org.apache.maven.execution.MavenSession, org.apache.maven.lifecycle.internal.DependencyContext) throws org.apache.maven.lifecycle.LifecycleExecutionException
+    {
+        org.apache.maven.lifecycle.internal.DependencyContext dependencyContext;
+        org.apache.maven.project.MavenProject project, aggregatedProject, $stack14;
+        org.apache.maven.plugin.descriptor.MojoDescriptor mojoDescriptor;
+        boolean aggregating, $stack12, $stack25, $stack34, $stack15, $stack18;
+        MojoExecutor this;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.Object $stack19, $stack35;
+        java.lang.String $stack21, $stack23;
+        java.util.List $stack32, scopesToResolve#26;
+        org.apache.maven.lifecycle.internal.LifecycleDependencyResolver $stack37, $stack41;
+        java.util.Set $stack38, $stack42;
+        java.util.Collection scopesToCollect, scopesToResolve;
+        java.util.Iterator l8;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter scopesToCollect#13;
+        org.apache.maven.lifecycle.internal.MojoExecutor $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: MojoExecutor;
+
+        mojoDescriptor := @parameter0: org.apache.maven.plugin.descriptor.MojoDescriptor;
+
+        session := @parameter1: org.apache.maven.execution.MavenSession;
+
+        dependencyContext := @parameter2: org.apache.maven.lifecycle.internal.DependencyContext;
+
+        project = virtualinvoke dependencyContext.<org.apache.maven.lifecycle.internal.DependencyContext: org.apache.maven.project.MavenProject getProject()>();
+
+        aggregating = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: boolean isAggregator()>();
+
+        $stack12 = virtualinvoke dependencyContext.<org.apache.maven.lifecycle.internal.DependencyContext: boolean isResolutionRequiredForCurrentProject()>();
+
+        if $stack12 == 0 goto label1;
+
+        scopesToCollect = virtualinvoke dependencyContext.<org.apache.maven.lifecycle.internal.DependencyContext: java.util.Collection getScopesToCollectForCurrentProject()>();
+
+        scopesToResolve = virtualinvoke dependencyContext.<org.apache.maven.lifecycle.internal.DependencyContext: java.util.Collection getScopesToResolveForCurrentProject()>();
+
+        $r0 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack41 = $r0.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.LifecycleDependencyResolver lifeCycleDependencyResolver>;
+
+        $stack42 = staticinvoke <java.util.Collections: java.util.Set emptySet()>();
+
+        virtualinvoke $stack41.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: void resolveProjectDependencies(org.apache.maven.project.MavenProject,java.util.Collection,java.util.Collection,org.apache.maven.execution.MavenSession,boolean,java.util.Set)>(project, scopesToCollect, scopesToResolve, session, aggregating, $stack42);
+
+        virtualinvoke dependencyContext.<org.apache.maven.lifecycle.internal.DependencyContext: void synchronizeWithProjectState()>();
+
+     label1:
+        if aggregating == 0 goto label4;
+
+        $stack21 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getDependencyCollectionRequired()>();
+
+        $r1 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        scopesToCollect = specialinvoke $r1.<org.apache.maven.lifecycle.internal.MojoExecutor: java.util.Collection toScopes(java.lang.String)>($stack21);
+
+        $stack23 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getDependencyResolutionRequired()>();
+
+        $r2 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        scopesToResolve = specialinvoke $r2.<org.apache.maven.lifecycle.internal.MojoExecutor: java.util.Collection toScopes(java.lang.String)>($stack23);
+
+        $stack25 = virtualinvoke dependencyContext.<org.apache.maven.lifecycle.internal.DependencyContext: boolean isResolutionRequiredForAggregatedProjects(java.util.Collection,java.util.Collection)>(scopesToCollect, scopesToResolve);
+
+        if $stack25 == 0 goto label4;
+
+        $stack32 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        l8 = interfaceinvoke $stack32.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack34 = interfaceinvoke l8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack34 == 0 goto label4;
+
+        $stack35 = interfaceinvoke l8.<java.util.Iterator: java.lang.Object next()>();
+
+        aggregatedProject = (org.apache.maven.project.MavenProject) $stack35;
+
+        if aggregatedProject == project goto label3;
+
+        $r3 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack37 = $r3.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.LifecycleDependencyResolver lifeCycleDependencyResolver>;
+
+        $stack38 = staticinvoke <java.util.Collections: java.util.Set emptySet()>();
+
+        virtualinvoke $stack37.<org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: void resolveProjectDependencies(org.apache.maven.project.MavenProject,java.util.Collection,java.util.Collection,org.apache.maven.execution.MavenSession,boolean,java.util.Set)>(aggregatedProject, scopesToCollect, scopesToResolve, session, aggregating, $stack38);
+
+     label3:
+        goto label2;
+
+     label4:
+        $r4 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        scopesToCollect#13 = specialinvoke $r4.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.artifact.resolver.filter.ArtifactFilter getArtifactFilter(org.apache.maven.plugin.descriptor.MojoDescriptor)>(mojoDescriptor);
+
+        $stack14 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $stack15 = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: boolean isAggregator()>();
+
+        scopesToResolve#26 = staticinvoke <org.apache.maven.lifecycle.internal.LifecycleDependencyResolver: java.util.List getProjects(org.apache.maven.project.MavenProject,org.apache.maven.execution.MavenSession,boolean)>($stack14, session, $stack15);
+
+        l8 = interfaceinvoke scopesToResolve#26.<java.util.List: java.util.Iterator iterator()>();
+
+     label5:
+        $stack18 = interfaceinvoke l8.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack18 == 0 goto label6;
+
+        $stack19 = interfaceinvoke l8.<java.util.Iterator: java.lang.Object next()>();
+
+        aggregatedProject = (org.apache.maven.project.MavenProject) $stack19;
+
+        virtualinvoke aggregatedProject.<org.apache.maven.project.MavenProject: void setArtifactFilter(org.apache.maven.artifact.resolver.filter.ArtifactFilter)>(scopesToCollect#13);
+
+        goto label5;
+
+     label6:
+        return;
+    }
+
+    private org.apache.maven.artifact.resolver.filter.ArtifactFilter getArtifactFilter(org.apache.maven.plugin.descriptor.MojoDescriptor)
+    {
+        org.apache.maven.plugin.descriptor.MojoDescriptor mojoDescriptor;
+        java.lang.String scopeToResolve, scopeToCollect;
+        boolean $stack8, $stack9, $stack10;
+        MojoExecutor this;
+        java.util.ArrayList $u0;
+        org.apache.maven.artifact.resolver.filter.CumulativeScopeArtifactFilter $u1;
+        org.apache.maven.artifact.resolver.filter.ArtifactFilter $r0;
+
+        this := @this: MojoExecutor;
+
+        mojoDescriptor := @parameter0: org.apache.maven.plugin.descriptor.MojoDescriptor;
+
+        scopeToResolve = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getDependencyResolutionRequired()>();
+
+        scopeToCollect = virtualinvoke mojoDescriptor.<org.apache.maven.plugin.descriptor.MojoDescriptor: java.lang.String getDependencyCollectionRequired()>();
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(int)>(2);
+
+        $stack8 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>(scopeToCollect);
+
+        if $stack8 == 0 goto label1;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(scopeToCollect);
+
+     label1:
+        $stack9 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>(scopeToResolve);
+
+        if $stack9 == 0 goto label2;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(scopeToResolve);
+
+     label2:
+        $stack10 = interfaceinvoke $u0.<java.util.List: boolean isEmpty()>();
+
+        if $stack10 == 0 goto label3;
+
+        return null;
+
+     label3:
+        $u1 = new org.apache.maven.artifact.resolver.filter.CumulativeScopeArtifactFilter;
+
+        specialinvoke $u1.<org.apache.maven.artifact.resolver.filter.CumulativeScopeArtifactFilter: void <init>(java.util.Collection)>($u0);
+
+        $r0 = (org.apache.maven.artifact.resolver.filter.ArtifactFilter) $u1;
+
+        return $r0;
+    }
+
+    public java.util.List executeForkedExecutions(org.apache.maven.plugin.MojoExecution, org.apache.maven.execution.MavenSession, org.apache.maven.lifecycle.internal.ProjectIndex) throws org.apache.maven.lifecycle.LifecycleExecutionException
+    {
+        org.apache.maven.plugin.MojoExecution mojoExecution;
+        java.util.Map forkedExecutions, $stack32, $stack36, $stack44, $stack50, $stack59;
+        boolean $stack18, $stack41, $stack26;
+        MojoExecutor this;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.ExecutionEvent$Type $stack19, $stack27, $stack46, $stack48, $stack56, $stack64;
+        org.apache.maven.lifecycle.internal.ExecutionEventCatapult $stack20, $stack28, $stack47, $stack49, $stack57, $stack65;
+        org.apache.maven.project.MavenProject project, forkedProject, executedProject;
+        int $stack23, index;
+        java.util.Set $stack24;
+        java.lang.Object $stack30, $stack31, $stack33, $stack37, $stack40;
+        java.util.Map$Entry fork;
+        java.lang.String projectId;
+        org.apache.maven.lifecycle.internal.ProjectIndex projectIndex;
+        java.lang.Integer $stack34;
+        java.util.List mojoExecutions, $stack42, $stack52, $stack61, forkedProjects;
+        java.lang.Throwable $stack55, $stack58, $stack63;
+        java.util.Iterator e;
+        java.util.ArrayList $u0;
+        org.apache.maven.lifecycle.internal.MojoExecutor $r0, $r1, $r2, $r3, $r4, $r6, $r7;
+        java.lang.Exception $r5, $r8;
+
+        this := @this: MojoExecutor;
+
+        mojoExecution := @parameter0: org.apache.maven.plugin.MojoExecution;
+
+        session := @parameter1: org.apache.maven.execution.MavenSession;
+
+        projectIndex := @parameter2: org.apache.maven.lifecycle.internal.ProjectIndex;
+
+        forkedProjects = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        forkedExecutions = virtualinvoke mojoExecution.<org.apache.maven.plugin.MojoExecution: java.util.Map getForkedExecutions()>();
+
+        $stack18 = interfaceinvoke forkedExecutions.<java.util.Map: boolean isEmpty()>();
+
+        if $stack18 != 0 goto label12;
+
+        $r0 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack20 = $r0.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack19 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type ForkStarted>;
+
+        interfaceinvoke $stack20.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack19, session, mojoExecution);
+
+        project = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        $u0 = new java.util.ArrayList;
+
+        $stack23 = interfaceinvoke forkedExecutions.<java.util.Map: int size()>();
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>(int)>($stack23);
+
+        forkedProjects = $u0;
+
+     label01:
+        $stack24 = interfaceinvoke forkedExecutions.<java.util.Map: java.util.Set entrySet()>();
+
+        e = interfaceinvoke $stack24.<java.util.Set: java.util.Iterator iterator()>();
+
+     label02:
+        $stack26 = interfaceinvoke e.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack26 == 0 goto label09;
+
+        $stack30 = interfaceinvoke e.<java.util.Iterator: java.lang.Object next()>();
+
+        fork = (java.util.Map$Entry) $stack30;
+
+        $stack31 = interfaceinvoke fork.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        projectId = (java.lang.String) $stack31;
+
+        $stack32 = virtualinvoke projectIndex.<org.apache.maven.lifecycle.internal.ProjectIndex: java.util.Map getIndices()>();
+
+        $stack33 = interfaceinvoke $stack32.<java.util.Map: java.lang.Object get(java.lang.Object)>(projectId);
+
+        $stack34 = (java.lang.Integer) $stack33;
+
+        index = virtualinvoke $stack34.<java.lang.Integer: int intValue()>();
+
+        $stack36 = virtualinvoke projectIndex.<org.apache.maven.lifecycle.internal.ProjectIndex: java.util.Map getProjects()>();
+
+        $stack37 = interfaceinvoke $stack36.<java.util.Map: java.lang.Object get(java.lang.Object)>(projectId);
+
+        forkedProject = (org.apache.maven.project.MavenProject) $stack37;
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(forkedProject);
+
+        executedProject = virtualinvoke forkedProject.<org.apache.maven.project.MavenProject: org.apache.maven.project.MavenProject clone()>();
+
+        virtualinvoke forkedProject.<org.apache.maven.project.MavenProject: void setExecutionProject(org.apache.maven.project.MavenProject)>(executedProject);
+
+        $stack40 = interfaceinvoke fork.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        mojoExecutions = (java.util.List) $stack40;
+
+        $stack41 = interfaceinvoke mojoExecutions.<java.util.List: boolean isEmpty()>();
+
+        if $stack41 == 0 goto label03;
+
+        goto label02;
+
+     label03:
+        virtualinvoke session.<org.apache.maven.execution.MavenSession: void setCurrentProject(org.apache.maven.project.MavenProject)>(executedProject);
+
+        $stack42 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        interfaceinvoke $stack42.<java.util.List: java.lang.Object set(int,java.lang.Object)>(index, executedProject);
+
+        $stack44 = virtualinvoke projectIndex.<org.apache.maven.lifecycle.internal.ProjectIndex: java.util.Map getProjects()>();
+
+        interfaceinvoke $stack44.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(projectId, executedProject);
+
+        $r1 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack47 = $r1.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack46 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type ForkedProjectStarted>;
+
+        interfaceinvoke $stack47.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack46, session, mojoExecution);
+
+        $r2 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        virtualinvoke $r2.<org.apache.maven.lifecycle.internal.MojoExecutor: void execute(org.apache.maven.execution.MavenSession,java.util.List,org.apache.maven.lifecycle.internal.ProjectIndex)>(session, mojoExecutions, projectIndex);
+
+        $r3 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack49 = $r3.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack48 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type ForkedProjectSucceeded>;
+
+        interfaceinvoke $stack49.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack48, session, mojoExecution);
+
+     label04:
+        $stack50 = virtualinvoke projectIndex.<org.apache.maven.lifecycle.internal.ProjectIndex: java.util.Map getProjects()>();
+
+        interfaceinvoke $stack50.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(projectId, forkedProject);
+
+        $stack52 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        interfaceinvoke $stack52.<java.util.List: java.lang.Object set(int,java.lang.Object)>(index, forkedProject);
+
+        virtualinvoke session.<org.apache.maven.execution.MavenSession: void setCurrentProject(org.apache.maven.project.MavenProject)>(project);
+
+        goto label08;
+
+     label05:
+        $stack63 := @caughtexception;
+
+        $r4 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack65 = $r4.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack64 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type ForkedProjectFailed>;
+
+        $r5 = (java.lang.Exception) $stack63;
+
+        interfaceinvoke $stack65.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution,java.lang.Exception)>($stack64, session, mojoExecution, $r5);
+
+        throw $stack63;
+
+     label06:
+        $stack58 := @caughtexception;
+
+     label07:
+        $stack59 = virtualinvoke projectIndex.<org.apache.maven.lifecycle.internal.ProjectIndex: java.util.Map getProjects()>();
+
+        interfaceinvoke $stack59.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(projectId, forkedProject);
+
+        $stack61 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        interfaceinvoke $stack61.<java.util.List: java.lang.Object set(int,java.lang.Object)>(index, forkedProject);
+
+        virtualinvoke session.<org.apache.maven.execution.MavenSession: void setCurrentProject(org.apache.maven.project.MavenProject)>(project);
+
+        throw $stack58;
+
+     label08:
+        goto label02;
+
+     label09:
+        $r6 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack28 = $r6.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack27 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type ForkSucceeded>;
+
+        interfaceinvoke $stack28.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack27, session, mojoExecution);
+
+     label10:
+        goto label12;
+
+     label11:
+        $stack55 := @caughtexception;
+
+        $r7 = (org.apache.maven.lifecycle.internal.MojoExecutor) this;
+
+        $stack57 = $r7.<org.apache.maven.lifecycle.internal.MojoExecutor: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack56 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type ForkFailed>;
+
+        $r8 = (java.lang.Exception) $stack55;
+
+        interfaceinvoke $stack57.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution,java.lang.Exception)>($stack56, session, mojoExecution, $r8);
+
+        throw $stack55;
+
+     label12:
+        return forkedProjects;
+
+        catch org.apache.maven.lifecycle.LifecycleExecutionException from label03 to label04 with label05;
+        catch java.lang.Throwable from label03 to label04 with label06;
+        catch java.lang.Throwable from label05 to label07 with label06;
+        catch org.apache.maven.lifecycle.LifecycleExecutionException from label01 to label10 with label11;
+    }
+}

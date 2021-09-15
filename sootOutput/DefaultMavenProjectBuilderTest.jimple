@@ -1,0 +1,996 @@
+public class DefaultMavenProjectBuilderTest extends org.apache.maven.project.AbstractMavenProjectTestCase
+{
+    java.io.File localRepoDir;
+    java.nio.file.Path projectRoot;
+
+    public void <init>()
+    {
+        DefaultMavenProjectBuilderTest this;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        specialinvoke this.<org.apache.maven.project.AbstractMavenProjectTestCase: void <init>()>();
+
+        return;
+    }
+
+    public void setUp() throws java.lang.Exception
+    {
+        DefaultMavenProjectBuilderTest this;
+        org.codehaus.plexus.PlexusContainer $stack1;
+        java.lang.Object $stack2;
+        org.apache.maven.project.ProjectBuilder $stack3;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0, $r1;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        $stack2 = interfaceinvoke $stack1.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class)>(class "Lorg/apache/maven/project/ProjectBuilder;");
+
+        $stack3 = (org.apache.maven.project.ProjectBuilder) $stack2;
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $r1.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.ProjectBuilder projectBuilder> = $stack3;
+
+        return;
+    }
+
+    protected org.apache.maven.project.MavenProject getProject(org.apache.maven.artifact.Artifact, boolean) throws java.lang.Exception
+    {
+        DefaultMavenProjectBuilderTest this;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack5;
+        org.apache.maven.artifact.Artifact pom;
+        boolean allowStub;
+        org.apache.maven.project.ProjectBuilder $stack7;
+        org.apache.maven.project.ProjectBuildingResult $stack8;
+        org.apache.maven.project.MavenProject $stack9;
+        org.apache.maven.project.DefaultProjectBuildingRequest $u0;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0, $r2, $r4;
+        org.apache.maven.project.ProjectBuildingRequest $r1, $r3, $r5;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        pom := @parameter0: org.apache.maven.artifact.Artifact;
+
+        allowStub := @parameter1: boolean;
+
+        $u0 = new org.apache.maven.project.DefaultProjectBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.project.DefaultProjectBuildingRequest: void <init>()>();
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack5 = virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository()>();
+
+        $r1 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        interfaceinvoke $r1.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>($stack5);
+
+        $r2 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $r3 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        virtualinvoke $r2.<org.apache.maven.project.DefaultMavenProjectBuilderTest: void initRepoSession(org.apache.maven.project.ProjectBuildingRequest)>($r3);
+
+        $r4 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack7 = $r4.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        $r5 = (org.apache.maven.project.ProjectBuildingRequest) $u0;
+
+        $stack8 = interfaceinvoke $stack7.<org.apache.maven.project.ProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(org.apache.maven.artifact.Artifact,boolean,org.apache.maven.project.ProjectBuildingRequest)>(pom, allowStub, $r5);
+
+        $stack9 = interfaceinvoke $stack8.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+        return $stack9;
+    }
+
+    public void testBuildFromMiddlePom() throws java.lang.Exception
+    {
+        java.io.File f1, f2;
+        DefaultMavenProjectBuilderTest this;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0, $r1;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/grandchild-check/child/pom.xml");
+
+        f2 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/grandchild-check/child/grandchild/pom.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProject(java.io.File)>(f1);
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        virtualinvoke $r1.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProject(java.io.File)>(f2);
+
+        return;
+    }
+
+    public void testDuplicatePluginDefinitionsMerged() throws java.lang.Exception
+    {
+        java.io.File f1;
+        DefaultMavenProjectBuilderTest this;
+        org.apache.maven.project.MavenProject project;
+        java.util.List $stack6, $stack9, $stack12, $stack15, $stack18, $stack21;
+        java.lang.Object $stack7, $stack13, $stack19, $stack22;
+        org.apache.maven.model.Plugin $stack8, $stack14, $stack20;
+        int $stack10, $stack16;
+        org.apache.maven.model.PluginExecution $stack23;
+        java.lang.String $stack24;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/duplicate-plugins-merged-pom.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        project = virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProject(java.io.File)>(f1);
+
+        $stack6 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getBuildPlugins()>();
+
+        $stack7 = interfaceinvoke $stack6.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack8 = (org.apache.maven.model.Plugin) $stack7;
+
+        $stack9 = virtualinvoke $stack8.<org.apache.maven.model.Plugin: java.util.List getDependencies()>();
+
+        $stack10 = interfaceinvoke $stack9.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(2, $stack10);
+
+        $stack12 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getBuildPlugins()>();
+
+        $stack13 = interfaceinvoke $stack12.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack14 = (org.apache.maven.model.Plugin) $stack13;
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack16 = interfaceinvoke $stack15.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(2, $stack16);
+
+        $stack18 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getBuildPlugins()>();
+
+        $stack19 = interfaceinvoke $stack18.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack20 = (org.apache.maven.model.Plugin) $stack19;
+
+        $stack21 = virtualinvoke $stack20.<org.apache.maven.model.Plugin: java.util.List getExecutions()>();
+
+        $stack22 = interfaceinvoke $stack21.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack23 = (org.apache.maven.model.PluginExecution) $stack22;
+
+        $stack24 = virtualinvoke $stack23.<org.apache.maven.model.PluginExecution: java.lang.String getId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("first", $stack24);
+
+        return;
+    }
+
+    public void testFutureModelVersion() throws java.lang.Exception
+    {
+        java.io.File f1;
+        DefaultMavenProjectBuilderTest this;
+        org.junit.jupiter.api.function.Executable $stack5;
+        java.lang.Throwable $stack6;
+        org.apache.maven.project.ProjectBuildingException e;
+        java.lang.String $stack7;
+        org.hamcrest.Matcher $stack8;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/future-model-version-pom.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack5 = staticinvoke <DefaultMavenProjectBuilderTest$lambda_testFutureModelVersion_0__309: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.project.DefaultMavenProjectBuilderTest,java.io.File)>($r0, f1);
+
+        $stack6 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/project/ProjectBuildingException;", $stack5, "Expected to fail for future versions");
+
+        e = (org.apache.maven.project.ProjectBuildingException) $stack6;
+
+        $stack7 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.String getMessage()>();
+
+        $stack8 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher containsString(java.lang.String)>("Building this project requires a newer version of Maven");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack7, $stack8);
+
+        return;
+    }
+
+    public void testPastModelVersion() throws java.lang.Exception
+    {
+        java.io.File f1;
+        DefaultMavenProjectBuilderTest this;
+        org.junit.jupiter.api.function.Executable $stack5;
+        java.lang.Throwable $stack6;
+        org.apache.maven.project.ProjectBuildingException e;
+        java.lang.String $stack7;
+        org.hamcrest.Matcher $stack8;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/past-model-version-pom.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack5 = staticinvoke <DefaultMavenProjectBuilderTest$lambda_testPastModelVersion_1__310: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.project.DefaultMavenProjectBuilderTest,java.io.File)>($r0, f1);
+
+        $stack6 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/project/ProjectBuildingException;", $stack5, "Expected to fail for past versions");
+
+        e = (org.apache.maven.project.ProjectBuildingException) $stack6;
+
+        $stack7 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.String getMessage()>();
+
+        $stack8 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher containsString(java.lang.String)>("Building this project requires an older version of Maven");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack7, $stack8);
+
+        return;
+    }
+
+    public void testFutureSchemaModelVersion() throws java.lang.Exception
+    {
+        java.io.File f1;
+        DefaultMavenProjectBuilderTest this;
+        org.junit.jupiter.api.function.Executable $stack5;
+        java.lang.Throwable $stack6;
+        org.apache.maven.project.ProjectBuildingException e;
+        java.lang.String $stack7;
+        org.hamcrest.Matcher $stack8;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/future-schema-model-version-pom.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack5 = staticinvoke <DefaultMavenProjectBuilderTest$lambda_testFutureSchemaModelVersion_2__311: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.project.DefaultMavenProjectBuilderTest,java.io.File)>($r0, f1);
+
+        $stack6 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/project/ProjectBuildingException;", $stack5, "Expected to fail for future versions");
+
+        e = (org.apache.maven.project.ProjectBuildingException) $stack6;
+
+        $stack7 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.String getMessage()>();
+
+        $stack8 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher containsString(java.lang.String)>("Building this project requires a newer version of Maven");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack7, $stack8);
+
+        return;
+    }
+
+    public void testBuildStubModelForMissingRemotePom() throws java.lang.Exception
+    {
+        DefaultMavenProjectBuilderTest this;
+        org.apache.maven.repository.RepositorySystem $stack3;
+        org.apache.maven.artifact.Artifact pom, $stack14;
+        org.apache.maven.project.MavenProject project, $stack13;
+        java.lang.String $stack6;
+        java.util.List $stack7, $stack8, $stack10, $stack11;
+        boolean $stack9, $stack12, $stack15;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0, $r1;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack3 = $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        pom = interfaceinvoke $stack3.<org.apache.maven.repository.RepositorySystem: org.apache.maven.artifact.Artifact createProjectArtifact(java.lang.String,java.lang.String,java.lang.String)>("org.apache.maven.its", "missing", "0.1");
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        project = virtualinvoke $r1.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProject(org.apache.maven.artifact.Artifact,boolean)>(pom, 1);
+
+        $stack6 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack6);
+
+        $stack7 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getRemoteArtifactRepositories()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack7);
+
+        $stack8 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getRemoteArtifactRepositories()>();
+
+        $stack9 = interfaceinvoke $stack8.<java.util.List: boolean isEmpty()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack9);
+
+        $stack10 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getPluginArtifactRepositories()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack10);
+
+        $stack11 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getPluginArtifactRepositories()>();
+
+        $stack12 = interfaceinvoke $stack11.<java.util.List: boolean isEmpty()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack12);
+
+        $stack13 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.project.MavenProject getParent()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNull(java.lang.Object)>($stack13);
+
+        $stack14 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getParentArtifact()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNull(java.lang.Object)>($stack14);
+
+        $stack15 = virtualinvoke project.<org.apache.maven.project.MavenProject: boolean isExecutionRoot()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack15);
+
+        return;
+    }
+
+    protected org.apache.maven.artifact.repository.ArtifactRepository getLocalRepository() throws java.lang.Exception
+    {
+        DefaultMavenProjectBuilderTest this;
+        org.apache.maven.repository.RepositorySystem $stack1;
+        java.io.File $stack2;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack3;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0, $r1;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack1 = $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.repository.RepositorySystem repositorySystem>;
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack2 = virtualinvoke $r1.<org.apache.maven.project.DefaultMavenProjectBuilderTest: java.io.File getLocalRepositoryPath()>();
+
+        $stack3 = interfaceinvoke $stack1.<org.apache.maven.repository.RepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createLocalRepository(java.io.File)>($stack2);
+
+        return $stack3;
+    }
+
+    public void testPartialResultUponBadDependencyDeclaration() throws java.lang.Exception
+    {
+        java.io.File pomFile;
+        DefaultMavenProjectBuilderTest this;
+        org.apache.maven.project.ProjectBuildingRequest request;
+        org.junit.jupiter.api.function.Executable $stack11;
+        java.lang.Throwable $stack12;
+        org.apache.maven.project.ProjectBuildingException e;
+        java.util.List results, $stack19;
+        int $stack15, $stack20, $stack24;
+        java.lang.Object $stack16;
+        org.apache.maven.project.ProjectBuildingResult result;
+        org.apache.maven.project.MavenProject $stack17, $stack22;
+        java.util.Set $stack23;
+        org.apache.maven.project.DependencyResolutionResult $stack25;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0, $r1;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        pomFile = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/bad-dependency.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        request = virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.ProjectBuildingRequest newBuildingRequest()>();
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setProcessPlugins(boolean)>(0);
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setResolveDependencies(boolean)>(1);
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack11 = staticinvoke <DefaultMavenProjectBuilderTest$lambda_testPartialResultUponBadDependencyDeclaration_3__312: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.project.DefaultMavenProjectBuilderTest,java.io.File,org.apache.maven.project.ProjectBuildingRequest)>($r1, pomFile, request);
+
+        $stack12 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/project/ProjectBuildingException;", $stack11, "Project building did not fail despite invalid POM");
+
+        e = (org.apache.maven.project.ProjectBuildingException) $stack12;
+
+        results = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.util.List getResults()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(results);
+
+        $stack15 = interfaceinvoke results.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack15);
+
+        $stack16 = interfaceinvoke results.<java.util.List: java.lang.Object get(int)>(0);
+
+        result = (org.apache.maven.project.ProjectBuildingResult) $stack16;
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(result);
+
+        $stack17 = interfaceinvoke result.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack17);
+
+        $stack19 = interfaceinvoke result.<org.apache.maven.project.ProjectBuildingResult: java.util.List getProblems()>();
+
+        $stack20 = interfaceinvoke $stack19.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack20);
+
+        $stack22 = interfaceinvoke result.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+        $stack23 = virtualinvoke $stack22.<org.apache.maven.project.MavenProject: java.util.Set getArtifacts()>();
+
+        $stack24 = interfaceinvoke $stack23.<java.util.Set: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack24);
+
+        $stack25 = interfaceinvoke result.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.DependencyResolutionResult getDependencyResolutionResult()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack25);
+
+        return;
+    }
+
+    public void testImportScopePomResolvesFromPropertyBasedRepository() throws java.lang.Exception
+    {
+        java.io.File pomFile;
+        DefaultMavenProjectBuilderTest this;
+        org.apache.maven.project.ProjectBuildingRequest request;
+        org.apache.maven.project.ProjectBuilder $stack7;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0, $r1;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        pomFile = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/import-scope-pom-resolves-from-property-based-repository.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        request = virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.ProjectBuildingRequest newBuildingRequest()>();
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setProcessPlugins(boolean)>(0);
+
+        interfaceinvoke request.<org.apache.maven.project.ProjectBuildingRequest: org.apache.maven.project.ProjectBuildingRequest setResolveDependencies(boolean)>(1);
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack7 = $r1.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        interfaceinvoke $stack7.<org.apache.maven.project.ProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(java.io.File,org.apache.maven.project.ProjectBuildingRequest)>(pomFile, request);
+
+        return;
+    }
+
+    public void testBuildValidParentVersionRangeLocally() throws java.lang.Exception
+    {
+        java.io.File f1;
+        DefaultMavenProjectBuilderTest this;
+        org.apache.maven.project.MavenProject childProject, $stack8, $stack9;
+        org.apache.maven.artifact.Artifact $stack5, $stack6;
+        java.lang.String $stack7, $stack10, $stack15;
+        org.apache.maven.model.Model $stack11, $stack13;
+        org.apache.maven.model.Parent $stack12, $stack14;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/parent-version-range-local-valid/child/pom.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        childProject = virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProject(java.io.File)>(f1);
+
+        $stack5 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getParentArtifact()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack5);
+
+        $stack6 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getParentArtifact()>();
+
+        $stack7 = interfaceinvoke $stack6.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack7, "1");
+
+        $stack8 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.project.MavenProject getParent()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack8);
+
+        $stack9 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.project.MavenProject getParent()>();
+
+        $stack10 = virtualinvoke $stack9.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack10, "1");
+
+        $stack11 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.model.Model getModel()>();
+
+        $stack12 = virtualinvoke $stack11.<org.apache.maven.model.Model: org.apache.maven.model.Parent getParent()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack12);
+
+        $stack13 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.model.Model getModel()>();
+
+        $stack14 = virtualinvoke $stack13.<org.apache.maven.model.Model: org.apache.maven.model.Parent getParent()>();
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.model.Parent: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack15, "[1,10]");
+
+        return;
+    }
+
+    public void testBuildParentVersionRangeLocallyWithoutChildVersion() throws java.lang.Exception
+    {
+        java.io.File f1;
+        DefaultMavenProjectBuilderTest this;
+        org.junit.jupiter.api.function.Executable $stack5;
+        java.lang.Throwable $stack6;
+        org.apache.maven.project.ProjectBuildingException e;
+        java.lang.String $stack7;
+        org.hamcrest.Matcher $stack8;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/parent-version-range-local-child-without-version/child/pom.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack5 = staticinvoke <DefaultMavenProjectBuilderTest$lambda_testBuildParentVersionRangeLocallyWithoutChildVersion_4__314: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.project.DefaultMavenProjectBuilderTest,java.io.File)>($r0, f1);
+
+        $stack6 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/project/ProjectBuildingException;", $stack5, "Expected \'ProjectBuildingException\' not thrown.");
+
+        e = (org.apache.maven.project.ProjectBuildingException) $stack6;
+
+        $stack7 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.String getMessage()>();
+
+        $stack8 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher containsString(java.lang.String)>("Version must be a constant");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack7, $stack8);
+
+        return;
+    }
+
+    public void testBuildParentVersionRangeLocallyWithChildVersionExpression() throws java.lang.Exception
+    {
+        java.io.File f1;
+        DefaultMavenProjectBuilderTest this;
+        org.junit.jupiter.api.function.Executable $stack5;
+        java.lang.Throwable $stack6;
+        org.apache.maven.project.ProjectBuildingException e;
+        java.lang.String $stack7;
+        org.hamcrest.Matcher $stack8;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/parent-version-range-local-child-version-expression/child/pom.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack5 = staticinvoke <DefaultMavenProjectBuilderTest$lambda_testBuildParentVersionRangeLocallyWithChildVersionExpression_5__313: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.project.DefaultMavenProjectBuilderTest,java.io.File)>($r0, f1);
+
+        $stack6 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/project/ProjectBuildingException;", $stack5, "Expected \'ProjectBuildingException\' not thrown.");
+
+        e = (org.apache.maven.project.ProjectBuildingException) $stack6;
+
+        $stack7 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.String getMessage()>();
+
+        $stack8 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher containsString(java.lang.String)>("Version must be a constant");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack7, $stack8);
+
+        return;
+    }
+
+    public void testBuildParentVersionRangeExternally() throws java.lang.Exception
+    {
+        java.io.File f1;
+        DefaultMavenProjectBuilderTest this;
+        org.apache.maven.project.MavenProject childProject, $stack8, $stack9;
+        org.apache.maven.artifact.Artifact $stack5, $stack6;
+        java.lang.String $stack7, $stack10, $stack15;
+        org.apache.maven.model.Model $stack11, $stack13;
+        org.apache.maven.model.Parent $stack12, $stack14;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/parent-version-range-external-valid/pom.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        childProject = virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProjectFromRemoteRepository(java.io.File)>(f1);
+
+        $stack5 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getParentArtifact()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack5);
+
+        $stack6 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getParentArtifact()>();
+
+        $stack7 = interfaceinvoke $stack6.<org.apache.maven.artifact.Artifact: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack7, "1");
+
+        $stack8 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.project.MavenProject getParent()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack8);
+
+        $stack9 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.project.MavenProject getParent()>();
+
+        $stack10 = virtualinvoke $stack9.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack10, "1");
+
+        $stack11 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.model.Model getModel()>();
+
+        $stack12 = virtualinvoke $stack11.<org.apache.maven.model.Model: org.apache.maven.model.Parent getParent()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>($stack12);
+
+        $stack13 = virtualinvoke childProject.<org.apache.maven.project.MavenProject: org.apache.maven.model.Model getModel()>();
+
+        $stack14 = virtualinvoke $stack13.<org.apache.maven.model.Model: org.apache.maven.model.Parent getParent()>();
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.model.Parent: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack15, "[1,1]");
+
+        return;
+    }
+
+    public void testBuildParentVersionRangeExternallyWithoutChildVersion() throws java.lang.Exception
+    {
+        java.io.File f1;
+        DefaultMavenProjectBuilderTest this;
+        org.junit.jupiter.api.function.Executable $stack5;
+        java.lang.Throwable $stack6;
+        org.apache.maven.project.ProjectBuildingException e;
+        java.lang.String $stack7;
+        org.hamcrest.Matcher $stack8;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/parent-version-range-external-child-without-version/pom.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack5 = staticinvoke <DefaultMavenProjectBuilderTest$lambda_testBuildParentVersionRangeExternallyWithoutChildVersion_6__315: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.project.DefaultMavenProjectBuilderTest,java.io.File)>($r0, f1);
+
+        $stack6 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/project/ProjectBuildingException;", $stack5, "Expected \'ProjectBuildingException\' not thrown.");
+
+        e = (org.apache.maven.project.ProjectBuildingException) $stack6;
+
+        $stack7 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.String getMessage()>();
+
+        $stack8 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher containsString(java.lang.String)>("Version must be a constant");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack7, $stack8);
+
+        return;
+    }
+
+    public void testBuildParentVersionRangeExternallyWithChildVersionExpression() throws java.lang.Exception
+    {
+        java.io.File f1;
+        DefaultMavenProjectBuilderTest this;
+        org.junit.jupiter.api.function.Executable $stack5;
+        java.lang.Throwable $stack6;
+        org.apache.maven.project.ProjectBuildingException e;
+        java.lang.String $stack7;
+        org.hamcrest.Matcher $stack8;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("src/test/resources/projects/parent-version-range-external-child-version-expression/pom.xml");
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack5 = staticinvoke <DefaultMavenProjectBuilderTest$lambda_testBuildParentVersionRangeExternallyWithChildVersionExpression_7__316: org.junit.jupiter.api.function.Executable bootstrap$(org.apache.maven.project.DefaultMavenProjectBuilderTest,java.io.File)>($r0, f1);
+
+        $stack6 = staticinvoke <org.junit.jupiter.api.Assertions: java.lang.Throwable assertThrows(java.lang.Class,org.junit.jupiter.api.function.Executable,java.lang.String)>(class "Lorg/apache/maven/project/ProjectBuildingException;", $stack5, "Expected \'ProjectBuildingException\' not thrown.");
+
+        e = (org.apache.maven.project.ProjectBuildingException) $stack6;
+
+        $stack7 = virtualinvoke e.<org.apache.maven.project.ProjectBuildingException: java.lang.String getMessage()>();
+
+        $stack8 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher containsString(java.lang.String)>("Version must be a constant");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack7, $stack8);
+
+        return;
+    }
+
+    public void rereadPom_mng7063() throws java.lang.Exception
+    {
+        DefaultMavenProjectBuilderTest this;
+        java.nio.file.Path $stack7, pom;
+        org.apache.maven.project.ProjectBuildingRequest buildingRequest;
+        java.lang.Class $stack10, $stack21;
+        java.nio.file.CopyOption[] $stack12, $stack23;
+        java.nio.file.StandardCopyOption $stack13, $stack24;
+        org.apache.maven.project.ProjectBuilder $stack15, $stack26;
+        java.io.File $stack16, $stack27;
+        org.apache.maven.project.ProjectBuildingResult $stack17, $stack28;
+        java.lang.String $stack19, $stack30;
+        org.hamcrest.Matcher $stack20, $stack31;
+        java.lang.Throwable $stack48, $stack49, $stack51, $stack52;
+        java.io.InputStream pomResource;
+        org.apache.maven.project.MavenProject pomResource#6;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack7 = $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: java.nio.file.Path projectRoot>;
+
+        pom = interfaceinvoke $stack7.<java.nio.file.Path: java.nio.file.Path resolve(java.lang.String)>("pom.xml");
+
+        $r1 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        buildingRequest = virtualinvoke $r1.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.ProjectBuildingRequest newBuildingRequest()>();
+
+        $stack10 = class "Lorg/apache/maven/project/DefaultMavenProjectBuilderTest;";
+
+        pomResource = virtualinvoke $stack10.<java.lang.Class: java.io.InputStream getResourceAsStream(java.lang.String)>("/projects/reread/pom1.xml");
+
+     label01:
+        $stack12 = newarray (java.nio.file.CopyOption)[1];
+
+        $stack13 = <java.nio.file.StandardCopyOption: java.nio.file.StandardCopyOption REPLACE_EXISTING>;
+
+        $stack12[0] = $stack13;
+
+        staticinvoke <java.nio.file.Files: long copy(java.io.InputStream,java.nio.file.Path,java.nio.file.CopyOption[])>(pomResource, pom, $stack12);
+
+     label02:
+        if pomResource == null goto label08;
+
+        virtualinvoke pomResource.<java.io.InputStream: void close()>();
+
+        goto label08;
+
+     label03:
+        $stack52 := @caughtexception;
+
+        if pomResource == null goto label07;
+
+     label04:
+        virtualinvoke pomResource.<java.io.InputStream: void close()>();
+
+     label05:
+        goto label07;
+
+     label06:
+        $stack51 := @caughtexception;
+
+        virtualinvoke $stack52.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack51);
+
+     label07:
+        throw $stack52;
+
+     label08:
+        $r2 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack15 = $r2.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        $stack16 = interfaceinvoke pom.<java.nio.file.Path: java.io.File toFile()>();
+
+        $stack17 = interfaceinvoke $stack15.<org.apache.maven.project.ProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(java.io.File,org.apache.maven.project.ProjectBuildingRequest)>($stack16, buildingRequest);
+
+        pomResource#6 = interfaceinvoke $stack17.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+        $stack19 = virtualinvoke pomResource#6.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        $stack20 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>("aid");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack19, $stack20);
+
+        $stack21 = class "Lorg/apache/maven/project/DefaultMavenProjectBuilderTest;";
+
+        pomResource = virtualinvoke $stack21.<java.lang.Class: java.io.InputStream getResourceAsStream(java.lang.String)>("/projects/reread/pom2.xml");
+
+     label09:
+        $stack23 = newarray (java.nio.file.CopyOption)[1];
+
+        $stack24 = <java.nio.file.StandardCopyOption: java.nio.file.StandardCopyOption REPLACE_EXISTING>;
+
+        $stack23[0] = $stack24;
+
+        staticinvoke <java.nio.file.Files: long copy(java.io.InputStream,java.nio.file.Path,java.nio.file.CopyOption[])>(pomResource, pom, $stack23);
+
+     label10:
+        if pomResource == null goto label16;
+
+        virtualinvoke pomResource.<java.io.InputStream: void close()>();
+
+        goto label16;
+
+     label11:
+        $stack49 := @caughtexception;
+
+        if pomResource == null goto label15;
+
+     label12:
+        virtualinvoke pomResource.<java.io.InputStream: void close()>();
+
+     label13:
+        goto label15;
+
+     label14:
+        $stack48 := @caughtexception;
+
+        virtualinvoke $stack49.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack48);
+
+     label15:
+        throw $stack49;
+
+     label16:
+        $r3 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack26 = $r3.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        $stack27 = interfaceinvoke pom.<java.nio.file.Path: java.io.File toFile()>();
+
+        $stack28 = interfaceinvoke $stack26.<org.apache.maven.project.ProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(java.io.File,org.apache.maven.project.ProjectBuildingRequest)>($stack27, buildingRequest);
+
+        pomResource#6 = interfaceinvoke $stack28.<org.apache.maven.project.ProjectBuildingResult: org.apache.maven.project.MavenProject getProject()>();
+
+        $stack30 = virtualinvoke pomResource#6.<org.apache.maven.project.MavenProject: java.lang.String getName()>();
+
+        $stack31 = staticinvoke <org.hamcrest.Matchers: org.hamcrest.Matcher is(java.lang.Object)>("PROJECT NAME");
+
+        staticinvoke <org.hamcrest.MatcherAssert: void assertThat(java.lang.Object,org.hamcrest.Matcher)>($stack30, $stack31);
+
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label03;
+        catch java.lang.Throwable from label04 to label05 with label06;
+        catch java.lang.Throwable from label09 to label10 with label11;
+        catch java.lang.Throwable from label12 to label13 with label14;
+    }
+
+    private void lambda$testBuildParentVersionRangeExternallyWithChildVersionExpression$7(java.io.File) throws java.lang.Throwable
+    {
+        DefaultMavenProjectBuilderTest this;
+        java.io.File f1;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 := @parameter0: java.io.File;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProjectFromRemoteRepository(java.io.File)>(f1);
+
+        return;
+    }
+
+    private void lambda$testBuildParentVersionRangeExternallyWithoutChildVersion$6(java.io.File) throws java.lang.Throwable
+    {
+        DefaultMavenProjectBuilderTest this;
+        java.io.File f1;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 := @parameter0: java.io.File;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProjectFromRemoteRepository(java.io.File)>(f1);
+
+        return;
+    }
+
+    private void lambda$testBuildParentVersionRangeLocallyWithChildVersionExpression$5(java.io.File) throws java.lang.Throwable
+    {
+        DefaultMavenProjectBuilderTest this;
+        java.io.File f1;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 := @parameter0: java.io.File;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProject(java.io.File)>(f1);
+
+        return;
+    }
+
+    private void lambda$testBuildParentVersionRangeLocallyWithoutChildVersion$4(java.io.File) throws java.lang.Throwable
+    {
+        DefaultMavenProjectBuilderTest this;
+        java.io.File f1;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 := @parameter0: java.io.File;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProject(java.io.File)>(f1);
+
+        return;
+    }
+
+    private void lambda$testPartialResultUponBadDependencyDeclaration$3(java.io.File, org.apache.maven.project.ProjectBuildingRequest) throws java.lang.Throwable
+    {
+        DefaultMavenProjectBuilderTest this;
+        java.io.File pomFile;
+        org.apache.maven.project.ProjectBuildingRequest request;
+        org.apache.maven.project.ProjectBuilder $stack3;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        pomFile := @parameter0: java.io.File;
+
+        request := @parameter1: org.apache.maven.project.ProjectBuildingRequest;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        $stack3 = $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.ProjectBuilder projectBuilder>;
+
+        interfaceinvoke $stack3.<org.apache.maven.project.ProjectBuilder: org.apache.maven.project.ProjectBuildingResult build(java.io.File,org.apache.maven.project.ProjectBuildingRequest)>(pomFile, request);
+
+        return;
+    }
+
+    private void lambda$testFutureSchemaModelVersion$2(java.io.File) throws java.lang.Throwable
+    {
+        DefaultMavenProjectBuilderTest this;
+        java.io.File f1;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 := @parameter0: java.io.File;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProject(java.io.File)>(f1);
+
+        return;
+    }
+
+    private void lambda$testPastModelVersion$1(java.io.File) throws java.lang.Throwable
+    {
+        DefaultMavenProjectBuilderTest this;
+        java.io.File f1;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 := @parameter0: java.io.File;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProject(java.io.File)>(f1);
+
+        return;
+    }
+
+    private void lambda$testFutureModelVersion$0(java.io.File) throws java.lang.Throwable
+    {
+        DefaultMavenProjectBuilderTest this;
+        java.io.File f1;
+        org.apache.maven.project.DefaultMavenProjectBuilderTest $r0;
+
+        this := @this: DefaultMavenProjectBuilderTest;
+
+        f1 := @parameter0: java.io.File;
+
+        $r0 = (org.apache.maven.project.DefaultMavenProjectBuilderTest) this;
+
+        virtualinvoke $r0.<org.apache.maven.project.DefaultMavenProjectBuilderTest: org.apache.maven.project.MavenProject getProject(java.io.File)>(f1);
+
+        return;
+    }
+}

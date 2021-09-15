@@ -1,0 +1,1918 @@
+public class DefaultMaven extends java.lang.Object implements org.apache.maven.Maven
+{
+    private org.codehaus.plexus.logging.Logger logger;
+    protected org.apache.maven.project.ProjectBuilder projectBuilder;
+    private org.apache.maven.lifecycle.internal.LifecycleStarter lifecycleStarter;
+    protected org.codehaus.plexus.PlexusContainer container;
+    private org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult;
+    private org.apache.maven.plugin.LegacySupport legacySupport;
+    private org.apache.maven.session.scope.internal.SessionScope sessionScope;
+    private org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory repositorySessionFactory;
+    private org.apache.maven.graph.GraphBuilder graphBuilder;
+    private org.apache.maven.execution.BuildResumptionAnalyzer buildResumptionAnalyzer;
+    private org.apache.maven.execution.BuildResumptionDataRepository buildResumptionDataRepository;
+    private org.apache.maven.model.superpom.SuperPomProvider superPomProvider;
+
+    public void <init>()
+    {
+        DefaultMaven this;
+
+        this := @this: DefaultMaven;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.execution.MavenExecutionResult execute(org.apache.maven.execution.MavenExecutionRequest)
+    {
+        DefaultMaven this;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        org.apache.maven.plugin.LegacySupport $stack6, $stack8, $stack19, $stack29;
+        java.lang.Throwable $stack7, $stack10, $stack22, $r9;
+        java.lang.RuntimeException $stack9;
+        boolean $stack11;
+        java.lang.StringBuilder $stack15, $stack16, $u3;
+        java.lang.String $stack17;
+        java.lang.OutOfMemoryError $stack26;
+        org.apache.maven.execution.MavenExecutionResult result, $r3, $r6, $r8;
+        org.apache.maven.execution.DefaultMavenExecutionResult $u0, $u1, $u2;
+        org.apache.maven.InternalErrorException $u4;
+        org.apache.maven.DefaultMaven $r0, $r1, $r2, $r4, $r5, $r7, $r10, $r11;
+
+        this := @this: DefaultMaven;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+     label01:
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        result = specialinvoke $r0.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult doExecute(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+     label02:
+        $r1 = (org.apache.maven.DefaultMaven) this;
+
+        $stack6 = $r1.<org.apache.maven.DefaultMaven: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        interfaceinvoke $stack6.<org.apache.maven.plugin.LegacySupport: void setSession(org.apache.maven.execution.MavenSession)>(null);
+
+        goto label10;
+
+     label03:
+        $stack26 := @caughtexception;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionResult;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionResult: void <init>()>();
+
+        $r2 = (org.apache.maven.DefaultMaven) this;
+
+        $r3 = (org.apache.maven.execution.MavenExecutionResult) $u0;
+
+        result = specialinvoke $r2.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>($r3, $stack26);
+
+     label04:
+        $r4 = (org.apache.maven.DefaultMaven) this;
+
+        $stack29 = $r4.<org.apache.maven.DefaultMaven: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        interfaceinvoke $stack29.<org.apache.maven.plugin.LegacySupport: void setSession(org.apache.maven.execution.MavenSession)>(null);
+
+        goto label10;
+
+     label05:
+        $stack9 := @caughtexception;
+
+        $stack10 = virtualinvoke $stack9.<java.lang.RuntimeException: java.lang.Throwable getCause()>();
+
+        $stack11 = $stack10 instanceof org.apache.maven.ProjectCycleException;
+
+        if $stack11 == 0 goto label06;
+
+        $u1 = new org.apache.maven.execution.DefaultMavenExecutionResult;
+
+        specialinvoke $u1.<org.apache.maven.execution.DefaultMavenExecutionResult: void <init>()>();
+
+        $stack22 = virtualinvoke $stack9.<java.lang.RuntimeException: java.lang.Throwable getCause()>();
+
+        $r5 = (org.apache.maven.DefaultMaven) this;
+
+        $r6 = (org.apache.maven.execution.MavenExecutionResult) $u1;
+
+        result = specialinvoke $r5.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>($r6, $stack22);
+
+        goto label07;
+
+     label06:
+        $u2 = new org.apache.maven.execution.DefaultMavenExecutionResult;
+
+        specialinvoke $u2.<org.apache.maven.execution.DefaultMavenExecutionResult: void <init>()>();
+
+        $u4 = new org.apache.maven.InternalErrorException;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack15 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Internal error: ");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack9);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u4.<org.apache.maven.InternalErrorException: void <init>(java.lang.String,java.lang.Throwable)>($stack17, $stack9);
+
+        $r7 = (org.apache.maven.DefaultMaven) this;
+
+        $r8 = (org.apache.maven.execution.MavenExecutionResult) $u2;
+
+        $r9 = (java.lang.Throwable) $u4;
+
+        result = specialinvoke $r7.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>($r8, $r9);
+
+     label07:
+        $r10 = (org.apache.maven.DefaultMaven) this;
+
+        $stack19 = $r10.<org.apache.maven.DefaultMaven: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        interfaceinvoke $stack19.<org.apache.maven.plugin.LegacySupport: void setSession(org.apache.maven.execution.MavenSession)>(null);
+
+        goto label10;
+
+     label08:
+        $stack7 := @caughtexception;
+
+     label09:
+        $r11 = (org.apache.maven.DefaultMaven) this;
+
+        $stack8 = $r11.<org.apache.maven.DefaultMaven: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        interfaceinvoke $stack8.<org.apache.maven.plugin.LegacySupport: void setSession(org.apache.maven.execution.MavenSession)>(null);
+
+        throw $stack7;
+
+     label10:
+        return result;
+
+        catch java.lang.OutOfMemoryError from label01 to label02 with label03;
+        catch java.lang.RuntimeException from label01 to label02 with label05;
+        catch java.lang.Throwable from label01 to label02 with label08;
+        catch java.lang.Throwable from label03 to label04 with label08;
+        catch java.lang.Throwable from label05 to label07 with label08;
+        catch java.lang.Throwable from label08 to label09 with label08;
+    }
+
+    private org.apache.maven.execution.MavenExecutionResult doExecute(org.apache.maven.execution.MavenExecutionRequest)
+    {
+        org.apache.maven.execution.MavenExecutionRequest request;
+        DefaultMaven this;
+        org.apache.maven.session.scope.internal.SessionScope $stack10, $stack14, $stack17, $stack19;
+        org.eclipse.aether.RepositorySystemSession $stack11, $r6;
+        org.codehaus.plexus.PlexusContainer $stack13;
+        org.apache.maven.plugin.LegacySupport $stack15;
+        org.apache.maven.execution.MavenExecutionResult l5, $stack21, $r2, $r7, $r11;
+        java.lang.Throwable $stack18, $stack20;
+        org.eclipse.aether.DefaultRepositorySystemSession e#2;
+        java.util.Date $u0;
+        org.apache.maven.execution.DefaultMavenExecutionResult $u1;
+        org.apache.maven.execution.MavenSession $u2;
+        org.apache.maven.DefaultMaven $r0, $r1, $r3, $r4, $r5, $r8, $r9, $r10, $r12, $r13;
+
+        this := @this: DefaultMaven;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        $u0 = new java.util.Date;
+
+        specialinvoke $u0.<java.util.Date: void <init>()>();
+
+        interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setStartTime(java.util.Date)>($u0);
+
+        $u1 = new org.apache.maven.execution.DefaultMavenExecutionResult;
+
+        specialinvoke $u1.<org.apache.maven.execution.DefaultMavenExecutionResult: void <init>()>();
+
+     label1:
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r0.<org.apache.maven.DefaultMaven: void validateLocalRepository(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack20 := @caughtexception;
+
+        $r1 = (org.apache.maven.DefaultMaven) this;
+
+        $r2 = (org.apache.maven.execution.MavenExecutionResult) $u1;
+
+        $stack21 = specialinvoke $r1.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>($r2, $stack20);
+
+        return $stack21;
+
+     label4:
+        $r3 = (org.apache.maven.DefaultMaven) this;
+
+        $stack10 = $r3.<org.apache.maven.DefaultMaven: org.apache.maven.session.scope.internal.SessionScope sessionScope>;
+
+        virtualinvoke $stack10.<org.apache.maven.session.scope.internal.SessionScope: void enter()>();
+
+     label5:
+        $r4 = (org.apache.maven.DefaultMaven) this;
+
+        $stack11 = virtualinvoke $r4.<org.apache.maven.DefaultMaven: org.eclipse.aether.RepositorySystemSession newRepositorySession(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+        e#2 = (org.eclipse.aether.DefaultRepositorySystemSession) $stack11;
+
+        $u2 = new org.apache.maven.execution.MavenSession;
+
+        $r5 = (org.apache.maven.DefaultMaven) this;
+
+        $stack13 = $r5.<org.apache.maven.DefaultMaven: org.codehaus.plexus.PlexusContainer container>;
+
+        $r6 = (org.eclipse.aether.RepositorySystemSession) e#2;
+
+        $r7 = (org.apache.maven.execution.MavenExecutionResult) $u1;
+
+        specialinvoke $u2.<org.apache.maven.execution.MavenSession: void <init>(org.codehaus.plexus.PlexusContainer,org.eclipse.aether.RepositorySystemSession,org.apache.maven.execution.MavenExecutionRequest,org.apache.maven.execution.MavenExecutionResult)>($stack13, $r6, request, $r7);
+
+        $r8 = (org.apache.maven.DefaultMaven) this;
+
+        $stack14 = $r8.<org.apache.maven.DefaultMaven: org.apache.maven.session.scope.internal.SessionScope sessionScope>;
+
+        virtualinvoke $stack14.<org.apache.maven.session.scope.internal.SessionScope: void seed(java.lang.Class,java.lang.Object)>(class "Lorg/apache/maven/execution/MavenSession;", $u2);
+
+        $r9 = (org.apache.maven.DefaultMaven) this;
+
+        $stack15 = $r9.<org.apache.maven.DefaultMaven: org.apache.maven.plugin.LegacySupport legacySupport>;
+
+        interfaceinvoke $stack15.<org.apache.maven.plugin.LegacySupport: void setSession(org.apache.maven.execution.MavenSession)>($u2);
+
+        $r10 = (org.apache.maven.DefaultMaven) this;
+
+        $r11 = (org.apache.maven.execution.MavenExecutionResult) $u1;
+
+        l5 = specialinvoke $r10.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult doExecute(org.apache.maven.execution.MavenExecutionRequest,org.apache.maven.execution.MavenSession,org.apache.maven.execution.MavenExecutionResult,org.eclipse.aether.DefaultRepositorySystemSession)>(request, $u2, $r11, e#2);
+
+     label6:
+        $r12 = (org.apache.maven.DefaultMaven) this;
+
+        $stack17 = $r12.<org.apache.maven.DefaultMaven: org.apache.maven.session.scope.internal.SessionScope sessionScope>;
+
+        virtualinvoke $stack17.<org.apache.maven.session.scope.internal.SessionScope: void exit()>();
+
+        return l5;
+
+     label7:
+        $stack18 := @caughtexception;
+
+     label8:
+        $r13 = (org.apache.maven.DefaultMaven) this;
+
+        $stack19 = $r13.<org.apache.maven.DefaultMaven: org.apache.maven.session.scope.internal.SessionScope sessionScope>;
+
+        virtualinvoke $stack19.<org.apache.maven.session.scope.internal.SessionScope: void exit()>();
+
+        throw $stack18;
+
+        catch org.apache.maven.repository.LocalRepositoryNotAccessibleException from label1 to label2 with label3;
+        catch java.lang.Throwable from label5 to label6 with label7;
+        catch java.lang.Throwable from label7 to label8 with label7;
+    }
+
+    private org.apache.maven.execution.MavenExecutionResult doExecute(org.apache.maven.execution.MavenExecutionRequest, org.apache.maven.execution.MavenSession, org.apache.maven.execution.MavenExecutionResult, org.eclipse.aether.DefaultRepositorySystemSession)
+    {
+        DefaultMaven this;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.ExecutionEvent$Type $stack11;
+        org.apache.maven.lifecycle.internal.ExecutionEventCatapult $stack12;
+        org.apache.maven.execution.MavenExecutionResult result, $stack31, $stack36, $stack47, $stack60, $stack66, $stack68, $stack72, $stack74, $stack76, $stack78, $stack80, $stack82, $stack84, $stack86;
+        boolean $stack14, $stack23, $stack24, $stack32, $stack37;
+        java.util.List $stack15, $stack25, $stack29, $stack38, $stack46, $stack48, $stack52, $stack53, $stack54, $stack70;
+        java.util.Map $stack16;
+        org.codehaus.plexus.PlexusContainer $stack17;
+        java.lang.Object $stack18, $stack49, $stack57, $stack63;
+        org.eclipse.aether.DefaultRepositorySystemSession repoSession;
+        org.eclipse.aether.repository.WorkspaceReader $stack19, $stack20, e#4;
+        org.apache.maven.project.MavenProject $stack27;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        org.apache.maven.execution.ProfileActivation $stack30, $stack33, $stack35;
+        org.apache.maven.lifecycle.internal.LifecycleStarter $stack34;
+        java.util.stream.Stream $stack39, $stack41;
+        java.util.function.Predicate $stack40;
+        java.util.Optional $stack42;
+        org.apache.maven.execution.BuildResumptionDataRepository $stack43;
+        java.util.function.Consumer $stack45;
+        java.lang.Throwable $stack50, $stack67, $stack69, $stack71, $stack73, $stack75, $stack77, $stack79, $stack81, $stack83, $stack85;
+        java.lang.Iterable $stack55, $stack61;
+        java.util.Iterator $stack56, $stack62;
+        org.apache.maven.model.building.ModelProblem $stack58, $stack64;
+        java.lang.Exception $stack59, $stack65;
+        org.apache.maven.model.building.Result e;
+        org.apache.maven.DefaultMaven $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30;
+
+        this := @this: DefaultMaven;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        session := @parameter1: org.apache.maven.execution.MavenSession;
+
+        result := @parameter2: org.apache.maven.execution.MavenExecutionResult;
+
+        repoSession := @parameter3: org.eclipse.aether.DefaultRepositorySystemSession;
+
+     label01:
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r0.<org.apache.maven.DefaultMaven: void afterSessionStart(org.apache.maven.execution.MavenSession)>(session);
+
+     label02:
+        goto label04;
+
+     label03:
+        $stack85 := @caughtexception;
+
+        $r1 = (org.apache.maven.DefaultMaven) this;
+
+        $stack86 = specialinvoke $r1.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack85);
+
+        return $stack86;
+
+     label04:
+        $r2 = (org.apache.maven.DefaultMaven) this;
+
+        $stack12 = $r2.<org.apache.maven.DefaultMaven: org.apache.maven.lifecycle.internal.ExecutionEventCatapult eventCatapult>;
+
+        $stack11 = <org.apache.maven.execution.ExecutionEvent$Type: org.apache.maven.execution.ExecutionEvent$Type ProjectDiscoveryStarted>;
+
+        interfaceinvoke $stack12.<org.apache.maven.lifecycle.internal.ExecutionEventCatapult: void fire(org.apache.maven.execution.ExecutionEvent$Type,org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>($stack11, session, null);
+
+        $r3 = (org.apache.maven.DefaultMaven) this;
+
+        e = specialinvoke $r3.<org.apache.maven.DefaultMaven: org.apache.maven.model.building.Result buildGraph(org.apache.maven.execution.MavenSession,org.apache.maven.execution.MavenExecutionResult)>(session, result);
+
+        $stack14 = virtualinvoke e.<org.apache.maven.model.building.Result: boolean hasErrors()>();
+
+        if $stack14 == 0 goto label05;
+
+        $stack61 = virtualinvoke e.<org.apache.maven.model.building.Result: java.lang.Iterable getProblems()>();
+
+        $stack62 = interfaceinvoke $stack61.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+        $stack63 = interfaceinvoke $stack62.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack64 = (org.apache.maven.model.building.ModelProblem) $stack63;
+
+        $stack65 = interfaceinvoke $stack64.<org.apache.maven.model.building.ModelProblem: java.lang.Exception getException()>();
+
+        $r4 = (org.apache.maven.DefaultMaven) this;
+
+        $stack66 = specialinvoke $r4.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack65);
+
+        return $stack66;
+
+     label05:
+        $stack15 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $r5 = (org.apache.maven.DefaultMaven) this;
+
+        $stack16 = specialinvoke $r5.<org.apache.maven.DefaultMaven: java.util.Map getProjectMap(java.util.Collection)>($stack15);
+
+        virtualinvoke session.<org.apache.maven.execution.MavenSession: void setProjectMap(java.util.Map)>($stack16);
+
+     label06:
+        goto label08;
+
+     label07:
+        $stack83 := @caughtexception;
+
+        $r6 = (org.apache.maven.DefaultMaven) this;
+
+        $stack84 = specialinvoke $r6.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack83);
+
+        return $stack84;
+
+     label08:
+        $r7 = (org.apache.maven.DefaultMaven) this;
+
+        $stack17 = $r7.<org.apache.maven.DefaultMaven: org.codehaus.plexus.PlexusContainer container>;
+
+        $stack18 = interfaceinvoke $stack17.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class,java.lang.String)>(class "Lorg/eclipse/aether/repository/WorkspaceReader;", "reactor");
+
+        e#4 = (org.eclipse.aether.repository.WorkspaceReader) $stack18;
+
+     label09:
+        goto label11;
+
+     label10:
+        $stack81 := @caughtexception;
+
+        $r8 = (org.apache.maven.DefaultMaven) this;
+
+        $stack82 = specialinvoke $r8.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack81);
+
+        return $stack82;
+
+     label11:
+        $stack19 = virtualinvoke repoSession.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.repository.WorkspaceReader getWorkspaceReader()>();
+
+        $stack20 = staticinvoke <org.eclipse.aether.util.repository.ChainedWorkspaceReader: org.eclipse.aether.repository.WorkspaceReader newInstance(org.eclipse.aether.repository.WorkspaceReader,org.eclipse.aether.repository.WorkspaceReader)>(e#4, $stack19);
+
+        virtualinvoke repoSession.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setWorkspaceReader(org.eclipse.aether.repository.WorkspaceReader)>($stack20);
+
+        virtualinvoke repoSession.<org.eclipse.aether.DefaultRepositorySystemSession: void setReadOnly()>();
+
+     label12:
+        $r9 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r9.<org.apache.maven.DefaultMaven: void afterProjectsRead(org.apache.maven.execution.MavenSession)>(session);
+
+     label13:
+        goto label15;
+
+     label14:
+        $stack79 := @caughtexception;
+
+        $r10 = (org.apache.maven.DefaultMaven) this;
+
+        $stack80 = specialinvoke $r10.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack79);
+
+        return $stack80;
+
+     label15:
+        $r11 = (org.apache.maven.DefaultMaven) this;
+
+        e = specialinvoke $r11.<org.apache.maven.DefaultMaven: org.apache.maven.model.building.Result buildGraph(org.apache.maven.execution.MavenSession,org.apache.maven.execution.MavenExecutionResult)>(session, result);
+
+        $stack23 = virtualinvoke e.<org.apache.maven.model.building.Result: boolean hasErrors()>();
+
+        if $stack23 == 0 goto label16;
+
+        $stack55 = virtualinvoke e.<org.apache.maven.model.building.Result: java.lang.Iterable getProblems()>();
+
+        $stack56 = interfaceinvoke $stack55.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+        $stack57 = interfaceinvoke $stack56.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack58 = (org.apache.maven.model.building.ModelProblem) $stack57;
+
+        $stack59 = interfaceinvoke $stack58.<org.apache.maven.model.building.ModelProblem: java.lang.Exception getException()>();
+
+        $r12 = (org.apache.maven.DefaultMaven) this;
+
+        $stack60 = specialinvoke $r12.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack59);
+
+        return $stack60;
+
+     label16:
+        $stack24 = interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: boolean hasExceptions()>();
+
+        if $stack24 == 0 goto label21;
+
+     label17:
+        $stack54 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $r13 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r13.<org.apache.maven.DefaultMaven: void afterSessionEnd(java.util.Collection,org.apache.maven.execution.MavenSession)>($stack54, session);
+
+     label18:
+        goto label20;
+
+     label19:
+        $stack77 := @caughtexception;
+
+        $r14 = (org.apache.maven.DefaultMaven) this;
+
+        $stack78 = specialinvoke $r14.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack77);
+
+        return $stack78;
+
+     label20:
+        return result;
+
+     label21:
+        $stack25 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult setTopologicallySortedProjects(java.util.List)>($stack25);
+
+        $stack27 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getTopLevelProject()>();
+
+        interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult setProject(org.apache.maven.project.MavenProject)>($stack27);
+
+        $stack29 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $r15 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r15.<org.apache.maven.DefaultMaven: void validatePrerequisitesForNonMavenPluginProjects(java.util.List)>($stack29);
+
+        $stack30 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.ProfileActivation getProfileActivation()>();
+
+        $r16 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r16.<org.apache.maven.DefaultMaven: void validateRequiredProfiles(org.apache.maven.execution.MavenSession,org.apache.maven.execution.ProfileActivation)>(session, $stack30);
+
+        $stack31 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionResult getResult()>();
+
+        $stack32 = interfaceinvoke $stack31.<org.apache.maven.execution.MavenExecutionResult: boolean hasExceptions()>();
+
+        if $stack32 == 0 goto label26;
+
+     label22:
+        $stack53 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $r17 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r17.<org.apache.maven.DefaultMaven: void afterSessionEnd(java.util.Collection,org.apache.maven.execution.MavenSession)>($stack53, session);
+
+     label23:
+        goto label25;
+
+     label24:
+        $stack75 := @caughtexception;
+
+        $r18 = (org.apache.maven.DefaultMaven) this;
+
+        $stack76 = specialinvoke $r18.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack75);
+
+        return $stack76;
+
+     label25:
+        return result;
+
+     label26:
+        $stack33 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.ProfileActivation getProfileActivation()>();
+
+        $r19 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r19.<org.apache.maven.DefaultMaven: void validateOptionalProfiles(org.apache.maven.execution.MavenSession,org.apache.maven.execution.ProfileActivation)>(session, $stack33);
+
+        $r20 = (org.apache.maven.DefaultMaven) this;
+
+        $stack34 = $r20.<org.apache.maven.DefaultMaven: org.apache.maven.lifecycle.internal.LifecycleStarter lifecycleStarter>;
+
+        virtualinvoke $stack34.<org.apache.maven.lifecycle.internal.LifecycleStarter: void execute(org.apache.maven.execution.MavenSession)>(session);
+
+        $stack35 = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.ProfileActivation getProfileActivation()>();
+
+        $r21 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r21.<org.apache.maven.DefaultMaven: void validateOptionalProfiles(org.apache.maven.execution.MavenSession,org.apache.maven.execution.ProfileActivation)>(session, $stack35);
+
+        $stack36 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionResult getResult()>();
+
+        $stack37 = interfaceinvoke $stack36.<org.apache.maven.execution.MavenExecutionResult: boolean hasExceptions()>();
+
+        if $stack37 == 0 goto label31;
+
+        $stack47 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionResult getResult()>();
+
+        $stack48 = interfaceinvoke $stack47.<org.apache.maven.execution.MavenExecutionResult: java.util.List getExceptions()>();
+
+        $stack49 = interfaceinvoke $stack48.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack50 = (java.lang.Throwable) $stack49;
+
+        $r22 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r22.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack50);
+
+        $r23 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r23.<org.apache.maven.DefaultMaven: void persistResumptionData(org.apache.maven.execution.MavenExecutionResult,org.apache.maven.execution.MavenSession)>(result, session);
+
+     label27:
+        $stack52 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $r24 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r24.<org.apache.maven.DefaultMaven: void afterSessionEnd(java.util.Collection,org.apache.maven.execution.MavenSession)>($stack52, session);
+
+     label28:
+        goto label30;
+
+     label29:
+        $stack73 := @caughtexception;
+
+        $r25 = (org.apache.maven.DefaultMaven) this;
+
+        $stack74 = specialinvoke $r25.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack73);
+
+        return $stack74;
+
+     label30:
+        return result;
+
+     label31:
+        $stack38 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getAllProjects()>();
+
+        $stack39 = interfaceinvoke $stack38.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack40 = staticinvoke <DefaultMaven$isExecutionRoot__309: java.util.function.Predicate bootstrap$()>();
+
+        $stack41 = interfaceinvoke $stack39.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack40);
+
+        $stack42 = interfaceinvoke $stack41.<java.util.stream.Stream: java.util.Optional findFirst()>();
+
+        $r26 = (org.apache.maven.DefaultMaven) this;
+
+        $stack43 = $r26.<org.apache.maven.DefaultMaven: org.apache.maven.execution.BuildResumptionDataRepository buildResumptionDataRepository>;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>($stack43);
+
+        $stack45 = staticinvoke <DefaultMaven$removeResumptionData__313: java.util.function.Consumer bootstrap$(org.apache.maven.execution.BuildResumptionDataRepository)>($stack43);
+
+        virtualinvoke $stack42.<java.util.Optional: void ifPresent(java.util.function.Consumer)>($stack45);
+
+     label32:
+        $stack46 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $r27 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r27.<org.apache.maven.DefaultMaven: void afterSessionEnd(java.util.Collection,org.apache.maven.execution.MavenSession)>($stack46, session);
+
+     label33:
+        goto label40;
+
+     label34:
+        $stack71 := @caughtexception;
+
+        $r28 = (org.apache.maven.DefaultMaven) this;
+
+        $stack72 = specialinvoke $r28.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack71);
+
+        return $stack72;
+
+     label35:
+        $stack69 := @caughtexception;
+
+     label36:
+        $stack70 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $r29 = (org.apache.maven.DefaultMaven) this;
+
+        specialinvoke $r29.<org.apache.maven.DefaultMaven: void afterSessionEnd(java.util.Collection,org.apache.maven.execution.MavenSession)>($stack70, session);
+
+     label37:
+        goto label39;
+
+     label38:
+        $stack67 := @caughtexception;
+
+        $r30 = (org.apache.maven.DefaultMaven) this;
+
+        $stack68 = specialinvoke $r30.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>(result, $stack67);
+
+        return $stack68;
+
+     label39:
+        throw $stack69;
+
+     label40:
+        return result;
+
+        catch org.apache.maven.MavenExecutionException from label01 to label02 with label03;
+        catch org.apache.maven.DuplicateProjectException from label05 to label06 with label07;
+        catch org.codehaus.plexus.component.repository.exception.ComponentLookupException from label08 to label09 with label10;
+        catch org.apache.maven.MavenExecutionException from label12 to label13 with label14;
+        catch org.apache.maven.MavenExecutionException from label17 to label18 with label19;
+        catch org.apache.maven.MavenExecutionException from label22 to label23 with label24;
+        catch org.apache.maven.MavenExecutionException from label27 to label28 with label29;
+        catch org.apache.maven.MavenExecutionException from label32 to label33 with label34;
+        catch java.lang.Throwable from label16 to label17 with label35;
+        catch java.lang.Throwable from label21 to label22 with label35;
+        catch java.lang.Throwable from label26 to label27 with label35;
+        catch java.lang.Throwable from label31 to label32 with label35;
+        catch org.apache.maven.MavenExecutionException from label36 to label37 with label38;
+        catch java.lang.Throwable from label35 to label36 with label35;
+    }
+
+    private void afterSessionStart(org.apache.maven.execution.MavenSession) throws org.apache.maven.MavenExecutionException
+    {
+        DefaultMaven this;
+        java.util.List $stack4;
+        java.util.Collection $stack5;
+        java.util.Iterator l2;
+        boolean $stack7;
+        java.lang.Object $stack8;
+        org.apache.maven.AbstractMavenLifecycleParticipant listener;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.DefaultMaven $r0;
+
+        this := @this: DefaultMaven;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $stack4 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack5 = specialinvoke $r0.<org.apache.maven.DefaultMaven: java.util.Collection getLifecycleParticipants(java.util.Collection)>($stack4);
+
+        l2 = interfaceinvoke $stack5.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label2;
+
+        $stack8 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        listener = (org.apache.maven.AbstractMavenLifecycleParticipant) $stack8;
+
+        virtualinvoke listener.<org.apache.maven.AbstractMavenLifecycleParticipant: void afterSessionStart(org.apache.maven.execution.MavenSession)>(session);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    private void afterProjectsRead(org.apache.maven.execution.MavenSession) throws org.apache.maven.MavenExecutionException
+    {
+        java.lang.Thread $stack6, $stack12, $stack14, $stack19;
+        java.lang.ClassLoader originalClassLoader, $stack16;
+        DefaultMaven this;
+        org.apache.maven.execution.MavenSession session;
+        java.util.List $stack8;
+        java.util.Collection $stack9;
+        java.util.Iterator l3;
+        boolean $stack11;
+        java.lang.Object $stack13;
+        org.apache.maven.AbstractMavenLifecycleParticipant listener;
+        java.lang.Class $stack15;
+        java.lang.Throwable $stack18;
+        org.apache.maven.DefaultMaven $r0;
+
+        this := @this: DefaultMaven;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $stack6 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        originalClassLoader = virtualinvoke $stack6.<java.lang.Thread: java.lang.ClassLoader getContextClassLoader()>();
+
+     label1:
+        $stack8 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack9 = specialinvoke $r0.<org.apache.maven.DefaultMaven: java.util.Collection getLifecycleParticipants(java.util.Collection)>($stack8);
+
+        l3 = interfaceinvoke $stack9.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label2:
+        $stack11 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label3;
+
+        $stack13 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        listener = (org.apache.maven.AbstractMavenLifecycleParticipant) $stack13;
+
+        $stack14 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        $stack15 = virtualinvoke listener.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack16 = virtualinvoke $stack15.<java.lang.Class: java.lang.ClassLoader getClassLoader()>();
+
+        virtualinvoke $stack14.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>($stack16);
+
+        virtualinvoke listener.<org.apache.maven.AbstractMavenLifecycleParticipant: void afterProjectsRead(org.apache.maven.execution.MavenSession)>(session);
+
+        goto label2;
+
+     label3:
+        $stack12 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack12.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(originalClassLoader);
+
+        goto label6;
+
+     label4:
+        $stack18 := @caughtexception;
+
+     label5:
+        $stack19 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack19.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(originalClassLoader);
+
+        throw $stack18;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    private void afterSessionEnd(java.util.Collection, org.apache.maven.execution.MavenSession) throws org.apache.maven.MavenExecutionException
+    {
+        java.lang.Thread $stack7, $stack12, $stack14, $stack19;
+        java.lang.ClassLoader originalClassLoader, $stack16;
+        DefaultMaven this;
+        java.util.Collection projects, $stack9;
+        java.util.Iterator l4;
+        boolean $stack11;
+        java.lang.Object $stack13;
+        org.apache.maven.AbstractMavenLifecycleParticipant listener;
+        java.lang.Class $stack15;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.Throwable $stack18;
+        org.apache.maven.DefaultMaven $r0;
+
+        this := @this: DefaultMaven;
+
+        projects := @parameter0: java.util.Collection;
+
+        session := @parameter1: org.apache.maven.execution.MavenSession;
+
+        $stack7 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        originalClassLoader = virtualinvoke $stack7.<java.lang.Thread: java.lang.ClassLoader getContextClassLoader()>();
+
+     label1:
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack9 = specialinvoke $r0.<org.apache.maven.DefaultMaven: java.util.Collection getLifecycleParticipants(java.util.Collection)>(projects);
+
+        l4 = interfaceinvoke $stack9.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label2:
+        $stack11 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack11 == 0 goto label3;
+
+        $stack13 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        listener = (org.apache.maven.AbstractMavenLifecycleParticipant) $stack13;
+
+        $stack14 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        $stack15 = virtualinvoke listener.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack16 = virtualinvoke $stack15.<java.lang.Class: java.lang.ClassLoader getClassLoader()>();
+
+        virtualinvoke $stack14.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>($stack16);
+
+        virtualinvoke listener.<org.apache.maven.AbstractMavenLifecycleParticipant: void afterSessionEnd(org.apache.maven.execution.MavenSession)>(session);
+
+        goto label2;
+
+     label3:
+        $stack12 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack12.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(originalClassLoader);
+
+        goto label6;
+
+     label4:
+        $stack18 := @caughtexception;
+
+     label5:
+        $stack19 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack19.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(originalClassLoader);
+
+        throw $stack18;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    private void persistResumptionData(org.apache.maven.execution.MavenExecutionResult, org.apache.maven.execution.MavenSession)
+    {
+        org.apache.maven.execution.MavenExecutionResult result;
+        java.util.List $stack5, $stack11;
+        java.util.stream.Stream $stack6, $stack12, $stack14;
+        java.util.function.Predicate $stack9, $stack13;
+        boolean hasLifecycleExecutionExceptions;
+        org.apache.maven.execution.MavenSession session;
+        java.util.Optional $stack15, $stack19;
+        java.util.function.Supplier $stack16;
+        java.lang.Object $stack17;
+        org.apache.maven.project.MavenProject rootProject;
+        DefaultMaven this;
+        org.apache.maven.execution.BuildResumptionAnalyzer $stack18;
+        java.util.function.Consumer $stack20;
+        org.apache.maven.DefaultMaven $r0, $r1;
+
+        this := @this: DefaultMaven;
+
+        result := @parameter0: org.apache.maven.execution.MavenExecutionResult;
+
+        session := @parameter1: org.apache.maven.execution.MavenSession;
+
+        $stack5 = interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: java.util.List getExceptions()>();
+
+        $stack6 = interfaceinvoke $stack5.<java.util.List: java.util.stream.Stream stream()>();
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object)>(class "Lorg/apache/maven/lifecycle/LifecycleExecutionException;");
+
+        $stack9 = staticinvoke <DefaultMaven$isInstance__310: java.util.function.Predicate bootstrap$(java.lang.Class)>(class "Lorg/apache/maven/lifecycle/LifecycleExecutionException;");
+
+        hasLifecycleExecutionExceptions = interfaceinvoke $stack6.<java.util.stream.Stream: boolean anyMatch(java.util.function.Predicate)>($stack9);
+
+        if hasLifecycleExecutionExceptions == 0 goto label1;
+
+        $stack11 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getAllProjects()>();
+
+        $stack12 = interfaceinvoke $stack11.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack13 = staticinvoke <DefaultMaven$isExecutionRoot__315: java.util.function.Predicate bootstrap$()>();
+
+        $stack14 = interfaceinvoke $stack12.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack13);
+
+        $stack15 = interfaceinvoke $stack14.<java.util.stream.Stream: java.util.Optional findFirst()>();
+
+        $stack16 = staticinvoke <DefaultMaven$lambda_persistResumptionData_0__317: java.util.function.Supplier bootstrap$()>();
+
+        $stack17 = virtualinvoke $stack15.<java.util.Optional: java.lang.Object orElseThrow(java.util.function.Supplier)>($stack16);
+
+        rootProject = (org.apache.maven.project.MavenProject) $stack17;
+
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack18 = $r0.<org.apache.maven.DefaultMaven: org.apache.maven.execution.BuildResumptionAnalyzer buildResumptionAnalyzer>;
+
+        $stack19 = interfaceinvoke $stack18.<org.apache.maven.execution.BuildResumptionAnalyzer: java.util.Optional determineBuildResumptionData(org.apache.maven.execution.MavenExecutionResult)>(result);
+
+        $r1 = (org.apache.maven.DefaultMaven) this;
+
+        $stack20 = staticinvoke <DefaultMaven$lambda_persistResumptionData_1__319: java.util.function.Consumer bootstrap$(org.apache.maven.DefaultMaven,org.apache.maven.project.MavenProject,org.apache.maven.execution.MavenExecutionResult)>($r1, rootProject, result);
+
+        virtualinvoke $stack19.<java.util.Optional: void ifPresent(java.util.function.Consumer)>($stack20);
+
+     label1:
+        return;
+    }
+
+    public org.eclipse.aether.RepositorySystemSession newRepositorySession(org.apache.maven.execution.MavenExecutionRequest)
+    {
+        DefaultMaven this;
+        org.apache.maven.execution.MavenExecutionRequest request;
+        org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory $stack2;
+        org.eclipse.aether.DefaultRepositorySystemSession $stack3;
+        org.apache.maven.DefaultMaven $r0;
+        org.eclipse.aether.RepositorySystemSession $r1;
+
+        this := @this: DefaultMaven;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack2 = $r0.<org.apache.maven.DefaultMaven: org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory repositorySessionFactory>;
+
+        $stack3 = virtualinvoke $stack2.<org.apache.maven.internal.aether.DefaultRepositorySystemSessionFactory: org.eclipse.aether.DefaultRepositorySystemSession newRepositorySession(org.apache.maven.execution.MavenExecutionRequest)>(request);
+
+        $r1 = (org.eclipse.aether.RepositorySystemSession) $stack3;
+
+        return $r1;
+    }
+
+    private void validateLocalRepository(org.apache.maven.execution.MavenExecutionRequest) throws org.apache.maven.repository.LocalRepositoryNotAccessibleException
+    {
+        org.apache.maven.execution.MavenExecutionRequest request;
+        java.io.File localRepoDir;
+        DefaultMaven this;
+        org.codehaus.plexus.logging.Logger $stack5;
+        java.lang.StringBuilder $stack6, $stack7, $stack13, $stack14, $u0, $u1;
+        java.lang.String $stack8, $stack15;
+        boolean $stack10;
+        org.apache.maven.repository.LocalRepositoryNotAccessibleException $u2;
+        org.apache.maven.DefaultMaven $r0;
+        java.lang.Throwable $r1;
+
+        this := @this: DefaultMaven;
+
+        request := @parameter0: org.apache.maven.execution.MavenExecutionRequest;
+
+        localRepoDir = interfaceinvoke request.<org.apache.maven.execution.MavenExecutionRequest: java.io.File getLocalRepositoryPath()>();
+
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack5 = $r0.<org.apache.maven.DefaultMaven: org.codehaus.plexus.logging.Logger logger>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Using local repository at ");
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(localRepoDir);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack5.<org.codehaus.plexus.logging.Logger: void debug(java.lang.String)>($stack8);
+
+        virtualinvoke localRepoDir.<java.io.File: boolean mkdirs()>();
+
+        $stack10 = virtualinvoke localRepoDir.<java.io.File: boolean isDirectory()>();
+
+        if $stack10 != 0 goto label1;
+
+        $u2 = new org.apache.maven.repository.LocalRepositoryNotAccessibleException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not create local repository at ");
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(localRepoDir);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.apache.maven.repository.LocalRepositoryNotAccessibleException: void <init>(java.lang.String)>($stack15);
+
+        $r1 = (java.lang.Throwable) $u2;
+
+        throw $r1;
+
+     label1:
+        return;
+    }
+
+    private java.util.Collection getLifecycleParticipants(java.util.Collection)
+    {
+        java.lang.Thread $stack11, $stack19, $stack24, $stack29;
+        java.lang.ClassLoader originalClassLoader, $r3;
+        DefaultMaven this;
+        org.codehaus.plexus.PlexusContainer $stack13, $stack25;
+        java.util.List $stack14, $stack26;
+        java.util.Collection projects;
+        java.util.Iterator l5;
+        java.lang.Object $stack20;
+        org.apache.maven.project.MavenProject project;
+        org.codehaus.plexus.classworlds.realm.ClassRealm projectRealm;
+        boolean $stack23, $stack18;
+        java.lang.Throwable $stack28, $stack30, $stack37;
+        org.codehaus.plexus.logging.Logger $stack32, $stack39;
+        java.lang.StringBuilder $stack33, $stack35, $stack40, $stack42, $u1, $u3;
+        java.lang.String $stack34, $stack36, $stack41, $stack43;
+        java.util.LinkedHashSet $u0;
+        java.util.HashSet $u2;
+        org.apache.maven.DefaultMaven $r0, $r1, $r4, $r5;
+        org.codehaus.plexus.component.repository.exception.ComponentLookupException $r2, $r6;
+
+        this := @this: DefaultMaven;
+
+        projects := @parameter0: java.util.Collection;
+
+        $u0 = new java.util.LinkedHashSet;
+
+        specialinvoke $u0.<java.util.LinkedHashSet: void <init>()>();
+
+        $stack11 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        originalClassLoader = virtualinvoke $stack11.<java.lang.Thread: java.lang.ClassLoader getContextClassLoader()>();
+
+     label01:
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack13 = $r0.<org.apache.maven.DefaultMaven: org.codehaus.plexus.PlexusContainer container>;
+
+        $stack14 = interfaceinvoke $stack13.<org.codehaus.plexus.PlexusContainer: java.util.List lookupList(java.lang.Class)>(class "Lorg/apache/maven/AbstractMavenLifecycleParticipant;");
+
+        interfaceinvoke $u0.<java.util.Collection: boolean addAll(java.util.Collection)>($stack14);
+
+     label02:
+        goto label04;
+
+     label03:
+        $stack37 := @caughtexception;
+
+        $r1 = (org.apache.maven.DefaultMaven) this;
+
+        $stack39 = $r1.<org.apache.maven.DefaultMaven: org.codehaus.plexus.logging.Logger logger>;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack40 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to lookup lifecycle participants: ");
+
+        $r2 = (org.codehaus.plexus.component.repository.exception.ComponentLookupException) $stack37;
+
+        $stack41 = virtualinvoke $r2.<org.codehaus.plexus.component.repository.exception.ComponentLookupException: java.lang.String getMessage()>();
+
+        $stack42 = virtualinvoke $stack40.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack41);
+
+        $stack43 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack39.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack43);
+
+     label04:
+        $u2 = new java.util.HashSet;
+
+        specialinvoke $u2.<java.util.HashSet: void <init>()>();
+
+        l5 = interfaceinvoke projects.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label05:
+        $stack18 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack18 == 0 goto label10;
+
+        $stack20 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        project = (org.apache.maven.project.MavenProject) $stack20;
+
+        projectRealm = virtualinvoke project.<org.apache.maven.project.MavenProject: org.codehaus.plexus.classworlds.realm.ClassRealm getClassRealm()>();
+
+        if projectRealm == null goto label09;
+
+        $stack23 = interfaceinvoke $u2.<java.util.Collection: boolean add(java.lang.Object)>(projectRealm);
+
+        if $stack23 == 0 goto label09;
+
+        $stack24 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        $r3 = (java.lang.ClassLoader) projectRealm;
+
+        virtualinvoke $stack24.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>($r3);
+
+     label06:
+        $r4 = (org.apache.maven.DefaultMaven) this;
+
+        $stack25 = $r4.<org.apache.maven.DefaultMaven: org.codehaus.plexus.PlexusContainer container>;
+
+        $stack26 = interfaceinvoke $stack25.<org.codehaus.plexus.PlexusContainer: java.util.List lookupList(java.lang.Class)>(class "Lorg/apache/maven/AbstractMavenLifecycleParticipant;");
+
+        interfaceinvoke $u0.<java.util.Collection: boolean addAll(java.util.Collection)>($stack26);
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack30 := @caughtexception;
+
+        $r5 = (org.apache.maven.DefaultMaven) this;
+
+        $stack32 = $r5.<org.apache.maven.DefaultMaven: org.codehaus.plexus.logging.Logger logger>;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack33 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to lookup lifecycle participants: ");
+
+        $r6 = (org.codehaus.plexus.component.repository.exception.ComponentLookupException) $stack30;
+
+        $stack34 = virtualinvoke $r6.<org.codehaus.plexus.component.repository.exception.ComponentLookupException: java.lang.String getMessage()>();
+
+        $stack35 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack34);
+
+        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack32.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack36);
+
+     label09:
+        goto label05;
+
+     label10:
+        $stack19 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack19.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(originalClassLoader);
+
+        goto label13;
+
+     label11:
+        $stack28 := @caughtexception;
+
+     label12:
+        $stack29 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $stack29.<java.lang.Thread: void setContextClassLoader(java.lang.ClassLoader)>(originalClassLoader);
+
+        throw $stack28;
+
+     label13:
+        return $u0;
+
+        catch org.codehaus.plexus.component.repository.exception.ComponentLookupException from label01 to label02 with label03;
+        catch org.codehaus.plexus.component.repository.exception.ComponentLookupException from label06 to label07 with label08;
+        catch java.lang.Throwable from label01 to label10 with label11;
+        catch java.lang.Throwable from label11 to label12 with label11;
+    }
+
+    private org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult, java.lang.Throwable)
+    {
+        org.apache.maven.execution.MavenExecutionResult result;
+        java.util.List $stack3;
+        java.lang.Throwable e;
+        boolean $stack4;
+        DefaultMaven this;
+
+        this := @this: DefaultMaven;
+
+        result := @parameter0: org.apache.maven.execution.MavenExecutionResult;
+
+        e := @parameter1: java.lang.Throwable;
+
+        $stack3 = interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: java.util.List getExceptions()>();
+
+        $stack4 = interfaceinvoke $stack3.<java.util.List: boolean contains(java.lang.Object)>(e);
+
+        if $stack4 != 0 goto label1;
+
+        interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: org.apache.maven.execution.MavenExecutionResult addException(java.lang.Throwable)>(e);
+
+     label1:
+        return result;
+    }
+
+    private void validatePrerequisitesForNonMavenPluginProjects(java.util.List)
+    {
+        java.util.List projects;
+        java.util.Iterator l2;
+        boolean $stack6, $stack10;
+        java.lang.Object $stack7;
+        org.apache.maven.project.MavenProject mavenProject;
+        java.lang.String $stack8, $stack9, $stack13, $stack17, $stack20;
+        org.apache.maven.model.Prerequisites prerequisites;
+        DefaultMaven this;
+        org.codehaus.plexus.logging.Logger $stack15;
+        java.lang.StringBuilder $stack16, $stack18, $stack19, $u0;
+        org.apache.maven.DefaultMaven $r0;
+
+        this := @this: DefaultMaven;
+
+        projects := @parameter0: java.util.List;
+
+        l2 = interfaceinvoke projects.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke l2.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label3;
+
+        $stack7 = interfaceinvoke l2.<java.util.Iterator: java.lang.Object next()>();
+
+        mavenProject = (org.apache.maven.project.MavenProject) $stack7;
+
+        $stack8 = "maven-plugin";
+
+        $stack9 = virtualinvoke mavenProject.<org.apache.maven.project.MavenProject: java.lang.String getPackaging()>();
+
+        $stack10 = virtualinvoke $stack8.<java.lang.String: boolean equals(java.lang.Object)>($stack9);
+
+        if $stack10 != 0 goto label2;
+
+        prerequisites = virtualinvoke mavenProject.<org.apache.maven.project.MavenProject: org.apache.maven.model.Prerequisites getPrerequisites()>();
+
+        if prerequisites == null goto label2;
+
+        $stack13 = virtualinvoke prerequisites.<org.apache.maven.model.Prerequisites: java.lang.String getMaven()>();
+
+        if $stack13 == null goto label2;
+
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack15 = $r0.<org.apache.maven.DefaultMaven: org.codehaus.plexus.logging.Logger logger>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack16 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The project ");
+
+        $stack17 = virtualinvoke mavenProject.<org.apache.maven.project.MavenProject: java.lang.String getId()>();
+
+        $stack18 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack17);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" uses prerequisites which is only intended for maven-plugin projects but not for non maven-plugin projects. For such purposes you should use the maven-enforcer-plugin. See https://maven.apache.org/enforcer/enforcer-rules/requireMavenVersion.html");
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack15.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack20);
+
+     label2:
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    private java.util.Set getAllProfiles(org.apache.maven.execution.MavenSession)
+    {
+        DefaultMaven this;
+        org.apache.maven.model.superpom.SuperPomProvider $stack8;
+        org.apache.maven.model.Model superPomModel;
+        org.apache.maven.execution.MavenSession session;
+        java.util.List $stack11, $stack24, $stack28;
+        boolean $stack13, isAdded;
+        java.util.stream.Stream $stack14, $stack16, $stack18, $stack20, $stack25, $stack29, $stack33, $stack35, projectProfiles#5, project#6, isAdded#7;
+        java.util.function.Function $stack15, $stack17, $stack19, $stack21, $stack26, $stack30, $stack34;
+        org.apache.maven.settings.Settings $stack23;
+        java.util.stream.Stream[] $stack32;
+        java.util.stream.Collector $stack36;
+        java.lang.Object $stack37, $stack39;
+        java.util.Set $stack38;
+        java.util.Iterator projectProfiles;
+        org.apache.maven.project.MavenProject project, parent;
+        java.util.HashSet $u0;
+        org.apache.maven.DefaultMaven $r0;
+
+        this := @this: DefaultMaven;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack8 = $r0.<org.apache.maven.DefaultMaven: org.apache.maven.model.superpom.SuperPomProvider superPomProvider>;
+
+        superPomModel = interfaceinvoke $stack8.<org.apache.maven.model.superpom.SuperPomProvider: org.apache.maven.model.Model getSuperModel(java.lang.String)>("4.0.0");
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        $stack11 = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.List getProjects()>();
+
+        projectProfiles = interfaceinvoke $stack11.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack13 = interfaceinvoke projectProfiles.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label4;
+
+        $stack39 = interfaceinvoke projectProfiles.<java.util.Iterator: java.lang.Object next()>();
+
+        project = (org.apache.maven.project.MavenProject) $stack39;
+
+        isAdded = interfaceinvoke $u0.<java.util.Set: boolean add(java.lang.Object)>(project);
+
+        parent = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.project.MavenProject getParent()>();
+
+     label2:
+        if isAdded == 0 goto label3;
+
+        if parent == null goto label3;
+
+        isAdded = interfaceinvoke $u0.<java.util.Set: boolean add(java.lang.Object)>(parent);
+
+        parent = virtualinvoke parent.<org.apache.maven.project.MavenProject: org.apache.maven.project.MavenProject getParent()>();
+
+        goto label2;
+
+     label3:
+        goto label1;
+
+     label4:
+        $stack14 = interfaceinvoke $u0.<java.util.Set: java.util.stream.Stream stream()>();
+
+        $stack15 = staticinvoke <DefaultMaven$getModel__311: java.util.function.Function bootstrap$()>();
+
+        $stack16 = interfaceinvoke $stack14.<java.util.stream.Stream: java.util.stream.Stream map(java.util.function.Function)>($stack15);
+
+        $stack17 = staticinvoke <DefaultMaven$getProfiles__316: java.util.function.Function bootstrap$()>();
+
+        $stack18 = interfaceinvoke $stack16.<java.util.stream.Stream: java.util.stream.Stream map(java.util.function.Function)>($stack17);
+
+        $stack19 = staticinvoke <DefaultMaven$stream__318: java.util.function.Function bootstrap$()>();
+
+        $stack20 = interfaceinvoke $stack18.<java.util.stream.Stream: java.util.stream.Stream flatMap(java.util.function.Function)>($stack19);
+
+        $stack21 = staticinvoke <DefaultMaven$getId__320: java.util.function.Function bootstrap$()>();
+
+        projectProfiles#5 = interfaceinvoke $stack20.<java.util.stream.Stream: java.util.stream.Stream map(java.util.function.Function)>($stack21);
+
+        $stack23 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.settings.Settings getSettings()>();
+
+        $stack24 = virtualinvoke $stack23.<org.apache.maven.settings.Settings: java.util.List getProfiles()>();
+
+        $stack25 = interfaceinvoke $stack24.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack26 = staticinvoke <DefaultMaven$getId__321: java.util.function.Function bootstrap$()>();
+
+        project#6 = interfaceinvoke $stack25.<java.util.stream.Stream: java.util.stream.Stream map(java.util.function.Function)>($stack26);
+
+        $stack28 = virtualinvoke superPomModel.<org.apache.maven.model.Model: java.util.List getProfiles()>();
+
+        $stack29 = interfaceinvoke $stack28.<java.util.List: java.util.stream.Stream stream()>();
+
+        $stack30 = staticinvoke <DefaultMaven$getId__322: java.util.function.Function bootstrap$()>();
+
+        isAdded#7 = interfaceinvoke $stack29.<java.util.stream.Stream: java.util.stream.Stream map(java.util.function.Function)>($stack30);
+
+        $stack32 = newarray (java.util.stream.Stream)[3];
+
+        $stack32[0] = projectProfiles#5;
+
+        $stack32[1] = project#6;
+
+        $stack32[2] = isAdded#7;
+
+        $stack33 = staticinvoke <java.util.stream.Stream: java.util.stream.Stream of(java.lang.Object[])>($stack32);
+
+        $stack34 = staticinvoke <java.util.function.Function: java.util.function.Function identity()>();
+
+        $stack35 = interfaceinvoke $stack33.<java.util.stream.Stream: java.util.stream.Stream flatMap(java.util.function.Function)>($stack34);
+
+        $stack36 = staticinvoke <java.util.stream.Collectors: java.util.stream.Collector toSet()>();
+
+        $stack37 = interfaceinvoke $stack35.<java.util.stream.Stream: java.lang.Object collect(java.util.stream.Collector)>($stack36);
+
+        $stack38 = (java.util.Set) $stack37;
+
+        return $stack38;
+    }
+
+    private void validateRequiredProfiles(org.apache.maven.execution.MavenSession, org.apache.maven.execution.ProfileActivation)
+    {
+        DefaultMaven this;
+        org.apache.maven.execution.MavenSession session;
+        java.util.Set allAvailableProfiles, $stack9, $stack11, notFoundRequiredProfiles;
+        org.apache.maven.execution.ProfileActivation profileActivation;
+        java.util.stream.Stream $stack13, $stack15;
+        java.util.function.Predicate $stack14;
+        java.util.stream.Collector $stack16;
+        java.lang.Object $stack17;
+        boolean $stack18;
+        java.lang.Object[] $stack19;
+        java.lang.String $stack22, message;
+        org.apache.maven.execution.MavenExecutionResult $stack24;
+        java.util.HashSet $u0;
+        org.apache.maven.MissingProfilesException $u1;
+        org.apache.maven.DefaultMaven $r0, $r1;
+        java.lang.Throwable $r2;
+
+        this := @this: DefaultMaven;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        profileActivation := @parameter1: org.apache.maven.execution.ProfileActivation;
+
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        allAvailableProfiles = specialinvoke $r0.<org.apache.maven.DefaultMaven: java.util.Set getAllProfiles(org.apache.maven.execution.MavenSession)>(session);
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        $stack9 = virtualinvoke profileActivation.<org.apache.maven.execution.ProfileActivation: java.util.Set getRequiredActiveProfileIds()>();
+
+        interfaceinvoke $u0.<java.util.Set: boolean addAll(java.util.Collection)>($stack9);
+
+        $stack11 = virtualinvoke profileActivation.<org.apache.maven.execution.ProfileActivation: java.util.Set getRequiredInactiveProfileIds()>();
+
+        interfaceinvoke $u0.<java.util.Set: boolean addAll(java.util.Collection)>($stack11);
+
+        $stack13 = interfaceinvoke $u0.<java.util.Set: java.util.stream.Stream stream()>();
+
+        $stack14 = staticinvoke <DefaultMaven$lambda_validateRequiredProfiles_2__312: java.util.function.Predicate bootstrap$(java.util.Set)>(allAvailableProfiles);
+
+        $stack15 = interfaceinvoke $stack13.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack14);
+
+        $stack16 = staticinvoke <java.util.stream.Collectors: java.util.stream.Collector toSet()>();
+
+        $stack17 = interfaceinvoke $stack15.<java.util.stream.Stream: java.lang.Object collect(java.util.stream.Collector)>($stack16);
+
+        notFoundRequiredProfiles = (java.util.Set) $stack17;
+
+        $stack18 = interfaceinvoke notFoundRequiredProfiles.<java.util.Set: boolean isEmpty()>();
+
+        if $stack18 != 0 goto label1;
+
+        $stack19 = newarray (java.lang.Object)[1];
+
+        $stack22 = staticinvoke <java.lang.String: java.lang.String join(java.lang.CharSequence,java.lang.Iterable)>(", ", notFoundRequiredProfiles);
+
+        $stack19[0] = $stack22;
+
+        message = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("The requested profiles [%s] could not be activated or deactivated because they do not exist.", $stack19);
+
+        $stack24 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionResult getResult()>();
+
+        $u1 = new org.apache.maven.MissingProfilesException;
+
+        specialinvoke $u1.<org.apache.maven.MissingProfilesException: void <init>(java.lang.String)>(message);
+
+        $r1 = (org.apache.maven.DefaultMaven) this;
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        specialinvoke $r1.<org.apache.maven.DefaultMaven: org.apache.maven.execution.MavenExecutionResult addExceptionToResult(org.apache.maven.execution.MavenExecutionResult,java.lang.Throwable)>($stack24, $r2);
+
+     label1:
+        return;
+    }
+
+    private void validateOptionalProfiles(org.apache.maven.execution.MavenSession, org.apache.maven.execution.ProfileActivation)
+    {
+        DefaultMaven this;
+        org.apache.maven.execution.MavenSession session;
+        java.util.Set allAvailableProfiles, $stack9, $stack11, notFoundOptionalProfiles;
+        org.apache.maven.execution.ProfileActivation profileActivation;
+        java.util.stream.Stream $stack13, $stack15;
+        java.util.function.Predicate $stack14;
+        java.util.stream.Collector $stack16;
+        java.lang.Object $stack17;
+        boolean $stack18;
+        java.lang.Object[] $stack19;
+        java.lang.String $stack22, message;
+        org.codehaus.plexus.logging.Logger $stack24;
+        java.util.HashSet $u0;
+        org.apache.maven.DefaultMaven $r0, $r1;
+
+        this := @this: DefaultMaven;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        profileActivation := @parameter1: org.apache.maven.execution.ProfileActivation;
+
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        allAvailableProfiles = specialinvoke $r0.<org.apache.maven.DefaultMaven: java.util.Set getAllProfiles(org.apache.maven.execution.MavenSession)>(session);
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        $stack9 = virtualinvoke profileActivation.<org.apache.maven.execution.ProfileActivation: java.util.Set getOptionalActiveProfileIds()>();
+
+        interfaceinvoke $u0.<java.util.Set: boolean addAll(java.util.Collection)>($stack9);
+
+        $stack11 = virtualinvoke profileActivation.<org.apache.maven.execution.ProfileActivation: java.util.Set getOptionalInactiveProfileIds()>();
+
+        interfaceinvoke $u0.<java.util.Set: boolean addAll(java.util.Collection)>($stack11);
+
+        $stack13 = interfaceinvoke $u0.<java.util.Set: java.util.stream.Stream stream()>();
+
+        $stack14 = staticinvoke <DefaultMaven$lambda_validateOptionalProfiles_3__314: java.util.function.Predicate bootstrap$(java.util.Set)>(allAvailableProfiles);
+
+        $stack15 = interfaceinvoke $stack13.<java.util.stream.Stream: java.util.stream.Stream filter(java.util.function.Predicate)>($stack14);
+
+        $stack16 = staticinvoke <java.util.stream.Collectors: java.util.stream.Collector toSet()>();
+
+        $stack17 = interfaceinvoke $stack15.<java.util.stream.Stream: java.lang.Object collect(java.util.stream.Collector)>($stack16);
+
+        notFoundOptionalProfiles = (java.util.Set) $stack17;
+
+        $stack18 = interfaceinvoke notFoundOptionalProfiles.<java.util.Set: boolean isEmpty()>();
+
+        if $stack18 != 0 goto label1;
+
+        $stack19 = newarray (java.lang.Object)[1];
+
+        $stack22 = staticinvoke <java.lang.String: java.lang.String join(java.lang.CharSequence,java.lang.Iterable)>(", ", notFoundOptionalProfiles);
+
+        $stack19[0] = $stack22;
+
+        message = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("The requested optional profiles [%s] could not be activated or deactivated because they do not exist.", $stack19);
+
+        $r1 = (org.apache.maven.DefaultMaven) this;
+
+        $stack24 = $r1.<org.apache.maven.DefaultMaven: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack24.<org.codehaus.plexus.logging.Logger: void info(java.lang.String)>(message);
+
+     label1:
+        return;
+    }
+
+    private java.util.Map getProjectMap(java.util.Collection) throws org.apache.maven.DuplicateProjectException
+    {
+        java.util.Collection projects;
+        java.util.Iterator l4;
+        boolean $stack12, $stack13;
+        java.lang.StringBuilder $stack16, $stack17, $u3;
+        java.lang.String $stack18, $stack20, $stack21, $stack22, projectId;
+        java.lang.Object $stack19, $stack24, $stack25;
+        org.apache.maven.project.MavenProject project, collision;
+        java.io.File $stack26, $stack32, $stack34;
+        java.io.File[] $stack30;
+        java.util.List $stack35, pomFiles;
+        DefaultMaven this;
+        java.util.LinkedHashMap $u0, $u1;
+        java.util.ArrayList $u2;
+        org.apache.maven.DuplicateProjectException $u4;
+        java.lang.Throwable $r0;
+
+        this := @this: DefaultMaven;
+
+        projects := @parameter0: java.util.Collection;
+
+        $u0 = new java.util.LinkedHashMap;
+
+        specialinvoke $u0.<java.util.LinkedHashMap: void <init>()>();
+
+        $u1 = new java.util.LinkedHashMap;
+
+        specialinvoke $u1.<java.util.LinkedHashMap: void <init>()>();
+
+        l4 = interfaceinvoke projects.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack12 = interfaceinvoke l4.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack12 == 0 goto label5;
+
+        $stack19 = interfaceinvoke l4.<java.util.Iterator: java.lang.Object next()>();
+
+        project = (org.apache.maven.project.MavenProject) $stack19;
+
+        $stack20 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getGroupId()>();
+
+        $stack21 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getArtifactId()>();
+
+        $stack22 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getVersion()>();
+
+        projectId = staticinvoke <org.apache.maven.artifact.ArtifactUtils: java.lang.String key(java.lang.String,java.lang.String,java.lang.String)>($stack20, $stack21, $stack22);
+
+        $stack24 = interfaceinvoke $u0.<java.util.Map: java.lang.Object get(java.lang.Object)>(projectId);
+
+        collision = (org.apache.maven.project.MavenProject) $stack24;
+
+        if collision != null goto label2;
+
+        interfaceinvoke $u0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(projectId, project);
+
+        goto label4;
+
+     label2:
+        $stack25 = interfaceinvoke $u1.<java.util.Map: java.lang.Object get(java.lang.Object)>(projectId);
+
+        pomFiles = (java.util.List) $stack25;
+
+        if pomFiles != null goto label3;
+
+        $u2 = new java.util.ArrayList;
+
+        $stack30 = newarray (java.io.File)[2];
+
+        $stack32 = virtualinvoke collision.<org.apache.maven.project.MavenProject: java.io.File getFile()>();
+
+        $stack30[0] = $stack32;
+
+        $stack34 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.io.File getFile()>();
+
+        $stack30[1] = $stack34;
+
+        $stack35 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack30);
+
+        specialinvoke $u2.<java.util.ArrayList: void <init>(java.util.Collection)>($stack35);
+
+        interfaceinvoke $u1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(projectId, $u2);
+
+        goto label4;
+
+     label3:
+        $stack26 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.io.File getFile()>();
+
+        interfaceinvoke pomFiles.<java.util.List: boolean add(java.lang.Object)>($stack26);
+
+     label4:
+        goto label1;
+
+     label5:
+        $stack13 = interfaceinvoke $u1.<java.util.Map: boolean isEmpty()>();
+
+        if $stack13 != 0 goto label6;
+
+        $u4 = new org.apache.maven.DuplicateProjectException;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack16 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Two or more projects in the reactor have the same identifier, please make sure that <groupId>:<artifactId>:<version> is unique for each project: ");
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($u1);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u4.<org.apache.maven.DuplicateProjectException: void <init>(java.lang.String,java.util.Map)>($stack18, $u1);
+
+        $r0 = (java.lang.Throwable) $u4;
+
+        throw $r0;
+
+     label6:
+        return $u0;
+    }
+
+    private org.apache.maven.model.building.Result buildGraph(org.apache.maven.execution.MavenSession, org.apache.maven.execution.MavenExecutionResult)
+    {
+        DefaultMaven this;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.graph.GraphBuilder $stack6;
+        org.apache.maven.model.building.Result graphResult;
+        java.lang.Iterable $stack8;
+        boolean $stack10, $stack11;
+        java.lang.Object $stack12, $stack16;
+        java.util.List $stack13, $stack14;
+        org.apache.maven.model.building.ModelProblem problem;
+        org.apache.maven.model.building.ModelProblem$Severity $stack17, $stack18;
+        org.codehaus.plexus.logging.Logger $stack19, $stack22;
+        java.lang.String $stack20, $stack23;
+        org.apache.maven.execution.MavenExecutionResult result;
+        java.util.Iterator projectDependencyGraph;
+        org.apache.maven.execution.ProjectDependencyGraph projectDependencyGraph#2;
+        org.apache.maven.DefaultMaven $r0, $r1, $r2;
+
+        this := @this: DefaultMaven;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        result := @parameter1: org.apache.maven.execution.MavenExecutionResult;
+
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack6 = $r0.<org.apache.maven.DefaultMaven: org.apache.maven.graph.GraphBuilder graphBuilder>;
+
+        graphResult = interfaceinvoke $stack6.<org.apache.maven.graph.GraphBuilder: org.apache.maven.model.building.Result build(org.apache.maven.execution.MavenSession)>(session);
+
+        $stack8 = virtualinvoke graphResult.<org.apache.maven.model.building.Result: java.lang.Iterable getProblems()>();
+
+        projectDependencyGraph = interfaceinvoke $stack8.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label1:
+        $stack10 = interfaceinvoke projectDependencyGraph.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack10 == 0 goto label4;
+
+        $stack16 = interfaceinvoke projectDependencyGraph.<java.util.Iterator: java.lang.Object next()>();
+
+        problem = (org.apache.maven.model.building.ModelProblem) $stack16;
+
+        $stack17 = interfaceinvoke problem.<org.apache.maven.model.building.ModelProblem: org.apache.maven.model.building.ModelProblem$Severity getSeverity()>();
+
+        $stack18 = <org.apache.maven.model.building.ModelProblem$Severity: org.apache.maven.model.building.ModelProblem$Severity WARNING>;
+
+        if $stack17 != $stack18 goto label2;
+
+        $r1 = (org.apache.maven.DefaultMaven) this;
+
+        $stack22 = $r1.<org.apache.maven.DefaultMaven: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack23 = virtualinvoke problem.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke $stack22.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack23);
+
+        goto label3;
+
+     label2:
+        $r2 = (org.apache.maven.DefaultMaven) this;
+
+        $stack19 = $r2.<org.apache.maven.DefaultMaven: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack20 = virtualinvoke problem.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke $stack19.<org.codehaus.plexus.logging.Logger: void error(java.lang.String)>($stack20);
+
+     label3:
+        goto label1;
+
+     label4:
+        $stack11 = virtualinvoke graphResult.<org.apache.maven.model.building.Result: boolean hasErrors()>();
+
+        if $stack11 != 0 goto label5;
+
+        $stack12 = virtualinvoke graphResult.<org.apache.maven.model.building.Result: java.lang.Object get()>();
+
+        projectDependencyGraph#2 = (org.apache.maven.execution.ProjectDependencyGraph) $stack12;
+
+        $stack13 = interfaceinvoke projectDependencyGraph#2.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getSortedProjects()>();
+
+        virtualinvoke session.<org.apache.maven.execution.MavenSession: void setProjects(java.util.List)>($stack13);
+
+        $stack14 = interfaceinvoke projectDependencyGraph#2.<org.apache.maven.execution.ProjectDependencyGraph: java.util.List getAllProjects()>();
+
+        virtualinvoke session.<org.apache.maven.execution.MavenSession: void setAllProjects(java.util.List)>($stack14);
+
+        virtualinvoke session.<org.apache.maven.execution.MavenSession: void setProjectDependencyGraph(org.apache.maven.execution.ProjectDependencyGraph)>(projectDependencyGraph#2);
+
+     label5:
+        return graphResult;
+    }
+
+    protected org.codehaus.plexus.logging.Logger getLogger()
+    {
+        DefaultMaven this;
+        org.codehaus.plexus.logging.Logger $stack1;
+        org.apache.maven.DefaultMaven $r0;
+
+        this := @this: DefaultMaven;
+
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack1 = $r0.<org.apache.maven.DefaultMaven: org.codehaus.plexus.logging.Logger logger>;
+
+        return $stack1;
+    }
+
+    private static boolean lambda$validateOptionalProfiles$3(java.util.Set, java.lang.String)
+    {
+        java.util.Set allAvailableProfiles;
+        java.lang.String rap;
+        boolean $stack2, $stack3;
+
+        allAvailableProfiles := @parameter0: java.util.Set;
+
+        rap := @parameter1: java.lang.String;
+
+        $stack2 = interfaceinvoke allAvailableProfiles.<java.util.Set: boolean contains(java.lang.Object)>(rap);
+
+        if $stack2 != 0 goto label1;
+
+        $stack3 = 1;
+
+        goto label2;
+
+     label1:
+        $stack3 = 0;
+
+     label2:
+        return $stack3;
+    }
+
+    private static boolean lambda$validateRequiredProfiles$2(java.util.Set, java.lang.String)
+    {
+        java.util.Set allAvailableProfiles;
+        java.lang.String rap;
+        boolean $stack2, $stack3;
+
+        allAvailableProfiles := @parameter0: java.util.Set;
+
+        rap := @parameter1: java.lang.String;
+
+        $stack2 = interfaceinvoke allAvailableProfiles.<java.util.Set: boolean contains(java.lang.Object)>(rap);
+
+        if $stack2 != 0 goto label1;
+
+        $stack3 = 1;
+
+        goto label2;
+
+     label1:
+        $stack3 = 0;
+
+     label2:
+        return $stack3;
+    }
+
+    private void lambda$persistResumptionData$1(org.apache.maven.project.MavenProject, org.apache.maven.execution.MavenExecutionResult, org.apache.maven.execution.BuildResumptionData)
+    {
+        DefaultMaven this;
+        org.apache.maven.project.MavenProject rootProject;
+        org.apache.maven.execution.BuildResumptionData resumption;
+        org.apache.maven.execution.BuildResumptionDataRepository $stack5;
+        org.apache.maven.execution.MavenExecutionResult result;
+        java.lang.Throwable $stack6;
+        org.codehaus.plexus.logging.Logger $stack7;
+        org.apache.maven.DefaultMaven $r0, $r1;
+
+        this := @this: DefaultMaven;
+
+        rootProject := @parameter0: org.apache.maven.project.MavenProject;
+
+        result := @parameter1: org.apache.maven.execution.MavenExecutionResult;
+
+        resumption := @parameter2: org.apache.maven.execution.BuildResumptionData;
+
+     label1:
+        $r0 = (org.apache.maven.DefaultMaven) this;
+
+        $stack5 = $r0.<org.apache.maven.DefaultMaven: org.apache.maven.execution.BuildResumptionDataRepository buildResumptionDataRepository>;
+
+        interfaceinvoke $stack5.<org.apache.maven.execution.BuildResumptionDataRepository: void persistResumptionData(org.apache.maven.project.MavenProject,org.apache.maven.execution.BuildResumptionData)>(rootProject, resumption);
+
+        interfaceinvoke result.<org.apache.maven.execution.MavenExecutionResult: void setCanResume(boolean)>(1);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack6 := @caughtexception;
+
+        $r1 = (org.apache.maven.DefaultMaven) this;
+
+        $stack7 = $r1.<org.apache.maven.DefaultMaven: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack7.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String,java.lang.Throwable)>("Could not persist build resumption data", $stack6);
+
+     label4:
+        return;
+
+        catch org.apache.maven.execution.BuildResumptionPersistenceException from label1 to label2 with label3;
+    }
+
+    private static java.lang.IllegalStateException lambda$persistResumptionData$0()
+    {
+        java.lang.IllegalStateException $stack0;
+
+        $stack0 = new java.lang.IllegalStateException;
+
+        specialinvoke $stack0.<java.lang.IllegalStateException: void <init>(java.lang.String)>("No project in the session is execution root");
+
+        return $stack0;
+    }
+}

@@ -1,0 +1,265 @@
+public class DefaultMetadataReader extends java.lang.Object implements org.apache.maven.artifact.repository.metadata.io.MetadataReader
+{
+
+    public void <init>()
+    {
+        DefaultMetadataReader this;
+
+        this := @this: DefaultMetadataReader;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.artifact.repository.metadata.Metadata read(java.io.File, java.util.Map) throws java.io.IOException
+    {
+        java.io.File input;
+        DefaultMetadataReader this;
+        org.codehaus.plexus.util.xml.XmlStreamReader $stack5;
+        java.util.Map options;
+        org.apache.maven.artifact.repository.metadata.Metadata metadata;
+        org.apache.maven.artifact.repository.metadata.io.DefaultMetadataReader $r0;
+        java.io.Reader $r1;
+
+        this := @this: DefaultMetadataReader;
+
+        input := @parameter0: java.io.File;
+
+        options := @parameter1: java.util.Map;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(input, "input cannot be null");
+
+        $stack5 = staticinvoke <org.codehaus.plexus.util.ReaderFactory: org.codehaus.plexus.util.xml.XmlStreamReader newXmlReader(java.io.File)>(input);
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.io.DefaultMetadataReader) this;
+
+        $r1 = (java.io.Reader) $stack5;
+
+        metadata = virtualinvoke $r0.<org.apache.maven.artifact.repository.metadata.io.DefaultMetadataReader: org.apache.maven.artifact.repository.metadata.Metadata read(java.io.Reader,java.util.Map)>($r1, options);
+
+        return metadata;
+    }
+
+    public org.apache.maven.artifact.repository.metadata.Metadata read(java.io.Reader, java.util.Map) throws java.io.IOException
+    {
+        java.io.Reader input;
+        DefaultMetadataReader this;
+        java.util.Map options;
+        boolean $stack8;
+        java.lang.Throwable $stack11, $stack16, $stack17, $r4;
+        java.lang.String $stack13;
+        int $stack14, $stack15;
+        org.apache.maven.artifact.repository.metadata.Metadata l4;
+        org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader $u0;
+        org.apache.maven.artifact.repository.metadata.io.MetadataParseException $u1;
+        org.apache.maven.artifact.repository.metadata.io.DefaultMetadataReader $r0;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $r1, $r2, $r3;
+
+        this := @this: DefaultMetadataReader;
+
+        input := @parameter0: java.io.Reader;
+
+        options := @parameter1: java.util.Map;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(input, "input cannot be null");
+
+     label1:
+        $u0 = new org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.io.DefaultMetadataReader) this;
+
+        $stack8 = specialinvoke $r0.<org.apache.maven.artifact.repository.metadata.io.DefaultMetadataReader: boolean isStrict(java.util.Map)>(options);
+
+        l4 = virtualinvoke $u0.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: org.apache.maven.artifact.repository.metadata.Metadata read(java.io.Reader,boolean)>(input, $stack8);
+
+     label2:
+        if input == null goto label3;
+
+        virtualinvoke input.<java.io.Reader: void close()>();
+
+     label3:
+        return l4;
+
+     label4:
+        $stack17 := @caughtexception;
+
+        if input == null goto label8;
+
+     label5:
+        virtualinvoke input.<java.io.Reader: void close()>();
+
+     label6:
+        goto label8;
+
+     label7:
+        $stack16 := @caughtexception;
+
+        virtualinvoke $stack17.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack16);
+
+     label8:
+        throw $stack17;
+
+     label9:
+        $stack11 := @caughtexception;
+
+        $u1 = new org.apache.maven.artifact.repository.metadata.io.MetadataParseException;
+
+        $r1 = (org.codehaus.plexus.util.xml.pull.XmlPullParserException) $stack11;
+
+        $stack13 = virtualinvoke $r1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: java.lang.String getMessage()>();
+
+        $r2 = (org.codehaus.plexus.util.xml.pull.XmlPullParserException) $stack11;
+
+        $stack14 = virtualinvoke $r2.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: int getLineNumber()>();
+
+        $r3 = (org.codehaus.plexus.util.xml.pull.XmlPullParserException) $stack11;
+
+        $stack15 = virtualinvoke $r3.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: int getColumnNumber()>();
+
+        specialinvoke $u1.<org.apache.maven.artifact.repository.metadata.io.MetadataParseException: void <init>(java.lang.String,int,int,java.lang.Throwable)>($stack13, $stack14, $stack15, $stack11);
+
+        $r4 = (java.lang.Throwable) $u1;
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label7;
+        catch org.codehaus.plexus.util.xml.pull.XmlPullParserException from label1 to label3 with label9;
+        catch org.codehaus.plexus.util.xml.pull.XmlPullParserException from label4 to label9 with label9;
+    }
+
+    public org.apache.maven.artifact.repository.metadata.Metadata read(java.io.InputStream, java.util.Map) throws java.io.IOException
+    {
+        java.io.InputStream input;
+        DefaultMetadataReader this;
+        java.util.Map options;
+        boolean $stack8;
+        java.lang.Throwable $stack11, $stack16, $stack17, $r4;
+        java.lang.String $stack13;
+        int $stack14, $stack15;
+        org.apache.maven.artifact.repository.metadata.Metadata l4;
+        org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader $u0;
+        org.apache.maven.artifact.repository.metadata.io.MetadataParseException $u1;
+        org.apache.maven.artifact.repository.metadata.io.DefaultMetadataReader $r0;
+        org.codehaus.plexus.util.xml.pull.XmlPullParserException $r1, $r2, $r3;
+
+        this := @this: DefaultMetadataReader;
+
+        input := @parameter0: java.io.InputStream;
+
+        options := @parameter1: java.util.Map;
+
+        staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(input, "input cannot be null");
+
+     label1:
+        $u0 = new org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader;
+
+        specialinvoke $u0.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.repository.metadata.io.DefaultMetadataReader) this;
+
+        $stack8 = specialinvoke $r0.<org.apache.maven.artifact.repository.metadata.io.DefaultMetadataReader: boolean isStrict(java.util.Map)>(options);
+
+        l4 = virtualinvoke $u0.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: org.apache.maven.artifact.repository.metadata.Metadata read(java.io.InputStream,boolean)>(input, $stack8);
+
+     label2:
+        if input == null goto label3;
+
+        virtualinvoke input.<java.io.InputStream: void close()>();
+
+     label3:
+        return l4;
+
+     label4:
+        $stack17 := @caughtexception;
+
+        if input == null goto label8;
+
+     label5:
+        virtualinvoke input.<java.io.InputStream: void close()>();
+
+     label6:
+        goto label8;
+
+     label7:
+        $stack16 := @caughtexception;
+
+        virtualinvoke $stack17.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack16);
+
+     label8:
+        throw $stack17;
+
+     label9:
+        $stack11 := @caughtexception;
+
+        $u1 = new org.apache.maven.artifact.repository.metadata.io.MetadataParseException;
+
+        $r1 = (org.codehaus.plexus.util.xml.pull.XmlPullParserException) $stack11;
+
+        $stack13 = virtualinvoke $r1.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: java.lang.String getMessage()>();
+
+        $r2 = (org.codehaus.plexus.util.xml.pull.XmlPullParserException) $stack11;
+
+        $stack14 = virtualinvoke $r2.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: int getLineNumber()>();
+
+        $r3 = (org.codehaus.plexus.util.xml.pull.XmlPullParserException) $stack11;
+
+        $stack15 = virtualinvoke $r3.<org.codehaus.plexus.util.xml.pull.XmlPullParserException: int getColumnNumber()>();
+
+        specialinvoke $u1.<org.apache.maven.artifact.repository.metadata.io.MetadataParseException: void <init>(java.lang.String,int,int,java.lang.Throwable)>($stack13, $stack14, $stack15, $stack11);
+
+        $r4 = (java.lang.Throwable) $u1;
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label7;
+        catch org.codehaus.plexus.util.xml.pull.XmlPullParserException from label1 to label3 with label9;
+        catch org.codehaus.plexus.util.xml.pull.XmlPullParserException from label4 to label9 with label9;
+    }
+
+    private boolean isStrict(java.util.Map)
+    {
+        java.util.Map options;
+        java.lang.String $stack3;
+        boolean $stack4, $stack5;
+        DefaultMetadataReader this;
+        java.lang.Object $stack6;
+
+        this := @this: DefaultMetadataReader;
+
+        options := @parameter0: java.util.Map;
+
+        if options == null goto label1;
+
+        $stack6 = interfaceinvoke options.<java.util.Map: java.lang.Object get(java.lang.Object)>("org.apache.maven.artifact.repository.metadata.io.isStrict");
+
+        goto label2;
+
+     label1:
+        $stack6 = null;
+
+     label2:
+        if $stack6 == null goto label3;
+
+        $stack3 = virtualinvoke $stack6.<java.lang.Object: java.lang.String toString()>();
+
+        $stack4 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>($stack3);
+
+        if $stack4 == 0 goto label4;
+
+     label3:
+        $stack5 = 1;
+
+        goto label5;
+
+     label4:
+        $stack5 = 0;
+
+     label5:
+        return $stack5;
+    }
+}

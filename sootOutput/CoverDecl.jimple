@@ -1,0 +1,723 @@
+public class CoverDecl extends org.ooc.frontend.model.TypeDecl
+{
+    protected org.ooc.frontend.model.OocDocComment comment;
+    protected org.ooc.frontend.model.Type fromType;
+    protected org.ooc.frontend.model.CoverDecl base;
+    protected java.util.List addons;
+    protected org.ooc.frontend.model.FunctionDecl classGettingFunc;
+    static final boolean $assertionsDisabled;
+
+    public void <init>(java.lang.String, org.ooc.frontend.model.Type, org.ooc.frontend.model.Type, org.ooc.frontend.model.Module, org.ooc.frontend.model.tokens.Token)
+    {
+        CoverDecl this;
+        java.lang.String name;
+        org.ooc.frontend.model.Type superType, fromType, $stack25, $u2;
+        org.ooc.frontend.model.Module module;
+        org.ooc.frontend.model.tokens.Token startToken;
+        boolean $stack10;
+        int $stack24;
+        java.util.ArrayList $u0;
+        org.ooc.frontend.model.FunctionDecl $u1;
+        org.ooc.frontend.model.CoverDecl $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: CoverDecl;
+
+        name := @parameter0: java.lang.String;
+
+        superType := @parameter1: org.ooc.frontend.model.Type;
+
+        fromType := @parameter2: org.ooc.frontend.model.Type;
+
+        module := @parameter3: org.ooc.frontend.model.Module;
+
+        startToken := @parameter4: org.ooc.frontend.model.tokens.Token;
+
+        specialinvoke this.<org.ooc.frontend.model.TypeDecl: void <init>(java.lang.String,org.ooc.frontend.model.Type,org.ooc.frontend.model.Module,org.ooc.frontend.model.tokens.Token)>(name, superType, module, startToken);
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType> = fromType;
+
+        $r1 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $r1.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.CoverDecl base> = null;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r2 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $r2.<org.ooc.frontend.model.CoverDecl: java.util.List addons> = $u0;
+
+        if fromType == null goto label1;
+
+        $r3 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack25 = $r3.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type instanceType>;
+
+        $stack24 = fromType.<org.ooc.frontend.model.Type: int referenceLevel>;
+
+        $stack25.<org.ooc.frontend.model.Type: int referenceLevel> = $stack24;
+
+     label1:
+        if fromType == null goto label2;
+
+        $stack10 = virtualinvoke fromType.<org.ooc.frontend.model.Type: boolean isVoid()>();
+
+        if $stack10 != 0 goto label3;
+
+     label2:
+        $u1 = new org.ooc.frontend.model.FunctionDecl;
+
+        specialinvoke $u1.<org.ooc.frontend.model.FunctionDecl: void <init>(java.lang.String,java.lang.String,boolean,boolean,boolean,boolean,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>("class", "", 0, 1, 0, 0, startToken, module);
+
+        $u2 = new org.ooc.frontend.model.Type;
+
+        specialinvoke $u2.<org.ooc.frontend.model.Type: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>("Class", startToken);
+
+        virtualinvoke $u1.<org.ooc.frontend.model.FunctionDecl: void setReturnType(org.ooc.frontend.model.Type)>($u2);
+
+        $r4 = (org.ooc.frontend.model.CoverDecl) this;
+
+        virtualinvoke $r4.<org.ooc.frontend.model.CoverDecl: void addFunction(org.ooc.frontend.model.FunctionDecl)>($u1);
+
+     label3:
+        return;
+    }
+
+    public void addFunction(org.ooc.frontend.model.FunctionDecl)
+    {
+        CoverDecl this;
+        org.ooc.frontend.model.FunctionDecl decl;
+
+        this := @this: CoverDecl;
+
+        decl := @parameter0: org.ooc.frontend.model.FunctionDecl;
+
+        specialinvoke this.<org.ooc.frontend.model.TypeDecl: void addFunction(org.ooc.frontend.model.FunctionDecl)>(decl);
+
+        return;
+    }
+
+    public org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String, java.lang.String, org.ooc.frontend.model.FunctionCall, boolean, int, org.ooc.frontend.model.FunctionDecl)
+    {
+        CoverDecl this;
+        java.lang.String name, suffix;
+        org.ooc.frontend.model.FunctionCall call;
+        boolean recursive;
+        int bestScoreParam;
+        org.ooc.frontend.model.FunctionDecl bestMatchParam, $stack8;
+        java.util.HashSet $u0;
+        org.ooc.frontend.model.CoverDecl $r0;
+
+        this := @this: CoverDecl;
+
+        name := @parameter0: java.lang.String;
+
+        suffix := @parameter1: java.lang.String;
+
+        call := @parameter2: org.ooc.frontend.model.FunctionCall;
+
+        recursive := @parameter3: boolean;
+
+        bestScoreParam := @parameter4: int;
+
+        bestMatchParam := @parameter5: org.ooc.frontend.model.FunctionDecl;
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack8 = virtualinvoke $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall,boolean,java.util.HashSet,int,org.ooc.frontend.model.FunctionDecl)>(name, suffix, call, recursive, $u0, bestScoreParam, bestMatchParam);
+
+        return $stack8;
+    }
+
+    public java.util.ArrayList getAddons()
+    {
+        CoverDecl this;
+        java.util.List $stack1;
+        java.util.ArrayList $stack2;
+        org.ooc.frontend.model.CoverDecl $r0;
+
+        this := @this: CoverDecl;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.CoverDecl: java.util.List addons>;
+
+        $stack2 = (java.util.ArrayList) $stack1;
+
+        return $stack2;
+    }
+
+    private org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String, java.lang.String, org.ooc.frontend.model.FunctionCall, boolean, java.util.HashSet, int, org.ooc.frontend.model.FunctionDecl)
+    {
+        int bestScoreParam, score, bestScore;
+        org.ooc.frontend.model.FunctionDecl bestMatchParam, $stack22, bestMatch, function;
+        CoverDecl this;
+        java.lang.String name, suffix;
+        org.ooc.frontend.model.FunctionCall call;
+        boolean recursive, $stack24, $stack32, $stack17;
+        org.ooc.frontend.model.CoverDecl $stack18, $stack23, $stack26, $stack28, addon, $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+        org.ooc.frontend.model.TypeDecl $stack19, $stack21;
+        java.util.HashSet done;
+        java.lang.Object $stack31;
+        java.util.List $stack15;
+        java.util.Iterator score;
+
+        this := @this: CoverDecl;
+
+        name := @parameter0: java.lang.String;
+
+        suffix := @parameter1: java.lang.String;
+
+        call := @parameter2: org.ooc.frontend.model.FunctionCall;
+
+        recursive := @parameter3: boolean;
+
+        done := @parameter4: java.util.HashSet;
+
+        bestScoreParam := @parameter5: int;
+
+        bestMatchParam := @parameter6: org.ooc.frontend.model.FunctionDecl;
+
+        bestScore = bestScoreParam;
+
+        bestMatch = bestMatchParam;
+
+        function = specialinvoke this.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall,boolean,int,org.ooc.frontend.model.FunctionDecl)>(name, suffix, call, recursive, bestScoreParam, bestMatchParam);
+
+        if function == null goto label02;
+
+        if call != null goto label01;
+
+        return function;
+
+     label01:
+        score = virtualinvoke call.<org.ooc.frontend.model.FunctionCall: int getScore(org.ooc.frontend.model.FunctionDecl)>(function);
+
+        if score <= bestScoreParam goto label02;
+
+        bestScore = score;
+
+        bestMatch = function;
+
+     label02:
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack15 = $r0.<org.ooc.frontend.model.CoverDecl: java.util.List addons>;
+
+        score = interfaceinvoke $stack15.<java.util.List: java.util.Iterator iterator()>();
+
+     label03:
+        $stack17 = interfaceinvoke score.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack17 == 0 goto label07;
+
+        $stack31 = interfaceinvoke score.<java.util.Iterator: java.lang.Object next()>();
+
+        addon = (org.ooc.frontend.model.CoverDecl) $stack31;
+
+        $stack32 = virtualinvoke done.<java.util.HashSet: boolean contains(java.lang.Object)>(addon);
+
+        if $stack32 == 0 goto label04;
+
+        goto label03;
+
+     label04:
+        virtualinvoke done.<java.util.HashSet: boolean add(java.lang.Object)>(addon);
+
+        function = virtualinvoke addon.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall,boolean,java.util.HashSet,int,org.ooc.frontend.model.FunctionDecl)>(name, suffix, call, recursive, done, bestScore, bestMatch);
+
+        if function == null goto label06;
+
+        if call != null goto label05;
+
+        return function;
+
+     label05:
+        score = virtualinvoke call.<org.ooc.frontend.model.FunctionCall: int getScore(org.ooc.frontend.model.FunctionDecl)>(function);
+
+        if score <= bestScore goto label06;
+
+        bestScore = score;
+
+        bestMatch = function;
+
+     label06:
+        goto label03;
+
+     label07:
+        $r1 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack18 = $r1.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.CoverDecl base>;
+
+        if $stack18 == null goto label09;
+
+        $r2 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack23 = $r2.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.CoverDecl base>;
+
+        $stack24 = virtualinvoke done.<java.util.HashSet: boolean contains(java.lang.Object)>($stack23);
+
+        if $stack24 != 0 goto label09;
+
+        $r3 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack26 = $r3.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.CoverDecl base>;
+
+        virtualinvoke done.<java.util.HashSet: boolean add(java.lang.Object)>($stack26);
+
+        $r4 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack28 = $r4.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.CoverDecl base>;
+
+        function = virtualinvoke $stack28.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall,boolean,java.util.HashSet,int,org.ooc.frontend.model.FunctionDecl)>(name, suffix, call, recursive, done, bestScore, bestMatch);
+
+        if function == null goto label09;
+
+        if call != null goto label08;
+
+        return function;
+
+     label08:
+        score = virtualinvoke call.<org.ooc.frontend.model.FunctionCall: int getScore(org.ooc.frontend.model.FunctionDecl)>(function);
+
+        if score <= bestScore goto label09;
+
+        bestMatch = function;
+
+     label09:
+        if bestMatch != null goto label10;
+
+        $r5 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack19 = virtualinvoke $r5.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        if $stack19 == null goto label10;
+
+        $r6 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack21 = virtualinvoke $r6.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.TypeDecl getSuperRef()>();
+
+        $stack22 = virtualinvoke $stack21.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.FunctionDecl getFunction(java.lang.String,java.lang.String,org.ooc.frontend.model.FunctionCall,boolean,int,org.ooc.frontend.model.FunctionDecl)>(name, suffix, call, recursive, 0, null);
+
+        return $stack22;
+
+     label10:
+        return bestMatch;
+    }
+
+    public org.ooc.frontend.model.Type getFromType()
+    {
+        CoverDecl this;
+        org.ooc.frontend.model.Type $stack1;
+        org.ooc.frontend.model.CoverDecl $r0;
+
+        this := @this: CoverDecl;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType>;
+
+        return $stack1;
+    }
+
+    public org.ooc.frontend.model.OocDocComment getComment()
+    {
+        CoverDecl this;
+        org.ooc.frontend.model.OocDocComment $stack1;
+        org.ooc.frontend.model.CoverDecl $r0;
+
+        this := @this: CoverDecl;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.OocDocComment comment>;
+
+        return $stack1;
+    }
+
+    public void setComment(org.ooc.frontend.model.OocDocComment)
+    {
+        CoverDecl this;
+        org.ooc.frontend.model.OocDocComment comment;
+        org.ooc.frontend.model.CoverDecl $r0;
+
+        this := @this: CoverDecl;
+
+        comment := @parameter0: org.ooc.frontend.model.OocDocComment;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.OocDocComment comment> = comment;
+
+        return;
+    }
+
+    public boolean isAddon()
+    {
+        CoverDecl this;
+        org.ooc.frontend.model.CoverDecl $stack1, $r0;
+        boolean $stack2;
+
+        this := @this: CoverDecl;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.CoverDecl base>;
+
+        if $stack1 == null goto label1;
+
+        $stack2 = 1;
+
+        goto label2;
+
+     label1:
+        $stack2 = 0;
+
+     label2:
+        return $stack2;
+    }
+
+    public org.ooc.frontend.model.CoverDecl getBase()
+    {
+        CoverDecl this;
+        org.ooc.frontend.model.CoverDecl $stack1, $r0;
+
+        this := @this: CoverDecl;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.CoverDecl base>;
+
+        return $stack1;
+    }
+
+    public void accept(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        org.ooc.frontend.Visitor visitor;
+        CoverDecl this;
+        org.ooc.frontend.model.CoverDecl $r0;
+
+        this := @this: CoverDecl;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        interfaceinvoke visitor.<org.ooc.frontend.Visitor: void visit(org.ooc.frontend.model.CoverDecl)>($r0);
+
+        return;
+    }
+
+    public boolean hasChildren()
+    {
+        CoverDecl this;
+
+        this := @this: CoverDecl;
+
+        return 1;
+    }
+
+    public void acceptChildren(org.ooc.frontend.Visitor) throws java.io.IOException
+    {
+        CoverDecl this;
+        org.ooc.frontend.model.Type $stack2, $stack3;
+        org.ooc.frontend.Visitor visitor;
+        org.ooc.frontend.model.CoverDecl $r0, $r1;
+
+        this := @this: CoverDecl;
+
+        visitor := @parameter0: org.ooc.frontend.Visitor;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType>;
+
+        if $stack2 == null goto label1;
+
+        $r1 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack3 = $r1.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType>;
+
+        virtualinvoke $stack3.<org.ooc.frontend.model.Type: void accept(org.ooc.frontend.Visitor)>(visitor);
+
+     label1:
+        specialinvoke this.<org.ooc.frontend.model.TypeDecl: void acceptChildren(org.ooc.frontend.Visitor)>(visitor);
+
+        return;
+    }
+
+    public boolean replace(org.ooc.frontend.model.Node, org.ooc.frontend.model.Node)
+    {
+        org.ooc.frontend.model.Node oldie, kiddo;
+        CoverDecl this;
+        org.ooc.frontend.model.Type $stack3, $stack4, $stack5, $stack6;
+        org.ooc.frontend.model.CoverDecl $r0, $r1, $r2, $r3;
+
+        this := @this: CoverDecl;
+
+        oldie := @parameter0: org.ooc.frontend.model.Node;
+
+        kiddo := @parameter1: org.ooc.frontend.model.Node;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack3 = $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type instanceType>;
+
+        if oldie != $stack3 goto label1;
+
+        $stack6 = (org.ooc.frontend.model.Type) kiddo;
+
+        $r1 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $r1.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type instanceType> = $stack6;
+
+        return 1;
+
+     label1:
+        $r2 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack4 = $r2.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType>;
+
+        if oldie != $stack4 goto label2;
+
+        $stack5 = (org.ooc.frontend.model.Type) kiddo;
+
+        $r3 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $r3.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType> = $stack5;
+
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    public void absorb(org.ooc.frontend.model.CoverDecl)
+    {
+        boolean $stack2, $stack9;
+        CoverDecl this;
+        org.ooc.frontend.model.CoverDecl node, $stack3, $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+        org.ooc.frontend.model.FunctionDecl $stack4, $stack5;
+        org.ooc.frontend.model.NodeList $stack6, $stack8;
+        java.lang.AssertionError $u0;
+        org.ooc.frontend.model.Node $r7;
+
+        this := @this: CoverDecl;
+
+        node := @parameter0: org.ooc.frontend.model.CoverDecl;
+
+        $stack2 = <org.ooc.frontend.model.CoverDecl: boolean $assertionsDisabled>;
+
+        if $stack2 != 0 goto label1;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack8 = $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.NodeList variables>;
+
+        $stack9 = virtualinvoke $stack8.<org.ooc.frontend.model.NodeList: boolean isEmpty()>();
+
+        if $stack9 != 0 goto label1;
+
+        $u0 = new java.lang.AssertionError;
+
+        specialinvoke $u0.<java.lang.AssertionError: void <init>()>();
+
+        throw $u0;
+
+     label1:
+        $r1 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $r1.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.CoverDecl base> = node;
+
+        $r2 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack3 = $r2.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.CoverDecl base>;
+
+        $r3 = (org.ooc.frontend.model.CoverDecl) this;
+
+        virtualinvoke $stack3.<org.ooc.frontend.model.CoverDecl: void addAddon(org.ooc.frontend.model.CoverDecl)>($r3);
+
+        $r4 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack4 = $r4.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.FunctionDecl classGettingFunc>;
+
+        if $stack4 == null goto label2;
+
+        $r5 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack6 = $r5.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.NodeList functions>;
+
+        $r6 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack5 = $r6.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.FunctionDecl classGettingFunc>;
+
+        $r7 = (org.ooc.frontend.model.Node) $stack5;
+
+        virtualinvoke $stack6.<org.ooc.frontend.model.NodeList: boolean remove(org.ooc.frontend.model.Node)>($r7);
+
+     label2:
+        return;
+    }
+
+    private void addAddon(org.ooc.frontend.model.CoverDecl)
+    {
+        CoverDecl this;
+        org.ooc.frontend.model.CoverDecl node, $r0;
+        java.util.List $stack2;
+
+        this := @this: CoverDecl;
+
+        node := @parameter0: org.ooc.frontend.model.CoverDecl;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack2 = $r0.<org.ooc.frontend.model.CoverDecl: java.util.List addons>;
+
+        interfaceinvoke $stack2.<java.util.List: boolean add(java.lang.Object)>(node);
+
+        return;
+    }
+
+    public boolean isResolved()
+    {
+        CoverDecl this;
+        org.ooc.frontend.model.Type $stack1, $stack2;
+        org.ooc.frontend.model.Declaration $stack3;
+        boolean $stack4;
+        org.ooc.frontend.model.CoverDecl $r0, $r1;
+
+        this := @this: CoverDecl;
+
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack1 = $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType>;
+
+        if $stack1 == null goto label1;
+
+        $r1 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack2 = $r1.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType>;
+
+        $stack3 = virtualinvoke $stack2.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        if $stack3 == null goto label2;
+
+     label1:
+        $stack4 = 1;
+
+        goto label3;
+
+     label2:
+        $stack4 = 0;
+
+     label3:
+        return $stack4;
+    }
+
+    public org.ooc.frontend.model.interfaces.MustBeResolved$Response resolve(org.ooc.frontend.model.NodeList, org.ooc.middle.hobgoblins.Resolver, boolean)
+    {
+        CoverDecl this;
+        org.ooc.frontend.model.NodeList stack;
+        org.ooc.middle.hobgoblins.Resolver res;
+        boolean fatal;
+        org.ooc.frontend.model.interfaces.MustBeResolved$Response response, $stack6, $stack11, $stack15;
+        org.ooc.frontend.model.Type $stack7, $stack8, $stack9, $stack13, $stack14;
+        org.ooc.frontend.model.Declaration $stack10, $r5;
+        org.ooc.frontend.model.BuiltinType $u0;
+        org.ooc.frontend.model.CoverDecl $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: CoverDecl;
+
+        stack := @parameter0: org.ooc.frontend.model.NodeList;
+
+        res := @parameter1: org.ooc.middle.hobgoblins.Resolver;
+
+        fatal := @parameter2: boolean;
+
+        response = specialinvoke this.<org.ooc.frontend.model.TypeDecl: org.ooc.frontend.model.interfaces.MustBeResolved$Response resolve(org.ooc.frontend.model.NodeList,org.ooc.middle.hobgoblins.Resolver,boolean)>(stack, res, fatal);
+
+        $stack6 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response OK>;
+
+        if response == $stack6 goto label1;
+
+        return response;
+
+     label1:
+        $r0 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack7 = $r0.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType>;
+
+        if $stack7 != null goto label2;
+
+        $stack15 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response OK>;
+
+        return $stack15;
+
+     label2:
+        $r1 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack8 = $r1.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType>;
+
+        virtualinvoke $stack8.<org.ooc.frontend.model.Type: void resolve(org.ooc.middle.hobgoblins.Resolver)>(res);
+
+        $r2 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack9 = $r2.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType>;
+
+        $stack10 = virtualinvoke $stack9.<org.ooc.frontend.model.Type: org.ooc.frontend.model.Declaration getRef()>();
+
+        if $stack10 != null goto label3;
+
+        $r3 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack14 = $r3.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType>;
+
+        $u0 = new org.ooc.frontend.model.BuiltinType;
+
+        $r4 = (org.ooc.frontend.model.CoverDecl) this;
+
+        $stack13 = $r4.<org.ooc.frontend.model.CoverDecl: org.ooc.frontend.model.Type fromType>;
+
+        specialinvoke $u0.<org.ooc.frontend.model.BuiltinType: void <init>(org.ooc.frontend.model.Type)>($stack13);
+
+        $r5 = (org.ooc.frontend.model.Declaration) $u0;
+
+        virtualinvoke $stack14.<org.ooc.frontend.model.Type: void setRef(org.ooc.frontend.model.Declaration)>($r5);
+
+     label3:
+        $stack11 = <org.ooc.frontend.model.interfaces.MustBeResolved$Response: org.ooc.frontend.model.interfaces.MustBeResolved$Response OK>;
+
+        return $stack11;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $stack0;
+        boolean $stack1, $stack2;
+
+        $stack0 = class "Lorg/ooc/frontend/model/CoverDecl;";
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Class: boolean desiredAssertionStatus()>();
+
+        if $stack1 != 0 goto label1;
+
+        $stack2 = 1;
+
+        goto label2;
+
+     label1:
+        $stack2 = 0;
+
+     label2:
+        <org.ooc.frontend.model.CoverDecl: boolean $assertionsDisabled> = $stack2;
+
+        return;
+    }
+}

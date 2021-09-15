@@ -1,0 +1,626 @@
+public class DefaultProjectDependenciesResolver extends java.lang.Object implements org.apache.maven.project.ProjectDependenciesResolver
+{
+    private org.codehaus.plexus.logging.Logger logger;
+    private org.eclipse.aether.RepositorySystem repoSystem;
+    private java.util.List decorators;
+
+    public void <init>()
+    {
+        DefaultProjectDependenciesResolver this;
+
+        this := @this: DefaultProjectDependenciesResolver;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.project.DependencyResolutionResult resolve(org.apache.maven.project.DependencyResolutionRequest) throws org.apache.maven.project.DependencyResolutionException
+    {
+        org.apache.maven.project.DependencyResolutionRequest request;
+        org.eclipse.aether.RequestTrace trace, $stack46;
+        org.apache.maven.project.MavenProject project;
+        org.eclipse.aether.graph.DependencyFilter filter;
+        org.eclipse.aether.artifact.ArtifactTypeRegistry stereotypes;
+        DefaultProjectDependenciesResolver this;
+        org.codehaus.plexus.logging.Logger $stack23, $stack52, $stack54, $stack75;
+        boolean $stack24, $stack39, $stack42, $stack53, $stack55, $stack68, $stack72, $stack87, $stack110, $stack151, $stack154, $stack156, $stack27, $stack146;
+        org.apache.maven.artifact.Artifact $stack29, dependency#58;
+        org.eclipse.aether.artifact.Artifact $stack30, $stack82, $stack113, $stack118, art;
+        java.util.List $stack33, $stack37, $stack58, $stack66, $stack71, $stack77, $stack85, $stack144, $stack170, $stack184, $stack25, $stack122;
+        java.util.Set $stack35, $stack40;
+        org.eclipse.aether.RepositorySystem $stack48, $stack56;
+        org.eclipse.aether.collection.CollectResult $stack49, $stack181, $stack183;
+        org.eclipse.aether.resolution.DependencyResult $stack57, $stack169;
+        java.lang.Object $stack70, $stack78, $stack100, $stack104, $stack106, $stack126, $stack149, $stack159, $stack163, session;
+        java.lang.StringBuilder $stack76, $stack79, $stack80, $stack83, $stack173, $stack175, $stack176, $stack178, $stack187, $stack189, $stack190, $stack192, $u5, $u7, $u9;
+        org.eclipse.aether.graph.Dependency $stack81, $stack101, $stack157, dep;
+        java.lang.String $stack84, $stack108, $stack109, $stack119, $stack134, $stack150, $stack153, $stack155, $stack174, $stack177, $stack179, $stack188, $stack191, $stack193, classifier, $stack128, $stack129, $stack130, type#50;
+        java.io.File $stack114;
+        java.util.Map $stack162;
+        java.lang.Boolean $stack166;
+        java.lang.Throwable $stack168, $stack180, $r12, $r25;
+        org.eclipse.aether.graph.DependencyNode $stack182, dependency#73, type#76;
+        java.util.Iterator verbose#9, decorator#19, decorated#30, classifier#75;
+        org.apache.maven.project.RepositorySessionDecorator decorator;
+        org.eclipse.aether.RepositorySystemSession decorated, $r0, $r2, $r3, $r5, $r7, $r19;
+        org.apache.maven.model.Dependency decorated#28, dependency, type#60;
+        org.eclipse.aether.artifact.ArtifactType type;
+        org.apache.maven.model.DependencyManagement decorator#69;
+        org.apache.maven.project.DefaultDependencyResolutionResult $u0;
+        org.eclipse.aether.DefaultRepositorySystemSession $u1;
+        org.eclipse.aether.collection.CollectRequest $u2;
+        java.util.HashMap $u3;
+        org.eclipse.aether.resolution.DependencyRequest $u4;
+        org.apache.maven.project.DependencyResolutionException $u6, $u10;
+        org.apache.maven.project.DefaultProjectDependenciesResolver$GraphLogger $u8;
+        org.apache.maven.project.DefaultProjectDependenciesResolver $r1, $r4, $r6, $r13, $r14, $r15, $r16, $r18, $r20, $r22;
+        org.eclipse.aether.collection.DependencyCollectionException $r8, $r9, $r10;
+        org.apache.maven.project.DependencyResolutionResult $r11, $r24, $r26;
+        org.eclipse.aether.graph.DependencyVisitor $r17;
+        org.eclipse.aether.resolution.DependencyResolutionException $r21, $r23;
+
+        this := @this: DefaultProjectDependenciesResolver;
+
+        request := @parameter0: org.apache.maven.project.DependencyResolutionRequest;
+
+        trace = staticinvoke <org.eclipse.aether.RequestTrace: org.eclipse.aether.RequestTrace newChild(org.eclipse.aether.RequestTrace,java.lang.Object)>(null, request);
+
+        $u0 = new org.apache.maven.project.DefaultDependencyResolutionResult;
+
+        specialinvoke $u0.<org.apache.maven.project.DefaultDependencyResolutionResult: void <init>()>();
+
+        project = interfaceinvoke request.<org.apache.maven.project.DependencyResolutionRequest: org.apache.maven.project.MavenProject getMavenProject()>();
+
+        filter = interfaceinvoke request.<org.apache.maven.project.DependencyResolutionRequest: org.eclipse.aether.graph.DependencyFilter getResolutionFilter()>();
+
+        session = interfaceinvoke request.<org.apache.maven.project.DependencyResolutionRequest: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        $r0 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        stereotypes = interfaceinvoke $r0.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.artifact.ArtifactTypeRegistry getArtifactTypeRegistry()>();
+
+        $r1 = (org.apache.maven.project.DefaultProjectDependenciesResolver) this;
+
+        $stack23 = $r1.<org.apache.maven.project.DefaultProjectDependenciesResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack24 = interfaceinvoke $stack23.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack24 == 0 goto label01;
+
+        $r2 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        $stack162 = interfaceinvoke $r2.<org.eclipse.aether.RepositorySystemSession: java.util.Map getConfigProperties()>();
+
+        $stack163 = interfaceinvoke $stack162.<java.util.Map: java.lang.Object get(java.lang.Object)>("aether.dependencyManager.verbose");
+
+        if $stack163 != null goto label01;
+
+        $u1 = new org.eclipse.aether.DefaultRepositorySystemSession;
+
+        $r3 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        specialinvoke $u1.<org.eclipse.aether.DefaultRepositorySystemSession: void <init>(org.eclipse.aether.RepositorySystemSession)>($r3);
+
+        $stack166 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        virtualinvoke $u1.<org.eclipse.aether.DefaultRepositorySystemSession: org.eclipse.aether.DefaultRepositorySystemSession setConfigProperty(java.lang.String,java.lang.Object)>("aether.dependencyManager.verbose", $stack166);
+
+        session = $u1;
+
+     label01:
+        $r4 = (org.apache.maven.project.DefaultProjectDependenciesResolver) this;
+
+        $stack25 = $r4.<org.apache.maven.project.DefaultProjectDependenciesResolver: java.util.List decorators>;
+
+        verbose#9 = interfaceinvoke $stack25.<java.util.List: java.util.Iterator iterator()>();
+
+     label02:
+        $stack27 = interfaceinvoke verbose#9.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack27 == 0 goto label04;
+
+        $stack159 = interfaceinvoke verbose#9.<java.util.Iterator: java.lang.Object next()>();
+
+        decorator = (org.apache.maven.project.RepositorySessionDecorator) $stack159;
+
+        $r5 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        decorated = interfaceinvoke decorator.<org.apache.maven.project.RepositorySessionDecorator: org.eclipse.aether.RepositorySystemSession decorate(org.apache.maven.project.MavenProject,org.eclipse.aether.RepositorySystemSession)>(project, $r5);
+
+        if decorated == null goto label03;
+
+        session = decorated;
+
+     label03:
+        goto label02;
+
+     label04:
+        $u2 = new org.eclipse.aether.collection.CollectRequest;
+
+        specialinvoke $u2.<org.eclipse.aether.collection.CollectRequest: void <init>()>();
+
+        $stack29 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.artifact.Artifact getArtifact()>();
+
+        $stack30 = staticinvoke <org.apache.maven.RepositoryUtils: org.eclipse.aether.artifact.Artifact toArtifact(org.apache.maven.artifact.Artifact)>($stack29);
+
+        virtualinvoke $u2.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest setRootArtifact(org.eclipse.aether.artifact.Artifact)>($stack30);
+
+        virtualinvoke $u2.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest setRequestContext(java.lang.String)>("project");
+
+        $stack33 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getRemoteProjectRepositories()>();
+
+        virtualinvoke $u2.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest setRepositories(java.util.List)>($stack33);
+
+        $stack35 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.Set getDependencyArtifacts()>();
+
+        if $stack35 != null goto label08;
+
+        $stack144 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getDependencies()>();
+
+        decorator#19 = interfaceinvoke $stack144.<java.util.List: java.util.Iterator iterator()>();
+
+     label05:
+        $stack146 = interfaceinvoke decorator#19.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack146 == 0 goto label07;
+
+        $stack149 = interfaceinvoke decorator#19.<java.util.Iterator: java.lang.Object next()>();
+
+        decorated#28 = (org.apache.maven.model.Dependency) $stack149;
+
+        $stack150 = virtualinvoke decorated#28.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack151 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack150);
+
+        if $stack151 != 0 goto label05;
+
+        $stack153 = virtualinvoke decorated#28.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack154 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack153);
+
+        if $stack154 != 0 goto label05;
+
+        $stack155 = virtualinvoke decorated#28.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        $stack156 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack155);
+
+        if $stack156 == 0 goto label06;
+
+        goto label05;
+
+     label06:
+        $stack157 = staticinvoke <org.apache.maven.RepositoryUtils: org.eclipse.aether.graph.Dependency toDependency(org.apache.maven.model.Dependency,org.eclipse.aether.artifact.ArtifactTypeRegistry)>(decorated#28, stereotypes);
+
+        virtualinvoke $u2.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest addDependency(org.eclipse.aether.graph.Dependency)>($stack157);
+
+        goto label05;
+
+     label07:
+        goto label16;
+
+     label08:
+        $u3 = new java.util.HashMap;
+
+        specialinvoke $u3.<java.util.HashMap: void <init>()>();
+
+        $stack37 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.List getDependencies()>();
+
+        decorated#30 = interfaceinvoke $stack37.<java.util.List: java.util.Iterator iterator()>();
+
+     label09:
+        $stack39 = interfaceinvoke decorated#30.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack39 == 0 goto label11;
+
+        $stack126 = interfaceinvoke decorated#30.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.Dependency) $stack126;
+
+        classifier = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getClassifier()>();
+
+        if classifier != null goto label10;
+
+        $stack134 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getType()>();
+
+        type = interfaceinvoke stereotypes.<org.eclipse.aether.artifact.ArtifactTypeRegistry: org.eclipse.aether.artifact.ArtifactType get(java.lang.String)>($stack134);
+
+        if type == null goto label10;
+
+        classifier = interfaceinvoke type.<org.eclipse.aether.artifact.ArtifactType: java.lang.String getClassifier()>();
+
+     label10:
+        $stack128 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getGroupId()>();
+
+        $stack129 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getArtifactId()>();
+
+        $stack130 = virtualinvoke dependency.<org.apache.maven.model.Dependency: java.lang.String getType()>();
+
+        type#50 = staticinvoke <org.eclipse.aether.util.artifact.ArtifactIdUtils: java.lang.String toVersionlessId(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>($stack128, $stack129, $stack130, classifier);
+
+        interfaceinvoke $u3.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(type#50, dependency);
+
+        goto label09;
+
+     label11:
+        $stack40 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.util.Set getDependencyArtifacts()>();
+
+        decorated#30 = interfaceinvoke $stack40.<java.util.Set: java.util.Iterator iterator()>();
+
+     label12:
+        $stack42 = interfaceinvoke decorated#30.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack42 == 0 goto label16;
+
+        $stack104 = interfaceinvoke decorated#30.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency#58 = (org.apache.maven.artifact.Artifact) $stack104;
+
+        classifier = interfaceinvoke dependency#58.<org.apache.maven.artifact.Artifact: java.lang.String getDependencyConflictId()>();
+
+        $stack106 = interfaceinvoke $u3.<java.util.Map: java.lang.Object get(java.lang.Object)>(classifier);
+
+        type#60 = (org.apache.maven.model.Dependency) $stack106;
+
+        if type#60 == null goto label13;
+
+        $stack122 = virtualinvoke type#60.<org.apache.maven.model.Dependency: java.util.List getExclusions()>();
+
+        goto label14;
+
+     label13:
+        $stack122 = null;
+
+     label14:
+        dep = staticinvoke <org.apache.maven.RepositoryUtils: org.eclipse.aether.graph.Dependency toDependency(org.apache.maven.artifact.Artifact,java.util.Collection)>(dependency#58, $stack122);
+
+        $stack108 = "system";
+
+        $stack109 = virtualinvoke dep.<org.eclipse.aether.graph.Dependency: java.lang.String getScope()>();
+
+        $stack110 = virtualinvoke $stack108.<java.lang.String: boolean equals(java.lang.Object)>($stack109);
+
+        if $stack110 != 0 goto label15;
+
+        $stack113 = virtualinvoke dep.<org.eclipse.aether.graph.Dependency: org.eclipse.aether.artifact.Artifact getArtifact()>();
+
+        $stack114 = interfaceinvoke $stack113.<org.eclipse.aether.artifact.Artifact: java.io.File getFile()>();
+
+        if $stack114 == null goto label15;
+
+        art = virtualinvoke dep.<org.eclipse.aether.graph.Dependency: org.eclipse.aether.artifact.Artifact getArtifact()>();
+
+        $stack118 = interfaceinvoke art.<org.eclipse.aether.artifact.Artifact: org.eclipse.aether.artifact.Artifact setFile(java.io.File)>(null);
+
+        $stack119 = interfaceinvoke art.<org.eclipse.aether.artifact.Artifact: java.lang.String getBaseVersion()>();
+
+        art = interfaceinvoke $stack118.<org.eclipse.aether.artifact.Artifact: org.eclipse.aether.artifact.Artifact setVersion(java.lang.String)>($stack119);
+
+        dep = virtualinvoke dep.<org.eclipse.aether.graph.Dependency: org.eclipse.aether.graph.Dependency setArtifact(org.eclipse.aether.artifact.Artifact)>(art);
+
+     label15:
+        virtualinvoke $u2.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest addDependency(org.eclipse.aether.graph.Dependency)>(dep);
+
+        goto label12;
+
+     label16:
+        decorator#69 = virtualinvoke project.<org.apache.maven.project.MavenProject: org.apache.maven.model.DependencyManagement getDependencyManagement()>();
+
+        if decorator#69 == null goto label18;
+
+        $stack85 = virtualinvoke decorator#69.<org.apache.maven.model.DependencyManagement: java.util.List getDependencies()>();
+
+        decorated#30 = interfaceinvoke $stack85.<java.util.List: java.util.Iterator iterator()>();
+
+     label17:
+        $stack87 = interfaceinvoke decorated#30.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack87 == 0 goto label18;
+
+        $stack100 = interfaceinvoke decorated#30.<java.util.Iterator: java.lang.Object next()>();
+
+        dependency = (org.apache.maven.model.Dependency) $stack100;
+
+        $stack101 = staticinvoke <org.apache.maven.RepositoryUtils: org.eclipse.aether.graph.Dependency toDependency(org.apache.maven.model.Dependency,org.eclipse.aether.artifact.ArtifactTypeRegistry)>(dependency, stereotypes);
+
+        virtualinvoke $u2.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest addManagedDependency(org.eclipse.aether.graph.Dependency)>($stack101);
+
+        goto label17;
+
+     label18:
+        $u4 = new org.eclipse.aether.resolution.DependencyRequest;
+
+        specialinvoke $u4.<org.eclipse.aether.resolution.DependencyRequest: void <init>(org.eclipse.aether.collection.CollectRequest,org.eclipse.aether.graph.DependencyFilter)>($u2, filter);
+
+        virtualinvoke $u4.<org.eclipse.aether.resolution.DependencyRequest: org.eclipse.aether.resolution.DependencyRequest setTrace(org.eclipse.aether.RequestTrace)>(trace);
+
+     label19:
+        $stack46 = staticinvoke <org.eclipse.aether.RequestTrace: org.eclipse.aether.RequestTrace newChild(org.eclipse.aether.RequestTrace,java.lang.Object)>(trace, $u4);
+
+        virtualinvoke $u2.<org.eclipse.aether.collection.CollectRequest: org.eclipse.aether.collection.CollectRequest setTrace(org.eclipse.aether.RequestTrace)>($stack46);
+
+        $r6 = (org.apache.maven.project.DefaultProjectDependenciesResolver) this;
+
+        $stack48 = $r6.<org.apache.maven.project.DefaultProjectDependenciesResolver: org.eclipse.aether.RepositorySystem repoSystem>;
+
+        $r7 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        $stack49 = interfaceinvoke $stack48.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.collection.CollectResult collectDependencies(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.collection.CollectRequest)>($r7, $u2);
+
+        dependency#73 = virtualinvoke $stack49.<org.eclipse.aether.collection.CollectResult: org.eclipse.aether.graph.DependencyNode getRoot()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultDependencyResolutionResult: void setDependencyGraph(org.eclipse.aether.graph.DependencyNode)>(dependency#73);
+
+     label20:
+        goto label22;
+
+     label21:
+        $stack180 := @caughtexception;
+
+        $r8 = (org.eclipse.aether.collection.DependencyCollectionException) $stack180;
+
+        $stack181 = virtualinvoke $r8.<org.eclipse.aether.collection.DependencyCollectionException: org.eclipse.aether.collection.CollectResult getResult()>();
+
+        $stack182 = virtualinvoke $stack181.<org.eclipse.aether.collection.CollectResult: org.eclipse.aether.graph.DependencyNode getRoot()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultDependencyResolutionResult: void setDependencyGraph(org.eclipse.aether.graph.DependencyNode)>($stack182);
+
+        $r9 = (org.eclipse.aether.collection.DependencyCollectionException) $stack180;
+
+        $stack183 = virtualinvoke $r9.<org.eclipse.aether.collection.DependencyCollectionException: org.eclipse.aether.collection.CollectResult getResult()>();
+
+        $stack184 = virtualinvoke $stack183.<org.eclipse.aether.collection.CollectResult: java.util.List getExceptions()>();
+
+        virtualinvoke $u0.<org.apache.maven.project.DefaultDependencyResolutionResult: void setCollectionErrors(java.util.List)>($stack184);
+
+        $u6 = new org.apache.maven.project.DependencyResolutionException;
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack187 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not resolve dependencies for project ");
+
+        $stack188 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getId()>();
+
+        $stack189 = virtualinvoke $stack187.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack188);
+
+        $stack190 = virtualinvoke $stack189.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $r10 = (org.eclipse.aether.collection.DependencyCollectionException) $stack180;
+
+        $stack191 = virtualinvoke $r10.<org.eclipse.aether.collection.DependencyCollectionException: java.lang.String getMessage()>();
+
+        $stack192 = virtualinvoke $stack190.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack191);
+
+        $stack193 = virtualinvoke $stack192.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r11 = (org.apache.maven.project.DependencyResolutionResult) $u0;
+
+        specialinvoke $u6.<org.apache.maven.project.DependencyResolutionException: void <init>(org.apache.maven.project.DependencyResolutionResult,java.lang.String,java.lang.Throwable)>($r11, $stack193, $stack180);
+
+        $r12 = (java.lang.Throwable) $u6;
+
+        throw $r12;
+
+     label22:
+        virtualinvoke $u4.<org.eclipse.aether.resolution.DependencyRequest: org.eclipse.aether.resolution.DependencyRequest setRoot(org.eclipse.aether.graph.DependencyNode)>(dependency#73);
+
+        $r13 = (org.apache.maven.project.DefaultProjectDependenciesResolver) this;
+
+        $stack52 = $r13.<org.apache.maven.project.DefaultProjectDependenciesResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack53 = interfaceinvoke $stack52.<org.codehaus.plexus.logging.Logger: boolean isWarnEnabled()>();
+
+        if $stack53 == 0 goto label25;
+
+        $stack66 = interfaceinvoke dependency#73.<org.eclipse.aether.graph.DependencyNode: java.util.List getChildren()>();
+
+        classifier#75 = interfaceinvoke $stack66.<java.util.List: java.util.Iterator iterator()>();
+
+     label23:
+        $stack68 = interfaceinvoke classifier#75.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack68 == 0 goto label25;
+
+        $stack70 = interfaceinvoke classifier#75.<java.util.Iterator: java.lang.Object next()>();
+
+        type#76 = (org.eclipse.aether.graph.DependencyNode) $stack70;
+
+        $stack71 = interfaceinvoke type#76.<org.eclipse.aether.graph.DependencyNode: java.util.List getRelocations()>();
+
+        $stack72 = interfaceinvoke $stack71.<java.util.List: boolean isEmpty()>();
+
+        if $stack72 != 0 goto label24;
+
+        $r14 = (org.apache.maven.project.DefaultProjectDependenciesResolver) this;
+
+        $stack75 = $r14.<org.apache.maven.project.DefaultProjectDependenciesResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $u7 = new java.lang.StringBuilder;
+
+        specialinvoke $u7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack76 = virtualinvoke $u7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The artifact ");
+
+        $stack77 = interfaceinvoke type#76.<org.eclipse.aether.graph.DependencyNode: java.util.List getRelocations()>();
+
+        $stack78 = interfaceinvoke $stack77.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack79 = virtualinvoke $stack76.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack78);
+
+        $stack80 = virtualinvoke $stack79.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" has been relocated to ");
+
+        $stack81 = interfaceinvoke type#76.<org.eclipse.aether.graph.DependencyNode: org.eclipse.aether.graph.Dependency getDependency()>();
+
+        $stack82 = virtualinvoke $stack81.<org.eclipse.aether.graph.Dependency: org.eclipse.aether.artifact.Artifact getArtifact()>();
+
+        $stack83 = virtualinvoke $stack80.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack82);
+
+        $stack84 = virtualinvoke $stack83.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack75.<org.codehaus.plexus.logging.Logger: void warn(java.lang.String)>($stack84);
+
+     label24:
+        goto label23;
+
+     label25:
+        $r15 = (org.apache.maven.project.DefaultProjectDependenciesResolver) this;
+
+        $stack54 = $r15.<org.apache.maven.project.DefaultProjectDependenciesResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        $stack55 = interfaceinvoke $stack54.<org.codehaus.plexus.logging.Logger: boolean isDebugEnabled()>();
+
+        if $stack55 == 0 goto label26;
+
+        $u8 = new org.apache.maven.project.DefaultProjectDependenciesResolver$GraphLogger;
+
+        $r16 = (org.apache.maven.project.DefaultProjectDependenciesResolver) this;
+
+        specialinvoke $u8.<org.apache.maven.project.DefaultProjectDependenciesResolver$GraphLogger: void <init>(org.apache.maven.project.DefaultProjectDependenciesResolver,org.apache.maven.project.MavenProject)>($r16, project);
+
+        $r17 = (org.eclipse.aether.graph.DependencyVisitor) $u8;
+
+        interfaceinvoke dependency#73.<org.eclipse.aether.graph.DependencyNode: boolean accept(org.eclipse.aether.graph.DependencyVisitor)>($r17);
+
+     label26:
+        $r18 = (org.apache.maven.project.DefaultProjectDependenciesResolver) this;
+
+        $stack56 = $r18.<org.apache.maven.project.DefaultProjectDependenciesResolver: org.eclipse.aether.RepositorySystem repoSystem>;
+
+        $r19 = (org.eclipse.aether.RepositorySystemSession) session;
+
+        $stack57 = interfaceinvoke $stack56.<org.eclipse.aether.RepositorySystem: org.eclipse.aether.resolution.DependencyResult resolveDependencies(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.resolution.DependencyRequest)>($r19, $u4);
+
+        $stack58 = virtualinvoke $stack57.<org.eclipse.aether.resolution.DependencyResult: java.util.List getArtifactResults()>();
+
+        $r20 = (org.apache.maven.project.DefaultProjectDependenciesResolver) this;
+
+        specialinvoke $r20.<org.apache.maven.project.DefaultProjectDependenciesResolver: void process(org.apache.maven.project.DefaultDependencyResolutionResult,java.util.Collection)>($u0, $stack58);
+
+     label27:
+        goto label29;
+
+     label28:
+        $stack168 := @caughtexception;
+
+        $r21 = (org.eclipse.aether.resolution.DependencyResolutionException) $stack168;
+
+        $stack169 = virtualinvoke $r21.<org.eclipse.aether.resolution.DependencyResolutionException: org.eclipse.aether.resolution.DependencyResult getResult()>();
+
+        $stack170 = virtualinvoke $stack169.<org.eclipse.aether.resolution.DependencyResult: java.util.List getArtifactResults()>();
+
+        $r22 = (org.apache.maven.project.DefaultProjectDependenciesResolver) this;
+
+        specialinvoke $r22.<org.apache.maven.project.DefaultProjectDependenciesResolver: void process(org.apache.maven.project.DefaultDependencyResolutionResult,java.util.Collection)>($u0, $stack170);
+
+        $u10 = new org.apache.maven.project.DependencyResolutionException;
+
+        $u9 = new java.lang.StringBuilder;
+
+        specialinvoke $u9.<java.lang.StringBuilder: void <init>()>();
+
+        $stack173 = virtualinvoke $u9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not resolve dependencies for project ");
+
+        $stack174 = virtualinvoke project.<org.apache.maven.project.MavenProject: java.lang.String getId()>();
+
+        $stack175 = virtualinvoke $stack173.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack174);
+
+        $stack176 = virtualinvoke $stack175.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        $r23 = (org.eclipse.aether.resolution.DependencyResolutionException) $stack168;
+
+        $stack177 = virtualinvoke $r23.<org.eclipse.aether.resolution.DependencyResolutionException: java.lang.String getMessage()>();
+
+        $stack178 = virtualinvoke $stack176.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack177);
+
+        $stack179 = virtualinvoke $stack178.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r24 = (org.apache.maven.project.DependencyResolutionResult) $u0;
+
+        specialinvoke $u10.<org.apache.maven.project.DependencyResolutionException: void <init>(org.apache.maven.project.DependencyResolutionResult,java.lang.String,java.lang.Throwable)>($r24, $stack179, $stack168);
+
+        $r25 = (java.lang.Throwable) $u10;
+
+        throw $r25;
+
+     label29:
+        $r26 = (org.apache.maven.project.DependencyResolutionResult) $u0;
+
+        return $r26;
+
+        catch org.eclipse.aether.collection.DependencyCollectionException from label19 to label20 with label21;
+        catch org.eclipse.aether.resolution.DependencyResolutionException from label26 to label27 with label28;
+    }
+
+    private void process(org.apache.maven.project.DefaultDependencyResolutionResult, java.util.Collection)
+    {
+        java.util.Collection results;
+        java.util.Iterator l3;
+        boolean $stack7, $stack11;
+        java.lang.Object $stack8;
+        org.eclipse.aether.resolution.ArtifactResult ar;
+        org.eclipse.aether.resolution.ArtifactRequest $stack9;
+        org.eclipse.aether.graph.DependencyNode node;
+        org.apache.maven.project.DefaultDependencyResolutionResult result;
+        org.eclipse.aether.graph.Dependency $stack12, $stack15;
+        java.util.List $stack13;
+        DefaultProjectDependenciesResolver this;
+
+        this := @this: DefaultProjectDependenciesResolver;
+
+        result := @parameter0: org.apache.maven.project.DefaultDependencyResolutionResult;
+
+        results := @parameter1: java.util.Collection;
+
+        l3 = interfaceinvoke results.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack7 = interfaceinvoke l3.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack7 == 0 goto label4;
+
+        $stack8 = interfaceinvoke l3.<java.util.Iterator: java.lang.Object next()>();
+
+        ar = (org.eclipse.aether.resolution.ArtifactResult) $stack8;
+
+        $stack9 = virtualinvoke ar.<org.eclipse.aether.resolution.ArtifactResult: org.eclipse.aether.resolution.ArtifactRequest getRequest()>();
+
+        node = virtualinvoke $stack9.<org.eclipse.aether.resolution.ArtifactRequest: org.eclipse.aether.graph.DependencyNode getDependencyNode()>();
+
+        $stack11 = virtualinvoke ar.<org.eclipse.aether.resolution.ArtifactResult: boolean isResolved()>();
+
+        if $stack11 == 0 goto label2;
+
+        $stack15 = interfaceinvoke node.<org.eclipse.aether.graph.DependencyNode: org.eclipse.aether.graph.Dependency getDependency()>();
+
+        virtualinvoke result.<org.apache.maven.project.DefaultDependencyResolutionResult: void addResolvedDependency(org.eclipse.aether.graph.Dependency)>($stack15);
+
+        goto label3;
+
+     label2:
+        $stack12 = interfaceinvoke node.<org.eclipse.aether.graph.DependencyNode: org.eclipse.aether.graph.Dependency getDependency()>();
+
+        $stack13 = virtualinvoke ar.<org.eclipse.aether.resolution.ArtifactResult: java.util.List getExceptions()>();
+
+        virtualinvoke result.<org.apache.maven.project.DefaultDependencyResolutionResult: void setResolutionErrors(org.eclipse.aether.graph.Dependency,java.util.List)>($stack12, $stack13);
+
+     label3:
+        goto label1;
+
+     label4:
+        return;
+    }
+
+    static org.codehaus.plexus.logging.Logger access$000(org.apache.maven.project.DefaultProjectDependenciesResolver)
+    {
+        org.apache.maven.project.DefaultProjectDependenciesResolver x0;
+        org.codehaus.plexus.logging.Logger $stack1;
+
+        x0 := @parameter0: org.apache.maven.project.DefaultProjectDependenciesResolver;
+
+        $stack1 = x0.<org.apache.maven.project.DefaultProjectDependenciesResolver: org.codehaus.plexus.logging.Logger logger>;
+
+        return $stack1;
+    }
+}

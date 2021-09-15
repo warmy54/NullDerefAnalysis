@@ -1,0 +1,402 @@
+public class ImportParser extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        ImportParser this;
+
+        this := @this: ImportParser;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static boolean fill(org.ooc.frontend.model.Module, org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader)
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        java.lang.Object $stack10, $stack20, $stack23, $stack40, $stack61, $stack70, $stack14;
+        byte $stack11, $stack19, $stack22, $stack24, $stack42, $stack45, $stack46, $stack47, $stack48, $stack49, $stack63, $stack15;
+        java.lang.String $stack17, nsName, $stack50, $stack67;
+        org.ooc.frontend.model.tokens.Token $stack21, $stack41, $stack62, startToken, token#19, imp#37;
+        org.ubi.SourceReader sReader;
+        org.ooc.frontend.model.Module module;
+        org.ooc.frontend.model.NodeList $stack27, $stack28, $u1;
+        org.ubi.FileLocation $stack35, $stack58;
+        boolean $stack60;
+        org.ooc.frontend.model.NamespaceDecl namespace, $u7;
+        java.lang.StringBuilder $u0;
+        org.ooc.frontend.model.Import $u2, $u3;
+        org.ubi.CompilationFailedError $u4, $u5;
+        org.ooc.frontend.model.Node $r0, $r1;
+        org.ubi.Locatable $r2, $r4;
+        java.lang.Throwable $r3, $r5;
+
+        module := @parameter0: org.ooc.frontend.model.Module;
+
+        sReader := @parameter1: org.ubi.SourceReader;
+
+        reader := @parameter2: org.ooc.frontend.model.tokens.TokenReader;
+
+        $stack10 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        startToken = (org.ooc.frontend.model.tokens.Token) $stack10;
+
+        $stack11 = startToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack11 == 14 goto label01;
+
+        return 0;
+
+     label01:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        namespace = null;
+
+        $u1 = new org.ooc.frontend.model.NodeList;
+
+        specialinvoke $u1.<org.ooc.frontend.model.NodeList: void <init>(org.ooc.frontend.model.tokens.Token)>(startToken);
+
+     label02:
+        $stack14 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        token#19 = (org.ooc.frontend.model.tokens.Token) $stack14;
+
+        $stack15 = token#19.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack15 == 51 goto label03;
+
+        $stack45 = token#19.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack45 != 96 goto label04;
+
+     label03:
+        $u2 = new org.ooc.frontend.model.Import;
+
+        $stack17 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<org.ooc.frontend.model.Import: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack17, startToken);
+
+        $r0 = (org.ooc.frontend.model.Node) $u2;
+
+        virtualinvoke $u1.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r0);
+
+        goto label10;
+
+     label04:
+        $stack46 = token#19.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack46 != 45 goto label05;
+
+        $u3 = new org.ooc.frontend.model.Import;
+
+        $stack67 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u3.<org.ooc.frontend.model.Import: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack67, startToken);
+
+        $r1 = (org.ooc.frontend.model.Node) $u3;
+
+        virtualinvoke $u1.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r1);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        $stack70 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        startToken = (org.ooc.frontend.model.tokens.Token) $stack70;
+
+        goto label02;
+
+     label05:
+        $stack47 = token#19.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack47 != 58 goto label07;
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(47);
+
+        $stack60 = staticinvoke <org.ooc.frontend.parser.ImportParser: boolean readMulti(org.ubi.SourceReader,org.ooc.frontend.model.tokens.TokenReader,org.ooc.frontend.model.NodeList,java.lang.StringBuilder,org.ooc.frontend.model.tokens.Token)>(sReader, reader, $u1, $u0, token#19);
+
+        if $stack60 == 0 goto label06;
+
+        goto label10;
+
+     label06:
+        $stack61 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack62 = (org.ooc.frontend.model.tokens.Token) $stack61;
+
+        $stack63 = $stack62.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack63 != 45 goto label02;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        goto label02;
+
+     label07:
+        $stack48 = token#19.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack48 != 46 goto label08;
+
+        $u4 = new org.ubi.CompilationFailedError;
+
+        $r2 = (org.ubi.Locatable) token#19;
+
+        $stack58 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($r2);
+
+        specialinvoke $u4.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack58, "import my.package.MyClass style deprecated, use import my/package/MyClass instead.");
+
+        $r3 = (java.lang.Throwable) $u4;
+
+        throw $r3;
+
+     label08:
+        $stack49 = token#19.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack49 != 47 goto label09;
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("..");
+
+        goto label02;
+
+     label09:
+        $stack50 = virtualinvoke token#19.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack50);
+
+        goto label02;
+
+     label10:
+        $stack19 = token#19.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack19 == 96 goto label11;
+
+        $stack40 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack41 = (org.ooc.frontend.model.tokens.Token) $stack40;
+
+        $stack42 = $stack41.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack42 != 96 goto label15;
+
+     label11:
+        $stack20 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack21 = (org.ooc.frontend.model.tokens.Token) $stack20;
+
+        $stack22 = $stack21.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack22 != 96 goto label12;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+     label12:
+        $stack23 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        imp#37 = (org.ooc.frontend.model.tokens.Token) $stack23;
+
+        $stack24 = imp#37.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack24 == 39 goto label13;
+
+        $u5 = new org.ubi.CompilationFailedError;
+
+        $r4 = (org.ubi.Locatable) token#19;
+
+        $stack35 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($r4);
+
+        specialinvoke $u5.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack35, "Expected NAME after `into` keyword.");
+
+        $r5 = (java.lang.Throwable) $u5;
+
+        throw $r5;
+
+     label13:
+        goto label14;
+
+     label14:
+        nsName = virtualinvoke imp#37.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        namespace = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NamespaceDecl getNamespace(java.lang.String)>(nsName);
+
+        if namespace != null goto label15;
+
+        $u7 = new org.ooc.frontend.model.NamespaceDecl;
+
+        specialinvoke $u7.<org.ooc.frontend.model.NamespaceDecl: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token,org.ooc.frontend.model.Module)>(nsName, imp#37, module);
+
+        namespace = $u7;
+
+        virtualinvoke module.<org.ooc.frontend.model.Module: void addNamespace(org.ooc.frontend.model.NamespaceDecl)>($u7);
+
+     label15:
+        if namespace == null goto label16;
+
+        $stack28 = virtualinvoke namespace.<org.ooc.frontend.model.NamespaceDecl: org.ooc.frontend.model.NodeList getImports()>();
+
+        virtualinvoke $stack28.<org.ooc.frontend.model.NodeList: void addAll(org.ooc.frontend.model.NodeList)>($u1);
+
+        goto label17;
+
+     label16:
+        $stack27 = virtualinvoke module.<org.ooc.frontend.model.Module: org.ooc.frontend.model.NodeList getGlobalImports()>();
+
+        virtualinvoke $stack27.<org.ooc.frontend.model.NodeList: void addAll(org.ooc.frontend.model.NodeList)>($u1);
+
+     label17:
+        return 1;
+    }
+
+    private static boolean readMulti(org.ubi.SourceReader, org.ooc.frontend.model.tokens.TokenReader, org.ooc.frontend.model.NodeList, java.lang.StringBuilder, org.ooc.frontend.model.tokens.Token) throws org.ubi.CompilationFailedError
+    {
+        org.ooc.frontend.model.tokens.TokenReader reader;
+        java.lang.Object $stack9, $stack13, $stack15, $stack30, $stack44;
+        org.ooc.frontend.model.tokens.Token $stack10, token, startToken, innerToken;
+        byte $stack11, $stack16, $stack17, $stack31, $stack32, $stack33;
+        org.ubi.SourceReader sReader;
+        java.lang.String $stack18, $stack26, $stack27, $stack28, $stack37, $stack40, $stack41, $stack42;
+        java.lang.StringBuilder sb, $u0;
+        org.ooc.frontend.model.NodeList imports;
+        org.ubi.FileLocation $stack36;
+        org.ooc.frontend.model.Import $u1, $u2;
+        org.ubi.CompilationFailedError $u3;
+        org.ooc.frontend.model.Node $r0, $r1;
+        org.ubi.Locatable $r2;
+        java.lang.Throwable $r3;
+
+        sReader := @parameter0: org.ubi.SourceReader;
+
+        reader := @parameter1: org.ooc.frontend.model.tokens.TokenReader;
+
+        imports := @parameter2: org.ooc.frontend.model.NodeList;
+
+        sb := @parameter3: java.lang.StringBuilder;
+
+        token := @parameter4: org.ooc.frontend.model.tokens.Token;
+
+        $stack9 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        $stack10 = (org.ooc.frontend.model.tokens.Token) $stack9;
+
+        $stack11 = $stack10.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack11 != 86 goto label8;
+
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: void skip()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        startToken = (org.ooc.frontend.model.tokens.Token) $stack13;
+
+     label1:
+        virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: boolean skipWhitespace()>();
+
+        $stack15 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object read()>();
+
+        innerToken = (org.ooc.frontend.model.tokens.Token) $stack15;
+
+        $stack16 = innerToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack16 != 45 goto label2;
+
+        $u1 = new org.ooc.frontend.model.Import;
+
+        $stack40 = virtualinvoke sb.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack41 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack42 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>($stack40, $stack41) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001\u0001");
+
+        specialinvoke $u1.<org.ooc.frontend.model.Import: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack42, startToken);
+
+        $r0 = (org.ooc.frontend.model.Node) $u1;
+
+        virtualinvoke imports.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r0);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        $stack44 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        startToken = (org.ooc.frontend.model.tokens.Token) $stack44;
+
+        goto label4;
+
+     label2:
+        $stack17 = innerToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack17 != 87 goto label3;
+
+        $u2 = new org.ooc.frontend.model.Import;
+
+        $stack26 = virtualinvoke sb.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack27 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack28 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (java.lang.String,java.lang.String)>($stack26, $stack27) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("\u0001\u0001");
+
+        specialinvoke $u2.<org.ooc.frontend.model.Import: void <init>(java.lang.String,org.ooc.frontend.model.tokens.Token)>($stack28, startToken);
+
+        $r1 = (org.ooc.frontend.model.Node) $u2;
+
+        virtualinvoke imports.<org.ooc.frontend.model.NodeList: boolean add(org.ooc.frontend.model.Node)>($r1);
+
+        goto label5;
+
+     label3:
+        $stack18 = virtualinvoke innerToken.<org.ooc.frontend.model.tokens.Token: java.lang.String get(org.ubi.SourceReader)>(sReader);
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack18);
+
+     label4:
+        goto label1;
+
+     label5:
+        virtualinvoke sb.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        $stack30 = virtualinvoke reader.<org.ooc.frontend.model.tokens.TokenReader: java.lang.Object peek()>();
+
+        innerToken = (org.ooc.frontend.model.tokens.Token) $stack30;
+
+        $stack31 = innerToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack31 == 51 goto label6;
+
+        $stack32 = innerToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack32 != 96 goto label7;
+
+     label6:
+        return 1;
+
+     label7:
+        $stack33 = innerToken.<org.ooc.frontend.model.tokens.Token: byte type>;
+
+        if $stack33 == 45 goto label8;
+
+        $u3 = new org.ubi.CompilationFailedError;
+
+        $r2 = (org.ubi.Locatable) innerToken;
+
+        $stack36 = virtualinvoke sReader.<org.ubi.SourceReader: org.ubi.FileLocation getLocation(org.ubi.Locatable)>($r2);
+
+        $stack37 = dynamicinvoke "makeConcatWithConstants" <java.lang.String (org.ooc.frontend.model.tokens.Token)>(innerToken) <java.lang.invoke.StringConcatFactory: java.lang.invoke.CallSite makeConcatWithConstants(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType,java.lang.String,java.lang.Object[])>("Unexpected token \u0001 while reading an import");
+
+        specialinvoke $u3.<org.ubi.CompilationFailedError: void <init>(org.ubi.FileLocation,java.lang.String)>($stack36, $stack37);
+
+        $r3 = (java.lang.Throwable) $u3;
+
+        throw $r3;
+
+     label8:
+        return 0;
+    }
+}

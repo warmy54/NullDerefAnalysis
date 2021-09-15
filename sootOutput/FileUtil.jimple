@@ -1,0 +1,1009 @@
+public class FileUtil extends java.lang.Object
+{
+    private static final java.lang.String XML_FILE_EXTENSION;
+    private java.io.File pomFile;
+    private java.lang.String backupFileExtension;
+    private java.lang.String encoding;
+    private java.lang.String customSortOrderFile;
+    private java.lang.String predefinedSortOrder;
+    private java.lang.String newName;
+    private java.io.File backupFile;
+    private java.lang.String violationFilename;
+    private long timestamp;
+    private boolean keepTimestamp;
+    private final sortpom.util.FileAttributeUtil fileAttrUtils;
+
+    public void <init>()
+    {
+        FileUtil this;
+        sortpom.util.FileAttributeUtil $u0;
+        sortpom.util.FileUtil $r0;
+
+        this := @this: FileUtil;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new sortpom.util.FileAttributeUtil;
+
+        specialinvoke $u0.<sortpom.util.FileAttributeUtil: void <init>()>();
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $r0.<sortpom.util.FileUtil: sortpom.util.FileAttributeUtil fileAttrUtils> = $u0;
+
+        return;
+    }
+
+    public void setup(sortpom.parameter.PluginParameters)
+    {
+        FileUtil this;
+        sortpom.parameter.PluginParameters parameters;
+        java.io.File $stack2;
+        java.lang.String $stack3, $stack4, $stack5, $stack6, $stack7;
+        boolean $stack8;
+        sortpom.util.FileUtil $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: FileUtil;
+
+        parameters := @parameter0: sortpom.parameter.PluginParameters;
+
+        $stack2 = parameters.<sortpom.parameter.PluginParameters: java.io.File pomFile>;
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $r0.<sortpom.util.FileUtil: java.io.File pomFile> = $stack2;
+
+        $stack3 = parameters.<sortpom.parameter.PluginParameters: java.lang.String backupFileExtension>;
+
+        $r1 = (sortpom.util.FileUtil) this;
+
+        $r1.<sortpom.util.FileUtil: java.lang.String backupFileExtension> = $stack3;
+
+        $stack4 = parameters.<sortpom.parameter.PluginParameters: java.lang.String encoding>;
+
+        $r2 = (sortpom.util.FileUtil) this;
+
+        $r2.<sortpom.util.FileUtil: java.lang.String encoding> = $stack4;
+
+        $stack5 = parameters.<sortpom.parameter.PluginParameters: java.lang.String customSortOrderFile>;
+
+        $r3 = (sortpom.util.FileUtil) this;
+
+        $r3.<sortpom.util.FileUtil: java.lang.String customSortOrderFile> = $stack5;
+
+        $stack6 = parameters.<sortpom.parameter.PluginParameters: java.lang.String predefinedSortOrder>;
+
+        $r4 = (sortpom.util.FileUtil) this;
+
+        $r4.<sortpom.util.FileUtil: java.lang.String predefinedSortOrder> = $stack6;
+
+        $stack7 = parameters.<sortpom.parameter.PluginParameters: java.lang.String violationFilename>;
+
+        $r5 = (sortpom.util.FileUtil) this;
+
+        $r5.<sortpom.util.FileUtil: java.lang.String violationFilename> = $stack7;
+
+        $stack8 = parameters.<sortpom.parameter.PluginParameters: boolean keepTimestamp>;
+
+        $r6 = (sortpom.util.FileUtil) this;
+
+        $r6.<sortpom.util.FileUtil: boolean keepTimestamp> = $stack8;
+
+        return;
+    }
+
+    public void backupFile()
+    {
+        FileUtil this;
+        sortpom.util.FileUtil $r0, $r1, $r2;
+
+        this := @this: FileUtil;
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        virtualinvoke $r0.<sortpom.util.FileUtil: void createFileHandle()>();
+
+        $r1 = (sortpom.util.FileUtil) this;
+
+        specialinvoke $r1.<sortpom.util.FileUtil: void checkBackupFileAccess()>();
+
+        $r2 = (sortpom.util.FileUtil) this;
+
+        specialinvoke $r2.<sortpom.util.FileUtil: void createBackupFile()>();
+
+        return;
+    }
+
+    void createFileHandle()
+    {
+        FileUtil this;
+        java.io.File $stack2, $u1;
+        java.lang.String $stack3, $stack5, $stack7, $stack9;
+        java.lang.StringBuilder $stack4, $stack6, $u0;
+        sortpom.util.FileUtil $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: FileUtil;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $stack2 = $r0.<sortpom.util.FileUtil: java.io.File pomFile>;
+
+        $stack3 = virtualinvoke $stack2.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack4 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack3);
+
+        $r1 = (sortpom.util.FileUtil) this;
+
+        $stack5 = $r1.<sortpom.util.FileUtil: java.lang.String backupFileExtension>;
+
+        $stack6 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r2 = (sortpom.util.FileUtil) this;
+
+        $r2.<sortpom.util.FileUtil: java.lang.String newName> = $stack7;
+
+        $u1 = new java.io.File;
+
+        $r3 = (sortpom.util.FileUtil) this;
+
+        $stack9 = $r3.<sortpom.util.FileUtil: java.lang.String newName>;
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String)>($stack9);
+
+        $r4 = (sortpom.util.FileUtil) this;
+
+        $r4.<sortpom.util.FileUtil: java.io.File backupFile> = $u1;
+
+        return;
+    }
+
+    private void checkBackupFileAccess()
+    {
+        FileUtil this;
+        java.io.File $stack2;
+        java.nio.file.Path $stack3;
+        java.io.IOException $stack5;
+        java.lang.StringBuilder $stack8, $stack10, $u0;
+        java.lang.String $stack9, $stack11;
+        sortpom.exception.FailureException $u1;
+        sortpom.util.FileUtil $r0, $r1;
+        java.lang.Throwable $r2;
+
+        this := @this: FileUtil;
+
+     label1:
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $stack2 = $r0.<sortpom.util.FileUtil: java.io.File backupFile>;
+
+        $stack3 = virtualinvoke $stack2.<java.io.File: java.nio.file.Path toPath()>();
+
+        staticinvoke <java.nio.file.Files: boolean deleteIfExists(java.nio.file.Path)>($stack3);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack5 := @caughtexception;
+
+        $u1 = new sortpom.exception.FailureException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not remove old backup file, filename: ");
+
+        $r1 = (sortpom.util.FileUtil) this;
+
+        $stack9 = $r1.<sortpom.util.FileUtil: java.lang.String newName>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<sortpom.exception.FailureException: void <init>(java.lang.String,java.lang.Throwable)>($stack11, $stack5);
+
+        $r2 = (java.lang.Throwable) $u1;
+
+        throw $r2;
+
+     label4:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    private void createBackupFile()
+    {
+        FileUtil this;
+        java.io.File $stack2, $stack4;
+        java.nio.file.Path $stack3, $stack5;
+        java.nio.file.CopyOption[] $stack6;
+        java.io.IOException $stack8;
+        java.lang.StringBuilder $stack11, $stack13, $u0;
+        java.lang.String $stack12, $stack14;
+        sortpom.exception.FailureException $u1;
+        sortpom.util.FileUtil $r0, $r1, $r2;
+        java.lang.Throwable $r3;
+
+        this := @this: FileUtil;
+
+     label1:
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $stack2 = $r0.<sortpom.util.FileUtil: java.io.File pomFile>;
+
+        $stack3 = virtualinvoke $stack2.<java.io.File: java.nio.file.Path toPath()>();
+
+        $r1 = (sortpom.util.FileUtil) this;
+
+        $stack4 = $r1.<sortpom.util.FileUtil: java.io.File backupFile>;
+
+        $stack5 = virtualinvoke $stack4.<java.io.File: java.nio.file.Path toPath()>();
+
+        $stack6 = newarray (java.nio.file.CopyOption)[0];
+
+        staticinvoke <java.nio.file.Files: java.nio.file.Path copy(java.nio.file.Path,java.nio.file.Path,java.nio.file.CopyOption[])>($stack3, $stack5, $stack6);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack8 := @caughtexception;
+
+        $u1 = new sortpom.exception.FailureException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack11 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not create backup file to filename: ");
+
+        $r2 = (sortpom.util.FileUtil) this;
+
+        $stack12 = $r2.<sortpom.util.FileUtil: java.lang.String newName>;
+
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<sortpom.exception.FailureException: void <init>(java.lang.String,java.lang.Throwable)>($stack14, $stack8);
+
+        $r3 = (java.lang.Throwable) $u1;
+
+        throw $r3;
+
+     label4:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    public java.lang.String getPomFileContent()
+    {
+        FileUtil this;
+        java.io.File $stack6, $stack13;
+        java.lang.String $stack7, content, $stack14, $stack16, $stack21, $stack23;
+        java.io.IOException $stack9;
+        java.lang.StringBuilder $stack12, $stack15, $stack20, $stack22, $u1, $u3;
+        java.nio.charset.UnsupportedCharsetException $stack17;
+        java.lang.Throwable $stack24, $stack25, $r3, $r5;
+        java.io.FileInputStream $u0;
+        sortpom.exception.FailureException $u2, $u4;
+        sortpom.util.FileUtil $r0, $r1, $r2, $r4, $r6;
+
+        this := @this: FileUtil;
+
+     label01:
+        $u0 = new java.io.FileInputStream;
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $stack6 = $r0.<sortpom.util.FileUtil: java.io.File pomFile>;
+
+        specialinvoke $u0.<java.io.FileInputStream: void <init>(java.io.File)>($stack6);
+
+     label02:
+        $r1 = (sortpom.util.FileUtil) this;
+
+        $stack7 = $r1.<sortpom.util.FileUtil: java.lang.String encoding>;
+
+        content = staticinvoke <org.apache.commons.io.IOUtils: java.lang.String toString(java.io.InputStream,java.lang.String)>($u0, $stack7);
+
+     label03:
+        virtualinvoke $u0.<java.io.InputStream: void close()>();
+
+        goto label09;
+
+     label04:
+        $stack25 := @caughtexception;
+
+     label05:
+        virtualinvoke $u0.<java.io.InputStream: void close()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $stack24 := @caughtexception;
+
+        virtualinvoke $stack25.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack24);
+
+     label08:
+        throw $stack25;
+
+     label09:
+        goto label12;
+
+     label10:
+        $stack17 := @caughtexception;
+
+        $u2 = new sortpom.exception.FailureException;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack20 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not handle encoding: ");
+
+        $r2 = (sortpom.util.FileUtil) this;
+
+        $stack21 = $r2.<sortpom.util.FileUtil: java.lang.String encoding>;
+
+        $stack22 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack21);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u2.<sortpom.exception.FailureException: void <init>(java.lang.String,java.lang.Throwable)>($stack23, $stack17);
+
+        $r3 = (java.lang.Throwable) $u2;
+
+        throw $r3;
+
+     label11:
+        $stack9 := @caughtexception;
+
+        $u4 = new sortpom.exception.FailureException;
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not read pom file: ");
+
+        $r4 = (sortpom.util.FileUtil) this;
+
+        $stack13 = $r4.<sortpom.util.FileUtil: java.io.File pomFile>;
+
+        $stack14 = virtualinvoke $stack13.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack15 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u4.<sortpom.exception.FailureException: void <init>(java.lang.String,java.lang.Throwable)>($stack16, $stack9);
+
+        $r5 = (java.lang.Throwable) $u4;
+
+        throw $r5;
+
+     label12:
+        $r6 = (sortpom.util.FileUtil) this;
+
+        specialinvoke $r6.<sortpom.util.FileUtil: void savePomfileTimestamp()>();
+
+        return content;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch java.nio.charset.UnsupportedCharsetException from label01 to label09 with label10;
+        catch java.io.IOException from label01 to label09 with label11;
+    }
+
+    private void savePomfileTimestamp()
+    {
+        FileUtil this;
+        boolean $stack1;
+        java.io.File $stack2, $stack10;
+        sortpom.util.FileAttributeUtil $stack3;
+        long $stack4, $stack5;
+        byte $stack6;
+        java.lang.StringBuilder $stack9, $stack12, $u0;
+        java.lang.String $stack11, $stack13;
+        sortpom.exception.FailureException $u1;
+        sortpom.util.FileUtil $r0, $r1, $r2, $r3, $r4, $r5;
+        java.lang.Throwable $r6;
+
+        this := @this: FileUtil;
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $stack1 = $r0.<sortpom.util.FileUtil: boolean keepTimestamp>;
+
+        if $stack1 == 0 goto label1;
+
+        $r1 = (sortpom.util.FileUtil) this;
+
+        $stack3 = $r1.<sortpom.util.FileUtil: sortpom.util.FileAttributeUtil fileAttrUtils>;
+
+        $r2 = (sortpom.util.FileUtil) this;
+
+        $stack2 = $r2.<sortpom.util.FileUtil: java.io.File pomFile>;
+
+        $stack4 = virtualinvoke $stack3.<sortpom.util.FileAttributeUtil: long getLastModifiedTimestamp(java.io.File)>($stack2);
+
+        $r3 = (sortpom.util.FileUtil) this;
+
+        $r3.<sortpom.util.FileUtil: long timestamp> = $stack4;
+
+        $r4 = (sortpom.util.FileUtil) this;
+
+        $stack5 = $r4.<sortpom.util.FileUtil: long timestamp>;
+
+        $stack6 = $stack5 cmp 0L;
+
+        if $stack6 != 0 goto label1;
+
+        $u1 = new sortpom.exception.FailureException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack9 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not retrieve the timestamp of the pom file: ");
+
+        $r5 = (sortpom.util.FileUtil) this;
+
+        $stack10 = $r5.<sortpom.util.FileUtil: java.io.File pomFile>;
+
+        $stack11 = virtualinvoke $stack10.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack12 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<sortpom.exception.FailureException: void <init>(java.lang.String)>($stack13);
+
+        $r6 = (java.lang.Throwable) $u1;
+
+        throw $r6;
+
+     label1:
+        return;
+    }
+
+    public void saveViolationFile(java.lang.String)
+    {
+        FileUtil this;
+        java.lang.String $stack4, violationXml, $stack7, $stack9;
+        java.lang.StringBuilder $stack6, $stack8, $u1;
+        java.io.File $u0;
+        sortpom.util.FileUtil $r0, $r1;
+
+        this := @this: FileUtil;
+
+        violationXml := @parameter0: java.lang.String;
+
+        $u0 = new java.io.File;
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $stack4 = $r0.<sortpom.util.FileUtil: java.lang.String violationFilename>;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>($stack4);
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not save violation file: ");
+
+        $stack7 = virtualinvoke $u0.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack8 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack7);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = (sortpom.util.FileUtil) this;
+
+        specialinvoke $r1.<sortpom.util.FileUtil: void saveFile(java.io.File,java.lang.String,java.lang.String)>($u0, violationXml, $stack9);
+
+        return;
+    }
+
+    public void savePomFile(java.lang.String)
+    {
+        FileUtil this;
+        java.lang.String sortedXml, $stack6, $stack8;
+        java.io.File $stack3, $stack5;
+        java.lang.StringBuilder $stack4, $stack7, $u0;
+        sortpom.util.FileUtil $r0, $r1, $r2, $r3;
+
+        this := @this: FileUtil;
+
+        sortedXml := @parameter0: java.lang.String;
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $stack3 = $r0.<sortpom.util.FileUtil: java.io.File pomFile>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack4 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not save sorted pom file: ");
+
+        $r1 = (sortpom.util.FileUtil) this;
+
+        $stack5 = $r1.<sortpom.util.FileUtil: java.io.File pomFile>;
+
+        $stack6 = virtualinvoke $stack5.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack7 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack6);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r2 = (sortpom.util.FileUtil) this;
+
+        specialinvoke $r2.<sortpom.util.FileUtil: void saveFile(java.io.File,java.lang.String,java.lang.String)>($stack3, sortedXml, $stack8);
+
+        $r3 = (sortpom.util.FileUtil) this;
+
+        specialinvoke $r3.<sortpom.util.FileUtil: void setPomfileTimestamp()>();
+
+        return;
+    }
+
+    private void saveFile(java.io.File, java.lang.String, java.lang.String)
+    {
+        java.io.File fileToSave, $stack5;
+        java.nio.file.Path $stack6, $stack9;
+        java.nio.file.attribute.FileAttribute[] $stack7;
+        java.lang.String content, $stack10, errorMessage;
+        FileUtil this;
+        byte[] $stack11;
+        java.nio.file.OpenOption[] $stack12;
+        java.io.IOException $stack14;
+        sortpom.exception.FailureException $u0;
+        sortpom.util.FileUtil $r0;
+        java.lang.Throwable $r1;
+
+        this := @this: FileUtil;
+
+        fileToSave := @parameter0: java.io.File;
+
+        content := @parameter1: java.lang.String;
+
+        errorMessage := @parameter2: java.lang.String;
+
+     label1:
+        $stack5 = virtualinvoke fileToSave.<java.io.File: java.io.File getParentFile()>();
+
+        $stack6 = virtualinvoke $stack5.<java.io.File: java.nio.file.Path toPath()>();
+
+        $stack7 = newarray (java.nio.file.attribute.FileAttribute)[0];
+
+        staticinvoke <java.nio.file.Files: java.nio.file.Path createDirectories(java.nio.file.Path,java.nio.file.attribute.FileAttribute[])>($stack6, $stack7);
+
+        $stack9 = virtualinvoke fileToSave.<java.io.File: java.nio.file.Path toPath()>();
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $stack10 = $r0.<sortpom.util.FileUtil: java.lang.String encoding>;
+
+        $stack11 = virtualinvoke content.<java.lang.String: byte[] getBytes(java.lang.String)>($stack10);
+
+        $stack12 = newarray (java.nio.file.OpenOption)[0];
+
+        staticinvoke <java.nio.file.Files: java.nio.file.Path write(java.nio.file.Path,byte[],java.nio.file.OpenOption[])>($stack9, $stack11, $stack12);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack14 := @caughtexception;
+
+        $u0 = new sortpom.exception.FailureException;
+
+        specialinvoke $u0.<sortpom.exception.FailureException: void <init>(java.lang.String,java.lang.Throwable)>(errorMessage, $stack14);
+
+        $r1 = (java.lang.Throwable) $u0;
+
+        throw $r1;
+
+     label4:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    private void setPomfileTimestamp()
+    {
+        FileUtil this;
+        boolean $stack2;
+        long $stack3;
+        java.io.File $stack4, $stack10;
+        sortpom.util.FileAttributeUtil $stack5;
+        java.io.IOException $stack6;
+        java.lang.StringBuilder $stack9, $stack12, $u0;
+        java.lang.String $stack11, $stack13;
+        sortpom.exception.FailureException $u1;
+        sortpom.util.FileUtil $r0, $r1, $r2, $r3, $r4;
+        java.lang.Throwable $r5;
+
+        this := @this: FileUtil;
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $stack2 = $r0.<sortpom.util.FileUtil: boolean keepTimestamp>;
+
+        if $stack2 == 0 goto label4;
+
+     label1:
+        $r1 = (sortpom.util.FileUtil) this;
+
+        $stack5 = $r1.<sortpom.util.FileUtil: sortpom.util.FileAttributeUtil fileAttrUtils>;
+
+        $r2 = (sortpom.util.FileUtil) this;
+
+        $stack4 = $r2.<sortpom.util.FileUtil: java.io.File pomFile>;
+
+        $r3 = (sortpom.util.FileUtil) this;
+
+        $stack3 = $r3.<sortpom.util.FileUtil: long timestamp>;
+
+        virtualinvoke $stack5.<sortpom.util.FileAttributeUtil: void setTimestamps(java.io.File,long)>($stack4, $stack3);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack6 := @caughtexception;
+
+        $u1 = new sortpom.exception.FailureException;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack9 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not change timestamp of new pom file: ");
+
+        $r4 = (sortpom.util.FileUtil) this;
+
+        $stack10 = $r4.<sortpom.util.FileUtil: java.io.File pomFile>;
+
+        $stack11 = virtualinvoke $stack10.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack12 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<sortpom.exception.FailureException: void <init>(java.lang.String,java.lang.Throwable)>($stack13, $stack6);
+
+        $r5 = (java.lang.Throwable) $u1;
+
+        throw $r5;
+
+     label4:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    public java.lang.String getDefaultSortOrderXml() throws java.io.IOException
+    {
+        FileUtil this;
+        sortpom.util.CheckedSupplier createStreamFunc;
+        java.lang.Object $stack6;
+        java.io.InputStream inputStream;
+        java.nio.charset.Charset $stack7;
+        java.lang.Throwable $stack10, $stack11;
+        java.lang.String l3;
+        sortpom.util.FileUtil $r0;
+
+        this := @this: FileUtil;
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        createStreamFunc = staticinvoke <FileUtil$lambda_getDefaultSortOrderXml_0__309: sortpom.util.CheckedSupplier bootstrap$(sortpom.util.FileUtil)>($r0);
+
+        $stack6 = interfaceinvoke createStreamFunc.<sortpom.util.CheckedSupplier: java.lang.Object get()>();
+
+        inputStream = (java.io.InputStream) $stack6;
+
+     label1:
+        $stack7 = <java.nio.charset.StandardCharsets: java.nio.charset.Charset UTF_8>;
+
+        l3 = staticinvoke <org.apache.commons.io.IOUtils: java.lang.String toString(java.io.InputStream,java.nio.charset.Charset)>(inputStream, $stack7);
+
+     label2:
+        if inputStream == null goto label3;
+
+        virtualinvoke inputStream.<java.io.InputStream: void close()>();
+
+     label3:
+        return l3;
+
+     label4:
+        $stack11 := @caughtexception;
+
+        if inputStream == null goto label8;
+
+     label5:
+        virtualinvoke inputStream.<java.io.InputStream: void close()>();
+
+     label6:
+        goto label8;
+
+     label7:
+        $stack10 := @caughtexception;
+
+        virtualinvoke $stack11.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack10);
+
+     label8:
+        throw $stack11;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label7;
+    }
+
+    private java.io.InputStream openCustomSortOrderFile() throws java.io.FileNotFoundException
+    {
+        FileUtil this;
+        java.lang.String $stack5, $stack10, $stack13, $stack14, $stack15, $stack19;
+        java.io.IOException $stack6, $u1;
+        java.lang.Object[] $stack8;
+        java.io.FileNotFoundException $stack16, $u3;
+        java.lang.Class $stack17;
+        java.lang.ClassLoader $stack18;
+        java.io.InputStream inputStream;
+        java.net.URL resource;
+        java.io.FileInputStream $u0;
+        java.io.File $u2;
+        sortpom.util.FileUtil $r0, $r1, $r2, $r3;
+
+        this := @this: FileUtil;
+
+     label1:
+        $u0 = new java.io.FileInputStream;
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $stack5 = $r0.<sortpom.util.FileUtil: java.lang.String customSortOrderFile>;
+
+        specialinvoke $u0.<java.io.FileInputStream: void <init>(java.lang.String)>($stack5);
+
+        inputStream = $u0;
+
+     label2:
+        goto label8;
+
+     label3:
+        $stack16 := @caughtexception;
+
+     label4:
+        $stack17 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack18 = virtualinvoke $stack17.<java.lang.Class: java.lang.ClassLoader getClassLoader()>();
+
+        $r1 = (sortpom.util.FileUtil) this;
+
+        $stack19 = $r1.<sortpom.util.FileUtil: java.lang.String customSortOrderFile>;
+
+        resource = virtualinvoke $stack18.<java.lang.ClassLoader: java.net.URL getResource(java.lang.String)>($stack19);
+
+        if resource != null goto label5;
+
+        $u1 = new java.io.IOException;
+
+        specialinvoke $u1.<java.io.IOException: void <init>(java.lang.String)>("Cannot find resource");
+
+        throw $u1;
+
+     label5:
+        inputStream = virtualinvoke resource.<java.net.URL: java.io.InputStream openStream()>();
+
+     label6:
+        goto label8;
+
+     label7:
+        $stack6 := @caughtexception;
+
+        $u3 = new java.io.FileNotFoundException;
+
+        $stack8 = newarray (java.lang.Object)[2];
+
+        $u2 = new java.io.File;
+
+        $r2 = (sortpom.util.FileUtil) this;
+
+        $stack10 = $r2.<sortpom.util.FileUtil: java.lang.String customSortOrderFile>;
+
+        specialinvoke $u2.<java.io.File: void <init>(java.lang.String)>($stack10);
+
+        $stack13 = virtualinvoke $u2.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $stack8[0] = $stack13;
+
+        $r3 = (sortpom.util.FileUtil) this;
+
+        $stack14 = $r3.<sortpom.util.FileUtil: java.lang.String customSortOrderFile>;
+
+        $stack8[1] = $stack14;
+
+        $stack15 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Could not find %s or %s in classpath", $stack8);
+
+        specialinvoke $u3.<java.io.FileNotFoundException: void <init>(java.lang.String)>($stack15);
+
+        throw $u3;
+
+     label8:
+        return inputStream;
+
+        catch java.io.FileNotFoundException from label1 to label2 with label3;
+        catch java.io.IOException from label4 to label6 with label7;
+    }
+
+    private java.io.InputStream getPredefinedSortOrder(java.lang.String) throws java.io.IOException
+    {
+        FileUtil this;
+        java.lang.Class $stack4;
+        java.util.Optional $stack5, $stack7, resourceOptional;
+        java.util.function.Function $stack6, $stack8;
+        java.lang.String predefinedSortOrder;
+        java.util.function.Supplier $stack10;
+        java.lang.Object $stack11;
+        java.net.URL resource;
+        java.io.InputStream $stack12;
+
+        this := @this: FileUtil;
+
+        predefinedSortOrder := @parameter0: java.lang.String;
+
+        $stack4 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack5 = staticinvoke <java.util.Optional: java.util.Optional of(java.lang.Object)>($stack4);
+
+        $stack6 = staticinvoke <FileUtil$getClassLoader__310: java.util.function.Function bootstrap$()>();
+
+        $stack7 = virtualinvoke $stack5.<java.util.Optional: java.util.Optional map(java.util.function.Function)>($stack6);
+
+        $stack8 = staticinvoke <FileUtil$lambda_getPredefinedSortOrder_1__311: java.util.function.Function bootstrap$(java.lang.String)>(predefinedSortOrder);
+
+        resourceOptional = virtualinvoke $stack7.<java.util.Optional: java.util.Optional map(java.util.function.Function)>($stack8);
+
+        $stack10 = staticinvoke <FileUtil$lambda_getPredefinedSortOrder_2__312: java.util.function.Supplier bootstrap$(java.lang.String)>(predefinedSortOrder);
+
+        $stack11 = virtualinvoke resourceOptional.<java.util.Optional: java.lang.Object orElseThrow(java.util.function.Supplier)>($stack10);
+
+        resource = (java.net.URL) $stack11;
+
+        $stack12 = virtualinvoke resource.<java.net.URL: java.io.InputStream openStream()>();
+
+        return $stack12;
+    }
+
+    private static java.lang.IllegalArgumentException lambda$getPredefinedSortOrder$2(java.lang.String)
+    {
+        java.lang.IllegalArgumentException $stack1;
+        java.lang.Object[] $stack2;
+        java.lang.StringBuilder $stack3, $stack6, $stack7;
+        java.lang.String predefinedSortOrder, $stack8, $stack9;
+
+        predefinedSortOrder := @parameter0: java.lang.String;
+
+        $stack1 = new java.lang.IllegalArgumentException;
+
+        $stack2 = newarray (java.lang.Object)[1];
+
+        $stack3 = new java.lang.StringBuilder;
+
+        specialinvoke $stack3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(predefinedSortOrder);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".xml");
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack2[0] = $stack8;
+
+        $stack9 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Cannot find %s among the predefined plugin resources", $stack2);
+
+        specialinvoke $stack1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($stack9);
+
+        return $stack1;
+    }
+
+    private static java.net.URL lambda$getPredefinedSortOrder$1(java.lang.String, java.lang.ClassLoader)
+    {
+        java.lang.ClassLoader classLoader;
+        java.lang.StringBuilder $stack2, $stack3, $stack4;
+        java.lang.String predefinedSortOrder, $stack5;
+        java.net.URL $stack6;
+
+        predefinedSortOrder := @parameter0: java.lang.String;
+
+        classLoader := @parameter1: java.lang.ClassLoader;
+
+        $stack2 = new java.lang.StringBuilder;
+
+        specialinvoke $stack2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(predefinedSortOrder);
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".xml");
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack6 = virtualinvoke classLoader.<java.lang.ClassLoader: java.net.URL getResource(java.lang.String)>($stack5);
+
+        return $stack6;
+    }
+
+    private java.io.InputStream lambda$getDefaultSortOrderXml$0() throws java.io.IOException
+    {
+        FileUtil this;
+        java.lang.String $stack2, $stack3, $stack6;
+        java.io.InputStream $stack4, $stack8, $stack9;
+        boolean $stack7;
+        sortpom.util.UrlWrapper $u0;
+        sortpom.util.FileUtil $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: FileUtil;
+
+        $r0 = (sortpom.util.FileUtil) this;
+
+        $stack2 = $r0.<sortpom.util.FileUtil: java.lang.String customSortOrderFile>;
+
+        if $stack2 == null goto label2;
+
+        $u0 = new sortpom.util.UrlWrapper;
+
+        $r1 = (sortpom.util.FileUtil) this;
+
+        $stack6 = $r1.<sortpom.util.FileUtil: java.lang.String customSortOrderFile>;
+
+        specialinvoke $u0.<sortpom.util.UrlWrapper: void <init>(java.lang.String)>($stack6);
+
+        $stack7 = virtualinvoke $u0.<sortpom.util.UrlWrapper: boolean isUrl()>();
+
+        if $stack7 == 0 goto label1;
+
+        $stack9 = virtualinvoke $u0.<sortpom.util.UrlWrapper: java.io.InputStream openStream()>();
+
+        return $stack9;
+
+     label1:
+        $r2 = (sortpom.util.FileUtil) this;
+
+        $stack8 = specialinvoke $r2.<sortpom.util.FileUtil: java.io.InputStream openCustomSortOrderFile()>();
+
+        return $stack8;
+
+     label2:
+        $r3 = (sortpom.util.FileUtil) this;
+
+        $stack3 = $r3.<sortpom.util.FileUtil: java.lang.String predefinedSortOrder>;
+
+        $r4 = (sortpom.util.FileUtil) this;
+
+        $stack4 = specialinvoke $r4.<sortpom.util.FileUtil: java.io.InputStream getPredefinedSortOrder(java.lang.String)>($stack3);
+
+        return $stack4;
+    }
+
+    public static void <clinit>()
+    {
+        <FileUtil: java.lang.String XML_FILE_EXTENSION> = ".xml";
+
+        return;
+    }
+}

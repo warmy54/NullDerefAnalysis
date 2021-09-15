@@ -1,0 +1,1397 @@
+public class DefaultVersionResolver extends java.lang.Object implements org.eclipse.aether.impl.VersionResolver, org.eclipse.aether.spi.locator.Service
+{
+    private static final java.lang.String MAVEN_METADATA_XML;
+    private static final java.lang.String RELEASE;
+    private static final java.lang.String LATEST;
+    private static final java.lang.String SNAPSHOT;
+    private org.eclipse.aether.impl.MetadataResolver metadataResolver;
+    private org.eclipse.aether.spi.synccontext.SyncContextFactory syncContextFactory;
+    private org.eclipse.aether.impl.RepositoryEventDispatcher repositoryEventDispatcher;
+
+    public void <init>()
+    {
+        DefaultVersionResolver this;
+
+        this := @this: DefaultVersionResolver;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    void <init>(org.eclipse.aether.impl.MetadataResolver, org.eclipse.aether.spi.synccontext.SyncContextFactory, org.eclipse.aether.impl.RepositoryEventDispatcher)
+    {
+        DefaultVersionResolver this;
+        org.eclipse.aether.impl.MetadataResolver metadataResolver;
+        org.eclipse.aether.spi.synccontext.SyncContextFactory syncContextFactory;
+        org.eclipse.aether.impl.RepositoryEventDispatcher repositoryEventDispatcher;
+        org.apache.maven.repository.internal.DefaultVersionResolver $r0, $r1, $r2;
+
+        this := @this: DefaultVersionResolver;
+
+        metadataResolver := @parameter0: org.eclipse.aether.impl.MetadataResolver;
+
+        syncContextFactory := @parameter1: org.eclipse.aether.spi.synccontext.SyncContextFactory;
+
+        repositoryEventDispatcher := @parameter2: org.eclipse.aether.impl.RepositoryEventDispatcher;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $r0 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        virtualinvoke $r0.<org.apache.maven.repository.internal.DefaultVersionResolver: org.apache.maven.repository.internal.DefaultVersionResolver setMetadataResolver(org.eclipse.aether.impl.MetadataResolver)>(metadataResolver);
+
+        $r1 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        virtualinvoke $r1.<org.apache.maven.repository.internal.DefaultVersionResolver: org.apache.maven.repository.internal.DefaultVersionResolver setSyncContextFactory(org.eclipse.aether.spi.synccontext.SyncContextFactory)>(syncContextFactory);
+
+        $r2 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        virtualinvoke $r2.<org.apache.maven.repository.internal.DefaultVersionResolver: org.apache.maven.repository.internal.DefaultVersionResolver setRepositoryEventDispatcher(org.eclipse.aether.impl.RepositoryEventDispatcher)>(repositoryEventDispatcher);
+
+        return;
+    }
+
+    public void initService(org.eclipse.aether.spi.locator.ServiceLocator)
+    {
+        DefaultVersionResolver this;
+        org.eclipse.aether.spi.locator.ServiceLocator locator;
+        java.lang.Object $stack2, $stack5, $stack8;
+        org.eclipse.aether.impl.MetadataResolver $stack3;
+        org.eclipse.aether.spi.synccontext.SyncContextFactory $stack6;
+        org.eclipse.aether.impl.RepositoryEventDispatcher $stack9;
+        org.apache.maven.repository.internal.DefaultVersionResolver $r0, $r1, $r2;
+
+        this := @this: DefaultVersionResolver;
+
+        locator := @parameter0: org.eclipse.aether.spi.locator.ServiceLocator;
+
+        $stack2 = interfaceinvoke locator.<org.eclipse.aether.spi.locator.ServiceLocator: java.lang.Object getService(java.lang.Class)>(class "Lorg/eclipse/aether/impl/MetadataResolver;");
+
+        $stack3 = (org.eclipse.aether.impl.MetadataResolver) $stack2;
+
+        $r0 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        virtualinvoke $r0.<org.apache.maven.repository.internal.DefaultVersionResolver: org.apache.maven.repository.internal.DefaultVersionResolver setMetadataResolver(org.eclipse.aether.impl.MetadataResolver)>($stack3);
+
+        $stack5 = interfaceinvoke locator.<org.eclipse.aether.spi.locator.ServiceLocator: java.lang.Object getService(java.lang.Class)>(class "Lorg/eclipse/aether/spi/synccontext/SyncContextFactory;");
+
+        $stack6 = (org.eclipse.aether.spi.synccontext.SyncContextFactory) $stack5;
+
+        $r1 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        virtualinvoke $r1.<org.apache.maven.repository.internal.DefaultVersionResolver: org.apache.maven.repository.internal.DefaultVersionResolver setSyncContextFactory(org.eclipse.aether.spi.synccontext.SyncContextFactory)>($stack6);
+
+        $stack8 = interfaceinvoke locator.<org.eclipse.aether.spi.locator.ServiceLocator: java.lang.Object getService(java.lang.Class)>(class "Lorg/eclipse/aether/impl/RepositoryEventDispatcher;");
+
+        $stack9 = (org.eclipse.aether.impl.RepositoryEventDispatcher) $stack8;
+
+        $r2 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        virtualinvoke $r2.<org.apache.maven.repository.internal.DefaultVersionResolver: org.apache.maven.repository.internal.DefaultVersionResolver setRepositoryEventDispatcher(org.eclipse.aether.impl.RepositoryEventDispatcher)>($stack9);
+
+        return;
+    }
+
+    public org.apache.maven.repository.internal.DefaultVersionResolver setMetadataResolver(org.eclipse.aether.impl.MetadataResolver)
+    {
+        DefaultVersionResolver this;
+        org.eclipse.aether.impl.MetadataResolver metadataResolver, $stack3;
+        java.lang.Object $stack2;
+        org.apache.maven.repository.internal.DefaultVersionResolver $r0, $r1;
+
+        this := @this: DefaultVersionResolver;
+
+        metadataResolver := @parameter0: org.eclipse.aether.impl.MetadataResolver;
+
+        $stack2 = staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(metadataResolver, "metadataResolver cannot be null");
+
+        $stack3 = (org.eclipse.aether.impl.MetadataResolver) $stack2;
+
+        $r0 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $r0.<org.apache.maven.repository.internal.DefaultVersionResolver: org.eclipse.aether.impl.MetadataResolver metadataResolver> = $stack3;
+
+        $r1 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        return $r1;
+    }
+
+    public org.apache.maven.repository.internal.DefaultVersionResolver setSyncContextFactory(org.eclipse.aether.spi.synccontext.SyncContextFactory)
+    {
+        DefaultVersionResolver this;
+        org.eclipse.aether.spi.synccontext.SyncContextFactory syncContextFactory, $stack3;
+        java.lang.Object $stack2;
+        org.apache.maven.repository.internal.DefaultVersionResolver $r0, $r1;
+
+        this := @this: DefaultVersionResolver;
+
+        syncContextFactory := @parameter0: org.eclipse.aether.spi.synccontext.SyncContextFactory;
+
+        $stack2 = staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(syncContextFactory, "syncContextFactory cannot be null");
+
+        $stack3 = (org.eclipse.aether.spi.synccontext.SyncContextFactory) $stack2;
+
+        $r0 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $r0.<org.apache.maven.repository.internal.DefaultVersionResolver: org.eclipse.aether.spi.synccontext.SyncContextFactory syncContextFactory> = $stack3;
+
+        $r1 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        return $r1;
+    }
+
+    public org.apache.maven.repository.internal.DefaultVersionResolver setRepositoryEventDispatcher(org.eclipse.aether.impl.RepositoryEventDispatcher)
+    {
+        DefaultVersionResolver this;
+        org.eclipse.aether.impl.RepositoryEventDispatcher repositoryEventDispatcher, $stack3;
+        java.lang.Object $stack2;
+        org.apache.maven.repository.internal.DefaultVersionResolver $r0, $r1;
+
+        this := @this: DefaultVersionResolver;
+
+        repositoryEventDispatcher := @parameter0: org.eclipse.aether.impl.RepositoryEventDispatcher;
+
+        $stack2 = staticinvoke <java.util.Objects: java.lang.Object requireNonNull(java.lang.Object,java.lang.String)>(repositoryEventDispatcher, "repositoryEventDispatcher cannot be null");
+
+        $stack3 = (org.eclipse.aether.impl.RepositoryEventDispatcher) $stack2;
+
+        $r0 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $r0.<org.apache.maven.repository.internal.DefaultVersionResolver: org.eclipse.aether.impl.RepositoryEventDispatcher repositoryEventDispatcher> = $stack3;
+
+        $r1 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        return $r1;
+    }
+
+    public org.eclipse.aether.resolution.VersionResult resolveVersion(org.eclipse.aether.RepositorySystemSession, org.eclipse.aether.resolution.VersionRequest) throws org.eclipse.aether.resolution.VersionResolutionException
+    {
+        org.eclipse.aether.resolution.VersionRequest request, $u9;
+        org.eclipse.aether.RequestTrace $stack17, trace;
+        org.eclipse.aether.artifact.Artifact artifact, $stack71;
+        java.lang.String version, $stack25, $stack33, $stack43, $stack45, $stack49, $stack50, $stack51, $stack60, $stack66, $stack67, $stack70, $stack78, $stack124, $stack134, $stack135, $stack147, $stack148, $stack151, $stack152, $stack160, $stack163, $stack23, metadataRequest#34, $stack55;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.RepositoryCache cache;
+        boolean $stack26, $stack27, $stack37, $stack42, $stack44, $stack46, $stack54, $stack58, $stack65, $stack68, $stack74, $stack139, $stack155, $stack159, $stack24, $stack84, $stack56;
+        java.util.List $stack29, $stack35, $stack75, $stack82, $stack89, $stack138, $stack162, metadataResults#19;
+        int $stack30;
+        DefaultVersionResolver this;
+        org.eclipse.aether.impl.MetadataResolver $stack38;
+        java.lang.StringBuilder $stack48, $stack52, $u10;
+        org.eclipse.aether.repository.ArtifactRepository $stack61, $stack73, $stack80, $stack88, $stack165, $r1, $r6, $r8;
+        java.lang.Object $stack85, $stack102, $stack122, obj, repository#23;
+        java.lang.Exception $stack103, v#33;
+        org.eclipse.aether.resolution.MetadataRequest $stack105, $u6, $u7;
+        org.eclipse.aether.metadata.Metadata $stack107, $r2, $r3;
+        org.eclipse.aether.metadata.Metadata$Nature $stack136, $stack149, $stack153;
+        org.eclipse.aether.repository.WorkspaceRepository $stack144;
+        java.lang.String[] $stack154;
+        java.lang.Class $stack164;
+        org.apache.maven.repository.internal.DefaultVersionResolver$Key cacheKey, $u1;
+        org.apache.maven.repository.internal.DefaultVersionResolver$Record record, $u12;
+        org.eclipse.aether.metadata.DefaultMetadata obj#10, $u2, $u3, $u4;
+        org.eclipse.aether.repository.WorkspaceReader record#11;
+        java.util.Iterator metadataResults, metadataRequest#21, repository#28;
+        org.eclipse.aether.repository.RemoteRepository repository, metadataResult#26;
+        org.eclipse.aether.resolution.MetadataResult metadataResult;
+        org.apache.maven.artifact.repository.metadata.Versioning v;
+        org.eclipse.aether.resolution.VersionResult metadataResult#27, $u0;
+        java.util.ArrayList $u5;
+        java.util.HashMap $u8;
+        org.eclipse.aether.resolution.VersionResolutionException $u11;
+        org.apache.maven.repository.internal.DefaultVersionResolver $r0, $r4, $r5, $r7, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r17;
+        java.lang.Throwable $r16;
+
+        this := @this: DefaultVersionResolver;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        request := @parameter1: org.eclipse.aether.resolution.VersionRequest;
+
+        $stack17 = virtualinvoke request.<org.eclipse.aether.resolution.VersionRequest: org.eclipse.aether.RequestTrace getTrace()>();
+
+        trace = staticinvoke <org.eclipse.aether.RequestTrace: org.eclipse.aether.RequestTrace newChild(org.eclipse.aether.RequestTrace,java.lang.Object)>($stack17, request);
+
+        artifact = virtualinvoke request.<org.eclipse.aether.resolution.VersionRequest: org.eclipse.aether.artifact.Artifact getArtifact()>();
+
+        version = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getVersion()>();
+
+        $u0 = new org.eclipse.aether.resolution.VersionResult;
+
+        specialinvoke $u0.<org.eclipse.aether.resolution.VersionResult: void <init>(org.eclipse.aether.resolution.VersionRequest)>(request);
+
+        cacheKey = null;
+
+        cache = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.RepositoryCache getCache()>();
+
+        if cache == null goto label01;
+
+        $stack154 = newarray (java.lang.String)[1];
+
+        $stack154[0] = "aether.versionResolver.noCache";
+
+        $stack155 = staticinvoke <org.eclipse.aether.util.ConfigUtils: boolean getBoolean(org.eclipse.aether.RepositorySystemSession,boolean,java.lang.String[])>(session, 0, $stack154);
+
+        if $stack155 != 0 goto label01;
+
+        $u1 = new org.apache.maven.repository.internal.DefaultVersionResolver$Key;
+
+        specialinvoke $u1.<org.apache.maven.repository.internal.DefaultVersionResolver$Key: void <init>(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.resolution.VersionRequest)>(session, request);
+
+        cacheKey = $u1;
+
+        obj = interfaceinvoke cache.<org.eclipse.aether.RepositoryCache: java.lang.Object get(org.eclipse.aether.RepositorySystemSession,java.lang.Object)>(session, $u1);
+
+        $stack159 = obj instanceof org.apache.maven.repository.internal.DefaultVersionResolver$Record;
+
+        if $stack159 == 0 goto label01;
+
+        record = (org.apache.maven.repository.internal.DefaultVersionResolver$Record) obj;
+
+        $stack160 = record.<org.apache.maven.repository.internal.DefaultVersionResolver$Record: java.lang.String version>;
+
+        virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult setVersion(java.lang.String)>($stack160);
+
+        $stack162 = virtualinvoke request.<org.eclipse.aether.resolution.VersionRequest: java.util.List getRepositories()>();
+
+        $stack164 = record.<org.apache.maven.repository.internal.DefaultVersionResolver$Record: java.lang.Class repoClass>;
+
+        $stack163 = record.<org.apache.maven.repository.internal.DefaultVersionResolver$Record: java.lang.String repoId>;
+
+        $r0 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $stack165 = specialinvoke $r0.<org.apache.maven.repository.internal.DefaultVersionResolver: org.eclipse.aether.repository.ArtifactRepository getRepository(org.eclipse.aether.RepositorySystemSession,java.util.List,java.lang.Class,java.lang.String)>(session, $stack162, $stack164, $stack163);
+
+        virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult setRepository(org.eclipse.aether.repository.ArtifactRepository)>($stack165);
+
+        return $u0;
+
+     label01:
+        $stack23 = "RELEASE";
+
+        $stack24 = virtualinvoke $stack23.<java.lang.String: boolean equals(java.lang.Object)>(version);
+
+        if $stack24 == 0 goto label02;
+
+        $u2 = new org.eclipse.aether.metadata.DefaultMetadata;
+
+        $stack151 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack152 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack153 = <org.eclipse.aether.metadata.Metadata$Nature: org.eclipse.aether.metadata.Metadata$Nature RELEASE>;
+
+        specialinvoke $u2.<org.eclipse.aether.metadata.DefaultMetadata: void <init>(java.lang.String,java.lang.String,java.lang.String,org.eclipse.aether.metadata.Metadata$Nature)>($stack151, $stack152, "maven-metadata.xml", $stack153);
+
+        obj#10 = $u2;
+
+        goto label07;
+
+     label02:
+        $stack25 = "LATEST";
+
+        $stack26 = virtualinvoke $stack25.<java.lang.String: boolean equals(java.lang.Object)>(version);
+
+        if $stack26 == 0 goto label03;
+
+        $u3 = new org.eclipse.aether.metadata.DefaultMetadata;
+
+        $stack147 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack148 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack149 = <org.eclipse.aether.metadata.Metadata$Nature: org.eclipse.aether.metadata.Metadata$Nature RELEASE_OR_SNAPSHOT>;
+
+        specialinvoke $u3.<org.eclipse.aether.metadata.DefaultMetadata: void <init>(java.lang.String,java.lang.String,java.lang.String,org.eclipse.aether.metadata.Metadata$Nature)>($stack147, $stack148, "maven-metadata.xml", $stack149);
+
+        obj#10 = $u3;
+
+        goto label07;
+
+     label03:
+        $stack27 = virtualinvoke version.<java.lang.String: boolean endsWith(java.lang.String)>("SNAPSHOT");
+
+        if $stack27 == 0 goto label06;
+
+        record#11 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.WorkspaceReader getWorkspaceReader()>();
+
+        if record#11 == null goto label04;
+
+        $stack138 = interfaceinvoke record#11.<org.eclipse.aether.repository.WorkspaceReader: java.util.List findVersions(org.eclipse.aether.artifact.Artifact)>(artifact);
+
+        $stack139 = interfaceinvoke $stack138.<java.util.List: boolean contains(java.lang.Object)>(version);
+
+        if $stack139 == 0 goto label04;
+
+        obj#10 = null;
+
+        $stack144 = interfaceinvoke record#11.<org.eclipse.aether.repository.WorkspaceReader: org.eclipse.aether.repository.WorkspaceRepository getRepository()>();
+
+        $r1 = (org.eclipse.aether.repository.ArtifactRepository) $stack144;
+
+        virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult setRepository(org.eclipse.aether.repository.ArtifactRepository)>($r1);
+
+        goto label05;
+
+     label04:
+        $u4 = new org.eclipse.aether.metadata.DefaultMetadata;
+
+        $stack134 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getGroupId()>();
+
+        $stack135 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getArtifactId()>();
+
+        $stack136 = <org.eclipse.aether.metadata.Metadata$Nature: org.eclipse.aether.metadata.Metadata$Nature SNAPSHOT>;
+
+        specialinvoke $u4.<org.eclipse.aether.metadata.DefaultMetadata: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.eclipse.aether.metadata.Metadata$Nature)>($stack134, $stack135, version, "maven-metadata.xml", $stack136);
+
+        obj#10 = $u4;
+
+     label05:
+        goto label07;
+
+     label06:
+        obj#10 = null;
+
+     label07:
+        if obj#10 != null goto label08;
+
+        virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult setVersion(java.lang.String)>(version);
+
+        goto label22;
+
+     label08:
+        $u5 = new java.util.ArrayList;
+
+        $stack29 = virtualinvoke request.<org.eclipse.aether.resolution.VersionRequest: java.util.List getRepositories()>();
+
+        $stack30 = interfaceinvoke $stack29.<java.util.List: int size()>();
+
+        specialinvoke $u5.<java.util.ArrayList: void <init>(int)>($stack30);
+
+        $u6 = new org.eclipse.aether.resolution.MetadataRequest;
+
+        $stack33 = virtualinvoke request.<org.eclipse.aether.resolution.VersionRequest: java.lang.String getRequestContext()>();
+
+        $r2 = (org.eclipse.aether.metadata.Metadata) obj#10;
+
+        specialinvoke $u6.<org.eclipse.aether.resolution.MetadataRequest: void <init>(org.eclipse.aether.metadata.Metadata,org.eclipse.aether.repository.RemoteRepository,java.lang.String)>($r2, null, $stack33);
+
+        interfaceinvoke $u5.<java.util.List: boolean add(java.lang.Object)>($u6);
+
+        $stack35 = virtualinvoke request.<org.eclipse.aether.resolution.VersionRequest: java.util.List getRepositories()>();
+
+        metadataResults = interfaceinvoke $stack35.<java.util.List: java.util.Iterator iterator()>();
+
+     label09:
+        $stack37 = interfaceinvoke metadataResults.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack37 == 0 goto label10;
+
+        $stack122 = interfaceinvoke metadataResults.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.eclipse.aether.repository.RemoteRepository) $stack122;
+
+        $u7 = new org.eclipse.aether.resolution.MetadataRequest;
+
+        $stack124 = virtualinvoke request.<org.eclipse.aether.resolution.VersionRequest: java.lang.String getRequestContext()>();
+
+        $r3 = (org.eclipse.aether.metadata.Metadata) obj#10;
+
+        specialinvoke $u7.<org.eclipse.aether.resolution.MetadataRequest: void <init>(org.eclipse.aether.metadata.Metadata,org.eclipse.aether.repository.RemoteRepository,java.lang.String)>($r3, repository, $stack124);
+
+        virtualinvoke $u7.<org.eclipse.aether.resolution.MetadataRequest: org.eclipse.aether.resolution.MetadataRequest setDeleteLocalCopyIfMissing(boolean)>(1);
+
+        virtualinvoke $u7.<org.eclipse.aether.resolution.MetadataRequest: org.eclipse.aether.resolution.MetadataRequest setFavorLocalRepository(boolean)>(1);
+
+        virtualinvoke $u7.<org.eclipse.aether.resolution.MetadataRequest: org.eclipse.aether.resolution.MetadataRequest setTrace(org.eclipse.aether.RequestTrace)>(trace);
+
+        interfaceinvoke $u5.<java.util.List: boolean add(java.lang.Object)>($u7);
+
+        goto label09;
+
+     label10:
+        $r4 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $stack38 = $r4.<org.apache.maven.repository.internal.DefaultVersionResolver: org.eclipse.aether.impl.MetadataResolver metadataResolver>;
+
+        metadataResults#19 = interfaceinvoke $stack38.<org.eclipse.aether.impl.MetadataResolver: java.util.List resolveMetadata(org.eclipse.aether.RepositorySystemSession,java.util.Collection)>(session, $u5);
+
+        $u8 = new java.util.HashMap;
+
+        specialinvoke $u8.<java.util.HashMap: void <init>()>();
+
+        metadataRequest#21 = interfaceinvoke metadataResults#19.<java.util.List: java.util.Iterator iterator()>();
+
+     label11:
+        $stack42 = interfaceinvoke metadataRequest#21.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack42 == 0 goto label13;
+
+        $stack102 = interfaceinvoke metadataRequest#21.<java.util.Iterator: java.lang.Object next()>();
+
+        metadataResult = (org.eclipse.aether.resolution.MetadataResult) $stack102;
+
+        $stack103 = virtualinvoke metadataResult.<org.eclipse.aether.resolution.MetadataResult: java.lang.Exception getException()>();
+
+        virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult addException(java.lang.Exception)>($stack103);
+
+        $stack105 = virtualinvoke metadataResult.<org.eclipse.aether.resolution.MetadataResult: org.eclipse.aether.resolution.MetadataRequest getRequest()>();
+
+        repository#23 = virtualinvoke $stack105.<org.eclipse.aether.resolution.MetadataRequest: org.eclipse.aether.repository.RemoteRepository getRepository()>();
+
+        if repository#23 != null goto label12;
+
+        repository#23 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.LocalRepository getLocalRepository()>();
+
+     label12:
+        $stack107 = virtualinvoke metadataResult.<org.eclipse.aether.resolution.MetadataResult: org.eclipse.aether.metadata.Metadata getMetadata()>();
+
+        $r5 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $r6 = (org.eclipse.aether.repository.ArtifactRepository) repository#23;
+
+        v = specialinvoke $r5.<org.apache.maven.repository.internal.DefaultVersionResolver: org.apache.maven.artifact.repository.metadata.Versioning readVersions(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.RequestTrace,org.eclipse.aether.metadata.Metadata,org.eclipse.aether.repository.ArtifactRepository,org.eclipse.aether.resolution.VersionResult)>(session, trace, $stack107, $r6, $u0);
+
+        $r7 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $r8 = (org.eclipse.aether.repository.ArtifactRepository) repository#23;
+
+        specialinvoke $r7.<org.apache.maven.repository.internal.DefaultVersionResolver: void merge(org.eclipse.aether.artifact.Artifact,java.util.Map,org.apache.maven.artifact.repository.metadata.Versioning,org.eclipse.aether.repository.ArtifactRepository)>(artifact, $u8, v, $r8);
+
+        goto label11;
+
+     label13:
+        $stack43 = "RELEASE";
+
+        $stack44 = virtualinvoke $stack43.<java.lang.String: boolean equals(java.lang.Object)>(version);
+
+        if $stack44 == 0 goto label14;
+
+        $r9 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        specialinvoke $r9.<org.apache.maven.repository.internal.DefaultVersionResolver: boolean resolve(org.eclipse.aether.resolution.VersionResult,java.util.Map,java.lang.String)>($u0, $u8, "RELEASE");
+
+        goto label21;
+
+     label14:
+        $stack45 = "LATEST";
+
+        $stack46 = virtualinvoke $stack45.<java.lang.String: boolean equals(java.lang.Object)>(version);
+
+        if $stack46 == 0 goto label20;
+
+        $r10 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $stack65 = specialinvoke $r10.<org.apache.maven.repository.internal.DefaultVersionResolver: boolean resolve(org.eclipse.aether.resolution.VersionResult,java.util.Map,java.lang.String)>($u0, $u8, "LATEST");
+
+        if $stack65 != 0 goto label15;
+
+        $r11 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        specialinvoke $r11.<org.apache.maven.repository.internal.DefaultVersionResolver: boolean resolve(org.eclipse.aether.resolution.VersionResult,java.util.Map,java.lang.String)>($u0, $u8, "RELEASE");
+
+     label15:
+        $stack66 = virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: java.lang.String getVersion()>();
+
+        if $stack66 == null goto label21;
+
+        $stack67 = virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: java.lang.String getVersion()>();
+
+        $stack68 = virtualinvoke $stack67.<java.lang.String: boolean endsWith(java.lang.String)>("SNAPSHOT");
+
+        if $stack68 == 0 goto label21;
+
+        $u9 = new org.eclipse.aether.resolution.VersionRequest;
+
+        specialinvoke $u9.<org.eclipse.aether.resolution.VersionRequest: void <init>()>();
+
+        $stack70 = virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: java.lang.String getVersion()>();
+
+        $stack71 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: org.eclipse.aether.artifact.Artifact setVersion(java.lang.String)>($stack70);
+
+        virtualinvoke $u9.<org.eclipse.aether.resolution.VersionRequest: org.eclipse.aether.resolution.VersionRequest setArtifact(org.eclipse.aether.artifact.Artifact)>($stack71);
+
+        $stack73 = virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.repository.ArtifactRepository getRepository()>();
+
+        $stack74 = $stack73 instanceof org.eclipse.aether.repository.RemoteRepository;
+
+        if $stack74 == 0 goto label16;
+
+        $stack88 = virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.repository.ArtifactRepository getRepository()>();
+
+        metadataResult#26 = (org.eclipse.aether.repository.RemoteRepository) $stack88;
+
+        $stack89 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>(metadataResult#26);
+
+        virtualinvoke $u9.<org.eclipse.aether.resolution.VersionRequest: org.eclipse.aether.resolution.VersionRequest setRepositories(java.util.List)>($stack89);
+
+        goto label17;
+
+     label16:
+        $stack75 = virtualinvoke request.<org.eclipse.aether.resolution.VersionRequest: java.util.List getRepositories()>();
+
+        virtualinvoke $u9.<org.eclipse.aether.resolution.VersionRequest: org.eclipse.aether.resolution.VersionRequest setRepositories(java.util.List)>($stack75);
+
+     label17:
+        $r12 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        metadataResult#27 = virtualinvoke $r12.<org.apache.maven.repository.internal.DefaultVersionResolver: org.eclipse.aether.resolution.VersionResult resolveVersion(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.resolution.VersionRequest)>(session, $u9);
+
+        $stack78 = virtualinvoke metadataResult#27.<org.eclipse.aether.resolution.VersionResult: java.lang.String getVersion()>();
+
+        virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult setVersion(java.lang.String)>($stack78);
+
+        $stack80 = virtualinvoke metadataResult#27.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.repository.ArtifactRepository getRepository()>();
+
+        virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult setRepository(org.eclipse.aether.repository.ArtifactRepository)>($stack80);
+
+        $stack82 = virtualinvoke metadataResult#27.<org.eclipse.aether.resolution.VersionResult: java.util.List getExceptions()>();
+
+        repository#28 = interfaceinvoke $stack82.<java.util.List: java.util.Iterator iterator()>();
+
+     label18:
+        $stack84 = interfaceinvoke repository#28.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack84 == 0 goto label19;
+
+        $stack85 = interfaceinvoke repository#28.<java.util.Iterator: java.lang.Object next()>();
+
+        v#33 = (java.lang.Exception) $stack85;
+
+        virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult addException(java.lang.Exception)>(v#33);
+
+        goto label18;
+
+     label19:
+        goto label21;
+
+     label20:
+        $u10 = new java.lang.StringBuilder;
+
+        specialinvoke $u10.<java.lang.StringBuilder: void <init>()>();
+
+        $stack48 = virtualinvoke $u10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SNAPSHOT");
+
+        $stack49 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getClassifier()>();
+
+        $stack50 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getExtension()>();
+
+        $r13 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $stack51 = specialinvoke $r13.<org.apache.maven.repository.internal.DefaultVersionResolver: java.lang.String getKey(java.lang.String,java.lang.String)>($stack49, $stack50);
+
+        $stack52 = virtualinvoke $stack48.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack51);
+
+        metadataRequest#34 = virtualinvoke $stack52.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r14 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        specialinvoke $r14.<org.apache.maven.repository.internal.DefaultVersionResolver: void merge(java.util.Map,java.lang.String,java.lang.String)>($u8, "SNAPSHOT", metadataRequest#34);
+
+        $r15 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $stack54 = specialinvoke $r15.<org.apache.maven.repository.internal.DefaultVersionResolver: boolean resolve(org.eclipse.aether.resolution.VersionResult,java.util.Map,java.lang.String)>($u0, $u8, metadataRequest#34);
+
+        if $stack54 != 0 goto label21;
+
+        virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult setVersion(java.lang.String)>(version);
+
+     label21:
+        $stack55 = virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: java.lang.String getVersion()>();
+
+        $stack56 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isEmpty(java.lang.String)>($stack55);
+
+        if $stack56 == 0 goto label22;
+
+        $u11 = new org.eclipse.aether.resolution.VersionResolutionException;
+
+        specialinvoke $u11.<org.eclipse.aether.resolution.VersionResolutionException: void <init>(org.eclipse.aether.resolution.VersionResult)>($u0);
+
+        $r16 = (java.lang.Throwable) $u11;
+
+        throw $r16;
+
+     label22:
+        if cacheKey == null goto label23;
+
+        if obj#10 == null goto label23;
+
+        $r17 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $stack58 = specialinvoke $r17.<org.apache.maven.repository.internal.DefaultVersionResolver: boolean isSafelyCacheable(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.artifact.Artifact)>(session, artifact);
+
+        if $stack58 == 0 goto label23;
+
+        $u12 = new org.apache.maven.repository.internal.DefaultVersionResolver$Record;
+
+        $stack60 = virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: java.lang.String getVersion()>();
+
+        $stack61 = virtualinvoke $u0.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.repository.ArtifactRepository getRepository()>();
+
+        specialinvoke $u12.<org.apache.maven.repository.internal.DefaultVersionResolver$Record: void <init>(java.lang.String,org.eclipse.aether.repository.ArtifactRepository)>($stack60, $stack61);
+
+        interfaceinvoke cache.<org.eclipse.aether.RepositoryCache: void put(org.eclipse.aether.RepositorySystemSession,java.lang.Object,java.lang.Object)>(session, cacheKey, $u12);
+
+     label23:
+        return $u0;
+    }
+
+    private boolean resolve(org.eclipse.aether.resolution.VersionResult, java.util.Map, java.lang.String)
+    {
+        java.util.Map infos;
+        java.lang.String key, $stack7;
+        java.lang.Object $stack5;
+        org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo info;
+        org.eclipse.aether.resolution.VersionResult result;
+        org.eclipse.aether.repository.ArtifactRepository $stack9;
+        DefaultVersionResolver this;
+        boolean $stack6;
+
+        this := @this: DefaultVersionResolver;
+
+        result := @parameter0: org.eclipse.aether.resolution.VersionResult;
+
+        infos := @parameter1: java.util.Map;
+
+        key := @parameter2: java.lang.String;
+
+        $stack5 = interfaceinvoke infos.<java.util.Map: java.lang.Object get(java.lang.Object)>(key);
+
+        info = (org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo) $stack5;
+
+        if info == null goto label1;
+
+        $stack7 = info.<org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo: java.lang.String version>;
+
+        virtualinvoke result.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult setVersion(java.lang.String)>($stack7);
+
+        $stack9 = info.<org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo: org.eclipse.aether.repository.ArtifactRepository repository>;
+
+        virtualinvoke result.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult setRepository(org.eclipse.aether.repository.ArtifactRepository)>($stack9);
+
+     label1:
+        if info == null goto label2;
+
+        $stack6 = 1;
+
+        goto label3;
+
+     label2:
+        $stack6 = 0;
+
+     label3:
+        return $stack6;
+    }
+
+    private org.apache.maven.artifact.repository.metadata.Versioning readVersions(org.eclipse.aether.RepositorySystemSession, org.eclipse.aether.RequestTrace, org.eclipse.aether.metadata.Metadata, org.eclipse.aether.repository.ArtifactRepository, org.eclipse.aether.resolution.VersionResult)
+    {
+        org.eclipse.aether.metadata.Metadata metadata;
+        DefaultVersionResolver this;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.spi.synccontext.SyncContextFactory $stack12;
+        java.util.Set $stack15;
+        java.io.File $stack16, $stack17, $stack21;
+        boolean $stack18, $stack25;
+        org.apache.maven.artifact.repository.metadata.Metadata $stack23;
+        org.eclipse.aether.repository.ArtifactRepository repository;
+        org.apache.maven.artifact.repository.metadata.Snapshot $stack27, $stack28, $stack33, $u3;
+        int $stack29;
+        java.lang.String $stack31, $stack37, $stack40;
+        java.lang.StringBuilder $stack36, $stack38, $stack39, $u4;
+        java.lang.Exception $stack41;
+        org.eclipse.aether.RequestTrace trace;
+        org.eclipse.aether.resolution.VersionResult result;
+        java.lang.Throwable $stack44, $stack45, $stack47, $stack48;
+        org.apache.maven.artifact.repository.metadata.Versioning versioning, $stack11, $u2, $u6;
+        org.eclipse.aether.SyncContext syncContext;
+        java.io.FileInputStream $u0;
+        org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader $u1;
+        java.io.IOException $u5;
+        org.apache.maven.repository.internal.DefaultVersionResolver $r0, $r1;
+
+        this := @this: DefaultVersionResolver;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        trace := @parameter1: org.eclipse.aether.RequestTrace;
+
+        metadata := @parameter2: org.eclipse.aether.metadata.Metadata;
+
+        repository := @parameter3: org.eclipse.aether.repository.ArtifactRepository;
+
+        result := @parameter4: org.eclipse.aether.resolution.VersionResult;
+
+        versioning = null;
+
+     label01:
+        if metadata == null goto label16;
+
+        $r0 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $stack12 = $r0.<org.apache.maven.repository.internal.DefaultVersionResolver: org.eclipse.aether.spi.synccontext.SyncContextFactory syncContextFactory>;
+
+        syncContext = interfaceinvoke $stack12.<org.eclipse.aether.spi.synccontext.SyncContextFactory: org.eclipse.aether.SyncContext newInstance(org.eclipse.aether.RepositorySystemSession,boolean)>(session, 1);
+
+     label02:
+        $stack15 = staticinvoke <java.util.Collections: java.util.Set singleton(java.lang.Object)>(metadata);
+
+        interfaceinvoke syncContext.<org.eclipse.aether.SyncContext: void acquire(java.util.Collection,java.util.Collection)>(null, $stack15);
+
+        $stack16 = interfaceinvoke metadata.<org.eclipse.aether.metadata.Metadata: java.io.File getFile()>();
+
+        if $stack16 == null goto label10;
+
+        $stack17 = interfaceinvoke metadata.<org.eclipse.aether.metadata.Metadata: java.io.File getFile()>();
+
+        $stack18 = virtualinvoke $stack17.<java.io.File: boolean exists()>();
+
+        if $stack18 == 0 goto label10;
+
+        $u0 = new java.io.FileInputStream;
+
+        $stack21 = interfaceinvoke metadata.<org.eclipse.aether.metadata.Metadata: java.io.File getFile()>();
+
+        specialinvoke $u0.<java.io.FileInputStream: void <init>(java.io.File)>($stack21);
+
+     label03:
+        $u1 = new org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader;
+
+        specialinvoke $u1.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: void <init>()>();
+
+        $stack23 = virtualinvoke $u1.<org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader: org.apache.maven.artifact.repository.metadata.Metadata read(java.io.InputStream,boolean)>($u0, 0);
+
+        versioning = virtualinvoke $stack23.<org.apache.maven.artifact.repository.metadata.Metadata: org.apache.maven.artifact.repository.metadata.Versioning getVersioning()>();
+
+        if versioning == null goto label04;
+
+        $stack25 = repository instanceof org.eclipse.aether.repository.LocalRepository;
+
+        if $stack25 == 0 goto label04;
+
+        $stack27 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: org.apache.maven.artifact.repository.metadata.Snapshot getSnapshot()>();
+
+        if $stack27 == null goto label04;
+
+        $stack28 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: org.apache.maven.artifact.repository.metadata.Snapshot getSnapshot()>();
+
+        $stack29 = virtualinvoke $stack28.<org.apache.maven.artifact.repository.metadata.Snapshot: int getBuildNumber()>();
+
+        if $stack29 <= 0 goto label04;
+
+        $u2 = new org.apache.maven.artifact.repository.metadata.Versioning;
+
+        specialinvoke $u2.<org.apache.maven.artifact.repository.metadata.Versioning: void <init>()>();
+
+        $stack31 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getLastUpdated()>();
+
+        virtualinvoke $u2.<org.apache.maven.artifact.repository.metadata.Versioning: void setLastUpdated(java.lang.String)>($stack31);
+
+        $u3 = new org.apache.maven.artifact.repository.metadata.Snapshot;
+
+        specialinvoke $u3.<org.apache.maven.artifact.repository.metadata.Snapshot: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.artifact.repository.metadata.Versioning: void setSnapshot(org.apache.maven.artifact.repository.metadata.Snapshot)>($u3);
+
+        $stack33 = virtualinvoke $u2.<org.apache.maven.artifact.repository.metadata.Versioning: org.apache.maven.artifact.repository.metadata.Snapshot getSnapshot()>();
+
+        virtualinvoke $stack33.<org.apache.maven.artifact.repository.metadata.Snapshot: void setLocalCopy(boolean)>(1);
+
+        versioning = $u2;
+
+        $u5 = new java.io.IOException;
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack36 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Snapshot information corrupted with remote repository data, please verify that no remote repository uses the id \'");
+
+        $stack37 = interfaceinvoke repository.<org.eclipse.aether.repository.ArtifactRepository: java.lang.String getId()>();
+
+        $stack38 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack37);
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $stack40 = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u5.<java.io.IOException: void <init>(java.lang.String)>($stack40);
+
+        throw $u5;
+
+     label04:
+        virtualinvoke $u0.<java.io.InputStream: void close()>();
+
+        goto label10;
+
+     label05:
+        $stack48 := @caughtexception;
+
+     label06:
+        virtualinvoke $u0.<java.io.InputStream: void close()>();
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack47 := @caughtexception;
+
+        virtualinvoke $stack48.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack47);
+
+     label09:
+        throw $stack48;
+
+     label10:
+        if syncContext == null goto label16;
+
+        interfaceinvoke syncContext.<org.eclipse.aether.SyncContext: void close()>();
+
+        goto label16;
+
+     label11:
+        $stack45 := @caughtexception;
+
+        if syncContext == null goto label15;
+
+     label12:
+        interfaceinvoke syncContext.<org.eclipse.aether.SyncContext: void close()>();
+
+     label13:
+        goto label15;
+
+     label14:
+        $stack44 := @caughtexception;
+
+        virtualinvoke $stack45.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($stack44);
+
+     label15:
+        throw $stack45;
+
+     label16:
+        goto label18;
+
+     label17:
+        $stack41 := @caughtexception;
+
+        $r1 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        specialinvoke $r1.<org.apache.maven.repository.internal.DefaultVersionResolver: void invalidMetadata(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.RequestTrace,org.eclipse.aether.metadata.Metadata,org.eclipse.aether.repository.ArtifactRepository,java.lang.Exception)>(session, trace, metadata, repository, $stack41);
+
+        virtualinvoke result.<org.eclipse.aether.resolution.VersionResult: org.eclipse.aether.resolution.VersionResult addException(java.lang.Exception)>($stack41);
+
+     label18:
+        if versioning == null goto label19;
+
+        $stack11 = versioning;
+
+        goto label20;
+
+     label19:
+        $u6 = new org.apache.maven.artifact.repository.metadata.Versioning;
+
+        $stack11 = $u6;
+
+        specialinvoke $u6.<org.apache.maven.artifact.repository.metadata.Versioning: void <init>()>();
+
+     label20:
+        return $stack11;
+
+        catch java.lang.Throwable from label03 to label04 with label05;
+        catch java.lang.Throwable from label06 to label07 with label08;
+        catch java.lang.Throwable from label02 to label10 with label11;
+        catch java.lang.Throwable from label12 to label13 with label14;
+        catch java.lang.Exception from label01 to label16 with label17;
+    }
+
+    private void invalidMetadata(org.eclipse.aether.RepositorySystemSession, org.eclipse.aether.RequestTrace, org.eclipse.aether.metadata.Metadata, org.eclipse.aether.repository.ArtifactRepository, java.lang.Exception)
+    {
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.RepositoryEvent$EventType $stack8;
+        org.eclipse.aether.RequestTrace trace;
+        org.eclipse.aether.metadata.Metadata metadata;
+        java.lang.Exception exception;
+        org.eclipse.aether.repository.ArtifactRepository repository;
+        DefaultVersionResolver this;
+        org.eclipse.aether.impl.RepositoryEventDispatcher $stack13;
+        org.eclipse.aether.RepositoryEvent $stack14;
+        org.eclipse.aether.RepositoryEvent$Builder $u0;
+        org.apache.maven.repository.internal.DefaultVersionResolver $r0;
+
+        this := @this: DefaultVersionResolver;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        trace := @parameter1: org.eclipse.aether.RequestTrace;
+
+        metadata := @parameter2: org.eclipse.aether.metadata.Metadata;
+
+        repository := @parameter3: org.eclipse.aether.repository.ArtifactRepository;
+
+        exception := @parameter4: java.lang.Exception;
+
+        $u0 = new org.eclipse.aether.RepositoryEvent$Builder;
+
+        $stack8 = <org.eclipse.aether.RepositoryEvent$EventType: org.eclipse.aether.RepositoryEvent$EventType METADATA_INVALID>;
+
+        specialinvoke $u0.<org.eclipse.aether.RepositoryEvent$Builder: void <init>(org.eclipse.aether.RepositorySystemSession,org.eclipse.aether.RepositoryEvent$EventType)>(session, $stack8);
+
+        virtualinvoke $u0.<org.eclipse.aether.RepositoryEvent$Builder: org.eclipse.aether.RepositoryEvent$Builder setTrace(org.eclipse.aether.RequestTrace)>(trace);
+
+        virtualinvoke $u0.<org.eclipse.aether.RepositoryEvent$Builder: org.eclipse.aether.RepositoryEvent$Builder setMetadata(org.eclipse.aether.metadata.Metadata)>(metadata);
+
+        virtualinvoke $u0.<org.eclipse.aether.RepositoryEvent$Builder: org.eclipse.aether.RepositoryEvent$Builder setException(java.lang.Exception)>(exception);
+
+        virtualinvoke $u0.<org.eclipse.aether.RepositoryEvent$Builder: org.eclipse.aether.RepositoryEvent$Builder setRepository(org.eclipse.aether.repository.ArtifactRepository)>(repository);
+
+        $r0 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        $stack13 = $r0.<org.apache.maven.repository.internal.DefaultVersionResolver: org.eclipse.aether.impl.RepositoryEventDispatcher repositoryEventDispatcher>;
+
+        $stack14 = virtualinvoke $u0.<org.eclipse.aether.RepositoryEvent$Builder: org.eclipse.aether.RepositoryEvent build()>();
+
+        interfaceinvoke $stack13.<org.eclipse.aether.impl.RepositoryEventDispatcher: void dispatch(org.eclipse.aether.RepositoryEvent)>($stack14);
+
+        return;
+    }
+
+    private void merge(org.eclipse.aether.artifact.Artifact, java.util.Map, org.apache.maven.artifact.repository.metadata.Versioning, org.eclipse.aether.repository.ArtifactRepository)
+    {
+        org.apache.maven.artifact.repository.metadata.Versioning versioning;
+        java.lang.String $stack8, $stack10, $stack19, $stack29, $stack38, $stack41, $stack46, $stack49, $stack50, $stack55, $stack56, $stack57, $stack59, $stack60, $stack63, $stack64, key, sv#9, $stack21;
+        boolean $stack9, $stack11, $stack17, $stack47, $stack14;
+        java.util.List $stack12, $stack16;
+        org.eclipse.aether.artifact.Artifact artifact;
+        DefaultVersionResolver this;
+        java.util.Map infos;
+        org.eclipse.aether.repository.ArtifactRepository repository;
+        int $stack22, $stack32, $stack37, $stack39, $stack40;
+        java.lang.StringBuilder $stack30, $stack31, $stack33, $stack42, $stack43, $stack53, $stack54, $u0, $u1, $u2;
+        java.lang.Object $stack45;
+        java.util.Iterator snapshot;
+        org.apache.maven.artifact.repository.metadata.SnapshotVersion sv;
+        org.apache.maven.artifact.repository.metadata.Snapshot snapshot#8;
+        org.apache.maven.repository.internal.DefaultVersionResolver $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: DefaultVersionResolver;
+
+        artifact := @parameter0: org.eclipse.aether.artifact.Artifact;
+
+        infos := @parameter1: java.util.Map;
+
+        versioning := @parameter2: org.apache.maven.artifact.repository.metadata.Versioning;
+
+        repository := @parameter3: org.eclipse.aether.repository.ArtifactRepository;
+
+        $stack8 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getRelease()>();
+
+        $stack9 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack8);
+
+        if $stack9 == 0 goto label1;
+
+        $stack63 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getLastUpdated()>();
+
+        $stack64 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getRelease()>();
+
+        $r0 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        specialinvoke $r0.<org.apache.maven.repository.internal.DefaultVersionResolver: void merge(java.lang.String,java.util.Map,java.lang.String,java.lang.String,org.eclipse.aether.repository.ArtifactRepository)>("RELEASE", infos, $stack63, $stack64, repository);
+
+     label1:
+        $stack10 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getLatest()>();
+
+        $stack11 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack10);
+
+        if $stack11 == 0 goto label2;
+
+        $stack59 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getLastUpdated()>();
+
+        $stack60 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getLatest()>();
+
+        $r1 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        specialinvoke $r1.<org.apache.maven.repository.internal.DefaultVersionResolver: void merge(java.lang.String,java.util.Map,java.lang.String,java.lang.String,org.eclipse.aether.repository.ArtifactRepository)>("LATEST", infos, $stack59, $stack60, repository);
+
+     label2:
+        $stack12 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.util.List getSnapshotVersions()>();
+
+        snapshot = interfaceinvoke $stack12.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack14 = interfaceinvoke snapshot.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack14 == 0 goto label5;
+
+        $stack45 = interfaceinvoke snapshot.<java.util.Iterator: java.lang.Object next()>();
+
+        sv = (org.apache.maven.artifact.repository.metadata.SnapshotVersion) $stack45;
+
+        $stack46 = virtualinvoke sv.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: java.lang.String getVersion()>();
+
+        $stack47 = staticinvoke <org.codehaus.plexus.util.StringUtils: boolean isNotEmpty(java.lang.String)>($stack46);
+
+        if $stack47 == 0 goto label4;
+
+        $stack49 = virtualinvoke sv.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: java.lang.String getClassifier()>();
+
+        $stack50 = virtualinvoke sv.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: java.lang.String getExtension()>();
+
+        $r2 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        key = specialinvoke $r2.<org.apache.maven.repository.internal.DefaultVersionResolver: java.lang.String getKey(java.lang.String,java.lang.String)>($stack49, $stack50);
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack53 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SNAPSHOT");
+
+        $stack54 = virtualinvoke $stack53.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(key);
+
+        $stack55 = virtualinvoke $stack54.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack56 = virtualinvoke sv.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: java.lang.String getUpdated()>();
+
+        $stack57 = virtualinvoke sv.<org.apache.maven.artifact.repository.metadata.SnapshotVersion: java.lang.String getVersion()>();
+
+        $r3 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        specialinvoke $r3.<org.apache.maven.repository.internal.DefaultVersionResolver: void merge(java.lang.String,java.util.Map,java.lang.String,java.lang.String,org.eclipse.aether.repository.ArtifactRepository)>($stack55, infos, $stack56, $stack57, repository);
+
+     label4:
+        goto label3;
+
+     label5:
+        snapshot#8 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: org.apache.maven.artifact.repository.metadata.Snapshot getSnapshot()>();
+
+        if snapshot#8 == null goto label7;
+
+        $stack16 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.util.List getSnapshotVersions()>();
+
+        $stack17 = interfaceinvoke $stack16.<java.util.List: boolean isEmpty()>();
+
+        if $stack17 == 0 goto label7;
+
+        sv#9 = interfaceinvoke artifact.<org.eclipse.aether.artifact.Artifact: java.lang.String getVersion()>();
+
+        $stack19 = virtualinvoke snapshot#8.<org.apache.maven.artifact.repository.metadata.Snapshot: java.lang.String getTimestamp()>();
+
+        if $stack19 == null goto label6;
+
+        $stack22 = virtualinvoke snapshot#8.<org.apache.maven.artifact.repository.metadata.Snapshot: int getBuildNumber()>();
+
+        if $stack22 <= 0 goto label6;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack29 = virtualinvoke snapshot#8.<org.apache.maven.artifact.repository.metadata.Snapshot: java.lang.String getTimestamp()>();
+
+        $stack30 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack29);
+
+        $stack31 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(45);
+
+        $stack32 = virtualinvoke snapshot#8.<org.apache.maven.artifact.repository.metadata.Snapshot: int getBuildNumber()>();
+
+        $stack33 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack32);
+
+        key = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack37 = virtualinvoke sv#9.<java.lang.String: int length()>();
+
+        $stack38 = "SNAPSHOT";
+
+        $stack39 = virtualinvoke $stack38.<java.lang.String: int length()>();
+
+        $stack40 = $stack37 - $stack39;
+
+        $stack41 = virtualinvoke sv#9.<java.lang.String: java.lang.String substring(int,int)>(0, $stack40);
+
+        $stack42 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack41);
+
+        $stack43 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(key);
+
+        sv#9 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label6:
+        $stack21 = virtualinvoke versioning.<org.apache.maven.artifact.repository.metadata.Versioning: java.lang.String getLastUpdated()>();
+
+        $r4 = (org.apache.maven.repository.internal.DefaultVersionResolver) this;
+
+        specialinvoke $r4.<org.apache.maven.repository.internal.DefaultVersionResolver: void merge(java.lang.String,java.util.Map,java.lang.String,java.lang.String,org.eclipse.aether.repository.ArtifactRepository)>("SNAPSHOT", infos, $stack21, sv#9, repository);
+
+     label7:
+        return;
+    }
+
+    private void merge(java.lang.String, java.util.Map, java.lang.String, java.lang.String, org.eclipse.aether.repository.ArtifactRepository)
+    {
+        java.util.Map infos;
+        java.lang.String key, timestamp, version;
+        java.lang.Object $stack7;
+        boolean $stack8;
+        org.eclipse.aether.repository.ArtifactRepository repository;
+        org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo $stack9, info;
+        DefaultVersionResolver this;
+
+        this := @this: DefaultVersionResolver;
+
+        key := @parameter0: java.lang.String;
+
+        infos := @parameter1: java.util.Map;
+
+        timestamp := @parameter2: java.lang.String;
+
+        version := @parameter3: java.lang.String;
+
+        repository := @parameter4: org.eclipse.aether.repository.ArtifactRepository;
+
+        $stack7 = interfaceinvoke infos.<java.util.Map: java.lang.Object get(java.lang.Object)>(key);
+
+        info = (org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo) $stack7;
+
+        if info != null goto label1;
+
+        $stack9 = new org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo;
+
+        specialinvoke $stack9.<org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo: void <init>(java.lang.String,java.lang.String,org.eclipse.aether.repository.ArtifactRepository)>(timestamp, version, repository);
+
+        interfaceinvoke infos.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, $stack9);
+
+        goto label2;
+
+     label1:
+        $stack8 = virtualinvoke info.<org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo: boolean isOutdated(java.lang.String)>(timestamp);
+
+        if $stack8 == 0 goto label2;
+
+        info.<org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo: java.lang.String version> = version;
+
+        info.<org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo: org.eclipse.aether.repository.ArtifactRepository repository> = repository;
+
+        info.<org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo: java.lang.String timestamp> = timestamp;
+
+     label2:
+        return;
+    }
+
+    private void merge(java.util.Map, java.lang.String, java.lang.String)
+    {
+        java.util.Map infos;
+        java.lang.String srcKey, dstKey, $stack9;
+        java.lang.Object $stack6, $stack7;
+        org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo srcInfo, dstInfo;
+        boolean $stack10;
+        org.eclipse.aether.repository.ArtifactRepository $stack11, $stack12;
+        DefaultVersionResolver this;
+
+        this := @this: DefaultVersionResolver;
+
+        infos := @parameter0: java.util.Map;
+
+        srcKey := @parameter1: java.lang.String;
+
+        dstKey := @parameter2: java.lang.String;
+
+        $stack6 = interfaceinvoke infos.<java.util.Map: java.lang.Object get(java.lang.Object)>(srcKey);
+
+        srcInfo = (org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo) $stack6;
+
+        $stack7 = interfaceinvoke infos.<java.util.Map: java.lang.Object get(java.lang.Object)>(dstKey);
+
+        dstInfo = (org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo) $stack7;
+
+        if dstInfo == null goto label1;
+
+        if srcInfo == null goto label2;
+
+        $stack9 = srcInfo.<org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo: java.lang.String timestamp>;
+
+        $stack10 = virtualinvoke dstInfo.<org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo: boolean isOutdated(java.lang.String)>($stack9);
+
+        if $stack10 == 0 goto label2;
+
+        $stack12 = srcInfo.<org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo: org.eclipse.aether.repository.ArtifactRepository repository>;
+
+        $stack11 = dstInfo.<org.apache.maven.repository.internal.DefaultVersionResolver$VersionInfo: org.eclipse.aether.repository.ArtifactRepository repository>;
+
+        if $stack12 == $stack11 goto label2;
+
+     label1:
+        interfaceinvoke infos.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(dstKey, srcInfo);
+
+     label2:
+        return;
+    }
+
+    private java.lang.String getKey(java.lang.String, java.lang.String)
+    {
+        java.lang.StringBuilder $stack3, $stack5, $stack6, $stack8;
+        java.lang.String classifier, $stack4, extension, $stack7, $stack9;
+        DefaultVersionResolver this;
+
+        this := @this: DefaultVersionResolver;
+
+        classifier := @parameter0: java.lang.String;
+
+        extension := @parameter1: java.lang.String;
+
+        $stack3 = new java.lang.StringBuilder;
+
+        specialinvoke $stack3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack4 = staticinvoke <org.codehaus.plexus.util.StringUtils: java.lang.String clean(java.lang.String)>(classifier);
+
+        $stack5 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack4);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $stack7 = staticinvoke <org.codehaus.plexus.util.StringUtils: java.lang.String clean(java.lang.String)>(extension);
+
+        $stack8 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack7);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack9;
+    }
+
+    private org.eclipse.aether.repository.ArtifactRepository getRepository(org.eclipse.aether.RepositorySystemSession, java.util.List, java.lang.Class, java.lang.String)
+    {
+        java.lang.Class repoClass, $stack7, $stack9;
+        boolean $stack8, $stack10, $stack12, $stack16;
+        java.util.List repositories;
+        java.util.Iterator l5;
+        java.lang.Object $stack14;
+        org.eclipse.aether.repository.RemoteRepository repository;
+        java.lang.String repoId, $stack15;
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.repository.LocalRepository $stack18;
+        org.eclipse.aether.repository.WorkspaceReader $stack19;
+        org.eclipse.aether.repository.WorkspaceRepository $stack20;
+        DefaultVersionResolver this;
+        org.eclipse.aether.repository.ArtifactRepository $r0, $r1, $r2;
+
+        this := @this: DefaultVersionResolver;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        repositories := @parameter1: java.util.List;
+
+        repoClass := @parameter2: java.lang.Class;
+
+        repoId := @parameter3: java.lang.String;
+
+        if repoClass == null goto label5;
+
+        $stack7 = class "Lorg/eclipse/aether/repository/WorkspaceRepository;";
+
+        $stack8 = virtualinvoke $stack7.<java.lang.Class: boolean isAssignableFrom(java.lang.Class)>(repoClass);
+
+        if $stack8 == 0 goto label1;
+
+        $stack19 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.WorkspaceReader getWorkspaceReader()>();
+
+        $stack20 = interfaceinvoke $stack19.<org.eclipse.aether.repository.WorkspaceReader: org.eclipse.aether.repository.WorkspaceRepository getRepository()>();
+
+        $r0 = (org.eclipse.aether.repository.ArtifactRepository) $stack20;
+
+        return $r0;
+
+     label1:
+        $stack9 = class "Lorg/eclipse/aether/repository/LocalRepository;";
+
+        $stack10 = virtualinvoke $stack9.<java.lang.Class: boolean isAssignableFrom(java.lang.Class)>(repoClass);
+
+        if $stack10 == 0 goto label2;
+
+        $stack18 = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.LocalRepository getLocalRepository()>();
+
+        $r1 = (org.eclipse.aether.repository.ArtifactRepository) $stack18;
+
+        return $r1;
+
+     label2:
+        l5 = interfaceinvoke repositories.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $stack12 = interfaceinvoke l5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack12 == 0 goto label5;
+
+        $stack14 = interfaceinvoke l5.<java.util.Iterator: java.lang.Object next()>();
+
+        repository = (org.eclipse.aether.repository.RemoteRepository) $stack14;
+
+        $stack15 = virtualinvoke repository.<org.eclipse.aether.repository.RemoteRepository: java.lang.String getId()>();
+
+        $stack16 = virtualinvoke repoId.<java.lang.String: boolean equals(java.lang.Object)>($stack15);
+
+        if $stack16 == 0 goto label4;
+
+        $r2 = (org.eclipse.aether.repository.ArtifactRepository) repository;
+
+        return $r2;
+
+     label4:
+        goto label3;
+
+     label5:
+        return null;
+    }
+
+    private boolean isSafelyCacheable(org.eclipse.aether.RepositorySystemSession, org.eclipse.aether.artifact.Artifact)
+    {
+        org.eclipse.aether.RepositorySystemSession session;
+        org.eclipse.aether.repository.WorkspaceReader workspace;
+        org.eclipse.aether.artifact.Artifact artifact, pomArtifact;
+        java.io.File $stack7;
+        DefaultVersionResolver this;
+        boolean $stack8;
+
+        this := @this: DefaultVersionResolver;
+
+        session := @parameter0: org.eclipse.aether.RepositorySystemSession;
+
+        artifact := @parameter1: org.eclipse.aether.artifact.Artifact;
+
+        workspace = interfaceinvoke session.<org.eclipse.aether.RepositorySystemSession: org.eclipse.aether.repository.WorkspaceReader getWorkspaceReader()>();
+
+        if workspace != null goto label1;
+
+        return 1;
+
+     label1:
+        pomArtifact = staticinvoke <org.apache.maven.repository.internal.ArtifactDescriptorUtils: org.eclipse.aether.artifact.Artifact toPomArtifact(org.eclipse.aether.artifact.Artifact)>(artifact);
+
+        $stack7 = interfaceinvoke workspace.<org.eclipse.aether.repository.WorkspaceReader: java.io.File findArtifact(org.eclipse.aether.artifact.Artifact)>(pomArtifact);
+
+        if $stack7 != null goto label2;
+
+        $stack8 = 1;
+
+        goto label3;
+
+     label2:
+        $stack8 = 0;
+
+     label3:
+        return $stack8;
+    }
+
+    public static void <clinit>()
+    {
+        <DefaultVersionResolver: java.lang.String SNAPSHOT> = "SNAPSHOT";
+
+        <DefaultVersionResolver: java.lang.String LATEST> = "LATEST";
+
+        <DefaultVersionResolver: java.lang.String RELEASE> = "RELEASE";
+
+        <DefaultVersionResolver: java.lang.String MAVEN_METADATA_XML> = "maven-metadata.xml";
+
+        return;
+    }
+}

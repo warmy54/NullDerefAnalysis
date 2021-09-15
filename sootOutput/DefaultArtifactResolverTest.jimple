@@ -1,0 +1,203 @@
+public class DefaultArtifactResolverTest extends org.apache.maven.artifact.AbstractArtifactComponentTestCase
+{
+    private org.apache.maven.artifact.resolver.ArtifactResolver artifactResolver;
+    private org.apache.maven.artifact.Artifact projectArtifact;
+
+    public void <init>()
+    {
+        DefaultArtifactResolverTest this;
+
+        this := @this: DefaultArtifactResolverTest;
+
+        specialinvoke this.<org.apache.maven.artifact.AbstractArtifactComponentTestCase: void <init>()>();
+
+        return;
+    }
+
+    public void setUp() throws java.lang.Exception
+    {
+        DefaultArtifactResolverTest this;
+        org.apache.maven.artifact.Artifact $stack1;
+        org.apache.maven.artifact.resolver.DefaultArtifactResolverTest $r0, $r1;
+
+        this := @this: DefaultArtifactResolverTest;
+
+        specialinvoke this.<org.apache.maven.artifact.AbstractArtifactComponentTestCase: void setUp()>();
+
+        $r0 = (org.apache.maven.artifact.resolver.DefaultArtifactResolverTest) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.artifact.resolver.DefaultArtifactResolverTest: org.apache.maven.artifact.Artifact createLocalArtifact(java.lang.String,java.lang.String)>("project", "3.0");
+
+        $r1 = (org.apache.maven.artifact.resolver.DefaultArtifactResolverTest) this;
+
+        $r1.<org.apache.maven.artifact.resolver.DefaultArtifactResolverTest: org.apache.maven.artifact.Artifact projectArtifact> = $stack1;
+
+        return;
+    }
+
+    protected java.lang.String component()
+    {
+        DefaultArtifactResolverTest this;
+
+        this := @this: DefaultArtifactResolverTest;
+
+        return "resolver";
+    }
+
+    public void testMNG4738() throws java.lang.Exception
+    {
+        DefaultArtifactResolverTest this;
+        org.apache.maven.artifact.Artifact g, $stack20;
+        org.apache.maven.artifact.resolver.ArtifactResolver $stack18;
+        java.util.Set $stack19;
+        java.util.List $stack21;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack22;
+        java.lang.Thread $stack24, active;
+        java.lang.ThreadGroup $stack26, aTgList, tg;
+        int $stack27, l6, $stack31, l11, l7, l12;
+        java.lang.ThreadGroup[] tgList;
+        java.lang.String $stack29, name, $stack40;
+        boolean $stack30, daemon, seen;
+        java.lang.Thread[] ts;
+        java.lang.StringBuilder $stack38, $stack39, $u0;
+        org.apache.maven.artifact.resolver.DefaultArtifactResolverTest $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: DefaultArtifactResolverTest;
+
+        $r0 = (org.apache.maven.artifact.resolver.DefaultArtifactResolverTest) this;
+
+        g = virtualinvoke $r0.<org.apache.maven.artifact.resolver.DefaultArtifactResolverTest: org.apache.maven.artifact.Artifact createLocalArtifact(java.lang.String,java.lang.String)>("g", "1.0");
+
+        $r1 = (org.apache.maven.artifact.resolver.DefaultArtifactResolverTest) this;
+
+        virtualinvoke $r1.<org.apache.maven.artifact.resolver.DefaultArtifactResolverTest: org.apache.maven.artifact.Artifact createLocalArtifact(java.lang.String,java.lang.String)>("h", "1.0");
+
+        $r2 = (org.apache.maven.artifact.resolver.DefaultArtifactResolverTest) this;
+
+        $stack18 = $r2.<org.apache.maven.artifact.resolver.DefaultArtifactResolverTest: org.apache.maven.artifact.resolver.ArtifactResolver artifactResolver>;
+
+        $stack19 = staticinvoke <java.util.Collections: java.util.Set singleton(java.lang.Object)>(g);
+
+        $r3 = (org.apache.maven.artifact.resolver.DefaultArtifactResolverTest) this;
+
+        $stack20 = $r3.<org.apache.maven.artifact.resolver.DefaultArtifactResolverTest: org.apache.maven.artifact.Artifact projectArtifact>;
+
+        $r4 = (org.apache.maven.artifact.resolver.DefaultArtifactResolverTest) this;
+
+        $stack21 = virtualinvoke $r4.<org.apache.maven.artifact.resolver.DefaultArtifactResolverTest: java.util.List remoteRepositories()>();
+
+        $r5 = (org.apache.maven.artifact.resolver.DefaultArtifactResolverTest) this;
+
+        $stack22 = virtualinvoke $r5.<org.apache.maven.artifact.resolver.DefaultArtifactResolverTest: org.apache.maven.artifact.repository.ArtifactRepository localRepository()>();
+
+        interfaceinvoke $stack18.<org.apache.maven.artifact.resolver.ArtifactResolver: org.apache.maven.artifact.resolver.ArtifactResolutionResult resolveTransitively(java.util.Set,org.apache.maven.artifact.Artifact,java.util.List,org.apache.maven.artifact.repository.ArtifactRepository,org.apache.maven.artifact.metadata.ArtifactMetadataSource)>($stack19, $stack20, $stack21, $stack22, null);
+
+        $stack24 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        tg = virtualinvoke $stack24.<java.lang.Thread: java.lang.ThreadGroup getThreadGroup()>();
+
+     label1:
+        $stack26 = virtualinvoke tg.<java.lang.ThreadGroup: java.lang.ThreadGroup getParent()>();
+
+        if $stack26 != null goto label2;
+
+        tg = virtualinvoke tg.<java.lang.ThreadGroup: java.lang.ThreadGroup getParent()>();
+
+        goto label1;
+
+     label2:
+        $stack27 = virtualinvoke tg.<java.lang.ThreadGroup: int activeGroupCount()>();
+
+        tgList = newarray (java.lang.ThreadGroup)[$stack27];
+
+        virtualinvoke tg.<java.lang.ThreadGroup: int enumerate(java.lang.ThreadGroup[])>(tgList);
+
+        seen = 0;
+
+        l6 = lengthof tgList;
+
+        l7 = 0;
+
+     label3:
+        if l7 >= l6 goto label7;
+
+        aTgList = tgList[l7];
+
+        $stack29 = virtualinvoke aTgList.<java.lang.ThreadGroup: java.lang.String getName()>();
+
+        $stack30 = virtualinvoke $stack29.<java.lang.String: boolean equals(java.lang.Object)>("org.apache.maven.artifact.resolver.DefaultArtifactResolver");
+
+        if $stack30 != 0 goto label4;
+
+        goto label6;
+
+     label4:
+        seen = 1;
+
+        $stack31 = virtualinvoke aTgList.<java.lang.ThreadGroup: int activeCount()>();
+
+        ts = newarray (java.lang.Thread)[$stack31];
+
+        virtualinvoke aTgList.<java.lang.ThreadGroup: int enumerate(java.lang.Thread[])>(ts);
+
+        l11 = lengthof ts;
+
+        l12 = 0;
+
+     label5:
+        if l12 >= l11 goto label6;
+
+        active = ts[l12];
+
+        name = virtualinvoke active.<java.lang.Thread: java.lang.String getName()>();
+
+        daemon = virtualinvoke active.<java.lang.Thread: boolean isDaemon()>();
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack38 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+
+        $stack39 = virtualinvoke $stack38.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" is no daemon Thread.");
+
+        $stack40 = virtualinvoke $stack39.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean,java.lang.String)>(daemon, $stack40);
+
+        l12 = l12 + 1;
+
+        goto label5;
+
+     label6:
+        l7 = l7 + 1;
+
+        goto label3;
+
+     label7:
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean,java.lang.String)>(seen, "Could not find ThreadGroup: org.apache.maven.artifact.resolver.DefaultArtifactResolver");
+
+        return;
+    }
+
+    public void testLookup() throws java.lang.Exception
+    {
+        DefaultArtifactResolverTest this;
+        org.codehaus.plexus.PlexusContainer $stack2;
+        java.lang.Object $stack3;
+        org.apache.maven.artifact.resolver.ArtifactResolver resolver;
+        org.apache.maven.artifact.resolver.DefaultArtifactResolverTest $r0;
+
+        this := @this: DefaultArtifactResolverTest;
+
+        $r0 = (org.apache.maven.artifact.resolver.DefaultArtifactResolverTest) this;
+
+        $stack2 = virtualinvoke $r0.<org.apache.maven.artifact.resolver.DefaultArtifactResolverTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        $stack3 = interfaceinvoke $stack2.<org.codehaus.plexus.PlexusContainer: java.lang.Object lookup(java.lang.Class,java.lang.String)>(class "Lorg/apache/maven/artifact/resolver/ArtifactResolver;", "default");
+
+        resolver = (org.apache.maven.artifact.resolver.ArtifactResolver) $stack3;
+
+        return;
+    }
+}

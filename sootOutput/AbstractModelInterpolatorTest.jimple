@@ -1,0 +1,1407 @@
+public abstract class AbstractModelInterpolatorTest extends java.lang.Object
+{
+    private java.util.Properties context;
+
+    public void <init>()
+    {
+        AbstractModelInterpolatorTest this;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void setUp()
+    {
+        AbstractModelInterpolatorTest this;
+        java.util.Properties $stack2, $stack4, $u0;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context> = $u0;
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack2 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        virtualinvoke $stack2.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>("basedir", "myBasedir");
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack4 = $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        virtualinvoke $stack4.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>("project.baseUri", "myBaseUri");
+
+        return;
+    }
+
+    protected void assertProblemFree(org.apache.maven.model.building.SimpleProblemCollector)
+    {
+        org.apache.maven.model.building.SimpleProblemCollector collector;
+        java.util.List $stack3, $stack6, $stack9;
+        int $stack4, $stack7, $stack10;
+        AbstractModelInterpolatorTest this;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        collector := @parameter0: org.apache.maven.model.building.SimpleProblemCollector;
+
+        $stack3 = virtualinvoke collector.<org.apache.maven.model.building.SimpleProblemCollector: java.util.List getErrors()>();
+
+        $stack4 = interfaceinvoke $stack3.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int,java.lang.String)>(0, $stack4, "Expected no errors");
+
+        $stack6 = virtualinvoke collector.<org.apache.maven.model.building.SimpleProblemCollector: java.util.List getWarnings()>();
+
+        $stack7 = interfaceinvoke $stack6.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int,java.lang.String)>(0, $stack7, "Expected no warnings");
+
+        $stack9 = virtualinvoke collector.<org.apache.maven.model.building.SimpleProblemCollector: java.util.List getFatals()>();
+
+        $stack10 = interfaceinvoke $stack9.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int,java.lang.String)>(0, $stack10, "Expected no fatals");
+
+        return;
+    }
+
+    protected void assertCollectorState(int, int, int, org.apache.maven.model.building.SimpleProblemCollector)
+    {
+        int numErrors, $stack6, numWarnings, $stack8, numFatals, $stack10;
+        org.apache.maven.model.building.SimpleProblemCollector collector;
+        java.util.List $stack5, $stack7, $stack9;
+        AbstractModelInterpolatorTest this;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        numFatals := @parameter0: int;
+
+        numErrors := @parameter1: int;
+
+        numWarnings := @parameter2: int;
+
+        collector := @parameter3: org.apache.maven.model.building.SimpleProblemCollector;
+
+        $stack5 = virtualinvoke collector.<org.apache.maven.model.building.SimpleProblemCollector: java.util.List getErrors()>();
+
+        $stack6 = interfaceinvoke $stack5.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int,java.lang.String)>(numErrors, $stack6, "Errors");
+
+        $stack7 = virtualinvoke collector.<org.apache.maven.model.building.SimpleProblemCollector: java.util.List getWarnings()>();
+
+        $stack8 = interfaceinvoke $stack7.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int,java.lang.String)>(numWarnings, $stack8, "Warnings");
+
+        $stack9 = virtualinvoke collector.<org.apache.maven.model.building.SimpleProblemCollector: java.util.List getFatals()>();
+
+        $stack10 = interfaceinvoke $stack9.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int,java.lang.String)>(numFatals, $stack10, "Fatals");
+
+        return;
+    }
+
+    private org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)
+    {
+        java.util.Properties p;
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.building.DefaultModelBuildingRequest $u0;
+        org.apache.maven.model.building.ModelBuildingRequest $r0, $r1;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        p := @parameter0: java.util.Properties;
+
+        $u0 = new org.apache.maven.model.building.DefaultModelBuildingRequest;
+
+        specialinvoke $u0.<org.apache.maven.model.building.DefaultModelBuildingRequest: void <init>()>();
+
+        if p == null goto label1;
+
+        $r0 = (org.apache.maven.model.building.ModelBuildingRequest) $u0;
+
+        interfaceinvoke $r0.<org.apache.maven.model.building.ModelBuildingRequest: org.apache.maven.model.building.ModelBuildingRequest setSystemProperties(java.util.Properties)>(p);
+
+     label1:
+        $r1 = (org.apache.maven.model.building.ModelBuildingRequest) $u0;
+
+        return $r1;
+    }
+
+    public void testDefaultBuildTimestampFormatShouldFormatTimeIn24HourFormat()
+    {
+        java.util.Calendar cal;
+        java.util.TimeZone $stack6, $stack10;
+        java.util.Date firstTestDate, secondTestDate;
+        java.text.SimpleDateFormat $stack9;
+        java.lang.String $stack12, $stack14;
+        AbstractModelInterpolatorTest this;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        cal = staticinvoke <java.util.Calendar: java.util.Calendar getInstance()>();
+
+        $stack6 = <org.apache.maven.model.interpolation.MavenBuildTimestamp: java.util.TimeZone DEFAULT_BUILD_TIME_ZONE>;
+
+        virtualinvoke cal.<java.util.Calendar: void setTimeZone(java.util.TimeZone)>($stack6);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(10, 12);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(9, 0);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(11, 0);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(12, 16);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(13, 0);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(1, 1976);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(2, 10);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(5, 11);
+
+        firstTestDate = virtualinvoke cal.<java.util.Calendar: java.util.Date getTime()>();
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(10, 11);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(9, 1);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(11, 23);
+
+        secondTestDate = virtualinvoke cal.<java.util.Calendar: java.util.Date getTime()>();
+
+        $stack9 = new java.text.SimpleDateFormat;
+
+        specialinvoke $stack9.<java.text.SimpleDateFormat: void <init>(java.lang.String)>("yyyy-MM-dd\'T\'HH:mm:ss\'Z\'");
+
+        $stack10 = <org.apache.maven.model.interpolation.MavenBuildTimestamp: java.util.TimeZone DEFAULT_BUILD_TIME_ZONE>;
+
+        virtualinvoke $stack9.<java.text.SimpleDateFormat: void setTimeZone(java.util.TimeZone)>($stack10);
+
+        $stack12 = virtualinvoke $stack9.<java.text.SimpleDateFormat: java.lang.String format(java.util.Date)>(firstTestDate);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("1976-11-11T00:16:00Z", $stack12);
+
+        $stack14 = virtualinvoke $stack9.<java.text.SimpleDateFormat: java.lang.String format(java.util.Date)>(secondTestDate);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("1976-11-11T23:16:00Z", $stack14);
+
+        return;
+    }
+
+    public void testDefaultBuildTimestampFormatWithLocalTimeZoneMidnightRollover()
+    {
+        java.util.Calendar cal;
+        java.util.TimeZone $stack6, $stack10;
+        java.util.Date firstTestDate, secondTestDate;
+        java.text.SimpleDateFormat $stack9;
+        java.lang.String $stack12, $stack14;
+        AbstractModelInterpolatorTest this;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        cal = staticinvoke <java.util.Calendar: java.util.Calendar getInstance()>();
+
+        $stack6 = staticinvoke <java.util.TimeZone: java.util.TimeZone getTimeZone(java.lang.String)>("Europe/Berlin");
+
+        virtualinvoke cal.<java.util.Calendar: void setTimeZone(java.util.TimeZone)>($stack6);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(11, 1);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(12, 16);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(13, 0);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(1, 2014);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(2, 5);
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(5, 16);
+
+        firstTestDate = virtualinvoke cal.<java.util.Calendar: java.util.Date getTime()>();
+
+        virtualinvoke cal.<java.util.Calendar: void set(int,int)>(2, 10);
+
+        secondTestDate = virtualinvoke cal.<java.util.Calendar: java.util.Date getTime()>();
+
+        $stack9 = new java.text.SimpleDateFormat;
+
+        specialinvoke $stack9.<java.text.SimpleDateFormat: void <init>(java.lang.String)>("yyyy-MM-dd\'T\'HH:mm:ss\'Z\'");
+
+        $stack10 = <org.apache.maven.model.interpolation.MavenBuildTimestamp: java.util.TimeZone DEFAULT_BUILD_TIME_ZONE>;
+
+        virtualinvoke $stack9.<java.text.SimpleDateFormat: void setTimeZone(java.util.TimeZone)>($stack10);
+
+        $stack12 = virtualinvoke $stack9.<java.text.SimpleDateFormat: java.lang.String format(java.util.Date)>(firstTestDate);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("2014-06-15T23:16:00Z", $stack12);
+
+        $stack14 = virtualinvoke $stack9.<java.text.SimpleDateFormat: java.lang.String format(java.util.Date)>(secondTestDate);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("2014-11-16T00:16:00Z", $stack14);
+
+        return;
+    }
+
+    public void testShouldNotThrowExceptionOnReferenceToNonExistentValue() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack11;
+        org.apache.maven.model.building.ModelBuildingRequest $stack12;
+        org.apache.maven.model.Model out, $u0;
+        org.apache.maven.model.Scm $stack15, $u1;
+        java.lang.String $stack16;
+        org.apache.maven.model.building.SimpleProblemCollector $u2;
+        java.io.File $u3;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        $u1 = new org.apache.maven.model.Scm;
+
+        specialinvoke $u1.<org.apache.maven.model.Scm: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Scm: void setConnection(java.lang.String)>("${test}/somepath");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setScm(org.apache.maven.model.Scm)>($u1);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u2 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u2.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $u3 = new java.io.File;
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String)>(".");
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack11 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack12 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack11);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u2;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, $u3, $stack12, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertProblemFree(org.apache.maven.model.building.SimpleProblemCollector)>($u2);
+
+        $stack15 = virtualinvoke out.<org.apache.maven.model.Model: org.apache.maven.model.Scm getScm()>();
+
+        $stack16 = virtualinvoke $stack15.<org.apache.maven.model.Scm: java.lang.String getConnection()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("${test}/somepath", $stack16);
+
+        return;
+    }
+
+    public void testShouldThrowExceptionOnRecursiveScmConnectionReference() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack9;
+        org.apache.maven.model.building.ModelBuildingRequest $stack11;
+        org.apache.maven.model.Model $u0;
+        org.apache.maven.model.Scm $u1;
+        org.apache.maven.model.building.SimpleProblemCollector $u2;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        $u1 = new org.apache.maven.model.Scm;
+
+        specialinvoke $u1.<org.apache.maven.model.Scm: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Scm: void setConnection(java.lang.String)>("${project.scm.connection}/somepath");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setScm(org.apache.maven.model.Scm)>($u1);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u2 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u2.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack9 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack11 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack9);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u2;
+
+        interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, null, $stack11, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertCollectorState(int,int,int,org.apache.maven.model.building.SimpleProblemCollector)>(0, 1, 0, $u2);
+
+        return;
+    }
+
+    public void testShouldNotThrowExceptionOnReferenceToValueContainingNakedExpression() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack11;
+        org.apache.maven.model.building.ModelBuildingRequest $stack12;
+        org.apache.maven.model.Model out, $u0;
+        org.apache.maven.model.Scm $stack15, $u1;
+        java.lang.String $stack16;
+        org.apache.maven.model.building.SimpleProblemCollector $u2;
+        java.io.File $u3;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        $u1 = new org.apache.maven.model.Scm;
+
+        specialinvoke $u1.<org.apache.maven.model.Scm: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Scm: void setConnection(java.lang.String)>("${test}/somepath");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setScm(org.apache.maven.model.Scm)>($u1);
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void addProperty(java.lang.String,java.lang.String)>("test", "test");
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u2 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u2.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $u3 = new java.io.File;
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String)>(".");
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack11 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack12 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack11);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u2;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, $u3, $stack12, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertProblemFree(org.apache.maven.model.building.SimpleProblemCollector)>($u2);
+
+        $stack15 = virtualinvoke out.<org.apache.maven.model.Model: org.apache.maven.model.Scm getScm()>();
+
+        $stack16 = virtualinvoke $stack15.<org.apache.maven.model.Scm: java.lang.String getConnection()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("test/somepath", $stack16);
+
+        return;
+    }
+
+    public void shouldInterpolateOrganizationNameCorrectly() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack10;
+        org.apache.maven.model.building.ModelBuildingRequest $stack11;
+        org.apache.maven.model.Model out, $u0;
+        java.lang.StringBuilder $stack15, $stack16, $u4;
+        java.lang.String $stack17, $stack18;
+        org.apache.maven.model.Organization $u1;
+        java.io.File $u2;
+        org.apache.maven.model.building.SimpleProblemCollector $u3;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setName(java.lang.String)>("${pom.organization.name} Tools");
+
+        $u1 = new org.apache.maven.model.Organization;
+
+        specialinvoke $u1.<org.apache.maven.model.Organization: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Organization: void setName(java.lang.String)>("MyCo");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setOrganization(org.apache.maven.model.Organization)>($u1);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u2 = new java.io.File;
+
+        specialinvoke $u2.<java.io.File: void <init>(java.lang.String)>(".");
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack10 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack11 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack10);
+
+        $u3 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u3.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u3;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, $u2, $stack11, $r3);
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack15 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("MyCo");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" Tools");
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack18 = virtualinvoke out.<org.apache.maven.model.Model: java.lang.String getName()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack17, $stack18);
+
+        return;
+    }
+
+    public void shouldInterpolateDependencyVersionToSetSameAsProjectVersion() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack11;
+        org.apache.maven.model.building.ModelBuildingRequest $stack12;
+        org.apache.maven.model.Model out, $u0;
+        java.util.List $stack15;
+        java.lang.Object $stack16;
+        org.apache.maven.model.Dependency $stack17, $u1;
+        java.lang.String $stack18;
+        org.apache.maven.model.building.SimpleProblemCollector $u2;
+        java.io.File $u3;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setVersion(java.lang.String)>("3.8.1");
+
+        $u1 = new org.apache.maven.model.Dependency;
+
+        specialinvoke $u1.<org.apache.maven.model.Dependency: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Dependency: void setVersion(java.lang.String)>("${version}");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void addDependency(org.apache.maven.model.Dependency)>($u1);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u2 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u2.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $u3 = new java.io.File;
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String)>(".");
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack11 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack12 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack11);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u2;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, $u3, $stack12, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertCollectorState(int,int,int,org.apache.maven.model.building.SimpleProblemCollector)>(0, 0, 1, $u2);
+
+        $stack15 = virtualinvoke out.<org.apache.maven.model.Model: java.util.List getDependencies()>();
+
+        $stack16 = interfaceinvoke $stack15.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack17 = (org.apache.maven.model.Dependency) $stack16;
+
+        $stack18 = virtualinvoke $stack17.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("3.8.1", $stack18);
+
+        return;
+    }
+
+    public void testShouldNotInterpolateDependencyVersionWithInvalidReference() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack11;
+        org.apache.maven.model.building.ModelBuildingRequest $stack12;
+        org.apache.maven.model.Model out, $u0;
+        java.util.List $stack15;
+        java.lang.Object $stack16;
+        org.apache.maven.model.Dependency $stack17, $u1;
+        java.lang.String $stack18;
+        org.apache.maven.model.building.SimpleProblemCollector $u2;
+        java.io.File $u3;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setVersion(java.lang.String)>("3.8.1");
+
+        $u1 = new org.apache.maven.model.Dependency;
+
+        specialinvoke $u1.<org.apache.maven.model.Dependency: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Dependency: void setVersion(java.lang.String)>("${something}");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void addDependency(org.apache.maven.model.Dependency)>($u1);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u2 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u2.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $u3 = new java.io.File;
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String)>(".");
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack11 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack12 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack11);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u2;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, $u3, $stack12, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertProblemFree(org.apache.maven.model.building.SimpleProblemCollector)>($u2);
+
+        $stack15 = virtualinvoke out.<org.apache.maven.model.Model: java.util.List getDependencies()>();
+
+        $stack16 = interfaceinvoke $stack15.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack17 = (org.apache.maven.model.Dependency) $stack16;
+
+        $stack18 = virtualinvoke $stack17.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("${something}", $stack18);
+
+        return;
+    }
+
+    public void testTwoReferences() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack11;
+        org.apache.maven.model.building.ModelBuildingRequest $stack12;
+        org.apache.maven.model.Model out, $u0;
+        java.util.List $stack15;
+        java.lang.Object $stack16;
+        org.apache.maven.model.Dependency $stack17, $u1;
+        java.lang.String $stack18;
+        org.apache.maven.model.building.SimpleProblemCollector $u2;
+        java.io.File $u3;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setVersion(java.lang.String)>("3.8.1");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setArtifactId(java.lang.String)>("foo");
+
+        $u1 = new org.apache.maven.model.Dependency;
+
+        specialinvoke $u1.<org.apache.maven.model.Dependency: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Dependency: void setVersion(java.lang.String)>("${artifactId}-${version}");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void addDependency(org.apache.maven.model.Dependency)>($u1);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u2 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u2.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $u3 = new java.io.File;
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String)>(".");
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack11 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack12 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack11);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u2;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, $u3, $stack12, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertCollectorState(int,int,int,org.apache.maven.model.building.SimpleProblemCollector)>(0, 0, 2, $u2);
+
+        $stack15 = virtualinvoke out.<org.apache.maven.model.Model: java.util.List getDependencies()>();
+
+        $stack16 = interfaceinvoke $stack15.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack17 = (org.apache.maven.model.Dependency) $stack16;
+
+        $stack18 = virtualinvoke $stack17.<org.apache.maven.model.Dependency: java.lang.String getVersion()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("foo-3.8.1", $stack18);
+
+        return;
+    }
+
+    public void testBasedir() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack10;
+        org.apache.maven.model.building.ModelBuildingRequest $stack12;
+        org.apache.maven.model.Model out, $u0;
+        java.util.List $stack15;
+        java.lang.Object $stack16;
+        org.apache.maven.model.Repository $stack17, $u1;
+        java.lang.String $stack18;
+        org.apache.maven.model.building.SimpleProblemCollector $u2;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setVersion(java.lang.String)>("3.8.1");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setArtifactId(java.lang.String)>("foo");
+
+        $u1 = new org.apache.maven.model.Repository;
+
+        specialinvoke $u1.<org.apache.maven.model.Repository: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Repository: void setUrl(java.lang.String)>("file://localhost/${basedir}/temp-repo");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void addRepository(org.apache.maven.model.Repository)>($u1);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u2 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u2.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack10 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack12 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack10);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u2;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, null, $stack12, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertProblemFree(org.apache.maven.model.building.SimpleProblemCollector)>($u2);
+
+        $stack15 = virtualinvoke out.<org.apache.maven.model.Model: java.util.List getRepositories()>();
+
+        $stack16 = interfaceinvoke $stack15.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack17 = (org.apache.maven.model.Repository) $stack16;
+
+        $stack18 = virtualinvoke $stack17.<org.apache.maven.model.Repository: java.lang.String getUrl()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("file://localhost/myBasedir/temp-repo", $stack18);
+
+        return;
+    }
+
+    public void testBaseUri() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack10;
+        org.apache.maven.model.building.ModelBuildingRequest $stack12;
+        org.apache.maven.model.Model out, $u0;
+        java.util.List $stack15;
+        java.lang.Object $stack16;
+        org.apache.maven.model.Repository $stack17, $u1;
+        java.lang.String $stack18;
+        org.apache.maven.model.building.SimpleProblemCollector $u2;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setVersion(java.lang.String)>("3.8.1");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setArtifactId(java.lang.String)>("foo");
+
+        $u1 = new org.apache.maven.model.Repository;
+
+        specialinvoke $u1.<org.apache.maven.model.Repository: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Repository: void setUrl(java.lang.String)>("${project.baseUri}/temp-repo");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void addRepository(org.apache.maven.model.Repository)>($u1);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u2 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u2.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack10 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack12 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack10);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u2;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, null, $stack12, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertProblemFree(org.apache.maven.model.building.SimpleProblemCollector)>($u2);
+
+        $stack15 = virtualinvoke out.<org.apache.maven.model.Model: java.util.List getRepositories()>();
+
+        $stack16 = interfaceinvoke $stack15.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack17 = (org.apache.maven.model.Repository) $stack16;
+
+        $stack18 = virtualinvoke $stack17.<org.apache.maven.model.Repository: java.lang.String getUrl()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("myBaseUri/temp-repo", $stack18);
+
+        return;
+    }
+
+    public void testEnvars() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        org.apache.maven.model.building.ModelBuildingRequest $stack15;
+        org.apache.maven.model.Model out, $u1;
+        java.util.Properties $stack18, $u0, $u2;
+        java.lang.String $stack19;
+        org.apache.maven.model.building.SimpleProblemCollector $u3;
+        java.io.File $u4;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r3;
+        org.apache.maven.model.building.ModelProblemCollector $r2;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u0.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>("env.HOME", "/path/to/home");
+
+        $u1 = new org.apache.maven.model.Model;
+
+        specialinvoke $u1.<org.apache.maven.model.Model: void <init>()>();
+
+        $u2 = new java.util.Properties;
+
+        specialinvoke $u2.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u2.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("outputDirectory", "${env.HOME}");
+
+        virtualinvoke $u1.<org.apache.maven.model.Model: void setProperties(java.util.Properties)>($u2);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u3 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u3.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $u4 = new java.io.File;
+
+        specialinvoke $u4.<java.io.File: void <init>(java.lang.String)>(".");
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack15 = specialinvoke $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($u0);
+
+        $r2 = (org.apache.maven.model.building.ModelProblemCollector) $u3;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u1, $u4, $stack15, $r2);
+
+        $r3 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r3.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertProblemFree(org.apache.maven.model.building.SimpleProblemCollector)>($u3);
+
+        $stack18 = virtualinvoke out.<org.apache.maven.model.Model: java.util.Properties getProperties()>();
+
+        $stack19 = virtualinvoke $stack18.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("outputDirectory");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("/path/to/home", $stack19);
+
+        return;
+    }
+
+    public void envarExpressionThatEvaluatesToNullReturnsTheLiteralString() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack12, $stack15, $u1;
+        org.apache.maven.model.building.ModelBuildingRequest $stack13;
+        org.apache.maven.model.Model out, $u0;
+        java.lang.String $stack16;
+        org.apache.maven.model.building.SimpleProblemCollector $u2;
+        java.io.File $u3;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        $u1 = new java.util.Properties;
+
+        specialinvoke $u1.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u1.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("outputDirectory", "${env.DOES_NOT_EXIST}");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setProperties(java.util.Properties)>($u1);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u2 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u2.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $u3 = new java.io.File;
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String)>(".");
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack12 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack13 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack12);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u2;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, $u3, $stack13, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertProblemFree(org.apache.maven.model.building.SimpleProblemCollector)>($u2);
+
+        $stack15 = virtualinvoke out.<org.apache.maven.model.Model: java.util.Properties getProperties()>();
+
+        $stack16 = virtualinvoke $stack15.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("outputDirectory");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack16, "${env.DOES_NOT_EXIST}");
+
+        return;
+    }
+
+    public void expressionThatEvaluatesToNullReturnsTheLiteralString() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack12, $stack15, $u1;
+        org.apache.maven.model.building.ModelBuildingRequest $stack13;
+        org.apache.maven.model.Model out, $u0;
+        java.lang.String $stack16;
+        org.apache.maven.model.building.SimpleProblemCollector $u2;
+        java.io.File $u3;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        $u1 = new java.util.Properties;
+
+        specialinvoke $u1.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u1.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("outputDirectory", "${DOES_NOT_EXIST}");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setProperties(java.util.Properties)>($u1);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u2 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u2.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $u3 = new java.io.File;
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String)>(".");
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack12 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack13 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack12);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u2;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, $u3, $stack13, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertProblemFree(org.apache.maven.model.building.SimpleProblemCollector)>($u2);
+
+        $stack15 = virtualinvoke out.<org.apache.maven.model.Model: java.util.Properties getProperties()>();
+
+        $stack16 = virtualinvoke $stack15.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("outputDirectory");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack16, "${DOES_NOT_EXIST}");
+
+        return;
+    }
+
+    public void shouldInterpolateSourceDirectoryReferencedFromResourceDirectoryCorrectly() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack18;
+        org.apache.maven.model.building.ModelBuildingRequest $stack20;
+        org.apache.maven.model.Model out, $u0;
+        org.apache.maven.model.Build $stack22, $u1;
+        java.util.List outResources;
+        java.util.Iterator resIt;
+        java.lang.String $stack25, $stack28, $stack29, $stack32, $stack33, $stack36;
+        java.lang.Object $stack26, $stack30, $stack34;
+        org.apache.maven.model.Resource $stack27, $stack31, $stack35, $u2, $u3, $u4;
+        org.apache.maven.model.building.SimpleProblemCollector $u5;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        $u1 = new org.apache.maven.model.Build;
+
+        specialinvoke $u1.<org.apache.maven.model.Build: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Build: void setSourceDirectory(java.lang.String)>("correct");
+
+        $u2 = new org.apache.maven.model.Resource;
+
+        specialinvoke $u2.<org.apache.maven.model.Resource: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.Resource: void setDirectory(java.lang.String)>("${project.build.sourceDirectory}");
+
+        virtualinvoke $u1.<org.apache.maven.model.Build: void addResource(org.apache.maven.model.Resource)>($u2);
+
+        $u3 = new org.apache.maven.model.Resource;
+
+        specialinvoke $u3.<org.apache.maven.model.Resource: void <init>()>();
+
+        virtualinvoke $u3.<org.apache.maven.model.Resource: void setDirectory(java.lang.String)>("${pom.build.sourceDirectory}");
+
+        virtualinvoke $u1.<org.apache.maven.model.Build: void addResource(org.apache.maven.model.Resource)>($u3);
+
+        $u4 = new org.apache.maven.model.Resource;
+
+        specialinvoke $u4.<org.apache.maven.model.Resource: void <init>()>();
+
+        virtualinvoke $u4.<org.apache.maven.model.Resource: void setDirectory(java.lang.String)>("${build.sourceDirectory}");
+
+        virtualinvoke $u1.<org.apache.maven.model.Build: void addResource(org.apache.maven.model.Resource)>($u4);
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setBuild(org.apache.maven.model.Build)>($u1);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u5 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u5.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack18 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack20 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack18);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u5;
+
+        out = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u0, null, $stack20, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertCollectorState(int,int,int,org.apache.maven.model.building.SimpleProblemCollector)>(0, 0, 2, $u5);
+
+        $stack22 = virtualinvoke out.<org.apache.maven.model.Model: org.apache.maven.model.Build getBuild()>();
+
+        outResources = virtualinvoke $stack22.<org.apache.maven.model.Build: java.util.List getResources()>();
+
+        resIt = interfaceinvoke outResources.<java.util.List: java.util.Iterator iterator()>();
+
+        $stack25 = virtualinvoke $u1.<org.apache.maven.model.Build: java.lang.String getSourceDirectory()>();
+
+        $stack26 = interfaceinvoke resIt.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack27 = (org.apache.maven.model.Resource) $stack26;
+
+        $stack28 = virtualinvoke $stack27.<org.apache.maven.model.Resource: java.lang.String getDirectory()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack25, $stack28);
+
+        $stack29 = virtualinvoke $u1.<org.apache.maven.model.Build: java.lang.String getSourceDirectory()>();
+
+        $stack30 = interfaceinvoke resIt.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack31 = (org.apache.maven.model.Resource) $stack30;
+
+        $stack32 = virtualinvoke $stack31.<org.apache.maven.model.Resource: java.lang.String getDirectory()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack29, $stack32);
+
+        $stack33 = virtualinvoke $u1.<org.apache.maven.model.Build: java.lang.String getSourceDirectory()>();
+
+        $stack34 = interfaceinvoke resIt.<java.util.Iterator: java.lang.Object next()>();
+
+        $stack35 = (org.apache.maven.model.Resource) $stack34;
+
+        $stack36 = virtualinvoke $stack35.<org.apache.maven.model.Resource: java.lang.String getDirectory()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack33, $stack36);
+
+        return;
+    }
+
+    public void shouldInterpolateUnprefixedBasedirExpression() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.Properties $stack13;
+        org.apache.maven.model.building.ModelBuildingRequest $stack14;
+        org.apache.maven.model.Model result, $u1;
+        java.util.List rDeps;
+        int $stack18;
+        java.lang.String $stack20, $stack24, $stack25;
+        java.lang.Object $stack22;
+        org.apache.maven.model.Dependency $stack23, $u2;
+        java.io.File $u0, $u4, $u5;
+        org.apache.maven.model.building.SimpleProblemCollector $u3;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r1, $r2, $r4;
+        org.apache.maven.model.building.ModelProblemCollector $r3;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.lang.String)>("/test/path");
+
+        $u1 = new org.apache.maven.model.Model;
+
+        specialinvoke $u1.<org.apache.maven.model.Model: void <init>()>();
+
+        $u2 = new org.apache.maven.model.Dependency;
+
+        specialinvoke $u2.<org.apache.maven.model.Dependency: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.Dependency: void setSystemPath(java.lang.String)>("${basedir}/artifact.jar");
+
+        virtualinvoke $u1.<org.apache.maven.model.Model: void addDependency(org.apache.maven.model.Dependency)>($u2);
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $u3 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u3.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $r1 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack13 = $r1.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: java.util.Properties context>;
+
+        $r2 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        $stack14 = specialinvoke $r2.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.building.ModelBuildingRequest createModelBuildingRequest(java.util.Properties)>($stack13);
+
+        $r3 = (org.apache.maven.model.building.ModelProblemCollector) $u3;
+
+        result = interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u1, $u0, $stack14, $r3);
+
+        $r4 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r4.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertProblemFree(org.apache.maven.model.building.SimpleProblemCollector)>($u3);
+
+        rDeps = virtualinvoke result.<org.apache.maven.model.Model: java.util.List getDependencies()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(rDeps);
+
+        $stack18 = interfaceinvoke rDeps.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack18);
+
+        $u4 = new java.io.File;
+
+        specialinvoke $u4.<java.io.File: void <init>(java.io.File,java.lang.String)>($u0, "artifact.jar");
+
+        $stack20 = virtualinvoke $u4.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $u5 = new java.io.File;
+
+        $stack22 = interfaceinvoke rDeps.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack23 = (org.apache.maven.model.Dependency) $stack22;
+
+        $stack24 = virtualinvoke $stack23.<org.apache.maven.model.Dependency: java.lang.String getSystemPath()>();
+
+        specialinvoke $u5.<java.io.File: void <init>(java.lang.String)>($stack24);
+
+        $stack25 = virtualinvoke $u5.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack20, $stack25);
+
+        return;
+    }
+
+    public void testRecursiveExpressionCycleNPE() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.List $stack14;
+        java.lang.Object $stack15;
+        java.lang.String $stack16;
+        boolean $stack17;
+        java.util.Properties $u0;
+        org.apache.maven.model.building.DefaultModelBuildingRequest $u1;
+        org.apache.maven.model.Model $u2;
+        org.apache.maven.model.building.SimpleProblemCollector $u3;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r3;
+        org.apache.maven.model.building.ModelBuildingRequest $r1;
+        org.apache.maven.model.building.ModelProblemCollector $r2;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u0.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("aa", "${bb}");
+
+        virtualinvoke $u0.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("bb", "${aa}");
+
+        $u1 = new org.apache.maven.model.building.DefaultModelBuildingRequest;
+
+        specialinvoke $u1.<org.apache.maven.model.building.DefaultModelBuildingRequest: void <init>()>();
+
+        $u2 = new org.apache.maven.model.Model;
+
+        specialinvoke $u2.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.Model: void setProperties(java.util.Properties)>($u0);
+
+        $u3 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u3.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $r1 = (org.apache.maven.model.building.ModelBuildingRequest) $u1;
+
+        $r2 = (org.apache.maven.model.building.ModelProblemCollector) $u3;
+
+        interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u2, null, $r1, $r2);
+
+        $r3 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r3.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertCollectorState(int,int,int,org.apache.maven.model.building.SimpleProblemCollector)>(0, 2, 0, $u3);
+
+        $stack14 = virtualinvoke $u3.<org.apache.maven.model.building.SimpleProblemCollector: java.util.List getErrors()>();
+
+        $stack15 = interfaceinvoke $stack14.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack16 = (java.lang.String) $stack15;
+
+        $stack17 = virtualinvoke $stack16.<java.lang.String: boolean contains(java.lang.CharSequence)>("Detected the following recursive expression cycle");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack17);
+
+        return;
+    }
+
+    public void testRecursiveExpressionCycleBaseDir() throws java.lang.Exception
+    {
+        AbstractModelInterpolatorTest this;
+        org.apache.maven.model.interpolation.ModelInterpolator interpolator;
+        java.util.List $stack14;
+        java.lang.Object $stack15;
+        java.util.Properties $u0;
+        org.apache.maven.model.building.DefaultModelBuildingRequest $u1;
+        org.apache.maven.model.Model $u2;
+        org.apache.maven.model.building.SimpleProblemCollector $u3;
+        org.apache.maven.model.interpolation.AbstractModelInterpolatorTest $r0, $r3;
+        org.apache.maven.model.building.ModelBuildingRequest $r1;
+        org.apache.maven.model.building.ModelProblemCollector $r2;
+
+        this := @this: AbstractModelInterpolatorTest;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u0.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("basedir", "${basedir}");
+
+        $u1 = new org.apache.maven.model.building.DefaultModelBuildingRequest;
+
+        specialinvoke $u1.<org.apache.maven.model.building.DefaultModelBuildingRequest: void <init>()>();
+
+        $u2 = new org.apache.maven.model.Model;
+
+        specialinvoke $u2.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u2.<org.apache.maven.model.Model: void setProperties(java.util.Properties)>($u0);
+
+        $u3 = new org.apache.maven.model.building.SimpleProblemCollector;
+
+        specialinvoke $u3.<org.apache.maven.model.building.SimpleProblemCollector: void <init>()>();
+
+        $r0 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        interpolator = virtualinvoke $r0.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: org.apache.maven.model.interpolation.ModelInterpolator createInterpolator()>();
+
+        $r1 = (org.apache.maven.model.building.ModelBuildingRequest) $u1;
+
+        $r2 = (org.apache.maven.model.building.ModelProblemCollector) $u3;
+
+        interfaceinvoke interpolator.<org.apache.maven.model.interpolation.ModelInterpolator: org.apache.maven.model.Model interpolateModel(org.apache.maven.model.Model,java.io.File,org.apache.maven.model.building.ModelBuildingRequest,org.apache.maven.model.building.ModelProblemCollector)>($u2, null, $r1, $r2);
+
+        $r3 = (org.apache.maven.model.interpolation.AbstractModelInterpolatorTest) this;
+
+        virtualinvoke $r3.<org.apache.maven.model.interpolation.AbstractModelInterpolatorTest: void assertCollectorState(int,int,int,org.apache.maven.model.building.SimpleProblemCollector)>(0, 1, 0, $u3);
+
+        $stack14 = virtualinvoke $u3.<org.apache.maven.model.building.SimpleProblemCollector: java.util.List getErrors()>();
+
+        $stack15 = interfaceinvoke $stack14.<java.util.List: java.lang.Object get(int)>(0);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("Resolving expression: \'${basedir}\': Detected the following recursive expression cycle in \'basedir\': [basedir]", $stack15);
+
+        return;
+    }
+
+    protected abstract org.apache.maven.model.interpolation.ModelInterpolator createInterpolator() throws java.lang.Exception;
+}

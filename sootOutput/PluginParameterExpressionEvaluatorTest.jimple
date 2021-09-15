@@ -1,0 +1,1144 @@
+public class PluginParameterExpressionEvaluatorTest extends org.apache.maven.AbstractCoreMavenComponentTestCase
+{
+    private static final java.lang.String FS;
+    private org.apache.maven.repository.RepositorySystem factory;
+
+    public void <init>()
+    {
+        PluginParameterExpressionEvaluatorTest this;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        specialinvoke this.<org.apache.maven.AbstractCoreMavenComponentTestCase: void <init>()>();
+
+        return;
+    }
+
+    public void testPluginDescriptorExpressionReference() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.apache.maven.plugin.MojoExecution exec;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.Object result;
+        java.io.PrintStream $stack9;
+        java.lang.StringBuilder $stack10, $stack11, $u1;
+        java.lang.String $stack12;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack13;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack14;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluator $u0;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0, $r1;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        exec = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.plugin.MojoExecution newMojoExecution()>();
+
+        $r1 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        session = specialinvoke $r1.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.execution.MavenSession newMavenSession()>();
+
+        $u0 = new org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+
+        specialinvoke $u0.<org.apache.maven.plugin.PluginParameterExpressionEvaluator: void <init>(org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>(session, exec);
+
+        result = virtualinvoke $u0.<org.apache.maven.plugin.PluginParameterExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>("${plugin}");
+
+        $stack9 = <java.lang.System: java.io.PrintStream out>;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack10 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Result: ");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(result);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack9.<java.io.PrintStream: void println(java.lang.String)>($stack12);
+
+        $stack13 = virtualinvoke exec.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack14 = virtualinvoke $stack13.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object,java.lang.String)>($stack14, result, "${plugin} expression does not return plugin descriptor.");
+
+        return;
+    }
+
+    public void testPluginArtifactsExpressionReference() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.apache.maven.plugin.MojoExecution exec;
+        org.apache.maven.artifact.Artifact depArtifact;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack10;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack11;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.Object $stack14, $stack22;
+        java.util.List depResults;
+        java.io.PrintStream $stack16;
+        java.lang.StringBuilder $stack17, $stack18, $u2;
+        java.lang.String $stack19;
+        int $stack21;
+        java.util.ArrayList $u0;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluator $u1;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0, $r1, $r2;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        exec = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.plugin.MojoExecution newMojoExecution()>();
+
+        $r1 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        depArtifact = virtualinvoke $r1.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.artifact.Artifact createArtifact(java.lang.String,java.lang.String,java.lang.String)>("group", "artifact", "1");
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(depArtifact);
+
+        $stack10 = virtualinvoke exec.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack11 = virtualinvoke $stack10.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        virtualinvoke $stack11.<org.apache.maven.plugin.descriptor.PluginDescriptor: void setArtifacts(java.util.List)>($u0);
+
+        $r2 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        session = specialinvoke $r2.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.execution.MavenSession newMavenSession()>();
+
+        $u1 = new org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+
+        specialinvoke $u1.<org.apache.maven.plugin.PluginParameterExpressionEvaluator: void <init>(org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>(session, exec);
+
+        $stack14 = virtualinvoke $u1.<org.apache.maven.plugin.PluginParameterExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>("${plugin.artifacts}");
+
+        depResults = (java.util.List) $stack14;
+
+        $stack16 = <java.lang.System: java.io.PrintStream out>;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack17 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Result: ");
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(depResults);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack16.<java.io.PrintStream: void println(java.lang.String)>($stack19);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(depResults);
+
+        $stack21 = interfaceinvoke depResults.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack21);
+
+        $stack22 = interfaceinvoke depResults.<java.util.List: java.lang.Object get(int)>(0);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object,java.lang.String)>(depArtifact, $stack22, "dependency artifact is wrong.");
+
+        return;
+    }
+
+    public void testPluginArtifactMapExpressionReference() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.apache.maven.plugin.MojoExecution exec;
+        org.apache.maven.artifact.Artifact depArtifact;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack10;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack11;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.Object $stack14, $stack23;
+        java.util.Map depResults;
+        java.io.PrintStream $stack16;
+        java.lang.StringBuilder $stack17, $stack18, $u2;
+        java.lang.String $stack19, $stack22;
+        int $stack21;
+        java.util.ArrayList $u0;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluator $u1;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0, $r1, $r2;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        exec = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.plugin.MojoExecution newMojoExecution()>();
+
+        $r1 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        depArtifact = virtualinvoke $r1.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.artifact.Artifact createArtifact(java.lang.String,java.lang.String,java.lang.String)>("group", "artifact", "1");
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(depArtifact);
+
+        $stack10 = virtualinvoke exec.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack11 = virtualinvoke $stack10.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        virtualinvoke $stack11.<org.apache.maven.plugin.descriptor.PluginDescriptor: void setArtifacts(java.util.List)>($u0);
+
+        $r2 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        session = specialinvoke $r2.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.execution.MavenSession newMavenSession()>();
+
+        $u1 = new org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+
+        specialinvoke $u1.<org.apache.maven.plugin.PluginParameterExpressionEvaluator: void <init>(org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>(session, exec);
+
+        $stack14 = virtualinvoke $u1.<org.apache.maven.plugin.PluginParameterExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>("${plugin.artifactMap}");
+
+        depResults = (java.util.Map) $stack14;
+
+        $stack16 = <java.lang.System: java.io.PrintStream out>;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack17 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Result: ");
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(depResults);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack16.<java.io.PrintStream: void println(java.lang.String)>($stack19);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNotNull(java.lang.Object)>(depResults);
+
+        $stack21 = interfaceinvoke depResults.<java.util.Map: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack21);
+
+        $stack22 = staticinvoke <org.apache.maven.artifact.ArtifactUtils: java.lang.String versionlessKey(org.apache.maven.artifact.Artifact)>(depArtifact);
+
+        $stack23 = interfaceinvoke depResults.<java.util.Map: java.lang.Object get(java.lang.Object)>($stack22);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object,java.lang.String)>(depArtifact, $stack23, "dependency artifact is wrong.");
+
+        return;
+    }
+
+    public void testPluginArtifactIdExpressionReference() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.apache.maven.plugin.MojoExecution exec;
+        org.apache.maven.execution.MavenSession session;
+        java.lang.Object result;
+        java.io.PrintStream $stack9;
+        java.lang.StringBuilder $stack10, $stack11, $u1;
+        java.lang.String $stack12, $stack15;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $stack13;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $stack14;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluator $u0;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0, $r1;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        exec = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.plugin.MojoExecution newMojoExecution()>();
+
+        $r1 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        session = specialinvoke $r1.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.execution.MavenSession newMavenSession()>();
+
+        $u0 = new org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+
+        specialinvoke $u0.<org.apache.maven.plugin.PluginParameterExpressionEvaluator: void <init>(org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>(session, exec);
+
+        result = virtualinvoke $u0.<org.apache.maven.plugin.PluginParameterExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>("${plugin.artifactId}");
+
+        $stack9 = <java.lang.System: java.io.PrintStream out>;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack10 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Result: ");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(result);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack9.<java.io.PrintStream: void println(java.lang.String)>($stack12);
+
+        $stack13 = virtualinvoke exec.<org.apache.maven.plugin.MojoExecution: org.apache.maven.plugin.descriptor.MojoDescriptor getMojoDescriptor()>();
+
+        $stack14 = virtualinvoke $stack13.<org.apache.maven.plugin.descriptor.MojoDescriptor: org.apache.maven.plugin.descriptor.PluginDescriptor getPluginDescriptor()>();
+
+        $stack15 = virtualinvoke $stack14.<org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getArtifactId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertSame(java.lang.Object,java.lang.Object,java.lang.String)>($stack15, result, "${plugin.artifactId} expression does not return plugin descriptor\'s artifactId.");
+
+        return;
+    }
+
+    public void testValueExtractionWithAPomValueContainingAPath() throws java.lang.Exception
+    {
+        java.io.File $stack8, $stack20, $u3, $u5;
+        java.lang.String expected, $stack13, $stack16, $stack26, actual;
+        int $stack12, $stack14, $stack15;
+        PluginParameterExpressionEvaluatorTest this;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator expressionEvaluator;
+        java.lang.Object value;
+        org.apache.maven.model.Build $u0;
+        org.apache.maven.model.Model $u1;
+        org.apache.maven.project.MavenProject $u2;
+        java.util.Properties $u4;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $stack8 = staticinvoke <org.codehaus.plexus.testing.PlexusExtension: java.io.File getTestFile(java.lang.String)>("target/test-classes/target/classes");
+
+        expected = virtualinvoke $stack8.<java.io.File: java.lang.String getCanonicalPath()>();
+
+        $u0 = new org.apache.maven.model.Build;
+
+        specialinvoke $u0.<org.apache.maven.model.Build: void <init>()>();
+
+        $stack12 = virtualinvoke expected.<java.lang.String: int length()>();
+
+        $stack13 = "/classes";
+
+        $stack14 = virtualinvoke $stack13.<java.lang.String: int length()>();
+
+        $stack15 = $stack12 - $stack14;
+
+        $stack16 = virtualinvoke expected.<java.lang.String: java.lang.String substring(int,int)>(0, $stack15);
+
+        virtualinvoke $u0.<org.apache.maven.model.Build: void setDirectory(java.lang.String)>($stack16);
+
+        $u1 = new org.apache.maven.model.Model;
+
+        specialinvoke $u1.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Model: void setBuild(org.apache.maven.model.Build)>($u0);
+
+        $u2 = new org.apache.maven.project.MavenProject;
+
+        specialinvoke $u2.<org.apache.maven.project.MavenProject: void <init>(org.apache.maven.model.Model)>($u1);
+
+        $u3 = new java.io.File;
+
+        specialinvoke $u3.<java.io.File: void <init>(java.lang.String)>("pom.xml");
+
+        $stack20 = virtualinvoke $u3.<java.io.File: java.io.File getCanonicalFile()>();
+
+        virtualinvoke $u2.<org.apache.maven.project.MavenProject: void setFile(java.io.File)>($stack20);
+
+        $u4 = new java.util.Properties;
+
+        specialinvoke $u4.<java.util.Properties: void <init>()>();
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        expressionEvaluator = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>($u2, null, $u4);
+
+        value = interfaceinvoke expressionEvaluator.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>("${project.build.directory}/classes");
+
+        $u5 = new java.io.File;
+
+        $stack26 = virtualinvoke value.<java.lang.Object: java.lang.String toString()>();
+
+        specialinvoke $u5.<java.io.File: void <init>(java.lang.String)>($stack26);
+
+        actual = virtualinvoke $u5.<java.io.File: java.lang.String getCanonicalPath()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>(expected, actual);
+
+        return;
+    }
+
+    public void testEscapedVariablePassthrough() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator ee;
+        java.lang.StringBuilder $stack12, $stack13, $u3;
+        java.lang.String $stack14;
+        java.lang.Object value;
+        org.apache.maven.model.Model $u0;
+        org.apache.maven.project.MavenProject $u1;
+        java.util.Properties $u2;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setVersion(java.lang.String)>("1");
+
+        $u1 = new org.apache.maven.project.MavenProject;
+
+        specialinvoke $u1.<org.apache.maven.project.MavenProject: void <init>(org.apache.maven.model.Model)>($u0);
+
+        $u2 = new java.util.Properties;
+
+        specialinvoke $u2.<java.util.Properties: void <init>()>();
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        ee = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>($u1, null, $u2);
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("$");
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("${var}");
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        value = interfaceinvoke ee.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>($stack14);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("${var}", value);
+
+        return;
+    }
+
+    public void testEscapedVariablePassthroughInLargerExpression() throws java.lang.Exception
+    {
+        java.lang.StringBuilder $stack8, $stack9, $stack17, $stack18, $u0, $u4;
+        java.lang.String key, $stack19;
+        PluginParameterExpressionEvaluatorTest this;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator ee;
+        java.lang.Object value;
+        org.apache.maven.model.Model $u1;
+        org.apache.maven.project.MavenProject $u2;
+        java.util.Properties $u3;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("${var}");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" with version: ${project.version}");
+
+        key = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $u1 = new org.apache.maven.model.Model;
+
+        specialinvoke $u1.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Model: void setVersion(java.lang.String)>("1");
+
+        $u2 = new org.apache.maven.project.MavenProject;
+
+        specialinvoke $u2.<org.apache.maven.project.MavenProject: void <init>(org.apache.maven.model.Model)>($u1);
+
+        $u3 = new java.util.Properties;
+
+        specialinvoke $u3.<java.util.Properties: void <init>()>();
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        ee = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>($u2, null, $u3);
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack17 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("$");
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(key);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        value = interfaceinvoke ee.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>($stack19);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("${var} with version: 1", value);
+
+        return;
+    }
+
+    public void testMultipleSubExpressionsInLargerExpression() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator ee;
+        java.lang.Object value;
+        org.apache.maven.model.Model $u0;
+        org.apache.maven.project.MavenProject $u1;
+        java.util.Properties $u2;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setArtifactId(java.lang.String)>("test");
+
+        virtualinvoke $u0.<org.apache.maven.model.Model: void setVersion(java.lang.String)>("1");
+
+        $u1 = new org.apache.maven.project.MavenProject;
+
+        specialinvoke $u1.<org.apache.maven.project.MavenProject: void <init>(org.apache.maven.model.Model)>($u0);
+
+        $u2 = new java.util.Properties;
+
+        specialinvoke $u2.<java.util.Properties: void <init>()>();
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        ee = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>($u1, null, $u2);
+
+        value = interfaceinvoke ee.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>("${project.artifactId} with version: ${project.version}");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("test with version: 1", value);
+
+        return;
+    }
+
+    public void testMissingPOMPropertyRefInLargerExpression() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator ee;
+        java.lang.Object value;
+        org.apache.maven.model.Model $u0;
+        org.apache.maven.project.MavenProject $u1;
+        java.util.Properties $u2;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $u1 = new org.apache.maven.project.MavenProject;
+
+        $u0 = new org.apache.maven.model.Model;
+
+        specialinvoke $u0.<org.apache.maven.model.Model: void <init>()>();
+
+        specialinvoke $u1.<org.apache.maven.project.MavenProject: void <init>(org.apache.maven.model.Model)>($u0);
+
+        $u2 = new java.util.Properties;
+
+        specialinvoke $u2.<java.util.Properties: void <init>()>();
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        ee = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>($u1, null, $u2);
+
+        value = interfaceinvoke ee.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>("/path/to/someproject-${baseVersion}");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("/path/to/someproject-${baseVersion}", value);
+
+        return;
+    }
+
+    public void testPOMPropertyExtractionWithMissingProject_WithDotNotation() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator ee;
+        java.lang.StringBuilder $stack16, $stack17, $stack18, $u4;
+        java.lang.String $stack19;
+        java.lang.Object value;
+        java.util.Properties $u0, $u3;
+        org.apache.maven.model.Model $u1;
+        org.apache.maven.project.MavenProject $u2;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        virtualinvoke $u0.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("m2.name", "value");
+
+        $u1 = new org.apache.maven.model.Model;
+
+        specialinvoke $u1.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Model: void setProperties(java.util.Properties)>($u0);
+
+        $u2 = new org.apache.maven.project.MavenProject;
+
+        specialinvoke $u2.<org.apache.maven.project.MavenProject: void <init>(org.apache.maven.model.Model)>($u1);
+
+        $u3 = new java.util.Properties;
+
+        specialinvoke $u3.<java.util.Properties: void <init>()>();
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        ee = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>($u2, null, $u3);
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack16 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("${");
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("m2.name");
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        value = interfaceinvoke ee.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>($stack19);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("value", value);
+
+        return;
+    }
+
+    public void testBasedirExtractionWithMissingProject() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator ee;
+        java.lang.Object value;
+        java.lang.String $stack8;
+        java.util.Properties $u0;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        ee = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>(null, null, $u0);
+
+        value = interfaceinvoke ee.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>("${basedir}");
+
+        $stack8 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("user.dir");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack8, value);
+
+        return;
+    }
+
+    public void testValueExtractionFromSystemPropertiesWithMissingProject() throws java.lang.Exception
+    {
+        java.lang.String $stack6, $stack12;
+        PluginParameterExpressionEvaluatorTest this;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator ee;
+        java.lang.StringBuilder $stack9, $stack10, $stack11, $u1;
+        java.lang.Object value;
+        java.util.Properties $u0;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        $stack6 = virtualinvoke $u0.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("PPEET_sysprop1");
+
+        if $stack6 != null goto label1;
+
+        virtualinvoke $u0.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("PPEET_sysprop1", "value");
+
+     label1:
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        ee = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>(null, null, $u0);
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack9 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("${");
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("PPEET_sysprop1");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        value = interfaceinvoke ee.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>($stack12);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("value", value);
+
+        return;
+    }
+
+    public void testValueExtractionFromSystemPropertiesWithMissingProject_WithDotNotation() throws java.lang.Exception
+    {
+        java.lang.String $stack6, $stack12;
+        PluginParameterExpressionEvaluatorTest this;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator ee;
+        java.lang.StringBuilder $stack9, $stack10, $stack11, $u1;
+        java.lang.Object value;
+        java.util.Properties $u0;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        $stack6 = virtualinvoke $u0.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("PPEET.sysprop2");
+
+        if $stack6 != null goto label1;
+
+        virtualinvoke $u0.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("PPEET.sysprop2", "value");
+
+     label1:
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        ee = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>(null, null, $u0);
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack9 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("${");
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("PPEET.sysprop2");
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}");
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        value = interfaceinvoke ee.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>($stack12);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("value", value);
+
+        return;
+    }
+
+    private static org.apache.maven.execution.MavenSession createSession(org.codehaus.plexus.PlexusContainer, org.apache.maven.artifact.repository.ArtifactRepository, java.util.Properties) throws org.codehaus.plexus.util.dag.CycleDetectedException, org.apache.maven.project.DuplicateProjectException
+    {
+        java.util.Properties properties;
+        org.apache.maven.execution.MavenExecutionRequest $stack5, $stack7, $stack9, request;
+        java.util.List $stack6, $stack13;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        org.codehaus.plexus.PlexusContainer container;
+        org.apache.maven.execution.DefaultMavenExecutionRequest $u0;
+        java.io.File $u1;
+        org.apache.maven.execution.DefaultMavenExecutionResult $u2;
+        org.apache.maven.execution.MavenSession $u3;
+        org.apache.maven.execution.MavenExecutionResult $r0;
+
+        container := @parameter0: org.codehaus.plexus.PlexusContainer;
+
+        repo := @parameter1: org.apache.maven.artifact.repository.ArtifactRepository;
+
+        properties := @parameter2: java.util.Properties;
+
+        $u0 = new org.apache.maven.execution.DefaultMavenExecutionRequest;
+
+        specialinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: void <init>()>();
+
+        $stack5 = virtualinvoke $u0.<org.apache.maven.execution.DefaultMavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setSystemProperties(java.util.Properties)>(properties);
+
+        $stack6 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        $stack7 = interfaceinvoke $stack5.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setGoals(java.util.List)>($stack6);
+
+        $u1 = new java.io.File;
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String)>("");
+
+        $stack9 = interfaceinvoke $stack7.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setBaseDirectory(java.io.File)>($u1);
+
+        request = interfaceinvoke $stack9.<org.apache.maven.execution.MavenExecutionRequest: org.apache.maven.execution.MavenExecutionRequest setLocalRepository(org.apache.maven.artifact.repository.ArtifactRepository)>(repo);
+
+        $u3 = new org.apache.maven.execution.MavenSession;
+
+        $u2 = new org.apache.maven.execution.DefaultMavenExecutionResult;
+
+        specialinvoke $u2.<org.apache.maven.execution.DefaultMavenExecutionResult: void <init>()>();
+
+        $stack13 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        $r0 = (org.apache.maven.execution.MavenExecutionResult) $u2;
+
+        specialinvoke $u3.<org.apache.maven.execution.MavenSession: void <init>(org.codehaus.plexus.PlexusContainer,org.apache.maven.execution.MavenExecutionRequest,org.apache.maven.execution.MavenExecutionResult,java.util.List)>(container, request, $r0, $stack13);
+
+        return $u3;
+    }
+
+    public void testLocalRepositoryExtraction() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.apache.maven.project.MavenProject $stack3;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator expressionEvaluator;
+        java.lang.Object value;
+        org.apache.maven.artifact.repository.ArtifactRepository $stack8;
+        java.lang.String $stack10;
+        java.util.Properties $u0;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0, $r1;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        $stack3 = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.project.MavenProject createDefaultProject()>();
+
+        $u0 = new java.util.Properties;
+
+        specialinvoke $u0.<java.util.Properties: void <init>()>();
+
+        $r1 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        expressionEvaluator = specialinvoke $r1.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>($stack3, null, $u0);
+
+        value = interfaceinvoke expressionEvaluator.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>("${localRepository}");
+
+        $stack8 = (org.apache.maven.artifact.repository.ArtifactRepository) value;
+
+        $stack10 = interfaceinvoke $stack8.<org.apache.maven.artifact.repository.ArtifactRepository: java.lang.String getId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("local", $stack10);
+
+        return;
+    }
+
+    public void testTwoExpressions() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator expressionEvaluator;
+        java.lang.StringBuilder $stack12, $stack14, $stack15, $stack19, $stack21, $stack22, $u4, $u5;
+        java.lang.String $stack13, $stack16, $stack23;
+        java.lang.Object value;
+        char $stack20;
+        org.apache.maven.model.Build $u0;
+        org.apache.maven.model.Model $u1;
+        org.apache.maven.project.MavenProject $u2;
+        java.util.Properties $u3;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $u0 = new org.apache.maven.model.Build;
+
+        specialinvoke $u0.<org.apache.maven.model.Build: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Build: void setDirectory(java.lang.String)>("expected-directory");
+
+        virtualinvoke $u0.<org.apache.maven.model.Build: void setFinalName(java.lang.String)>("expected-finalName");
+
+        $u1 = new org.apache.maven.model.Model;
+
+        specialinvoke $u1.<org.apache.maven.model.Model: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.model.Model: void setBuild(org.apache.maven.model.Build)>($u0);
+
+        $u2 = new org.apache.maven.project.MavenProject;
+
+        specialinvoke $u2.<org.apache.maven.project.MavenProject: void <init>(org.apache.maven.model.Model)>($u1);
+
+        $u3 = new java.util.Properties;
+
+        specialinvoke $u3.<java.util.Properties: void <init>()>();
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        expressionEvaluator = specialinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>($u2, null, $u3);
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("${project.build.directory}");
+
+        $stack13 = <org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: java.lang.String FS>;
+
+        $stack14 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack13);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("${project.build.finalName}");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        value = interfaceinvoke expressionEvaluator.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>($stack16);
+
+        $u5 = new java.lang.StringBuilder;
+
+        specialinvoke $u5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack19 = virtualinvoke $u5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("expected-directory");
+
+        $stack20 = <java.io.File: char separatorChar>;
+
+        $stack21 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack20);
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("expected-finalName");
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>($stack23, value);
+
+        return;
+    }
+
+    public void testShouldExtractPluginArtifacts() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.apache.maven.artifact.Artifact artifact, result;
+        java.util.List $stack9, artifacts;
+        org.apache.maven.project.MavenProject $stack10;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator ee;
+        java.lang.Object value, $stack17;
+        boolean $stack14;
+        int $stack16;
+        java.lang.String $stack19;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $u0;
+        java.util.Properties $u1;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0, $r1, $r2;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $u0 = new org.apache.maven.plugin.descriptor.PluginDescriptor;
+
+        specialinvoke $u0.<org.apache.maven.plugin.descriptor.PluginDescriptor: void <init>()>();
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        artifact = virtualinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.artifact.Artifact createArtifact(java.lang.String,java.lang.String,java.lang.String)>("testGroup", "testArtifact", "1.0");
+
+        $stack9 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>(artifact);
+
+        virtualinvoke $u0.<org.apache.maven.plugin.descriptor.PluginDescriptor: void setArtifacts(java.util.List)>($stack9);
+
+        $r1 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        $stack10 = specialinvoke $r1.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.project.MavenProject createDefaultProject()>();
+
+        $u1 = new java.util.Properties;
+
+        specialinvoke $u1.<java.util.Properties: void <init>()>();
+
+        $r2 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        ee = specialinvoke $r2.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject,org.apache.maven.plugin.descriptor.PluginDescriptor,java.util.Properties)>($stack10, $u0, $u1);
+
+        value = interfaceinvoke ee.<org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator: java.lang.Object evaluate(java.lang.String)>("${plugin.artifacts}");
+
+        $stack14 = value instanceof java.util.List;
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack14);
+
+        artifacts = (java.util.List) value;
+
+        $stack16 = interfaceinvoke artifacts.<java.util.List: int size()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(int,int)>(1, $stack16);
+
+        $stack17 = interfaceinvoke artifacts.<java.util.List: java.lang.Object get(int)>(0);
+
+        result = (org.apache.maven.artifact.Artifact) $stack17;
+
+        $stack19 = interfaceinvoke result.<org.apache.maven.artifact.Artifact: java.lang.String getGroupId()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("testGroup", $stack19);
+
+        return;
+    }
+
+    private org.apache.maven.project.MavenProject createDefaultProject()
+    {
+        org.apache.maven.project.MavenProject $stack1;
+        org.apache.maven.model.Model $stack2;
+        PluginParameterExpressionEvaluatorTest this;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $stack1 = new org.apache.maven.project.MavenProject;
+
+        $stack2 = new org.apache.maven.model.Model;
+
+        specialinvoke $stack2.<org.apache.maven.model.Model: void <init>()>();
+
+        specialinvoke $stack1.<org.apache.maven.project.MavenProject: void <init>(org.apache.maven.model.Model)>($stack2);
+
+        return $stack1;
+    }
+
+    private org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator createExpressionEvaluator(org.apache.maven.project.MavenProject, org.apache.maven.plugin.descriptor.PluginDescriptor, java.util.Properties) throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.apache.maven.repository.RepositorySystem $stack9;
+        org.apache.maven.artifact.repository.ArtifactRepository repo;
+        org.codehaus.plexus.PlexusContainer $stack11, $r2;
+        org.codehaus.plexus.MutablePlexusContainer container;
+        java.util.Properties executionProperties;
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.project.MavenProject project;
+        org.apache.maven.plugin.descriptor.PluginDescriptor pluginDescriptor;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $u0;
+        org.apache.maven.plugin.MojoExecution $u1;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluator $u2;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0, $r1;
+        org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator $r3;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        project := @parameter0: org.apache.maven.project.MavenProject;
+
+        pluginDescriptor := @parameter1: org.apache.maven.plugin.descriptor.PluginDescriptor;
+
+        executionProperties := @parameter2: java.util.Properties;
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        $stack9 = $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.repository.RepositorySystem factory>;
+
+        repo = interfaceinvoke $stack9.<org.apache.maven.repository.RepositorySystem: org.apache.maven.artifact.repository.ArtifactRepository createDefaultLocalRepository()>();
+
+        $r1 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        $stack11 = virtualinvoke $r1.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.codehaus.plexus.PlexusContainer getContainer()>();
+
+        container = (org.codehaus.plexus.MutablePlexusContainer) $stack11;
+
+        $r2 = (org.codehaus.plexus.PlexusContainer) container;
+
+        session = staticinvoke <org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.execution.MavenSession createSession(org.codehaus.plexus.PlexusContainer,org.apache.maven.artifact.repository.ArtifactRepository,java.util.Properties)>($r2, repo, executionProperties);
+
+        virtualinvoke session.<org.apache.maven.execution.MavenSession: void setCurrentProject(org.apache.maven.project.MavenProject)>(project);
+
+        $u0 = new org.apache.maven.plugin.descriptor.MojoDescriptor;
+
+        specialinvoke $u0.<org.apache.maven.plugin.descriptor.MojoDescriptor: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.plugin.descriptor.MojoDescriptor: void setPluginDescriptor(org.apache.maven.plugin.descriptor.PluginDescriptor)>(pluginDescriptor);
+
+        virtualinvoke $u0.<org.apache.maven.plugin.descriptor.MojoDescriptor: void setGoal(java.lang.String)>("goal");
+
+        $u1 = new org.apache.maven.plugin.MojoExecution;
+
+        specialinvoke $u1.<org.apache.maven.plugin.MojoExecution: void <init>(org.apache.maven.plugin.descriptor.MojoDescriptor)>($u0);
+
+        $u2 = new org.apache.maven.plugin.PluginParameterExpressionEvaluator;
+
+        specialinvoke $u2.<org.apache.maven.plugin.PluginParameterExpressionEvaluator: void <init>(org.apache.maven.execution.MavenSession,org.apache.maven.plugin.MojoExecution)>(session, $u1);
+
+        $r3 = (org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator) $u2;
+
+        return $r3;
+    }
+
+    protected org.apache.maven.artifact.Artifact createArtifact(java.lang.String, java.lang.String, java.lang.String) throws java.lang.Exception
+    {
+        java.lang.String groupId, artifactId, version;
+        PluginParameterExpressionEvaluatorTest this;
+        org.apache.maven.repository.RepositorySystem $stack6;
+        org.apache.maven.artifact.Artifact $stack7;
+        org.apache.maven.model.Dependency $u0;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        groupId := @parameter0: java.lang.String;
+
+        artifactId := @parameter1: java.lang.String;
+
+        version := @parameter2: java.lang.String;
+
+        $u0 = new org.apache.maven.model.Dependency;
+
+        specialinvoke $u0.<org.apache.maven.model.Dependency: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.model.Dependency: void setGroupId(java.lang.String)>(groupId);
+
+        virtualinvoke $u0.<org.apache.maven.model.Dependency: void setArtifactId(java.lang.String)>(artifactId);
+
+        virtualinvoke $u0.<org.apache.maven.model.Dependency: void setVersion(java.lang.String)>(version);
+
+        virtualinvoke $u0.<org.apache.maven.model.Dependency: void setType(java.lang.String)>("jar");
+
+        virtualinvoke $u0.<org.apache.maven.model.Dependency: void setScope(java.lang.String)>("compile");
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        $stack6 = $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.repository.RepositorySystem factory>;
+
+        $stack7 = interfaceinvoke $stack6.<org.apache.maven.repository.RepositorySystem: org.apache.maven.artifact.Artifact createDependencyArtifact(org.apache.maven.model.Dependency)>($u0);
+
+        return $stack7;
+    }
+
+    private org.apache.maven.plugin.MojoExecution newMojoExecution()
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $u0;
+        org.apache.maven.plugin.descriptor.MojoDescriptor $u1;
+        org.apache.maven.plugin.MojoExecution $u2;
+        org.codehaus.plexus.component.repository.ComponentDescriptor $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $u0 = new org.apache.maven.plugin.descriptor.PluginDescriptor;
+
+        specialinvoke $u0.<org.apache.maven.plugin.descriptor.PluginDescriptor: void <init>()>();
+
+        virtualinvoke $u0.<org.apache.maven.plugin.descriptor.PluginDescriptor: void setArtifactId(java.lang.String)>("my-plugin");
+
+        virtualinvoke $u0.<org.apache.maven.plugin.descriptor.PluginDescriptor: void setGroupId(java.lang.String)>("org.myco.plugins");
+
+        virtualinvoke $u0.<org.apache.maven.plugin.descriptor.PluginDescriptor: void setVersion(java.lang.String)>("1");
+
+        $u1 = new org.apache.maven.plugin.descriptor.MojoDescriptor;
+
+        specialinvoke $u1.<org.apache.maven.plugin.descriptor.MojoDescriptor: void <init>()>();
+
+        virtualinvoke $u1.<org.apache.maven.plugin.descriptor.MojoDescriptor: void setPluginDescriptor(org.apache.maven.plugin.descriptor.PluginDescriptor)>($u0);
+
+        $r0 = (org.codehaus.plexus.component.repository.ComponentDescriptor) $u1;
+
+        virtualinvoke $u0.<org.apache.maven.plugin.descriptor.PluginDescriptor: void addComponentDescriptor(org.codehaus.plexus.component.repository.ComponentDescriptor)>($r0);
+
+        $u2 = new org.apache.maven.plugin.MojoExecution;
+
+        specialinvoke $u2.<org.apache.maven.plugin.MojoExecution: void <init>(org.apache.maven.plugin.descriptor.MojoDescriptor)>($u1);
+
+        return $u2;
+    }
+
+    private org.apache.maven.execution.MavenSession newMavenSession() throws java.lang.Exception
+    {
+        PluginParameterExpressionEvaluatorTest this;
+        org.apache.maven.execution.MavenSession $stack1;
+        org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest $r0;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        $r0 = (org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest) this;
+
+        $stack1 = virtualinvoke $r0.<org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: org.apache.maven.execution.MavenSession createMavenSession(java.io.File)>(null);
+
+        return $stack1;
+    }
+
+    protected java.lang.String getProjectsDirectory()
+    {
+        PluginParameterExpressionEvaluatorTest this;
+
+        this := @this: PluginParameterExpressionEvaluatorTest;
+
+        return null;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String $stack0;
+
+        $stack0 = <java.io.File: java.lang.String separator>;
+
+        <org.apache.maven.plugin.PluginParameterExpressionEvaluatorTest: java.lang.String FS> = $stack0;
+
+        return;
+    }
+}

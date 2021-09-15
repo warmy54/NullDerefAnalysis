@@ -1,0 +1,131 @@
+public class DefaultLegacySupport extends java.lang.Object implements org.apache.maven.plugin.LegacySupport
+{
+    private static final java.lang.ThreadLocal SESSION;
+
+    public void <init>()
+    {
+        DefaultLegacySupport this;
+
+        this := @this: DefaultLegacySupport;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void setSession(org.apache.maven.execution.MavenSession)
+    {
+        java.lang.ThreadLocal $stack3, $stack6, $stack8;
+        java.lang.Object $stack4;
+        java.util.concurrent.atomic.AtomicReference reference, $stack5;
+        org.apache.maven.execution.MavenSession session;
+        DefaultLegacySupport this;
+
+        this := @this: DefaultLegacySupport;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        $stack3 = <org.apache.maven.plugin.internal.DefaultLegacySupport: java.lang.ThreadLocal SESSION>;
+
+        $stack4 = virtualinvoke $stack3.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        reference = (java.util.concurrent.atomic.AtomicReference) $stack4;
+
+        if reference == null goto label1;
+
+        virtualinvoke reference.<java.util.concurrent.atomic.AtomicReference: void set(java.lang.Object)>(null);
+
+     label1:
+        if session != null goto label2;
+
+        if reference == null goto label2;
+
+        $stack8 = <org.apache.maven.plugin.internal.DefaultLegacySupport: java.lang.ThreadLocal SESSION>;
+
+        virtualinvoke $stack8.<java.lang.ThreadLocal: void remove()>();
+
+        goto label3;
+
+     label2:
+        $stack6 = <org.apache.maven.plugin.internal.DefaultLegacySupport: java.lang.ThreadLocal SESSION>;
+
+        $stack5 = new java.util.concurrent.atomic.AtomicReference;
+
+        specialinvoke $stack5.<java.util.concurrent.atomic.AtomicReference: void <init>(java.lang.Object)>(session);
+
+        virtualinvoke $stack6.<java.lang.ThreadLocal: void set(java.lang.Object)>($stack5);
+
+     label3:
+        return;
+    }
+
+    public org.apache.maven.execution.MavenSession getSession()
+    {
+        java.lang.ThreadLocal $stack2;
+        java.lang.Object $stack3, $stack4;
+        java.util.concurrent.atomic.AtomicReference currentSession;
+        DefaultLegacySupport this;
+        org.apache.maven.execution.MavenSession $stack5;
+
+        this := @this: DefaultLegacySupport;
+
+        $stack2 = <org.apache.maven.plugin.internal.DefaultLegacySupport: java.lang.ThreadLocal SESSION>;
+
+        $stack3 = virtualinvoke $stack2.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        currentSession = (java.util.concurrent.atomic.AtomicReference) $stack3;
+
+        if currentSession == null goto label1;
+
+        $stack4 = virtualinvoke currentSession.<java.util.concurrent.atomic.AtomicReference: java.lang.Object get()>();
+
+        $stack5 = (org.apache.maven.execution.MavenSession) $stack4;
+
+        goto label2;
+
+     label1:
+        $stack5 = null;
+
+     label2:
+        return $stack5;
+    }
+
+    public org.eclipse.aether.RepositorySystemSession getRepositorySession()
+    {
+        DefaultLegacySupport this;
+        org.apache.maven.execution.MavenSession session;
+        org.eclipse.aether.RepositorySystemSession $stack3;
+        org.apache.maven.plugin.internal.DefaultLegacySupport $r0;
+
+        this := @this: DefaultLegacySupport;
+
+        $r0 = (org.apache.maven.plugin.internal.DefaultLegacySupport) this;
+
+        session = virtualinvoke $r0.<org.apache.maven.plugin.internal.DefaultLegacySupport: org.apache.maven.execution.MavenSession getSession()>();
+
+        if session == null goto label1;
+
+        $stack3 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.eclipse.aether.RepositorySystemSession getRepositorySession()>();
+
+        goto label2;
+
+     label1:
+        $stack3 = null;
+
+     label2:
+        return $stack3;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.InheritableThreadLocal $stack0;
+
+        $stack0 = new java.lang.InheritableThreadLocal;
+
+        specialinvoke $stack0.<java.lang.InheritableThreadLocal: void <init>()>();
+
+        <org.apache.maven.plugin.internal.DefaultLegacySupport: java.lang.ThreadLocal SESSION> = $stack0;
+
+        return;
+    }
+}

@@ -1,0 +1,2908 @@
+public class GNImageAlignerCL extends org.bytedeco.javacv.GNImageAligner implements org.bytedeco.javacv.ImageAlignerCL
+{
+    private final org.bytedeco.javacv.JavaCVCL context;
+    private com.jogamp.opencl.CLImage2d[] templateCL;
+    private com.jogamp.opencl.CLImage2d[] targetCL;
+    private com.jogamp.opencl.CLImage2d[] transformedCL;
+    private com.jogamp.opencl.CLImage2d[] residualCL;
+    private com.jogamp.opencl.gl.CLGLImage2d[] maskCL;
+    private int[] maskrb;
+    private int[] maskfb;
+    private com.jogamp.opencl.CLImage2d[] imagesCL;
+    private org.bytedeco.javacv.ImageTransformerCL$InputData inputData;
+    private org.bytedeco.javacv.ImageTransformerCL$OutputData outputData;
+    private boolean[] templateChanged;
+    static final boolean $assertionsDisabled;
+
+    public void <init>(org.bytedeco.javacv.ImageTransformerCL, org.bytedeco.javacv.ImageTransformer$Parameters, com.jogamp.opencl.CLImage2d, double[], com.jogamp.opencl.CLImage2d)
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.ImageTransformerCL transformer;
+        org.bytedeco.javacv.ImageTransformer$Parameters initialParameters;
+        com.jogamp.opencl.CLImage2d template0, target0;
+        double[] roiPts;
+        org.bytedeco.javacv.GNImageAligner$Settings $u0;
+        org.bytedeco.javacv.GNImageAlignerCL $r0;
+
+        this := @this: GNImageAlignerCL;
+
+        transformer := @parameter0: org.bytedeco.javacv.ImageTransformerCL;
+
+        initialParameters := @parameter1: org.bytedeco.javacv.ImageTransformer$Parameters;
+
+        template0 := @parameter2: com.jogamp.opencl.CLImage2d;
+
+        roiPts := @parameter3: double[];
+
+        target0 := @parameter4: com.jogamp.opencl.CLImage2d;
+
+        $u0 = new org.bytedeco.javacv.GNImageAligner$Settings;
+
+        specialinvoke $u0.<org.bytedeco.javacv.GNImageAligner$Settings: void <init>()>();
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        specialinvoke $r0.<org.bytedeco.javacv.GNImageAlignerCL: void <init>(org.bytedeco.javacv.ImageTransformerCL,org.bytedeco.javacv.ImageTransformer$Parameters,com.jogamp.opencl.CLImage2d,double[],com.jogamp.opencl.CLImage2d,org.bytedeco.javacv.GNImageAligner$Settings)>(transformer, initialParameters, template0, roiPts, target0, $u0);
+
+        return;
+    }
+
+    public void <init>(org.bytedeco.javacv.ImageTransformerCL, org.bytedeco.javacv.ImageTransformer$Parameters, com.jogamp.opencl.CLImage2d, double[], com.jogamp.opencl.CLImage2d, org.bytedeco.javacv.GNImageAligner$Settings)
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.ImageTransformerCL transformer;
+        org.bytedeco.javacv.ImageTransformer$Parameters initialParameters;
+        com.jogamp.opencl.CLImage2d[] $stack15, $stack28, $stack30, $stack32, $stack34, $stack59, $stack62, $stack65, $stack68;
+        org.bytedeco.javacv.GNImageAligner$Settings settings;
+        org.bytedeco.javacv.JavaCVCL $stack16, $stack41, $stack43;
+        int minLevel, maxLevel, $stack17, $stack19, $stack21, $stack23, $stack25, $stack27, $stack29, $stack31, $stack33, $stack35, $stack37, $stack39, $stack46, $stack48, $stack54, $stack79, $stack90, $stack100, $stack184, w, $stack170, h, i, $stack166, $stack127, $stack71, $stack73, $stack75;
+        org.bytedeco.opencv.opencv_core.IplImage[] $stack18, $stack20, $stack22, $stack24, $stack26;
+        com.jogamp.opencl.gl.CLGLImage2d[] $stack36, $stack80, $stack84, $stack88, $stack93;
+        int[] $stack38, $stack40, $stack45, $stack47, $stack77, $stack70, $stack72, $stack74;
+        com.jogamp.opencl.CLImage2d template0, target0, $stack60, $stack63, $stack66, $stack69;
+        com.jogamp.opencl.gl.CLGLContext c;
+        com.jogamp.opengl.GL2 gl;
+        com.jogamp.opencl.CLImageFormat$ChannelType $stack50;
+        com.jogamp.opencl.CLImageFormat$ChannelOrder $stack51;
+        boolean[] $stack55, $stack56;
+        boolean $stack57, $stack76;
+        double[] roiPts;
+        com.jogamp.opencl.CLMemory$Mem[] $stack58, $stack61, $stack78, $stack64, $stack67;
+        com.jogamp.opencl.gl.CLGLImage2d $stack81, $stack85, $stack89, $stack94;
+        java.io.PrintStream $stack83;
+        java.lang.StringBuilder $stack86, $stack87, $stack91, $stack92, $stack96, $u2;
+        com.jogamp.opencl.CLImageFormat $stack95, $u0;
+        java.lang.String $stack97;
+        java.lang.AssertionError $u1;
+        org.bytedeco.javacv.ImageTransformerCL$InputData $u3;
+        org.bytedeco.javacv.ImageTransformerCL$OutputData $u4;
+        org.bytedeco.javacv.ImageTransformer $r0;
+        org.bytedeco.javacv.GNImageAlignerCL $r1, $r2, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r33, $r34, $r35, $r36, $r37, $r38, $r39;
+        org.bytedeco.javacv.ImageAligner$Settings $r3;
+
+        this := @this: GNImageAlignerCL;
+
+        transformer := @parameter0: org.bytedeco.javacv.ImageTransformerCL;
+
+        initialParameters := @parameter1: org.bytedeco.javacv.ImageTransformer$Parameters;
+
+        template0 := @parameter2: com.jogamp.opencl.CLImage2d;
+
+        roiPts := @parameter3: double[];
+
+        target0 := @parameter4: com.jogamp.opencl.CLImage2d;
+
+        settings := @parameter5: org.bytedeco.javacv.GNImageAligner$Settings;
+
+        $r0 = (org.bytedeco.javacv.ImageTransformer) transformer;
+
+        specialinvoke this.<org.bytedeco.javacv.GNImageAligner: void <init>(org.bytedeco.javacv.ImageTransformer,org.bytedeco.javacv.ImageTransformer$Parameters)>($r0, initialParameters);
+
+        $stack15 = newarray (com.jogamp.opencl.CLImage2d)[5];
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r1.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] imagesCL> = $stack15;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r3 = (org.bytedeco.javacv.ImageAligner$Settings) settings;
+
+        virtualinvoke $r2.<org.bytedeco.javacv.GNImageAlignerCL: void setSettings(org.bytedeco.javacv.ImageAligner$Settings)>($r3);
+
+        $stack16 = interfaceinvoke transformer.<org.bytedeco.javacv.ImageTransformerCL: org.bytedeco.javacv.JavaCVCL getContext()>();
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context> = $stack16;
+
+        minLevel = settings.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMin>;
+
+        maxLevel = settings.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMax>;
+
+        $stack17 = maxLevel + 1;
+
+        $stack18 = newarray (org.bytedeco.opencv.opencv_core.IplImage)[$stack17];
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r5.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] template> = $stack18;
+
+        $stack19 = maxLevel + 1;
+
+        $stack20 = newarray (org.bytedeco.opencv.opencv_core.IplImage)[$stack19];
+
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r6.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] target> = $stack20;
+
+        $stack21 = maxLevel + 1;
+
+        $stack22 = newarray (org.bytedeco.opencv.opencv_core.IplImage)[$stack21];
+
+        $r7 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r7.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] transformed> = $stack22;
+
+        $stack23 = maxLevel + 1;
+
+        $stack24 = newarray (org.bytedeco.opencv.opencv_core.IplImage)[$stack23];
+
+        $r8 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r8.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] residual> = $stack24;
+
+        $stack25 = maxLevel + 1;
+
+        $stack26 = newarray (org.bytedeco.opencv.opencv_core.IplImage)[$stack25];
+
+        $r9 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r9.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] mask> = $stack26;
+
+        $stack27 = maxLevel + 1;
+
+        $stack28 = newarray (com.jogamp.opencl.CLImage2d)[$stack27];
+
+        $r10 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r10.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL> = $stack28;
+
+        $stack29 = maxLevel + 1;
+
+        $stack30 = newarray (com.jogamp.opencl.CLImage2d)[$stack29];
+
+        $r11 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r11.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL> = $stack30;
+
+        $stack31 = maxLevel + 1;
+
+        $stack32 = newarray (com.jogamp.opencl.CLImage2d)[$stack31];
+
+        $r12 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r12.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] transformedCL> = $stack32;
+
+        $stack33 = maxLevel + 1;
+
+        $stack34 = newarray (com.jogamp.opencl.CLImage2d)[$stack33];
+
+        $r13 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r13.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] residualCL> = $stack34;
+
+        $stack35 = maxLevel + 1;
+
+        $stack36 = newarray (com.jogamp.opencl.gl.CLGLImage2d)[$stack35];
+
+        $r14 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r14.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL> = $stack36;
+
+        $stack37 = maxLevel + 1;
+
+        $stack38 = newarray (int)[$stack37];
+
+        $r15 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r15.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskrb> = $stack38;
+
+        $stack39 = maxLevel + 1;
+
+        $stack40 = newarray (int)[$stack39];
+
+        $r16 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r16.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskfb> = $stack40;
+
+        if template0 == null goto label01;
+
+        $stack184 = template0.<com.jogamp.opencl.CLImage2d: int width>;
+
+        goto label02;
+
+     label01:
+        $stack184 = target0.<com.jogamp.opencl.CLImage2d: int width>;
+
+     label02:
+        w = $stack184;
+
+        if template0 == null goto label03;
+
+        $stack170 = template0.<com.jogamp.opencl.CLImage2d: int height>;
+
+        goto label04;
+
+     label03:
+        $stack170 = target0.<com.jogamp.opencl.CLImage2d: int height>;
+
+     label04:
+        h = $stack170;
+
+        $r17 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack41 = $r17.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        c = virtualinvoke $stack41.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.gl.CLGLContext getCLGLContext()>();
+
+        $r18 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack43 = $r18.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        gl = virtualinvoke $stack43.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.GL2 getGL2()>();
+
+        $stack46 = maxLevel + 1;
+
+        $r19 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack45 = $r19.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskrb>;
+
+        interfaceinvoke gl.<com.jogamp.opengl.GL2: void glGenRenderbuffers(int,int[],int)>($stack46, $stack45, 0);
+
+        $stack48 = maxLevel + 1;
+
+        $r20 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack47 = $r20.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskfb>;
+
+        interfaceinvoke gl.<com.jogamp.opengl.GL2: void glGenFramebuffers(int,int[],int)>($stack48, $stack47, 0);
+
+        $u0 = new com.jogamp.opencl.CLImageFormat;
+
+        $stack51 = <com.jogamp.opencl.CLImageFormat$ChannelOrder: com.jogamp.opencl.CLImageFormat$ChannelOrder RGBA>;
+
+        $stack50 = <com.jogamp.opencl.CLImageFormat$ChannelType: com.jogamp.opencl.CLImageFormat$ChannelType FLOAT>;
+
+        specialinvoke $u0.<com.jogamp.opencl.CLImageFormat: void <init>(com.jogamp.opencl.CLImageFormat$ChannelOrder,com.jogamp.opencl.CLImageFormat$ChannelType)>($stack51, $stack50);
+
+        i = minLevel;
+
+     label05:
+        if i > maxLevel goto label11;
+
+        $r21 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack59 = $r21.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        $stack166 = i;
+
+        if i != minLevel goto label06;
+
+        if template0 == null goto label06;
+
+        $stack60 = template0;
+
+        goto label07;
+
+     label06:
+        $stack58 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        $stack60 = virtualinvoke c.<com.jogamp.opencl.gl.CLGLContext: com.jogamp.opencl.CLImage2d createImage2d(int,int,com.jogamp.opencl.CLImageFormat,com.jogamp.opencl.CLMemory$Mem[])>(w, h, $u0, $stack58);
+
+     label07:
+        $stack59[$stack166] = $stack60;
+
+        $r22 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack62 = $r22.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL>;
+
+        $stack127 = i;
+
+        if i != minLevel goto label08;
+
+        if target0 == null goto label08;
+
+        $stack63 = target0;
+
+        goto label09;
+
+     label08:
+        $stack61 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        $stack63 = virtualinvoke c.<com.jogamp.opencl.gl.CLGLContext: com.jogamp.opencl.CLImage2d createImage2d(int,int,com.jogamp.opencl.CLImageFormat,com.jogamp.opencl.CLMemory$Mem[])>(w, h, $u0, $stack61);
+
+     label09:
+        $stack62[$stack127] = $stack63;
+
+        $r23 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack65 = $r23.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] transformedCL>;
+
+        $stack64 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        $stack66 = virtualinvoke c.<com.jogamp.opencl.gl.CLGLContext: com.jogamp.opencl.CLImage2d createImage2d(int,int,com.jogamp.opencl.CLImageFormat,com.jogamp.opencl.CLMemory$Mem[])>(w, h, $u0, $stack64);
+
+        $stack65[i] = $stack66;
+
+        $r24 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack68 = $r24.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] residualCL>;
+
+        $stack67 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        $stack69 = virtualinvoke c.<com.jogamp.opencl.gl.CLGLContext: com.jogamp.opencl.CLImage2d createImage2d(int,int,com.jogamp.opencl.CLImageFormat,com.jogamp.opencl.CLMemory$Mem[])>(w, h, $u0, $stack67);
+
+        $stack68[i] = $stack69;
+
+        $r25 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack70 = $r25.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskrb>;
+
+        $stack71 = $stack70[i];
+
+        interfaceinvoke gl.<com.jogamp.opengl.GL2: void glBindRenderbuffer(int,int)>(36161, $stack71);
+
+        $r26 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack72 = $r26.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskfb>;
+
+        $stack73 = $stack72[i];
+
+        interfaceinvoke gl.<com.jogamp.opengl.GL2: void glBindFramebuffer(int,int)>(36160, $stack73);
+
+        interfaceinvoke gl.<com.jogamp.opengl.GL2: void glRenderbufferStorage(int,int,int,int)>(36161, 32832, w, h);
+
+        $r27 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack74 = $r27.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskrb>;
+
+        $stack75 = $stack74[i];
+
+        interfaceinvoke gl.<com.jogamp.opengl.GL2: void glFramebufferRenderbuffer(int,int,int,int)>(36160, 36064, 36161, $stack75);
+
+        $stack76 = <org.bytedeco.javacv.GNImageAlignerCL: boolean $assertionsDisabled>;
+
+        if $stack76 != 0 goto label10;
+
+        $stack100 = interfaceinvoke gl.<com.jogamp.opengl.GL2: int glCheckFramebufferStatus(int)>(36160);
+
+        if $stack100 == 36053 goto label10;
+
+        $u1 = new java.lang.AssertionError;
+
+        specialinvoke $u1.<java.lang.AssertionError: void <init>()>();
+
+        throw $u1;
+
+     label10:
+        $r28 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack80 = $r28.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r29 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack77 = $r29.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskrb>;
+
+        $stack79 = $stack77[i];
+
+        $stack78 = newarray (com.jogamp.opencl.CLMemory$Mem)[0];
+
+        $stack81 = virtualinvoke c.<com.jogamp.opencl.gl.CLGLContext: com.jogamp.opencl.gl.CLGLImage2d createFromGLRenderbuffer(int,com.jogamp.opencl.CLMemory$Mem[])>($stack79, $stack78);
+
+        $stack80[i] = $stack81;
+
+        $stack83 = <java.lang.System: java.io.PrintStream out>;
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        $r30 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack84 = $r30.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $stack85 = $stack84[i];
+
+        $stack86 = virtualinvoke $u2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack85);
+
+        $stack87 = virtualinvoke $stack86.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r31 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack88 = $r31.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $stack89 = $stack88[i];
+
+        $stack90 = virtualinvoke $stack89.<com.jogamp.opencl.gl.CLGLImage2d: int getElementSize()>();
+
+        $stack91 = virtualinvoke $stack87.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack90);
+
+        $stack92 = virtualinvoke $stack91.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r32 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack93 = $r32.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $stack94 = $stack93[i];
+
+        $stack95 = virtualinvoke $stack94.<com.jogamp.opencl.gl.CLGLImage2d: com.jogamp.opencl.CLImageFormat getFormat()>();
+
+        $stack96 = virtualinvoke $stack92.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack95);
+
+        $stack97 = virtualinvoke $stack96.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack83.<java.io.PrintStream: void println(java.lang.String)>($stack97);
+
+        w = w / 2;
+
+        h = h / 2;
+
+        i = i + 1;
+
+        goto label05;
+
+     label11:
+        $u3 = new org.bytedeco.javacv.ImageTransformerCL$InputData;
+
+        specialinvoke $u3.<org.bytedeco.javacv.ImageTransformerCL$InputData: void <init>()>();
+
+        $r33 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r33.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData> = $u3;
+
+        $u4 = new org.bytedeco.javacv.ImageTransformerCL$OutputData;
+
+        specialinvoke $u4.<org.bytedeco.javacv.ImageTransformerCL$OutputData: void <init>(boolean)>(0);
+
+        $r34 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r34.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$OutputData outputData> = $u4;
+
+        $stack54 = maxLevel + 1;
+
+        $stack55 = newarray (boolean)[$stack54];
+
+        $r35 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r35.<org.bytedeco.javacv.GNImageAlignerCL: boolean[] templateChanged> = $stack55;
+
+        $r36 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack56 = $r36.<org.bytedeco.javacv.GNImageAlignerCL: boolean[] templateChanged>;
+
+        staticinvoke <java.util.Arrays: void fill(boolean[],boolean)>($stack56, 1);
+
+        $stack57 = settings.<org.bytedeco.javacv.GNImageAligner$Settings: boolean constrained>;
+
+        $r37 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r37.<org.bytedeco.javacv.GNImageAlignerCL: void setConstrained(boolean)>($stack57);
+
+        $r38 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r38.<org.bytedeco.javacv.GNImageAlignerCL: void setTemplateImageCL(com.jogamp.opencl.CLImage2d,double[])>(template0, roiPts);
+
+        $r39 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r39.<org.bytedeco.javacv.GNImageAlignerCL: void setTargetImageCL(com.jogamp.opencl.CLImage2d)>(target0);
+
+        return;
+    }
+
+    public void release()
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.GNImageAligner$Settings $stack4, $stack5;
+        int minLevel, maxLevel, $stack15, $stack17, i;
+        com.jogamp.opencl.CLImage2d[] $stack6, $stack19, $stack23, $stack24, $stack27, $stack29, $stack35, $stack43;
+        int[] $stack13, $stack14, $stack16, $stack12;
+        com.jogamp.opencl.gl.CLGLImage2d[] $stack25, $stack31;
+        com.jogamp.opencl.CLImage2d $stack28, $stack30, $stack36, $stack44;
+        com.jogamp.opencl.gl.CLGLImage2d $stack32;
+        org.bytedeco.javacv.JavaCVCL $stack7, $stack10;
+        com.jogamp.opengl.GLContext $stack8;
+        com.jogamp.opengl.GL2 i#32;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        minLevel = $stack4.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMin>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack5 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        maxLevel = $stack5.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMax>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        if $stack6 == null goto label5;
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack19 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL>;
+
+        if $stack19 == null goto label5;
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack23 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] transformedCL>;
+
+        if $stack23 == null goto label5;
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack24 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] residualCL>;
+
+        if $stack24 == null goto label5;
+
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack25 = $r6.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        if $stack25 == null goto label5;
+
+        i = minLevel;
+
+     label1:
+        if i > maxLevel goto label4;
+
+        if i <= minLevel goto label2;
+
+        $r7 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack43 = $r7.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        $stack44 = $stack43[i];
+
+        virtualinvoke $stack44.<com.jogamp.opencl.CLImage2d: void release()>();
+
+     label2:
+        if i <= minLevel goto label3;
+
+        $r8 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack35 = $r8.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL>;
+
+        $stack36 = $stack35[i];
+
+        virtualinvoke $stack36.<com.jogamp.opencl.CLImage2d: void release()>();
+
+     label3:
+        $r9 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack27 = $r9.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] transformedCL>;
+
+        $stack28 = $stack27[i];
+
+        virtualinvoke $stack28.<com.jogamp.opencl.CLImage2d: void release()>();
+
+        $r10 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack29 = $r10.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] residualCL>;
+
+        $stack30 = $stack29[i];
+
+        virtualinvoke $stack30.<com.jogamp.opencl.CLImage2d: void release()>();
+
+        $r11 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack31 = $r11.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $stack32 = $stack31[i];
+
+        virtualinvoke $stack32.<com.jogamp.opencl.gl.CLGLImage2d: void release()>();
+
+        i = i + 1;
+
+        goto label1;
+
+     label4:
+        $r12 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r12.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL> = null;
+
+        $r13 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r13.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] residualCL> = null;
+
+        $r14 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r14.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] transformedCL> = null;
+
+        $r15 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r15.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL> = null;
+
+        $r16 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r16.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL> = null;
+
+     label5:
+        $r17 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack7 = $r17.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $stack8 = virtualinvoke $stack7.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.GLContext getGLContext()>();
+
+        virtualinvoke $stack8.<com.jogamp.opengl.GLContext: int makeCurrent()>();
+
+        $r18 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack10 = $r18.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        i#32 = virtualinvoke $stack10.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.GL2 getGL2()>();
+
+        $r19 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack12 = $r19.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskfb>;
+
+        if $stack12 == null goto label6;
+
+        $stack17 = maxLevel + 1;
+
+        $r20 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack16 = $r20.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskfb>;
+
+        interfaceinvoke i#32.<com.jogamp.opengl.GL2: void glDeleteFramebuffers(int,int[],int)>($stack17, $stack16, 0);
+
+        $r21 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r21.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskfb> = null;
+
+     label6:
+        $r22 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack13 = $r22.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskrb>;
+
+        if $stack13 == null goto label7;
+
+        $stack15 = maxLevel + 1;
+
+        $r23 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack14 = $r23.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskrb>;
+
+        interfaceinvoke i#32.<com.jogamp.opengl.GL2: void glDeleteRenderbuffers(int,int[],int)>($stack15, $stack14, 0);
+
+        $r24 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r24.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskrb> = null;
+
+     label7:
+        return;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.GNImageAlignerCL $r0;
+
+        this := @this: GNImageAlignerCL;
+
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r0.<org.bytedeco.javacv.GNImageAlignerCL: void release()>();
+
+        return;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getTemplateImage()
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.opencv.opencv_core.IplImage $stack1;
+        org.bytedeco.javacv.GNImageAlignerCL $r0;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage getTemplateImage(boolean)>(1);
+
+        return $stack1;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getTemplateImage(boolean)
+    {
+        GNImageAlignerCL this;
+        int $stack2, $stack5, $stack8, $stack11, $stack14;
+        boolean[] $stack3, $stack9;
+        boolean $stack4, blocking;
+        org.bytedeco.opencv.opencv_core.IplImage[] $stack6, $stack10, $stack15;
+        org.bytedeco.opencv.opencv_core.IplImage $stack7, $stack16, $stack17;
+        org.bytedeco.javacv.JavaCVCL $stack12;
+        com.jogamp.opencl.CLImage2d $stack13;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11;
+
+        this := @this: GNImageAlignerCL;
+
+        blocking := @parameter0: boolean;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack3 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: boolean[] templateChanged>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack4 = $stack3[$stack2];
+
+        if $stack4 == 0 goto label1;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack9 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: boolean[] templateChanged>;
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack8 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack9[$stack8] = 0;
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack10 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] template>;
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack11 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack12 = $r6.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r7 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack13 = virtualinvoke $r7.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d getTemplateImageCL()>();
+
+        $r8 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack15 = $r8.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] template>;
+
+        $r9 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack14 = $r9.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack16 = $stack15[$stack14];
+
+        $stack17 = virtualinvoke $stack12.<org.bytedeco.javacv.JavaCVCL: org.bytedeco.opencv.opencv_core.IplImage readImage(com.jogamp.opencl.CLImage2d,org.bytedeco.opencv.opencv_core.IplImage,boolean)>($stack13, $stack16, blocking);
+
+        $stack10[$stack11] = $stack17;
+
+        return $stack17;
+
+     label1:
+        $r10 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r10.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] template>;
+
+        $r11 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack5 = $r11.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack7 = $stack6[$stack5];
+
+        return $stack7;
+    }
+
+    public void setTemplateImage(org.bytedeco.opencv.opencv_core.IplImage, double[])
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.GNImageAligner$Settings $stack3, $stack9;
+        int $stack4, $stack10;
+        com.jogamp.opencl.CLImage2d[] $stack5, $stack11;
+        org.bytedeco.opencv.opencv_core.IplImage template0;
+        com.jogamp.opencl.CLImage2d $stack6, $stack12;
+        org.bytedeco.javacv.JavaCVCL $stack7;
+        double[] roiPts;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: GNImageAlignerCL;
+
+        template0 := @parameter0: org.bytedeco.opencv.opencv_core.IplImage;
+
+        roiPts := @parameter1: double[];
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack7 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack5 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack3 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack4 = $stack3.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMin>;
+
+        $stack6 = $stack5[$stack4];
+
+        virtualinvoke $stack7.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLImage2d writeImage(com.jogamp.opencl.CLImage2d,org.bytedeco.opencv.opencv_core.IplImage,boolean)>($stack6, template0, 0);
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack11 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack9 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack10 = $stack9.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMin>;
+
+        $stack12 = $stack11[$stack10];
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r5.<org.bytedeco.javacv.GNImageAlignerCL: void setTemplateImageCL(com.jogamp.opencl.CLImage2d,double[])>($stack12, roiPts);
+
+        return;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getTargetImage()
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.opencv.opencv_core.IplImage $stack1;
+        org.bytedeco.javacv.GNImageAlignerCL $r0;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage getTargetImage(boolean)>(1);
+
+        return $stack1;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getTargetImage(boolean)
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.opencv.opencv_core.IplImage[] $stack2, $stack7;
+        int $stack3, $stack6;
+        org.bytedeco.javacv.JavaCVCL $stack4;
+        com.jogamp.opencl.CLImage2d $stack5;
+        boolean blocking;
+        org.bytedeco.opencv.opencv_core.IplImage $stack8, $stack9;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: GNImageAlignerCL;
+
+        blocking := @parameter0: boolean;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] target>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack4 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack5 = virtualinvoke $r3.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d getTargetImageCL()>();
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack7 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] target>;
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack8 = $stack7[$stack6];
+
+        $stack9 = virtualinvoke $stack4.<org.bytedeco.javacv.JavaCVCL: org.bytedeco.opencv.opencv_core.IplImage readImage(com.jogamp.opencl.CLImage2d,org.bytedeco.opencv.opencv_core.IplImage,boolean)>($stack5, $stack8, blocking);
+
+        $stack2[$stack3] = $stack9;
+
+        return $stack9;
+    }
+
+    public void setTargetImage(org.bytedeco.opencv.opencv_core.IplImage)
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.GNImageAligner$Settings $stack2, $stack8;
+        int $stack3, $stack9;
+        com.jogamp.opencl.CLImage2d[] $stack4, $stack10;
+        org.bytedeco.opencv.opencv_core.IplImage target0;
+        com.jogamp.opencl.CLImage2d $stack5, $stack11;
+        org.bytedeco.javacv.JavaCVCL $stack6;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: GNImageAlignerCL;
+
+        target0 := @parameter0: org.bytedeco.opencv.opencv_core.IplImage;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack4 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack3 = $stack2.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMin>;
+
+        $stack5 = $stack4[$stack3];
+
+        virtualinvoke $stack6.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opencl.CLImage2d writeImage(com.jogamp.opencl.CLImage2d,org.bytedeco.opencv.opencv_core.IplImage,boolean)>($stack5, target0, 0);
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack10 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL>;
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack8 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack9 = $stack8.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMin>;
+
+        $stack11 = $stack10[$stack9];
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r5.<org.bytedeco.javacv.GNImageAlignerCL: void setTargetImageCL(com.jogamp.opencl.CLImage2d)>($stack11);
+
+        return;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getTransformedImage()
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.opencv.opencv_core.IplImage $stack1;
+        org.bytedeco.javacv.GNImageAlignerCL $r0;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage getTransformedImage(boolean)>(1);
+
+        return $stack1;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getTransformedImage(boolean)
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.opencv.opencv_core.IplImage[] $stack2, $stack7;
+        int $stack3, $stack6;
+        org.bytedeco.javacv.JavaCVCL $stack4;
+        com.jogamp.opencl.CLImage2d $stack5;
+        boolean blocking;
+        org.bytedeco.opencv.opencv_core.IplImage $stack8, $stack9;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: GNImageAlignerCL;
+
+        blocking := @parameter0: boolean;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] transformed>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack4 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack5 = virtualinvoke $r3.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d getTransformedImageCL()>();
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack7 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] transformed>;
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack8 = $stack7[$stack6];
+
+        $stack9 = virtualinvoke $stack4.<org.bytedeco.javacv.JavaCVCL: org.bytedeco.opencv.opencv_core.IplImage readImage(com.jogamp.opencl.CLImage2d,org.bytedeco.opencv.opencv_core.IplImage,boolean)>($stack5, $stack8, blocking);
+
+        $stack2[$stack3] = $stack9;
+
+        return $stack9;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getResidualImage()
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.opencv.opencv_core.IplImage $stack1;
+        org.bytedeco.javacv.GNImageAlignerCL $r0;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage getResidualImage(boolean)>(1);
+
+        return $stack1;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getResidualImage(boolean)
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.opencv.opencv_core.IplImage[] $stack2, $stack7;
+        int $stack3, $stack6;
+        org.bytedeco.javacv.JavaCVCL $stack4;
+        com.jogamp.opencl.CLImage2d $stack5;
+        boolean blocking;
+        org.bytedeco.opencv.opencv_core.IplImage $stack8, $stack9;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5;
+
+        this := @this: GNImageAlignerCL;
+
+        blocking := @parameter0: boolean;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] residual>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack4 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack5 = virtualinvoke $r3.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d getResidualImageCL()>();
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack7 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] residual>;
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack8 = $stack7[$stack6];
+
+        $stack9 = virtualinvoke $stack4.<org.bytedeco.javacv.JavaCVCL: org.bytedeco.opencv.opencv_core.IplImage readImage(com.jogamp.opencl.CLImage2d,org.bytedeco.opencv.opencv_core.IplImage,boolean)>($stack5, $stack8, blocking);
+
+        $stack2[$stack3] = $stack9;
+
+        return $stack9;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getMaskImage()
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.opencv.opencv_core.IplImage $stack1;
+        org.bytedeco.javacv.GNImageAlignerCL $r0;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage getMaskImage(boolean)>(1);
+
+        return $stack1;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage getMaskImage(boolean)
+    {
+        GNImageAlignerCL this;
+        int $stack2, $stack7, $stack10, $stack14, $stack18;
+        com.jogamp.opencl.gl.CLGLImage2d[] $stack3, $stack15;
+        com.jogamp.opencl.gl.CLGLImage2d $stack4, $stack16;
+        org.bytedeco.javacv.JavaCVCL $stack5, $stack8, $stack17;
+        org.bytedeco.opencv.opencv_core.IplImage[] $stack6, $stack11, $stack19;
+        com.jogamp.opencl.CLImage2d $stack9;
+        boolean blocking;
+        org.bytedeco.opencv.opencv_core.IplImage $stack12, $stack13, $stack20;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r14, $r15;
+        com.jogamp.opencl.CLObject $r3, $r13;
+
+        this := @this: GNImageAlignerCL;
+
+        blocking := @parameter0: boolean;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack5 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack3 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack4 = $stack3[$stack2];
+
+        $r3 = (com.jogamp.opencl.CLObject) $stack4;
+
+        virtualinvoke $stack5.<org.bytedeco.javacv.JavaCVCL: void acquireGLObject(com.jogamp.opencl.CLObject)>($r3);
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] mask>;
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack7 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack8 = $r6.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r7 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack9 = virtualinvoke $r7.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d getMaskImageCL()>();
+
+        $r8 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack11 = $r8.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] mask>;
+
+        $r9 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack10 = $r9.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack12 = $stack11[$stack10];
+
+        $stack13 = virtualinvoke $stack8.<org.bytedeco.javacv.JavaCVCL: org.bytedeco.opencv.opencv_core.IplImage readImage(com.jogamp.opencl.CLImage2d,org.bytedeco.opencv.opencv_core.IplImage,boolean)>($stack9, $stack12, blocking);
+
+        $stack6[$stack7] = $stack13;
+
+        $r10 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack17 = $r10.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r11 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack15 = $r11.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r12 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack14 = $r12.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack16 = $stack15[$stack14];
+
+        $r13 = (com.jogamp.opencl.CLObject) $stack16;
+
+        virtualinvoke $stack17.<org.bytedeco.javacv.JavaCVCL: void releaseGLObject(com.jogamp.opencl.CLObject)>($r13);
+
+        $r14 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack19 = $r14.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] mask>;
+
+        $r15 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack18 = $r15.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack20 = $stack19[$stack18];
+
+        return $stack20;
+    }
+
+    public double getRMSE()
+    {
+        GNImageAlignerCL this;
+        boolean $stack1;
+        double $stack2;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: boolean residualUpdateNeeded>;
+
+        if $stack1 == 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r1.<org.bytedeco.javacv.GNImageAlignerCL: void doRoi()>();
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r2.<org.bytedeco.javacv.GNImageAlignerCL: void doResidual()>();
+
+     label1:
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: double RMSE>;
+
+        return $stack2;
+    }
+
+    public int getPixelCount()
+    {
+        GNImageAlignerCL this;
+        boolean $stack1;
+        org.bytedeco.javacv.ImageTransformerCL$OutputData $stack2;
+        int $stack3;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: boolean residualUpdateNeeded>;
+
+        if $stack1 == 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r1.<org.bytedeco.javacv.GNImageAlignerCL: void doRoi()>();
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r2.<org.bytedeco.javacv.GNImageAlignerCL: void doResidual()>();
+
+     label1:
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$OutputData outputData>;
+
+        $stack3 = $stack2.<org.bytedeco.javacv.ImageTransformerCL$OutputData: int dstCount>;
+
+        return $stack3;
+    }
+
+    public int getOutlierCount()
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.ImageTransformerCL$OutputData $stack1;
+        int $stack2;
+        org.bytedeco.javacv.GNImageAlignerCL $r0;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$OutputData outputData>;
+
+        $stack2 = $stack1.<org.bytedeco.javacv.ImageTransformerCL$OutputData: int dstCountOutlier>;
+
+        return $stack2;
+    }
+
+    public org.bytedeco.opencv.opencv_core.CvRect getRoi()
+    {
+        GNImageAlignerCL this;
+        boolean $stack1;
+        org.bytedeco.javacv.ImageTransformerCL$InputData $stack2, $stack6, $stack9, $stack12;
+        int $stack3, $stack7, $stack10, $stack13;
+        org.bytedeco.opencv.opencv_core.CvRect $stack4, $stack5, $stack8, $stack11, $stack14;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: boolean residualUpdateNeeded>;
+
+        if $stack1 == 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r1.<org.bytedeco.javacv.GNImageAlignerCL: void doRoi()>();
+
+     label1:
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack4 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvRect roi>;
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $stack3 = $stack2.<org.bytedeco.javacv.ImageTransformerCL$InputData: int roiX>;
+
+        $stack5 = virtualinvoke $stack4.<org.bytedeco.opencv.opencv_core.CvRect: org.bytedeco.opencv.opencv_core.CvRect x(int)>($stack3);
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $stack7 = $stack6.<org.bytedeco.javacv.ImageTransformerCL$InputData: int roiY>;
+
+        $stack8 = virtualinvoke $stack5.<org.bytedeco.opencv.opencv_core.CvRect: org.bytedeco.opencv.opencv_core.CvRect y(int)>($stack7);
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack9 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $stack10 = $stack9.<org.bytedeco.javacv.ImageTransformerCL$InputData: int roiWidth>;
+
+        $stack11 = virtualinvoke $stack8.<org.bytedeco.opencv.opencv_core.CvRect: org.bytedeco.opencv.opencv_core.CvRect width(int)>($stack10);
+
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack12 = $r6.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $stack13 = $stack12.<org.bytedeco.javacv.ImageTransformerCL$InputData: int roiHeight>;
+
+        $stack14 = virtualinvoke $stack11.<org.bytedeco.opencv.opencv_core.CvRect: org.bytedeco.opencv.opencv_core.CvRect height(int)>($stack13);
+
+        return $stack14;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage[] getImages()
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.opencv.opencv_core.IplImage[] $stack1;
+        org.bytedeco.javacv.GNImageAlignerCL $r0;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = virtualinvoke $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] getImages(boolean)>(1);
+
+        return $stack1;
+    }
+
+    public org.bytedeco.opencv.opencv_core.IplImage[] getImages(boolean)
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.opencv.opencv_core.IplImage[] $stack2, $stack5, $stack8, $stack11, $stack14, $stack17;
+        org.bytedeco.opencv.opencv_core.IplImage $stack4, $stack7, $stack10, $stack13, $stack16;
+        boolean blocking;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10;
+
+        this := @this: GNImageAlignerCL;
+
+        blocking := @parameter0: boolean;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] images>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack4 = virtualinvoke $r1.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage getTemplateImage(boolean)>(0);
+
+        $stack2[0] = $stack4;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack5 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] images>;
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack7 = virtualinvoke $r3.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage getTargetImage(boolean)>(0);
+
+        $stack5[1] = $stack7;
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack8 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] images>;
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack10 = virtualinvoke $r5.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage getTransformedImage(boolean)>(0);
+
+        $stack8[2] = $stack10;
+
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack11 = $r6.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] images>;
+
+        $r7 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack13 = virtualinvoke $r7.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage getResidualImage(boolean)>(0);
+
+        $stack11[3] = $stack13;
+
+        $r8 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack14 = $r8.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] images>;
+
+        $r9 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack16 = virtualinvoke $r9.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage getMaskImage(boolean)>(blocking);
+
+        $stack14[4] = $stack16;
+
+        $r10 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack17 = $r10.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.IplImage[] images>;
+
+        return $stack17;
+    }
+
+    public com.jogamp.opencl.CLImage2d getTemplateImageCL()
+    {
+        GNImageAlignerCL this;
+        int $stack1;
+        com.jogamp.opencl.CLImage2d[] $stack2;
+        com.jogamp.opencl.CLImage2d $stack3;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack3 = $stack2[$stack1];
+
+        return $stack3;
+    }
+
+    public void setTemplateImageCL(com.jogamp.opencl.CLImage2d, double[])
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.GNImageAligner$Settings $stack7, $stack8;
+        int minLevel, maxLevel, $stack13, $stack24, $stack25, h, w;
+        double[] roiPts, $stack26;
+        org.bytedeco.opencv.opencv_core.CvMat $stack9, $stack31;
+        com.jogamp.opencl.CLImage2d template0, $stack16, $stack17;
+        com.jogamp.opencl.CLImage2d[] $stack11, $stack14, $stack15;
+        boolean[] $stack12;
+        org.bytedeco.javacv.JavaCVCL $stack18;
+        double $stack27, $stack28, $stack29, $stack30;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9;
+
+        this := @this: GNImageAlignerCL;
+
+        template0 := @parameter0: com.jogamp.opencl.CLImage2d;
+
+        roiPts := @parameter1: double[];
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack7 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        minLevel = $stack7.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMin>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack8 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        maxLevel = $stack8.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMax>;
+
+        if roiPts != null goto label1;
+
+        if template0 == null goto label1;
+
+        $stack24 = template0.<com.jogamp.opencl.CLImage2d: int width>;
+
+        w = $stack24 << minLevel;
+
+        $stack25 = template0.<com.jogamp.opencl.CLImage2d: int height>;
+
+        h = $stack25 << minLevel;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack31 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvMat srcRoiPts>;
+
+        $stack26 = newarray (double)[8];
+
+        $stack26[0] = 0.0;
+
+        $stack26[1] = 0.0;
+
+        $stack27 = (double) w;
+
+        $stack26[2] = $stack27;
+
+        $stack26[3] = 0.0;
+
+        $stack28 = (double) w;
+
+        $stack26[4] = $stack28;
+
+        $stack29 = (double) h;
+
+        $stack26[5] = $stack29;
+
+        $stack26[6] = 0.0;
+
+        $stack30 = (double) h;
+
+        $stack26[7] = $stack30;
+
+        virtualinvoke $stack31.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(double[])>($stack26);
+
+        goto label2;
+
+     label1:
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack9 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvMat srcRoiPts>;
+
+        virtualinvoke $stack9.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(double[])>(roiPts);
+
+     label2:
+        if template0 != null goto label3;
+
+        return;
+
+     label3:
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack11 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        $stack11[minLevel] = template0;
+
+        w = minLevel + 1;
+
+     label4:
+        if w > maxLevel goto label5;
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack18 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack14 = $r6.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        $stack13 = w - 1;
+
+        $stack17 = $stack14[$stack13];
+
+        $r7 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack15 = $r7.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        $stack16 = $stack15[w];
+
+        virtualinvoke $stack18.<org.bytedeco.javacv.JavaCVCL: void pyrDown(com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d)>($stack17, $stack16);
+
+        w = w + 1;
+
+        goto label4;
+
+     label5:
+        $r8 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r8.<org.bytedeco.javacv.GNImageAlignerCL: void setPyramidLevel(int)>(maxLevel);
+
+        $r9 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack12 = $r9.<org.bytedeco.javacv.GNImageAlignerCL: boolean[] templateChanged>;
+
+        staticinvoke <java.util.Arrays: void fill(boolean[],boolean)>($stack12, 1);
+
+        return;
+    }
+
+    public com.jogamp.opencl.CLImage2d getTargetImageCL()
+    {
+        GNImageAlignerCL this;
+        int $stack1;
+        com.jogamp.opencl.CLImage2d[] $stack2;
+        com.jogamp.opencl.CLImage2d $stack3;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack3 = $stack2[$stack1];
+
+        return $stack3;
+    }
+
+    public void setTargetImageCL(com.jogamp.opencl.CLImage2d)
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.GNImageAligner$Settings $stack5, $stack6;
+        int minLevel, maxLevel, $stack8, i;
+        com.jogamp.opencl.CLImage2d target0, $stack11, $stack12;
+        com.jogamp.opencl.CLImage2d[] $stack7, $stack9, $stack10;
+        org.bytedeco.javacv.JavaCVCL $stack13;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5, $r6;
+
+        this := @this: GNImageAlignerCL;
+
+        target0 := @parameter0: com.jogamp.opencl.CLImage2d;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack5 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        minLevel = $stack5.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMin>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        maxLevel = $stack6.<org.bytedeco.javacv.GNImageAligner$Settings: int pyramidLevelMax>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack7 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL>;
+
+        $stack7[minLevel] = target0;
+
+        i = minLevel + 1;
+
+     label1:
+        if i > maxLevel goto label2;
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack13 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack9 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL>;
+
+        $stack8 = i - 1;
+
+        $stack12 = $stack9[$stack8];
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack10 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL>;
+
+        $stack11 = $stack10[i];
+
+        virtualinvoke $stack13.<org.bytedeco.javacv.JavaCVCL: void pyrDown(com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d)>($stack12, $stack11);
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r6.<org.bytedeco.javacv.GNImageAlignerCL: void setPyramidLevel(int)>(maxLevel);
+
+        return;
+    }
+
+    public com.jogamp.opencl.CLImage2d getTransformedImageCL()
+    {
+        GNImageAlignerCL this;
+        boolean $stack1;
+        int $stack2;
+        com.jogamp.opencl.CLImage2d[] $stack3;
+        com.jogamp.opencl.CLImage2d $stack4;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: boolean residualUpdateNeeded>;
+
+        if $stack1 == 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r1.<org.bytedeco.javacv.GNImageAlignerCL: void doRoi()>();
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r2.<org.bytedeco.javacv.GNImageAlignerCL: void doResidual()>();
+
+     label1:
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack3 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] transformedCL>;
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack4 = $stack3[$stack2];
+
+        return $stack4;
+    }
+
+    public com.jogamp.opencl.CLImage2d getResidualImageCL()
+    {
+        GNImageAlignerCL this;
+        boolean $stack1;
+        int $stack2;
+        com.jogamp.opencl.CLImage2d[] $stack3;
+        com.jogamp.opencl.CLImage2d $stack4;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: boolean residualUpdateNeeded>;
+
+        if $stack1 == 0 goto label1;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r1.<org.bytedeco.javacv.GNImageAlignerCL: void doRoi()>();
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r2.<org.bytedeco.javacv.GNImageAlignerCL: void doResidual()>();
+
+     label1:
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack3 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] residualCL>;
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack4 = $stack3[$stack2];
+
+        return $stack4;
+    }
+
+    public com.jogamp.opencl.CLImage2d getMaskImageCL()
+    {
+        GNImageAlignerCL this;
+        int $stack1;
+        com.jogamp.opencl.gl.CLGLImage2d[] $stack2;
+        com.jogamp.opencl.gl.CLGLImage2d $stack3;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1;
+        com.jogamp.opencl.CLImage2d $r2;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack3 = $stack2[$stack1];
+
+        $r2 = (com.jogamp.opencl.CLImage2d) $stack3;
+
+        return $r2;
+    }
+
+    public com.jogamp.opencl.CLImage2d[] getImagesCL()
+    {
+        GNImageAlignerCL this;
+        int $stack1, $stack5, $stack9, $stack13, $stack17;
+        com.jogamp.opencl.CLImage2d[] $stack2, $stack4, $stack6, $stack8, $stack10, $stack12, $stack14, $stack16, $stack21;
+        com.jogamp.opencl.CLImage2d $stack3, $stack7, $stack11, $stack15;
+        com.jogamp.opencl.gl.CLGLImage2d[] $stack18;
+        com.jogamp.opencl.gl.CLGLImage2d $stack19;
+        java.lang.Object[] $stack20;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] imagesCL>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack2 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack1 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack3 = $stack2[$stack1];
+
+        $stack4[0] = $stack3;
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack8 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] imagesCL>;
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL>;
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack5 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack7 = $stack6[$stack5];
+
+        $stack8[1] = $stack7;
+
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack12 = $r6.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] imagesCL>;
+
+        $r7 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack10 = $r7.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] transformedCL>;
+
+        $r8 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack9 = $r8.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack11 = $stack10[$stack9];
+
+        $stack12[2] = $stack11;
+
+        $r9 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack16 = $r9.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] imagesCL>;
+
+        $r10 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack14 = $r10.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] residualCL>;
+
+        $r11 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack13 = $r11.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack15 = $stack14[$stack13];
+
+        $stack16[3] = $stack15;
+
+        $r12 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack20 = $r12.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] imagesCL>;
+
+        $r13 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack18 = $r13.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r14 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack17 = $r14.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack19 = $stack18[$stack17];
+
+        $stack20[4] = $stack19;
+
+        $r15 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack21 = $r15.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] imagesCL>;
+
+        return $stack21;
+    }
+
+    protected void doHessianGradient(double[])
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.ImageTransformer$Parameters $stack8;
+        double constraintError, stepSize, $stack25, $stack35, $stack72, $stack76, $stack77, $stack84, $stack91, $stack92, $stack97, $stack98, $stack99, $stack101, $stack102, $stack103;
+        org.bytedeco.javacv.GNImageAligner$Settings $stack10, $stack16, $stack17, $stack26, $stack27, $stack36;
+        org.bytedeco.opencv.opencv_core.CvMat $stack11, $stack12, $stack70, $stack71, $stack82, $stack83;
+        double[] scale, $stack18, $stack23, $stack28, $stack33, $stack65;
+        int $stack15, $stack19, $stack20, $stack21, $stack24, $stack29, $stack30, $stack31, $stack34, $stack38, $stack40, $stack45, $stack47, $stack49, $stack51, $stack61, $stack79, $stack86, $stack87, $stack88, i, $stack69, j;
+        org.bytedeco.javacv.ImageTransformerCL$InputData $stack22, $stack32, $stack39, $stack54, $stack96, $stack100;
+        boolean $stack37;
+        com.jogamp.opencl.gl.CLGLImage2d[] $stack41, $stack52, $stack62;
+        com.jogamp.opencl.gl.CLGLImage2d $stack42, $stack56, $stack63;
+        org.bytedeco.javacv.JavaCVCL $stack43, $stack64, $stack66;
+        org.bytedeco.javacv.ImageTransformer $stack44;
+        com.jogamp.opencl.CLImage2d[] $stack46, $stack48, $stack50;
+        org.bytedeco.javacv.ImageTransformerCL$OutputData $stack53, $stack67, $stack73, $stack85;
+        org.bytedeco.javacv.ImageTransformer$Parameters[] $stack55;
+        com.jogamp.opencl.CLImage2d $stack57, $stack58, $stack59, $r40;
+        org.bytedeco.javacv.ImageTransformerCL $stack60;
+        java.nio.FloatBuffer $stack74, $stack89;
+        float $stack75, $stack90;
+        org.bytedeco.javacv.GNImageAlignerCL$1 $u0;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r4, $r6, $r7, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r28, $r29, $r30, $r31, $r32, $r33, $r34, $r35, $r36, $r37, $r38, $r39, $r41, $r42, $r43, $r45, $r46, $r47, $r48, $r49, $r50, $r51, $r52, $r53, $r54, $r55, $r56, $r57;
+        org.bytedeco.opencv.opencv_core.CvArr $r3, $r5;
+        org.bytedeco.javacv.Parallel$Looper $r8;
+        com.jogamp.opencl.CLObject $r27, $r44;
+
+        this := @this: GNImageAlignerCL;
+
+        scale := @parameter0: double[];
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack8 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformer$Parameters parameters>;
+
+        constraintError = interfaceinvoke $stack8.<org.bytedeco.javacv.ImageTransformer$Parameters: double getConstraintError()>();
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack10 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        stepSize = $stack10.<org.bytedeco.javacv.GNImageAligner$Settings: double stepSize>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack11 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvMat gradient>;
+
+        $r3 = (org.bytedeco.opencv.opencv_core.CvArr) $stack11;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetZero(org.bytedeco.opencv.opencv_core.CvArr)>($r3);
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack12 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvMat hessian>;
+
+        $r5 = (org.bytedeco.opencv.opencv_core.CvArr) $stack12;
+
+        staticinvoke <org.bytedeco.opencv.global.opencv_core: void cvSetZero(org.bytedeco.opencv.opencv_core.CvArr)>($r5);
+
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack15 = $r6.<org.bytedeco.javacv.GNImageAlignerCL: int n>;
+
+        $u0 = new org.bytedeco.javacv.GNImageAlignerCL$1;
+
+        $r7 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        specialinvoke $u0.<org.bytedeco.javacv.GNImageAlignerCL$1: void <init>(org.bytedeco.javacv.GNImageAlignerCL,double,double[],double)>($r7, stepSize, scale, constraintError);
+
+        $r8 = (org.bytedeco.javacv.Parallel$Looper) $u0;
+
+        staticinvoke <org.bytedeco.javacv.Parallel: void loop(int,int,org.bytedeco.javacv.Parallel$Looper)>(0, $stack15, $r8);
+
+        $r9 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack22 = $r9.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r10 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack16 = $r10.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack23 = $stack16.<org.bytedeco.javacv.GNImageAligner$Settings: double[] thresholdsZero>;
+
+        $r11 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack17 = $r11.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack18 = $stack17.<org.bytedeco.javacv.GNImageAligner$Settings: double[] thresholdsZero>;
+
+        $stack19 = lengthof $stack18;
+
+        $stack21 = $stack19 - 1;
+
+        $r12 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack20 = $r12.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack24 = staticinvoke <java.lang.Math: int min(int,int)>($stack21, $stack20);
+
+        $stack25 = $stack23[$stack24];
+
+        $stack22.<org.bytedeco.javacv.ImageTransformerCL$InputData: double zeroThreshold> = $stack25;
+
+        $r13 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack32 = $r13.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r14 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack26 = $r14.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack33 = $stack26.<org.bytedeco.javacv.GNImageAligner$Settings: double[] thresholdsOutlier>;
+
+        $r15 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack27 = $r15.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack28 = $stack27.<org.bytedeco.javacv.GNImageAligner$Settings: double[] thresholdsOutlier>;
+
+        $stack29 = lengthof $stack28;
+
+        $stack31 = $stack29 - 1;
+
+        $r16 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack30 = $r16.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack34 = staticinvoke <java.lang.Math: int min(int,int)>($stack31, $stack30);
+
+        $stack35 = $stack33[$stack34];
+
+        $stack32.<org.bytedeco.javacv.ImageTransformerCL$InputData: double outlierThreshold> = $stack35;
+
+        $r17 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack36 = $r17.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack37 = $stack36.<org.bytedeco.javacv.GNImageAligner$Settings: boolean thresholdsMulRMSE>;
+
+        if $stack37 == 0 goto label1;
+
+        $r18 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack96 = $r18.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $stack98 = $stack96.<org.bytedeco.javacv.ImageTransformerCL$InputData: double zeroThreshold>;
+
+        $r19 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack97 = $r19.<org.bytedeco.javacv.GNImageAlignerCL: double RMSE>;
+
+        $stack99 = $stack98 * $stack97;
+
+        $stack96.<org.bytedeco.javacv.ImageTransformerCL$InputData: double zeroThreshold> = $stack99;
+
+        $r20 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack100 = $r20.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $stack102 = $stack100.<org.bytedeco.javacv.ImageTransformerCL$InputData: double outlierThreshold>;
+
+        $r21 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack101 = $r21.<org.bytedeco.javacv.GNImageAlignerCL: double RMSE>;
+
+        $stack103 = $stack102 * $stack101;
+
+        $stack100.<org.bytedeco.javacv.ImageTransformerCL$InputData: double outlierThreshold> = $stack103;
+
+     label1:
+        $r22 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack39 = $r22.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r23 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack38 = $r23.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack39.<org.bytedeco.javacv.ImageTransformerCL$InputData: int pyramidLevel> = $stack38;
+
+        $r24 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack43 = $r24.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r25 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack41 = $r25.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r26 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack40 = $r26.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack42 = $stack41[$stack40];
+
+        $r27 = (com.jogamp.opencl.CLObject) $stack42;
+
+        virtualinvoke $stack43.<org.bytedeco.javacv.JavaCVCL: void acquireGLObject(com.jogamp.opencl.CLObject)>($r27);
+
+        $r28 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack44 = $r28.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformer transformer>;
+
+        $stack60 = (org.bytedeco.javacv.ImageTransformerCL) $stack44;
+
+        $r29 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack46 = $r29.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        $r30 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack45 = $r30.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack59 = $stack46[$stack45];
+
+        $r31 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack48 = $r31.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] transformedCL>;
+
+        $r32 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack47 = $r32.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack58 = $stack48[$stack47];
+
+        $r33 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack50 = $r33.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] residualCL>;
+
+        $r34 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack49 = $r34.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack57 = $stack50[$stack49];
+
+        $r35 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack52 = $r35.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r36 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack51 = $r36.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack56 = $stack52[$stack51];
+
+        $r37 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack55 = $r37.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformer$Parameters[] tempParameters>;
+
+        $r38 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack54 = $r38.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r39 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack53 = $r39.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$OutputData outputData>;
+
+        $r40 = (com.jogamp.opencl.CLImage2d) $stack56;
+
+        interfaceinvoke $stack60.<org.bytedeco.javacv.ImageTransformerCL: void transform(com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,org.bytedeco.javacv.ImageTransformer$Parameters[],boolean[],org.bytedeco.javacv.ImageTransformerCL$InputData,org.bytedeco.javacv.ImageTransformerCL$OutputData)>($stack59, $stack58, $stack57, null, null, $r40, $stack55, null, $stack54, $stack53);
+
+        $r41 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack64 = $r41.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r42 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack62 = $r42.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r43 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack61 = $r43.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack63 = $stack62[$stack61];
+
+        $r44 = (com.jogamp.opencl.CLObject) $stack63;
+
+        virtualinvoke $stack64.<org.bytedeco.javacv.JavaCVCL: void releaseGLObject(com.jogamp.opencl.CLObject)>($r44);
+
+        $r45 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack65 = $r45.<org.bytedeco.javacv.GNImageAlignerCL: double[] updateScale>;
+
+        $r46 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        virtualinvoke $r46.<org.bytedeco.javacv.GNImageAlignerCL: void doRegularization(double[])>($stack65);
+
+        $r47 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack67 = $r47.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$OutputData outputData>;
+
+        $r48 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack66 = $r48.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        virtualinvoke $stack67.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer readBuffer(org.bytedeco.javacv.JavaCVCL)>($stack66);
+
+        i = 0;
+
+     label2:
+        $r49 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack69 = $r49.<org.bytedeco.javacv.GNImageAlignerCL: int n>;
+
+        if i >= $stack69 goto label5;
+
+        $r50 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack71 = $r50.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvMat gradient>;
+
+        $r51 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack70 = $r51.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvMat gradient>;
+
+        $stack72 = virtualinvoke $stack70.<org.bytedeco.opencv.opencv_core.CvMat: double get(int)>(i);
+
+        $r52 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack73 = $r52.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$OutputData outputData>;
+
+        $stack74 = $stack73.<org.bytedeco.javacv.ImageTransformerCL$OutputData: java.nio.FloatBuffer srcDstDot>;
+
+        $stack75 = virtualinvoke $stack74.<java.nio.FloatBuffer: float get(int)>(i);
+
+        $stack76 = (double) $stack75;
+
+        $stack77 = $stack72 - $stack76;
+
+        virtualinvoke $stack71.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(int,double)>(i, $stack77);
+
+        j = 0;
+
+     label3:
+        $r53 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack79 = $r53.<org.bytedeco.javacv.GNImageAlignerCL: int n>;
+
+        if j >= $stack79 goto label4;
+
+        $r54 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack83 = $r54.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvMat hessian>;
+
+        $r55 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack82 = $r55.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvMat hessian>;
+
+        $stack84 = virtualinvoke $stack82.<org.bytedeco.opencv.opencv_core.CvMat: double get(int,int)>(i, j);
+
+        $r56 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack85 = $r56.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$OutputData outputData>;
+
+        $stack89 = $stack85.<org.bytedeco.javacv.ImageTransformerCL$OutputData: java.nio.FloatBuffer dstDstDot>;
+
+        $r57 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack86 = $r57.<org.bytedeco.javacv.GNImageAlignerCL: int n>;
+
+        $stack87 = i * $stack86;
+
+        $stack88 = $stack87 + j;
+
+        $stack90 = virtualinvoke $stack89.<java.nio.FloatBuffer: float get(int)>($stack88);
+
+        $stack91 = (double) $stack90;
+
+        $stack92 = $stack84 + $stack91;
+
+        virtualinvoke $stack83.<org.bytedeco.opencv.opencv_core.CvMat: org.bytedeco.opencv.opencv_core.CvMat put(int,int,double)>(i, j, $stack92);
+
+        j = j + 1;
+
+        goto label3;
+
+     label4:
+        i = i + 1;
+
+        goto label2;
+
+     label5:
+        return;
+    }
+
+    protected void doRoi()
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.ImageTransformer$Parameters $stack3;
+        org.bytedeco.opencv.opencv_core.CvMat $stack4, $stack5, $stack7;
+        org.bytedeco.javacv.ImageTransformer $stack6;
+        double[] pts;
+        int $stack9, $stack13, $stack16, $stack18, $stack21, $stack27, $stack30, $stack33, $stack36, $stack39, $stack41, $stack44, $stack47, $stack48, $stack51, $stack54, $stack57, $stack60, $stack61, $stack74, $stack75, i;
+        org.bytedeco.opencv.opencv_core.CvRect $stack10, $stack11, $stack12, $stack17, $stack23, $stack25, $stack28, $stack31, $stack34;
+        com.jogamp.opencl.gl.CLGLImage2d[] $stack14, $stack19, $stack45, $stack49, $stack55, $stack58;
+        com.jogamp.opencl.gl.CLGLImage2d $stack15, $stack20, $stack46, $stack50, $stack56, $stack59;
+        org.bytedeco.javacv.ImageTransformerCL$InputData $stack26, $stack29, $stack32, $stack35;
+        org.bytedeco.javacv.JavaCVCL $stack37, $stack42;
+        int[] $stack40;
+        com.jogamp.opengl.glu.GLU $stack43;
+        float $stack52, $stack53;
+        double $stack62, $stack63, $stack64, $stack65, $stack66, $stack67, $stack68, $stack69, $stack70, $stack71, $stack72, $stack73, $stack76, $stack77, $stack78;
+        com.jogamp.opengl.GL2 i#2;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformer transformer>;
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack5 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvMat srcRoiPts>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack4 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvMat dstRoiPts>;
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack3 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformer$Parameters parameters>;
+
+        interfaceinvoke $stack6.<org.bytedeco.javacv.ImageTransformer: void transform(org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.opencv.opencv_core.CvMat,org.bytedeco.javacv.ImageTransformer$Parameters,boolean)>($stack5, $stack4, $stack3, 0);
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack7 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvMat dstRoiPts>;
+
+        pts = virtualinvoke $stack7.<org.bytedeco.opencv.opencv_core.CvMat: double[] get()>();
+
+        i = 0;
+
+     label1:
+        $stack9 = lengthof pts;
+
+        if i >= $stack9 goto label2;
+
+        $stack77 = pts[i];
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack74 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack75 = 1 << $stack74;
+
+        $stack76 = (double) $stack75;
+
+        $stack78 = $stack77 / $stack76;
+
+        pts[i] = $stack78;
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack10 = $r6.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvRect roi>;
+
+        $stack11 = virtualinvoke $stack10.<org.bytedeco.opencv.opencv_core.CvRect: org.bytedeco.opencv.opencv_core.CvRect x(int)>(0);
+
+        $stack12 = virtualinvoke $stack11.<org.bytedeco.opencv.opencv_core.CvRect: org.bytedeco.opencv.opencv_core.CvRect y(int)>(0);
+
+        $r7 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack14 = $r7.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r8 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack13 = $r8.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack15 = $stack14[$stack13];
+
+        $stack16 = $stack15.<com.jogamp.opencl.gl.CLGLImage2d: int width>;
+
+        $stack17 = virtualinvoke $stack12.<org.bytedeco.opencv.opencv_core.CvRect: org.bytedeco.opencv.opencv_core.CvRect width(int)>($stack16);
+
+        $r9 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack19 = $r9.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r10 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack18 = $r10.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack20 = $stack19[$stack18];
+
+        $stack21 = $stack20.<com.jogamp.opencl.gl.CLGLImage2d: int height>;
+
+        virtualinvoke $stack17.<org.bytedeco.opencv.opencv_core.CvRect: org.bytedeco.opencv.opencv_core.CvRect height(int)>($stack21);
+
+        $r11 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack23 = $r11.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvRect roi>;
+
+        staticinvoke <org.bytedeco.javacv.JavaCV: org.bytedeco.opencv.opencv_core.CvRect boundingRect(double[],org.bytedeco.opencv.opencv_core.CvRect,int,int,int,int)>(pts, $stack23, 3, 3, 16, 1);
+
+        $r12 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack26 = $r12.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r13 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack25 = $r13.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvRect roi>;
+
+        $stack27 = virtualinvoke $stack25.<org.bytedeco.opencv.opencv_core.CvRect: int x()>();
+
+        $stack26.<org.bytedeco.javacv.ImageTransformerCL$InputData: int roiX> = $stack27;
+
+        $r14 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack29 = $r14.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r15 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack28 = $r15.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvRect roi>;
+
+        $stack30 = virtualinvoke $stack28.<org.bytedeco.opencv.opencv_core.CvRect: int y()>();
+
+        $stack29.<org.bytedeco.javacv.ImageTransformerCL$InputData: int roiY> = $stack30;
+
+        $r16 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack32 = $r16.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r17 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack31 = $r17.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvRect roi>;
+
+        $stack33 = virtualinvoke $stack31.<org.bytedeco.opencv.opencv_core.CvRect: int width()>();
+
+        $stack32.<org.bytedeco.javacv.ImageTransformerCL$InputData: int roiWidth> = $stack33;
+
+        $r18 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack35 = $r18.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r19 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack34 = $r19.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.opencv.opencv_core.CvRect roi>;
+
+        $stack36 = virtualinvoke $stack34.<org.bytedeco.opencv.opencv_core.CvRect: int height()>();
+
+        $stack35.<org.bytedeco.javacv.ImageTransformerCL$InputData: int roiHeight> = $stack36;
+
+        $r20 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack37 = $r20.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        i#2 = virtualinvoke $stack37.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.GL2 getGL2()>();
+
+        $r21 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack40 = $r21.<org.bytedeco.javacv.GNImageAlignerCL: int[] maskfb>;
+
+        $r22 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack39 = $r22.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack41 = $stack40[$stack39];
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glBindFramebuffer(int,int)>(36160, $stack41);
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glMatrixMode(int)>(5889);
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glLoadIdentity()>();
+
+        $r23 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack42 = $r23.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $stack43 = virtualinvoke $stack42.<org.bytedeco.javacv.JavaCVCL: com.jogamp.opengl.glu.GLU getGLU()>();
+
+        $r24 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack45 = $r24.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r25 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack44 = $r25.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack46 = $stack45[$stack44];
+
+        $stack47 = $stack46.<com.jogamp.opencl.gl.CLGLImage2d: int width>;
+
+        $stack53 = (float) $stack47;
+
+        $r26 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack49 = $r26.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r27 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack48 = $r27.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack50 = $stack49[$stack48];
+
+        $stack51 = $stack50.<com.jogamp.opencl.gl.CLGLImage2d: int height>;
+
+        $stack52 = (float) $stack51;
+
+        virtualinvoke $stack43.<com.jogamp.opengl.glu.GLU: void gluOrtho2D(float,float,float,float)>(0.0F, $stack53, 0.0F, $stack52);
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glMatrixMode(int)>(5888);
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glLoadIdentity()>();
+
+        $r28 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack55 = $r28.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r29 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack54 = $r29.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack56 = $stack55[$stack54];
+
+        $stack61 = $stack56.<com.jogamp.opencl.gl.CLGLImage2d: int width>;
+
+        $r30 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack58 = $r30.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r31 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack57 = $r31.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack59 = $stack58[$stack57];
+
+        $stack60 = $stack59.<com.jogamp.opencl.gl.CLGLImage2d: int height>;
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glViewport(int,int,int,int)>(0, 0, $stack61, $stack60);
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glClearColor(float,float,float,float)>(0.0F, 0.0F, 0.0F, 0.0F);
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glClear(int)>(16384);
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glColor4f(float,float,float,float)>(1.0F, 1.0F, 1.0F, 1.0F);
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glBegin(int)>(9);
+
+        $stack63 = pts[0];
+
+        $stack62 = pts[1];
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glVertex2d(double,double)>($stack63, $stack62);
+
+        $stack64 = pts[2];
+
+        $stack66 = $stack64 + 1.0;
+
+        $stack65 = pts[3];
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glVertex2d(double,double)>($stack66, $stack65);
+
+        $stack67 = pts[4];
+
+        $stack70 = $stack67 + 1.0;
+
+        $stack68 = pts[5];
+
+        $stack69 = $stack68 + 1.0;
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glVertex2d(double,double)>($stack70, $stack69);
+
+        $stack73 = pts[6];
+
+        $stack71 = pts[7];
+
+        $stack72 = $stack71 + 1.0;
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glVertex2d(double,double)>($stack73, $stack72);
+
+        interfaceinvoke i#2.<com.jogamp.opengl.GL2: void glEnd()>();
+
+        return;
+    }
+
+    protected void doResidual()
+    {
+        GNImageAlignerCL this;
+        org.bytedeco.javacv.ImageTransformer$Parameters $stack4;
+        org.bytedeco.javacv.GNImageAligner$Settings $stack6, $stack7, $stack16, $stack17, $stack26;
+        double[] $stack8, $stack13, $stack18, $stack23;
+        int $stack9, $stack10, $stack11, $stack14, $stack19, $stack20, $stack21, $stack24, $stack28, $stack30, $stack35, $stack37, $stack39, $stack41, $stack43, $stack54, dstCount, $stack65;
+        org.bytedeco.javacv.ImageTransformerCL$InputData $stack12, $stack22, $stack29, $stack46, $stack72, $stack76;
+        double $stack15, $stack25, dstDstDot, $stack66, $stack67, $stack73, $stack74, $stack75, $stack77, $stack78, $stack79, $stack68;
+        boolean $stack27;
+        com.jogamp.opencl.gl.CLGLImage2d[] $stack31, $stack44, $stack55;
+        com.jogamp.opencl.gl.CLGLImage2d $stack32, $stack48, $stack56;
+        org.bytedeco.javacv.JavaCVCL $stack33, $stack57, $stack58;
+        org.bytedeco.javacv.ImageTransformer $stack34;
+        com.jogamp.opencl.CLImage2d[] $stack36, $stack38, $stack40, $stack42;
+        org.bytedeco.javacv.ImageTransformerCL$OutputData $stack45, $stack59, $stack61, $stack64;
+        org.bytedeco.javacv.ImageTransformer$Parameters[] $stack47;
+        com.jogamp.opencl.CLImage2d $stack49, $stack50, $stack51, $stack52, $r34;
+        org.bytedeco.javacv.ImageTransformerCL $stack53;
+        java.nio.FloatBuffer $stack62;
+        float $stack63;
+        org.bytedeco.javacv.GNImageAlignerCL $r0, $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r33, $r35, $r36, $r37, $r39, $r40, $r41, $r42, $r43, $r44, $r45;
+        com.jogamp.opencl.CLObject $r19, $r38;
+
+        this := @this: GNImageAlignerCL;
+
+        $r0 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack4 = $r0.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformer$Parameters parameters>;
+
+        interfaceinvoke $stack4.<org.bytedeco.javacv.ImageTransformer$Parameters: double getConstraintError()>();
+
+        $r1 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack12 = $r1.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r2 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack6 = $r2.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack13 = $stack6.<org.bytedeco.javacv.GNImageAligner$Settings: double[] thresholdsZero>;
+
+        $r3 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack7 = $r3.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack8 = $stack7.<org.bytedeco.javacv.GNImageAligner$Settings: double[] thresholdsZero>;
+
+        $stack9 = lengthof $stack8;
+
+        $stack11 = $stack9 - 1;
+
+        $r4 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack10 = $r4.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack14 = staticinvoke <java.lang.Math: int min(int,int)>($stack11, $stack10);
+
+        $stack15 = $stack13[$stack14];
+
+        $stack12.<org.bytedeco.javacv.ImageTransformerCL$InputData: double zeroThreshold> = $stack15;
+
+        $r5 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack22 = $r5.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r6 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack16 = $r6.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack23 = $stack16.<org.bytedeco.javacv.GNImageAligner$Settings: double[] thresholdsOutlier>;
+
+        $r7 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack17 = $r7.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack18 = $stack17.<org.bytedeco.javacv.GNImageAligner$Settings: double[] thresholdsOutlier>;
+
+        $stack19 = lengthof $stack18;
+
+        $stack21 = $stack19 - 1;
+
+        $r8 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack20 = $r8.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack24 = staticinvoke <java.lang.Math: int min(int,int)>($stack21, $stack20);
+
+        $stack25 = $stack23[$stack24];
+
+        $stack22.<org.bytedeco.javacv.ImageTransformerCL$InputData: double outlierThreshold> = $stack25;
+
+        $r9 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack26 = $r9.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.GNImageAligner$Settings settings>;
+
+        $stack27 = $stack26.<org.bytedeco.javacv.GNImageAligner$Settings: boolean thresholdsMulRMSE>;
+
+        if $stack27 == 0 goto label1;
+
+        $r10 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack72 = $r10.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $stack74 = $stack72.<org.bytedeco.javacv.ImageTransformerCL$InputData: double zeroThreshold>;
+
+        $r11 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack73 = $r11.<org.bytedeco.javacv.GNImageAlignerCL: double RMSE>;
+
+        $stack75 = $stack74 * $stack73;
+
+        $stack72.<org.bytedeco.javacv.ImageTransformerCL$InputData: double zeroThreshold> = $stack75;
+
+        $r12 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack76 = $r12.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $stack78 = $stack76.<org.bytedeco.javacv.ImageTransformerCL$InputData: double outlierThreshold>;
+
+        $r13 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack77 = $r13.<org.bytedeco.javacv.GNImageAlignerCL: double RMSE>;
+
+        $stack79 = $stack78 * $stack77;
+
+        $stack76.<org.bytedeco.javacv.ImageTransformerCL$InputData: double outlierThreshold> = $stack79;
+
+     label1:
+        $r14 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack29 = $r14.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r15 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack28 = $r15.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack29.<org.bytedeco.javacv.ImageTransformerCL$InputData: int pyramidLevel> = $stack28;
+
+        $r16 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack33 = $r16.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r17 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack31 = $r17.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r18 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack30 = $r18.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack32 = $stack31[$stack30];
+
+        $r19 = (com.jogamp.opencl.CLObject) $stack32;
+
+        virtualinvoke $stack33.<org.bytedeco.javacv.JavaCVCL: void acquireGLObject(com.jogamp.opencl.CLObject)>($r19);
+
+        $r20 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack34 = $r20.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformer transformer>;
+
+        $stack53 = (org.bytedeco.javacv.ImageTransformerCL) $stack34;
+
+        $r21 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack36 = $r21.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] templateCL>;
+
+        $r22 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack35 = $r22.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack52 = $stack36[$stack35];
+
+        $r23 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack38 = $r23.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] targetCL>;
+
+        $r24 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack37 = $r24.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack51 = $stack38[$stack37];
+
+        $r25 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack40 = $r25.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] transformedCL>;
+
+        $r26 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack39 = $r26.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack50 = $stack40[$stack39];
+
+        $r27 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack42 = $r27.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.CLImage2d[] residualCL>;
+
+        $r28 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack41 = $r28.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack49 = $stack42[$stack41];
+
+        $r29 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack44 = $r29.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r30 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack43 = $r30.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack48 = $stack44[$stack43];
+
+        $r31 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack47 = $r31.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformer$Parameters[] parametersArray>;
+
+        $r32 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack46 = $r32.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$InputData inputData>;
+
+        $r33 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack45 = $r33.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$OutputData outputData>;
+
+        $r34 = (com.jogamp.opencl.CLImage2d) $stack48;
+
+        interfaceinvoke $stack53.<org.bytedeco.javacv.ImageTransformerCL: void transform(com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,com.jogamp.opencl.CLImage2d,org.bytedeco.javacv.ImageTransformer$Parameters[],boolean[],org.bytedeco.javacv.ImageTransformerCL$InputData,org.bytedeco.javacv.ImageTransformerCL$OutputData)>($stack52, $stack51, null, $stack50, $stack49, $r34, $stack47, null, $stack46, $stack45);
+
+        $r35 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack57 = $r35.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        $r36 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack55 = $r36.<org.bytedeco.javacv.GNImageAlignerCL: com.jogamp.opencl.gl.CLGLImage2d[] maskCL>;
+
+        $r37 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack54 = $r37.<org.bytedeco.javacv.GNImageAlignerCL: int pyramidLevel>;
+
+        $stack56 = $stack55[$stack54];
+
+        $r38 = (com.jogamp.opencl.CLObject) $stack56;
+
+        virtualinvoke $stack57.<org.bytedeco.javacv.JavaCVCL: void releaseGLObject(com.jogamp.opencl.CLObject)>($r38);
+
+        $r39 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack59 = $r39.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$OutputData outputData>;
+
+        $r40 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack58 = $r40.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.JavaCVCL context>;
+
+        virtualinvoke $stack59.<org.bytedeco.javacv.ImageTransformerCL$OutputData: com.jogamp.opencl.CLBuffer readBuffer(org.bytedeco.javacv.JavaCVCL)>($stack58);
+
+        $r41 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack61 = $r41.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$OutputData outputData>;
+
+        $stack62 = $stack61.<org.bytedeco.javacv.ImageTransformerCL$OutputData: java.nio.FloatBuffer dstDstDot>;
+
+        $stack63 = virtualinvoke $stack62.<java.nio.FloatBuffer: float get(int)>(0);
+
+        dstDstDot = (double) $stack63;
+
+        $r42 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack64 = $r42.<org.bytedeco.javacv.GNImageAlignerCL: org.bytedeco.javacv.ImageTransformerCL$OutputData outputData>;
+
+        dstCount = $stack64.<org.bytedeco.javacv.ImageTransformerCL$OutputData: int dstCount>;
+
+        $r43 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $stack65 = $r43.<org.bytedeco.javacv.GNImageAlignerCL: int n>;
+
+        if dstCount >= $stack65 goto label2;
+
+        $stack68 = #NaN;
+
+        goto label3;
+
+     label2:
+        $stack66 = (double) dstCount;
+
+        $stack67 = dstDstDot / $stack66;
+
+        $stack68 = staticinvoke <java.lang.Math: double sqrt(double)>($stack67);
+
+     label3:
+        $r44 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r44.<org.bytedeco.javacv.GNImageAlignerCL: double RMSE> = $stack68;
+
+        $r45 = (org.bytedeco.javacv.GNImageAlignerCL) this;
+
+        $r45.<org.bytedeco.javacv.GNImageAlignerCL: boolean residualUpdateNeeded> = 0;
+
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $stack0;
+        boolean $stack1, $stack2;
+
+        $stack0 = class "Lorg/bytedeco/javacv/GNImageAlignerCL;";
+
+        $stack1 = virtualinvoke $stack0.<java.lang.Class: boolean desiredAssertionStatus()>();
+
+        if $stack1 != 0 goto label1;
+
+        $stack2 = 1;
+
+        goto label2;
+
+     label1:
+        $stack2 = 0;
+
+     label2:
+        <org.bytedeco.javacv.GNImageAlignerCL: boolean $assertionsDisabled> = $stack2;
+
+        return;
+    }
+}

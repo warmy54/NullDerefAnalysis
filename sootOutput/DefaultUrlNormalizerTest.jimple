@@ -1,0 +1,209 @@
+public class DefaultUrlNormalizerTest extends java.lang.Object
+{
+    private org.apache.maven.model.path.UrlNormalizer normalizer;
+
+    public void <init>()
+    {
+        DefaultUrlNormalizerTest this;
+        org.apache.maven.model.path.DefaultUrlNormalizer $u0;
+        org.apache.maven.model.path.DefaultUrlNormalizerTest $r0;
+        org.apache.maven.model.path.UrlNormalizer $r1;
+
+        this := @this: DefaultUrlNormalizerTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new org.apache.maven.model.path.DefaultUrlNormalizer;
+
+        specialinvoke $u0.<org.apache.maven.model.path.DefaultUrlNormalizer: void <init>()>();
+
+        $r0 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $r1 = (org.apache.maven.model.path.UrlNormalizer) $u0;
+
+        $r0.<org.apache.maven.model.path.DefaultUrlNormalizerTest: org.apache.maven.model.path.UrlNormalizer normalizer> = $r1;
+
+        return;
+    }
+
+    private java.lang.String normalize(java.lang.String)
+    {
+        DefaultUrlNormalizerTest this;
+        java.lang.String url, $stack3;
+        org.apache.maven.model.path.UrlNormalizer $stack2;
+        org.apache.maven.model.path.DefaultUrlNormalizerTest $r0;
+
+        this := @this: DefaultUrlNormalizerTest;
+
+        url := @parameter0: java.lang.String;
+
+        $r0 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack2 = $r0.<org.apache.maven.model.path.DefaultUrlNormalizerTest: org.apache.maven.model.path.UrlNormalizer normalizer>;
+
+        $stack3 = interfaceinvoke $stack2.<org.apache.maven.model.path.UrlNormalizer: java.lang.String normalize(java.lang.String)>(url);
+
+        return $stack3;
+    }
+
+    public void testNullSafe()
+    {
+        DefaultUrlNormalizerTest this;
+        java.lang.String $stack1;
+        org.apache.maven.model.path.DefaultUrlNormalizerTest $r0;
+
+        this := @this: DefaultUrlNormalizerTest;
+
+        $r0 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack1 = specialinvoke $r0.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>(null);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertNull(java.lang.Object)>($stack1);
+
+        return;
+    }
+
+    public void testTrailingSlash()
+    {
+        DefaultUrlNormalizerTest this;
+        java.lang.String $stack2, $stack4, $stack6;
+        org.apache.maven.model.path.DefaultUrlNormalizerTest $r0, $r1, $r2;
+
+        this := @this: DefaultUrlNormalizerTest;
+
+        $r0 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("", $stack2);
+
+        $r1 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack4 = specialinvoke $r1.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("http://server.org/dir");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("http://server.org/dir", $stack4);
+
+        $r2 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack6 = specialinvoke $r2.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("http://server.org/dir/");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("http://server.org/dir/", $stack6);
+
+        return;
+    }
+
+    public void testRemovalOfParentRefs()
+    {
+        DefaultUrlNormalizerTest this;
+        java.lang.String $stack2, $stack4, $stack6, $stack8;
+        org.apache.maven.model.path.DefaultUrlNormalizerTest $r0, $r1, $r2, $r3;
+
+        this := @this: DefaultUrlNormalizerTest;
+
+        $r0 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("http://server.org/parent/../child");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("http://server.org/child", $stack2);
+
+        $r1 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack4 = specialinvoke $r1.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("http://server.org/grand/parent/../../child");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("http://server.org/child", $stack4);
+
+        $r2 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack6 = specialinvoke $r2.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("http://server.org/parent/..//child");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("http://server.org//child", $stack6);
+
+        $r3 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack8 = specialinvoke $r3.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("http://server.org/parent//../child");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("http://server.org/child", $stack8);
+
+        return;
+    }
+
+    public void testPreservationOfDoubleSlashes()
+    {
+        DefaultUrlNormalizerTest this;
+        java.lang.String $stack2, $stack4, $stack6;
+        org.apache.maven.model.path.DefaultUrlNormalizerTest $r0, $r1, $r2;
+
+        this := @this: DefaultUrlNormalizerTest;
+
+        $r0 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("scm:hg:ssh://localhost//home/user");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("scm:hg:ssh://localhost//home/user", $stack2);
+
+        $r1 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack4 = specialinvoke $r1.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("file:////UNC/server");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("file:////UNC/server", $stack4);
+
+        $r2 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack6 = specialinvoke $r2.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("[fetch=]http://server.org/[push=]ssh://server.org/");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("[fetch=]http://server.org/[push=]ssh://server.org/", $stack6);
+
+        return;
+    }
+
+    public void absolutePathTraversalPastRootIsOmitted()
+    {
+        DefaultUrlNormalizerTest this;
+        java.lang.String $stack2;
+        org.apache.maven.model.path.DefaultUrlNormalizerTest $r0;
+
+        this := @this: DefaultUrlNormalizerTest;
+
+        $r0 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("/../");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("/", $stack2);
+
+        return;
+    }
+
+    public void parentDirectoryRemovedFromRelativeUriReference()
+    {
+        DefaultUrlNormalizerTest this;
+        java.lang.String $stack2;
+        org.apache.maven.model.path.DefaultUrlNormalizerTest $r0;
+
+        this := @this: DefaultUrlNormalizerTest;
+
+        $r0 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("a/../");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("", $stack2);
+
+        return;
+    }
+
+    public void leadingParentDirectoryNotRemovedFromRelativeUriReference()
+    {
+        DefaultUrlNormalizerTest this;
+        java.lang.String $stack2;
+        org.apache.maven.model.path.DefaultUrlNormalizerTest $r0;
+
+        this := @this: DefaultUrlNormalizerTest;
+
+        $r0 = (org.apache.maven.model.path.DefaultUrlNormalizerTest) this;
+
+        $stack2 = specialinvoke $r0.<org.apache.maven.model.path.DefaultUrlNormalizerTest: java.lang.String normalize(java.lang.String)>("../");
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>("../", $stack2);
+
+        return;
+    }
+}

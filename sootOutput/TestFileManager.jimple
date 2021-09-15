@@ -1,0 +1,480 @@
+public class TestFileManager extends java.lang.Object
+{
+    public static final java.lang.String TEMP_DIR_PATH;
+    private java.util.List filesToDelete;
+    private final java.lang.String baseFilename;
+    private final java.lang.String fileSuffix;
+    private java.lang.StackTraceElement callerInfo;
+    private java.lang.Thread cleanupWarning;
+    private boolean warnAboutCleanup;
+
+    public void <init>(java.lang.String, java.lang.String)
+    {
+        TestFileManager this;
+        java.lang.String baseFilename, fileSuffix;
+        java.util.ArrayList $u0;
+        org.apache.maven.artifact.testutils.TestFileManager $r0, $r1, $r2, $r3, $r4;
+
+        this := @this: TestFileManager;
+
+        baseFilename := @parameter0: java.lang.String;
+
+        fileSuffix := @parameter1: java.lang.String;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $r0.<org.apache.maven.artifact.testutils.TestFileManager: java.util.List filesToDelete> = $u0;
+
+        $r1 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $r1.<org.apache.maven.artifact.testutils.TestFileManager: boolean warnAboutCleanup> = 0;
+
+        $r2 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $r2.<org.apache.maven.artifact.testutils.TestFileManager: java.lang.String baseFilename> = baseFilename;
+
+        $r3 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $r3.<org.apache.maven.artifact.testutils.TestFileManager: java.lang.String fileSuffix> = fileSuffix;
+
+        $r4 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        specialinvoke $r4.<org.apache.maven.artifact.testutils.TestFileManager: void initializeCleanupMonitoring()>();
+
+        return;
+    }
+
+    private void initializeCleanupMonitoring()
+    {
+        TestFileManager this;
+        java.lang.StackTraceElement[] $stack3;
+        java.lang.StackTraceElement $stack4;
+        java.lang.Runnable warning;
+        java.lang.Runtime $stack7;
+        java.lang.Thread $stack8, $u1;
+        java.lang.NullPointerException $u0;
+        org.apache.maven.artifact.testutils.TestFileManager $r0, $r1, $r2, $r3;
+
+        this := @this: TestFileManager;
+
+        $u0 = new java.lang.NullPointerException;
+
+        specialinvoke $u0.<java.lang.NullPointerException: void <init>()>();
+
+        $stack3 = virtualinvoke $u0.<java.lang.NullPointerException: java.lang.StackTraceElement[] getStackTrace()>();
+
+        $stack4 = $stack3[2];
+
+        $r0 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $r0.<org.apache.maven.artifact.testutils.TestFileManager: java.lang.StackTraceElement callerInfo> = $stack4;
+
+        $r1 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        warning = staticinvoke <TestFileManager$maybeWarnAboutCleanUp__309: java.lang.Runnable bootstrap$(org.apache.maven.artifact.testutils.TestFileManager)>($r1);
+
+        $u1 = new java.lang.Thread;
+
+        specialinvoke $u1.<java.lang.Thread: void <init>(java.lang.Runnable)>(warning);
+
+        $r2 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $r2.<org.apache.maven.artifact.testutils.TestFileManager: java.lang.Thread cleanupWarning> = $u1;
+
+        $stack7 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+
+        $r3 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $stack8 = $r3.<org.apache.maven.artifact.testutils.TestFileManager: java.lang.Thread cleanupWarning>;
+
+        virtualinvoke $stack7.<java.lang.Runtime: void addShutdownHook(java.lang.Thread)>($stack8);
+
+        return;
+    }
+
+    private void maybeWarnAboutCleanUp()
+    {
+        TestFileManager this;
+        boolean $stack1;
+        java.io.PrintStream $stack3;
+        java.lang.StringBuilder $stack4, $stack7, $stack8, $u0;
+        java.lang.StackTraceElement $stack5;
+        java.lang.String $stack6, $stack9;
+        org.apache.maven.artifact.testutils.TestFileManager $r0, $r1;
+
+        this := @this: TestFileManager;
+
+        $r0 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $stack1 = $r0.<org.apache.maven.artifact.testutils.TestFileManager: boolean warnAboutCleanup>;
+
+        if $stack1 == 0 goto label1;
+
+        $stack3 = <java.lang.System: java.io.PrintStream out>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack4 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[WARNING] TestFileManager from: ");
+
+        $r1 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $stack5 = $r1.<org.apache.maven.artifact.testutils.TestFileManager: java.lang.StackTraceElement callerInfo>;
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StackTraceElement: java.lang.String getClassName()>();
+
+        $stack7 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack6);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" not cleaned up!");
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack3.<java.io.PrintStream: void println(java.lang.String)>($stack9);
+
+     label1:
+        return;
+    }
+
+    public void markForDeletion(java.io.File)
+    {
+        TestFileManager this;
+        java.io.File toDelete;
+        java.util.List $stack2;
+        org.apache.maven.artifact.testutils.TestFileManager $r0, $r1;
+
+        this := @this: TestFileManager;
+
+        toDelete := @parameter0: java.io.File;
+
+        $r0 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $stack2 = $r0.<org.apache.maven.artifact.testutils.TestFileManager: java.util.List filesToDelete>;
+
+        interfaceinvoke $stack2.<java.util.List: boolean add(java.lang.Object)>(toDelete);
+
+        $r1 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $r1.<org.apache.maven.artifact.testutils.TestFileManager: boolean warnAboutCleanup> = 1;
+
+        return;
+    }
+
+    public synchronized java.io.File createTempDir()
+    {
+        java.lang.String $stack4, $stack5, $stack9;
+        TestFileManager this;
+        java.lang.StringBuilder $stack6, $stack8, $u0;
+        long $stack7;
+        java.lang.InterruptedException $stack11;
+        java.io.File $u1;
+        org.apache.maven.artifact.testutils.TestFileManager $r0, $r1;
+
+        this := @this: TestFileManager;
+
+     label1:
+        staticinvoke <java.lang.Thread: void sleep(long)>(20L);
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack11 := @caughtexception;
+
+     label4:
+        $u1 = new java.io.File;
+
+        $stack4 = <org.apache.maven.artifact.testutils.TestFileManager: java.lang.String TEMP_DIR_PATH>;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $r0 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $stack5 = $r0.<org.apache.maven.artifact.testutils.TestFileManager: java.lang.String baseFilename>;
+
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $stack8 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($stack7);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $u1.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack4, $stack9);
+
+        virtualinvoke $u1.<java.io.File: boolean mkdirs()>();
+
+        $r1 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        virtualinvoke $r1.<org.apache.maven.artifact.testutils.TestFileManager: void markForDeletion(java.io.File)>($u1);
+
+        return $u1;
+
+        catch java.lang.InterruptedException from label1 to label2 with label3;
+    }
+
+    public synchronized java.io.File createTempFile() throws java.io.IOException
+    {
+        TestFileManager this;
+        java.lang.String $stack2, $stack3;
+        java.io.File tempFile;
+        org.apache.maven.artifact.testutils.TestFileManager $r0, $r1, $r2;
+
+        this := @this: TestFileManager;
+
+        $r0 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.testutils.TestFileManager: java.lang.String baseFilename>;
+
+        $r1 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $stack2 = $r1.<org.apache.maven.artifact.testutils.TestFileManager: java.lang.String fileSuffix>;
+
+        tempFile = staticinvoke <java.io.File: java.io.File createTempFile(java.lang.String,java.lang.String)>($stack3, $stack2);
+
+        virtualinvoke tempFile.<java.io.File: void deleteOnExit()>();
+
+        $r2 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        virtualinvoke $r2.<org.apache.maven.artifact.testutils.TestFileManager: void markForDeletion(java.io.File)>(tempFile);
+
+        return tempFile;
+    }
+
+    public void cleanUp() throws java.io.IOException
+    {
+        TestFileManager this;
+        java.util.List $stack3;
+        java.util.Iterator it;
+        boolean $stack5, $stack7, $stack9;
+        java.lang.Object $stack6;
+        java.io.File file;
+        org.apache.maven.artifact.testutils.TestFileManager $r0, $r1;
+
+        this := @this: TestFileManager;
+
+        $r0 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $stack3 = $r0.<org.apache.maven.artifact.testutils.TestFileManager: java.util.List filesToDelete>;
+
+        it = interfaceinvoke $stack3.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $stack5 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack5 == 0 goto label4;
+
+        $stack6 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+
+        file = (java.io.File) $stack6;
+
+        $stack7 = virtualinvoke file.<java.io.File: boolean exists()>();
+
+        if $stack7 == 0 goto label3;
+
+        $stack9 = virtualinvoke file.<java.io.File: boolean isDirectory()>();
+
+        if $stack9 == 0 goto label2;
+
+        staticinvoke <org.codehaus.plexus.util.FileUtils: void deleteDirectory(java.io.File)>(file);
+
+        goto label3;
+
+     label2:
+        virtualinvoke file.<java.io.File: boolean delete()>();
+
+     label3:
+        interfaceinvoke it.<java.util.Iterator: void remove()>();
+
+        goto label1;
+
+     label4:
+        $r1 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $r1.<org.apache.maven.artifact.testutils.TestFileManager: boolean warnAboutCleanup> = 0;
+
+        return;
+    }
+
+    public void assertFileExistence(java.io.File, java.lang.String, boolean)
+    {
+        java.io.File $stack5, dir;
+        java.lang.String filename;
+        boolean shouldExist, $stack6, $stack7;
+        TestFileManager this;
+
+        this := @this: TestFileManager;
+
+        dir := @parameter0: java.io.File;
+
+        filename := @parameter1: java.lang.String;
+
+        shouldExist := @parameter2: boolean;
+
+        $stack5 = new java.io.File;
+
+        specialinvoke $stack5.<java.io.File: void <init>(java.io.File,java.lang.String)>(dir, filename);
+
+        if shouldExist == 0 goto label1;
+
+        $stack7 = virtualinvoke $stack5.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertTrue(boolean)>($stack7);
+
+        goto label2;
+
+     label1:
+        $stack6 = virtualinvoke $stack5.<java.io.File: boolean exists()>();
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertFalse(boolean)>($stack6);
+
+     label2:
+        return;
+    }
+
+    public void assertFileContents(java.io.File, java.lang.String, java.lang.String, java.lang.String) throws java.io.IOException
+    {
+        TestFileManager this;
+        java.io.File dir, $u0;
+        java.lang.String filename, encoding, contents, contentsTest;
+        org.apache.maven.artifact.testutils.TestFileManager $r0;
+
+        this := @this: TestFileManager;
+
+        dir := @parameter0: java.io.File;
+
+        filename := @parameter1: java.lang.String;
+
+        contentsTest := @parameter2: java.lang.String;
+
+        encoding := @parameter3: java.lang.String;
+
+        $r0 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        virtualinvoke $r0.<org.apache.maven.artifact.testutils.TestFileManager: void assertFileExistence(java.io.File,java.lang.String,boolean)>(dir, filename, 1);
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.io.File,java.lang.String)>(dir, filename);
+
+        contents = staticinvoke <org.codehaus.plexus.util.FileUtils: java.lang.String fileRead(java.io.File,java.lang.String)>($u0, encoding);
+
+        staticinvoke <org.junit.jupiter.api.Assertions: void assertEquals(java.lang.Object,java.lang.Object)>(contentsTest, contents);
+
+        return;
+    }
+
+    public java.io.File createFile(java.io.File, java.lang.String, java.lang.String, java.lang.String) throws java.io.IOException
+    {
+        java.io.File dir, $stack7, $u0;
+        java.lang.String filename, $stack9, encoding, contents;
+        TestFileManager this;
+        org.apache.maven.artifact.testutils.TestFileManager $r0;
+
+        this := @this: TestFileManager;
+
+        dir := @parameter0: java.io.File;
+
+        filename := @parameter1: java.lang.String;
+
+        contents := @parameter2: java.lang.String;
+
+        encoding := @parameter3: java.lang.String;
+
+        $u0 = new java.io.File;
+
+        specialinvoke $u0.<java.io.File: void <init>(java.io.File,java.lang.String)>(dir, filename);
+
+        $stack7 = virtualinvoke $u0.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $stack7.<java.io.File: boolean mkdirs()>();
+
+        $stack9 = virtualinvoke $u0.<java.io.File: java.lang.String getPath()>();
+
+        staticinvoke <org.codehaus.plexus.util.FileUtils: void fileWrite(java.lang.String,java.lang.String,java.lang.String)>($stack9, encoding, contents);
+
+        $r0 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        virtualinvoke $r0.<org.apache.maven.artifact.testutils.TestFileManager: void markForDeletion(java.io.File)>($u0);
+
+        return $u0;
+    }
+
+    public java.lang.String getFileContents(java.io.File, java.lang.String) throws java.io.IOException
+    {
+        java.io.File file;
+        java.lang.String encoding, $stack3;
+        TestFileManager this;
+
+        this := @this: TestFileManager;
+
+        file := @parameter0: java.io.File;
+
+        encoding := @parameter1: java.lang.String;
+
+        $stack3 = staticinvoke <org.codehaus.plexus.util.FileUtils: java.lang.String fileRead(java.io.File,java.lang.String)>(file, encoding);
+
+        return $stack3;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        TestFileManager this;
+        org.apache.maven.artifact.testutils.TestFileManager $r0;
+
+        this := @this: TestFileManager;
+
+        $r0 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        specialinvoke $r0.<org.apache.maven.artifact.testutils.TestFileManager: void maybeWarnAboutCleanUp()>();
+
+        specialinvoke this.<java.lang.Object: void finalize()>();
+
+        return;
+    }
+
+    public java.io.File createFile(java.lang.String, java.lang.String, java.lang.String) throws java.io.IOException
+    {
+        TestFileManager this;
+        java.io.File dir, $stack6;
+        java.lang.String filename, content, encoding;
+        org.apache.maven.artifact.testutils.TestFileManager $r0, $r1;
+
+        this := @this: TestFileManager;
+
+        filename := @parameter0: java.lang.String;
+
+        content := @parameter1: java.lang.String;
+
+        encoding := @parameter2: java.lang.String;
+
+        $r0 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        dir = virtualinvoke $r0.<org.apache.maven.artifact.testutils.TestFileManager: java.io.File createTempDir()>();
+
+        $r1 = (org.apache.maven.artifact.testutils.TestFileManager) this;
+
+        $stack6 = virtualinvoke $r1.<org.apache.maven.artifact.testutils.TestFileManager: java.io.File createFile(java.io.File,java.lang.String,java.lang.String,java.lang.String)>(dir, filename, content, encoding);
+
+        return $stack6;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String $stack0;
+
+        $stack0 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("java.io.tmpdir");
+
+        <org.apache.maven.artifact.testutils.TestFileManager: java.lang.String TEMP_DIR_PATH> = $stack0;
+
+        return;
+    }
+}

@@ -1,0 +1,282 @@
+public class DefaultToolchainManager extends java.lang.Object implements org.apache.maven.toolchain.ToolchainManager
+{
+    org.codehaus.plexus.logging.Logger logger;
+    java.util.Map factories;
+
+    public void <init>()
+    {
+        DefaultToolchainManager this;
+
+        this := @this: DefaultToolchainManager;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public org.apache.maven.toolchain.Toolchain getToolchainFromBuildContext(java.lang.String, org.apache.maven.execution.MavenSession)
+    {
+        DefaultToolchainManager this;
+        org.apache.maven.execution.MavenSession session;
+        java.util.Map context;
+        java.lang.String type, $stack7;
+        java.lang.Object $stack8, $stack13;
+        org.apache.maven.toolchain.model.ToolchainModel model;
+        java.util.List $stack9, toolchains;
+        boolean $stack11;
+        org.apache.maven.toolchain.Toolchain $stack14;
+        org.apache.maven.toolchain.DefaultToolchainManager $r0, $r1;
+
+        this := @this: DefaultToolchainManager;
+
+        type := @parameter0: java.lang.String;
+
+        session := @parameter1: org.apache.maven.execution.MavenSession;
+
+        $r0 = (org.apache.maven.toolchain.DefaultToolchainManager) this;
+
+        context = virtualinvoke $r0.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.Map retrieveContext(org.apache.maven.execution.MavenSession)>(session);
+
+        $stack7 = staticinvoke <org.apache.maven.toolchain.DefaultToolchainManager: java.lang.String getStorageKey(java.lang.String)>(type);
+
+        $stack8 = interfaceinvoke context.<java.util.Map: java.lang.Object get(java.lang.Object)>($stack7);
+
+        model = (org.apache.maven.toolchain.model.ToolchainModel) $stack8;
+
+        if model == null goto label1;
+
+        $stack9 = staticinvoke <java.util.Collections: java.util.List singletonList(java.lang.Object)>(model);
+
+        $r1 = (org.apache.maven.toolchain.DefaultToolchainManager) this;
+
+        toolchains = specialinvoke $r1.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.List selectToolchains(java.util.List,java.lang.String,java.util.Map)>($stack9, type, null);
+
+        $stack11 = interfaceinvoke toolchains.<java.util.List: boolean isEmpty()>();
+
+        if $stack11 != 0 goto label1;
+
+        $stack13 = interfaceinvoke toolchains.<java.util.List: java.lang.Object get(int)>(0);
+
+        $stack14 = (org.apache.maven.toolchain.Toolchain) $stack13;
+
+        return $stack14;
+
+     label1:
+        return null;
+    }
+
+    public java.util.List getToolchains(org.apache.maven.execution.MavenSession, java.lang.String, java.util.Map)
+    {
+        org.apache.maven.execution.MavenSession session;
+        org.apache.maven.execution.MavenExecutionRequest $stack5;
+        java.util.Map $stack6, requirements;
+        java.lang.String type;
+        java.lang.Object $stack7;
+        java.util.List models, $stack8;
+        DefaultToolchainManager this;
+        org.apache.maven.toolchain.DefaultToolchainManager $r0;
+
+        this := @this: DefaultToolchainManager;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        type := @parameter1: java.lang.String;
+
+        requirements := @parameter2: java.util.Map;
+
+        $stack5 = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.execution.MavenExecutionRequest getRequest()>();
+
+        $stack6 = interfaceinvoke $stack5.<org.apache.maven.execution.MavenExecutionRequest: java.util.Map getToolchains()>();
+
+        $stack7 = interfaceinvoke $stack6.<java.util.Map: java.lang.Object get(java.lang.Object)>(type);
+
+        models = (java.util.List) $stack7;
+
+        $r0 = (org.apache.maven.toolchain.DefaultToolchainManager) this;
+
+        $stack8 = specialinvoke $r0.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.List selectToolchains(java.util.List,java.lang.String,java.util.Map)>(models, type, requirements);
+
+        return $stack8;
+    }
+
+    private java.util.List selectToolchains(java.util.List, java.lang.String, java.util.Map)
+    {
+        java.util.List models;
+        DefaultToolchainManager this;
+        java.lang.String type, $stack27;
+        java.util.Map $stack10, requirements;
+        java.lang.Object $stack11, $stack15;
+        org.apache.maven.toolchain.ToolchainFactory fact;
+        java.util.Iterator l6;
+        boolean $stack13, $stack19;
+        org.apache.maven.toolchain.model.ToolchainModel model;
+        org.codehaus.plexus.logging.Logger $stack23, $stack29;
+        java.lang.StringBuilder $stack24, $stack25, $stack26, $u1;
+        java.lang.Throwable $stack28;
+        org.apache.maven.toolchain.ToolchainPrivate toolchain;
+        java.util.ArrayList $u0;
+        org.apache.maven.toolchain.DefaultToolchainManager $r0, $r1, $r2;
+
+        this := @this: DefaultToolchainManager;
+
+        models := @parameter0: java.util.List;
+
+        type := @parameter1: java.lang.String;
+
+        requirements := @parameter2: java.util.Map;
+
+        $u0 = new java.util.ArrayList;
+
+        specialinvoke $u0.<java.util.ArrayList: void <init>()>();
+
+        if models == null goto label8;
+
+        $r0 = (org.apache.maven.toolchain.DefaultToolchainManager) this;
+
+        $stack10 = $r0.<org.apache.maven.toolchain.DefaultToolchainManager: java.util.Map factories>;
+
+        $stack11 = interfaceinvoke $stack10.<java.util.Map: java.lang.Object get(java.lang.Object)>(type);
+
+        fact = (org.apache.maven.toolchain.ToolchainFactory) $stack11;
+
+        if fact != null goto label1;
+
+        $r1 = (org.apache.maven.toolchain.DefaultToolchainManager) this;
+
+        $stack23 = $r1.<org.apache.maven.toolchain.DefaultToolchainManager: org.codehaus.plexus.logging.Logger logger>;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack24 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Missing toolchain factory for type: ");
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(type);
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(". Possibly caused by misconfigured project.");
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack23.<org.codehaus.plexus.logging.Logger: void error(java.lang.String)>($stack27);
+
+        goto label8;
+
+     label1:
+        l6 = interfaceinvoke models.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $stack13 = interfaceinvoke l6.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack13 == 0 goto label8;
+
+        $stack15 = interfaceinvoke l6.<java.util.Iterator: java.lang.Object next()>();
+
+        model = (org.apache.maven.toolchain.model.ToolchainModel) $stack15;
+
+     label3:
+        toolchain = interfaceinvoke fact.<org.apache.maven.toolchain.ToolchainFactory: org.apache.maven.toolchain.ToolchainPrivate createToolchain(org.apache.maven.toolchain.model.ToolchainModel)>(model);
+
+        if requirements == null goto label4;
+
+        $stack19 = interfaceinvoke toolchain.<org.apache.maven.toolchain.ToolchainPrivate: boolean matchesRequirements(java.util.Map)>(requirements);
+
+        if $stack19 == 0 goto label5;
+
+     label4:
+        interfaceinvoke $u0.<java.util.List: boolean add(java.lang.Object)>(toolchain);
+
+     label5:
+        goto label7;
+
+     label6:
+        $stack28 := @caughtexception;
+
+        $r2 = (org.apache.maven.toolchain.DefaultToolchainManager) this;
+
+        $stack29 = $r2.<org.apache.maven.toolchain.DefaultToolchainManager: org.codehaus.plexus.logging.Logger logger>;
+
+        interfaceinvoke $stack29.<org.codehaus.plexus.logging.Logger: void error(java.lang.String,java.lang.Throwable)>("Misconfigured toolchain.", $stack28);
+
+     label7:
+        goto label2;
+
+     label8:
+        return $u0;
+
+        catch org.apache.maven.toolchain.MisconfiguredToolchainException from label3 to label5 with label6;
+    }
+
+    java.util.Map retrieveContext(org.apache.maven.execution.MavenSession)
+    {
+        org.apache.maven.execution.MavenSession session;
+        java.lang.String $stack7, $stack8;
+        org.apache.maven.project.MavenProject current;
+        DefaultToolchainManager this;
+        java.util.Map context, $stack5;
+        org.apache.maven.plugin.descriptor.PluginDescriptor $u0;
+        java.util.HashMap $u1;
+
+        this := @this: DefaultToolchainManager;
+
+        session := @parameter0: org.apache.maven.execution.MavenSession;
+
+        context = null;
+
+        if session == null goto label1;
+
+        $u0 = new org.apache.maven.plugin.descriptor.PluginDescriptor;
+
+        specialinvoke $u0.<org.apache.maven.plugin.descriptor.PluginDescriptor: void <init>()>();
+
+        $stack7 = staticinvoke <org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getDefaultPluginGroupId()>();
+
+        virtualinvoke $u0.<org.apache.maven.plugin.descriptor.PluginDescriptor: void setGroupId(java.lang.String)>($stack7);
+
+        $stack8 = staticinvoke <org.apache.maven.plugin.descriptor.PluginDescriptor: java.lang.String getDefaultPluginArtifactId(java.lang.String)>("toolchains");
+
+        virtualinvoke $u0.<org.apache.maven.plugin.descriptor.PluginDescriptor: void setArtifactId(java.lang.String)>($stack8);
+
+        current = virtualinvoke session.<org.apache.maven.execution.MavenSession: org.apache.maven.project.MavenProject getCurrentProject()>();
+
+        if current == null goto label1;
+
+        context = virtualinvoke session.<org.apache.maven.execution.MavenSession: java.util.Map getPluginContext(org.apache.maven.plugin.descriptor.PluginDescriptor,org.apache.maven.project.MavenProject)>($u0, current);
+
+     label1:
+        if context == null goto label2;
+
+        $stack5 = context;
+
+        goto label3;
+
+     label2:
+        $u1 = new java.util.HashMap;
+
+        $stack5 = $u1;
+
+        specialinvoke $u1.<java.util.HashMap: void <init>()>();
+
+     label3:
+        return $stack5;
+    }
+
+    public static final java.lang.String getStorageKey(java.lang.String)
+    {
+        java.lang.StringBuilder $stack1, $stack2, $stack3;
+        java.lang.String type, $stack4;
+
+        type := @parameter0: java.lang.String;
+
+        $stack1 = new java.lang.StringBuilder;
+
+        specialinvoke $stack1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack2 = virtualinvoke $stack1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("toolchain-");
+
+        $stack3 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(type);
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack4;
+    }
+}
